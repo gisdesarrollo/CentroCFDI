@@ -1,0 +1,146 @@
+﻿@model API.Operaciones.ComplementosPagos.Pago
+
+@using (Html.BeginCollectionItem("Pagos"))
+    {
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+    @Html.HiddenFor(model => model.FechaPago)
+    <div class="content-box mrg20L mrg20R">
+        <h3 class="content-box-header bg-default">
+            <i class="glyph-icon icon-money"></i>
+            Pago
+            <div class="header-buttons-separator">
+                <a href="#" class="icon-separator" onclick="$(this).parent().parent().parent().remove();">
+                    <i class="glyph-icon icon-times font-red"></i>
+                </a>
+            </div>
+        </h3>
+        <div class="content-box-wrapper pago">
+
+            <div class="col-xs-12 col-sm-3">
+                <b>Fecha de Pago</b><br />
+                @Html.DisplayFor(model => model.FechaPago)
+                @Html.HiddenFor(model => model.FechaPago)
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <b>Forma de Pago</b><br />
+                @Html.DisplayFor(model => model.FormaPago)
+                @Html.HiddenFor(model => model.FormaPago)
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <b>Moneda</b><br />
+                @Html.DisplayFor(model => model.Moneda)
+                @Html.HiddenFor(model => model.Moneda)
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <b>Tipo de Cambio</b><br />
+                @Html.DisplayFor(model => model.TipoCambio)
+                @Html.HiddenFor(model => model.TipoCambio)
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <b>Monto</b><br />
+                @Model.Monto.ToString("c")
+                @*@Html.DisplayFor(model => model.Monto)*@
+                @Html.HiddenFor(model => model.Monto)
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <b>Número de Operación</b><br />
+                @if (Model.NumeroOperacion != null || Model.NumeroOperacion == "")
+                    {
+                    @Html.DisplayFor(model => model.NumeroOperacion)
+                    @Html.HiddenFor(model => model.NumeroOperacion)
+                    }
+                else
+                    {
+                    @Html.Raw("Sin Definir")
+                    }
+            </div>
+
+            <div class="col-xs-12 col-sm-3">
+                <b>Banco Ordenante</b><br />
+                @if (Model.BancoOrdenanteId != null)
+                    {
+                    @Html.HiddenFor(model => model.BancoOrdenanteId)
+                    @Html.DisplayFor(model => model.BancoOrdenante.Nombre)
+                    @Html.HiddenFor(model => model.BancoOrdenante.Nombre)
+                    @Html.HiddenFor(model => model.BancoOrdenante.BancoId)
+                    @Html.HiddenFor(model => model.BancoOrdenante.Nombre)
+                    @Html.HiddenFor(model => model.BancoOrdenante.Id)
+                    @Html.HiddenFor(model => model.BancoOrdenante.NumeroCuenta)
+                    @Html.HiddenFor(model => model.BancoOrdenante.ClienteId)
+
+                    @Html.HiddenFor(model => model.BancoOrdenante.Banco.Id)
+                    @Html.HiddenFor(model => model.BancoOrdenante.Banco.RazonSocial)
+                    @Html.HiddenFor(model => model.BancoOrdenante.Banco.NombreCorto)
+                    @Html.HiddenFor(model => model.BancoOrdenante.Banco.Rfc)
+                    @Html.HiddenFor(model => model.BancoOrdenante.Banco.Status)
+                    }
+                else
+                    {
+                    @Html.Raw("Sin Definir")
+                    }
+            </div>
+
+            <div class="col-xs-12 col-sm-3">
+                <b>Banco Beneficiario</b><br />
+                @if (Model.BancoBeneficiarioId != null)
+                    {
+                    @Html.HiddenFor(model => model.BancoBeneficiarioId)
+                    @Html.DisplayFor(model => model.BancoBeneficiario.Nombre)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.Nombre)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.BancoId)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.SucursalId)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.NumeroCuenta)
+
+                    @Html.HiddenFor(model => model.BancoBeneficiario.Banco.Id)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.Banco.RazonSocial)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.Banco.NombreCorto)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.Banco.Rfc)
+                    @Html.HiddenFor(model => model.BancoBeneficiario.Banco.Status)
+                    }
+                else
+                    {
+                    @Html.Raw("Sin Definir")
+                    }
+            </div>
+
+            @if (Model.TipoCadenaPago == CFDI.API.Enums.Complementos.Pagos10.c_TipoCadenaPago.Spei)
+                {
+                @Html.HiddenFor(model => model.TipoCadenaPago)
+
+                <div class="clearfix"></div>
+
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Información
+                </div>
+
+                <hr />
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <b>Cadena de Pago de SPEI</b><br />
+                    @Html.DisplayFor(model => model.CadenaPago)
+                    @Html.HiddenFor(model => model.CadenaPago)
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <b>Certificado de Pago</b><br />
+                    @Html.DisplayFor(model => model.CertificadoPago)
+                    @Html.HiddenFor(model => model.CertificadoPago)
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <b>Sello de Pago</b><br />
+                    @Html.DisplayFor(model => model.SelloPago)
+                    @Html.HiddenFor(model => model.SelloPago)
+                </div>
+                }
+
+
+
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.SucursalId)
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    }

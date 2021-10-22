@@ -1,0 +1,141 @@
+/* Deja el scroll bar siempre abierto */
+
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
+
+/* Modificadores font  */
+
+* {
+    font-family: Helvetica, Arial, sans-serif !important;
+}
+.fa,
+.far,
+.fas {
+    font-family: "Font Awesome 5 Free" !important;
+}
+
+.glyphicon {
+    font-family: "Glyphicons Halflings" !important;
+}
+
+
+/* Modificadores del Template - Monarch  */
+
+#page-title {
+    padding: 0 0 10px !important;
+}
+
+table {
+    font-size: 12px !important;
+}
+
+
+/* Estandariza el font de los botones */
+
+button span {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+
+/* Hace más chico el input de busqueda de Data Tables */
+
+div.dataTables_filter input {
+    height: 25px;
+}
+
+
+/* Alinea los campos de numero a la derecha */
+
+[data-val-number] {
+    text-align: right;
+}
+
+
+/* Submenú Header */
+
+li.submenu-header {
+    font-size: 13px;
+    width: 100%;
+    margin: 0 3px 0 10px !important;
+    height: 32px;
+    line-height: 32px;
+    color: orange;
+}
+
+
+/* Logos 
+Leer la clase que tiene el Body para desplegar el logo correspondiente
+*/
+
+body.APBox #header-logo .logo-content-big,
+body.APBox .logo-content-small {
+    background: url('../../custom/logo_Apbox.png') left 50% no-repeat !important;
+}
+
+body.NominAid #header-logo .logo-content-big,
+body.NominAid .logo-content-small {
+    background: url('../../custom/logo_Nominaid.png') left 50% no-repeat !important;
+}
+
+body.Infodextra #header-logo .logo-content-big,
+body.Infodextra .logo-content-small {
+    background: url('../../custom/logo_Infodextra.png') left 50% no-repeat !important;
+}
+
+
+/* Formato para campos requeridos */
+input[data-val-required]:valid {
+    border-left: solid #3da6ff 3px !important;
+}
+
+input[data-val-required]:placeholder-shown {
+    border-left: solid #f59191 3px !important;
+}
+
+
+/* Agregar flex a row para igualar altura */
+
+.flex,
+.flex>div[class*='col-'] {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex: 1 0 auto;
+}
+
+.panel {
+    -webkit-box-shadow: 0px 5px 9px -9px black;
+    -moz-box-shadow: 0px 5px 9px -9px black;
+    box-shadow: 0px 5px 9px -9px black;
+}
+
+
+/* Arregla el padding del Body cuando un modal abre */
+
+body {
+    padding-right: 0px !important;
+}
+
+
+/* COlor más oscuro para los TD de las tablas */
+
+table,
+.table {
+    color: #546169 !important;
+}
+
+
+/*Arregla los campos para tabla*/
+
+table .form-control,
+table .input-group-addon {
+    font-size: 11px;
+    height: 28px;
+    padding: 2px 3px;
+}

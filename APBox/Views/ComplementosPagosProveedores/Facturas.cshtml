@@ -1,0 +1,33 @@
+﻿@model API.Operaciones.Factura
+
+@using (Html.BeginCollectionItem("Facturas"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+    <div class="wrapper">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            @Html.DisplayFor(model => model.Serie)
+            @Html.HiddenFor(model => model.Serie)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            @Html.DisplayFor(model => model.Folio)
+            @Html.HiddenFor(model => model.Folio)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            @Html.DisplayFor(model => model.Uuid)
+            @Html.HiddenFor(model => model.Uuid)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            @Html.DisplayFor(model => model.Subtotal)
+            @Html.HiddenFor(model => model.Subtotal)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            @Html.DisplayFor(model => model.Total)
+            @Html.HiddenFor(model => model.Total)
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+            @Html.HiddenFor(model => model.Id)
+            <span onclick="$(this).parent().parent().remove();" class="fa fa-minus-circle fa-2x text-danger" style="cursor:pointer"></span>
+        </div>
+
+    </div>
+}

@@ -1,0 +1,97 @@
+﻿@model IEnumerable<API.Operaciones.Facturacion.DocumentoExtranjero>
+
+@{
+    ViewBag.Title = "Documentos Extranjeros";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>@ViewBag.Title</h2>
+        </div>
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Create")';return false;">
+                <span>[ Nuevo Registro ]</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="panel">
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <table class="dataTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NombreEmisor)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Fecha)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Moneda)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TipoCambio)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Concepto)
+                            </th>
+                            <th>
+                                Opciones
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreEmisor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Moneda)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TipoCambio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Concepto)
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="fa fa-cog"></span> Opciones
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>@Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "edit" })</li>
+                                        <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "details" })</li>
+                                        <li>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "delete" })</li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

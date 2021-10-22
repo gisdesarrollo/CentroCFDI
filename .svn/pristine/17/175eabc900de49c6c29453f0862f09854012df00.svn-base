@@ -1,0 +1,151 @@
+﻿@model API.Models.Facturas.FacturasEmitidasModel
+
+@{
+    ViewBag.Title = "Facturas Emitidas";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Facturas Emitidas</h2>
+            <p>CFDi emitidos que se asignarán a los Complementos de Recepción de Pagos.</p>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form">
+            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+            @Html.HiddenFor(model => model.SucursalId)
+
+            <div class="sub-title">
+                <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon">Fecha Inicial</span>
+                    @Html.EditorFor(model => model.FechaInicial)
+                    @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon">Fecha Final</span>
+                    @Html.EditorFor(model => model.FechaFinal)
+                    @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <hr />
+            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                <button type="submit" class="btn btn-success">Filtrar</button>
+            </div>
+
+            <table class="dataTable" data-columna="3" data-orden="desc">
+                <thead>
+                    <tr>
+                        <th>
+                            Versión
+                        </th>
+                        <th>
+                            Emisor
+                        </th>
+                        <th>
+                            Receptor
+                        </th>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Serie
+                        </th>
+                        <th>
+                            Folio
+                        </th>
+                        <th>
+                            Moneda
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.FacturasEmitidas)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Version)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Emisor.Nombre)
+                            </td>
+                            <td>
+                                @if (item.Receptor.Rfc == "XAXX010101000" || item.Receptor.Rfc == "XEXX010101000")
+                                {
+                                    @Html.Raw("XAXX0101010000")
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Receptor.RazonSocial)
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Serie)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Folio)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Moneda)
+                            </td>
+                            <td class="text-right">
+                                @item.Total.ToString("c")
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="fa fa-cog"></span> Opciones
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "details" })</li>
+                                        <li>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "delete" })</li>
+                                        <li>@Html.ActionLink("Descargar", "Descargar", new { id = item.Id }, new { @class = "operar" })</li>
+                                        @{
+                                            var db = new APBox.Context.APBoxContext();
+                                            var sucursal = db.Sucursales.Find(Model.SucursalId);
+                                            if (sucursal.Grupo.CargaPdf)
+                                            {
+                                                <li>@Html.ActionLink("Subir PDF", "SubirPdf", new { id = item.Id }, new { @class = "operar" })</li>
+                                            }
+                                        }
+
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+    </div>
+</div>

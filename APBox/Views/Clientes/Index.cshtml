@@ -1,0 +1,85 @@
+﻿@model IEnumerable<API.Catalogos.Cliente>
+
+@{
+    ViewBag.Title = "Clientes";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Clientes</h2>
+            <p>Puedes asignar los bancos y cambiar datos de la información del cliente. Los clientes se crean automáticamente.</p>
+        </div>
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Create", "Clientes")';return false;">
+                <span>Nuevo Cliente</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("RelacionClientesBancos", "CargasMasivas")';return false;">
+                <span>Bancos por Layout</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <table class="table table-condensed dataTable" data-columna="0" data-orden="asc">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RazonSocial)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Rfc)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FechaAlta)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            Opciones
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RazonSocial)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Rfc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaAlta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="fa fa-cog"></span> Opciones
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>@Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "edit" })</li>
+                                        <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "details" })</li>
+                                        <li>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "delete" })</li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,4 @@
+Monarch CDN para Admin Dashboard
+********************************
+Todos los archivos de la carpeta de Monarch se despliegan aqui
+Los CSS y Scripts Custom para los sistemas e inits, estan en la carpeta CUSTOM.

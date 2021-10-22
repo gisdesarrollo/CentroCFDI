@@ -1,0 +1,215 @@
+﻿@model API.Operaciones.Facturacion.FacturaRecibida
+
+@{
+    ViewBag.Title = "Reporte de Documento Recibido";
+    ViewBag.Clase = Model.Desplegado;
+}
+
+<div id="page-title">
+    <h2>@ViewBag.Title - @ViewBag.Clase</h2>
+</div>
+<div class="panel">
+    <div class="panel-heading">
+        Información del Documento
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+        <div class="form">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="deshabilitar">
+                <div class="clearfix"></div>
+
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Entidades
+                </div>
+
+                <hr />
+
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.ValidacionId)
+                @Html.HiddenFor(model => model.EmisorId)
+                @Html.HiddenFor(model => model.ReceptorId)
+                @Html.HiddenFor(model => model.DepartamentoId)
+                @Html.HiddenFor(model => model.CentroCostoId)
+                @Html.HiddenFor(model => model.ArchivoFisicoXml)
+                @Html.HiddenFor(model => model.FechaTimbrado)
+                @Html.HiddenFor(model => model.LugarExpedicion)
+                @Html.HiddenFor(model => model.MotivoDescuento)
+                @Html.HiddenFor(model => model.NoCertificado)
+                @Html.HiddenFor(model => model.NoCertificadoSat)
+                @Html.HiddenFor(model => model.NombreArchivoXml)
+                @Html.HiddenFor(model => model.NumeroCuentaPago)
+                @Html.HiddenFor(model => model.Serie)
+                @Html.HiddenFor(model => model.Folio)
+                @Html.HiddenFor(model => model.SelloDigitalCfdi)
+                @Html.HiddenFor(model => model.SelloSat)
+                @Html.HiddenFor(model => model.Subtotal)
+                @Html.HiddenFor(model => model.TipoCambio)
+                @Html.HiddenFor(model => model.TipoComprobante)
+                @Html.HiddenFor(model => model.TipoGasto)
+                @Html.HiddenFor(model => model.Total)
+                @Html.HiddenFor(model => model.TotalImpuestosRetenidos)
+                @Html.HiddenFor(model => model.TotalImpuestosTrasladados)
+                @Html.HiddenFor(model => model.UsuarioAutorizacionId)
+                @Html.HiddenFor(model => model.FechaAutorizacion)
+                @Html.HiddenFor(model => model.UsuarioId)
+                @Html.HiddenFor(model => model.Version)
+                @Html.HiddenFor(model => model.Fecha)
+                @Html.HiddenFor(model => model.TipoGasto)
+                @Html.HiddenFor(model => model.FormaPago)
+                @Html.HiddenFor(model => model.MetodoPago)
+                @Html.HiddenFor(model => model.Certificado)
+                @Html.HiddenFor(model => model.Uuid)
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    @Html.LabelFor(model => model.CentroCostoId, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CentroCosto.Nombre, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.CentroCostoId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    @Html.LabelFor(model => model.EmisorId, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Emisor.RazonSocial, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.EmisorId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Receptor.RazonSocial, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Folios
+                </div>
+
+                <hr />
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    @Html.LabelFor(model => model.Uuid, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Uuid, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Uuid, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    @Html.LabelFor(model => model.Serie, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Serie, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Serie, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    @Html.LabelFor(model => model.Folio, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Folio, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Folio, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Información General
+                </div>
+
+                <hr />
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.TipoComprobante, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListSpecialFor(model => model.TipoComprobante)
+                    @Html.ValidationMessageFor(model => model.TipoComprobante, "", new { @class = "text-danger" })
+                </div>
+
+                @if (Model.TipoComprobante != c_TipoDeComprobante.P)
+                {
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "control-label" })
+                        @Html.EnumDropDownListSpecialFor(model => model.MetodoPago)
+                        @Html.ValidationMessageFor(model => model.MetodoPago, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "control-label" })
+                        @Html.EnumDropDownListSpecialFor(model => model.FormaPago)
+                        @Html.ValidationMessageFor(model => model.FormaPago, "", new { @class = "text-danger" })
+                    </div>
+                }
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListSpecialFor(model => model.Moneda)
+                    @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
+                </div>
+
+                @if (Model.TipoCambio != null)
+                {
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.TipoCambio, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.TipoCambio, "", new { @class = "text-danger" })
+                    </div>
+                }
+
+                <div class="clearfix"></div>
+
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Totales
+                </div>
+
+                <hr />
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                    @Html.LabelFor(model => model.Subtotal, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Subtotal, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Subtotal, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                    @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="sub-title">
+                <span class="fa fa-bars text-muted"></span> Notas de rechazo
+            </div>
+
+            <hr />
+
+            @Html.HiddenFor(model => model.UsuarioAutorizacionId)
+            @Html.HiddenFor(model => model.FechaAutorizacion)
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                @Html.LabelFor(model => model.NotasAutorizacion, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.NotasAutorizacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotasAutorizacion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="clearfix"></div>
+            <hr />
+            <div class="form-group pull-right">
+                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';return false;">
+                    <span>Regresar</span>
+                    <i class="glyph-icon icon-arrow-left"></i>
+                </button>
+                <button type="submit" class="btn btn-alt btn-hover btn-danger">
+                    <span>Rechazar</span>
+                    <i class="glyph-icon icon-arrow-right"></i>
+                </button>
+            </div>
+
+        </div>
+        }
+    </div>
+</div>

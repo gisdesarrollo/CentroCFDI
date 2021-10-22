@@ -1,0 +1,50 @@
+﻿@model APBox.Models.LoginSucursal
+
+@{
+    ViewBag.Title = "Seleccionar Sucursal";
+}
+
+<script>
+    $("body").addClass("closed-sidebar");
+</script>
+
+<div class="col-md-8 col-md-push-2">
+    <div id="page-title">
+        <h2>Seleccionar Sucursal</h2>
+        <p>Selecciona una de las sucursales</p>
+    </div>
+
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form col-sm-4 col-sm-offset-4 col-xs-12">
+                    <img class="mrg25B center-margin display-block" src="~/Archivos/images/AP.Box.jpg" height="100">
+
+                    <section class="" id="loginForm">
+                        @using (Html.BeginForm())
+                            {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                            @Html.HiddenFor(model => model.GrupoId)
+                            @Html.HiddenFor(model => model.UsuarioId)
+                            @Html.HiddenFor(model => model.ProveedorId)
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.SucursalId, new { @class = "control-label" })
+                                @Html.DropDownList("SucursalId", null, "Favor de hacer su selección", new { @class = "select2 form-control" })
+                                @Html.ValidationMessageFor(m => m.SucursalId)
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                                <button type="submit" value="Ingresar" class="btn btn-success"><span class="fa fa-sign-in-alt"></span> Ingresar</button>
+                            </div>
+                            }
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

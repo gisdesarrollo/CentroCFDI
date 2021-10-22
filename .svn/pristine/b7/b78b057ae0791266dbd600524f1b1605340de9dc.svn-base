@@ -1,0 +1,68 @@
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using API.Enums;
+using API.Relaciones;
+using System.Collections.Generic;
+
+namespace API.Catalogos
+{
+    [Table("CAT_PROVEEDORES")]
+    public class Proveedor
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [DisplayName("Razón Social")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public String RazonSocial { get; set; }
+
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public String Rfc { get; set; }
+
+        public String Email { get; set; }
+
+        [DisplayName("Página Web")]
+        public String PaginaWeb { get; set; }
+
+        [DisplayName("Teléfono 1")]
+        public String Telefono1 { get; set; }
+
+        [DisplayName("Teléfono 2")]
+        public String Telefono2 { get; set; }
+
+        public Status Status { get; set; }
+
+        public DateTime FechaAlta { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public Double Saldo { get; set; }
+
+        [DisplayName("Código Postal")]
+        [RegularExpression("[\\s]{0,3}([0-9]{5})[\\s]{0,3}", ErrorMessage = "El código postal tiene que conformarse de 5 caracteres numéricos")]
+        public String CodigoPostal { get; set; }
+
+        [DisplayName("País")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public String Pais { get; set; }
+
+        [DisplayName("Referencia de Ubicación")]
+        public String Referencia { get; set; }
+
+        //Objetos
+        [NotMapped]
+        public virtual ProveedorSucursal Sucursal { get; set; }
+        public virtual List<ProveedorSucursal> Sucursales { get; set; }
+
+        #region Grupo
+
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        [DisplayName("Grupo")]
+        public int GrupoId { get; set; }
+        [ForeignKey("GrupoId")]
+        public virtual Grupo Grupo { get; set; }
+
+        #endregion
+    }
+}

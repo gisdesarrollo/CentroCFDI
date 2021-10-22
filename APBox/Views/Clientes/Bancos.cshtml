@@ -1,0 +1,35 @@
+﻿@model API.Relaciones.BancoCliente
+
+@using (Html.BeginCollectionItem("Bancos"))
+{
+	@Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+<div class="row">
+    <div class="col-lg-5">
+        @Html.HiddenFor(model => model.Banco.Id)
+        @Html.HiddenFor(model => model.Banco.NombreCorto)
+        @Html.HiddenFor(model => model.Banco.RazonSocial)
+        @Html.HiddenFor(model => model.Banco.Rfc)
+        @Html.HiddenFor(model => model.Banco.Status)
+
+
+        @Html.DisplayFor(model => model.Banco.NombreCorto)
+    </div>
+    <div class="col-lg-3">
+        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="col-lg-3">
+        @Html.EditorFor(model => model.NumeroCuenta, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="col-lg-1">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.BancoId)
+        @Html.HiddenFor(model => model.ClienteId)
+        @*<span onclick="$(this).parent().parent().remove();" class="fa-stack fa-lg" style="cursor:pointer">
+            <i class="fas fa-square fa-stack-2x font-red"></i>
+            <i class="fas fa-trash-alt fa-stack-1x fa-inverse"></i>
+        </span>*@
+    </div>
+    <div class="clearfix"></div>
+    <hr />
+</div>
+}

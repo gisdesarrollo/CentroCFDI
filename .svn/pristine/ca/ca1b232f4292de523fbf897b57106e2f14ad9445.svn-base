@@ -1,0 +1,75 @@
+﻿@model API.Models.Cargas.CargasMasivasModel
+
+@{
+    ViewBag.Title = "Cargas Masivas";
+    ViewBag.Clase = "Trabajadores";
+}
+<div id="page-title">
+    <h2>Modificación y Carga Grupal de Trabajadores</h2>
+    <p>Descarga, modifica y sube tu plantilla de trabajadores.</p>
+</div>
+
+@using (Html.BeginForm("RelacionClientesBancos", "CargasMasivas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.SucursalId)
+    <div class="row flex">
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-body">
+                    <h3 class="title-hero">
+                        Descarga de Layout
+                    </h3>
+                    <p>Descarga el layout de los Trabajadores, si el switch prepopulado está prendido, descargará el layout lleno con los datos actuales.</p>
+                    <hr />
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        @Html.LabelFor(model => model.Prepopulado, htmlAttributes: new { @class = "control-label" })
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Prepopulado, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Prepopulado, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <hr />
+
+                    <button class="btn btn-alt btn-hover btn-primary pull-right multiple" type="submit" value="Descargar" name="actionName">
+                        <span>Descargar</span>
+                        <i class="glyph-icon icon-arrow-down"></i>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-body">
+                    <h3 class="title-hero">
+                        Carga de cambios
+                    </h3>
+                    <p>Sube el layout con tus cambios, solo se tomarán en cuenta los registros que hayas modificado para actualizar la base de trabajadores.</p>
+                    <hr />
+                    <div class="form-group">
+                        <label class="control-label">Seleccionar Archivo</label>
+                        <input type="file" name="FileUpload" id="file" class="minusculas">
+                    </div>
+                    <br />
+                    <div class="clearfix"></div>
+                    <hr />
+
+                    <button class="btn btn-alt btn-hover btn-success pull-right multiple" type="submit" name="actionName" value="Cargar">
+                        <span>Cargar</span>
+                        <i class="glyph-icon icon-arrow-up"></i>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-alt btn-hover btn-default pull-right" onclick="location.href='@Url.Action("Index", "Trabajadores")';">
+        <span>Regresar</span>
+        <i class="glyph-icon icon-arrow-left"></i>
+    </button>
+}

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BusApBox.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PathSftp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\inetpub\sftproot\ApBox\</Value>
+    </Setting>
+    <Setting Name="PathArchivos" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Source Codes\ApBox\APBox\Archivos\RecibosExternos\</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

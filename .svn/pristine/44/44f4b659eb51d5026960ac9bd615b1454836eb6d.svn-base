@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7F88E760-CFA0-4D95-ACD2-3CB76C9E4AE2}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>APBox</RootNamespace>
+    <AssemblyName>APBox</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BeginCollectionItem, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BeginCollectionItem.1.2.1.0\lib\net35\BeginCollectionItem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>..\Aplicacion\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="CFDI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Aplicacion\lib\CFDI.dll</HintPath>
+    </Reference>
+    <Reference Include="DTOs">
+      <HintPath>..\Aplicacion\lib\DTOs.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Facturacion, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Aplicacion\lib\Facturacion.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.1.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Infodextra">
+      <HintPath>..\Aplicacion\lib\Infodextra.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.13.1\lib\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
+    <Reference Include="MessagingToolkit.QRCode, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MessagingToolkit.QRCode.1.3.0\lib\MessagingToolkit.QRCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.0\lib\net451\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.0\lib\net451\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.0\lib\net451\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.0\lib\net451\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.9\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="SendGrid, Version=9.11.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sendgrid.9.11.0\lib\net452\SendGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Utilerias">
+      <HintPath>..\Aplicacion\lib\Utilerias.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Context\APBoxContext.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Ajax\AjaxCatalogosController.cs" />
+    <Compile Include="Controllers\Ajax\AjaxOperacionesController.cs" />
+    <Compile Include="Controllers\Catalogos\BancosController.cs" />
+    <Compile Include="Controllers\Catalogos\CentrosCostosController.cs" />
+    <Compile Include="Controllers\Catalogos\ClientesController.cs" />
+    <Compile Include="Controllers\Catalogos\DepartamentosController.cs" />
+    <Compile Include="Controllers\Catalogos\GruposController.cs" />
+    <Compile Include="Controllers\Catalogos\PerfilesController.cs" />
+    <Compile Include="Controllers\Catalogos\ProveedoresController.cs" />
+    <Compile Include="Controllers\Catalogos\SucursalesController.cs" />
+    <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
+    <Compile Include="Controllers\ComplementosPago\ComplementosPagosController.cs" />
+    <Compile Include="Controllers\ComplementosPago\FacturasEmitidasController.cs" />
+    <Compile Include="Controllers\Control\ControlController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Operaciones\CargasMasivasController.cs" />
+    <Compile Include="Controllers\Operaciones\DocumentosExtranjerosController.cs" />
+    <Compile Include="Controllers\Operaciones\OperacionesCfdisRecibidosController.cs" />
+    <Compile Include="Controllers\Operaciones\SolicitudesAccesosController.cs" />
+    <Compile Include="Controllers\Operaciones\ValidacionesRapidasController.cs" />
+    <Compile Include="Controllers\PortalProveedores\ComplementosPagosProveedoresController.cs" />
+    <Compile Include="Controllers\PortalProveedores\PortalProveedoresController.cs" />
+    <Compile Include="Controllers\PortalUsuarios\PortalUsuariosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\RecepcionDocumentosController.cs" />
+    <Compile Include="Controllers\Reportes\ReportesController.cs" />
+    <Compile Include="Control\Helpers.cs" />
+    <Compile Include="Control\OperacionesUsuarios.cs" />
+    <Compile Include="Control\PopularDropDowns.cs" />
+    <Compile Include="Control\SessionExpireAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903200259013_FKNotes.cs" />
+    <Compile Include="Migrations\201903200259013_FKNotes.Designer.cs">
+      <DependentUpon>201903200259013_FKNotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Archivos\DocumentosProveedores\Defectuosa.xml" />
+    <Content Include="Archivos\DocumentosProveedores\Proveedor.xml" />
+    <Content Include="Archivos\DocumentosProveedores\Viaticos.xml" />
+    <Content Include="Archivos\Ejemplos\Acuse.xml" />
+    <Content Include="Archivos\Gastos\Viaticos.xml" />
+    <Content Include="Archivos\images\AP.Box.jpg" />
+    <Content Include="Archivos\images\favicon.ico" />
+    <Content Include="Archivos\images\faviconit\browserconfig.xml" />
+    <Content Include="Archivos\images\faviconit\favicon-114.png" />
+    <Content Include="Archivos\images\faviconit\favicon-120.png" />
+    <Content Include="Archivos\images\faviconit\favicon-144.png" />
+    <Content Include="Archivos\images\faviconit\favicon-150.png" />
+    <Content Include="Archivos\images\faviconit\favicon-152.png" />
+    <Content Include="Archivos\images\faviconit\favicon-16.png" />
+    <Content Include="Archivos\images\faviconit\favicon-160.png" />
+    <Content Include="Archivos\images\faviconit\favicon-180.png" />
+    <Content Include="Archivos\images\faviconit\favicon-192.png" />
+    <Content Include="Archivos\images\faviconit\favicon-310.png" />
+    <Content Include="Archivos\images\faviconit\favicon-32.png" />
+    <Content Include="Archivos\images\faviconit\favicon-57.png" />
+    <Content Include="Archivos\images\faviconit\favicon-60.png" />
+    <Content Include="Archivos\images\faviconit\favicon-64.png" />
+    <Content Include="Archivos\images\faviconit\favicon-70.png" />
+    <Content Include="Archivos\images\faviconit\favicon-72.png" />
+    <Content Include="Archivos\images\faviconit\favicon-76.png" />
+    <Content Include="Archivos\images\faviconit\favicon-96.png" />
+    <Content Include="Archivos\images\faviconit\favicon.ico" />
+    <Content Include="Archivos\images\faviconit\faviconit-instrucciones.txt" />
+    <Content Include="Archivos\images\logo-admin.png" />
+    <Content Include="Archivos\images\Logo.png" />
+    <Content Include="Archivos\Muestra\ejemploCFDIv33.xml" />
+    <Content Include="Content\Images\Clientes\Aguas.jpg" />
+    <Content Include="Content\Images\Clientes\Bisquets.jpg" />
+    <Content Include="Content\Images\Clientes\Corpogas.png" />
+    <Content Include="Content\Images\Clientes\Huixquilucan.png" />
+    <Content Include="Content\Images\Clientes\Televisa.png" />
+    <Content Include="Content\Images\Clientes\Wendys.jpg" />
+    <Content Include="Content\Images\Logos\AP.Box.jpg" />
+    <Content Include="Content\Images\Logos\APBox-Navbar.png" />
+    <Content Include="Content\Images\Logos\Infodextra.jpg" />
+    <Content Include="Content\Images\Logos\Infodextra.png" />
+    <Content Include="Content\Infodextra\Catalogos\Clientes.js" />
+    <Content Include="Content\Infodextra\Catalogos\Sucursales.js" />
+    <Content Include="Content\Infodextra\ComplementosPago.js" />
+    <Content Include="Content\Infodextra\Documentos.js" />
+    <Content Include="Content\Infodextra\Gastos.js" />
+    <Content Include="Content\Infodextra\Login.js" />
+    <Content Include="Content\Infodextra\Proveedores.js" />
+    <Content Include="Content\Infodextra\SolicitudesAcceso.js" />
+    <Content Include="Content\Infodextra\Usuarios.js" />
+    <Content Include="Content\_APBox\logo-admin.png" />
+    <Content Include="Content\_APBox\user_hombre.png" />
+    <Content Include="Content\_APBox\user_mujer.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Archivos\ArchivosSucursales\Certificados\" />
+    <Folder Include="Archivos\ArchivosSucursales\Logos\" />
+    <Folder Include="Archivos\CargasMasivas\" />
+    <Folder Include="Archivos\FacturasProveedores\" />
+    <Folder Include="Archivos\PDFs Facturas Emitidas\" />
+    <Folder Include="Archivos\RecibosExternos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\About\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\API\API.csproj">
+      <Project>{20a7e0f9-b699-4182-82af-82df8ab48e7e}</Project>
+      <Name>API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Aplicacion\Aplicacion.csproj">
+      <Project>{196a70e8-a942-419f-91d6-1c431f1cc36f}</Project>
+      <Name>Aplicacion</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bundleconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_LogoffPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Departamentos\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Departamentos\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Departamentos\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Departamentos\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Departamentos\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CentrosCostos\Create.cshtml" />
+    <Content Include="Views\CentrosCostos\Delete.cshtml" />
+    <Content Include="Views\CentrosCostos\Details.cshtml" />
+    <Content Include="Views\CentrosCostos\Edit.cshtml" />
+    <Content Include="Views\CentrosCostos\Index.cshtml" />
+    <Content Include="Views\Control\Configuraciones.cshtml" />
+    <Content Include="Views\Proveedores\Create.cshtml" />
+    <Content Include="Views\Proveedores\Delete.cshtml" />
+    <Content Include="Views\Proveedores\Details.cshtml" />
+    <Content Include="Views\Proveedores\Edit.cshtml" />
+    <Content Include="Views\Proveedores\Index.cshtml" />
+    <Content Include="Views\Usuarios\Create.cshtml" />
+    <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Usuarios\Details.cshtml" />
+    <Content Include="Views\Usuarios\Edit.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Usuarios\Sucursales.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Sucursales\Create.cshtml" />
+    <Content Include="Views\Sucursales\Delete.cshtml" />
+    <Content Include="Views\Sucursales\Details.cshtml" />
+    <Content Include="Views\Sucursales\Edit.cshtml" />
+    <Content Include="Views\Sucursales\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\GastosProveedores\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\GastosProveedores\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\GastosProveedores\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\GastosProveedores\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PortalProveedores\EstadosCuenta.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PortalUsuarios\EstadosCuenta.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Reportes\EstadisticasUsuario.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Reportes\EstadisticasProveedor.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Anticipos\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Archivos\DocumentosProveedores\Proveedor.pdf" />
+    <Content Include="Archivos\DocumentosProveedores\Viaticos.pdf" />
+    <Content Include="Archivos\Gastos\Viaticos.pdf" />
+    <Content Include="Archivos\Ejemplos\Complemento.zip" />
+    <Content Include="Archivos\Formatos\LayoutPagos.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\Jeronimo.pubxml" />
+    <Content Include="Views\SolicitudesAccesos\Solicitar.cshtml" />
+    <Content Include="Views\SolicitudesAccesos\Index.cshtml" />
+    <Content Include="Views\SolicitudesAccesos\Operar.cshtml" />
+    <Content Include="Views\Perfiles\Create.cshtml" />
+    <Content Include="Views\Perfiles\Delete.cshtml" />
+    <Content Include="Views\Perfiles\Details.cshtml" />
+    <Content Include="Views\Perfiles\Edit.cshtml" />
+    <Content Include="Views\Perfiles\Index.cshtml" />
+    <Content Include="Views\Clientes\Create.cshtml" />
+    <Content Include="Views\Clientes\Delete.cshtml" />
+    <Content Include="Views\Clientes\Details.cshtml" />
+    <Content Include="Views\Clientes\Edit.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Grupos\Create.cshtml" />
+    <Content Include="Views\Grupos\Delete.cshtml" />
+    <Content Include="Views\Grupos\Details.cshtml" />
+    <Content Include="Views\Grupos\Edit.cshtml" />
+    <Content Include="Views\Grupos\Index.cshtml" />
+    <Content Include="Views\ComplementosPagos\Create.cshtml" />
+    <Content Include="Views\ComplementosPagos\Delete.cshtml" />
+    <Content Include="Views\ComplementosPagos\Edit.cshtml" />
+    <Content Include="Views\ComplementosPagos\Index.cshtml" />
+    <Content Include="Views\OtrosGastos\Index.cshtml" />
+    <Content Include="Views\Gastos\Create.cshtml" />
+    <Content Include="Views\Gastos\Delete.cshtml" />
+    <Content Include="Views\Gastos\Index.cshtml" />
+    <Content Include="Views\ComplementosPagos\Pagos.cshtml" />
+    <Content Include="Views\Proveedores\Sucursales.cshtml" />
+    <Content Include="Views\ComplementosPagos\FacturasDetalles.cshtml" />
+    <Content Include="Views\ComplementosPagosProveedores\Create.cshtml" />
+    <Content Include="Views\ComplementosPagosProveedores\Delete.cshtml" />
+    <Content Include="Views\ComplementosPagosProveedores\Details.cshtml" />
+    <Content Include="Views\ComplementosPagosProveedores\Detalles.cshtml" />
+    <Content Include="Views\ComplementosPagosProveedores\Edit.cshtml" />
+    <Content Include="Views\ComplementosPagosProveedores\Facturas.cshtml" />
+    <Content Include="Views\ComplementosPagosProveedores\Index.cshtml" />
+    <Content Include="Views\Bancos\Create.cshtml" />
+    <Content Include="Views\Bancos\Delete.cshtml" />
+    <Content Include="Views\Bancos\Details.cshtml" />
+    <Content Include="Views\Bancos\Edit.cshtml" />
+    <Content Include="Views\Bancos\Index.cshtml" />
+    <Content Include="Views\ComplementosPagos\DocumentosRelacionados.cshtml" />
+    <Content Include="Views\Account\SeleccionarSucursal.cshtml" />
+    <Content Include="Views\ComplementosPagos\Generar.cshtml" />
+    <Content Include="Views\Shared\_ConfigPartial.cshtml" />
+    <Content Include="Views\Shared\_SidebarPartial.cshtml" />
+    <Content Include="Views\Shared\_NotificationsPartial.cshtml" />
+    <Content Include="Views\Shared\_DashboardPartial.cshtml" />
+    <Content Include="Views\Reportes\EstadisticasCliente.cshtml" />
+    <Content Include="Views\ComplementosPagos\Cargar.cshtml" />
+    <Content Include="Views\ValidacionesRapidas\Validar.cshtml" />
+    <Content Include="Views\PortalProveedores\Validaciones.cshtml" />
+    <Content Include="Views\Shared\_headerScripts.cshtml" />
+    <Content Include="Views\Shared\_footerScripts.cshtml" />
+    <Content Include="Views\Clientes\Bancos.cshtml" />
+    <Content Include="Views\Sucursales\Bancos.cshtml" />
+    <Content Include="Views\FacturasEmitidas\Delete.cshtml" />
+    <Content Include="Views\FacturasEmitidas\Details.cshtml" />
+    <Content Include="Views\FacturasEmitidas\Index.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\VerTodos.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\VerGastosPersonal.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\VerGastosProveedores.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\CargaGeneral.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\CargaGastosPersonal.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\CargaGastosProveedores.cshtml" />
+    <None Include="Properties\PublishProfiles\Lalo.pubxml" />
+    <Content Include="Views\Shared\_AyudaPartial.cshtml" />
+    <Content Include="Views\CargasMasivas\RelacionClientesBancos.cshtml" />
+    <Content Include="Views\CargasMasivas\RelacionSucursalesBancos.cshtml" />
+    <Content Include="Views\DocumentosExtranjeros\Index.cshtml" />
+    <Content Include="Views\DocumentosExtranjeros\Create.cshtml" />
+    <Content Include="Views\DocumentosExtranjeros\Details.cshtml" />
+    <Content Include="Views\DocumentosExtranjeros\Edit.cshtml" />
+    <Content Include="Views\DocumentosExtranjeros\Delete.cshtml" />
+    <Content Include="Views\FacturasEmitidas\SubirPdf.cshtml" />
+    <Content Include="Views\ValidacionesRapidas\Reporte.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\ReporteIndividual.cshtml" />
+    <Content Include="Views\ComplementosPagos\_ComplementosPagosScripts.cshtml" />
+    <Content Include="Views\RecepcionDocumentos\CargarDocumentosExternos.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\Rechazar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201903200259013_FKNotes.resx">
+      <DependentUpon>201903200259013_FKNotes.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:55805/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

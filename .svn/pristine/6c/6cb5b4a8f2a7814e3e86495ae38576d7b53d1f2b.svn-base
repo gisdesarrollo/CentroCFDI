@@ -1,0 +1,296 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <div class="scroll-sidebar">
+        <ul id="sidebar-menu">
+            @if (User.IsInRole("PORTALPROVEEDORES"))
+            {
+                <li class="panel panel-default dropdown-toggle no-margin" id="PortalProveedores">
+                    <a data-toggle="collapse" href="#dropdown-PortalProveedores">
+                        <span class="icon fa fa-sign-in"></span><span class="title"> Portal de Proveedores</span>
+                    </a>
+                    <div id="dropdown-PortalProveedores" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="panel panel-default dropdown-toggle no-margin">
+                                <a class="agrupador" data-toggle="collapse" href="#DocumentosProveedores">
+                                    <span class="title"><span class="fa fa-arrow-circle-down"></span> Documentos</span>
+                                </a>
+                                <ul class="nav child_menu collapse sub-menu" id="DocumentosProveedores" data-parent="dropdown-PortalProveedores">
+                                    <li class="hvr-fade">
+                                        @Html.ActionLink("Mis Facturas", "Validaciones", "PortalProveedores")
+                                    </li>
+
+                                    <li class="nav-divider"></li>
+
+                                    <li class="hvr-fade">
+                                        @Html.ActionLink("Complementos de Pago", "Index", "ComplementosPagosProveedores")
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="panel panel-default dropdown-toggle no-margin">
+                                <a class="agrupador" data-toggle="collapse" href="#ReportesProveedores">
+                                    <span class="title"><span class="fa fa-arrow-circle-down"></span> Reportes</span>
+                                </a>
+                                <ul class="nav child_menu collapse sub-menu" id="ReportesProveedores" data-parent="dropdown-PortalProveedores">
+                                    <li class="hvr-fade">
+                                        @Html.ActionLink("Estados de Cuenta", "EstadosCuenta", "PortalProveedores")
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="~/Home" title="Admin Dashboard">
+                        <i class="glyph-icon icon-linecons-tv"></i>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li class="divider"></li>
+
+                if (User.IsInRole("GRUPOS") || User.IsInRole("PERFILES") || User.IsInRole("USUARIOS"))
+                {
+                    <li class="header"><span>Portal de Catálogos</span></li>
+                    <li>
+                        <a href="#" title="PortalAdministrativo">
+                            <i class="glyph-icon icon-linecons-params"></i>
+                            <span>Sistema</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                @if (User.IsInRole("GRUPOS"))
+                                {
+                                    <li>
+                                        @Html.ActionLink("Grupos", "Index", "Grupos")
+                                    </li>
+                                }
+                                @if (User.IsInRole("PERFILES"))
+                                {
+                                    <li>
+                                        @Html.ActionLink("Perfiles", "Index", "Perfiles")
+                                    </li>
+                                }
+                                @if (User.IsInRole("USUARIOS"))
+                                {
+                                    <li>
+                                        @Html.ActionLink("Usuarios", "Index", "Usuarios")
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                }
+
+                if (User.IsInRole("SUCURSALES") || User.IsInRole("DEPARTAMENTOS") || User.IsInRole("CENTROSCOSTOS") || User.IsInRole("BANCOS"))
+                {
+                    <li>
+                        <a href="#" title="PortalAdministrativo">
+                            <i class="glyph-icon icon-linecons-shop"></i>
+                            <span>Empresa</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    @Html.ActionLink("Sucursales", "Index", "Sucursales")
+                                </li>
+                                @if (User.IsInRole("DEPARTAMENTOS"))
+                                {
+                                    <li>
+                                        @Html.ActionLink("Departamentos", "Index", "Departamentos")
+                                    </li>
+                                }
+                                @if (User.IsInRole("CENTROSCOSTOS"))
+                                {
+                                    <li>
+                                        @Html.ActionLink("Centros de Costos", "Index", "CentrosCostos")
+                                    </li>
+                                }
+                                @*@if (User.IsInRole("BANCOS"))
+                                    {
+                                    <li>
+                                        @Html.ActionLink("Bancos", "Index", "Bancos")
+                                    </li>
+                                    }*@
+                            </ul>
+                        </div>
+                    </li>
+                }
+
+                <li>
+                    <a href="#" title="PortalAdministrativo">
+                        <i class="glyph-icon icon-linecons-user"></i>
+                        <span>Socios Comerciales</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            @if (User.IsInRole("PROVEEDORES"))
+                            {
+                                <li>
+                                    @Html.ActionLink("Proveedores", "Index", "Proveedores")
+                                </li>
+                            }
+                            @if (User.IsInRole("CLIENTES"))
+                            {
+                                <li>
+                                    @Html.ActionLink("Clientes", "Index", "Clientes")
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+
+
+
+                if (!User.IsInRole("RECEPCIONCFDI"))
+                {
+                    <li class="header"><span>Recepción de CFDi</span></li>
+                    <li>
+                        <a href="#" title="PortalAdministrativo">
+                            <i class="glyph-icon icon-linecons-inbox"></i>
+                            <span>CFDi Recibidos</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    @Html.ActionLink("Ver todos", "VerTodos", "OperacionesCfdisRecibidos")
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("CFDIs de Gastos de Personal", "VerGastosPersonal", "OperacionesCfdisRecibidos")
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("CFDIs de Proveedores", "VerGastosProveedores", "OperacionesCfdisRecibidos")
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Documentos Extranjeros", "Index", "DocumentosExtranjeros")
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" title="PortalAdministrativo">
+                            <i class="glyph-icon icon-linecons-attach"></i>
+                            <span>Carga de CFDi Recibidos</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    @Html.ActionLink("Carga General", "CargaGeneral", "OperacionesCfdisRecibidos")
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Carga de Gastos de Personal", "CargaGastosPersonal", "OperacionesCfdisRecibidos")
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Carga de Proveedores", "CargaGastosProveedores", "OperacionesCfdisRecibidos")
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Carga Facturas Extranjero", "Create", "DocumentosExtranjeros")
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a href="#" title="PortalAdministrativo">
+                            <i class="glyph-icon icon-linecons-cog"></i>
+                            <span>Operaciones</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    @Html.ActionLink("Autorizar Accesos", "Index", "SolicitudesAccesos")
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                }
+                <li class="header"><span>Complementos de Pago</span></li>
+                <li>
+                    <a href="#" title="ComplementoPagos">
+                        <i class="glyph-icon icon-linecons-money"></i>
+                        <span>Complementos de Pago</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Complementos de Pago", "Index", "ComplementosPagos")
+
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </li>
+                <li>
+                    <a href="#" title="ComplementoPagos">
+                        <i class="glyph-icon icon-linecons-money"></i>
+                        <span>CFDi Emitidos</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Facturas Emitidas", "Index", "FacturasEmitidas")
+                            </li>
+
+                            <li>
+                                @Html.ActionLink("Cargar CFDi Externos", "CargarDocumentosExternos", "RecepcionDocumentos")
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+                <li class="header"><span>Reportes</span></li>
+
+                <li>
+                    <a href="#" title="PortalAdministrativo">
+                        <i class="glyph-icon icon-linecons-note"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Estadísiticas por Proveedor", "EstadisticasProveedor", "Reportes")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Estadísticas por Cliente", "EstadisticasCliente", "Reportes")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Estadísticas por Usuario", "EstadisticasUsuario", "Reportes")
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+}
+else
+{
+    <div id="page-sidebar">
+        <div class="scroll-sidebar">
+
+            <ul id="sidebar-menu"></ul>
+
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+
+

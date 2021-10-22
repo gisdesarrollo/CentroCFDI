@@ -1,0 +1,59 @@
+﻿<div class="dropdown" id="dashnav-btn">
+    <a href="#" data-toggle="dropdown" data-placement="bottom" class="popover-button-header tooltip-button" title="" data-original-title="Dashboard Quick Menu" aria-expanded="true">
+        <i class="glyph-icon icon-linecons-cog"></i>
+    </a>
+    <div class="dropdown-menu float-right">
+        <div class="box-sm">
+            <div class="pad5T pad5B pad10L pad10R dashboard-buttons clearfix">
+                <a href="#" class="btn vertical-button hover-blue-alt font-size-10" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="fas fa-building fa-3x opacity-80 font-size-20"></i>
+                    </span>
+                    Mi Empresa
+                </a>
+                <a href="#" class="btn vertical-button hover-green font-size-10" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="fas fa-user fa-3x opacity-80 font-size-20"></i>
+                    </span>
+                    Usuarios
+                </a>
+                <a href="#" class="btn vertical-button hover-orange font-size-10" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="fas fa-user-tie fa-3x opacity-80 font-size-20"></i>
+                    </span>
+                    Clientes
+                </a>
+            </div>
+            <div class="divider"></div>
+            <div class="pad5T pad5B pad10L pad10R dashboard-buttons clearfix">
+                <a href="#" class="btn vertical-button remove-border btn-info font-size-10" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="fas fa-inbox fa-3x opacity-80 font-size-20"></i>
+                    </span>
+                    CFDi Emitidos
+                </a>
+                <a href="#" class="btn vertical-button remove-border btn-danger font-size-10" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="fas fa-file-invoice-dollar fa-3x opacity-80 font-size-20"></i>
+                    </span>
+                    Pagos Emitidos
+                </a>
+            </div>
+            <div class="divider"></div>
+            <div class="pad5T pad5B pad10L pad10R dashboard-buttons clearfix">
+                <a href="#" class="btn vertical-button remove-border btn-purple font-size-10" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="fas fa-file fa-3x opacity-80 font-size-20"></i>
+                    </span>
+                    Pagos Manual
+                </a>
+                <a href="#" class="btn vertical-button remove-border btn-azure font-size-10" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="fas fa-th-list fa-3x opacity-80 font-size-20"></i>
+                    </span>
+                    Pagos Layout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

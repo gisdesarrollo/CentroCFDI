@@ -1,0 +1,242 @@
+﻿@model API.Operaciones.ComplementosPagos.ComplementoPago
+
+@{
+    ViewBag.Title = "Crear";
+}
+
+@Html.Partial("_ComplementosPagosScripts")
+
+<div id="page-title">
+    <h2>Crear Complemento de Pago</h2>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.Generado)
+            @Html.HiddenFor(model => model.SucursalId)
+
+        <div class="form">
+            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+            <div class="row">
+                <h3 class="title-hero">
+                    Información del Cliente y CFDi
+                </h3>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @*@Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label" })*@
+                    <label class="control-label" for="Version">Versión</label>
+                    @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @*@Html.LabelFor(model => model.FechaDocumento, htmlAttributes: new { @class = "control-label" })*@
+                    <label class="control-label" for="Version">Fecha Emisión</label>
+                    @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control date" } })
+                    @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListSpecialFor(model => model.Mes)
+                    @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                    @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                    <div class="checkbox">
+                        <input type="checkbox" class="cfdiRelacionado" />
+                        <label class="control-label">Relacionar CFDi Cancelado</label>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="cfdiRelacionadoSeccion" hidden>
+                    <h3 class="title-hero">
+                        CFDI Relacionado
+                    </h3>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        @Html.LabelFor(model => model.TipoRelacion, new { @class = "control-label" })
+                        @Html.EnumDropDownListSpecialFor(model => model.TipoRelacion)
+                        @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        @Html.LabelFor(model => model.CfdiRelacionadoId, new { @class = "control-label" })
+                        @Html.DropDownList("CfdiRelacionadoId", null, "Favor de hacer su selección", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CfdiRelacionadoId, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="clearfix"></div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <h3 class="title-hero">
+                    Pagos Recibidos
+                </h3>
+
+                <div class="content-box">
+                    <h3 class="content-box-header bg-blue">
+                        <i class="glyph-icon icon-cog"></i>
+                        Agregar Pago
+                        <div class="header-buttons-separator">
+                            <a href="#" class="icon-separator" id="agregarDetalle">
+                                <i class="glyph-icon icon-plus"></i>
+                            </a>
+                        </div>
+                    </h3>
+
+                    <div class="content-box-wrapper">
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.FechaPago, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pago.FechaPago, new { @class = "form-control datetime" })
+                            @Html.ValidationMessageFor(model => model.Pago.FechaPago, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.FormaPago, new { @class = "control-label" })
+                            @Html.EnumDropDownListSpecialFor(model => model.Pago.FormaPago)
+                            @Html.ValidationMessageFor(model => model.Pago.FormaPago, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.Moneda, new { @class = "control-label" })
+                            @Html.EnumDropDownListSpecialFor(model => model.Pago.Moneda)
+                            @Html.ValidationMessageFor(model => model.Pago.Moneda, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.TipoCambio, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pago.TipoCambio, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Pago.TipoCambio, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.Monto, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pago.Monto, new { @class = "form-control dinero" })
+                            @Html.ValidationMessageFor(model => model.Pago.Monto, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.NumeroOperacion, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pago.NumeroOperacion, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Pago.NumeroOperacion, "", new { @class = "text-danger" })
+                        </div>
+
+                        @*Bancos*@
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.BancoBeneficiarioId, new { @class = "control-label" })
+                            @Html.DropDownList("BancoBeneficiarioId", null, "Favor de hacer su selección", new { @id = "Pago_BancoBeneficiarioId", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Pago.BancoBeneficiarioId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.Pago.BancoOrdenanteId, new { @class = "control-label" })
+                            @Html.DropDownList("BancoOrdenanteId", null, "Favor de hacer su selección", new { @id = "Pago_BancoOrdenanteId", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Pago.BancoOrdenanteId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="content-box hidden">
+                            <h3 class="content-box-header bg-green">
+                                <i class="glyph-icon icon-money"></i>
+                                Bancarizado
+                            </h3>
+                            <div class="content-box-wrapper">
+
+                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <input type="file" id="file" name="FileUpload" value="Favor de subir su archivo de SPEI" accept=".xml" class="fileSpei" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-xs-12">
+                            <div class="content-box">
+                                <h3 class="content-box-header bg-default">
+                                    <i class="glyph-icon icon-inbox"></i>
+                                    Pagos Agregados
+                                    <span class="contadorPagos font-blue">
+
+                                    </span>
+                                </h3>
+                                <div class="content-box-wrapper">
+                                    <div>
+                                        <div class="row" id="detalles">
+                                            @if (Model.Pagos != null)
+                                                {
+                                                foreach (var pago in Model.Pagos)
+                                                    {
+                                                    @Html.Partial("~/Views/ComplementosPagos/Pagos.cshtml", pago)
+                                                    }
+                                                }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <hr />
+
+            <div class="form-group pull-right">
+                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
+                    <span>Regresar</span>
+                    <i class="glyph-icon icon-arrow-left"></i>
+                </button>
+                <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
+                    <span>Siguiente</span>
+                    <i class="glyph-icon icon-arrow-right"></i>
+                </button>
+            </div>
+
+        </div>
+            }
+    </div>
+</div>
+
+<script>
+    $('.cfdiRelacionado').change(function () {
+        if ($('.cfdiRelacionado').prop('checked')) {
+            $('.cfdiRelacionadoSeccion').show(200);
+            $('.cfdiRelacionadoSeccion').css('display', 'inline');
+        } else {
+            $('.cfdiRelacionadoSeccion').hide(200);
+        }
+    });
+
+    $('#agregarDetalle').click(function () {
+        var contador = $(".pago").size() + 1;
+    $(".contadorPagos").replaceWith('<span class="contadorPagos font-blue">: ' + contador + '</span >');
+        })
+</script>

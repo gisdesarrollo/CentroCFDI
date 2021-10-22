@@ -1,0 +1,178 @@
+﻿@model API.Models.Facturas.FacturasEmitidasModel
+@{
+    ViewBag.Title = "Reporte Facturas con Pago";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Reporte de Facturas con Pago</h2>
+            <!--<p>CFDi emitidos que se asignarán a los Complementos de Recepción de Pagos.</p>-->
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form">
+           
+            @Html.HiddenFor(model => model.SucursalId)
+
+            <div class="sub-title">
+                <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon">Fecha Inicial</span>
+                    @Html.EditorFor(model => model.FechaInicial)
+                    @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon">Fecha Final</span>
+                    @Html.EditorFor(model => model.FechaFinal)
+                    @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                    <span class="input-group-addon"></span>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <hr />
+            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                <button type="submit" class="btn btn-success">Filtrar</button>
+            </div>
+            <br /><br />
+            <div class="container" style="width:102%">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-condensed dataTable" data-descarga="true" data-columna="3" data-orden="desc">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Receptor
+                                        </th>
+                                        <th>
+                                            UUID
+                                        </th>
+                                        <th>
+                                            Serie
+                                        </th>
+                                        <th>
+                                            Folio
+                                        </th>
+                                        <th>
+                                            Fecha
+                                        </th>
+                                        <th>
+                                            Moneda
+                                        </th>
+                                        <th>
+                                            Subtotal
+                                        </th>
+                                        <th>
+                                            Descuento
+                                        </th>
+                                        <th>
+                                            Total Impuestos Trasladados
+                                        </th>
+                                        <th>
+                                            Total Impuestos Retenidos
+                                        </th>
+                                        <th>
+                                            Total
+                                        </th>
+                                        <th>
+                                            Tipo Comprobante
+                                        </th>
+                                        <th>
+                                            Complemento de Pago
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @for (int x = 0; x < Model.FacturasEmitidas.Count; x++)
+                                    {
+                                        <tr>
+                                            
+                                            <td>
+                                                @Model.FacturasEmitidas[x].Receptor.RazonSocial
+                                                @Html.HiddenFor(model => model.FacturasEmitidas[x].Id)
+                                                 
+                                               
+                                            </td>
+                                            <td>
+                                                @Model.FacturasEmitidas[x].Uuid
+                                                
+                                            </td>
+                                            <td>
+                                                @Model.FacturasEmitidas[x].Serie
+                                                
+                                            </td>
+                                            <td>
+                                                @Model.FacturasEmitidas[x].Folio
+                                                
+                                            </td>
+                                            <td>
+                                                @Model.FacturasEmitidas[x].Fecha
+                                                
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.FacturasEmitidas[x].Moneda
+                                                
+                                            </td>
+                                            <td class="text-right">
+                                                @Html.Raw(Model.FacturasEmitidas[x].Subtotal.ToString("c"))
+                                                
+                                            </td>
+                                            <td class="text-right">
+                                                @Model.FacturasEmitidas[x].Descuento
+                                                
+                                            </td>
+                                            <td class="text-right">
+                                                @Model.FacturasEmitidas[x].TotalImpuestosTrasladados
+                                               
+                                            </td>
+                                            <td class="text-right">
+                                                @Model.FacturasEmitidas[x].TotalImpuestosRetenidos
+                                            </td>
+                                            <td class="text-right">
+                                                @Html.Raw(Model.FacturasEmitidas[x].Total.ToString("c"))
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.FacturasEmitidas[x].TipoComprobante
+                                            </td>
+                                            <td class="text-center">
+                                                @if (Model.FacturasEmitidas[x].FacturaEmitidaPagada)
+                                                {
+                                                    @Html.ActionLink(Model.FacturasEmitidas[x].SerieComplementoPago + "-" + Model.FacturasEmitidas[x].FolioComplementoPago, "Descargar", "ComplementosPagos", new { id = Model.FacturasEmitidas[x].FacturaComplementoPagoId }, new { @class = "font-size-12" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw("")
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            }
+        </div>
+</div>
+

@@ -1,0 +1,62 @@
+﻿<div class="dropdown" id="dashnav-btn">
+    <a href="#" data-toggle="dropdown" data-placement="bottom" class="popover-button-header tooltip-button" title="" data-original-title="Dashboard Quick Menu" aria-expanded="true">
+        <i class="glyph-icon icon-question"></i>
+    </a>
+    <div class="dropdown-menu float-right">
+        <div class="box-sm">
+            <div class="pad5T pad5B pad10L pad10R dashboard-buttons clearfix">
+                <a href="#" class="btn vertical-button hover-blue-alt" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-dashboard opacity-80 font-size-20"></i>
+                    </span>
+                    Mi Empresa
+                </a>
+                <a href="#" class="btn vertical-button hover-green" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-tags opacity-80 font-size-20"></i>
+                    </span>
+                    Usuarios
+                </a>
+                <a href="#" class="btn vertical-button hover-orange" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-fire opacity-80 font-size-20"></i>
+                    </span>
+                    Clientes
+                </a>
+                <a href="#" class="btn vertical-button hover-orange" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-bar-chart-o opacity-80 font-size-20"></i>
+                    </span>
+                    Charts
+                </a>
+            </div>
+            <div class="divider"></div>
+            <div class="pad5T pad5B pad10L pad10R dashboard-buttons clearfix">
+                <a href="#" class="btn vertical-button remove-border btn-info" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-dashboard opacity-80 font-size-20"></i>
+                    </span>
+                    CFDi Emitidos
+                </a>
+                <a href="#" class="btn vertical-button remove-border btn-danger" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-tags opacity-80 font-size-20"></i>
+                    </span>
+                    Complementos de Pago
+                </a>
+                <a href="#" class="btn vertical-button remove-border btn-purple" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-fire opacity-80 font-size-20"></i>
+                    </span>
+                    Generación Manual
+                </a>
+                <a href="#" class="btn vertical-button remove-border btn-azure" title="">
+                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                        <i class="glyph-icon icon-bar-chart-o opacity-80 font-size-20"></i>
+                    </span>
+                    Generación Layout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

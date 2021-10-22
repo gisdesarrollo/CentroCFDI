@@ -1,0 +1,204 @@
+﻿@model API.Catalogos.Cliente
+
+@{
+    ViewBag.Title = "Eliminar";
+    ViewBag.Clase = "Cliente";
+}
+
+
+<div id="page-title">
+    <h2>Eliminar Cliente</h2>
+</div>
+
+<div class="alert alert-danger">
+    <div class="bg-red alert-icon">
+        <i class="glyph-icon icon-remove"></i>
+    </div>
+    <div class="alert-content">
+        <h4 class="alert-title">Alerta</h4>
+        <p>¿Está seguro que desea eliminar este registro?</p>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <h3 class="title-hero">
+            Información
+        </h3>
+        <div class="row">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.FechaAlta)
+                @Html.HiddenFor(model => model.SucursalId)
+
+                <div class="form deshabilitar">
+                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                    <div class="form-group col-xs-12">
+                        <h2>
+                            @Html.DisplayFor(model => model.RazonSocial)
+                        </h2>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <hr />
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        @Html.LabelFor(model => model.Rfc, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Rfc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Rfc, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-lg-3">
+                        @Html.LabelFor(model => model.CodigoPostal, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.CodigoPostal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CodigoPostal, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-lg-3">
+                        @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "control-label" })
+                        @Html.EnumDropDownListSpecialFor(model => model.Pais)
+                        @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-lg-3">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="form-group col-xs-12 col-lg-3">
+                        @Html.LabelFor(model => model.Telefono1, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Telefono1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Telefono1, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-lg-3">
+                        @Html.LabelFor(model => model.Telefono2, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Telefono2, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Telefono2, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-lg-6">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <hr />
+
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Bancos
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="form-group col-lg-5">
+                                        @Html.LabelFor(model => model.Banco.BancoId, htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownList("BancoId", null, "Favor de hacer su selección", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Banco.BancoId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        @Html.LabelFor(model => model.Banco.Nombre, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Banco.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Banco.Nombre, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        @Html.LabelFor(model => model.Banco.NumeroCuenta, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Banco.NumeroCuenta, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Banco.NumeroCuenta, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-lg-1">
+                                        <label class="control-label">Agregar</label> <br />
+                                        <div id="agregarBanco" style="cursor:pointer">
+                                            <span class="fa fa-plus-circle fa-2x text-success"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="col-xs-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Bancos Asignados
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <b>Banco</b>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <b>Nombre</b>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <b>Número de Cuenta</b>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <b></b>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div id="bancos">
+                                                    @if (Model.Bancos != null)
+                                                    {
+                                                        foreach (var banco in Model.Bancos)
+                                                        {
+                                                            @Html.Partial("~/Views/Clientes/Bancos.cshtml", banco)
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                    <hr />
+
+                    <div class="form-group pull-right">
+                        <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index", "Clientes")';">
+                            <span>Regresar</span>
+                            <i class="glyph-icon icon-arrow-left"></i>
+                        </button>
+                        <button type="submit" class="btn btn-alt btn-hover btn-danger">
+                            <span>Eliminar</span>
+                            <i class="glyph-icon icon-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $('#Banco_Nombre').attr('value', 'Banco');
+    $('#Banco_NumeroCuenta').attr('value', 'NumCta');
+</script>

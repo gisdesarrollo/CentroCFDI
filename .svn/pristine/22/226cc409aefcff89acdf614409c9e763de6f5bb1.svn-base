@@ -1,0 +1,69 @@
+[
+  {
+    "outputFileName": "Content/_Bundles/_bundle_CSS.css",
+    "inputFiles": [
+      "Content/CSS/Bootstrap/bootstrap-datepicker.standalone.css",
+      "Content/CSS/Bootstrap/bootstrap.css",
+      "Content/CSS/theme/buttons.css",
+      "Content/CSS/theme/flat-blue.css",
+      "Content/CSS/theme/hover.css",
+      "Content/CSS/theme/style.css",
+      "Content/Fonts/font-awesome-4.6.3/css/font-awesome.css",
+      "Content/Plugins/DataTables/DataTables-1.10.12/css/dataTables.bootstrap.css",
+      "Content/Plugins/DataTables/AutoFill-2.1.2/css/autoFill.bootstrap.min.css",
+      "Content/Plugins/DataTables/ColReorder-1.3.2/css/colReorder.bootstrap.css",
+      "Content/Plugins/DataTables/Responsive-2.1.0/css/responsive.dataTables.css",
+      "Content/Plugins/DataTables/Responsive-2.1.0/css/responsive.bootstrap.css"
+
+    ]
+  },
+  {
+    "outputFileName": "Content/_Bundles/_bundle_JS.js",
+    "inputFiles": [
+      "Content/JS/Bootstrap/bootstrap.js",
+      "Content/JS/Bootstrap/bootstrap-datepicker.js",
+      "Content/JS/BootstrapDatepickerLocales/bootstrap-datepicker.es.min.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/_Bundles/_dataTablesBundle.css",
+    "inputFiles": [
+      "Content/Plugins/DataTables/AutoFill-2.1.2/css/autoFill.bootstrap.css",
+      "Content/Plugins/DataTables/Buttons-1.2.2/css/buttons.bootstrap.css",
+      "Content/Plugins/DataTables/ColReorder-1.3.2/css/colReorder.bootstrap.css",
+      "Content/Plugins/DataTables/DataTables-1.10.12/css/dataTables.bootstrap.css",
+      "Content/Plugins/DataTables/Responsive-2.1.0/css/responsive.bootstrap.css",
+      "Content/Plugins/DataTables/datatables.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/_Bundles/_dataTablesBundle.js",
+    "inputFiles": [
+      "Content/Plugins/DataTables/DataTables-1.10.12/js/jquery.dataTables.js",
+      "Content/Plugins/DataTables/DataTables-1.10.12/js/dataTables.bootstrap.js",
+      "Content/Plugins/DataTables/pdfmake-0.1.18/pdfmake.js",
+      "Content/Plugins/DataTables/pdfmake-0.1.18/vfs_fonts.js",
+      "Content/Plugins/DataTables/JSZip-2.5.0/jszip.js",
+      "Content/Plugins/DataTables/AutoFill-2.1.2/js/dataTables.autoFill.js",
+      "Content/Plugins/DataTables/AutoFill-2.1.2/js/autoFill.bootstrap.js",
+      "Content/Plugins/DataTables/Buttons-1.2.2/js/dataTables.buttons.js",
+      "Content/Plugins/DataTables/Buttons-1.2.2/js/buttons.bootstrap.js",
+      "Content/Plugins/DataTables/Buttons-1.2.2/js/buttons.colVis.js",
+      "Content/Plugins/DataTables/Buttons-1.2.2/js/buttons.flash.js",
+      "Content/Plugins/DataTables/Buttons-1.2.2/js/buttons.html5.js",
+      "Content/Plugins/DataTables/Buttons-1.2.2/js/buttons.print.js",
+      "Content/Plugins/DataTables/ColReorder-1.3.2/js/dataTables.colReorder.js",
+      "Content/Plugins/DataTables/Responsive-2.1.0/js/dataTables.responsive.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/_Bundles/_bundle_JSapps.js",
+    "inputFiles": [
+      "Content/JS/Scripts/apps.js",
+      "Content/JS/Scripts/dataTables.js",
+      "Content/JS/Scripts/forms.js",
+      "Content/JS/Scripts/navs.js",
+      "Content/JS/Scripts/theming.js"
+    ]
+  }
+]

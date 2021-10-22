@@ -1,0 +1,179 @@
+﻿@model API.Catalogos.Usuario
+
+@{
+    ViewBag.Title = "Crear";
+}
+
+<script src="~/Content/Infodextra/Usuarios.js"></script>
+
+<div id="page-title">
+    <h2>Crear Usuario</h2>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="alert alert-notice">
+            <div class="bg-blue alert-icon">
+                <i class="glyph-icon icon-info"></i>
+            </div>
+            <div class="alert-content">
+                <h4 class="alert-title">Importante</h4>
+                <p>La contraseña para todos los usuarios nuevos es <span class="bs-label label-blue-alt font-size-15">A12345</span></p>
+            </div>
+        </div>
+        <h3 class="title-hero">
+            Información
+        </h3>
+        <div class="row">
+            @using (Html.BeginForm())
+                {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.GrupoId)
+
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control minusculas" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.Rfc, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Rfc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Rfc, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PerfilId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.TodasSucursales, htmlAttributes: new { @class = "control-label" })
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.TodasSucursales, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TodasSucursales, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <hr />
+
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="content-box">
+                            <h3 class="content-box-header bg-success">
+                                Sucursales
+                            </h3>
+                            <div class="content-box-wrapper">
+
+                                <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                    <label class="control-label">Sucursal</label>
+                                    @Html.DropDownList("SucursalId", null, "Favor de hacer su selección", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.Sucursal.Id, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                    <label class="control-label">Agregar</label> <br />
+                                    <button id="agregarSucursal" class="btn btn-round btn-primary">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+
+
+                                <div class="clearfix"></div>
+
+                                <div class="content-box">
+                                    <h3 class="content-box-header bg-success">
+                                        Sucursales asignadas
+                                    </h3>
+                                    <div class="content-box-wrapper">
+                                        <div class="row no-margin-bottom center">
+                                            <div class="col-lg-10">
+                                                <label>Sucursal</label>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <label>Remover</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row" id="sucursales">
+                                                @if (Model.Sucursales != null)
+                                                    {
+                                                    foreach (var detalle in Model.Sucursales)
+                                                        {
+                                                        @Html.Partial("~/Views/Usuarios/Sucursales.cshtml", detalle)
+                                                        }
+                                                    }
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <hr />
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                        <button class="btn btn-alt btn-default" onclick="location.href='@Url.Action("Index", "Usuarios")';return false;">
+                            <span>Regresar</span>
+                        </button>
+                        <button type="submit" class="btn btn-alt btn-blue-alt">
+                            <span>Crear</span>
+                        </button>
+                    </div>
+                </div>
+                }
+        </div>
+    </div>
+</div>

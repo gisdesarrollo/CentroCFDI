@@ -1,0 +1,95 @@
+﻿@model IEnumerable<API.Operaciones.Gasto>
+
+@{
+    ViewBag.Title = "Gastos Internos";
+}
+
+<script src="//softwares.infodextra.com/_CDN/Plugins/DataTables/datatables.min.js"></script>
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="title">@ViewBag.Title</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="btn btn-success">
+                    <i class="fa fa-plus-circle"></i> @Html.ActionLink(" Nuevo Registro", "Create")
+                </div>
+
+                <hr />
+
+                <table class="dataTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CentroCostoId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FechaCarga)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NombreArchivoXml)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProveedorId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UsuarioId)
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CentroCostoId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaCarga)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NombreArchivoXml)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProveedorId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UsuarioId)
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-cog"></span> Opciones
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "details" })</li>
+                                        </ul>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

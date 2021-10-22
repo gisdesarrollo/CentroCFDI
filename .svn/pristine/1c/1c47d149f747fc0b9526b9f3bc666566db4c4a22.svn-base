@@ -1,0 +1,100 @@
+﻿@model IEnumerable<API.Operaciones.Gasto>
+
+@{
+    ViewBag.Title = "Mis Facturas";
+}
+<script src="//softwares.infodextra.com/_CDN/Plugins/DataTables/datatables.js"></script>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="title">@ViewBag.Title</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="btn btn-success btn-sm">
+                    <span class="fa fa-plus-square"></span>
+                    @Html.ActionLink(" Subir Nueva Factura", "Create")
+                </div>
+                <div class="clearfix"></div>
+                <hr />
+                <table class="table dataTableButtons">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Descripcion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FechaCarga)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaCarga)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                                <td>
+                                    @if (item.Status == API.Enums.StatusGasto.EnProceso)
+                                    {
+                                        <div class="text-primary"><span class="fa fa-inbox"></span> Recibida</div>
+                                    }
+                                    else if (item.Status == API.Enums.StatusGasto.Autorizado)
+                                    {
+                                        <div class="text-success"><span class="fa fa-check"></span> Aceptada</div>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Status == API.Enums.StatusGasto.EnProceso)
+                                    {
+                                        <div class="btn-group">
+                                            <button type="button" class="no-margin btn btn-default btn-xs dropdown-toggle no-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-cog"></span> Opciones
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "details" })</li>
+                                                <li>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "delete" })</li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    else if (item.Status == API.Enums.StatusGasto.Autorizado)
+                                    {
+                                        <div class="btn-group">
+                                            <button type="button" class="no-margin btn btn-default btn-xs dropdown-toggle no-margin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-cog"></span> Opciones
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "details" })</li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

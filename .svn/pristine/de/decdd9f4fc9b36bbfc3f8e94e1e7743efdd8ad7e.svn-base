@@ -1,0 +1,121 @@
+﻿@model API.Operaciones.Facturacion.FacturaEmitida
+    }
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h3 class="alert alert-danger">¿Está seguro que desea eliminar este registro?</h3>
+
+<div class="container-fluid">
+    <div class="row deshabilitar">
+        <div class="col-xs-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div class="title"><b>@ViewBag.Title</b></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="form">
+                            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Información de la Factura
+                            </div>
+
+                            <hr />
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Serie, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Serie, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Serie, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Folio, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Folio, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Folio, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.TipoComprobante, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.TipoComprobante, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TipoComprobante, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.FormaPago, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FormaPago, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.TipoCambio, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TipoCambio, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.MetodoPago, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MetodoPago, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Subtotal, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Subtotal, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Subtotal, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.EmisorId, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Emisor.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.EmisorId, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Receptor.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                @Html.LabelFor(model => model.Uuid, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Uuid, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Uuid, "", new { @class = "text-danger" })
+                            </div> 
+
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                                @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-primary" })
+                                <button type="submit" class="btn btn-success">Eliminar</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,221 @@
+﻿@model API.Models.Operaciones.ComplementosPagosModel
+
+@{
+    ViewBag.Title = "Complementos de Pago";
+}
+@using (Html.BeginForm())
+    {
+    @Html.AntiForgeryToken()
+
+    <div id="page-title">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Complementos de Recepción de Pagos</h2>
+            </div>
+
+            <div class="col-sm-2">
+                @Html.EnumDropDownListFor(model => model.Mes, new { htmlAttributes = new { @class = "clean form-control" } })
+                @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.Anio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Anio, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-lg-1">
+                <button class="btn btn-alt btn-primary float-left multiple" type="submit" value="Filtrar" name="actionName">
+                    <span></span> <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="col-lg-1">
+                <div class="btn-group pull-right float-right">
+                    <button type="button" class="btn btn-primary dropdown-toggle float-right" data-toggle="dropdown" aria-expanded="false">
+                        <span>Nuevo</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a onclick="location.href='@Url.Action("Create", "ComplementosPagos")';return false;">Manual</a></li>
+                        <li><a onclick="location.href='@Url.Action("Cargar", "ComplementosPagos")';return false;">Layout</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-body">
+            <h3 class="title-hero">
+                CFDi Generados con complemento de pagos
+            </h3>
+            <button class="btn btn-alt btn-primary float-left btn-xs" type="submit" value="Timbrar" name="actionName">
+                <span> Timbrar Seleccionados </span>
+            </button>
+            <div class="clearfix"></div>
+            <div class="row">
+                <table class="table table-condensed dataTable">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                Seleccionado
+                            </th>
+                            <th>
+                                Folio
+                            </th>
+                            <th>
+                                Receptor
+                            </th>
+                            <th>
+                                Fecha del Documento
+                            </th>
+                            <th>
+                                Mes
+                            </th>
+                            <th>
+                                Estado
+                            </th>
+                            <th>
+                                Opciones
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.ComplementosPago.Count; i++)
+                            {
+                            <tr>
+                                <td>
+                                    @if (Model.ComplementosPago[i].FacturaEmitida == null)
+                                        {
+                                        @Html.EditorFor(model => Model.ComplementosPago[i].Seleccionado)
+                                        }
+
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Id)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitidaId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FechaDocumento)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Generado)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Mes)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].ReceptorId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Status)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].SucursalId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Version)
+
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.ArchivoFisicoXml)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.CadenaOriginal)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.CentroCostoId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Certificado)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.DepartamentoId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Descuento)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.EmisorId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Fecha)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.FechaTimbrado)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Folio)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.FormaPago)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Id)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.LugarExpedicion)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.MetodoPago)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Moneda)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.MotivoDescuento)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NoCertificado)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NoCertificadoSat)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NombreArchivoXml)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NumeroCuentaPago)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.ReceptorId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.SelloDigitalCfdi)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.SelloSat)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Serie)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Subtotal)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.TipoCambio)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.TipoComprobante)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Total)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Uuid)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Version)
+
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.CodigoPostal)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Email)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.FechaAlta)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Id)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Observaciones)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Pais)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.RazonSocial)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Rfc)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Status)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.SucursalId)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Telefono1)
+                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Telefono2)
+                                </td>
+                                <td>
+                                    @if (Model.ComplementosPago[i].FacturaEmitida != null)
+                                        {
+                                        @Html.DisplayFor(model => Model.ComplementosPago[i].FacturaEmitida.Folio);
+                                        }
+                                    else
+                                        {
+                                        @Html.Raw("Pendinte")
+                                        }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.RazonSocial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => Model.ComplementosPago[i].FechaDocumento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => Model.ComplementosPago[i].Mes)
+                                </td>
+                                <td>
+                                    @if (Model.ComplementosPago[i].Generado == true)
+                                        {
+                                        if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
+                                            {
+                                            <p><span class="fa fa-clipboard-check font-green"></span> Generado</p>
+                                            }
+                                        else
+                                            {
+                                            <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
+                                            }
+                                        }
+                                    else
+                                        {
+                                        <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                        }
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-cog"></span> Opciones
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            @if (Model.ComplementosPago[i].Generado)
+                                                {
+                                                if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
+                                                    {
+                                                    <li>@Html.ActionLink("Descargar", "Descargar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                    <li>@Html.ActionLink("Cancelar", "Cancelar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-red", onclick = "return confirm('¿Está seguro que desea cancelar este CFDI?');" })</li>
+                                                    }
+                                                else
+                                                    {
+                                                    <li>@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                    }
+
+                                                }
+                                            else
+                                                {
+                                                <li>@Html.ActionLink("Editar Pagos", "Edit", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                <li>@Html.ActionLink("Editar Doc Relacionados", "DocumentosRelacionados", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-green" })</li>
+                                                <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-red" })</li>
+                                                }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    }

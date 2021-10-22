@@ -1,0 +1,100 @@
+﻿@model API.Models.Cargas.CargasCfdisModel
+
+@{
+    ViewBag.Title = "Carga de Gastos de Personal";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Cargar CFDi - Personal Interno</h2>
+            <p>Carga los CFDi al sistema asignados al Departamento y Centro de Costos que elijas</p>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            @using (Html.BeginForm("CargaGastosPersonal", "OperacionesCfdisRecibidos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                @Html.AntiForgeryToken()
+
+            <div class="form">
+                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    @Html.LabelFor(model => model.DepartamentoId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("DepartamentoId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DepartamentoId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    @Html.LabelFor(model => model.CentroCostoId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("CentroCostoId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CentroCostoId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Referencia
+                </div>
+
+                <hr />
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    @Html.LabelFor(model => model.Referencia1, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Referencia1, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Referencia1, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    @Html.LabelFor(model => model.Referencia2, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Referencia2, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Referencia2, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    @Html.LabelFor(model => model.Referencia3, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Referencia3, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Referencia3, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    @Html.LabelFor(model => model.Referencia4, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Referencia4, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Referencia4, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    @Html.LabelFor(model => model.Referencia5, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Referencia5, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Referencia5, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="clearfix"></div>
+                <hr />
+
+                <div class="form-group col-xs-12 col-lg-6">
+                    <label class="control-label" for="Grupos">Seleccionar CFDi</label>
+                    <input class="" type="file" name="Archivo" typeof="Archivo" accept=".xml, .pdf" multiple />
+                </div>
+
+
+                <div class="clearfix"></div>
+                <hr />
+
+                <div class="form-group col-xs-12 col-lg-4 pull-right">
+                    <label> </label>
+                    <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
+                        <span>Procesar</span>
+                        <i class="glyph-icon icon-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+                }
+        </div>
+    </div>
+</div>

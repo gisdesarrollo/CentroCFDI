@@ -1,0 +1,92 @@
+﻿@using APBox.Context;
+
+@{
+    var sucursalId = Convert.ToInt32(Session["SucursalId"]);
+}
+@if (Request.IsAuthenticated && sucursalId != 0)
+    {
+    var _db = new APBoxContext();
+    var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
+    var usuario = _db.Usuarios.Find(usuarioId);
+
+    var sucursal = _db.Sucursales.Find(sucursalId);
+    <div id="header-nav-left">
+        <div class="user-account-btn dropdown">
+            <a href="#" title="My Account" class="user-profile clearfix" data-toggle="dropdown" aria-expanded="false">
+                @*<img width="28" src="~/Content/_APBox/user_hombre.png" alt="Profile image">*@
+                <span style="width:auto;">Hola, @usuario.Nombre</span>
+                <i class="glyph-icon icon-angle-down"></i>
+            </a>
+            <div class="dropdown-menu float-left" style="display: none;">
+                <div class="box-sm">
+                    <div class="login-box clearfix">
+                        <div class="user-img">
+                            <img src="~/Content/_APBox/user_hombre.png" />
+                        </div>
+                        <div class="user-info">
+                            <span>
+                                @usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno
+                                <i>@usuario.Perfil.Nombre</i>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="pad5A button-pane button-pane-alt text-center" onclick="location.href='@Url.Action("Manage", "Account")';return false;">
+                        <a class="btn display-block font-normal btn-blue-alt">
+                            <i class="glyph-icon icon-key"></i> Cambiar Contraseña
+                        </a>
+                    </div>
+
+
+                    <div class="pad5A button-pane button-pane-alt text-center">
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                            @Html.AntiForgeryToken()
+                                {
+                                <a href="javascript:document.getElementById('logoutForm').submit()" class="btn display-block font-normal btn-danger">
+                                    <i class="glyph-icon icon-power-off"></i> Cerrar Sesión
+                                </a>
+                                }
+                            }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="header-nav-left">
+        <div class="user-account-btn dropdown">
+            <a href="#" title="My Account" class="user-profile clearfix" data-toggle="dropdown" aria-expanded="false">
+                @*<img width="28" src="~/Content/_APBox/user_hombre.png" alt="Profile image">*@
+                <span style="width:auto;">@sucursal.Nombre</span>
+                <i class="glyph-icon icon-angle-down"></i>
+            </a>
+            <div class="dropdown-menu float-left" style="display: none;">
+                <div class="box-sm">
+                    <div class="user-info">
+                        <p class="mrg10A font-bold">
+                            Sucursal Actual
+                        </p>
+                        <p class="mrg10A">
+                            @sucursal.RazonSocial
+                        </p>
+                    </div>
+                    <div class="pad5A button-pane button-pane-alt text-center" onclick="location.href='@Url.Action("Edit", "Sucursales",  new { id = sucursalId })';return false;">
+                        <a class="btn display-block font-normal btn-success">
+                            <i class="fas fa-pencil-alt"></i> Editar Sucursal Actual
+                        </a>
+                    </div>
+                    <div class="pad5A button-pane button-pane-alt text-center" onclick="location.href='@Url.Action("SeleccionarSucursal", "Account" )';return false;">
+                        <a class="btn display-block font-normal btn-blue-alt">
+                            <i class="glyph-icon icon-home"></i> Cambiar de Sucursal
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+

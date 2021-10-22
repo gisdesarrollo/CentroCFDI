@@ -1,0 +1,298 @@
+﻿@model API.Operaciones.ComplementosPagos.ComplementoPago
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<div class="container-fluid">
+    <div class="row deshabilitar">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title"><b>@ViewBag.Title Complemento de Pago</b></div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.SucursalId)
+
+                        <div class="form">
+                            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                            <ul class="nav nav-pills nav-justified">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#mInformacion">Información</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#mDetalles">Detalles</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#mFacturas">Facturas</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div id="mInformacion" class="tab-pane fade in active">
+                                    <div class="clearfix"></div>
+
+                                    <div class="sub-title">
+                                        <span class="fa fa-bars text-muted"></span> Información
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.FechaPago, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.FechaPago, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.FechaPago, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EnumDropDownListSpecialFor(model => model.FormaPago)
+                                        @Html.ValidationMessageFor(model => model.FormaPago, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EnumDropDownListSpecialFor(model => model.Moneda)
+                                        @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.TipoCambio, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.TipoCambio, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.Monto, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Monto, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.NumeroOperacion, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.NumeroOperacion, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NumeroOperacion, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.RfcEmisorCuentaOrigen, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.RfcEmisorCuentaOrigen, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.RfcEmisorCuentaOrigen, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        @Html.LabelFor(model => model.NombreBancoOrdenanteExtranjero, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.NombreBancoOrdenanteExtranjero, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NombreBancoOrdenanteExtranjero, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        @Html.LabelFor(model => model.Notas, htmlAttributes: new { @class = "control-label" })
+                                        @Html.TextAreaFor(model => model.Notas, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Notas, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div id="mDetalles" class="tab-pane fade">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            Detalles
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    @Html.LabelFor(model => model.Detalle.CuentaOrdenante, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Detalle.CuentaOrdenante, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.Detalle.CuentaOrdenante, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    @Html.LabelFor(model => model.Detalle.RfcEmisorCuentaDestino, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Detalle.RfcEmisorCuentaDestino, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.Detalle.RfcEmisorCuentaDestino, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                                                    @Html.LabelFor(model => model.Detalle.TipoCadenaPago, new { @class = "control-label" })
+                                                    @Html.EnumDropDownListSpecialFor(model => model.Detalle.TipoCadenaPago)
+                                                    @Html.ValidationMessageFor(model => model.Detalle.TipoCadenaPago, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    @Html.LabelFor(model => model.Detalle.CertificadoPago, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Detalle.CertificadoPago, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.Detalle.CertificadoPago, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    @Html.LabelFor(model => model.Detalle.CadenaOriginalComprobante, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Detalle.CadenaOriginalComprobante, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.Detalle.CadenaOriginalComprobante, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    @Html.LabelFor(model => model.Detalle.SelloPago, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Detalle.SelloPago, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.Detalle.SelloPago, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                    <label class="control-label">Agregar</label> <br />
+                                                    <div id="agregarDetalle" style="cursor:pointer">
+                                                        <span class="fa fa-plus-circle fa-2x text-success"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="col-xs-12">
+                                                <div class="panel panel-success fresh-color">
+                                                    <div class="panel-heading">
+                                                        <div class="panel-title">
+                                                            Detalles asignados
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row no-margin-bottom center">
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Cuenta Ordenante</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Rfc Emisor</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                                                                <b>Tipo de Cadena</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Certificado</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Cadena Original Comprobante</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Sello</b>
+                                                            </div>
+                                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                                <b>Remover</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                                <b><a href="">Agregar Documento</a></b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                                <b><a href="">Agregar Documento</a></b>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="row" id="detalles">
+                                                                @if (Model.Detalles != null)
+                                                                {
+                                                                    foreach (var detalle in Model.Detalles)
+                                                                    {
+                                                                        @Html.Partial("~/Views/ComplementosPagos/Detalles.cshtml", detalle)
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="mFacturas" class="tab-pane fade">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            Facturas
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                                    @Html.LabelFor(model => model.ReceptorId, new { @class = "control-label" })
+                                                    @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    @Html.LabelFor(model => model.FacturaId, new { @class = "control-label" })
+                                                    @Html.DropDownList("FacturaId", null, "Favor de hacer su selección", new { @class = "form-control select2" })
+                                                    @Html.ValidationMessageFor(model => model.FacturaId, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                    <label class="control-label">Agregar</label> <br />
+                                                    <div id="agregarFactura" style="cursor:pointer">
+                                                        <span class="fa fa-plus-circle fa-2x text-success"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="col-xs-12">
+                                                <div class="panel panel-success fresh-color">
+                                                    <div class="panel-heading">
+                                                        <div class="panel-title">
+                                                            Facturas asignadas
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row no-margin-bottom center">
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Serie</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Folio</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                                                <b>Folio Fiscal</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Subtotal</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                                <b>Total</b>
+                                                            </div>
+                                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                                <b>Remover</b>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="row" id="facturas">
+                                                                @if (Model.Facturas != null)
+                                                                {
+                                                                    foreach (var factura in Model.Facturas)
+                                                                    {
+                                                                        @Html.Partial("~/Views/ComplementosPagos/Facturas.cshtml", factura)
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="pull-right">
+                                <div class="btn btn-primary">
+                                    <i class="fa fa-reply"></i> @Html.ActionLink("Regresar", "Index")
+                                </div>
+                                <div class="btn btn-success">
+                                    <i class="fa fa-edit"></i> @Html.ActionLink("Editar", "Edit", new { id = Model.Id })
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

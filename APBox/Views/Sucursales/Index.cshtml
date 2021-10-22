@@ -1,0 +1,76 @@
+﻿@model IEnumerable<API.Catalogos.Sucursal>
+
+@{
+    ViewBag.Title = "Sucursales";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Sucursales</h2>
+            <p>Crea y modifica las sucursales de la empresa</p>
+        </div>
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Create", "Sucursales")';return false;">
+                <span>Nueva Sucursal</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("RelacionSucursalesBancos", "CargasMasivas")';return false;">
+                <span>Bancos por Layout</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <table class="table table-condensed dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Rfc)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                        {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rfc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="fa fa-caret-down"></span> Acciones
+                                </button>
+                                <ul class="dropdown-menu float-left">
+                                    <li>@Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                    <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                    <li>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

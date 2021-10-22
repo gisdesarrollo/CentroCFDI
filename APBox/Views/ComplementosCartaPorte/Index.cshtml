@@ -1,0 +1,46 @@
+﻿@model API.Models.Operaciones.ComplementosCartaPorteModel
+
+@{
+    ViewBag.Title = "Complementos de Carta Porte";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="page-title">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Complementos de Recepción de CartaPorte</h2>
+            </div>
+            <div class="col-sm-2">
+                @Html.EnumDropDownListFor(model => model.Mes, new { htmlAttributes = new { @class = "clean form-control" } })
+                @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.Anio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Anio, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-lg-1">
+                <button class="btn btn-alt btn-primary float-left multiple" type="submit" value="Filtrar" name="actionName">
+                    <span></span> <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="col-lg-1">
+                <div class="btn-group pull-right float-right">
+                    <button type="button" class="btn btn-primary dropdown-toggle float-right" data-toggle="dropdown" aria-expanded="false">
+                        <span>Nuevo</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a onclick="location.href='@Url.Action("Create", "ComplementosCartaporte")';return false;">Manual</a></li>
+                        <li><a onclick="location.href='@Url.Action("Cargar", "ComplementosCartaPorte")';return false;">Layout</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

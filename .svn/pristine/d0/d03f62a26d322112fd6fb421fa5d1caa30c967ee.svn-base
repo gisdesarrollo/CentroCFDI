@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  version="3.2"
+                  folio="146"
+                  fecha="2017-02-28T12:21:26"
+                  sello="XXPh9TU4eQyoDcQyWlR73DBceSVtwRuOedgfv4KaNzTcwsyQaom1cKgX/un0PKmpuRg3QTuwmCimpiRozebVgika0MNJLD+QVjfVY8gjTdjx8pQJ8lT+TAqW+I6MpZy+GFSCTeZtYKKrZ6OLz1+eJiqNRRifhb24QyK0Qr8YBpM="
+                  formaDePago="Pago en una sola exhibición"
+                  noCertificado="00001000000306685297"
+                  certificado="MIIEgjCCA2qgAwIBAgIUMDAwMDEwMDAwMDAzMDY2ODUyOTcwDQYJKoZIhvcNAQEFBQAwggGKMTgwNgYDVQQDDC9BLkMuIGRlbCBTZXJ2aWNpbyBkZSBBZG1pbmlzdHJhY2nDs24gVHJpYnV0YXJpYTEvMC0GA1UECgwmU2VydmljaW8gZGUgQWRtaW5pc3RyYWNpw7NuIFRyaWJ1dGFyaWExODA2BgNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMR8wHQYJKoZIhvcNAQkBFhBhY29kc0BzYXQuZ29iLm14MSYwJAYDVQQJDB1Bdi4gSGlkYWxnbyA3NywgQ29sLiBHdWVycmVybzEOMAwGA1UEEQwFMDYzMDAxCzAJBgNVBAYTAk1YMRkwFwYDVQQIDBBEaXN0cml0byBGZWRlcmFsMRQwEgYDVQQHDAtDdWF1aHTDqW1vYzEVMBMGA1UELRMMU0FUOTcwNzAxTk4zMTUwMwYJKoZIhvcNAQkCDCZSZXNwb25zYWJsZTogQ2xhdWRpYSBDb3ZhcnJ1YmlhcyBPY2hvYTAeFw0xNTA0MDcxODU3MzhaFw0xOTA0MDcxODU3MzhaMIHOMSowKAYDVQQDEyFNQVJJQSBGRVJOQU5EQSBET01JTkdVRVogUEFMT01FUkExKjAoBgNVBCkTIU1BUklBIEZFUk5BTkRBIERPTUlOR1VFWiBQQUxPTUVSQTEqMCgGA1UEChMhTUFSSUEgRkVSTkFOREEgRE9NSU5HVUVaIFBBTE9NRVJBMRYwFAYDVQQtEw1ET1BGNjYwODAzS0QyMRswGQYDVQQFExJET1BGNjYwODAzTURGTUxSMDgxEzARBgNVBAsTCkNVQVVIVEVNT0MwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKam1a9YISv3OK1bkYQPO4n2kpR4QyOsjaT1l4lt74JX7XYsbns4/NC5Fq3LBTPikivlacgsTWWu6PEDZ/4bk3c9j4JdVcWxQw9OotBjp8ti/rbobavXwFbRfsfj1HhiahDvEEAzQUp/MbQ7uH32qNDC+e+qZqnmRkNie/O0MnfDAgMBAAGjHTAbMAwGA1UdEwEB/wQCMAAwCwYDVR0PBAQDAgbAMA0GCSqGSIb3DQEBBQUAA4IBAQAGrPth7+eq6lsAgOy1yX37mUZtF1kDoHlAYW/nK5ezwiDWz6XM/kX0/FGRjIP8p7QXGRWpNKzeimV3h0E/oZycBBrOAnAp8I0Kmo9ZJ+5+psh4KTdUMiVrJ+et8AXw8e7aoF1osTYfK3v6+NrkvREC8Jk2p+6peNpRhqleOSii40VvYz6r5u4STHbXmOObLgGEY7asKs9jmikepLgQthI3eds6k2c4CxHY4ZZyCxayO9IvX11j1TjtWwnNlx4nBYFOFMEKxrNzEUOH4OfVwBe/DsDlU93g+SwKlnpngCxq405EyQrlCBbNSs/T7B2fh6dMVH9kfj6U7bPwwfGwNHZL"
+                  subTotal="16200.00"
+                  Moneda="MXN"
+                  total="6200.00"
+                  tipoDeComprobante="ingreso"
+                  metodoDePago="03"
+                  LugarExpedicion="Cuauhtémoc, Ciudad de México"
+                  NumCtaPago="9646"
+                  xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd"
+                  xmlns:cfdi="http://www.sat.gob.mx/cfd/3">
+	<cfdi:Emisor rfc="DOPF660803KD2"
+	             nombre="María Fernanda Domínguez Palomera">
+		<cfdi:DomicilioFiscal calle="Av. Guerrero"
+		                      noExterior="68 local C"
+		                      colonia="Guerrero"
+		                      municipio="Cuauhtémoc"
+		                      estado="Ciudad de México"
+		                      pais="México"
+		                      codigoPostal="06300" />
+		<cfdi:RegimenFiscal Regimen="Régimen de las Personas Físicas con Actividades Empresariales y Profesionales" />
+	</cfdi:Emisor>
+	<cfdi:Receptor rfc="SARJ850403DM6"
+	               nombre="Jerónimo Sampedro Remis">
+		<cfdi:Domicilio calle="Calle Acayucan"
+		                noExterior="10"
+		                colonia="Roma Sur"
+		                municipio="Cuauhtémoc"
+		                estado="D.F."
+		                pais="México"
+		                codigoPostal="06700" />
+	</cfdi:Receptor>
+	<cfdi:Conceptos>
+		<cfdi:Concepto cantidad="1.00"
+		               unidad="1"
+		               descripcion="Renta del mes de febrero"
+		               valorUnitario="16200.00"
+		               importe="16200.00" />
+	</cfdi:Conceptos>
+	<cfdi:Impuestos />
+	<cfdi:Complemento>
+		<tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital"
+		                         xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/TimbreFiscalDigital/TimbreFiscalDigital.xsd"
+		                         version="1.0"
+		                         UUID="896BC56B-5SB0-4115-8D4C-C78D417CDAF7"
+		                         FechaTimbrado="2017-02-28T12:26:26"
+		                         selloCFD="XXPh9TU4eQyoDcQyWlR73DBceSVtwRuOedgfv4KaNzTcwsyQaom1cKgX/un0PKmpuRg3QTuwmCimpiRozebVgika0MNJLD+QVjfVY8gjTdjx8pQJ8lT+TAqW+I6MpZy+GFSCTeZtYKKrZ6OLz1+eJiqNRRifhb24QyK0Qr8YBpM="
+		                         noCertificadoSAT="00001000000403498740"
+		                         selloSAT="Wu9r+Ba4+DMrGSP88SfioWNaAHjjpAET6qWoiKE4o+bZd/7qUKjBZeWqYonTe4swcrHyRScRwzlpDU9IBqQSrrKQlLLlohzK0B/GnwcfMNsBBE9iwazg11/yTAjAs2NcEhSCVv9da+/s1CRYc5I1qdds9ylJxOEtsOVh0Z2Q34F7m8LCKPv0ALWdr4CkQ2hY5H6yOFQVJ75hAn9b1pnb7WgTxXRsZaycVypHG39DkDuvXVyWh5SbbsuGAfLgSihVYbLmTu6ZdmF6E3sd0NmP0gz/TtXl34gn9F6xRmwoygs6AAWvhUqYmnTFPd47I5gl/rsb854SQMcD0R5JF0SbTg==" />
+	</cfdi:Complemento>
+</cfdi:Comprobante>

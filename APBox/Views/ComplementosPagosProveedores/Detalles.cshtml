@@ -1,0 +1,44 @@
+﻿@model API.Operaciones.ComplementosPagos.ComplementoPagoDetalle
+
+@using (Html.BeginCollectionItem("Detalles"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+    <div class="wrapper">
+        <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+            @Html.DisplayFor(model => model.CuentaOrdenante)
+            @Html.HiddenFor(model => model.CuentaOrdenante)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+            @Html.DisplayFor(model => model.RfcEmisorCuentaDestino)
+            @Html.HiddenFor(model => model.RfcEmisorCuentaDestino)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+            @Html.DisplayFor(model => model.TipoCadenaPago)
+            @Html.HiddenFor(model => model.TipoCadenaPago)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            @Html.DisplayFor(model => model.CertificadoPago)
+            @Html.HiddenFor(model => model.CertificadoPago)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            @Html.DisplayFor(model => model.CadenaOriginalComprobante)
+            @Html.HiddenFor(model => model.CadenaOriginalComprobante)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            @Html.DisplayFor(model => model.SelloPago)
+            @Html.HiddenFor(model => model.SelloPago)
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+            <b><a href=""><span class="fa fa-upload" title="Subir Documento"></span></a></b>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+            <b><a href=""><span class="fa fa-upload" title="Subir Impuesto"></span></a></b>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.FacturaId)
+            <span onclick="$(this).parent().parent().remove();" class="fa fa-minus-circle fa-2x text-danger" style="cursor:pointer"></span>
+        </div>
+
+    </div>
+}

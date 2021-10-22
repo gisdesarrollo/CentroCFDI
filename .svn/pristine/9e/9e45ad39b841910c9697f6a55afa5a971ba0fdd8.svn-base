@@ -1,0 +1,62 @@
+﻿@model API.Models.Reportes.HorasModel
+
+@{
+    ViewBag.Title = "Estadísitcas por Proveedor";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">@ViewBag.Title</div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form">
+                            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Fecha Inicial</span>
+                                    @Html.EditorFor(model => model.FechaInicial)
+                                    @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.HoraInicial, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.HoraInicial, "", new { @class = "text-danger" })
+                                    <span class="input-group-addon"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Fecha Final</span>
+                                    @Html.EditorFor(model => model.FechaFinal)
+                                    @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.HoraFinal, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.HoraFinal, "", new { @class = "text-danger" })
+                                    <span class="input-group-addon"></span>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                                <button type="submit" class="btn btn-success">Generar</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

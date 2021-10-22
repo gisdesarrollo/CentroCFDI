@@ -1,0 +1,112 @@
+﻿@model IEnumerable<API.Operaciones.Facturacion.FacturaRecibida>
+
+@{
+    ViewBag.Title = "Ver Gastos de Personal";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>CFDi Recibidos - Personal Interno</h2>
+            <p>Lista general de CFDi recibidos a través del Portal de Usuarios Internos</p>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            @using (Html.BeginForm())
+                {
+                @Html.AntiForgeryToken()
+
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                    <table class="table table-condensed dataTable" data-descarga="true">
+                        <thead>
+                            <tr>
+                                <th>Proveedor</th>
+                                <th>Folio</th>
+                                <th>Total</th>
+                                <th>Usuario</th>
+                                <th>Departamento</th>
+                                <th>Centro de Costos</th>
+                                <th>Fecha de Status</th>
+                                <th>Status</th>
+                                <th>SAT</th>
+                                @*<th>Descripción</th>*@
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var factura in Model)
+                                {
+                                <tr>
+                                    <td>@factura.Emisor.Rfc<br />@factura.Emisor.RazonSocial</td>
+                                    <td>@factura.Serie - @factura.Folio</td>
+                                    <td class="text-right">@factura.Total.ToString("c")</td>
+                                    <td>@(factura.Usuario == null ? "" : factura.Usuario.NombreCompleto)</td>
+                                    <td>@factura.Departamento.Nombre</td>
+                                    <td>@factura.CentroCosto.Nombre</td>
+                                    <td>
+                                        @if (factura.FechaAutorizacion == null)
+                                            {
+                                            <br />
+                                            }
+                                        else
+                                            {
+                                            @factura.FechaAutorizacion.Value.ToString("dd MMM yy");
+                                            }
+                                    </td>
+                                    <td>
+                                        <center>
+                                            @if (factura.Autorizada == true)
+                                                {
+                                                <p><span class="fa fa-clipboard-check font-green"></span> Autorizada</p>
+                                                }
+                                            else
+                                                {
+                                                <p><span class="fa fa-envelope font-gray"></span> Recibida</p>
+                                                }
+                                        </center>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (factura.Validacion.Correcto == true)
+                                            {
+                                            <p><span class="fas fa-check-circle font-green"></span></p>
+                                            }
+                                        else
+                                            {
+                                            <p><span class="fas fa-exclamation-triangle font-red"></span></p>
+                                            }
+
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-cog"></span> Opciones
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>@Html.ActionLink("Aprobar", "Aprobar", new { facturaRecibidaId = factura.Id }, new { @class = "edit" })</li>
+                                                <li>@Html.ActionLink("Rechazar", "Rechazar", new { facturaRecibidaId = factura.Id }, new { @class = "delete" })</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                }
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix"></div>
+                    <hr />
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                        @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-primary" })
+                        <button type="submit" class="btn btn-success">Crear</button>
+                    </div>
+                </div>
+                }
+        </div>
+    </div>
+</div>

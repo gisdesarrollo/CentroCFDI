@@ -1,0 +1,126 @@
+﻿@model API.Operaciones.Gasto
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+
+<div class="container-fluid">
+    <div class="alert alert-danger fresh-color h3 no-margin">
+        ¿Está seguro que desea eliminar este registro?
+    </div>
+    <div class="row deshabilitar">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">@ViewBag.Title Documento</div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm("Delete", "GastosProveedores", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.Status)
+                        @Html.HiddenFor(model => model.FechaCarga)
+                        @Html.HiddenFor(model => model.ProveedorId)
+                        @Html.HiddenFor(model => model.CentroCostoId)
+                        @Html.HiddenFor(model => model.FechaAutorizacionRechazo)
+                        @Html.HiddenFor(model => model.NotasAutorizacionRechazo)
+                        @Html.HiddenFor(model => model.UsuarioAutorizacionRechazoId)
+
+                        <div class="form">
+                            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Tipo de Documento
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.LabelFor(model => model.TipoDocumento, htmlAttributes: new { @class = "control-label" })
+                                @Html.EnumDropDownListSpecialFor(model => model.TipoDocumento)
+                                @Html.ValidationMessageFor(model => model.TipoDocumento, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Información General
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.FechaDocumento, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.FechaDocumento)
+                                @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.SubTotal, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.SubTotal, new { @class = "form-control", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.SubTotal, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Total, new { @class = "form-control", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Descripcion, new { @class = "form-control", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Archivos
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-6" onclick="location.href='@Url.Action("ObtenerArchivos", "Documentos", new { archivoId = Model.Id, xml = true })'" style="cursor:pointer">
+                                    <div class="alert alert-info fresh-color h1 no-margin">
+                                        <span class="fa fa-cloud-download"></span> Descargar XML
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-6" onclick="location.href='@Url.Action("ObtenerArchivos", "Documentos", new { archivoId = Model.Id, xml = false })'" style="cursor:pointer">
+                                    <div class="alert alert-info fresh-color h1 no-margin">
+                                        <span class="fa fa-cloud-download"></span> Descargar PDF
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Notas
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.LabelFor(model => model.Notas, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.Notas, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Notas, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right">
+                                @Html.ActionLink("Listado de Documentos", "Index", null, new { @class = "btn btn-primary" })
+                                <button type="submit" class="btn btn-success">Eliminar</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,253 @@
+﻿@model API.Models.ComplementosPagos.CargasComplementosModel
+
+@{
+    ViewBag.Title = "Cargar";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Cargar Layout para Complementos de Pagos</h2>
+            <p>Descarga y llena el layout disponible para generar complementos de pago</p>
+        </div>
+        <div class="col-lg-3">
+            <button class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Exportar", "ComplementosPagos")'">
+                <span>Descargar Layout Vacío</span>
+                <i class="glyph-icon icon-arrow-down"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            @using (Html.BeginForm("Cargar", "ComplementosPagos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.GrupoId)
+
+                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.Mes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    @Html.LabelFor(model => model.Previsualizacion, htmlAttributes: new { @class = "control-label" })
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Previsualizacion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Previsualizacion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label class="control-label" for="Grupos">Seleccionar Layout</label>
+                    <input class="file-input" type="file" name="Archivo" typeof="Archivo" accept=".csv, .dat" />
+                </div>
+
+                <div class="clearfix"></div>
+                <hr />
+                <div class="form-group pull-right">
+                    <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
+                        <span>Procesar</span>
+                        <i class="glyph-icon icon-arrow-right"></i>
+                    </button>
+                </div>
+
+
+                if (Model.Detalles != null && Model.Detalles.Count > 0)
+                    {
+                    var i = 0;
+                    <div class="clearfix"></div>
+
+                    <div class="alert alert-notice">
+                        <div class="bg-blue alert-icon">
+                            <i class="glyph-icon icon-check-square"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4 class="alert-title">Detalles de la previsualización</h4>
+                            <p>Para timbrar el archivo que acabas de cargar, apaga el switch de Previsualizacion.</p>
+                        </div>
+                    </div>
+
+                    foreach (var detalle in Model.Detalles)
+                        {
+                        i++;
+                        <div class="content-box">
+
+                            <h3 class="content-box-header bg-default">
+                                Complemento de Recepción de Pagos - @i
+                            </h3>
+
+                            <div class="content-box-wrapper">
+
+                                <table class="table">
+                                    <tr>
+                                        <th colspan="4"><b>Información de CFDi</b></th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Receptor</b> <br />
+                                            @detalle.Receptor.RazonSocial
+                                        </td>
+                                        <td>
+                                            <b>Receptor</b> <br />
+                                            @detalle.Receptor.RazonSocial
+                                        </td>
+                                        <td>
+                                            <b>Fecha de Emisión</b> <br />
+                                            @detalle.FechaDocumento.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td> </td>
+                                    </tr>
+                                </table>
+
+
+                                @if (detalle.Pagos != null && detalle.Pagos.Count > 0)
+                                    {
+                                    var j = 0;
+                                    foreach (var pago in detalle.Pagos)
+                                        {
+                                        j++;
+
+                                        <table>
+                                            <tr>
+                                                <th colspan="4">
+                                                    <b>Pago - @j</b>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Fecha del Pago</b><br />
+                                                    @pago.FechaPago
+                                                </td>
+                                                <td>
+                                                    <b>Banco Ordenante</b><br />
+                                                    @if (pago.BancoOrdenante != null)
+                                                        {
+                                                        @Html.Raw(pago.BancoOrdenante.Nombre);
+                                                        }
+                                                    else
+                                                        {
+                                                        @Html.Raw("Sin Definir");
+                                                        }
+                                                </td>
+                                                <td>
+                                                    <b>Banco Beneficiario</b><br />
+                                                    @if (pago.BancoBeneficiario != null)
+                                                        {
+                                                        @Html.Raw(pago.BancoBeneficiario.Nombre);
+                                                        }
+                                                    else
+                                                        {
+                                                        @Html.Raw("Sin Definir");
+                                                        }
+                                                </td>
+                                                <td>
+                                                    <b>Numero de Operación</b><br />
+                                                    @if (pago.NumeroOperacion != null)
+                                                        {
+                                                        @Html.Raw(pago.NumeroOperacion);
+                                                        }
+                                                    else
+                                                        {
+                                                        @Html.Raw("Sin Definir");
+                                                        }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Forma de Pago</b><br />
+
+                                                    @*@pago.FormaPago*@
+                                                </td>
+                                                <td>
+                                                    <b>Moneda</b><br />
+                                                    @pago.Moneda
+                                                </td>
+                                                <td>
+                                                    <b>Tipo de Cambio</b><br />
+                                                    @pago.TipoCambio
+                                                </td>
+                                                <td>
+                                                    <b>Monto</b><br />
+                                                    @pago.Monto.ToString("c")
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+                                        if (pago.DocumentosRelacionados != null && pago.DocumentosRelacionados.Count > 0)
+                                            {
+                                            var h = 0;
+
+                                            foreach (var documentoRelacionado in pago.DocumentosRelacionados)
+                                                {
+                                                h++;
+                                                <table>
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            Documento Relacionado - @h
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Factura - Serie / Folio</b><br />
+                                                            @documentoRelacionado.Serie / @documentoRelacionado.Folio
+                                                        </td>
+                                                        <td>
+                                                            <b>Id Documento - UUID Factura</b><br />
+                                                            @documentoRelacionado.IdDocumento
+                                                        </td>
+                                                        <td>
+                                                            <b>Método de Pago</b><br />
+                                                            @documentoRelacionado.MetodoPago
+                                                        </td>
+                                                        <td>
+                                                            <b>Moneda</b><br />
+                                                            @documentoRelacionado.Moneda
+                                                        </td>
+                                                        <td>
+                                                            <b>Tipo de Cambio</b><br />
+                                                            @documentoRelacionado.TipoCambio
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Importe Saldo Anterior</b><br />
+                                                            @documentoRelacionado.ImporteSaldoAnterior.Value.ToString("c")
+                                                        </td>
+                                                        <td>
+                                                            <b>Importe Pagado</b><br />
+                                                            @documentoRelacionado.ImportePagado.Value.ToString("c")
+                                                        </td>
+                                                        <td>
+                                                            <b>Importe Saldo Insoluto</b><br />
+                                                            @documentoRelacionado.ImporteSaldoInsoluto.Value.ToString("c")
+                                                        </td>
+                                                        <td>
+                                                            <b>Método de Pago</b><br />
+                                                            @documentoRelacionado.MetodoPago
+                                                        </td>
+                                                        <td>
+                                                            <b>Número de Parcialidad</b><br />
+                                                            @documentoRelacionado.NumeroParcialidad
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                                }
+                                            }
+                                        }
+                                    }
+                            </div>
+                        </div>
+                        }
+                    }
+                }
+        </div>
+    </div>
+</div>

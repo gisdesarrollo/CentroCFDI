@@ -1,0 +1,64 @@
+﻿@model APBox.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Ingresar al Sistema";
+}
+
+<script>
+    $("body").addClass("closed-sidebar");
+</script>
+<div class="col-md-8 col-md-push-2">
+    <div id="page-title">
+        <h2>Ingresar al Sistema</h2>
+        <p>Favor de ingresar nombre de usuario y contraseña</p>
+    </div>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form col-sm-4 col-sm-offset-4 col-xs-12">
+                    <img class="mrg25B center-margin display-block" src="~/Archivos/images/AP.Box.jpg" height="100">
+                    <section class="" id="loginForm">
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                            <div class="form-group input-group">
+                                <span class="input-group-addon bg-black">
+                                    <i class="glyph-icon icon-user"></i>
+                                </span>
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Usuario" })
+                            </div>
+
+
+                            <div class="form-group input-group">
+                                <span class="input-group-addon bg-black">
+                                    <i class="glyph-icon icon-unlock-alt"></i>
+                                </span>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control minusculas", @placeholder = "Contraseña" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Password)
+
+                            <div class="form-group">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                                <div class="checkbox">
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <hr />
+                            <div class="form-group pull-right">
+                                <button type="submit" class="btn btn-alt btn-hover btn-success">
+                                    <span>Ingresar</span>
+                                    <i class="glyph-icon icon-arrow-right"></i>
+                                </button>
+                            </div>
+                            }
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

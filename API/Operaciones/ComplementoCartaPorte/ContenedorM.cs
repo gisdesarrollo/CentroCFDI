@@ -1,0 +1,33 @@
+﻿using API.CatalogosCartaPorte;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
+
+namespace API.Operaciones.ComplementoCartaPorte
+{
+    [Table("cp_ContenedorM")]
+    public class ContenedorM
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [DisplayName("Matriculo del Contenedor")]
+        public String MatriculaContenedor { get; set; }
+        
+        [DisplayName("Número de Precinto")]
+        public String NumPrecinto { get; set; }
+        
+        public String ContenedorMaritimo_Id { get; set; }
+        [ForeignKey("ContenedorMaritimo_Id")]
+        public virtual ContenedorMaritimo ContenedorMaritimo { get; set; }
+        [NotMapped]
+        [DisplayName("Tipo de Contenedor")]
+        public String TipoContenedor { get; set; }
+
+    }
+}

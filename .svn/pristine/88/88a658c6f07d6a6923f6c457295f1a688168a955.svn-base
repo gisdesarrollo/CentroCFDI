@@ -1,0 +1,139 @@
+﻿@model API.Operaciones.OperacionesProveedores.SolicitudAcceso
+
+@{
+    ViewBag.Title = "Operar";
+}
+
+<div class="container-fluid">
+    <div class="row deshabilitar">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title"><b>@ViewBag.Title</b></div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.Autorizar)
+
+                        if (Model.Autorizar)
+                        {
+                            <div class="alert alert-success">¿Está seguro que desea autorizar el acceso a este nuevo proveedor?</div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">¿Está seguro que desea rechazar el acceso a este nuevo proveedor?</div>
+                        }
+                        <div class="form">
+                            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Accesos
+                            </div>
+
+                            <hr />
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.LabelFor(model => model.LlaveGrupo, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.LlaveGrupo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LlaveGrupo, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.LabelFor(model => model.Notas, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.Notas, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Notas, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Datos
+                            </div>
+
+                            <hr />
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.PaginaWeb, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.PaginaWeb, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PaginaWeb, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Telefono1, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Telefono1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Telefono1, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Telefono2, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Telefono2, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Telefono2, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="sub-title">
+                                <span class="fa fa-bars text-muted"></span> Facturación
+                            </div>
+
+                            <hr />
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Rfc, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Rfc, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Rfc, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.CodigoPostal, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.CodigoPostal, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CodigoPostal, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Pais, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                                @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-primary" })
+                                @if (Model.Autorizar)
+                                {
+                                    <button type="submit" class="btn btn-success">Autorizar</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-danger">Rechazar</button>
+                                }
+                                
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

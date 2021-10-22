@@ -1,0 +1,272 @@
+﻿@model API.Operaciones.ComplementosPagos.ComplementoPago
+
+@{
+    ViewBag.Title = "Generar";
+}
+
+<script src="~/Content/Infodextra/ComplementosPago.js"></script>
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Generar CFDi</h2>
+        </div>
+        <div class="col-lg-3">
+            <button id="botonImprimir" type="submit" class="btn btn-alt btn-hover btn-primary float-right">
+                <span>Imprimir</span>
+                <i class="glyph-icon icon-print"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel" id="areaImprimir">
+    <div class="panel-body">
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.Version)
+            @Html.HiddenFor(model => model.Generado)
+
+            @Html.HiddenFor(model => model.SucursalId)
+            @Html.HiddenFor(model => model.Sucursal.Id)
+            @Html.HiddenFor(model => model.Sucursal.Nombre)
+            @Html.HiddenFor(model => model.Sucursal.RazonSocial)
+            @Html.HiddenFor(model => model.Sucursal.Rfc)
+            @Html.HiddenFor(model => model.Sucursal.CodigoPostal)
+            @Html.HiddenFor(model => model.Sucursal.Pais)
+
+            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+            <div class="row">
+                <h2 class="title-hero">
+                    @Model.Sucursal.Nombre
+                </h2>
+                <h3 class="title-hero">
+                    Complemento de Recepción de Pagos
+                </h3>
+
+                <table class="table">
+                    <tr>
+                        <td class="font-bold">Versión Complemento</td>
+                        <td class="font-bold">Fecha de Generación</td>
+                        <td class="font-bold" colspan="4">Receptor</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.Version)
+                            @Html.HiddenFor(model => model.Version)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.FechaDocumento)
+                            @Html.HiddenFor(model => model.FechaDocumento)
+                        </td>
+                        <td colspan="4">
+                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="content-box">
+                    <h3 class="content-box-header bg-default">
+                        Pagos
+                    </h3>
+                    <div class="content-box-wrapper">
+                        @if (Model.Pagos != null)
+                            {
+                            for (int i = 0; i < Model.Pagos.Count(); i++)
+                                {
+                                @Html.HiddenFor(model => Model.Pagos[i].Id)
+                                @Html.HiddenFor(model => Model.Pagos[i].Monto)
+                                @Html.HiddenFor(model => Model.Pagos[i].FechaPago)
+                                @Html.HiddenFor(model => Model.Pagos[i].Moneda)
+                                @Html.HiddenFor(model => Model.Pagos[i].TipoCambio)
+                                @Html.HiddenFor(model => Model.Pagos[i].FormaPago)
+                                @Html.HiddenFor(model => Model.Pagos[i].BancoOrdenanteId)
+                                @Html.HiddenFor(model => Model.Pagos[i].BancoBeneficiarioId)
+                                @Html.HiddenFor(model => Model.Pagos[i].NumeroOperacion)
+
+                                <div class="row">
+                                    <div class="col-md-10 col-lg-offset-1">
+                                        <div class="content-box">
+                                            <h3 class="content-box-header bg-default">
+                                                Pago: @(i + 1)
+                                            </h3>
+
+                                            <div class="content-box-wrapper">
+                                                <h5 class="mrg0A font-blue-alt">
+                                                    Información del Pago
+                                                </h5>
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="font-bold">Monto</th>
+                                                            <th class="font-bold">Fecha de Pago</th>
+                                                            <th class="font-bold">Moneda</th>
+                                                            <th class="font-bold">Tipo de Cambio</th>
+                                                            <th class="font-bold" colspan="2">Forma de Pago</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>@Model.Pagos[i].Monto.ToString("c")</td>
+                                                            <td>@Model.Pagos[i].FechaPago.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                                                            <td>@Model.Pagos[i].Moneda</td>
+                                                            <td>@Model.Pagos[i].TipoCambio</td>
+                                                            <td colspan="2">@Model.Pagos[i].FormaPago</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="font-bold" colspan="2">Banco Emisor</th>
+                                                            <th class="font-bold" colspan="2">Banco Receptor</th>
+                                                            <th class="font-bold" colspan="2">Número de Operación</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                @if (Model.Pagos[i].BancoOrdenante != null)
+                                                                    {
+                                                                    @Model.Pagos[i].BancoOrdenante.Nombre
+                                                                    }
+                                                                else
+                                                                    {
+                                                                    @Html.Raw("Sin Definir")
+                                                                    }
+                                                            </td>
+                                                            <td colspan="2">
+                                                                @if (Model.Pagos[i].BancoBeneficiario != null)
+                                                                    {
+                                                                    @Model.Pagos[i].BancoBeneficiario.Nombre
+                                                                    }
+                                                                else
+                                                                    {
+                                                                    @Html.Raw("Sin Definir")
+                                                                    }
+                                                            </td>
+                                                            <td colspan="2">
+                                                                @if (Model.Pagos[i].NumeroOperacion != null)
+                                                                    {
+                                                                    @Model.Pagos[i].NumeroOperacion
+                                                                    }
+                                                                else
+                                                                    {
+                                                                    @Html.Raw("Sin Definir")
+                                                                    }
+
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <div class="content-box mrg0A">
+                                                    <div class="content-box-wrapper">
+                                                        @if (Model.Pagos != null)
+                                                        {
+                                                            if (Model.Pagos[i].DocumentosRelacionados != null)
+                                                            {
+                                                                for (int j = 0; j < Model.Pagos[i].DocumentosRelacionados.Count(); j++)
+                                                                {
+
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].Id)
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].IdDocumento)
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].Moneda)
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].ImportePagado)
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].ImporteSaldoInsoluto)
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].ImporteSaldoAnterior)
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].FacturaEmitidaId)
+                                                                    @Html.HiddenFor(model => Model.Pagos[i].DocumentosRelacionados[j].FacturaEmitida.Id)
+
+                                                                    //TODO: Lalo chingarse esta talacha y poner todos los campos obligatorios de la factura emitida menos listas
+                                                                    <h5 class="mrg0A font-blue-alt">
+                                                                        Doc Relacionado: <b>@(j + 1)</b> -
+                                                                        Serie / Folio: <b>@Model.Pagos[i].DocumentosRelacionados[j].Serie - @Model.Pagos[i].DocumentosRelacionados[j].Folio</b> -
+                                                                        UUID: <b>@Model.Pagos[i].DocumentosRelacionados[j].IdDocumento</b>
+                                                                    </h5>
+
+                                                                    <table class="table mrg0A">
+                                                                        <tr>
+                                                                            <th>Método Pago</th>
+                                                                            <th>Num Parcialidad</th>
+                                                                            <th>Moneda</th>
+                                                                            <th>TC o Factor</th>
+                                                                            <th>Imp Saldo Anterior</th>
+                                                                            <th>Imp Pagado</th>
+                                                                            <th>Imp Saldo Insoluto</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].MetodoPago
+                                                                            </td>
+                                                                            <td>
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].NumeroParcialidad
+                                                                            </td>
+                                                                            <td>
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].Moneda
+                                                                            </td>
+                                                                            <td>
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].TipoCambio
+                                                                            </td>
+                                                                            <td>
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].ImporteSaldoAnterior.Value.ToString("c")
+                                                                            </td>
+                                                                            <td>
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].ImportePagado.Value.ToString("c")
+                                                                            </td>
+                                                                            <td>
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].ImporteSaldoInsoluto.Value.ToString("c")
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                }
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            }
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <hr />
+
+            <div class="form-group pull-right">
+                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
+                    <span>Regresar</span>
+                    <i class="glyph-icon icon-arrow-left"></i>
+                </button>
+                <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
+                    <span>Timbrar</span>
+                    <i class="glyph-icon icon-arrow-right"></i>
+                </button>
+            </div>
+            }
+    </div>
+</div>
+<script type="text/javascript" src="//sistemas.infodextra.com/_CDN/Monarch/custom/widgets-custom/printThis-master/printThis.js"></script>
+<script>
+    $('#botonImprimir').on("click", function () {
+        $('#areaImprimir').printThis({
+            importCSS: false,
+            loadCSS: "//sistemas.infodextra.com/_CDN/Monarch/assets/bootstrap/css/bootstrap.css",
+            removeScripts: false,
+            canvas: true
+        });
+    });
+
+
+    $("#botonModalReporte").click(function () {
+        $("#tablaReporte").clone().appendTo("#modal-body-reporte");
+        $("#modal-body-reporte table").removeClass("dataTableButtons dataTable");
+    });
+</script>

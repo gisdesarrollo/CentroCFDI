@@ -1,0 +1,73 @@
+﻿@model IEnumerable<API.Catalogos.Banco>
+
+@{
+    ViewBag.Title = "Bancos";
+}
+
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Bancos</h2>
+            <p>Lista de Bancos registrados con RFC para la emisión de Complemento de Pago, es solo informativo.</p>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <table class="table table-condensed dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RazonSocial)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NombreCorto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Rfc)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nacional)
+                        </th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                        {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RazonSocial)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NombreCorto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rfc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nacional)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="fa fa-cog"></span> Opciones
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    @*<li>@Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "edit" })</li>*@
+                                    <li>@Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "details" })</li>
+                                    @*<li>@Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "delete" })</li>*@
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.Domicilio
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownList("Paises", null, "Favor de hacer su selección", new { @class = "form-control ddlPaisesChange" })
+        @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownList("ddlEstados", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control ddlEstadosChange", @disabled = "disabled" })
+        @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control hidden" } })
+        @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.Municipio, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownList("ddlMunicipios", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control", @disabled = "disabled" })
+        @Html.EditorFor(model => model.Municipio, new { htmlAttributes = new { @class = "form-control hidden" } })
+        @Html.ValidationMessageFor(model => model.Municipio, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.Localidad, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownList("ddlLocalidades", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control", @disabled = "disabled" })
+        @Html.EditorFor(model => model.Localidad, new { htmlAttributes = new { @class = "form-control hidden" } })
+        @Html.ValidationMessageFor(model => model.Localidad, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.CodigoPostal, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.CodigoPostal, new { htmlAttributes = new { @class = "form-control CodigosPostalesChange" } })
+        @Html.ValidationMessageFor(model => model.CodigoPostal, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.Colonia, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownList("ddlColonias", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control", @disabled = "disabled" })
+        @Html.EditorFor(model => model.Colonia, new { htmlAttributes = new { @class = "form-control hidden"} })
+        @Html.ValidationMessageFor(model => model.Colonia, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.Calle, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.Calle, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Calle, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.NumeroExterior, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.NumeroExterior, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.NumeroExterior, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.NumeroInterior, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.NumeroInterior, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.NumeroInterior, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group col-xs-12 col-sm-3">
+        @Html.LabelFor(model => model.Referencia, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.Referencia, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Referencia, "", new { @class = "text-danger" })
+    </div>
+}

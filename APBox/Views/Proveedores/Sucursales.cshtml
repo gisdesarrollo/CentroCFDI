@@ -1,0 +1,24 @@
+﻿@model API.Relaciones.ProveedorSucursal
+
+@using (Html.BeginCollectionItem("Sucursales"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+    <div class="wrapper">
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            @Html.DisplayFor(model => model.Sucursal.Nombre)
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+            @Html.HiddenFor(model => model.SucursalId)
+            @Html.HiddenFor(model => model.Sucursal.Id)
+            @Html.HiddenFor(model => model.Sucursal.Nombre)
+            @Html.HiddenFor(model => model.Sucursal.RazonSocial)
+            @Html.HiddenFor(model => model.Sucursal.Rfc)
+            @Html.HiddenFor(model => model.Sucursal.CodigoPostal)
+            @Html.HiddenFor(model => model.Sucursal.Pais)
+
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ProveedorId)
+            <span onclick="$(this).parent().parent().remove();" class="fa fa-minus-circle fa-2x text-danger" style="cursor:pointer"></span>
+        </div>
+    </div>
+}

@@ -1,0 +1,80 @@
+﻿@using APBox.Context
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    @Html.Partial("_headerScripts")
+
+</head>
+
+<body class="APBox">
+    <div id="sb-site">
+        <div id="loading">
+            <div class="spinner">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
+        <div id="page-wrapper">
+            <div id="page-header" class="bg-gradient-9">
+                <div id="mobile-navigation">
+                    <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"><span></span></button>
+                    <a href="~/Home/Index" class="logo-content-small" title="MonarchUI"></a>
+                </div>
+                <div id="header-logo" class="logo-bg">
+                    <a href="~/Home/Index" class="logo-content-big" title="MonarchUI">
+                        APBOX <i>UI</i>
+                        <span>The perfect solution for user interfaces</span>
+                    </a>
+                    <a href="~/Home/Index" class="logo-content-small" title="MonarchUI">
+                        APBOX <i>UI</i>
+                        <span>The perfect solution for user interfaces</span>
+                    </a>
+                    <a id="close-sidebar" href="#" title="Close sidebar">
+                        <i class="glyph-icon icon-angle-left fa fa-angle-left"></i>
+                    </a>
+                </div>
+                <div id="header-nav-left">
+                    @Html.Partial("_LoginPartial")
+                </div>
+
+                <!-- #header-nav-left -->
+                <div id="header-nav-right">
+                    <a href="#" class="hdr-btn" id="fullscreen-btn" title="Fullscreen">
+                        <i class="glyph-icon icon-arrows-alt"></i>
+                    </a>
+                    @Html.Partial("_AyudaPartial")
+                    @*
+                        @Html.Partial("_NotificationsPartial")
+                        @Html.Partial("_ConfigPartial")
+                    *@
+                    @Html.Partial("_DashboardPartial")
+                </div><!-- #header-nav-right -->
+            </div>
+
+            <div id="page-sidebar">
+                @Html.Partial("_SidebarPartial")
+            </div>
+
+            <div id="page-content-wrapper">
+                <div id="page-content">
+                    <div class="container">
+                        @RenderBody()
+                        @if (!Request.IsAuthenticated || Session["SucursalId"] == null)
+                            {
+                            <script>
+                                $("body").addClass("closed-sidebar");
+                            </script>
+                            }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @Html.Partial("_footerScripts")
+
+    </div>
+</body>
+</html>
