@@ -1,5 +1,6 @@
 namespace APBox.Migrations
 {
+    using APBox.Models;
     using MySql.Data.Entity;
     using System.Data.Entity.Migrations;
 
@@ -9,7 +10,9 @@ namespace APBox.Migrations
         {
             //Add-Migration FKNotes;
             AutomaticMigrationsEnabled = true;
-            SetSqlGenerator("MySql.Data.MySqlClient", new MySqlMigrationSqlGenerator());
+            //SetSqlGenerator("MySql.Data.MySqlClient", new MySqlMigrationSqlGenerator());
+            //se agrega new dbMigrationSQLGenerator para resolver error del Hash al crear un index en tablas mysql
+            SetSqlGenerator("MySql.Data.MySqlClient", new dbMigrationSQLGenerator());
             CodeGenerator = new MySqlMigrationCodeGenerator();
             AutomaticMigrationDataLossAllowed = true;  // or false in case data loss is not allowed.
         }
