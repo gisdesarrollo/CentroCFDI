@@ -42,6 +42,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaDatosEstaciones();
 
             PopulaPaises();
+            PopularUsoCfdi();
 
             var ComplementoCartaPorte = new ComplementoCartaPorte()
             {
@@ -52,7 +53,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 SucursalId = ObtenerSucursal(),
                 Version = "1.0",
                 TotalDistRec = 0,
+                Moneda = c_Moneda.MXN,
+                hidden = false,
                 Ubicacion = new Ubicacion
+               
                 {
                     UbicacionOrigen = new UbicacionOrigen
                     {
@@ -82,7 +86,65 @@ namespace APBox.Controllers.ComplementosCartaPorte
             return View(ComplementoCartaPorte);
         }
 
-        public JsonResult FiltrarEstados(string PaisId)
+        [HttpPost]
+        // [ValidateAntiForgeryToken]
+        public ActionResult Create(ComplementoCartaPorte complementoCartaPorte)
+        {
+            PopulaClientes(complementoCartaPorte.ReceptorId);
+            PopulaBancos(ObtenerSucursal());
+            PopulaCfdiRelacionado(complementoCartaPorte.CfdiRelacionadoId);
+
+            PopulaTiposDeComprobante();
+            PopulaTransporte();
+            PopulaTiposEstacion();
+
+            PopulaDatosSucursal(ObtenerSucursal());
+            PopulaDatosEstaciones();
+
+            PopulaPaises();
+            PopularUsoCfdi();
+            if (ModelState.IsValid)
+            {
+                if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.T)
+                {
+                    complementoCartaPorte.Moneda = null;
+                    complementoCartaPorte.Subtotal = 0;
+                    complementoCartaPorte.Total = 0;
+                }
+                return View(complementoCartaPorte);
+            }
+            if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.I)
+            {
+                complementoCartaPorte.hidden = true;
+            }
+            else
+            {
+                complementoCartaPorte.hidden = false;
+            }
+            
+            complementoCartaPorte.Ubicacion = new Ubicacion() {
+                UbicacionOrigen = new UbicacionOrigen() {
+                    Sucursal_Id = ObtenerSucursal(),
+                    RFCRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
+                    NombreRemitente = ViewBag.DatosSucursal.Items[0].Nombre,
+                    ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
+                    Domicilio = new Domicilio()
+                    {
+
+                    }
+                },
+                UbicacionDestino = new UbicacionDestino()
+                {
+                    Domicilio = new Domicilio()
+                }
+            };
+           
+
+
+            return View(complementoCartaPorte);
+        }
+
+            public JsonResult FiltrarEstados(string PaisId)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             var Estados = popularDropDowns.PopulaEstados(PaisId);
@@ -137,6 +199,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.Paises = (popularDropDowns.PopulaPaises());
+        }
+
+        private void PopularUsoCfdi()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.UsoCfdi = (popularDropDowns.PopularUsocfdi());
         }
 
         private void PopulaDatosEstaciones()

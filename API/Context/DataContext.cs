@@ -164,6 +164,7 @@ namespace API.Context
         public DbSet<TipoEstacion> TipoEstaciones { get; set; }
         public DbSet<TipoPermiso> TipoPermisos { get; set; }
         public DbSet<TipoRelacion> TiposRelaciones { get; set; }
+        public DbSet<UsoCfdi> UsoCfdis { get; set; }
 
         //CatalogosCartaPorte Domicilio
         public DbSet<Pais> Paises {get;set;}

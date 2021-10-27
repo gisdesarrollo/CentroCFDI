@@ -8,7 +8,7 @@ namespace API.CatalogosCartaPorte.Domicilio
     public class CodigoPostal
     {
         [Key]
-        [StringLength(3)]
+        [StringLength(5)]
         public String c_CodigoPostal { get; set; }
 
         [StringLength(3)]

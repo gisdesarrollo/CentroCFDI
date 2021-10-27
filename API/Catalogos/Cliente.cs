@@ -47,9 +47,13 @@ namespace API.Catalogos
         [RegularExpression("[\\s]{0,3}([0-9]{5})[\\s]{0,3}", ErrorMessage = "El código postal tiene que conformarse de 5 caracteres numéricos")]
         public String CodigoPostal { get; set; }
 
+        [NotMapped]
+        public String UsoCfdi;
+        
         [DisplayName("País")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public c_Pais Pais { get; set; }
+
 
         [NotMapped]
         public virtual BancoCliente Banco { get; set; }

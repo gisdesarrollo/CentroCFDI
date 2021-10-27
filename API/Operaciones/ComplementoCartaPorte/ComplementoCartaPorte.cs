@@ -32,7 +32,13 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public string Version { get; set; }
 
-        [DisplayName("Transporte")]
+        public c_Moneda? Moneda { get; set; }
+
+        public Decimal Subtotal { get; set; }
+
+        public Decimal Total { get; set; }
+
+        [DisplayName("Clave Transporte")]
         public string ClaveTransporteId { get; set; }
         [ForeignKey("ClaveTransporteId")]
         public virtual CveTransporte ViaEntradaSalida { get; set; }
@@ -41,6 +47,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String ClaveTransporte { get; set; }
 
         [NotMapped]
+        [Required]
         [DisplayName("Tipo de Comprobante")]
         public c_TipoDeComprobante TipoDeComprobante { get; set; }
 
@@ -86,8 +93,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual FacturaEmitida FacturaEmitida { get; set; }
 
         [NotMapped]
+        public bool hidden { get; set; }
+
+        [NotMapped]
         public bool Seleccionado { get; set; }
         #endregion
+
 
         #region Cfdis Relacionados
 

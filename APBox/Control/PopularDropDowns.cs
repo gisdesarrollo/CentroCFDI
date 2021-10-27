@@ -62,6 +62,11 @@ namespace APBox.Control
         {
             return new SelectList(_db.Paises.OrderBy(a => a.c_Pais), "c_Pais","Descripcion");
         }
+
+        public SelectList PopularUsocfdi()
+        {
+            return new SelectList(_db.UsoCfdis.OrderBy(u => u.C_UsoCfdi), "C_UsoCfdi", "descripcion");
+        }
        
         public SelectList PopulaDatosEstaciones(string seleccion)
         {
