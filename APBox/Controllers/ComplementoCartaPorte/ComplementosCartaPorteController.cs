@@ -61,8 +61,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     UbicacionOrigen = new UbicacionOrigen
                     {
                         Sucursal_Id = ObtenerSucursal(),
-                        RfcRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Rfc,
-                        NombreRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Nombre,
+                        RfcRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
+                        NombreRemitente = ViewBag.DatosSucursal.Items[0].Nombre,
                         ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
                         FechaHoraSalida = DateTime.Now,
                         IDUbicacionOrigen = "OR",
@@ -77,6 +77,16 @@ namespace APBox.Controllers.ComplementosCartaPorte
                         FechaHoraLlegada = DateTime.Now,
                         IDUbicacionDestino = "DE",
                         Domicilio  = new Domicilio
+                        {
+
+                        }
+                    }
+                },
+                TiposFigura = new TiposFigura()
+                {
+                    PartesTransporte = new PartesTransporte()
+                    {
+                        Domicilio = new Domicilio()
                         {
 
                         }
@@ -121,8 +131,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             complementoCartaPorte.Ubicacion = new Ubicacion() {
                     UbicacionOrigen = new UbicacionOrigen() {
                     Sucursal_Id = ObtenerSucursal(),
-                    RfcRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Rfc,
-                    NombreRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Nombre,
+                    RfcRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
+                    NombreRemitente = ViewBag.DatosSucursal.Items[0].Nombre,
                     ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
                     Domicilio = new Domicilio()
                     {
@@ -133,9 +143,19 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 {
                     Domicilio = new Domicilio()
                 }
-            };
-           
 
+            };
+
+            complementoCartaPorte.TiposFigura = new TiposFigura()
+            {
+                PartesTransporte = new PartesTransporte()
+                {
+                    Domicilio = new Domicilio()
+                    {
+
+                    }
+                }
+            };
 
             return View(complementoCartaPorte);
         }

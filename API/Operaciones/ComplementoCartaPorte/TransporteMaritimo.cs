@@ -94,7 +94,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         /*[NotMapped]
         [DisplayName("Tipo de Carga")]
         public String TipoCarga { get; set; }
-        /*
+        */
 
         [DisplayName("Tipo de Embarcación")]
         [Required(ErrorMessage ="Campo obligatorio")]

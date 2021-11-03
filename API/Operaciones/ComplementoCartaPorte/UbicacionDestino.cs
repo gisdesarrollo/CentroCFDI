@@ -24,10 +24,10 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DisplayName("RFC Remitente Destino")]
         [Required(ErrorMessage = "Campo Obligatorio")]
-        public string RfcRemitenteDestinatario { get; set; }
+        public string RfcDestinatario { get; set; }
 
         [DisplayName("Nombre Remitente Destino")]
-        public string NombreRemitenteDestinatario { get; set; }
+        public string NombreDestinatario { get; set; }
         [DisplayName("Número de identificación")]
         public string NumRegIdTrib { get; set; }
         [DisplayName("Residencia Fiscal")]

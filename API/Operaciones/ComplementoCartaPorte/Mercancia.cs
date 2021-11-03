@@ -47,6 +47,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public string MaterialPeligroso_Id { get; set; }
         [ForeignKey("MaterialPeligroso_Id")]
         public virtual MaterialPeligroso MaterialPeligroso { get; set; }
+
+        [DisplayName("Material Peligroso")]
+        public string MaterialPeligrosos { get; set; }
         /*[NotMapped]
         [DisplayName("Material Peligroso")]
         public string MaterialPeligrosos { get; set; }

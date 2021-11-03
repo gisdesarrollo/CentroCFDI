@@ -19,7 +19,7 @@ namespace API.Operaciones.ComplementoCartaPorte
        
         public int? Domicilio_Id { get; set; }
         [ForeignKey("Domicilio_Id")]
-        public virtual Domicilio domicilio { get; set; }
+        public virtual Domicilio Domicilio { get; set; }
        
 
     }

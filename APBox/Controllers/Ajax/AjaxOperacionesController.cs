@@ -119,8 +119,8 @@ namespace APBox.Controllers.Ajax
                     DistanciaRecorrida = DistanciaRecorrida,
 
                     IDUbicacionOrigen = IdOrigen,
-                    RfcRemitenteDestinatario = ORRFCRemitente,
-                    NombreRemitenteDestinatario = ORNombreRemitente,
+                    RfcRemitente = ORRFCRemitente,
+                    NombreRemitente = ORNombreRemitente,
                     ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), ORResidenciaFiscal, true),
                     NombreEstacion = ORNombreEstacion,
                     NumEstacion = ORNumEstacion,
@@ -142,8 +142,8 @@ namespace APBox.Controllers.Ajax
                 UbicacionDestino = new UbicacionDestino
                 {
                     IDUbicacionDestino = IdDestino,
-                    RfcRemitenteDestinatario = DERFCDestinatario,
-                    NombreRemitenteDestinatario = DENombreDestinatario,
+                    RfcDestinatario = DERFCDestinatario,
+                    NombreDestinatario = DENombreDestinatario,
                     ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), DEResidenciaFiscal, true),
                     NombreEstacion = DENombreEstacion,
                     NumEstacion = DENumEstacion,
