@@ -111,14 +111,16 @@ namespace APBox.Controllers.Ajax
 
             var Ubicacion = new Ubicacion
             {
-                DistanciaRecorrida = DistanciaRecorrida,
+                /*DistanciaRecorrida = DistanciaRecorrida,
                 TipoEstacion_Id = TipoEstacionId,
-                TipoEstaciones = TipoEstacion,
+                TipoEstaciones = TipoEstacion,*/
                 UbicacionOrigen = new UbicacionOrigen
                 {
-                    IdOrigen = IdOrigen,
-                    RFCRemitente = ORRFCRemitente,
-                    NombreRemitente = ORNombreRemitente,
+                    DistanciaRecorrida = DistanciaRecorrida,
+
+                    IDUbicacionOrigen = IdOrigen,
+                    RfcRemitenteDestinatario = ORRFCRemitente,
+                    NombreRemitenteDestinatario = ORNombreRemitente,
                     ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), ORResidenciaFiscal, true),
                     NombreEstacion = ORNombreEstacion,
                     NumEstacion = ORNumEstacion,
@@ -139,13 +141,13 @@ namespace APBox.Controllers.Ajax
                 },
                 UbicacionDestino = new UbicacionDestino
                 {
-                    IdDestino = IdDestino,
-                    RFCDestinatario = DERFCDestinatario,
-                    NombreDestinatario = DENombreDestinatario,
+                    IDUbicacionDestino = IdDestino,
+                    RfcRemitenteDestinatario = DERFCDestinatario,
+                    NombreRemitenteDestinatario = DENombreDestinatario,
                     ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), DEResidenciaFiscal, true),
                     NombreEstacion = DENombreEstacion,
                     NumEstacion = DENumEstacion,
-                    FechaHoraProgLlegada = FechaHoraProgLlegada,
+                    FechaHoraLlegada = FechaHoraProgLlegada,
                     Domicilio = new Domicilio
                     {
                         Calle = DECalle,

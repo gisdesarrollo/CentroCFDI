@@ -17,15 +17,18 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Decimal CargoPorTasacion { get; set; }
 
         [DisplayName("Número Total de Mercancías")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public int NumTotalMercancias { get; set; }
 
         [DisplayName("Peso Bruto Total")]
+        [Required(ErrorMessage ="Campo Obligatorio")]
         public Decimal PesoBrutoTotal { get; set; }
 
         [DisplayName("Peso Neto Total")]
         public Decimal PesoNetoTotal { get; set; }
 
         [StringLength(3)]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public String ClaveUnidadPeso_Id { get; set; }
         [ForeignKey("ClaveUnidadPeso_Id")]
         public virtual ClaveUnidadPeso ClaveUnidadPeso { get; set; }
@@ -33,9 +36,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Unidad de Peso")]
         public String UnidadPeso { get; set; }
 
-        public int? AutoTransporteFederal_Id { get; set; }
-        [ForeignKey("AutoTransporteFederal_Id")]
-        public virtual AutoTransporteFederal AutoTransporteFederal { get; set; }
+        public int? AutoTransporte_Id { get; set; }
+        [ForeignKey("AutoTransporte_Id")]
+        public virtual AutoTransporte AutoTransporte { get; set; }
 
         public int? TransporteMaritimo_Id { get; set; }
         [ForeignKey("TransporteMaritimo_Id")]
@@ -48,7 +51,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int? TransporteFerroviario_Id { get; set; }
         [ForeignKey("TransporteFerroviario_Id")]
         public virtual TransporteFerroviario TransporteFerroviario { get; set; }
-
+        
         [NotMapped]
         public virtual Mercancia Mercancia{ get; set; }
 

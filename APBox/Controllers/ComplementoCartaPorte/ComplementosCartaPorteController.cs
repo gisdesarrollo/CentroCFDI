@@ -61,11 +61,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     UbicacionOrigen = new UbicacionOrigen
                     {
                         Sucursal_Id = ObtenerSucursal(),
-                        RFCRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
-                        NombreRemitente = ViewBag.DatosSucursal.Items[0].Nombre,
+                        RfcRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Rfc,
+                        NombreRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Nombre,
                         ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
                         FechaHoraSalida = DateTime.Now,
-                        IdOrigen = "OR",
+                        IDUbicacionOrigen = "OR",
                         Domicilio = new Domicilio
                         {
 
@@ -74,8 +74,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
                     UbicacionDestino = new UbicacionDestino
                     {
-                        FechaHoraProgLlegada = DateTime.Now,
-                        IdDestino = "DE",
+                        FechaHoraLlegada = DateTime.Now,
+                        IDUbicacionDestino = "DE",
                         Domicilio  = new Domicilio
                         {
 
@@ -111,22 +111,18 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     complementoCartaPorte.Subtotal = 0;
                     complementoCartaPorte.Total = 0;
                 }
-                return View(complementoCartaPorte);
+                return RedirectToAction("Index"); ;
             }
-            if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.I)
-            {
-                complementoCartaPorte.hidden = true;
-            }
-            else
-            {
+            if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.I){complementoCartaPorte.hidden = true;}
+            else{
                 complementoCartaPorte.hidden = false;
             }
             
             complementoCartaPorte.Ubicacion = new Ubicacion() {
-                UbicacionOrigen = new UbicacionOrigen() {
+                    UbicacionOrigen = new UbicacionOrigen() {
                     Sucursal_Id = ObtenerSucursal(),
-                    RFCRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
-                    NombreRemitente = ViewBag.DatosSucursal.Items[0].Nombre,
+                    RfcRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Rfc,
+                    NombreRemitenteDestinatario = ViewBag.DatosSucursal.Items[0].Nombre,
                     ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
                     Domicilio = new Domicilio()
                     {
@@ -142,6 +138,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
 
             return View(complementoCartaPorte);
+        }
+
+        public void serealizaJson(ComplementoCartaPorte complementoCartaPorte)
+        {
+
         }
 
             public JsonResult FiltrarEstados(string PaisId)

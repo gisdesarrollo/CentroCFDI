@@ -164,7 +164,6 @@ namespace API.Context
         public DbSet<TipoEstacion> TipoEstaciones { get; set; }
         public DbSet<TipoPermiso> TipoPermisos { get; set; }
         public DbSet<TipoRelacion> TiposRelaciones { get; set; }
-        public DbSet<UsoCfdi> UsoCfdis { get; set; }
 
         //CatalogosCartaPorte Domicilio
         public DbSet<Pais> Paises {get;set;}
@@ -176,7 +175,7 @@ namespace API.Context
 
         //Complementos CartaPorte
         public DbSet<Arrendatario> Arrendatarios { get; set; }
-        public DbSet<AutoTransporteFederal> AutoTransporteFederales { get; set; }
+        public DbSet<AutoTransporte> AutoTransporte { get; set; }
         public DbSet<CantidadTransportada> CantidadTransportadas { get; set; }
         public DbSet<Carro> Carros { get; set; }
         public DbSet<ComplementoCartaPorte> ComplementoCartaPortes { get; set; }
@@ -186,32 +185,36 @@ namespace API.Context
         public DbSet<DerechosDePasos> DerechoDePasos { get; set; }
         public DbSet<DetalleMercancia> DetalleMercancias { get; set; }
         public DbSet<Domicilio> Domicilios { get; set; }
-        public DbSet<FiguraTransporte> FiguraTransportes { get; set; }
         public DbSet<IdentificacionVehicular> IdentificacionVehiculares { get; set; }
         public DbSet<Mercancia> Mercancia { get; set; }
         public DbSet<Mercancias> Mercancias { get; set; }
         public DbSet<Notificado> Notificados { get; set; }
         public DbSet<Operador> Operadores { get; set; }
+        public DbSet<PartesTransporte> PartesTransporte { get; set; }
+        public DbSet<Pedimentos> Pedimentos { get; set; }
         public DbSet<Propietario> Propietarios { get; set; }
         public DbSet<Remolques> Remolques { get; set; }
+        public DbSet<Seguros> Seguros { get; set; }
+        public DbSet<TiposFigura> Tiposfigura { get; set; }
         public DbSet<TransporteAereo> TransporteAereos { get; set; }
         public DbSet<TransporteFerroviario> TransporteFerroviarios { get; set; }
         public DbSet<TransporteMaritimo> TransporteMaritimos { get; set; }
         public DbSet<Ubicacion> Ubicaciones { get; set; }
         public DbSet<UbicacionDestino> UbicacionesDestino { get; set; }
         public DbSet<UbicacionOrigen> UbuicacionesOrigen { get; set; }
+        public DbSet<UsoCfdi> UsoCfdis { get; set; }
 
         //Relaciones CartaPorte
-        public DbSet<AutotransporteFederalRemolque> AutotransporteFederalRemolques { get; set; }
+        public DbSet<AutotransporteRemolque> AutotransporteFederalRemolques { get; set; }
         public DbSet<CarroContenedorC> CarrosContenedorC { get; set; }
+
         public DbSet<ComplementoCartaPorteUbicacion> ComplementoCartaPorteUbicaciones { get; set; }
-        public DbSet<FiguraTransporteOperador> FiguraTransporteOperadores { get; set; }
-        public DbSet<FiguraTransporteArrendatario> FiguraTransporteArrendatarios { get; set; }
-        public DbSet<FiguraTransportePropietario> FiguraTransportePropietarios { get; set; }
-        public DbSet<FiguraTransporteNotificado> FiguraTransporteNotificados { get; set; }
         public DbSet<TransporteMaritimoContenedorM> TransporteMaritimoContenedoresM { get; set; }
         public DbSet<MercanciaCantidadTransportada> MercanciaCantidadTransportadas { get; set; }
+        public DbSet<MercanciaGuiasIdentificacion> MercanciasGuiasIdentificacion { get; set; }
+        public DbSet<MercanciaPedimentos> MercanciaPedimentos { get; set; }
         public DbSet<MercanciasMercancia> MercanciasMercancias  { get; set; }
+        public DbSet<TiposFiguraPartesTransporte>TiposFiguraPartesTransporte { get; set; }
         public DbSet<TransporteFerroviarioDerechosDePaso> TransporteFerroviarioDerechosDePasos  { get; set; }
         public DbSet<TransporteFerroviarioCarro> TransporteFerroviarioCarros { get; set; }
 

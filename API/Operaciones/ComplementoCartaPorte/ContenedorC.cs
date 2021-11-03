@@ -14,14 +14,21 @@ namespace API.Operaciones.ComplementoCartaPorte
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Campo Requerido")]
         public Decimal PesoContenedorVacio { get; set; }
+
+        [Required(ErrorMessage = "Campo Requerido")]
         public Decimal PesoNetoMercancia { get; set; }
+
+
+        [Required(ErrorMessage = "Campo Requerido")]
         public String Contenedor_Id { get; set; }
         [ForeignKey("Contenedor_Id")]
         public virtual Contenedor Contenedor { get; set; }
       
-        [NotMapped]
-        public String TipoContenedor { get; set; }
+        /*[NotMapped]
+        public String TipoContenedor { get; set; }*/
 
     }
 }

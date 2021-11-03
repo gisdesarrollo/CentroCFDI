@@ -16,18 +16,21 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [DisplayName("Matriculo del Contenedor")]
+        [DisplayName("Matricula del Contenedor")]
+        [Required(ErrorMessage = "Campo obligatorio")]
         public String MatriculaContenedor { get; set; }
         
         [DisplayName("Número de Precinto")]
         public String NumPrecinto { get; set; }
-        
+
+        [DisplayName("Tipo de Contenedor")]
+        [Required(ErrorMessage = "Campo obligatorio")]
         public String ContenedorMaritimo_Id { get; set; }
         [ForeignKey("ContenedorMaritimo_Id")]
         public virtual ContenedorMaritimo ContenedorMaritimo { get; set; }
-        [NotMapped]
+        /*[NotMapped]
         [DisplayName("Tipo de Contenedor")]
         public String TipoContenedor { get; set; }
-
+        */
     }
 }

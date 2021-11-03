@@ -14,40 +14,49 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [DisplayName("Tipo de Ubicación")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public string TipoUbicacion { get; set; }
         [StringLength(8)]
         [RegularExpression(@"/[D][E]\d{6}$")]
-        [DisplayName("Id Destino")]
-        public String IdDestino { get; set; }
-        public int Cliente_Id { get; set; }
-        [ForeignKey("Cliente_Id")]
-        public virtual Cliente Cliente { get; set; }
-        
-        [NotMapped]
-        [DisplayName("Nombre del Destinatario")]
-        public string NombreDestinatario { get; set; }
-        [NotMapped]
+        [DisplayName("Id Ubicacion Origen")]
+        public string IDUbicacionDestino { get; set; }
+
+        [DisplayName("RFC Remitente Destino")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public string RfcRemitenteDestinatario { get; set; }
+
+        [DisplayName("Nombre Remitente Destino")]
+        public string NombreRemitenteDestinatario { get; set; }
+        [DisplayName("Número de identificación")]
+        public string NumRegIdTrib { get; set; }
         [DisplayName("Residencia Fiscal")]
         public c_Pais ResidenciaFiscal { get; set; }
-        [NotMapped]
-        public string NumRegIdTrib { get; set; }
-        [NotMapped]
-        [DisplayName("RFC Destinatario")]
-        public string RFCDestinatario { get; set; }
-
-        public string Estaciones_Id { get; set; }
+        public string Estaciones_Id{ get; set; }
         [ForeignKey("Estaciones_Id")]
-        public virtual Estaciones Estaciones{ get; set; }
+        public virtual Estaciones Estaciones { get; set; }
         [NotMapped]
-        [DisplayName("Nombre de Estación")]
+        [DisplayName("Numero de Estación Destino")]
+        public String NumEstacion { get; set; }
+        [DisplayName("Nombre Estacion")]
         public string NombreEstacion { get; set; }
-        [NotMapped]
-        [DisplayName("Número de Estación")]
-        public string NumEstacion { get; set; }
-
+        [DisplayName("Navegacion Trafico")]
         public string NavegacionTrafico { get; set; }
+        [DisplayName("Fecha y Hora Salida de Destino ")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public DateTime FechaHoraLlegada { get; set; }
 
-        [DisplayName("Fecha y Hora Programada de Llegada")]
-        public DateTime FechaHoraProgLlegada { get; set; }
+        [DisplayName("Tipo de Estación")]
+        public String TipoEstacion_Id { get; set; }
+        [ForeignKey("TipoEstacion_Id")]
+        public virtual TipoEstacion TipoEstacion { get; set; }
+
+        /*[NotMapped]
+        [DisplayName("Tipo de Estación")]
+        public String TipoEstaciones { get; set; }*/
+
+        [DisplayName("Distancia Recorrida")]
+        public Decimal DistanciaRecorrida { get; set; }
 
         public int Domicilio_Id { get; set; }
         [ForeignKey("Domicilio_Id")]

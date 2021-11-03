@@ -7,30 +7,22 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using CFDI.API.Enums.CFDI33;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Ubicacion")]
+    [Table("cp_Ubicaciones")]
     public class Ubicacion
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [DisplayName("Distancia Recorrida")]
-        public Decimal DistanciaRecorrida { get; set; }
-
-        public String TipoEstacion_Id { get; set; }
-        [ForeignKey("TipoEstacion_Id")]
-        public virtual TipoEstacion TipoEstacion { get; set; }
-
-        [NotMapped]
-        [DisplayName("Tipo de Estación")]
-        public String TipoEstaciones { get; set; }
-
-        [NotMapped]
+        public int UbicacionD_Id { get; set; }
+        [ForeignKey("UbicacionD_Id")]
         public virtual UbicacionDestino UbicacionDestino { get; set; }
-
-        [NotMapped]
+        public int UbicacionO_Id { get; set; }
+        [ForeignKey("UbicacionO_Id")]
         public virtual UbicacionOrigen UbicacionOrigen { get; set; }
+        
     }
 }

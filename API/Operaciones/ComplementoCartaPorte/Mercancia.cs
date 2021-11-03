@@ -19,68 +19,74 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [StringLength(8)]
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        [DisplayName("Bienes Transportados")]
         public String ClaveProdServCP_Id { get; set; }
         [ForeignKey("ClaveProdServCP_Id")]
         public virtual ClaveProdServCP ClaveProdServCP { get; set; }
-        [NotMapped]
-        [DisplayName("Bienes Transportados")]
-        public string BienesTransp { get; set; }
-
+        /*[NotMapped]
+        public string BienesTransp { get; set; }*/
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public Decimal Cantidad { get; set; }
 
+        [DisplayName("Clave STCC")]
         public string ClaveProdSTCC_Id { get; set; }
         [ForeignKey("ClaveProdSTCC_Id")]
         public virtual ClaveProdSTCC ClaveProdSTCC { get; set; }
-        [NotMapped]
-        [DisplayName("Vlave STCC")]
+        /*[NotMapped]
         public string ClaveSTCC { get; set; }
-
+        */
+        [DisplayName("Clave de Unidad")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public string ClaveUnidad_Id { get; set; }
         [ForeignKey("ClaveUnidad_Id")]
         public virtual ClaveUnidad ClaveUnidad { get; set; }
-        [NotMapped]
-        [DisplayName("Clave de Unidad")]
-        public string ClavesUnidad { get; set; }
-
+        /*[NotMapped]
+        public string ClavesUnidad { get; set; }*/
+        [DisplayName("Clave de Material Peligroso")]
         public string MaterialPeligroso_Id { get; set; }
         [ForeignKey("MaterialPeligroso_Id")]
         public virtual MaterialPeligroso MaterialPeligroso { get; set; }
-        [NotMapped]
+        /*[NotMapped]
         [DisplayName("Material Peligroso")]
         public string MaterialPeligrosos { get; set; }
         [NotMapped]
         [DisplayName("Clave de Material Peligroso")]
-        public string ClaveMaterialPeligroso { get; set; }
+        public string ClaveMaterialPeligroso { get; set; }*/
 
         [DisplayName("Descripción")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public string Descripcion { get; set; }
 
         public string Dimensiones { get; set; }
 
+        [DisplayName("Tipo Embalaje")]
         public string TipoEmbalaje_Id { get; set; }
         [ForeignKey("TipoEmbalaje_Id")]
         public virtual TipoEmbalaje TipoEmbalaje { get; set; }
-        [NotMapped]
-        public string Embalaje { get; set; }
+        /*[NotMapped]
+        public string Embalaje { get; set; }*/
 
         [NotMapped]
         [DisplayName("Descripción de Embalaje")]
         public string DescripEmbalaje { get; set; }
 
+        [DisplayName("Fracción Arancelaria")]
         public string FraccionArancelaria_Id { get; set; }
         [ForeignKey("FraccionArancelaria_Id")]
         public virtual FraccionArancelaria FraccionArancelaria { get; set; }
-        [NotMapped]
+        /*[NotMapped]
         [DisplayName("Fracción Arancelaria")]
         public string  FraccionArancelarias{ get; set; }
         [NotMapped]
         [DisplayName("Descripción de Fracción Arancelaria")]
-        public string DescripcionFraccionArancelaria { get; set; }
+        public string DescripcionFraccionArancelaria { get; set; }*/
 
         public Boolean MaterialPeligro { get; set; }
         public c_Moneda Moneda { get; set; }
 
         [DisplayName("Peso en Kilogramos")]
+        [Required(ErrorMessage ="Campo Obligatorio")]
         public Decimal PesoEnKg { get; set; }
         public String Unidad { get; set; }
 
@@ -96,6 +102,14 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [NotMapped]
         public virtual CantidadTransportada CantidadTransportada { get; set; }
+        
+        [NotMapped]
+        public virtual GuiasIdentificacion GuiasIdentificacion { get; set; }
+
+        [NotMapped]
+        public virtual Pedimentos Pedimentos { get; set; }
+
+
 
     }
 }

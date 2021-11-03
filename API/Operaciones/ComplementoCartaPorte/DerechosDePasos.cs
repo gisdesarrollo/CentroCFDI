@@ -17,12 +17,16 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Kilometraje Pagado")]
+        [Required(ErrorMessage = "Campo Requerido")]
         public Decimal KilometrajePagado { get; set; }
+
+        [DisplayName("Tipo de Derecho de Paso")]
+        [Required(ErrorMessage = "Campo Requerido")]
         public String TipoDerechoDePaso_Id { get; set; }
         [ForeignKey("TipoDerechoDePaso_Id")]
         public virtual DerechosDePaso DerechosDepaso { get; set; }
-        [NotMapped]
+        /*[NotMapped]
         [DisplayName("Tipo de Derecho de Paso")]
-        public String TipoDerechoDePago { get; set; }
+        public String TipoDerechoDePago { get; set; }*/
     }
 }

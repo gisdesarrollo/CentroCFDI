@@ -15,15 +15,24 @@ namespace API.Operaciones.ComplementoCartaPorte
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public String Placa { get; set; }
+
+        [Required(ErrorMessage ="Campo Obligatorio")]
         public String SubTipoRem_Id { get; set; }
         [ForeignKey("SubTipoRem_Id")]
         public virtual SubTipoRem SubTipoRem { get; set; }
-        [NotMapped]
+
+        /*public int AutoTransporte_Id { get; set; }
+        [ForeignKey("AutoTransporte_Id")]
+        public virtual AutoTransporte AutoTransporte { get; set; }*/
+
+        /*[NotMapped]
         [DisplayName("Clave Tipo de Remolque")]
         public String ClaveSubTiporem { get; set; }
         [NotMapped]
         [DisplayName("Subtipo de Remolque")]
-        public String SubTipoRems { get; set; }
+        public String SubTipoRems { get; set; }*/
     }
 }

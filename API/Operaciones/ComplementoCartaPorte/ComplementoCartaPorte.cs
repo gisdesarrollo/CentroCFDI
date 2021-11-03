@@ -21,6 +21,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Transporte Internacional")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public Boolean TranspInternac { get; set; }
 
 
@@ -30,13 +31,13 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Total de Distancia Recorrida")]
         public Decimal TotalDistRec { get; set; }
 
+        [DisplayName("Pais de origen destino")]
+        public c_Pais PaisOrigendestino { get; set; }
+
+        [Required(ErrorMessage ="Campo Obligatorio")]
         public string Version { get; set; }
 
-        public c_Moneda? Moneda { get; set; }
-
-        public Decimal Subtotal { get; set; }
-
-        public Decimal Total { get; set; }
+        
 
         [DisplayName("Clave Transporte")]
         public string ClaveTransporteId { get; set; }
@@ -50,19 +51,29 @@ namespace API.Operaciones.ComplementoCartaPorte
         [Required]
         [DisplayName("Tipo de Comprobante")]
         public c_TipoDeComprobante TipoDeComprobante { get; set; }
+        [NotMapped]
+        public c_Moneda? Moneda { get; set; }
+        [NotMapped]
+        public Decimal Subtotal { get; set; }
+        [NotMapped]
+        public Decimal Total { get; set; }
 
         [NotMapped]
         public virtual Ubicacion Ubicacion { get; set; }
         [NotMapped]
         public virtual List<Ubicacion> Ubicaciones { get; set; }
-
-        [NotMapped]
+        public int Mercancias_Id { get; set; }
+        [ForeignKey("Mercancias_Id")]
         public virtual Mercancias Mercancias { get; set; }
 
         [NotMapped]
-        public virtual FiguraTransporte FiguraTransporte { get; set; }
+        public virtual TiposFigura TiposFigura { get; set; }
+
+        [NotMapped]
+        public virtual List<TiposFigura> FiguraTransporte { get; set; }
 
         #region Campos CFDI
+
         [DisplayName("Sucursal")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public int SucursalId { get; set; }

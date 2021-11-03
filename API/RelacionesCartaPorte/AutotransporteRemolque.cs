@@ -9,19 +9,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.RelacionesCartaPorte
 {
-    [Table("cp_rel_FiguraTransportePropietario")]
-    public class FiguraTransportePropietario
+    [Table("cp_rel_AutotransporteRemolque")]
+    public class AutotransporteRemolque
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int FiguraTransporte_Id { get; set; }
-        [ForeignKey("FiguraTransporte_Id")]
-        public virtual FiguraTransporte FiguraTransporte { get; set; }
+        public int Autotransporte_Id { get; set; }
+        [ForeignKey("Autotransporte_Id")]
+        public virtual AutoTransporte AutoTransporte { get; set; }
 
-        public int Propietario_Id { get; set; }
-        [ForeignKey("Propietario_Id")]
-        public virtual Propietario Propietario { get; set; }
-
+        public int Remolques_Id { get; set; }
+        [ForeignKey("Remolques_Id")]
+        public virtual Remolques Remolques{ get; set; }
     }
 }

@@ -11,43 +11,56 @@ using System.ComponentModel;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_AutoTransporteFederal")]
-    public class AutoTransporteFederal
+    [Table("cp_AutoTransporte")]
+    public class AutoTransporte
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [DisplayName("Nombre de la Aseguradora")]
-        public String NombreAseg { get; set; }
+        /*[DisplayName("Nombre de la Aseguradora")]
+        public String NombreAseg { get; set; }*/
 
         [DisplayName("Número de Permiso SCT")]
+        [Required(ErrorMessage ="Campo Obligatorio")]
         public String NumPermisoSCT { get; set; }
 
-        [DisplayName("Número de Póliza de Seguro")]
-        public String NumPolizaSeguro { get; set; }
-
+        /*[DisplayName("Número de Póliza de Seguro")]
+        public String NumPolizaSeguro { get; set; }*/
+        [DisplayName("Permiso SCT")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public String TipoPermiso_Id { get; set; }
         [ForeignKey("TipoPermiso_Id")]
         public virtual TipoPermiso TipoPermiso{ get; set; }
-        
-        [NotMapped]
+
+        /*[NotMapped]
         [DisplayName("Permiso SCT")]
         public String PermSCT { get; set; }
-
-        [NotMapped]
+        */
+        /*[NotMapped]
         [DisplayName("Descripción Permisos SCT")]
-        public String DescripcionPermSCT { get; set; }
+        public String DescripcionPermSCT { get; set; }*/
 
+        [DisplayName("Identificación Vehicular")]
+        [Required(ErrorMessage ="Campo Requerido")]
         public int IdentificacionVehicular_Id { get; set; }
         [ForeignKey ("IdentificacionVehicular_Id")]
         public virtual IdentificacionVehicular IdentificacionVehicular { get; set; }
 
-        public int? Remolques_Id { get; set; }
+       /* public int? Remolques_Id { get; set; }
         [ForeignKey("Remolques_Id")]
         public virtual Remolques Remolques { get; set; }
+        */
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public int? Seguros_Id { get; set; }
+        [ForeignKey("Seguros_Id")]
+        public virtual Seguros Seguros { get; set; }
 
+        //remolques total por AutoTransporte 2
         [NotMapped]
-        public virtual Operador Operador { get; set; }
+        public int TotalRemolquesActivos { get { return 2; } }
+        
+        [NotMapped]
+        public virtual Remolques Remolque { get; set; }
 
     }
 }

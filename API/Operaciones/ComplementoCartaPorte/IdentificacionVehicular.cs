@@ -17,20 +17,24 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Año Modelo")]
+        [Required(ErrorMessage ="Campo Obligatorio")]
         public int AnioModeloVM { get; set; }
+
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public String ConfigAutotransporte_Id { get; set; }
         [ForeignKey("ConfigAutotransporte_Id")]
         public virtual ConfigAutotransporte ConfigAutotransporte { get; set; }
-        [NotMapped]
         
+        /*[NotMapped]
         [DisplayName("Configuración Vehicular (Clave de Nomeclatura)")]
-        public String ConfigVehicular { get; set; }
+        public String ConfigVehicular { get; set; }*/
         
-        [NotMapped]
+        /*[NotMapped]
         [DisplayName("Descripción de Configuración Vehicular")]
-        public String ConfigVehicularDescripcion { get; set; }
+        public String ConfigVehicularDescripcion { get; set; }*/
 
         [DisplayName("Placa Vehiculo Motor")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public String PlacaVM { get; set; }
     }
 }

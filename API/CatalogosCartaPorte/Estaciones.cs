@@ -8,7 +8,7 @@ namespace API.CatalogosCartaPorte
     public class Estaciones
     {
         [Key]
-        [StringLength(5)]
+        [StringLength(6)]
         public String ClaveIdentificacion { get; set; }
 
         public String ClaveTransporte_Id { get; set; }
