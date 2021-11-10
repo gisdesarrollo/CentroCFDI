@@ -52,6 +52,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Fecha y Hora Salida de Origen")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public DateTime FechaHoraSalida { get; set; }
+        [DisplayName("Tipo de Estación")]
         public String TipoEstacion_Id { get; set; }
         [ForeignKey("TipoEstacion_Id")]
         public virtual TipoEstacion TipoEstacion { get; set; }

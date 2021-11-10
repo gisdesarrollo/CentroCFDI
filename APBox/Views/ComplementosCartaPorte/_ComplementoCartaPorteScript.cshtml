@@ -1,0 +1,649 @@
+﻿<script>
+    //DETALLE MERCANCIAS
+    $(function () {
+    /*$('.addPedimento').change(function () {
+        if ($('.addPedimento').prop('checked')) {
+            $('.divPedimento').show(200);
+            $('.divPedimento').css('display', 'inline');
+        } else {
+            $('.divPedimento').hide(200);
+        }
+    });
+
+        $('.addGIdentificacion').change(function () {
+            if ($('.addGIdentificacion').prop('checked')) {
+                $('.divGIdentificacion').show(200);
+                $('.divGIdentificacion').css('display', 'inline');
+            } else {
+                $('.divGIdentificacion').hide(200);
+            }
+        });*/
+
+        $('.addCTransportada').change(function () {
+            if ($('.addCTransportada').prop('checked')) {
+                $('.divCTransportada').show(200);
+                $('.divCTransportada').css('display', 'inline');
+            } else {
+                $('.divCTransportada').hide(200);
+            }
+        });
+
+    });
+
+    $(function () {
+    $('#agregarDetalleMercancia').click(function () {
+        var contador = $(".mercancia").size() + 1;
+        $(".contadorMercancias").replaceWith('<span class="contadorMercancias font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleMercancia").on('click', function () {
+        var CPSI = false;
+        var D = false;
+        var C = false;
+        var CUI = false;
+        var PKG = false;
+        var CTC = true;
+        var CTCTI = true;
+        var CTCO = true;
+        var CTCD = true;
+        var message;
+
+        var ClaveProdServID = $('#Mercancias_Mercancia_ClaveProdServCP_Id').val();
+        message = "#ClaveProdServID"
+        CPSI = Boolean(ValidaCampos(ClaveProdServID, message));
+        var Descripcion = $('#Mercancias_Mercancia_Descripcion').val();
+        message = "#Descripcion"
+        D = Boolean(ValidaCampos(Descripcion, message));
+        var Cantidad = $('#Mercancias_Mercancia_Cantidad').val();
+        message = "#Cantidad"
+        C = Boolean(ValidaCampos(Cantidad, message));
+        var ClaveUnidadID = $('#Mercancias_Mercancia_ClaveUnidad_Id').val();
+        message = "#ClaveUnidadId"
+        CUI = Boolean(ValidaCampos(ClaveUnidadID, message));
+        var PesoEnKg = $('#Mercancias_Mercancia_PesoEnKg').val();
+        message = "#PesoEnKg"
+        PKG = Boolean(ValidaCampos(PesoEnKg, message));
+        
+        //valida check Cantidad Transportada
+        if ($('.addCTransportada').prop('checked')) {
+            var CTCantidad= $('#Mercancias_Mercancia_CantidadTransportada_Cantidad').val();
+            message = "#CTCantidad"
+            CTC = Boolean(ValidaCampos(CTCantidad, message));
+            var CTCveTransporteID = $('#Mercancias_Mercancia_CantidadTransportada_CveTransporte_Id').val();
+            message = "#CveTransporteId"
+            CTCTI = Boolean(ValidaCampos(CTCveTransporteID, message));
+            var CTCveOrigen = $('#Mercancias_Mercancia_CantidadTransportada_UbicacionOrigen_Id').val();
+            message = "#UbicacionOrigenId"
+            CTCO = Boolean(ValidaCampos(CTCveOrigen, message));
+            var CTCveDestino = $('#Mercancias_Mercancia_CantidadTransportada_UbicacionDestino_Id').val();
+            message = "#UbicacionDestinoId"
+            CTCD = Boolean(ValidaCampos(CTCveDestino, message));
+        }
+
+
+        if (!CPSI || !D || !C || !CUI || !PKG || !CTC || !CTCTI || !CTCO || !CTCD ) {
+
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarMercancia", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    ClaveProdServID: $('#Mercancias_Mercancia_ClaveProdServCP_Id').val(),//option:selected
+                    ClaveProdSTCCID: $('#Mercancias_Mercancia_ClaveProdSTCC_Id').val(),//option:selected
+                    Descripcion: $('#Mercancias_Mercancia_Descripcion').val(),
+                    Cantidad: $('#Mercancias_Mercancia_Cantidad').val(),
+                    Unidad: $('#Mercancias_Mercancia_Unidad').val(),
+                    ClaveUnidadID: $('#Mercancias_Mercancia_ClaveUnidad_Id').val(),//option:selected
+                    Dimensiones: $('#Mercancias_Mercancia_Dimensiones').val(),
+                    MaterialPeligorosoSN: $('#Mercancias_Mercancia_MaterialPeligrosos').val(),
+                    MaterialPeligrosoID: $('#Mercancias_Mercancia_MaterialPeligroso_Id').val(),//option:selected
+                    DescripcionEmbalaje: $('#Mercancias_Mercancia_DescripEmbalaje').val(),
+                    TipoEmbalajeID: $('#Mercancias_Mercancia_TipoEmbalaje_Id').val(),//option:selected
+                    PesoEnKg: $('#Mercancias_Mercancia_PesoEnKg').val(),
+                    ValorMercancia: $('#Mercancias_Mercancia_ValorMercancia').val(),
+                    Moneda: $('#Mercancias_Mercancia_Moneda').val(),
+                    FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelaria_Id').val(),//option:selected
+                    UUIDComercioExt: $('#Mercancias_Mercancia_UUIDComecioExt').val(),
+                    PPedimento: $('#Mercancias_Mercancia_Pedimentos_Pedimento').val(),
+                    GINumIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_NumeroGuiaIdentificacion').val(),
+                    GIDescripIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_DescripGuiaIdentificacion').val(),
+                    GIPesoIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_PesoGuiaIdentificacion').val(),
+                    CTCantidad: $('#Mercancias_Mercancia_CantidadTransportada_Cantidad').val(),
+                    CTCveTransporteID: $('#Mercancias_Mercancia_CantidadTransportada_CveTransporte_Id').val(),//option:selected
+                    CTCveOrigen: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionOrigen_Id').val(),//option:selected
+                    CTCveDestino: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionDestino_Id').val(),//option:selected
+                    DEClaveUnidadPesoID: $('#Mercancias_Mercancia.DetalleMercancia_ClaveUnidadPeso_Id').val(),//option:selected
+                    DEPesoBruto: $('#Mercancias_Mercancia_DetalleMercancia_PesoBruto').val(),
+                    DEPEsoNeto: $('#Mercancias_Mercancia_DetalleMercancia_PesoNeto').val(),
+                    DEPesoTara: $('#Mercancias_Mercancia_DetalleMercancia_PesoTara').val(),
+                    DENumPiezas: $('#Mercancias_Mercancia_DetalleMercancia_NumPiezas').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesMercancias').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        }
+        });
+    });
+
+    function removeDetalleMercancia(elem) {
+        var totalU = $(".mercancia").size();
+        if (totalU > 0) {
+            var contador = $(".mercancia").size() - 1;
+            $(".contadorMercancias").replaceWith('<span class="contadorMercancias font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorMercancias").replaceWith('<span class="contadorMercancias font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    //DETALLE FIGURA TRANSPORTE
+    $(function () {
+    $('#agregarDetalleFTransporte').click(function () {
+        var contador = $(".FTransporte").size() + 1;
+        $(".contadorFTransporte").replaceWith('<span class="contadorFTransporte font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleFTransporte").on('click', function () {
+        var TFT = false;
+     
+        var message;
+        var FTransporte = $('#TiposFigura_FiguraTransporte').val();
+        message = "#TFFiguraTransporte";
+        TFT = Boolean(ValidaCampos(FTransporte, message));
+       
+        if (!TFT) {
+
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarFTransporte", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    FTransporte: $('#TiposFigura_FiguraTransporte').val(),
+                    RFCFigura: $('#TiposFigura_RFCFigura').val(),
+                    NumLicencia: $('#TiposFigura_NumLicencia').val(),
+                    NombreFigura: $('#TiposFigura_NombreFigura').val(),
+                    NumRegIdTribFigura: $('#TiposFigura_NumRegIdTribFigura').val(),
+                    ResidenciaFiscalFigura: $('#TiposFigura_ResidenciaFiscalFigura').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesFTransporte').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        }
+        });
+    });
+
+    function removeDetalleFTransporte(elem) {
+        var totalU = $(".FTransporte").size();
+        if (totalU > 0) {
+            var contador = $(".FTransporte").size() - 1;
+            $(".contadorFTransporte").replaceWith('<span class="contadorFTransporte font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorFTransporte").replaceWith('<span class="contadorFTransporte font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+    //DETALLE PARTES TRANSPORTE
+    $(function () {
+    $('#agregarDetallePTransporte').click(function () {
+        var contador = $(".PTransporte").size() + 1;
+        $(".contadorPTransporte").replaceWith('<span class="contadorPTransporte font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetallePTransporte").on('click', function () {
+        var FTPT = false;
+        var FTE = false;
+        var FTP = false;
+        var FTCP = false;
+
+        var message;
+        var PTransporte = $('#TiposFigura_PartesTransporte_ParteTransporte').val();
+        message = "#FTPartesTransporte";
+        FTPT = Boolean(ValidaCampos(PTransporte, message));
+        var Estado = $('#TiposFigura_PartesTransporte_Domicilio_Estado').val();
+        message = "#UEstado";
+        FTE = Boolean(ValidaCampos(Estado, message));
+        var Pais = $('#TiposFigura_PartesTransporte_Domicilio_Pais').val();
+        message = "#UPais";
+        FTP = Boolean(ValidaCampos(Pais, message));
+        var CodigoPostal = $('#TiposFigura_PartesTransporte_Domicilio_CodigoPostal').val();
+        message = "#UCodigoPostal";
+        FTCP = Boolean(ValidaCampos(CodigoPostal, message));
+        if (!FTPT || !FTE || !FTP || !FTCP) {
+
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarPTransporte", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    PTransporte: $('#TiposFigura_PartesTransporte_ParteTransporte').val(),
+                    Pais: $('#TiposFigura_PartesTransporte_Domicilio_Pais').val(),
+                    Estado: $('#TiposFigura_PartesTransporte_Domicilio_Estado').val(),
+                    Municipio: $('#TiposFigura_PartesTransporte_Domicilio_Municipio').val(),
+                    Localidad: $('#TiposFigura_PartesTransporte_Domicilio_Localidad').val(),
+                    CodigoPostal: $('#TiposFigura_PartesTransporte_Domicilio_CodigoPostal').val(),
+                    Colonia: $('#TiposFigura_PartesTransporte_Domicilio_Colonia').val(),
+                    Calle: $('#TiposFigura_PartesTransporte_Domicilio_Calle').val(),
+                    NumExterior: $('#TiposFigura_PartesTransporte_Domicilio_NumeroExterior').val(),
+                    NumInterior: $('#TiposFigura_PartesTransporte_Domicilio_NumeroInterior').val(),
+                    Referencia: $('#TiposFigura_PartesTransporte_Domicilio_Referencia').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesPTransporte').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        }
+        });
+    });
+
+    function removeDetallePTransporte(elem) {
+        var totalU = $(".PTransporte").size();
+        if (totalU > 0) {
+            var contador = $(".PTransporte").size() - 1;
+            $(".contadorPTransporte").replaceWith('<span class="contadorPTransporte font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorPTransporte").replaceWith('<span class="contadorPTransporte font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    //DETALLE TRANSPORTE MARITIMO CONTENEDOR
+    $(function () {
+    $('#agregarDetalleTMContenedor').click(function () {
+        var contador = $(".TMContenedor").size() + 1;
+        $(".contadorTMContenedor").replaceWith('<span class="contadorTMContenedor font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+        $("#agregarDetalleTMContenedor").on('click', function () {
+            var MT = false;
+            var CMI = false;
+            
+
+            var message;
+            var MatContenedor = $('#Mercancias_TransporteMaritimo_ContenedorM_MatriculaContenedor').val();
+            message = "#MatContenedor";
+            MT = Boolean(ValidaCampos(MatContenedor, message));
+            var ContenedorMaritId = $('#Mercancias_TransporteMaritimo_ContenedorM._ContenedorMaritimo_Id').val();
+            message = "#ContenedorMaritId";
+            CMI = Boolean(ValidaCampos(ContenedorMaritId, message));
+            if (!MT || !CMI) {
+
+            } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("AgregarTMContenedor", "AjaxOperaciones")',
+                    data: JSON.stringify({
+                        MatContenedor: $('#Mercancias_TransporteMaritimo_ContenedorM_MatriculaContenedor').val(),
+                        ContenedorMaritId: $('#Mercancias_TransporteMaritimo_ContenedorM._ContenedorMaritimo_Id').val(),//option:selected
+                        NumPrecinto: $('#Mercancias_TransporteMaritimo_ContenedorM_NumPrecinto').val()
+                    }),
+                    dataType: 'html',
+                    contentType: "application/json; charset=utf-8",
+                }).success(function (partialView) {
+                    $('#detallesTMContenedor').append(partialView);
+                })
+                    .fail(function (jqxhr, textStatus, error) {
+                        alert("Favor de llenar todos los datos para los detalles");
+                    });
+                return false;
+            }
+        });
+    });
+
+    function removeDetalleTMContenedor(elem) {
+        var totalU = $(".TMContenedor").size();
+        if (totalU > 0) {
+            var contador = $(".TMContenedor").size() - 1;
+            $(".contadorTMContenedor").replaceWith('<span class="contadorTMContenedor font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorTMContenedor").replaceWith('<span class="contadorTMContenedor font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    //DETALLE TRANSPORTE FERROVIARIO DERECHOS DE PASO
+    $(function () {
+    $('#agregarDetalleTFDPaso').click(function () {
+        var contador = $(".TFDPaso").size() + 1;
+        $(".contadorTFDPaso").replaceWith('<span class="contadorTFDPaso font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleTFDPaso").on('click', function () {
+        var TDPI = false;
+        var KP = false;
+
+        var message;
+        var TipoDPasoID = $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso_Id').val();
+        message = "#TipoDerechosDePasoId";
+        TDPI = Boolean(ValidaCampos(TipoDPasoID, message));
+        var KilPagado = $('#Mercancias_TransporteFerroviario_DerechosDePasos_KilometrajePagado').val();
+        message = "#KilPagado";
+        KP = Boolean(ValidaCampos(KilPagado, message));
+        
+
+        if (!TDPI || !KP) {
+
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarTFDPaso", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoDPasoID: $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso_Id').val(),//option:selected
+                    KilPagado: $('#Mercancias_TransporteFerroviario_DerechosDePasos_KilometrajePagado').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesTFDPaso').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        }
+        });
+    });
+
+    function removeDetalleTFDPaso(elem) {
+        var totalU = $(".TFDPaso").size();
+        if (totalU > 0) {
+            var contador = $(".TFDPaso").size() - 1;
+            $(".contadorTFDPaso").replaceWith('<span class="contadorTFDPaso font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorTFDPaso").replaceWith('<span class="contadorTFDPaso font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+     //DETALLE TRANSPORTE FERROVIARIO CARRO
+    $(function () {
+    $('#agregarDetalleTFCarro').click(function () {
+        var contador = $(".TFCarro").size() + 1;
+        $(".contadorTFCarro").replaceWith('<span class="contadorTFCarro font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleTFCarro").on('click', function () {
+        var TCI = false;
+        var MC = false;
+        var GC = false;
+        var TNC = false;
+
+        var message;
+        var TipoCarroID = $('#Mercancias_TransporteFerroviario_Carro_TipoCarro_Id').val();
+        message = "#TFTipoCarroID";
+        TCI = Boolean(ValidaCampos(TipoCarroID, message));
+        var MatriculaCarro = $('#Mercancias_TransporteFerroviario_Carro_MatriculaCarro').val();
+        message = "#TFMatriculaCarro";
+        MC = Boolean(ValidaCampos(MatriculaCarro, message));
+        var GuiaCarro = $('#Mercancias_TransporteFerroviario_Carro_GuiaCarro').val();
+        message = "#TFGuiaCarro";
+        GC = Boolean(ValidaCampos(GuiaCarro, message));
+        var TonNetasCarro = $('#Mercancias_TransporteFerroviario_Carro_ToneladasNetasCarro').val();
+        message = "#TFTNetasCarro";
+        TNC = Boolean(ValidaCampos(TonNetasCarro, message));
+
+        if (!TCI || !MC || !GC || !TNC) {
+
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarTFCarro", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoCarroID: $('#Mercancias_TransporteFerroviario_Carro_TipoCarro_Id').val(),//option:selected
+                    MatriculaCarro: $('#Mercancias_TransporteFerroviario_Carro_MatriculaCarro').val(),
+                    GuiaCarro: $('#Mercancias_TransporteFerroviario_Carro_GuiaCarro').val(),
+                    TonNetasCarro: $('#Mercancias_TransporteFerroviario_Carro_ToneladasNetasCarro').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesTFCarro').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        }
+        });
+    });
+
+    function removeDetalleTFCarro(elem) {
+        var totalU = $(".TFCarro").size();
+        if (totalU > 0) {
+            var contador = $(".TFCarro").size() - 1;
+            $(".contadorTFCarro").replaceWith('<span class="contadorTFCarro font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorTFCarro").replaceWith('<span class="contadorTFCarro font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+     //DETALLE TRANSPORTE FERROVIARIO CARRO CONTENEDOR
+    $(function () {
+    $('#agregarDetalleTFContenedor').click(function () {
+        var contador = $(".TFContenedor").size() + 1;
+        $(".contadorTFContenedor").replaceWith('<span class="contadorTFContenedor font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+        $("#agregarDetalleTFContenedor").on('click', function () {
+            var C = false;
+            var PCV = false;
+            var PNM = false;
+
+            var message;
+            var ContenedorID = $('#Mercancias_TransporteFerroviario_Carro_ContenedorC_Contenedor_Id').val();
+            message = "#MTFcontenedorId";
+            C = Boolean(ValidaCampos(ContenedorID, message));
+            var PesoContenedorVacio = $('#Mercancias_TransporteFerroviario_Carro_ContenedorC_PesoContenedorVacio').val();
+            message = "#MTFPesoContenedorVacio";
+            PCV = Boolean(ValidaCampos(PesoContenedorVacio, message));
+            var pesoNetoMercancia = $('#Mercancias_TransporteFerroviario_Carro_ContenedorC_PesoNetoMercancia').val();
+            message = "#MTFPesoNetoMercancia";
+            PNM = Boolean(ValidaCampos(pesoNetoMercancia, message));
+
+            if (!C || !PCV || !PNM ) {
+
+            } else {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarTFContenedor", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    ContenedorID: $('#Mercancias_TransporteFerroviario_Carro_ContenedorC_Contenedor_Id').val(),//option:selected
+                    PesoContenedorVacio: $('#Mercancias_TransporteFerroviario_Carro_ContenedorC_PesoContenedorVacio').val(),
+                    pesoNetoMercancia: $('#Mercancias_TransporteFerroviario_Carro_ContenedorC_PesoNetoMercancia').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesTFContenedor').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+                return false;
+                }
+        });
+    });
+
+    function removeDetalleTFContenedor(elem) {
+        var totalU = $(".TFContenedor").size();
+        if (totalU > 0) {
+            var contador = $(".TFContenedor").size() - 1;
+            $(".contadorTFContenedor").replaceWith('<span class="contadorTFContenedor font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorTFContenedor").replaceWith('<span class="contadorTFContenedor font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    function ValidaCampos(input, div) {
+        console.log(input);
+        if (input === "" || input === null || input == undefined) {
+            $(div).html("Campo Obligatorio");
+            return false;
+        } else {
+            $(div).html("");
+            return true;
+        }
+
+    }
+
+    //DETALLE MERCANCIA PEDIMENTOS
+    $(function () {
+    $('#agregarDetallePedimentos').click(function () {
+        var contador = $(".Pedimentos").size() + 1;
+        $(".contadorPedimentos").replaceWith('<span class="contadorPedimentos font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetallePedimentos").on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarPedimentos", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    Pedimento: $('#Mercancias_Mercancia_Pedimentos_Pedimento').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesPedimentos').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        });
+    });
+
+    function removeDetallePedimentos(elem) {
+        var totalU = $(".Pedimentos").size();
+        if (totalU > 0) {
+            var contador = $(".Pedimentos").size() - 1;
+            $(".contadorPedimentos").replaceWith('<span class="contadorPedimentos font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorPedimentos").replaceWith('<span class="contadorPedimentos font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    //DETALLE MERCANCIA GUIAS  DE IDENTIFICACION
+    $(function () {
+    $('#agregarDetalleGIdentificacion').click(function () {
+        var contador = $(".GIdentificacion").size() + 1;
+        $(".contadorGIdentificacion").replaceWith('<span class="contadorGIdentificacion font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleGIdentificacion").on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarGIdentificacion", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    NumGuiIdentificacion: $('#Mercancias_Mercancia_GuiasIdentificacion_NumeroGuiaIdentificacion').val(),
+                    DescripGuiaIdentificacion: $('#Mercancias_Mercancia_GuiasIdentificacion_DescripGuiaIdentificacion').val(),
+                    PesoGuiaIdentificacion: $('#Mercancias_Mercancia_GuiasIdentificacion_PesoGuiaIdentificacion').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesGIdentificacion').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        });
+    });
+
+    function removeDetalleGIdentificacion(elem) {
+        var totalU = $(".GIdentificacion").size();
+        if (totalU > 0) {
+            var contador = $(".GIdentificacion").size() - 1;
+            $(".contadorGIdentificacion").replaceWith('<span class="contadorGIdentificacion font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorGIdentificacion").replaceWith('<span class="contadorGIdentificacion font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    //DETALLE MERCANCIA CANTIDAD TRANSPORTADAS
+    $(function () {
+    $('#agregarDetalleCTransportadas').click(function () {
+        var contador = $(".CTransportadas").size() + 1;
+        $(".contadorCTransportadas").replaceWith('<span class="contadorCTransportadas font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleCTransportadas").on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarCTransportadas", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    Cantidad: $('#Mercancias_Mercancia_CantidadTransportada_Cantidad').val(),
+                    CveTransporteID: $('#Mercancias_Mercancia_CantidadTransportada_CveTransporte_Id').val(),
+                    UbicacionOrigenID: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionOrigen_Id').val(),
+                    UbicacionDestinoID: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionDestino_Id').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesCTransportadas').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        });
+    });
+
+    function removeDetalleCTransportadas(elem) {
+        var totalU = $(".CTransportadas").size();
+        if (totalU > 0) {
+            var contador = $(".CTransportadas").size() - 1;
+            $(".contadorCTransportadas").replaceWith('<span class="contadorCTransportadas font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorCTransportadas").replaceWith('<span class="contadorCTransportadas font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+</script>

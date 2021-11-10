@@ -42,7 +42,13 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual Carro Carro { get; set; }
 
         [NotMapped]
+        public virtual List<Carro> Carros { get; set; }
+
+        [NotMapped]
         public virtual DerechosDePasos DerechosDePasos { get; set; }
+
+        [NotMapped]
+        public virtual List<DerechosDePasos> DerechosDePasoss { get; set; }
 
     }
 }

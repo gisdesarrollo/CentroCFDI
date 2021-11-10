@@ -30,5 +30,8 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual PartesTransporte PartesTransporte { get; set; }
 
+        [NotMapped]
+        public virtual List<PartesTransporte> PartesTransportes { get; set; }
+
     }
 }

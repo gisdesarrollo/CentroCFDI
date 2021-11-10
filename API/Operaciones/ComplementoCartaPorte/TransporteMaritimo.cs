@@ -113,5 +113,8 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual ContenedorM ContenedorM { get; set; }
 
+        [NotMapped]
+        public virtual List<ContenedorM> ContenedoresM { get; set; }
+
     }
 }

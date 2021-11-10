@@ -1,6 +1,7 @@
 ﻿using API.CatalogosCartaPorte;
 using API.Operaciones.ComplementoCartaPorte;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -55,5 +56,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual Mercancia Mercancia{ get; set; }
 
+        [NotMapped]
+        public virtual List<Mercancia> Mercanciass { get; set; }
     }
 }

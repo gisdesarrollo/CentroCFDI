@@ -51,9 +51,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("TipoEstacion_Id")]
         public virtual TipoEstacion TipoEstacion { get; set; }
 
-        /*[NotMapped]
+        [NotMapped]
         [DisplayName("Tipo de Estación")]
-        public String TipoEstaciones { get; set; }*/
+        public String TipoEstaciones { get; set; }
 
         [DisplayName("Distancia Recorrida")]
         public Decimal DistanciaRecorrida { get; set; }

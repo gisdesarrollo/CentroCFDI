@@ -37,9 +37,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String ClaveUnidadPeso_Id { get; set; }
         [ForeignKey("ClaveUnidadPeso_Id")]
         public virtual ClaveUnidadPeso ClaveUnidadPeso { get; set; }
-        /*[NotMapped]
+        [NotMapped]
         [DisplayName("Unidad de Peso")]
-        public string UnidadPeso { get; set; }*/
+        public string UnidadPeso { get; set; }
 
     }
 }

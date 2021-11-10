@@ -1,7 +1,7 @@
 ﻿@model API.Operaciones.ComplementoCartaPorte.Ubicacion
 
 
-@using (Html.BeginCollectionItem("Ubicacion"))
+@using (Html.BeginCollectionItem("Ubicaciones"))
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
@@ -10,12 +10,12 @@
         <i class="glyph-icon icon-money"></i>
         Ubicacion
         <div class="header-buttons-separator">
-            <a href="#" class="icon-separator" onclick="$(this).parent().parent().parent().remove();">
+            <a href="#" class="icon-separator" onclick="removeDetalleUbicacion(this)">
                 <i class="glyph-icon icon-times font-red"></i>
             </a>
         </div>
     </h3>
-    <div class="content-box-wrapper Ubicacion">
+    <div class="content-box-wrapper ubicacion">
 
         @*<div class="col-xs-12 col-sm-3">
             @Html.LabelFor(model => model.DistanciaRecorrida)
@@ -36,42 +36,47 @@
                 Ubicación Origen
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.IDUbicacionOrigen)
+                @Html.LabelFor(model => model.UbicacionOrigen.TipoEstaciones)<br />
+                @Html.DisplayFor(model => model.UbicacionOrigen.TipoEstaciones)
+                @Html.HiddenFor(model => model.UbicacionOrigen.TipoEstaciones)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.UbicacionOrigen.IDUbicacionOrigen)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.IDUbicacionOrigen)
                 @Html.HiddenFor(model => model.UbicacionOrigen.IDUbicacionOrigen)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.RfcRemitente)
+                @Html.LabelFor(model => model.UbicacionOrigen.RfcRemitente)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.RfcRemitente)
                 @Html.HiddenFor(model => model.UbicacionOrigen.RfcRemitente)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.NombreRemitente)
+                @Html.LabelFor(model => model.UbicacionOrigen.NombreRemitente)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.NombreRemitente)
                 @Html.HiddenFor(model => model.UbicacionOrigen.NombreRemitente)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.ResidenciaFiscal)
+                @Html.LabelFor(model => model.UbicacionOrigen.ResidenciaFiscal)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.ResidenciaFiscal)
                 @Html.HiddenFor(model => model.UbicacionOrigen.ResidenciaFiscal)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.NombreEstacion)
+                @Html.LabelFor(model => model.UbicacionOrigen.NombreEstacion)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.NombreEstacion)
                 @Html.HiddenFor(model => model.UbicacionOrigen.NombreEstacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.NumEstacion)
+                @Html.LabelFor(model => model.UbicacionOrigen.NumEstacion)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.NumEstacion)
                 @Html.HiddenFor(model => model.UbicacionOrigen.NumEstacion)
             </div>
-            <div class="col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.FechaHoraSalida)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.UbicacionOrigen.FechaHoraSalida)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.FechaHoraSalida)
                 @Html.HiddenFor(model => model.UbicacionOrigen.FechaHoraSalida)
             </div>
-            <div class="col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.DistanciaRecorrida)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.UbicacionOrigen.DistanciaRecorrida)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.DistanciaRecorrida)
                 @Html.HiddenFor(model => model.UbicacionOrigen.DistanciaRecorrida)
             </div>
@@ -81,53 +86,53 @@
                 Ubicación Origen Domicilio
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Calle)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Calle)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.Calle)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.Calle)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.CodigoPostal)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.CodigoPostal)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.CodigoPostal)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.CodigoPostal)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Colonia)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Colonia)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.Colonia)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.Colonia)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Estado)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Estado)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.Estado)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.Estado)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Localidad)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Localidad)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.Localidad)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.Localidad)
 
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Municipio)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Municipio)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.Municipio)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.Municipio)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.NumeroExterior)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.NumeroExterior)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.NumeroExterior)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.NumeroExterior)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.NumeroInterior)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.NumeroInterior)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.NumeroInterior)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.NumeroInterior)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Pais)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Pais)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.Pais)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.Pais)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Referencia)
+                @Html.LabelFor(model => model.UbicacionOrigen.Domicilio.Referencia)<br />
                 @Html.DisplayFor(model => model.UbicacionOrigen.Domicilio.Referencia)
                 @Html.HiddenFor(model => model.UbicacionOrigen.Domicilio.Referencia)
             </div>
@@ -140,42 +145,47 @@
                 Ubicación Destino
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.IDUbicacionDestino)
+                @Html.LabelFor(model => model.UbicacionDestino.TipoEstaciones)<br />
+                @Html.DisplayFor(model => model.UbicacionDestino.TipoEstaciones)
+                @Html.HiddenFor(model => model.UbicacionDestino.TipoEstaciones)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.UbicacionDestino.IDUbicacionDestino)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.IDUbicacionDestino)
                 @Html.HiddenFor(model => model.UbicacionDestino.IDUbicacionDestino)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.RfcDestinatario)
+                @Html.LabelFor(model => model.UbicacionDestino.RfcDestinatario)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.RfcDestinatario)
                 @Html.HiddenFor(model => model.UbicacionDestino.RfcDestinatario)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.NombreDestinatario)
+                @Html.LabelFor(model => model.UbicacionDestino.NombreDestinatario)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.NombreDestinatario)
                 @Html.HiddenFor(model => model.UbicacionDestino.NombreDestinatario)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.ResidenciaFiscal)
+                @Html.LabelFor(model => model.UbicacionDestino.ResidenciaFiscal)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.ResidenciaFiscal)
                 @Html.HiddenFor(model => model.UbicacionDestino.ResidenciaFiscal)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.NombreEstacion)
+                @Html.LabelFor(model => model.UbicacionDestino.NombreEstacion)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.NombreEstacion)
                 @Html.HiddenFor(model => model.UbicacionDestino.NombreEstacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.NumEstacion)
+                @Html.LabelFor(model => model.UbicacionDestino.NumEstacion)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.NumEstacion)
                 @Html.HiddenFor(model => model.UbicacionDestino.NumEstacion)
             </div>
-            <div class="col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.FechaHoraLlegada)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.UbicacionDestino.FechaHoraLlegada)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.FechaHoraLlegada)
                 @Html.HiddenFor(model => model.UbicacionDestino.FechaHoraLlegada)
             </div>
-            <div class="col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.DistanciaRecorrida)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.UbicacionDestino.DistanciaRecorrida)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.DistanciaRecorrida)
                 @Html.HiddenFor(model => model.UbicacionDestino.DistanciaRecorrida)
             </div>
@@ -185,52 +195,52 @@
                 Ubicación Origen Domicilio
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Calle)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Calle)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.Calle)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.Calle)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.CodigoPostal)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.CodigoPostal)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.CodigoPostal)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.CodigoPostal)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Colonia)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Colonia)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.Colonia)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.Colonia)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Estado)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Estado)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.Estado)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.Estado)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Localidad)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Localidad)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.Localidad)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.Localidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Municipio)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Municipio)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.Municipio)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.Municipio)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.NumeroExterior)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.NumeroExterior)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.NumeroExterior)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.NumeroExterior)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.NumeroInterior)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.NumeroInterior)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.NumeroInterior)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.NumeroInterior)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Pais)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Pais)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.Pais)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.Pais)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Referencia)
+                @Html.LabelFor(model => model.UbicacionDestino.Domicilio.Referencia)<br />
                 @Html.DisplayFor(model => model.UbicacionDestino.Domicilio.Referencia)
                 @Html.HiddenFor(model => model.UbicacionDestino.Domicilio.Referencia)
             </div>

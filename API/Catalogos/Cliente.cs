@@ -48,7 +48,7 @@ namespace API.Catalogos
         public String CodigoPostal { get; set; }
 
         [NotMapped]
-        public String UsoCfdi;
+        public c_UsoCFDI UsoCfdi;
         
         [DisplayName("País")]
         [Required(ErrorMessage = "Campo Obligatorio")]

@@ -23,6 +23,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int UbicacionO_Id { get; set; }
         [ForeignKey("UbicacionO_Id")]
         public virtual UbicacionOrigen UbicacionOrigen { get; set; }
-        
+
+        [NotMapped]
+        [DisplayName("Nombre Remitente Destino")]
+        public Decimal DistanciaRecorridas { get; set; }
+
     }
 }

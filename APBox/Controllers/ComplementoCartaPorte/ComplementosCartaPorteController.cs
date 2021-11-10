@@ -51,10 +51,56 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 FechaDocumento = DateTime.Now,
                 Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
                 SucursalId = ObtenerSucursal(),
-                Version = "1.0",
+                Version = "2.0",
                 TotalDistRec = 0,
                 Moneda = c_Moneda.MXN,
                 hidden = false,
+                Mercancias = new Mercancias
+                {
+                    Mercancia = new Mercancia()
+                    {
+                        Moneda = c_Moneda.MXN,
+                        Cantidad = 0,
+                        PesoEnKg = 0,
+                        DetalleMercancia = new DetalleMercancia()
+                        {
+                            NumPiezas = 0,
+                            PesoBruto = 0,
+                            PesoNeto = 0,
+                            PesoTara = 0
+                        },
+                        CantidadTransportada = new CantidadTransportada()
+                        {
+                            Cantidad = 0
+                        },
+                        GuiasIdentificacion = new GuiasIdentificacion()
+                        {
+                            PesoGuiaIdentificacion = 0
+                        }
+                    },
+                    TransporteFerroviario = new TransporteFerroviario()
+                    {
+                        DerechosDePasos = new DerechosDePasos()
+                        {
+                            KilometrajePagado = 0
+                        },
+                        Carro = new Carro()
+                        {
+                            ToneladasNetasCarro = 0,
+                            ContenedorC = new ContenedorC()
+                            {
+                                PesoContenedorVacio = 0,
+                                PesoNetoMercancia = 0
+                            }
+                        }
+                    },
+                    TransporteMaritimo = new TransporteMaritimo()
+                    {
+                        ContenedorM = new ContenedorM() { }
+                    }
+                    
+                },
+                
                 Ubicacion = new Ubicacion
                
                 {
@@ -142,6 +188,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 UbicacionDestino = new UbicacionDestino()
                 {
                     Domicilio = new Domicilio()
+                    {
+
+                    }
                 }
 
             };

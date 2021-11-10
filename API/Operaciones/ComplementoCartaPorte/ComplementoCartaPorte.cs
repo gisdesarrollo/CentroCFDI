@@ -20,6 +20,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [DisplayName("Forma de Pago")]
+        public c_FormaPago FormaPago { get; set; }
+
+        [DisplayName("Método de Pago")]
+        public c_MetodoPago MetodoPago { get; set; }
+
         [DisplayName("Transporte Internacional")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public Boolean TranspInternac { get; set; }
@@ -65,6 +71,33 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Mercancias_Id { get; set; }
         [ForeignKey("Mercancias_Id")]
         public virtual Mercancias Mercancias { get; set; }
+
+        [NotMapped]
+        public virtual List<Mercancia> Mercanciass { get; set; }
+
+        [NotMapped]
+        public virtual List<Pedimentos> Pedimentoss { get; set; }
+
+        [NotMapped]
+        public virtual List<GuiasIdentificacion> GuiasIdentificacioness  { get; set; }
+
+        [NotMapped]
+        public virtual List<CantidadTransportada> CantidadTransportadass { get; set; }
+
+        [NotMapped]
+        public virtual List<ContenedorM> ContenedoresM { get; set; }
+
+        [NotMapped]
+        public virtual List<DerechosDePasos> DerechosDePasoss { get; set; }
+
+        [NotMapped]
+        public virtual List<ContenedorC> ContenedoresC { get; set; }
+
+        [NotMapped]
+        public virtual List<Carro> Carros { get; set; }
+
+        [NotMapped]
+        public virtual List<PartesTransporte> PartesTransportes { get; set; }
 
         [NotMapped]
         public virtual TiposFigura TiposFigura { get; set; }

@@ -48,15 +48,16 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("MaterialPeligroso_Id")]
         public virtual MaterialPeligroso MaterialPeligroso { get; set; }
 
-        [DisplayName("Material Peligroso")]
-        public string MaterialPeligrosos { get; set; }
         /*[NotMapped]
         [DisplayName("Material Peligroso")]
-        public string MaterialPeligrosos { get; set; }
+        public string MaterialPeligrosos { get; set; }*/
         [NotMapped]
         [DisplayName("Clave de Material Peligroso")]
-        public string ClaveMaterialPeligroso { get; set; }*/
+        public string ClaveMaterialPeligroso { get; set; }
 
+        [DisplayName("Material Peligroso")]
+        public Boolean  MaterialPeligrosos { get; set; }
+        
         [DisplayName("Descripción")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public string Descripcion { get; set; }
@@ -104,6 +105,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual DetalleMercancia DetalleMercancia { get; set; }
 
         [NotMapped]
+        public virtual DetalleMercancia DetalleMercancias { get; set; }
+
+        [NotMapped]
         public virtual CantidadTransportada CantidadTransportada { get; set; }
         
         [NotMapped]
@@ -112,7 +116,14 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual Pedimentos Pedimentos { get; set; }
 
-
-
+        [NotMapped]
+        [DisplayName("Agregar Pedimento")]
+        public bool ActivaPedimento { get; set; }
+        [NotMapped]
+        [DisplayName("Agregar Guias Identificación")]
+        public bool ActivaGuiaIdentificacion { get; set; }
+        [NotMapped]
+        [DisplayName("Agregar Cantidad Transportada")]
+        public bool ActivaCantidadTransportada { get; set; }
     }
 }
