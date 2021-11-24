@@ -20,7 +20,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [StringLength(5)]
         [DisplayName("Codigo de Transportista")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public String CodigoTransporteAereo_Id { get; set; }
         [ForeignKey("CodigoTransporteAereo_Id")]
         public virtual CodigoTransporteAereo CodigoTransporteAereo{ get; set; }
@@ -44,11 +44,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String NombreTransportista { get; set; }*/
 
         [DisplayName("Número de Guía")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public String NumeroGuia { get; set; }
 
         [DisplayName("Número de Permiso SCT")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public String NumPermisoSCT { get; set; }
 
         [DisplayName("Número de Poliza de Seguro")]
@@ -69,7 +69,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String PaisE { get; set; }
 
         [DisplayName("Permiso SCT")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public String TipoPermiso_Id { get; set; }
         [ForeignKey("TipoPermiso_Id")]
         public virtual TipoPermiso TipoPermiso { get; set; }

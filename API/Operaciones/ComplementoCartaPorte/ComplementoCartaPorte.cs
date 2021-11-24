@@ -27,7 +27,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public c_MetodoPago MetodoPago { get; set; }
 
         [DisplayName("Transporte Internacional")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Boolean TranspInternac { get; set; }
 
 
@@ -43,7 +43,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         [Required(ErrorMessage ="Campo Obligatorio")]
         public string Version { get; set; }
 
-        
+        public int Conceptos_Id { get; set; }
+        [ForeignKey("Conceptos_Id")]
+        public virtual Conceptos Conceptos { get; set; }
+
+        [NotMapped]
+        public List<Conceptos> Conceptoss { get; set; }
 
         [DisplayName("Clave Transporte")]
         public string ClaveTransporteId { get; set; }
@@ -53,6 +58,8 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Vía de Entrada o Salida")]
         public String ClaveTransporte { get; set; }
 
+        [NotMapped]
+        public string rfcReceptor { get; set; }
         [NotMapped]
         [Required]
         [DisplayName("Tipo de Comprobante")]
@@ -66,6 +73,8 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [NotMapped]
         public virtual Ubicacion Ubicacion { get; set; }
+        /*[NotMapped]
+        public virtual UbicacionDestino UbicacionDestino { get; set; }*/
         [NotMapped]
         public virtual List<Ubicacion> Ubicaciones { get; set; }
         public int Mercancias_Id { get; set; }
@@ -108,14 +117,14 @@ namespace API.Operaciones.ComplementoCartaPorte
         #region Campos CFDI
 
         [DisplayName("Sucursal")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public int SucursalId { get; set; }
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
         //Filtros
         [DisplayName("Receptor")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public int ReceptorId { get; set; }
         [ForeignKey("ReceptorId")]
         public virtual Cliente Receptor { get; set; }
@@ -124,7 +133,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDocumento { get; set; }
 
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Meses Mes { get; set; }
 
         public bool Generado { get; set; }

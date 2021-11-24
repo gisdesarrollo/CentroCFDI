@@ -15,7 +15,7 @@ namespace API.Operaciones.ComplementoCartaPorte
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Decimal Cantidad { get; set; }
 
         [DisplayName("Claves Transporte")]
@@ -26,7 +26,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String ClaveTransporte { get; set; }
         
         [DisplayName("ID Destino")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public int UbicacionDestino_Id { get; set; }
         [ForeignKey("UbicacionDestino_Id")]
         public virtual UbicacionDestino UbicacionDestino { get; set; }
@@ -35,10 +35,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String IDDestino { get; set; }
 
         [DisplayName("ID Origen")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public int UbicacionOrigen_Id { get; set; }
         [ForeignKey("UbicacionOrigen_Id")]
-        public virtual UbicacionOrigen UbicacionOrigen { get; set; }
+        public virtual Ubicacion UbicacionOrigen { get; set; }
         [NotMapped]
         [DisplayName("ID Origen")]
         public String IDOrigen { get; set; }

@@ -17,15 +17,15 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Guías de Carro")]
-        [Required(ErrorMessage = "Campo Requerido")]
+        //[Required(ErrorMessage = "Campo Requerido")]
         public String GuiaCarro { get; set; }
 
         [DisplayName("Matrícula de Carro")]
-        [Required(ErrorMessage = "Campo Requerido")]
+        //[Required(ErrorMessage = "Campo Requerido")]
         public String MatriculaCarro { get; set; }
 
         [DisplayName("Tipo de Carro")]
-        [Required(ErrorMessage ="Campo Requerido")]
+        //[Required(ErrorMessage ="Campo Requerido")]
         public String TipoCarro_Id { get; set; }
         [ForeignKey("TipoCarro_Id")]
         public virtual TipoCarro TipoCarro { get; set; }
@@ -34,7 +34,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String TipoCarros { get; set; }
         */
         [DisplayName("Toneladas Netas de Carro")]
-        [Required(ErrorMessage = "Campo Requerido")]
+        //[Required(ErrorMessage = "Campo Requerido")]
         public Decimal ToneladasNetasCarro { get; set; }
 
         [NotMapped]

@@ -18,18 +18,18 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Decimal CargoPorTasacion { get; set; }
 
         [DisplayName("Número Total de Mercancías")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        [Required(ErrorMessage = "Campo Obligatorio Total Mercancia")]
         public int NumTotalMercancias { get; set; }
 
         [DisplayName("Peso Bruto Total")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        [Required(ErrorMessage ="Campo Obligatorio Peso BrutoTotal Mercancia")]
         public Decimal PesoBrutoTotal { get; set; }
 
         [DisplayName("Peso Neto Total")]
         public Decimal PesoNetoTotal { get; set; }
 
         [StringLength(3)]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio Clave unida")]
         public String ClaveUnidadPeso_Id { get; set; }
         [ForeignKey("ClaveUnidadPeso_Id")]
         public virtual ClaveUnidadPeso ClaveUnidadPeso { get; set; }
@@ -57,6 +57,6 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual Mercancia Mercancia{ get; set; }
 
         [NotMapped]
-        public virtual List<Mercancia> Mercanciass { get; set; }
+        public virtual List<Mercancias> Mercanciass { get; set; }
     }
 }

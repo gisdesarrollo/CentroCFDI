@@ -15,15 +15,15 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [DisplayName("Numero Guia de Identificación")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+       //[Required(ErrorMessage = "Campo Obligatorio")]
         public string NumeroGuiaIdentificacion { get; set; }
 
         [DisplayName("Descripción Guia Identificación")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public string DescripGuiaIdentificacion { get; set; }
 
         [DisplayName("Peso Guia de Identificación")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Decimal PesoGuiaIdentificacion { get; set; }
 
     }

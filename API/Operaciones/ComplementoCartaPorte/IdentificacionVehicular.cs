@@ -17,10 +17,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Año Modelo")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public int AnioModeloVM { get; set; }
 
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public String ConfigAutotransporte_Id { get; set; }
         [ForeignKey("ConfigAutotransporte_Id")]
         public virtual ConfigAutotransporte ConfigAutotransporte { get; set; }
@@ -34,7 +34,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String ConfigVehicularDescripcion { get; set; }*/
 
         [DisplayName("Placa Vehiculo Motor")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public String PlacaVM { get; set; }
     }
 }

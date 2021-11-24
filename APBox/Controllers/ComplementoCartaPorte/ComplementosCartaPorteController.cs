@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using API.Enums;
 using Aplicacion.Context;
 using APBox.Control;
+using Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -17,6 +18,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
     {
         // GET: ComplementosCartaPorte
         private readonly AplicacionContext _db = new AplicacionContext();
+        private readonly AcondicionarComplementosCartaPorte _acondicionarComplementosCartaPorte = new AcondicionarComplementosCartaPorte();
         public ActionResult Index()
         {
             var ComplementoCartaPorteModel = new ComplementosCartaPorteModel()
@@ -43,6 +45,28 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
             PopulaPaises();
             PopularUsoCfdi();
+            PopulaTiposUbicacion();
+            PopulaFiguraTransporte();
+            //PopulaClaveUnidad();
+            //PopulaClaveProdServCP();
+            PopulaClaveProdSTCC();
+            PopulaClaveUnida_Id();
+            PopulaMaterialPeligroso_Id();
+            TipoEmbalaje_Id();
+            PopulaFraccionArancelaria_Id();
+            ClaveUnidadPeso_Id();
+            SubTipoRem_Id();
+            ConfigMaritima_Id();
+            TipoPermiso_Id();
+            ConfigAutotransporte_Id();
+            ClaveTipoCarga_Id();
+            NumAutorizacionNaviero_Id();
+            ContenedorMaritimo_Id();
+            CodigoTransporteAereo_Id();
+            TipoDeServicio_Id();
+            TipoCarro_Id();
+            Contenedor_Id();
+
 
             var ComplementoCartaPorte = new ComplementoCartaPorte()
             {
@@ -55,6 +79,26 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 TotalDistRec = 0,
                 Moneda = c_Moneda.MXN,
                 hidden = false,
+                Conceptos = new Conceptos()
+                {
+                    Traslado = new SubImpuestoC()
+                    {
+                        Impuesto = c_Impuesto.Iva,
+                        TipoFactor = c_TipoFactor.Tasa,
+                        Base = 0,
+                        TasaOCuota = 0,
+                        Importe = 0
+                    },
+                    Retencion = new SubImpuestoC()
+                    {
+                        Impuesto = c_Impuesto.Iva,
+                        TipoFactor = c_TipoFactor.Tasa,
+                        Base = 0,
+                        TasaOCuota = 0,
+                        Importe = 0
+                    }
+
+                },
                 Mercancias = new Mercancias
                 {
                     Mercancia = new Mercancia()
@@ -98,13 +142,18 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     {
                         ContenedorM = new ContenedorM() { }
                     }
-                    
+
                 },
-                
+
                 Ubicacion = new Ubicacion
-               
+
                 {
-                    UbicacionOrigen = new UbicacionOrigen
+                    IDUbicacion = "OR",
+                    DistanciaRecorrida = 0,
+                    TipoUbicacion = "Origen",
+                    FechaHoraSalidaLlegada = DateTime.Now,
+                    
+                    /*UbicacionOrigen = new UbicacionOrigen
                     {
                         Sucursal_Id = ObtenerSucursal(),
                         RfcRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
@@ -112,22 +161,37 @@ namespace APBox.Controllers.ComplementosCartaPorte
                         ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
                         FechaHoraSalida = DateTime.Now,
                         IDUbicacionOrigen = "OR",
+                        TipoUbicacion= "Origen",
+                        DistanciaRecorrida = 0,
                         Domicilio = new Domicilio
                         {
 
                         }
-                    },
+                    },*/
 
-                    UbicacionDestino = new UbicacionDestino
+                    /*UbicacionDestino = new UbicacionDestino
                     {
                         FechaHoraLlegada = DateTime.Now,
                         IDUbicacionDestino = "DE",
+                        TipoUbicacion = "Destino",
+                        DistanciaRecorrida = 0,
                         Domicilio  = new Domicilio
                         {
-
+                            
                         }
+                    }*/
+                    Domicilio = new Domicilio
+                    {
+
                     }
                 },
+                /*UbicacionDestino = new UbicacionDestino()
+                {
+                    Domicilio = new Domicilio()
+                    {
+
+                    } 
+                },*/
                 TiposFigura = new TiposFigura()
                 {
                     PartesTransporte = new PartesTransporte()
@@ -143,9 +207,17 @@ namespace APBox.Controllers.ComplementosCartaPorte
         }
 
         [HttpPost]
-        // [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Create(ComplementoCartaPorte complementoCartaPorte)
         {
+            ModelState.Remove("Mercancias.AutoTransporte.IdentificacionVehicular.AnioModeloVM");
+            ModelState.Remove("Mercancias.TransporteAereo.ResidenciaFiscalEmbarc");
+            ModelState.Remove("SucursalId");
+            ModelState.Remove("ReceptorId");
+            ModelState.Remove("FacturaEmitidaId");
+            ModelState.Remove("CfdiRelacionadoId");
+            ModelState.Remove("Receptor.RazonSocial");
+            ModelState.Remove("Receptor");
             PopulaClientes(complementoCartaPorte.ReceptorId);
             PopulaBancos(ObtenerSucursal());
             PopulaCfdiRelacionado(complementoCartaPorte.CfdiRelacionadoId);
@@ -159,54 +231,68 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
             PopulaPaises();
             PopularUsoCfdi();
-            if (ModelState.IsValid)
+            PopulaTiposUbicacion();
+            PopulaFiguraTransporte();
+            //
+            PopulaClaveProdSTCC();
+            PopulaClaveUnida_Id();
+            PopulaMaterialPeligroso_Id();
+            TipoEmbalaje_Id();
+            PopulaFraccionArancelaria_Id();
+            ClaveUnidadPeso_Id();
+            SubTipoRem_Id();
+            ConfigMaritima_Id();
+            TipoPermiso_Id();
+            ConfigAutotransporte_Id();
+            ClaveTipoCarga_Id();
+            NumAutorizacionNaviero_Id();
+            ContenedorMaritimo_Id();
+            CodigoTransporteAereo_Id();
+            TipoDeServicio_Id();
+            TipoCarro_Id();
+            Contenedor_Id();
+            if (!ModelState.IsValid)
             {
-                if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.T)
+                //Identifica los mensaje de error
+                var errors = ModelState.Values.Where(E => E.Errors.Count > 0)
+                         .SelectMany(E => E.Errors)
+                         .Select(E => E.ErrorMessage)
+                         .ToList();
+                //Identifica el campo del Required
+                var modelErrors = ModelState.Where(m => ModelState[m.Key].Errors.Any());
+                ModelState.AddModelError("", "Error revisar los campos requeridos");
+                complementoCartaPorte.Ubicacion = new Ubicacion()
                 {
-                    complementoCartaPorte.Moneda = null;
-                    complementoCartaPorte.Subtotal = 0;
-                    complementoCartaPorte.Total = 0;
-                }
-                return RedirectToAction("Index"); ;
+
+                    Domicilio = new Domicilio()
+                    {
+                        Pais = complementoCartaPorte.Ubicacion.Domicilio.Pais
+                    }
+                };
+
+                complementoCartaPorte.TiposFigura.PartesTransporte.Domicilio = new Domicilio();
+                return View(complementoCartaPorte);
             }
-            if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.I){complementoCartaPorte.hidden = true;}
-            else{
+            //Modelstate True
+            if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.T)
+            {
                 complementoCartaPorte.hidden = false;
+                complementoCartaPorte.Moneda = c_Moneda.XXX;
+                complementoCartaPorte.Subtotal = 0;
+                complementoCartaPorte.Total = 0;
+                //carga conceptos
+                _acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
             }
-            
-            complementoCartaPorte.Ubicacion = new Ubicacion() {
-                    UbicacionOrigen = new UbicacionOrigen() {
-                    Sucursal_Id = ObtenerSucursal(),
-                    RfcRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
-                    NombreRemitente = ViewBag.DatosSucursal.Items[0].Nombre,
-                    ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
-                    Domicilio = new Domicilio()
-                    {
-
-                    }
-                },
-                UbicacionDestino = new UbicacionDestino()
-                {
-                    Domicilio = new Domicilio()
-                    {
-
-                    }
-                }
-
-            };
-
-            complementoCartaPorte.TiposFigura = new TiposFigura()
+            else
             {
-                PartesTransporte = new PartesTransporte()
-                {
-                    Domicilio = new Domicilio()
-                    {
+                complementoCartaPorte.hidden = true;
+                //carga conceptos
+                _acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
+            }
+            //carga ubicaciones
+            _acondicionarComplementosCartaPorte.cargaUbicaciones(ref complementoCartaPorte);
 
-                    }
-                }
-            };
-
-            return View(complementoCartaPorte);
+            return RedirectToAction("Index");
         }
 
         public void serealizaJson(ComplementoCartaPorte complementoCartaPorte)
@@ -271,6 +357,17 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Paises = (popularDropDowns.PopulaPaises());
         }
 
+        private void PopulaClaveUnidad()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ClaveUnidadC = (popularDropDowns.PopulaClaveUnidad());
+        }
+        private void PopulaClaveProdServCP()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ClaveProdServ = (popularDropDowns.PopulaClaveProdServ());
+        }
+
         private void PopularUsoCfdi()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -306,11 +403,124 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.TipoDeComprobante = (popularDropDowns.PopulaTipoDeComprobante());
         }
 
+        private void PopulaTiposUbicacion()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Origen", Value = "Origen", Selected = true });
+            items.Add(new SelectListItem { Text = "Destino", Value = "Destino" });
+            ViewBag.TipoUbicacion = items;
+        }
+
+        private void PopulaFiguraTransporte()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Operador", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "Propietario", Value = "02" });
+            items.Add(new SelectListItem { Text = "Arrendador", Value = "03" });
+            items.Add(new SelectListItem { Text = "Notificado", Value = "04" });
+            ViewBag.TipoFiguraTransporte = items;
+        }
+
         private void PopulaTransporte()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ClavesTransporte = (popularDropDowns.PopulaTransporte());
         }
+        //evelio dropdopw
+        private void PopulaClaveProdSTCC()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ClavesProdSTCC = (popularDropDowns.PopulaClaveProdSTCC());
+        }
+        private void PopulaClaveUnida_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ClaveUnidad = popularDropDowns.PopulaClaveUnida_Id();
+        }
+
+        private void PopulaMaterialPeligroso_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.MaterialesPeligroso_Id = (popularDropDowns.PopulaMaterialPeligroso_Id());
+        }
+        private void TipoEmbalaje_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TiposEmbalaje_Id = (popularDropDowns.TipoEmbalaje_Id());
+        }
+        private void PopulaFraccionArancelaria_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.FraccionesArancelaria_Id = (popularDropDowns.PopulaFraccionArancelaria_Id());
+        }
+        private void ClaveUnidadPeso_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ClavesUnidadPeso_Id = (popularDropDowns.ClaveUnidadPeso_Id());
+        }
+
+        private void SubTipoRem_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.SubTipoRem_Id = popularDropDowns.SubTipoRem_Id();
+        }
+        private void ConfigMaritima_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ConfigMaritima_Id = popularDropDowns.ConfigMaritima_Id();
+        }
+        private void TipoPermiso_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TipoPermisoMaritimo = (popularDropDowns.TipoPermiso_Id("02"));
+            ViewBag.TipoPermisoAereo = (popularDropDowns.TipoPermiso_Id("03"));
+            ViewBag.TipoPermisoAuto = (popularDropDowns.TipoPermiso_Id("01"));
+            ViewBag.TipoPermiso_M = ViewBag.TipoPermisoMaritimo;
+            ViewBag.TipoPermiso_A = ViewBag.TipoPermisoAereo;
+            ViewBag.TipoPermiso_AT = ViewBag.TipoPermisoAuto;
+        }
+
+        private void ConfigAutotransporte_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ConfigAutotransporte_Id = popularDropDowns.ConfigAutotransporte_Id();
+        }
+        private void ClaveTipoCarga_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ClaveTipoCarga_Id = popularDropDowns.ClaveTipoCarga_Id();
+        }
+        private void NumAutorizacionNaviero_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.NumAutorizacionNaviero_Id = popularDropDowns.NumAutorizacionNaviero_Id();
+        }
+        private void ContenedorMaritimo_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ContenedorMaritimo_Id = popularDropDowns.ContenedorMaritimo_Id();
+        }
+        private void CodigoTransporteAereo_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.CodigoTransporteAereo_Id = popularDropDowns.CodigoTransporteAereo_Id();
+        }
+        private void TipoDeServicio_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TipoDeServicio_Id = popularDropDowns.TipoDeServicio_Id();
+        }
+        private void TipoCarro_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TipoCarro_Id = popularDropDowns.TipoCarro_Id();
+        }
+        private void Contenedor_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.Contenedor_Id = popularDropDowns.Contenedor_Id();
+        }
+        //
         #endregion
 
         #region Popula CFDI

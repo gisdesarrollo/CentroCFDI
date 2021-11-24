@@ -16,11 +16,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Nombre de la Aseguradora")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public string AseguraRespCivil { get; set; }
 
         [DisplayName("Número de Póliza de Seguro")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public string PolizaRespCivil { get; set; }
 
         public string AseguraMedAmbiente { get; set; }

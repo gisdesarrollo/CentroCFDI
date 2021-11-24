@@ -21,19 +21,19 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int NumPiezas { get; set; }
 
         [DisplayName("Peso Bruto")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Decimal PesoBruto  { get; set; }
 
         [DisplayName("Peso Neto")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Decimal PesoNeto { get; set; }
 
         [DisplayName("Peso Tara")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Decimal PesoTara { get; set; }
 
         [DisplayName("Unidad de Peso")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public String ClaveUnidadPeso_Id { get; set; }
         [ForeignKey("ClaveUnidadPeso_Id")]
         public virtual ClaveUnidadPeso ClaveUnidadPeso { get; set; }

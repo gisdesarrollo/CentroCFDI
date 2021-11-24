@@ -16,7 +16,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Campo Obligatorio")]
+       // [Required(ErrorMessage = "Campo Obligatorio")]
         public string FiguraTransporte { get; set; }
         [DisplayName("RFC Figura Transporte")]
         public string RFCFigura { get; set; }
@@ -32,6 +32,9 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [NotMapped]
         public virtual List<PartesTransporte> PartesTransportes { get; set; }
+
+        [NotMapped]
+        public virtual List<PartesTransporte> PartesTransportes2 { get; set; }
 
     }
 }

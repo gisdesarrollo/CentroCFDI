@@ -16,10 +16,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public String Placa { get; set; }
 
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public String SubTipoRem_Id { get; set; }
         [ForeignKey("SubTipoRem_Id")]
         public virtual SubTipoRem SubTipoRem { get; set; }

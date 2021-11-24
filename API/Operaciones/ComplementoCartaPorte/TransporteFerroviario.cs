@@ -25,12 +25,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Número de Poliza de Seguro")]
         public String NumPolizaSeguro { get; set; }
         [DisplayName("Tipo de Trafico")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public String TipoDeTrafico { get; set; }
 
 
         [DisplayName("Tipo de Servicio")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public string TipoDeServicio_Id { get; set; }
         [ForeignKey("TipoDeServicio_Id")]
         public virtual TipoDeServicio TipoDeServicio{ get; set; }      

@@ -62,6 +62,14 @@ namespace APBox.Control
         {
             return new SelectList(_db.Paises.OrderBy(a => a.c_Pais), "c_Pais","Descripcion");
         }
+        public SelectList PopulaClaveUnidad()
+        {
+            return new SelectList(_db.ClavesUnidad.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Nombre");
+        }
+        public SelectList PopulaClaveProdServ()
+        {
+            return new SelectList(_db.ClavesProdServCP.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
+        }
 
         public SelectList PopularUsocfdi()
         {
@@ -91,8 +99,81 @@ namespace APBox.Control
         {
             return new SelectList(_db.CveTransportes.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
         }
+        //evelio dropdow
+        public SelectList PopulaClaveProdSTCC()
+        {
+            return new SelectList(_db.ClavesProdSTCC.OrderBy(a => a.ClaveSTCC), "ClaveSTCC", "Descripcion");
+        }
+        public SelectList PopulaClaveUnida_Id()
+        {
+            return new SelectList(_db.ClavesUnidad.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Nombre");
+        }
 
+        public SelectList PopulaMaterialPeligroso_Id()
+        {
+            return new SelectList(_db.MaterialesPeligrosos.OrderBy(a => a.ClaveMaterialPeligroso), "ClaveMaterialPeligroso", "Descripcion");
+        }
+        public SelectList TipoEmbalaje_Id()
+        {
+            return new SelectList(_db.TipoEmbalajes.OrderBy(a => a.ClaveAsignacion), "ClaveAsignacion", "Descripcion");
+        }
 
+        public SelectList PopulaFraccionArancelaria_Id()
+        {
+            return new SelectList(_db.FraccionesArancelarias.OrderBy(a => a.c_FraccionArancelaria), "c_FraccionArancelaria", "Descripcion");
+        }
+
+        public SelectList ClaveUnidadPeso_Id()
+        {
+            return new SelectList(_db.ClavesUnidadPeso.OrderBy(a => a.ClaveUnidad), "ClaveUnidad", "Descripcion");
+        }
+        public SelectList SubTipoRem_Id()
+        {
+            return new SelectList(_db.SubTipoRems.OrderBy(a => a.ClaveTipoRemolque), "ClaveTipoRemolque", "Remolque");
+        }
+        public SelectList ConfigMaritima_Id()
+        {
+            return new SelectList(_db.ConfigMaritimas.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
+        }
+
+        public SelectList TipoPermiso_Id(string seleccion)
+        {
+            return new SelectList(_db.TipoPermisos.Where(a => a.Nota == seleccion).OrderBy(a => a.Descripcion), "Clave", "Descripcion");
+        }
+        public SelectList ConfigAutotransporte_Id()
+        {
+            return new SelectList(_db.ConfigAutotransportes.OrderBy(a => a.Descripcion), "c_ClaveNomeclatura", "Descripcion");
+        }
+        public SelectList ClaveTipoCarga_Id()
+        {
+            return new SelectList(_db.ClavesTipoCarga.OrderBy(a => a.ClaveTipocarga), "ClaveTipocarga", "Descripcion");
+        }
+        public SelectList NumAutorizacionNaviero_Id()
+        {
+            return new SelectList(_db.NumAutorizacionNavieros.OrderBy(a => a.NumeroAutorizacion), "NumeroAutorizacion");
+        }
+        public SelectList ContenedorMaritimo_Id()
+        {
+            return new SelectList(_db.ContenedoresMaritimos.OrderBy(a => a.ClaveContenedorMaritimo), "ClaveContenedorMaritimo", "Descripcion");
+        }
+        public SelectList CodigoTransporteAereo_Id()
+        {
+            return new SelectList(_db.CodigosTransporteAereo.OrderBy(a => a.ClaveIdentificacion), "ClaveIdentificacion", "Designador");
+        }
+        public SelectList TipoDeServicio_Id()
+        {
+            return new SelectList(_db.TipoDeServicios.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
+        }
+        public SelectList TipoCarro_Id()
+        {
+            return new SelectList(_db.TipoCarros.OrderBy(a => a.TipoDeCarro), "Clave", "TipoDeCarro");
+        }
+        public SelectList Contenedor_Id()
+        {
+            return new SelectList(_db.Contenedores.OrderBy(a => a.Clave), "Clave", "Descripcion");
+        }
+
+        //
 
         public SelectList PopulaBancos(int? seleccion)
         {

@@ -1,42 +1,43 @@
-﻿using API.CatalogosCartaPorte;
-using API.Catalogos;
+﻿using API.Catalogos;
+using API.CatalogosCartaPorte;
+using API.Operaciones.ComplementoCartaPorte;
+using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using CFDI.API.Enums.CFDI33;
-using System.ComponentModel;
 
-namespace API.Operaciones.ComplementoCartaPorte
+namespace API.Models.Dto
 {
-    [Table("cp_UbicacionOrigen")]
-    public class UbicacionOrigen
+     public class UbicacionDto
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         [DisplayName("Tipo de Ubicación")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public string TipoUbicacion { get; set; }
+
         [StringLength(8)]
-        [RegularExpression(@"/[O][R]\d{6}$")]
-        [DisplayName("Id Ubicacion Origen")]
-        public string IDUbicacionOrigen { get; set; }
+        //[RegularExpression(@"/[O][R]\d{6}$")]
+        [DisplayName("Id Ubicacion")]
+        public string IDUbicacion { get; set; }
 
-        public int Sucursal_Id { get; set; }
+        /*public int Sucursal_Id { get; set; }
         [ForeignKey("Sucursal_Id")]
-        public virtual Sucursal Sucursal { get; set; }
+        public virtual Sucursal Sucursal { get; set; }*/
 
-        [DisplayName("RFC Remitente Origen")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
-        public string RfcRemitente { get; set; }
+        [DisplayName("RFC Remitente Destinatario")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
+        public string RfcRemitenteDestinatario { get; set; }
 
-        [DisplayName("Nombre Remitente Origen")]
-        public string NombreRemitente { get; set; }
+        [DisplayName("Nombre Remitente Destinatario")]
+        public string NombreRemitenteDestinatario { get; set; }
+
         [DisplayName("Número de identificación")]
         public string NumRegIdTrib { get; set; }
+
         [DisplayName("Residencia Fiscal")]
         public c_Pais ResidenciaFiscal { get; set; }
         public string Estaciones_Id { get; set; }
@@ -45,13 +46,13 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         [DisplayName("Numero de Estación")]
         public String NumEstacion { get; set; }
-        [DisplayName("Nombre Estacion Origen")]
+        [DisplayName("Nombre Estacion")]
         public string NombreEstacion { get; set; }
         [DisplayName("Navegacion Trafico")]
         public string NavegacionTrafico { get; set; }
-        [DisplayName("Fecha y Hora Salida de Origen")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
-        public DateTime FechaHoraSalida { get; set; }
+        [DisplayName("Fecha y Hora Salida Llegada")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
+        public DateTime FechaHoraSalidaLlegada { get; set; }
         [DisplayName("Tipo de Estación")]
         public String TipoEstacion_Id { get; set; }
         [ForeignKey("TipoEstacion_Id")]
@@ -66,6 +67,5 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Domicilio_Id { get; set; }
         [ForeignKey("Domicilio_Id")]
         public virtual Domicilio Domicilio { get; set; }
-
     }
 }

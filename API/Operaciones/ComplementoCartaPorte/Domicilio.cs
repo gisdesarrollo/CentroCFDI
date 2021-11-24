@@ -15,10 +15,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String Calle { get; set; }
 
         [DisplayName("Codigo Postal")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
         public String CodigoPostal { get; set; }
         public String Colonia { get; set; }
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        
         public String Estado { get; set; }
         public String Localidad { get; set; }
         public String Municipio { get; set; }
@@ -28,7 +27,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DisplayName("Número Interior")]
         public String NumeroInterior { get; set; }
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        
         public String Pais { get; set; }
         public String Referencia { get; set; }
     }

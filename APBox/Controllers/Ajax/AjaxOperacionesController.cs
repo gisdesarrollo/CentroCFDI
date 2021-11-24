@@ -7,6 +7,9 @@ using CFDI.API.Enums.CFDI33;
 using CFDI.API.Enums.Complementos.Pagos10;
 using System;
 using System.Web.Mvc;
+using System.Collections.Generic;
+using API.Models.Dto;
+using System.Linq;
 
 namespace APBox.Controllers.Ajax
 {
@@ -79,99 +82,93 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
         }
 
-        public PartialViewResult AgregarUbicacion(String ORTipoUbicacion,String ORTipoEstacion,String ORTipoEstacionId, String IdOrigen,
-         String ORRFCRemitente,
-             String ORNombreRemitente,
-              String ORResidenciaFiscal,
-               String ORNombreEstacion,
-                String ORNumEstacion,
-                DateTime FechaHoraSalida,
-                Decimal ORDistanciaRecorrida,
-                 String ORCalle,
-                  String ORCodigoPostal,
-                   String ORColonia,
-                   String OREstado,
-                    String ORLocalidad,
-                    String ORMunicipio,
-                    String ORNumeroExterior,
-                    String ORNumeroInterior,
-                    String ORPais,
-                    String ORReferencia,
-                    String DETipoEstacion,
-                    String DETipoEstacionId,
-                     String IdDestino,
-                     String DERFCDestinatario,
-                     String DENombreDestinatario,
-                     String DEResidenciaFiscal,
-                     String DENombreEstacion,
-                     String DENumEstacion,
-                    DateTime FechaHoraLlegada,
-                    Decimal DEDistanciaRecorrida,
-                    String DECalle,
-                     String DECodigoPostal,
-                     String DEColonia, String DEEstado, String DELocalidad, String DEMunicipio, String DENumeroExterior,
-             String DENumeroInterior, String DEPais, String DEReferencia)
+        public PartialViewResult AgregarUbicacion(String TipoUbicacion,String TipoEstacion,String TipoEstacionId, String IdUbicacion,
+         String RFCRemitenteDestinatario,
+             String NombreRemitenteDestinatario,
+             string NumRegIdTrib,
+              String ResidenciaFiscal,
+               String NombreEstacion,
+                String NumEstacion,
+                DateTime FechaHoraSalidaLlegada,
+                Decimal DistanciaRecorrida,
+                 String Calle,
+                  String CodigoPostal,
+                   String Colonia,
+                   String Estado,
+                    String Localidad,
+                    String Municipio,
+                    String NumeroExterior,
+                    String NumeroInterior,
+                    String Pais,
+                    String Referencia)
         {
 
             var Ubicacion = new Ubicacion
             {
-                UbicacionOrigen = new UbicacionOrigen
+                TipoUbicacion = TipoUbicacion,
+                TipoEstaciones = TipoEstacion,
+                TipoEstacion_Id = TipoEstacionId,
+                IDUbicacion = IdUbicacion,
+                RfcRemitenteDestinatario = RFCRemitenteDestinatario,
+                NombreRemitenteDestinatario = NombreRemitenteDestinatario,
+                NumRegIdTrib = NumRegIdTrib,
+                ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), ResidenciaFiscal, true),
+                NombreEstacion = NombreEstacion,
+                NumEstacion = NumEstacion,
+                FechaHoraSalidaLlegada = FechaHoraSalidaLlegada,
+                DistanciaRecorrida = DistanciaRecorrida,
+                Domicilio = new Domicilio()
                 {
-                    DistanciaRecorrida = ORDistanciaRecorrida,
-                    TipoEstacion_Id = ORTipoEstacionId,
-                    TipoEstaciones = ORTipoEstacion,
-                    IDUbicacionOrigen = IdOrigen,
-                    RfcRemitente = ORRFCRemitente,
-                    NombreRemitente = ORNombreRemitente,
-                    ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), ORResidenciaFiscal, true),
-                    NombreEstacion = ORNombreEstacion,
-                    NumEstacion = ORNumEstacion,
-                    FechaHoraSalida = FechaHoraSalida,
-                    Domicilio = new Domicilio
-                    {
-                        Calle=ORCalle,
-                        CodigoPostal=ORCodigoPostal,
-                        Colonia = ORColonia,
-                        Estado = OREstado,
-                        Localidad = ORLocalidad,
-                        Municipio = ORMunicipio,
-                        NumeroExterior = ORNumeroExterior,
-                        NumeroInterior = ORNumeroInterior,
-                        Pais = ORPais,
-                        Referencia = ORReferencia
-                    }
-                },
-                UbicacionDestino = new UbicacionDestino
-                {
-                    DistanciaRecorrida = DEDistanciaRecorrida,
-                    TipoEstacion_Id = DETipoEstacionId,
-                    TipoEstaciones = DETipoEstacion,
-                    IDUbicacionDestino = IdDestino,
-                    RfcDestinatario = DERFCDestinatario,
-                    NombreDestinatario = DENombreDestinatario,
-                    ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), DEResidenciaFiscal, true),
-                    NombreEstacion = DENombreEstacion,
-                    NumEstacion = DENumEstacion,
-                    FechaHoraLlegada = FechaHoraLlegada,
-                    Domicilio = new Domicilio
-                    {
-                        Calle = DECalle,
-                        CodigoPostal = DECodigoPostal,
-                        Colonia = DEColonia,
-                        Estado = DEEstado,
-                        Localidad = DELocalidad,
-                        Municipio = DEMunicipio,
-                        NumeroExterior = DENumeroExterior,
-                        NumeroInterior = DENumeroInterior,
-                        Pais = DEPais,
-                        Referencia = DEReferencia
-                    }
+                    Calle = Calle,
+                    CodigoPostal = CodigoPostal,
+                    Colonia = Colonia,
+                    Estado = Estado,
+                    Localidad = Localidad,
+                    Municipio = Municipio,
+                    NumeroExterior = NumeroExterior,
+                    NumeroInterior = NumeroInterior,
+                    Pais = Pais,
+                    Referencia = Referencia
                 }
-
             };
 
             return PartialView("~/Views/ComplementosCartaPorte/Ubicacion.cshtml", Ubicacion);
         }
+
+        /*public PartialViewResult AgregarUbicacionDestino(string DETipoEstacion,string DETipoEstacionId,string IdDestino,string DERFCRemitente
+            , string DENombreRemitente,string DEResidenciaFiscal, string DENombreEstacion,string DENumEstacion,DateTime FechaHoraLlegada
+            , Decimal DEDistanciaRecorrida,string DECalle,string DECodigoPostal,string DEColonia, string DEEstado,string DELocalidad
+            , string DEMunicipio,string DENumeroExterior,string DENumeroInterior,string DEPais,string DEReferencia)
+        {
+            var UbicacionDestino = new UbicacionDestino()
+            {
+                TipoEstaciones = DETipoEstacion,
+                TipoEstacion_Id = DETipoEstacionId,
+                IDUbicacionDestino = IdDestino,
+                RfcDestinatario = DERFCRemitente,
+                NombreDestinatario = DENombreRemitente,
+                ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), DEResidenciaFiscal, true),
+                NombreEstacion = DENombreEstacion,
+                NumEstacion = DENumEstacion,
+                FechaHoraLlegada = FechaHoraLlegada,
+                DistanciaRecorrida = DEDistanciaRecorrida,
+                Domicilio = new Domicilio()
+                {
+                    Calle = DECalle,
+                    CodigoPostal = DECodigoPostal,
+                    Colonia = DEColonia,
+                    Estado = DEEstado,
+                    Localidad = DELocalidad,
+                    Municipio = DEMunicipio,
+                    NumeroExterior = DENumeroExterior,
+                    NumeroInterior = DENumeroInterior,
+                    Pais = DEPais,
+                    Referencia = DEReferencia
+                }
+
+            };
+            return PartialView("~/Views/ComplementosCartaPorte/UbicacionDestino.cshtml", UbicacionDestino);  
+        }*/
 
         public PartialViewResult AgregarMercancia(String ClaveProdServID, string ClaveProdSTCCID,string Descripcion,
             Decimal Cantidad,string Unidad,string ClaveUnidadID,string Dimensiones,bool MaterialPeligorosoSN, 
@@ -183,8 +180,8 @@ namespace APBox.Controllers.Ajax
             
             var mercancia = new Mercancia()
             {
-                ClaveProdServCP_Id = ClaveProdServID,
-                ClaveProdSTCC_Id = ClaveProdSTCCID,
+                ClaveProdServCP = ClaveProdServID,
+                ClaveProdSTCC = ClaveProdSTCCID,
                 Descripcion = Descripcion,
                 Cantidad = 0,
                 Unidad = Unidad,
@@ -216,7 +213,7 @@ namespace APBox.Controllers.Ajax
                     IDDestino = CTCveDestino,
                     ClaveTransporte =  CTCveTransporteID
                 },
-                DetalleMercancias = new DetalleMercancia()
+                DetalleMercancia = new DetalleMercancia()
                 {
                     ClaveUnidadPeso_Id = DEClaveUnidadPesoID,
                     PesoBruto = DEPesoBruto,
@@ -230,8 +227,9 @@ namespace APBox.Controllers.Ajax
         }
 
         public PartialViewResult AgregarFTransporte(string FTransporte, string RFCFigura,string NumLicencia, string NombreFigura,
-            string NumRegIdTribFigura,string ResidenciaFiscalFigura)
+            string NumRegIdTribFigura,string ResidenciaFiscalFigura, List<PartesTransporteDto> PartesTransporte)
         {
+           
             var TiposFigura = new TiposFigura()
             {
                 FiguraTransporte = FTransporte,
@@ -240,8 +238,45 @@ namespace APBox.Controllers.Ajax
                 NombreFigura = NombreFigura,
                 NumRegIdTribFigura = NumRegIdTribFigura,
                 ResidenciaFiscalFigura = (c_Pais)Enum.Parse(typeof(c_Pais), ResidenciaFiscalFigura, true),
+                
             };
+            //var listPartTrans = new List<PartesTransporte>();
+            TiposFigura.PartesTransportes = new List<PartesTransporte>();
+            if (PartesTransporte != null)
+            {
+                var parteTransporte = new PartesTransporte();
+                foreach (var parteTransporteDto in PartesTransporte)
+                {
+                    parteTransporte.ParteTransporte = parteTransporteDto.ParteTransporte;
+                    parteTransporte.Domicilio = new Domicilio() {
+                        Pais = parteTransporteDto.Pais,
+                        Estado = parteTransporteDto.Estado,
+                        Municipio = parteTransporteDto.Municipio,
+                        Localidad = parteTransporteDto.Localidad,
+                        CodigoPostal = parteTransporteDto.CodigoPostal,
+                        Colonia = parteTransporteDto.Colonia,
+                        Calle = parteTransporteDto.Calle,
+                        NumeroExterior = parteTransporteDto.NumeroExterior,
+                        NumeroInterior = parteTransporteDto.NumeroInterior,
+                        Referencia = parteTransporteDto.Referencia
+                };
+                    //listPartTrans.Add(parteTransporte);
+                    
+                    TiposFigura.PartesTransportes.Add(parteTransporte);
+                }
+            }
             return PartialView("~/Views/ComplementosCartaPorte/FiguraTransporte.cshtml", TiposFigura);
+        }
+        public PartialViewResult AgregarFTransporte2(ComplementoCartaPorte cartaPorte)
+        {
+            var CartaPorte = new ComplementoCartaPorte()
+            {
+                TiposFigura = new TiposFigura()
+                {
+                    NombreFigura = cartaPorte.TiposFigura.NombreFigura
+                }
+            };
+            return PartialView("~/Views/ComplementosCartaPorte/FiguraTransporte.cshtml", CartaPorte);
         }
 
         public PartialViewResult AgregarPTransporte(string PTransporte, string Pais,string Estado,string Municipio,string Localidad,
@@ -289,7 +324,7 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/DerechosDePaso.cshtml",DerechosDePasos);
         }
 
-        public PartialViewResult AgregarTFCarro(string TipoCarroID,string MatriculaCarro,string GuiaCarro,Decimal TonNetasCarro)
+        public PartialViewResult AgregarTFCarro(string TipoCarroID,string MatriculaCarro,string GuiaCarro,Decimal TonNetasCarro,List<ContenedorC> contenedorC)
         {
             var Carro = new Carro()
             {
@@ -298,6 +333,15 @@ namespace APBox.Controllers.Ajax
                 GuiaCarro = GuiaCarro,
                 ToneladasNetasCarro = TonNetasCarro
             };
+            Carro.ContenedoresC = new List<ContenedorC>();
+            if (contenedorC != null)
+            {
+                foreach(var contenedor in contenedorC)
+                {
+                    Carro.ContenedoresC.Add(contenedor);
+                }
+            }
+            
             return PartialView("~/Views/ComplementosCartaPorte/Carro.cshtml",Carro);
         }
 
@@ -342,6 +386,55 @@ namespace APBox.Controllers.Ajax
                IDDestino = UbicacionDestinoID
             };
             return PartialView("~/Views/ComplementosCartaPorte/CantidadTransportadas.cshtml", CTransportadas);
+        }
+
+        public PartialViewResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Descripcion, Decimal TBase
+            ,string TImpuesto, string TTipoFactor,Decimal TTasaOCuota,Decimal TImporte,Decimal TTImpuestosTR,Decimal RBase,string RImpuesto
+            ,string RTipofactor,Decimal RTasaOCuota,Decimal RImporte,Decimal RTImpuestoTR)
+        {
+            var Conceptos = new Conceptos()
+            {
+                ClaveProdServ_Id = ClaveProdServID,
+                ClaveUnidad_Id = ClaveUnidadID,
+                Descripcion = Descripcion,
+                Traslado = new SubImpuestoC()
+                {
+                    Base=TBase,
+                    Impuesto = (c_Impuesto)Enum.Parse(typeof(c_Impuesto), TImpuesto, true),
+                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TTipoFactor, true),
+                    TasaOCuota = TTasaOCuota,
+                    Importe = TImporte,
+                    TotalImpuestosTR = TTImpuestosTR,
+                },
+                Retencion = new SubImpuestoC()
+                {
+                    Base = RBase,
+                    Impuesto = (c_Impuesto)Enum.Parse(typeof(c_Impuesto), RImpuesto, true),
+                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RTipofactor, true),
+                    TasaOCuota = RTasaOCuota,
+                    Importe = RImporte,
+                    TotalImpuestosTR = RTImpuestoTR
+                }
+            };
+            return PartialView("~/Views/ComplementosCartaPorte/Conceptos.cshtml", Conceptos);
+        }
+
+        public int Buscar(string valor, String tipo)
+        {
+            Console.WriteLine("el valor es: " + valor);
+            //_db.Localidades.Where(a => a.c_Estado_Id == seleccion).ToList()
+            var busqueda = 0;
+            if (tipo.Equals("serv"))
+            {
+                busqueda = _db.ClavesProdServCP.Where(a => a.c_ClaveUnidad.Equals(valor)).Count();
+            }
+            else if (tipo.Equals("stcc"))
+            {
+                busqueda = _db.ClavesProdSTCC.Where(a => a.ClaveSTCC.Equals(valor)).Count();
+            }
+
+
+            return busqueda;
         }
         #region PopulaForma
 

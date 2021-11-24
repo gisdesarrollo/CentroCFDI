@@ -141,6 +141,8 @@ namespace API.Context
         #region CartaPorte
 
         //CatalogosCartaPorte
+        
+        public DbSet<Conceptos> Conceptos { get; set; }
         public DbSet<ClaveProdServCP> ClavesProdServCP { get; set; }
         public DbSet<ClaveProdSTCC> ClavesProdSTCC { get; set; }
         public DbSet<ClaveTipoCarga> ClavesTipoCarga { get; set; }
@@ -199,14 +201,20 @@ namespace API.Context
         public DbSet<TransporteAereo> TransporteAereos { get; set; }
         public DbSet<TransporteFerroviario> TransporteFerroviarios { get; set; }
         public DbSet<TransporteMaritimo> TransporteMaritimos { get; set; }
-        public DbSet<Ubicacion> Ubicaciones { get; set; }
+        public DbSet<Ubicacion> UbicacionOrigen { get; set; }
         public DbSet<UbicacionDestino> UbicacionesDestino { get; set; }
-        public DbSet<UbicacionOrigen> UbuicacionesOrigen { get; set; }
+
+        /*public DbSet<UbicacionOrigen> UbuicacionesOrigen { get; set; }*/
         public DbSet<UsoCfdi> UsoCfdis { get; set; }
+
+        public DbSet<SubImpuestoC> SubImpuestoC { get; set; }
+        public DbSet<GuiasIdentificacion> GuiasIdentificacion { get; set; }
 
         //Relaciones CartaPorte
         public DbSet<AutotransporteRemolque> AutotransporteFederalRemolques { get; set; }
         public DbSet<CarroContenedorC> CarrosContenedorC { get; set; }
+
+        public DbSet<ConceptoSubImpuestoConcepto> ConceptoSubImpuestoConcepto { get; set; }
 
         public DbSet<ComplementoCartaPorteUbicacion> ComplementoCartaPorteUbicaciones { get; set; }
         public DbSet<TransporteMaritimoContenedorM> TransporteMaritimoContenedoresM { get; set; }
@@ -218,6 +226,7 @@ namespace API.Context
         public DbSet<TransporteFerroviarioDerechosDePaso> TransporteFerroviarioDerechosDePasos  { get; set; }
         public DbSet<TransporteFerroviarioCarro> TransporteFerroviarioCarros { get; set; }
 
+        public DbSet<MercanciaDetalleMercancia> MercanciaDetalleMercancia { get; set; }
         #endregion
 
 

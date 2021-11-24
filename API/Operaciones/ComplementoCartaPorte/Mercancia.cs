@@ -19,25 +19,26 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [StringLength(8)]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Bienes Transportados")]
-        public String ClaveProdServCP_Id { get; set; }
-        [ForeignKey("ClaveProdServCP_Id")]
-        public virtual ClaveProdServCP ClaveProdServCP { get; set; }
-        /*[NotMapped]
-        public string BienesTransp { get; set; }*/
-        [Required(ErrorMessage = "Campo Obligatorio")]
-        public Decimal Cantidad { get; set; }
+        public String ClaveProdServCP { get; set; }
+        /*[ForeignKey("ClaveProdServCP_Id")]
+        public virtual ClaveProdServCP ClaveProdServCP { get; set; }*/
+        [NotMapped]
+        public string NameBienesTransp { get; set; }
+
+        //[Required(ErrorMessage = "Campo Obligatorio")]
+        public int Cantidad { get; set; }
 
         [DisplayName("Clave STCC")]
-        public string ClaveProdSTCC_Id { get; set; }
-        [ForeignKey("ClaveProdSTCC_Id")]
-        public virtual ClaveProdSTCC ClaveProdSTCC { get; set; }
-        /*[NotMapped]
-        public string ClaveSTCC { get; set; }
-        */
+        public string ClaveProdSTCC { get; set; }
+        /*[ForeignKey("ClaveProdSTCC_Id")]
+        public virtual ClaveProdSTCC ClaveProdSTCC { get; set; }*/
+        [NotMapped]
+        public string NameClaveSTCC { get; set; }
+        
         [DisplayName("Clave de Unidad")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public string ClaveUnidad_Id { get; set; }
         [ForeignKey("ClaveUnidad_Id")]
         public virtual ClaveUnidad ClaveUnidad { get; set; }
@@ -59,7 +60,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Boolean  MaterialPeligrosos { get; set; }
         
         [DisplayName("Descripción")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public string Descripcion { get; set; }
 
         public string Dimensiones { get; set; }
@@ -90,7 +91,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public c_Moneda Moneda { get; set; }
 
         [DisplayName("Peso en Kilogramos")]
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        //[Required(ErrorMessage ="Campo Obligatorio")]
         public Decimal PesoEnKg { get; set; }
         public String Unidad { get; set; }
 
@@ -100,13 +101,14 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Valor de la Mercancía")]
         public String ValorMercancia { get; set; }
 
-        public int? DetalleMercanciaId { get; set; }
-        [ForeignKey("DetalleMercanciaId")]
+        /*public int? DetalleMercanciaId { get; set; }
+        [ForeignKey("DetalleMercanciaId")]*/
+        [NotMapped]
         public virtual DetalleMercancia DetalleMercancia { get; set; }
 
-        [NotMapped]
+        /*[NotMapped]
         public virtual DetalleMercancia DetalleMercancias { get; set; }
-
+        */
         [NotMapped]
         public virtual CantidadTransportada CantidadTransportada { get; set; }
         

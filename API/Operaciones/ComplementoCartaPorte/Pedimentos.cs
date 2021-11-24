@@ -13,7 +13,7 @@ namespace API.Operaciones.ComplementoCartaPorte
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public string Pedimento { get; set; }
     }
 }

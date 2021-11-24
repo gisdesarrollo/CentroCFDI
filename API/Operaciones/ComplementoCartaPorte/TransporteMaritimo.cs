@@ -28,15 +28,15 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Decimal Manga { get; set; }
 
         [DisplayName("Matrícula")]
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public String Matricula { get; set; }
 
         [DisplayName("Nacionalidad de Embarcación")]
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public c_Pais NacionalidadEmbarc { get; set; }
 
         [DisplayName("Nombre del Agente Naviero")]
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public String NombreAgenteNaviero { get; set; }
 
         [DisplayName("Nombre de la Aseguradora")]
@@ -45,7 +45,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Nombre de Embarcación")]
         public String NombreEmbarc { get; set; }
 
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public String NumAutorizacionNaviero_Id { get; set; }
         [ForeignKeyAttribute("NumAutorizacionNaviero_Id")]
         public virtual NumAutorizacionNaviero NumAutorizacionNaviero { get; set; }
@@ -53,14 +53,14 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String NumAutorizacionNavieros { get; set; }
         */
         [DisplayName("Número de Certificación de la ITC")]
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public String NumCerITC { get; set; }
 
         [DisplayName("Número de Conocimiento del Embarque")]
         public String NumConocEmbarc { get; set; }
 
         [DisplayName("Número OMI")]
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public String NumeroOMI { get; set; }
         
         [DisplayName("Número de Permiso SCT")]
@@ -86,7 +86,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
 
         [DisplayName("Tipo de Carga")]
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public String ClaveTipoCarga_Id { get; set; }
         [ForeignKeyAttribute("ClaveTipoCarga_Id")]
         public virtual ClaveTipoCarga ClaveTipoCarga { get; set; }
@@ -97,7 +97,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         */
 
         [DisplayName("Tipo de Embarcación")]
-        [Required(ErrorMessage ="Campo obligatorio")]
+        //[Required(ErrorMessage ="Campo obligatorio")]
         public String ConfigMaritima_Id { get; set; }
         [ForeignKey("ConfigMaritima_Id")]
         public virtual ConfigMaritima ConfigMaritima{ get; set; }
@@ -107,7 +107,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         //[NotMapped]
         [DisplayName("Unidades de Arqueo Bruto")]
-        [Required(ErrorMessage = "Campo obligatorio")]
+        //[Required(ErrorMessage = "Campo obligatorio")]
         public Decimal UnidadesDeArqBruto { get; set; }
 
         [NotMapped]
