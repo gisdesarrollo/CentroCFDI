@@ -43,4 +43,104 @@
 
         </div>
     </div>
+
+    <div class="panel">
+        <div class="panel-body">
+            <h3 class="title-hero">
+                CFDi Generados con complemento de Carta Porte
+            </h3>
+            <button class="btn btn-alt btn-primary float-left btn-xs" type="" value="" name="">
+                <span> Timbrar Seleccionados </span>
+            </button>
+            <div class="clearfix"></div>
+            <div class="row">
+                <table class="table table-condensed ">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                Seleccionado
+                            </th>
+                            <th>
+                                RFCReceptor
+                            </th>
+                            <th>
+                                Tipo Comprobante
+                            </th>
+                            <th>
+                                Tipo Transporte
+                            </th>
+                            <th>
+                                Fecha del Documento
+                            </th>
+
+                            <th>
+                                Opciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.ComplementosCartaPorte.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Id)
+                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FormaPago)
+                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FechaDocumento)
+                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].TipoDeComprobante)
+                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].ClaveTransporteId)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].rfcReceptor)
+                                </td>
+                                <td>
+                                    @if (Model.ComplementosCartaPorte[i].TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
+                                    {
+                                        @Html.Raw("Ingreso")
+                                    }
+                                    else
+                                    {
+                                    @Html.Raw("Tralado")
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "1")
+                                    {@Html.Raw("AutoTransporte")}
+                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "2")
+                                    {@Html.Raw("Transporte Maritimo")}
+                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "3")
+                                    {@Html.Raw("Transporte Aereo")}
+                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "4")
+                                    {@Html.Raw("Transporte Ferroviario")}
+                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "5")
+                                    {@Html.Raw("Ducto")}
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FechaDocumento)
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-cog"></span> Opciones
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            
+                                <li>@Html.ActionLink("Descargar", "", new { }, new { @class = "font-size-12" })</li>
+                              
+                                <li>@Html.ActionLink("Editar Carta Porte", "", new {  }, new { @class = "font-size-12" })</li>
+                                
+                                 <li>@Html.ActionLink("Generar", "", new {  }, new { @class = "font-size-12 font-green" })</li>
+                                 <li>@Html.ActionLink("Eliminar", "", new {  }, new { @class = "font-size-12 font-red" })</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                            </table>
+
+                        </div>
+        </div>
+    </div>
 }

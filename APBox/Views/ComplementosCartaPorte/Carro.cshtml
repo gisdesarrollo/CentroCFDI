@@ -18,7 +18,7 @@
     <h3 class="title-hero">
         Carro
     </h3>
-    <div class="content-box-wrapper FTransporte">
+    <div class="content-box-wrapper TFCarro">
         <div class="form-group col-xs-12 col-sm-3">
             @Html.LabelFor(model => model.TipoCarro_Id)<br />
             @Html.DisplayFor(model => model.TipoCarro_Id)
@@ -43,12 +43,13 @@
         @if (Model.ContenedoresC != null)
         {
 
-            <hr />
-            <h3 class="title-hero">
-                Carro : Contenedor
-            </h3>
+
             for (var x = 0; x < Model.ContenedoresC.Count; x++)
             {
+                <hr />
+                <h3 class="title-hero">
+                    Carro : Contenedor
+                </h3>
                 <div class="form-group col-xs-12 col-sm-3">
                     @Html.LabelFor(i => i.ContenedoresC[x].Contenedor_Id)<br />
                     @Html.DisplayFor(i => i.ContenedoresC[x].Contenedor_Id)

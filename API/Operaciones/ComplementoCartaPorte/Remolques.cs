@@ -20,6 +20,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String Placa { get; set; }
 
         //[Required(ErrorMessage ="Campo Obligatorio")]
+        [DisplayName("Subtipo de Remolque")]
         public String SubTipoRem_Id { get; set; }
         [ForeignKey("SubTipoRem_Id")]
         public virtual SubTipoRem SubTipoRem { get; set; }
@@ -31,8 +32,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         /*[NotMapped]
         [DisplayName("Clave Tipo de Remolque")]
         public String ClaveSubTiporem { get; set; }
+        */
         [NotMapped]
         [DisplayName("Subtipo de Remolque")]
-        public String SubTipoRems { get; set; }*/
+        public String SubTipoRems { get; set; }
     }
 }

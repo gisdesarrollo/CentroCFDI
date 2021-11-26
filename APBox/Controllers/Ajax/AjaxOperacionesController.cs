@@ -173,9 +173,10 @@ namespace APBox.Controllers.Ajax
         public PartialViewResult AgregarMercancia(String ClaveProdServID, string ClaveProdSTCCID,string Descripcion,
             Decimal Cantidad,string Unidad,string ClaveUnidadID,string Dimensiones,bool MaterialPeligorosoSN, 
             string MaterialPeligrosoID, string DescripcionEmbalaje, string TipoEmbalajeID,Decimal PesoEnKg,string ValorMercancia,
-            string Moneda, string FraccionArancelariaID, string UUIDComercioExt, string PPedimento, string GINumIdent, string GIDescripIdent,
-            Decimal GIPesoIdent,Decimal CTCantidad, string CTCveTransporteID, string CTCveOrigen, string CTCveDestino,
-            string DEClaveUnidadPesoID, Decimal DEPesoBruto, Decimal DEPEsoNeto,Decimal DEPesoTara, int DENumPiezas)
+            string Moneda, string FraccionArancelariaID, string UUIDComercioExt/*, string PPedimento, string GINumIdent, string GIDescripIdent,
+            Decimal GIPesoIdent,Decimal CTCantidad, string CTCveTransporteID, string CTCveOrigen, string CTCveDestino*/,
+            string DEClaveUnidadPesoID, Decimal DEPesoBruto, Decimal DEPEsoNeto,Decimal DEPesoTara, int DENumPiezas,
+            List<Pedimentos> pedimentos,List<GuiasIdentificacion> GIdentificacion,List<CantidadTransportada> CTransportada)
         {
             
             var mercancia = new Mercancia()
@@ -196,23 +197,6 @@ namespace APBox.Controllers.Ajax
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), Moneda, true), 
                 FraccionArancelaria_Id = FraccionArancelariaID,
                 UUIDComecioExt = UUIDComercioExt,
-                Pedimentos = new Pedimentos()
-                {
-                    Pedimento = PPedimento
-                },
-                GuiasIdentificacion = new GuiasIdentificacion()
-                {
-                    NumeroGuiaIdentificacion = GINumIdent,
-                    DescripGuiaIdentificacion = GIDescripIdent,
-                    PesoGuiaIdentificacion = GIPesoIdent
-                },
-                CantidadTransportada = new CantidadTransportada()
-                {
-                    Cantidad = CTCantidad,
-                    IDOrigen = CTCveOrigen,
-                    IDDestino = CTCveDestino,
-                    ClaveTransporte =  CTCveTransporteID
-                },
                 DetalleMercancia = new DetalleMercancia()
                 {
                     ClaveUnidadPeso_Id = DEClaveUnidadPesoID,
@@ -223,6 +207,30 @@ namespace APBox.Controllers.Ajax
                 }
                 
             };
+            if (pedimentos != null)
+            {
+                mercancia.Pedimentoss = new List<Pedimentos>();
+                foreach(var ped in pedimentos)
+                {
+                    mercancia.Pedimentoss.Add(ped);
+                }
+            }
+            if (GIdentificacion != null)
+            {
+                mercancia.GuiasIdentificacionss = new List<GuiasIdentificacion>();
+                foreach(var GIdent in GIdentificacion)
+                {
+                    mercancia.GuiasIdentificacionss.Add(GIdent);
+                }
+            }
+            if (CTransportada != null)
+            {
+                mercancia.CantidadTransportadass = new List<CantidadTransportada>();
+                foreach(var CTrans in CTransportada)
+                {
+                    mercancia.CantidadTransportadass.Add(CTrans);
+                }
+            }
             return PartialView("~/Views/ComplementosCartaPorte/Mercancia.cshtml", mercancia);
         }
 
@@ -362,7 +370,7 @@ namespace APBox.Controllers.Ajax
             {
                 Pedimento = Pedimento
             };
-            return PartialView("~/Views/ComplementosCartaPorte/Pedimentos.cshtml", Pedimento);
+            return PartialView("~/Views/ComplementosCartaPorte/Pedimentos.cshtml", Pedimentos);
         }
 
         public PartialViewResult AgregarGIdentificacion(string NumGuiIdentificacion,string DescripGuiaIdentificacion,Decimal PesoGuiaIdentificacion)
@@ -417,6 +425,18 @@ namespace APBox.Controllers.Ajax
                 }
             };
             return PartialView("~/Views/ComplementosCartaPorte/Conceptos.cshtml", Conceptos);
+        }
+
+        public PartialViewResult AgregarRemolque(string Placa,string TipoRemolqueId, string TipoRemolque)
+        {
+            var remolques = new Remolques()
+            {
+                Placa = Placa,
+                SubTipoRem_Id = TipoRemolqueId,
+                SubTipoRems = TipoRemolque
+
+            };
+            return PartialView("~/Views/ComplementosCartaPorte/Remolques.cshtml",remolques);
         }
 
         public int Buscar(string valor, String tipo)

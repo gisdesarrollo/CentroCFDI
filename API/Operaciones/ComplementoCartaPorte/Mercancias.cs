@@ -57,6 +57,6 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual Mercancia Mercancia{ get; set; }
 
         [NotMapped]
-        public virtual List<Mercancias> Mercanciass { get; set; }
+        public virtual List<Mercancia> Mercanciass { get; set; }
     }
 }

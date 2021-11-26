@@ -99,6 +99,10 @@ namespace APBox.Control
         {
             return new SelectList(_db.CveTransportes.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
         }
+        public SelectList PopulaTipoPermiso()
+        {
+            return new SelectList(_db.TipoPermisos.OrderBy(a => a.Clave), "Clave", "Descripcion");
+        }
         //evelio dropdow
         public SelectList PopulaClaveProdSTCC()
         {
@@ -106,7 +110,7 @@ namespace APBox.Control
         }
         public SelectList PopulaClaveUnida_Id()
         {
-            return new SelectList(_db.ClavesUnidad.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Nombre");
+            return new SelectList(_db.ClavesUnidad.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Nombre"); 
         }
 
         public SelectList PopulaMaterialPeligroso_Id()
@@ -125,7 +129,7 @@ namespace APBox.Control
 
         public SelectList ClaveUnidadPeso_Id()
         {
-            return new SelectList(_db.ClavesUnidadPeso.OrderBy(a => a.ClaveUnidad), "ClaveUnidad", "Descripcion");
+            return new SelectList(_db.ClavesUnidadPeso.OrderBy(a => a.ClaveUnidad), "ClaveUnidad", "Nombre");
         }
         public SelectList SubTipoRem_Id()
         {

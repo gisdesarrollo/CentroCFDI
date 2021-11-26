@@ -8,7 +8,7 @@
     <div class="content-box mrg20L mrg20R">
         <h3 class="content-box-header bg-default">
             <i class="glyph-icon icon-money"></i>
-            Carros
+            Guia Identificación
             <div class="header-buttons-separator">
                 <a href="#" class="icon-separator" onclick="removeDetalleGIdentificacion(this)">
                     <i class="glyph-icon icon-times font-red"></i>
@@ -18,17 +18,17 @@
         <div class="content-box-wrapper GIdentificacion">
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.NumeroGuiaIdentificacion)<br />
-                @Html.DisplayFor(model => model.NumeroGuiaIdentificacion)
+                <p id="NumGuiaIdentificacion">@Model.NumeroGuiaIdentificacion</p>
                 @Html.HiddenFor(model => model.NumeroGuiaIdentificacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.DescripGuiaIdentificacion)<br />
-                @Html.DisplayFor(model => model.DescripGuiaIdentificacion)
+               <p id="DescripGuiaIdentificacion">@Model.DescripGuiaIdentificacion</p>
                 @Html.HiddenFor(model => model.DescripGuiaIdentificacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.PesoGuiaIdentificacion)<br />
-                @Html.DisplayFor(model => model.PesoGuiaIdentificacion)
+                <p id="PesoGuiaIdentificacion">@Model.PesoGuiaIdentificacion)</p>
                 @Html.HiddenFor(model => model.PesoGuiaIdentificacion)
             </div>
             <div class="clearfix"></div>

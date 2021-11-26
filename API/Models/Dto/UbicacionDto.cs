@@ -53,6 +53,7 @@ namespace API.Models.Dto
         [DisplayName("Fecha y Hora Salida Llegada")]
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public DateTime FechaHoraSalidaLlegada { get; set; }
+
         [DisplayName("Tipo de Estación")]
         public String TipoEstacion_Id { get; set; }
         [ForeignKey("TipoEstacion_Id")]

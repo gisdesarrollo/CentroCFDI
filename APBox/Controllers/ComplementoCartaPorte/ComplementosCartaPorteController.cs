@@ -10,6 +10,7 @@ using API.Enums;
 using Aplicacion.Context;
 using APBox.Control;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones;
+using System.Data.Entity.Validation;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -19,6 +20,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
         // GET: ComplementosCartaPorte
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly AcondicionarComplementosCartaPorte _acondicionarComplementosCartaPorte = new AcondicionarComplementosCartaPorte();
+       
         public ActionResult Index()
         {
             var ComplementoCartaPorteModel = new ComplementosCartaPorteModel()
@@ -26,6 +28,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 Mes = (Meses)(DateTime.Now.Month),
                 Anio = DateTime.Now.Year
             };
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            var fechaFinal = DateTime.Now;
+            ComplementoCartaPorteModel.ComplementosCartaPorte = _acondicionarComplementosCartaPorte.Filtrar(fechaInicial, fechaFinal, ObtenerSucursal());
 
             return View(ComplementoCartaPorteModel);
         }
@@ -50,10 +55,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
             //PopulaClaveUnidad();
             //PopulaClaveProdServCP();
             PopulaClaveProdSTCC();
-            PopulaClaveUnida_Id();
+            //PopulaClaveUnida_Id();
             PopulaMaterialPeligroso_Id();
             TipoEmbalaje_Id();
-            PopulaFraccionArancelaria_Id();
+            //PopulaFraccionArancelaria_Id();
             ClaveUnidadPeso_Id();
             SubTipoRem_Id();
             ConfigMaritima_Id();
@@ -66,8 +71,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
             TipoDeServicio_Id();
             TipoCarro_Id();
             Contenedor_Id();
-
-
+            //list
+            PopulaClaveUnidaList();
+            PopulaClaveProDServList();
+            PopulaFraccionArancelariaList();
+            PopulaTiPermiso();
             var ComplementoCartaPorte = new ComplementoCartaPorte()
             {
                 Generado = false,
@@ -218,9 +226,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ModelState.Remove("CfdiRelacionadoId");
             ModelState.Remove("Receptor.RazonSocial");
             ModelState.Remove("Receptor");
-            PopulaClientes(complementoCartaPorte.ReceptorId);
+            ModelState.Remove("Sucursal.RazonSocial");
+           // PopulaClientes(complementoCartaPorte.ReceptorId);
             PopulaBancos(ObtenerSucursal());
-            PopulaCfdiRelacionado(complementoCartaPorte.CfdiRelacionadoId);
+            //PopulaCfdiRelacionado(complementoCartaPorte.CfdiRelacionadoId);
 
             PopulaTiposDeComprobante();
             PopulaTransporte();
@@ -228,17 +237,17 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
             PopulaDatosSucursal(ObtenerSucursal());
             PopulaDatosEstaciones();
-
+            //PopulaClaveUnidad();
             PopulaPaises();
             PopularUsoCfdi();
             PopulaTiposUbicacion();
             PopulaFiguraTransporte();
             //
             PopulaClaveProdSTCC();
-            PopulaClaveUnida_Id();
+            //PopulaClaveUnida_Id();
             PopulaMaterialPeligroso_Id();
             TipoEmbalaje_Id();
-            PopulaFraccionArancelaria_Id();
+            //PopulaFraccionArancelaria_Id();
             ClaveUnidadPeso_Id();
             SubTipoRem_Id();
             ConfigMaritima_Id();
@@ -251,6 +260,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
             TipoDeServicio_Id();
             TipoCarro_Id();
             Contenedor_Id();
+            //list
+            PopulaClaveUnidaList();
+            PopulaClaveProDServList();
+            PopulaFraccionArancelariaList();
+            PopulaTiPermiso();
             if (!ModelState.IsValid)
             {
                 //Identifica los mensaje de error
@@ -274,25 +288,61 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 return View(complementoCartaPorte);
             }
             //Modelstate True
-            if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.T)
+            try
             {
-                complementoCartaPorte.hidden = false;
-                complementoCartaPorte.Moneda = c_Moneda.XXX;
-                complementoCartaPorte.Subtotal = 0;
-                complementoCartaPorte.Total = 0;
-                //carga conceptos
-                _acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
+                if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.T)
+                {
+                    complementoCartaPorte.hidden = false;
+                    complementoCartaPorte.Moneda = c_Moneda.XXX;
+                    complementoCartaPorte.Subtotal = 0;
+                    complementoCartaPorte.Total = 0;
+                    //carga conceptos
+                    //_acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
+                }
+                else
+                {
+                    complementoCartaPorte.hidden = true;
+                    //carga conceptos
+                    //_acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
+                }
+                //carga complemento
+                
+                _db.ComplementoCartaPortes.Add(complementoCartaPorte);
+                _db.SaveChanges();
+                //carga ubicaciones
+                //_acondicionarComplementosCartaPorte.cargaUbicaciones(ref complementoCartaPorte);
+                //carga Mercancias
+                //_acondicionarComplementosCartaPorte.cargaMercancias(ref complementoCartaPorte);
+                //carga Transporte
+                //_acondicionarComplementosCartaPorte.cargaTransporte(ref complementoCartaPorte);
+                //carga Figura Transporte
+               /// _acondicionarComplementosCartaPorte.cargaFiguraTransporte(ref complementoCartaPorte);
+                //carga complemento
+                //_db.ComplementoCartaPortes.Add(complementoCartaPorte);
+                return RedirectToAction("Index");
             }
-            else
+            catch(DbEntityValidationException ex)
             {
-                complementoCartaPorte.hidden = true;
-                //carga conceptos
-                _acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
-            }
-            //carga ubicaciones
-            _acondicionarComplementosCartaPorte.cargaUbicaciones(ref complementoCartaPorte);
+                ModelState.AddModelError("", ex.Message);
+                /*foreach (var eve in ex.EntityValidationErrors)
+                {
+                    /*Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);*/
 
-            return RedirectToAction("Index");
+                /* foreach (var ve in eve.ValidationErrors)
+                 {
+                     ModelState.AddModelError("", String.Format("- Property: \"{0}\", Error: \"{1}\"",
+                         ve.PropertyName, ve.ErrorMessage));
+
+                     /*Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                         ve.PropertyName, ve.ErrorMessage);*/
+                /*}
+            }*/
+
+
+            }
+            complementoCartaPorte.TiposFigura.PartesTransporte.Domicilio = new Domicilio();
+            return View(complementoCartaPorte);
         }
 
         public void serealizaJson(ComplementoCartaPorte complementoCartaPorte)
@@ -421,6 +471,38 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.TipoFiguraTransporte = items;
         }
 
+        private void PopulaClaveProDServList()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Origen Nacional", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "No existe en el catálogo", Value = "01010101" });
+            items.Add(new SelectListItem { Text = "Caballos", Value = "10101506" });
+            items.Add(new SelectListItem { Text = "Pollos vivos", Value = "10101601" });
+            ViewBag.ProductoSerCPList = items;
+        }
+        private void PopulaClaveUnidaList()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Grupos", Value = "10", Selected = true });
+            items.Add(new SelectListItem { Text = "Equipos", Value = "11" });
+            items.Add(new SelectListItem { Text = "Raciones", Value = "13" });
+            items.Add(new SelectListItem { Text = "Camión cisterna", Value = "19" });
+            ViewBag.ClaveUnidadList = items;
+        }
+        private void PopulaFraccionArancelariaList()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Derogada", Value = "01011001", Selected = true });
+            items.Add(new SelectListItem { Text = "Reproductores de raza pura.", Value = "01012101" });
+            items.Add(new SelectListItem { Text = "Sin pedigree, para reproducción", Value = "01012902" });
+            items.Add(new SelectListItem { Text = "Perros", Value = "01061903" });
+            ViewBag.FraccArancelaria = items;
+        }
+        private void PopulaTiPermiso()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TipoPermisoList = (popularDropDowns.PopulaTipoPermiso());
+        }
         private void PopulaTransporte()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -432,16 +514,22 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ClavesProdSTCC = (popularDropDowns.PopulaClaveProdSTCC());
         }
-        private void PopulaClaveUnida_Id()
+        /*private void PopulaClaveUnida_Id()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ClaveUnidad = popularDropDowns.PopulaClaveUnida_Id();
-        }
+        }*/
 
         private void PopulaMaterialPeligroso_Id()
         {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.MaterialesPeligroso_Id = (popularDropDowns.PopulaMaterialPeligroso_Id());
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "PICRATO AMÓNICO seco o humedecido con menos del 10 %, en masa, de agua (Producto o material explosivo)", Value = "M0001", Selected = true });
+            items.Add(new SelectListItem { Text = "CARTUCHOS PARA ARMAS, con carga explosiva (Producto o material explosivo)", Value = "M0002" });
+            items.Add(new SelectListItem { Text = "CARTUCHOS PARA ARMAS, con carga explosiva (Producto o material explosivo)", Value = "M0003" });
+            items.Add(new SelectListItem { Text = "BOMBAS con carga explosiva (Producto o material explosivo)", Value = "M0019" });
+           
+            
+            ViewBag.MaterialesPeligroso_Id = items;
         }
         private void TipoEmbalaje_Id()
         {

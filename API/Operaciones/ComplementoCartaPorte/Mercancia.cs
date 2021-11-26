@@ -106,17 +106,26 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual DetalleMercancia DetalleMercancia { get; set; }
 
-        /*[NotMapped]
-        public virtual DetalleMercancia DetalleMercancias { get; set; }
-        */
+        [NotMapped]
+        public virtual List<DetalleMercancia> DetalleMercanciass { get; set; }
+        
         [NotMapped]
         public virtual CantidadTransportada CantidadTransportada { get; set; }
-        
+
+        [NotMapped]
+        public virtual List<CantidadTransportada> CantidadTransportadass { get; set; }
+
         [NotMapped]
         public virtual GuiasIdentificacion GuiasIdentificacion { get; set; }
 
         [NotMapped]
+        public virtual List<GuiasIdentificacion> GuiasIdentificacionss { get; set; }
+
+        [NotMapped]
         public virtual Pedimentos Pedimentos { get; set; }
+
+        [NotMapped]
+        public virtual List<Pedimentos> Pedimentoss { get; set; }
 
         [NotMapped]
         [DisplayName("Agregar Pedimento")]

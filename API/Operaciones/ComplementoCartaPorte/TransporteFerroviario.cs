@@ -50,5 +50,6 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual List<DerechosDePasos> DerechosDePasoss { get; set; }
 
+
     }
 }

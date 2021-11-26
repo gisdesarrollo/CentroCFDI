@@ -50,7 +50,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public List<Conceptos> Conceptoss { get; set; }
 
-        [DisplayName("Clave Transporte")]
+        [DisplayName("Tipo Transporte")]
         public string ClaveTransporteId { get; set; }
         [ForeignKey("ClaveTransporteId")]
         public virtual CveTransporte ViaEntradaSalida { get; set; }
@@ -58,9 +58,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Vía de Entrada o Salida")]
         public String ClaveTransporte { get; set; }
 
-        [NotMapped]
+        [Required]
+        [DisplayName("RFC Receptor")]
         public string rfcReceptor { get; set; }
-        [NotMapped]
+
+       
         [Required]
         [DisplayName("Tipo de Comprobante")]
         public c_TipoDeComprobante TipoDeComprobante { get; set; }
@@ -94,6 +96,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual List<CantidadTransportada> CantidadTransportadass { get; set; }
 
         [NotMapped]
+        public virtual List<Remolques> Remolques { get; set; }
+
+        [NotMapped]
         public virtual List<ContenedorM> ContenedoresM { get; set; }
 
         [NotMapped]
@@ -123,10 +128,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual Sucursal Sucursal { get; set; }
 
         //Filtros
-        [DisplayName("Receptor")]
+        //[DisplayName("Receptor")]
         //[Required(ErrorMessage = "Campo Obligatorio")]
-        public int ReceptorId { get; set; }
+        /*public int ReceptorId { get; set; }
         [ForeignKey("ReceptorId")]
+        */
+        [NotMapped]
         public virtual Cliente Receptor { get; set; }
 
         [DisplayName("Fecha del Documento")]
@@ -140,10 +147,10 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public Status Status { get; set; }
 
-        [DisplayName("Factura Emitida")]
+        /*[DisplayName("Factura Emitida")]
         public int? FacturaEmitidaId { get; set; }
         [ForeignKey("FacturaEmitidaId")]
-        public virtual FacturaEmitida FacturaEmitida { get; set; }
+        public virtual FacturaEmitida FacturaEmitida { get; set; }*/
 
         [NotMapped]
         public bool hidden { get; set; }
@@ -158,10 +165,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Tipo de Relación")]
         public c_TipoRelacion? TipoRelacion { get; set; }
 
-        [DisplayName("CFDI Relacionado")]
+        /*[DisplayName("CFDI Relacionado")]
         public int? CfdiRelacionadoId { get; set; }
         [ForeignKey("CfdiRelacionadoId")]
-        public virtual FacturaEmitida CfdiRelacionado { get; set; }
+        public virtual FacturaEmitida CfdiRelacionado { get; set; }*/
 
         #endregion
 

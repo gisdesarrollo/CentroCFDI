@@ -20,14 +20,14 @@
                 Mercancía
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ClaveProdServCP_Id)<br />
-                @Html.DisplayFor(model => model.ClaveProdServCP_Id)
-                @Html.HiddenFor(model => model.ClaveProdServCP_Id)
+                @Html.LabelFor(model => model.ClaveProdServCP)<br />
+                @Html.DisplayFor(model => model.ClaveProdServCP)
+                @Html.HiddenFor(model => model.ClaveProdServCP)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ClaveProdSTCC_Id)<br />
-                @Html.DisplayFor(model => model.ClaveProdSTCC_Id)
-                @Html.HiddenFor(model => model.ClaveProdSTCC_Id)
+                @Html.LabelFor(model => model.ClaveProdSTCC)<br />
+                @Html.DisplayFor(model => model.ClaveProdSTCC)
+                @Html.HiddenFor(model => model.ClaveProdSTCC)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.Descripcion)<br />
@@ -96,87 +96,104 @@
             </div>
 
             <div class="clearfix"></div>
+            @if(Model.Pedimentoss != null) {
+                for (var i = 0; i < Model.Pedimentoss.Count; i++)
+                {
+            <hr />
             <h3 class="title-hero">
                 Mercancía : Pedimentos
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Pedimentos.Pedimento)<br />
-                @Html.DisplayFor(model => model.Pedimentos.Pedimento)
-                @Html.HiddenFor(model => model.Pedimentos.Pedimento)
+                @Html.LabelFor(x => x.Pedimentoss[i].Pedimento)<br />
+                @Html.DisplayFor(x => x.Pedimentoss[i].Pedimento)
+                @Html.HiddenFor(x => x.Pedimentoss[i].Pedimento)
             </div>
+                }
+            }
             <div class="clearfix"></div>
+            @if (Model.GuiasIdentificacionss != null)
+            {
+                for(var y = 0; y < Model.GuiasIdentificacionss.Count; y++) { 
+            <hr />
             <h3 class="title-hero">
                 Mercancía : Guias de Identificación
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.GuiasIdentificacion.NumeroGuiaIdentificacion)<br />
-                @Html.DisplayFor(model => model.GuiasIdentificacion.NumeroGuiaIdentificacion)
-                @Html.HiddenFor(model => model.GuiasIdentificacion.NumeroGuiaIdentificacion)
+                @Html.LabelFor(x => x.GuiasIdentificacionss[y].NumeroGuiaIdentificacion)<br />
+                @Html.DisplayFor(x => x.GuiasIdentificacionss[y].NumeroGuiaIdentificacion)
+                @Html.HiddenFor(x => x.GuiasIdentificacionss[y].NumeroGuiaIdentificacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.GuiasIdentificacion.DescripGuiaIdentificacion)<br />
-                @Html.DisplayFor(model => model.GuiasIdentificacion.DescripGuiaIdentificacion)
-                @Html.HiddenFor(model => model.GuiasIdentificacion.DescripGuiaIdentificacion)
+                @Html.LabelFor(x => x.GuiasIdentificacionss[y].DescripGuiaIdentificacion)<br />
+                @Html.DisplayFor(x => x.GuiasIdentificacionss[y].DescripGuiaIdentificacion)
+                @Html.HiddenFor(x => x.GuiasIdentificacionss[y].DescripGuiaIdentificacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.GuiasIdentificacion.PesoGuiaIdentificacion)<br />
-                @Html.DisplayFor(model => model.GuiasIdentificacion.PesoGuiaIdentificacion)
-                @Html.HiddenFor(model => model.GuiasIdentificacion.PesoGuiaIdentificacion)
+                @Html.LabelFor(x => x.GuiasIdentificacionss[y].PesoGuiaIdentificacion)<br />
+                @Html.DisplayFor(x => x.GuiasIdentificacionss[y].PesoGuiaIdentificacion)
+                @Html.HiddenFor(x => x.GuiasIdentificacionss[y].PesoGuiaIdentificacion)
             </div>
+                }
+            }
             <div class="clearfix"></div>
-
+            @if (Model.CantidadTransportadass != null)
+            {
+                for(var a = 0; a < Model.CantidadTransportadass.Count; a++) { 
+                <hr />
             <h3 class="title-hero">
                 Mercancía : Cantidad Transportada
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.CantidadTransportada.Cantidad)<br />
-                @Html.DisplayFor(model => model.CantidadTransportada.Cantidad)
-                @Html.HiddenFor(model => model.CantidadTransportada.Cantidad)
+                @Html.LabelFor(z => z.CantidadTransportadass[a].Cantidad)<br />
+                @Html.DisplayFor(z => z.CantidadTransportadass[a].Cantidad)
+                @Html.HiddenFor(z => z.CantidadTransportadass[a].Cantidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.CantidadTransportada.IDOrigen)<br />
-                @Html.DisplayFor(model => model.CantidadTransportada.IDOrigen)
-                @Html.HiddenFor(model => model.CantidadTransportada.IDOrigen)
+                @Html.LabelFor(z => z.CantidadTransportadass[a].IDOrigen)<br />
+                @Html.DisplayFor(z => z.CantidadTransportadass[a].IDOrigen)
+                @Html.HiddenFor(z => z.CantidadTransportadass[a].IDOrigen)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.CantidadTransportada.IDDestino)<br />
-                @Html.DisplayFor(model => model.CantidadTransportada.IDDestino)
-                @Html.HiddenFor(model => model.CantidadTransportada.IDDestino)
+                @Html.LabelFor(z => z.CantidadTransportadass[a].IDDestino)<br />
+                @Html.DisplayFor(z => z.CantidadTransportadass[a].IDDestino)
+                @Html.HiddenFor(z => z.CantidadTransportadass[a].IDDestino)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.CantidadTransportada.CveTransporte_Id)<br />
-                @Html.DisplayFor(model => model.CantidadTransportada.CveTransporte_Id)
-                @Html.HiddenFor(model => model.CantidadTransportada.CveTransporte_Id)
+                @Html.LabelFor(z => z.CantidadTransportadass[a].CveTransporte_Id)<br />
+                @Html.DisplayFor(z => z.CantidadTransportadass[a].CveTransporte_Id)
+                @Html.HiddenFor(z => z.CantidadTransportadass[a].CveTransporte_Id)
             </div>
+                }
+            }
             <div class="clearfix"></div>
-
+            <hr />
             <h3 class="title-hero">
                 Mercancía : Detalle Mercancia
             </h3>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.DetalleMercancias.ClaveUnidadPeso_Id)<br />
-                @Html.DisplayFor(model => model.DetalleMercancias.ClaveUnidadPeso_Id)
-                @Html.HiddenFor(model => model.DetalleMercancias.ClaveUnidadPeso_Id)
+                @Html.LabelFor(model => model.DetalleMercancia.ClaveUnidadPeso_Id)<br />
+                @Html.DisplayFor(model => model.DetalleMercancia.ClaveUnidadPeso_Id)
+                @Html.HiddenFor(model => model.DetalleMercancia.ClaveUnidadPeso_Id)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.DetalleMercancias.PesoBruto)<br />
-                @Html.DisplayFor(model => model.DetalleMercancias.PesoBruto)
-               @Html.HiddenFor(model => model.DetalleMercancias.PesoBruto)
+                @Html.LabelFor(model => model.DetalleMercancia.PesoBruto)<br />
+                @Html.DisplayFor(model => model.DetalleMercancia.PesoBruto)
+               @Html.HiddenFor(model => model.DetalleMercancia.PesoBruto)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.DetalleMercancias.PesoNeto)<br />
-                @Html.DisplayFor(model => model.DetalleMercancias.PesoNeto)
-                @Html.HiddenFor(model => model.DetalleMercancias.PesoNeto)
+                @Html.LabelFor(model => model.DetalleMercancia.PesoNeto)<br />
+                @Html.DisplayFor(model => model.DetalleMercancia.PesoNeto)
+                @Html.HiddenFor(model => model.DetalleMercancia.PesoNeto)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.DetalleMercancias.PesoTara)<br />
-                @Html.DisplayFor(model => model.DetalleMercancias.PesoTara)
-                @Html.HiddenFor(model => model.DetalleMercancias.PesoTara)
+                @Html.LabelFor(model => model.DetalleMercancia.PesoTara)<br />
+                @Html.DisplayFor(model => model.DetalleMercancia.PesoTara)
+                @Html.HiddenFor(model => model.DetalleMercancia.PesoTara)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.DetalleMercancias.NumPiezas)<br />
-                @Html.DisplayFor(model => model.DetalleMercancias.NumPiezas)
-                @Html.HiddenFor(model => model.DetalleMercancias.NumPiezas)
+                @Html.LabelFor(model => model.DetalleMercancia.NumPiezas)<br />
+                @Html.DisplayFor(model => model.DetalleMercancia.NumPiezas)
+                @Html.HiddenFor(model => model.DetalleMercancia.NumPiezas)
             </div>
             <div class="clearfix"></div>
         </div>

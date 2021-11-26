@@ -55,12 +55,15 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("Seguros_Id")]
         public virtual Seguros Seguros { get; set; }
 
-        //remolques total por AutoTransporte 2
-        [NotMapped]
-        public int TotalRemolquesActivos { get { return 2; } }
+       
         
         [NotMapped]
         public virtual Remolques Remolque { get; set; }
+
+        [NotMapped]
+        public virtual List<Remolques> Remolquess { get; set; }
+
+
 
     }
 }
