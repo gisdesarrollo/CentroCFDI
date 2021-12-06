@@ -26,7 +26,7 @@
                 <li><a href="#tab3" data-toggle="tab">Conceptos</a></li>
                 <li><a href="#tab4" data-toggle="tab">Carta Porte</a></li>
                 <li><a href="#tab5" data-toggle="tab">Ubicaciones</a></li>
-                <li><a href="#tab6" data-toggle="tab">Mercancías</a></li>
+                <li><a href="#tab6" data-toggle="tab" class="getMercancias">Mercancías</a></li>
                 <li><a href="#tab7" data-toggle="tab">Transporte</a></li>
                 <li><a href="#tab8" data-toggle="tab">Figura Transporte</a></li>
 
@@ -94,12 +94,17 @@
                                 @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control date" } })
                                 @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
                             </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Hora, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Hora, new { htmlAttributes = new { @class = "form-control time" } })
+                                @Html.ValidationMessageFor(model => model.Hora, "", new { @class = "text-danger" })
+                            </div>
 
                             @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListSpecialFor(model => model.Mes)
-                            @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
-                        </div>*@
+            @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "control-label" })
+            @Html.EnumDropDownListSpecialFor(model => model.Mes)
+            @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+        </div>*@
                             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                 @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "control-label" })
                                 @Html.EnumDropDownListSpecialFor(model => model.FormaPago)
@@ -206,7 +211,7 @@
                             <h3 class="content-box-header bg-blue">
                                 <i class="glyph-icon icon-cog"></i>
                                 Agregar Conceptos
-                                <div class="header-buttons-separator">
+                                <div class="header-buttons-separator disableConceptos" disabled="true">
                                     <a href="#" class="icon-separator" id="agregarDetalleConceptos">
                                         <i class="glyph-icon icon-plus"></i>
                                     </a>
@@ -218,16 +223,20 @@
                             <div class="clearfix"></div>
 
                             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.ClaveProdServ_Id, htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownListFor(model => model.Conceptos.ClaveProdServ_Id, (IEnumerable<SelectListItem>)ViewBag.ProductoSerCPList, "Favor de hacer su selección", new { @class = "form-control" })
-                               
-                                @Html.ValidationMessageFor(model => model.Conceptos.ClaveProdServ_Id, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.Conceptos.ClavesProdServ, htmlAttributes: new { @class = "control-label" })
+                                @* @Html.DropDownListFor(model => model.Conceptos.ClavesProdServ, (IEnumerable<SelectListItem>)ViewBag.ProductoSerCPList, "Favor de hacer su selección", new { @class = "form-control" })*@
+
+                                @Html.EditorFor(model => model.Conceptos.ClavesProdServ, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.ClavesProdServ, "", new { @class = "text-danger" })
+                                <div id="ClaveProdServCPConceptos" style="color:red;"></div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.ClaveUnidad_Id, htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownListFor(model => model.Conceptos.ClaveUnidad_Id, (IEnumerable<SelectListItem>)ViewBag.ClaveUnidadList, "Favor de hacer su selección", new { @class = "form-control" })
-                                
-                                @Html.ValidationMessageFor(model => model.Conceptos.ClaveUnidad_Id, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.Conceptos.ClavesUnidad, htmlAttributes: new { @class = "control-label" })
+                                @*@Html.DropDownListFor(model => model.Conceptos.ClavesUnidad, (IEnumerable<SelectListItem>)ViewBag.ClaveUnidadList, "Favor de hacer su selección", new { @class = "form-control" })*@
+
+                                @Html.EditorFor(model => model.Conceptos.ClavesUnidad, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.ClavesUnidad, "", new { @class = "text-danger" })
+                                <div id="ClaveUnidadConcepto" style="color:red;"></div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6">
@@ -380,9 +389,9 @@
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-3">
-                                    @Html.LabelFor(model => model.ClaveTransporte, htmlAttributes: new { @class = "control-label" })
-                                    @Html.DropDownListFor(model => model.ClaveTransporte, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-control", @id = "ClaveTransporteCP" })
-                                    @Html.ValidationMessageFor(model => model.ClaveTransporte, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.viaEntradaSalida, htmlAttributes: new { @class = "control-label" })
+                                    @Html.DropDownListFor(model => model.viaEntradaSalida, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-control", @id = "ClaveTransporteCP" })
+                                    @Html.ValidationMessageFor(model => model.viaEntradaSalida, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="row">
@@ -437,7 +446,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-3">
                                     @Html.LabelFor(model => model.Ubicacion.IDUbicacion, htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Ubicacion.IDUbicacion, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.Ubicacion.IDUbicacion, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                     @Html.ValidationMessageFor(model => model.Ubicacion.IDUbicacion, "", new { @class = "text-danger" })
 
                                 </div>
@@ -462,17 +471,13 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Ubicacion.ResidenciaFiscal, htmlAttributes: new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.Ubicacion.ResidenciaFiscal, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EnumDropDownListSpecialFor(model => model.Ubicacion.ResidenciaFiscal)
                                         @Html.ValidationMessageFor(model => model.Ubicacion.ResidenciaFiscal, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="form-group col-xs-12 col-sm-3" id="DivNumEstacion" @ActNumEstacion>
-                                @Html.LabelFor(model => model.Ubicacion.NumEstacion, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Ubicacion.NumEstacion, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "NumEstacion" } })
-                                @Html.ValidationMessageFor(model => model.Ubicacion.NumEstacion, "", new { @class = "text-danger" })
-                            </div>
+
                             <div class="form-group col-xs-12 col-sm-3" @ActTransporteMaritimo id="DivEstacionMaritimo">
                                 @Html.LabelFor(model => model.Ubicacion.NombreEstacion, htmlAttributes: new { @class = "control-label" })
                                 @Html.DropDownList("NombreEstacionMaritimo", null, "Favor de hacer su selección", new { @class = "form-control NombreEstacion" })
@@ -488,10 +493,14 @@
                                 @Html.DropDownList("NombreEstacionFerroviario", null, "Favor de hacer su selección", new { @class = "form-control NombreEstacion" })
                                 @Html.ValidationMessageFor(model => model.Ubicacion.NombreEstacion, "", new { @class = "text-danger" })
                             </div>
-
+                            <div class="form-group col-xs-12 col-sm-3" id="DivNumEstacion" @ActNumEstacion>
+                                @Html.LabelFor(model => model.Ubicacion.NumEstacion, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Ubicacion.NumEstacion, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "NumEstacion" } })
+                                @Html.ValidationMessageFor(model => model.Ubicacion.NumEstacion, "", new { @class = "text-danger" })
+                            </div>
                             <div class="form-group col-xs-12 col-sm-3" id="DivNavegacionTrafico" @ActDimension>
                                 @Html.LabelFor(model => model.Ubicacion.NavegacionTrafico, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Ubicacion.NavegacionTrafico, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.DropDownListFor(model => model.Ubicacion.NavegacionTrafico, (IEnumerable<SelectListItem>)ViewBag.TipoNavegacionTrafico, "Favor de hacer su selección", new { @class = "form-control"})
                                 @Html.ValidationMessageFor(model => model.Ubicacion.NavegacionTrafico, "", new { @class = "text-danger" })
                             </div>
 
@@ -504,7 +513,7 @@
                             <div class="activaTipoEstacion" @ActNumEstacion>
                                 <div class=" form-group col-xs-12 col-sm-3">
                                     @Html.LabelFor(model => model.Ubicacion.TipoEstacion_Id, htmlAttributes: new { @class = "control-label" })
-                                    @Html.DropDownList("TipoEstacion", null, "Favor de hacer su selección", new { @class = "form-control", @id = "Ubicacion_ORTipoEstacion" })
+                                    @Html.DropDownList("TipoEstacion", null, "Favor de hacer su selección", new { @class = "form-control", @id = "UTipoEstacion" })
                                     @Html.ValidationMessageFor(model => model.Ubicacion.TipoEstacion_Id, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -689,12 +698,13 @@
                         </h3>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
                             @Html.LabelFor(model => model.Mercancias.PesoBrutoTotal, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Mercancias.PesoBrutoTotal, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.EditorFor(model => model.Mercancias.PesoBrutoTotal, new { htmlAttributes = new { @class = "form-control pesoBrutoTotalD", @disabled = "disabled" } })
                             @Html.ValidationMessageFor(model => model.Mercancias.PesoBrutoTotal, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
                             @Html.LabelFor(model => model.Mercancias.UnidadPeso, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Mercancias.UnidadPeso, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownListFor(model => model.Mercancias.UnidadPeso, (IEnumerable<SelectListItem>)ViewBag.ClavesUnidadPeso, "Favor de hacer su selección", new { @class = "form-control" })
+                            
                             @Html.ValidationMessageFor(model => model.Mercancias.UnidadPeso, "", new { @class = "text-danger" })
                         </div>
                         <div id="activaMercPeso" @ActPesoMercancia>
@@ -744,7 +754,7 @@
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                 @Html.LabelFor(model => model.Mercancias.Mercancia.Descripcion, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Mercancias.Mercancia.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Mercancias.Mercancia.Descripcion, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Descripcion, "", new { @class = "text-danger" })
                                 <div id="Descripcion" style="color:red;"></div>
                             </div>
@@ -754,7 +764,7 @@
                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Cantidad, "", new { @class = "text-danger" })
                                 <div id="Cantidad" style="color:red;"></div>
                             </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3 activaClaveSTCC" hidden>
                                 @Html.LabelFor(model => model.Mercancias.Mercancia.ClaveProdSTCC, htmlAttributes: new { @class = "control-label" })
                                 @Html.EditorFor(model => model.Mercancias.Mercancia.ClaveProdSTCC, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.ClaveProdSTCC, "", new { @class = "text-danger" })
@@ -762,15 +772,15 @@
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
-                                @Html.LabelFor(model => model.Mercancias.Mercancia.ClaveUnidad_Id, htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.Mercancias.Mercancia.ClavesUnidad, htmlAttributes: new { @class = "control-label" })
 
-                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.ClaveUnidad_Id, (IEnumerable<SelectListItem>)ViewBag.ClaveUnidadList, "Favor de hacer su selección", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.ClaveUnidad_Id, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.Mercancias.Mercancia.ClavesUnidad, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.ClavesUnidad, "", new { @class = "text-danger" })
                                 <div id="ClaveUnidadId" style="color:red;"></div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                 @Html.LabelFor(model => model.Mercancias.Mercancia.Unidad, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Mercancias.Mercancia.Unidad, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Mercancias.Mercancia.Unidad, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Unidad, "", new { @class = "text-danger" })
                             </div>
 
@@ -793,22 +803,25 @@
                             
                             <div class="ActivaCampoMatPeligroso" @ActCamposMatPeligroso>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-3">
-                                    @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligroso_Id, htmlAttributes: new { @class = "control-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.Mercancia.MaterialPeligroso_Id, (IEnumerable<SelectListItem>)ViewBag.MaterialesPeligroso_Id, "Favor de hacer su selección", new { @class = "form-control " })
-                                    @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.MaterialPeligroso_Id, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.Mercancias.Mercancia.ClaveMaterialPeligroso, htmlAttributes: new { @class = "control-label" })
+                                   @* @Html.DropDownListFor(model => model.Mercancias.Mercancia.ClaveMaterialPeligroso, (IEnumerable<SelectListItem>)ViewBag.MaterialesPeligroso_Id, "Favor de hacer su selección", new { @class = "form-control " })*@
+                                    @Html.EditorFor(model => model.Mercancias.Mercancia.ClaveMaterialPeligroso, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.ClaveMaterialPeligroso, "", new { @class = "text-danger" })
+                                    <div id="ClaveMatPeligroso" style="color:red;"></div>
                                 </div>
-
                                 <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                     @Html.LabelFor(model => model.Mercancias.Mercancia.DescripEmbalaje, htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Mercancias.Mercancia.DescripEmbalaje, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.DropDownListFor(model => model.Mercancias.Mercancia.DescripEmbalaje, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-control" })
+                                   @* @Html.EditorFor(model => model.Mercancias.Mercancia.DescripEmbalaje, new { htmlAttributes = new { @class = "form-control" } })*@
                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DescripEmbalaje, "", new { @class = "text-danger" })
                                 </div>
-
                                 <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                     @Html.LabelFor(model => model.Mercancias.Mercancia.TipoEmbalaje_Id, htmlAttributes: new { @class = "control-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.Mercancia.TipoEmbalaje_Id, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje_Id, "Favor de hacer su selección", new { @class = "form-control" })
+                                    @*@Html.DropDownListFor(model => model.Mercancias.Mercancia.TipoEmbalaje_Id, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-control" })*@
+                                    @Html.EditorFor(model => model.Mercancias.Mercancia.TipoEmbalaje_Id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.TipoEmbalaje_Id, "", new { @class = "text-danger" })
                                 </div>
+
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                 @Html.LabelFor(model => model.Mercancias.Mercancia.PesoEnKg, htmlAttributes: new { @class = "control-label" })
@@ -870,7 +883,7 @@
 
 
 
-                        <div class="content-box-wrapper  DivPedimento" @ActFormPedimento>
+                        <div class="content-box-wrapper DivPedimento" @ActFormPedimento>
                             <h3 class="title-hero">
                                 Mercancía : Pedimentos
                             </h3>
@@ -933,7 +946,7 @@
 
 
                         <div class="clearfix"></div>
-                        <div class="content-box-wrapper GuiasIdentificacionForm" hidden>
+                        <div class="content-box-wrapper GuiasIdentificacionForm"   hidden>
                             <h3 class="title-hero">
                                 Mercancía : Guias de Identificación
                             </h3>
@@ -1009,7 +1022,7 @@
 
                         <div class="clearfix"></div>
 
-                        <div class="content-box-wrapper DivCantidadTransportada" @ActFormCantidadTransportada>
+                        <div class="content-box-wrapper DivCantidadTransportada"  @ActFormCantidadTransportada>
                             <h3 class="title-hero">
                                 Mercancía : Cantidad Transportada
                             </h3>
@@ -1041,14 +1054,16 @@
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     @Html.LabelFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new { @class = "form-control datetime" })
+                                    @*@Html.DropDownList("ddlIDOrigen", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control", @disabled = "disabled" })*@
+                                    @Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new { @class = "form-control " })
                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, "", new { @class = "text-danger" })
                                     <div id="UbicacionOrigenId" style="color:red;"></div>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     @Html.LabelFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new { @class = "form-control datetime" })
+                                    @*@Html.DropDownList("ddlIDDestino", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control" })*@
+                                    @Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new { @class = "form-control " })
                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, "", new { @class = "text-danger" })
                                     <div id="UbicacionDestinoId" style="color:red;"></div>
                                 </div>
@@ -1091,7 +1106,7 @@
                             </h3>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                 @Html.LabelFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, (IEnumerable<SelectListItem>)ViewBag.ClavesUnidadPeso_Id, "Favor de hacer su selección", new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, (IEnumerable<SelectListItem>)ViewBag.ClavesUnidadPeso, "Favor de hacer su selección", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -1349,7 +1364,7 @@
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
                             @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, (IEnumerable<SelectListItem>)ViewBag.Paises, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -1620,9 +1635,9 @@
                             </h3>
                             <div class="content-box-wrapper">
                                 <div class="form-group col-xs-12 col-sm-3">
-                                    @Html.LabelFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso, new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso, new { @class = "form-control datetime" })
-                                    @Html.ValidationMessageFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso_Id, new { @class = "control-label" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoDerechoPaso, new { @class = "form-control" })
+                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso_Id, "", new { @class = "text-danger" })
                                     <div id="TipoDerechosDePasoId" style="color:red;"></div>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-3">
@@ -1860,7 +1875,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-3">
                                     @Html.LabelFor(model => model.TiposFigura.ResidenciaFiscalFigura, new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.TiposFigura.ResidenciaFiscalFigura, new { @class = "form-control" })
+                                    @Html.EnumDropDownListSpecialFor(model => model.TiposFigura.ResidenciaFiscalFigura)
                                     @Html.ValidationMessageFor(model => Model.TiposFigura.ResidenciaFiscalFigura, "", new { @class = "text-danger" })
                                 </div>
 
@@ -1888,11 +1903,12 @@
                                         <div class="content-box-wrapper">
 
                                             <div class="form-group col-xs-12 col-sm-3" @ActParteTransporte id="ActivaCampoPartesTransporte">
-                                                @Html.LabelFor(model => model.TiposFigura.PartesTransporte.ParteTransporte, new { @class = "control-label" })
-                                                @Html.EditorFor(model => model.TiposFigura.PartesTransporte.ParteTransporte, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.TiposFigura.PartesTransporte.ParteTransporte, "", new { @class = "text-danger" })
-                                                <div id="FTPartesTransporte" style="color:red;"></div>
-                                            </div>
+                                               
+                                                                                        @Html.LabelFor(model => model.TiposFigura.PartesTransporte.ParteTransporte, new { @class = "control-label" })
+                                                                                        @Html.EditorFor(model => model.TiposFigura.PartesTransporte.ParteTransporte, new { @class = "form-control" })
+                                                                                        @Html.ValidationMessageFor(model => model.TiposFigura.PartesTransporte.ParteTransporte, "", new { @class = "text-danger" })
+                                                                                        <div id="FTPartesTransporte" style="color:red;"></div>
+                                                                                    </div>
 
                                             <div class="clearfix"></div>
                                             <h3 class="title-hero">
@@ -2036,35 +2052,45 @@
             message="#FechaHoraSalida"
         FHS = Boolean(ValidaCampos(FechaHoraSalida, message));
         var ORPais = $("#Ubicacion_Domicilio_Paises").val();
-            message = "#UPais"
+        message = "#UPais"
+        var ORPaisText = $("#Ubicacion_Domicilio_Paises option:selected").text();
+
         P = Boolean(ValidaCampos(ORPais, message));
         //se toman valores de  campos de select o input  
-        var OREstado = $('#Ubicacion_Domicilio_ddlEstados').val();
+        var OREstado = $('#Ubicacion_Domicilio_ddlEstados option:selected').val();
+        var OREstadoText = $('#Ubicacion_Domicilio_ddlEstados option:selected').text();
         message = "#UEstado"
         E = Boolean(ValidaCampos(OREstado, message));
         if (!E) {
             OREstado = $('#Ubicacion_Domicilio_Estado').val();
+            OREstadoText = OREstado;
             message = "#UEstado"
             E = Boolean(ValidaCampos(OREstado, message));
         }
        
         var DEMunicipio = $('#Ubicacion_Domicilio_ddlMunicipios option:selected').val();
+        var DEMunicipioText = $('#Ubicacion_Domicilio_ddlMunicipios option:selected').text();
         message = ""
         var ddlM = Boolean(ValidaCampos(DEMunicipio, message));
         if (!ddlM) {
             DEMunicipio = $('#Ubicacion_Domicilio_Municipio').val();
+            DEMunicipioText = DEMunicipio;
         }
         var DELocalidad = $('#Ubicacion_Domicilio_ddlLocalidades option:selected').val();
+        var DELocalidadText = $('#Ubicacion_Domicilio_ddlLocalidades option:selected').text();
         message = ""
         var ddlL = Boolean(ValidaCampos(DELocalidad, message));
         if (!ddlL) {
             DELocalidad = $('#Ubicacion_Domicilio_Localidad').val();
+            DELocalidadText = DELocalidad;
         }
         var DEColonia = $('#Ubicacion_Domicilio_ddlColonias option:selected').val();
+        var DEColoniaText = $('#Ubicacion_Domicilio_ddlColonias option:selected').text();
         message = ""
         var ddlC = Boolean(ValidaCampos(DEColonia, message));
         if (!ddlC) {
             DEColonia = $('#Ubicacion_Domicilio_Colonia').val();
+            DEColoniaText = DEColonia;
         }
         //
         var ORCodigoPostal = $('#Ubicacion_Domicilio_CodigoPostal').val();
@@ -2076,55 +2102,61 @@
 
 
         var ORNE = "";
-        var DENE = "";
-        if ($("#DiveEstacionMaritima").is(":visible")) {
-            ORNE = $('#NombreEstacionMaritima option:selected').text();
+        var NumEsta = "";
+            if ($("#DivEstacionMaritimo").is(":visible")) {
+                ORNE = $('#NombreEstacionMaritimo option:selected').text();
+                NumEsta = $('#NombreEstacionMaritimo option:selected').val();
         }
         if ($("#DivEstacionAereo").is(":visible")) {
             ORNE = $('#NombreEstacionAereo option:selected').text();
+            NumEsta = $('#NombreEstacionAereo option:selected').val();
+            
         }
-        if ($("#DivEstacionFerroviaria").is(":visible")) {
-            ORNE = $('#NombreEstacionFerroviaria option:selected').text();
-        }
-        if ($("#DivEstacionMaritimaD").is(":visible")) {
-            DENE = $('#NombreEstacionMaritimaD option:selected').text();
-        }
-        if ($("#DivNombreEstacionAereoD").is(":visible")) {
-            DENE = $('#NombreEstacionAereoD option:selected').text();
-        }
-        if ($("#DivNombreEstacionFerroviariaD").is(":visible")) {
-            DENE = $('#NombreEstacionFerroviariaD option:selected').text();
-        }
+            if ($("#DivEstacionFerroviario").is(":visible")) {
+                ORNE = $('#NombreEstacionFerroviario option:selected').text();
+                NumEsta = $('#NombreEstacionFerroviario option:selected').val();
+            
+            }
+            var clave="";
+            var randomClave = Math.floor(Math.random() * (10000 - 900000 + 1) + 900000);
+            if ($('#TipoUbicacionRD').val() === "Origen") { clave = "OR" + randomClave; } else { clave = "DE" + randomClave }
         $.ajax({
             type: 'POST',
             url: ' @Url.Action("AgregarUbicacion", "AjaxOperaciones")',
             data: JSON.stringify({
                 TipoUbicacion: $('#TipoUbicacionRD').val(),
-                TipoEstacion: $('#Ubicacion_TipoEstacion option:selected').text(),
-                TipoEstacionId: $('#Ubicacion_TipoEstacion option:selected').val(),//id =Ubicacion_ORTipoEstacion
+                TipoEstacion: $('#UTipoEstacion option:selected').text(),
+                TipoEstacionId: $('#UTipoEstacion option:selected').val(),//id =Ubicacion_ORTipoEstacion
                 IdUbicacion: $('#Ubicacion_IDUbicacion').val(),
                 RFCRemitenteDestinatario: $('#Ubicacion_RfcRemitenteDestinatario').val(),
                 NombreRemitenteDestinatario: $('#Ubicacion_NombreRemitenteDestinatario').val(),
                 NumRegIdTrib: $('#Ubicacion_NumRegIdTrib').val(),
                 ResidenciaFiscal: $('#Ubicacion_ResidenciaFiscal').val(),
                 NombreEstacion: ORNE,
-                NumEstacion: $('#Ubicacion_NumEstacion').val(),
+                NumEstacion: NumEsta,
+                NavegacionTrafico: $('#Ubicacion_NavegacionTrafico').val(),
                 FechaHoraSalidaLlegada: $('#Ubicacion_FechaHoraSalidaLlegada').val(),
                 DistanciaRecorrida: $('#DistanciaRO').val(),
                 Calle: $('#Ubicacion_Domicilio_Calle').val(),
                 CodigoPostal: $('#Ubicacion_Domicilio_CodigoPostal').val(),
                 Colonia: DEColonia,
+                ColoniaText: DEColoniaText,
                 Estado: OREstado,
+                EstadoText: OREstadoText,
                 Localidad: DELocalidad,
+                LocalidadText: DELocalidadText,
                 Municipio: DEMunicipio,
+                MunicipioText: DEMunicipioText,
                 NumeroExterior: $('#Ubicacion_Domicilio_NumeroExterior').val(),
                 NumeroInterior: $('#Ubicacion_Domicilio_NumeroInterior').val(),
                 Pais: ORPais,
+                PaisText: ORPaisText,
                 Referencia: $('#Ubicacion_Domicilio_Referencia').val()
             }),
             dataType: 'html',
             contentType: "application/json; charset=utf-8",
         }).success(function (partialView) {
+            $('#Ubicacion_IDUbicacion').val(clave);
             $('#detalleUbicaciones').append(partialView);
         })
             .fail(function (jqxhr, textStatus, error) {
@@ -2155,11 +2187,14 @@
                 $('#DivAutotransporte').hide();
                 $('#TotalDistRec').hide();
                 $('.activaTipoEstacion').show();
-                $('#ActivaDimensiones').show();
+                $('#ActivaDimensiones').hide();
                 $('#DivNavegacionTrafico').show();
                 $('#activaMercPeso').show();
                 $('.DivDetalleMercancia').show();
                 $('#DivCargoTasacion').hide();
+                $(".pesoBrutoTotalD").attr('disabled', 'disabled');
+                $(".activaClaveSTCC").hide();
+                $('.DivCantidadTransportada').hide(200);
                 break;
             case "3":
                 $('#DivEstacionMaritimo').hide();
@@ -2179,10 +2214,12 @@
                 $('#TotalDistRec').hide();
                 $('.activaTipoEstacion').show();
                 $('#ActivaDimensiones').show();
-                $('#DivNavegacionTrafico').show();
+                $('#DivNavegacionTrafico').hide();
                 $('#activaMercPeso').hide();
                 $('.DivDetalleMercancia').hide();
                 $('#DivCargoTasacion').show();
+                $(".pesoBrutoTotalD").removeAttr('disabled');
+                $(".activaClaveSTCC").hide();
                 break;
             case "4":
                 $('#DivEstacionMaritimo').hide();
@@ -2201,11 +2238,14 @@
                 $('#DivAutotransporte').hide();
                 $('#TotalDistRec').show();
                 $('.activaTipoEstacion').show();
-                $('#ActivaDimensiones').show();
-                $('#DivNavegacionTrafico').show();
+                $('#ActivaDimensiones').hide();
+                $('#DivNavegacionTrafico').hide();
                 $('#activaMercPeso').show();
-                $('.DivDetalleMercancia').hide();
+                $('.DivDetalleMercancia').show();
                 $('#DivCargoTasacion').hide();
+                $(".pesoBrutoTotalD").attr('disabled', 'disabled');
+                $(".activaClaveSTCC").show();
+                $('.DivCantidadTransportada').show();
                 break;
             default:
                 $('#DivEstacionMaritimo').hide();
@@ -2224,11 +2264,13 @@
                 $('#TransporteFerroviario').hide();
                 $('#TotalDistRec').show();
                 $('.activaTipoEstacion').hide();
-                $('#ActivaDimensiones').hide();
+                $('#ActivaDimensiones').show();
                 $('#DivNavegacionTrafico').hide();
                 $('#activaMercPeso').hide();
                 $('.DivDetalleMercancia').hide();
                 $('#DivCargoTasacion').hide();
+                $(".pesoBrutoTotalD").removeAttr('disabled');
+                $(".activaClaveSTCC").hide();
         }
 
     });
@@ -2260,9 +2302,9 @@
     $(".ddlPaisesChange").change(function () {
         var Paises = "#"+$(this).attr('id');
         var Seccion = Paises.replace('Paises', '');
-        console.log("Seccion: "+Paises);
+        
         var ddlEstados = Seccion + "ddlEstados";
-        console.log("ddlEstados: " +ddlEstados);
+        
         var ddlMunicipios = Seccion + "ddlMunicipios";
         var ddlLocalidades = Seccion + "ddlLocalidades";
         var ddlColonias = Seccion + "ddlColonias";
@@ -2345,10 +2387,10 @@
                 $(ddlMunicipios).selectpicker('refresh');
             });
             $.get("/ComplementosCartaPorte/FiltrarLocalidades", { EstadoId: $(ddlEstados).val() }, function (data) {
-
+                
                 $(ddlLocalidades).empty();
                 $.each(data, function (index, row) {
-                    $(ddlLocalidades).append("<option value='" + row.c_Municipio + "'>" + row.Descripcion + "</option>")
+                    $(ddlLocalidades).append("<option value='" + row.c_Localidad + "'>" + row.Descripcion + "</option>")
                 });
                 $(ddlLocalidades).removeAttr('disabled');
                 $(ddlLocalidades).selectpicker('refresh');
@@ -2587,7 +2629,9 @@
     //valida tipo de ubicación
     $('#TipoUbicacionRD').change(function () {
         var TipoUbicacionRD = $(this).val();
-        
+        var clave = "";
+        var randomClave = Math.floor(Math.random() * (10000 - 900000 + 1) + 900000);
+       
         if (TipoUbicacionRD == "Origen") {
             $('.origenTitulo').show(200);
             $('.origenDomicilio').show(200);
@@ -2595,6 +2639,8 @@
             $('.destinoDomicilio').hide(200);
             $('#Ubicacion_IDUbicacion').val("OR");
             $('.activaDR').hide(200);
+            clave = "OR" + randomClave;
+            $('#Ubicacion_IDUbicacion').val(clave);
         } else {
             $('.destinoTitulo').show(200);
             $('.destinoDomicilio').show(200);
@@ -2602,6 +2648,8 @@
             $('.origenDomicilio').hide(200);
             $('#Ubicacion_IDUbicacion').val("DE");
             $('.activaDR').show(200);
+            clave = "DE" + randomClave
+            $('#Ubicacion_IDUbicacion').val(clave);
         }
         
     });

@@ -82,27 +82,41 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
         }
 
-        public PartialViewResult AgregarUbicacion(String TipoUbicacion,String TipoEstacion,String TipoEstacionId, String IdUbicacion,
+        public PartialViewResult AgregarUbicacion(String TipoUbicacion,
+            String TipoEstacion,
+            String TipoEstacionId, 
+            String IdUbicacion,
          String RFCRemitenteDestinatario,
              String NombreRemitenteDestinatario,
              string NumRegIdTrib,
               String ResidenciaFiscal,
                String NombreEstacion,
                 String NumEstacion,
+                string NavegacionTrafico,
                 DateTime FechaHoraSalidaLlegada,
                 Decimal DistanciaRecorrida,
                  String Calle,
                   String CodigoPostal,
                    String Colonia,
+                   string ColoniaText,
                    String Estado,
+                   string EstadoText,
                     String Localidad,
+                    string LocalidadText,
                     String Municipio,
+                    string MunicipioText,
                     String NumeroExterior,
                     String NumeroInterior,
                     String Pais,
+                    string PaisText,
                     String Referencia)
         {
-
+            c_Pais? ResidenciaFiscalParse=null;
+            if (ResidenciaFiscal == "")
+            {
+                ResidenciaFiscalParse = null;
+            }
+            else { ResidenciaFiscalParse = (c_Pais)Enum.Parse(typeof(c_Pais), ResidenciaFiscal, true); }
             var Ubicacion = new Ubicacion
             {
                 TipoUbicacion = TipoUbicacion,
@@ -112,9 +126,11 @@ namespace APBox.Controllers.Ajax
                 RfcRemitenteDestinatario = RFCRemitenteDestinatario,
                 NombreRemitenteDestinatario = NombreRemitenteDestinatario,
                 NumRegIdTrib = NumRegIdTrib,
-                ResidenciaFiscal = (c_Pais)Enum.Parse(typeof(c_Pais), ResidenciaFiscal, true),
+                ResidenciaFiscal = ResidenciaFiscalParse,
                 NombreEstacion = NombreEstacion,
                 NumEstacion = NumEstacion,
+                Estaciones_Id = NumEstacion,
+                NavegacionTrafico= NavegacionTrafico,
                 FechaHoraSalidaLlegada = FechaHoraSalidaLlegada,
                 DistanciaRecorrida = DistanciaRecorrida,
                 Domicilio = new Domicilio()
@@ -122,12 +138,17 @@ namespace APBox.Controllers.Ajax
                     Calle = Calle,
                     CodigoPostal = CodigoPostal,
                     Colonia = Colonia,
+                    colonias = ColoniaText,
                     Estado = Estado,
+                    estados = EstadoText,
                     Localidad = Localidad,
+                    localidades = LocalidadText,
                     Municipio = Municipio,
+                    municipios = MunicipioText,
                     NumeroExterior = NumeroExterior,
                     NumeroInterior = NumeroInterior,
                     Pais = Pais,
+                    paiss = PaisText,
                     Referencia = Referencia
                 }
             };
@@ -171,12 +192,12 @@ namespace APBox.Controllers.Ajax
         }*/
 
         public PartialViewResult AgregarMercancia(String ClaveProdServID, string ClaveProdSTCCID,string Descripcion,
-            Decimal Cantidad,string Unidad,string ClaveUnidadID,string Dimensiones,bool MaterialPeligorosoSN, 
+            int Cantidad,string Unidad,string ClaveUnidadID,string Dimensiones,bool MaterialPeligorosoSN, 
             string MaterialPeligrosoID, string DescripcionEmbalaje, string TipoEmbalajeID,Decimal PesoEnKg,string ValorMercancia,
             string Moneda, string FraccionArancelariaID, string UUIDComercioExt/*, string PPedimento, string GINumIdent, string GIDescripIdent,
             Decimal GIPesoIdent,Decimal CTCantidad, string CTCveTransporteID, string CTCveOrigen, string CTCveDestino*/,
             string DEClaveUnidadPesoID, Decimal DEPesoBruto, Decimal DEPEsoNeto,Decimal DEPesoTara, int DENumPiezas,
-            List<Pedimentos> pedimentos,List<GuiasIdentificacion> GIdentificacion,List<CantidadTransportada> CTransportada)
+            List<Pedimentos> PedimentoArray, List<GuiasIdentificacion> GIdentificacionArray, List<CantidadTransportada> CTransportadaArray)
         {
             
             var mercancia = new Mercancia()
@@ -184,12 +205,12 @@ namespace APBox.Controllers.Ajax
                 ClaveProdServCP = ClaveProdServID,
                 ClaveProdSTCC = ClaveProdSTCCID,
                 Descripcion = Descripcion,
-                Cantidad = 0,
+                Cantidad = Cantidad,
                 Unidad = Unidad,
-                ClaveUnidad_Id = ClaveUnidadID,
+                ClavesUnidad = ClaveUnidadID,
                 Dimensiones = Dimensiones,
                 MaterialPeligrosos = MaterialPeligorosoSN,
-                MaterialPeligroso_Id = MaterialPeligrosoID,
+                ClaveMaterialPeligroso = MaterialPeligrosoID,
                 DescripEmbalaje = DescripcionEmbalaje,
                 TipoEmbalaje_Id = TipoEmbalajeID,
                 PesoEnKg = PesoEnKg,
@@ -207,26 +228,26 @@ namespace APBox.Controllers.Ajax
                 }
                 
             };
-            if (pedimentos != null)
+            if (PedimentoArray != null)
             {
                 mercancia.Pedimentoss = new List<Pedimentos>();
-                foreach(var ped in pedimentos)
+                foreach(var ped in PedimentoArray)
                 {
                     mercancia.Pedimentoss.Add(ped);
                 }
             }
-            if (GIdentificacion != null)
+            if (GIdentificacionArray != null)
             {
                 mercancia.GuiasIdentificacionss = new List<GuiasIdentificacion>();
-                foreach(var GIdent in GIdentificacion)
+                foreach(var GIdent in GIdentificacionArray)
                 {
                     mercancia.GuiasIdentificacionss.Add(GIdent);
                 }
             }
-            if (CTransportada != null)
+            if (CTransportadaArray != null)
             {
                 mercancia.CantidadTransportadass = new List<CantidadTransportada>();
-                foreach(var CTrans in CTransportada)
+                foreach(var CTrans in CTransportadaArray)
                 {
                     mercancia.CantidadTransportadass.Add(CTrans);
                 }
@@ -287,8 +308,9 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/FiguraTransporte.cshtml", CartaPorte);
         }
 
-        public PartialViewResult AgregarPTransporte(string PTransporte, string Pais,string Estado,string Municipio,string Localidad,
-            string CodigoPostal,string Colonia,string Calle,string NumExterior,string NumInterior,string Referencia)
+                  
+        public PartialViewResult AgregarPTransporte(string PTransporte, string Pais, string PaisText, string Estado,string EstadoText,string Municipio,string MunicipioText,string Localidad,
+            string LocalidadText,string CodigoPostal,string Colonia,string ColoniaText,string Calle,string NumExterior,string NumInterior,string Referencia)
         {
             var PartesTransporte = new PartesTransporte()
             {
@@ -296,11 +318,16 @@ namespace APBox.Controllers.Ajax
                 Domicilio = new Domicilio()
                 {
                     Pais = Pais,
+                    paiss = PaisText,
                     Estado = Estado,
+                    estados = EstadoText,
                     Municipio = Municipio,
+                    municipios = MunicipioText,
                     Localidad = Localidad,
+                    localidades = LocalidadText,
                     CodigoPostal = CodigoPostal,
                     Colonia = Colonia,
+                    colonias = ColoniaText,
                     Calle = Calle,
                     NumeroExterior = NumExterior,
                     NumeroInterior = NumInterior,
@@ -402,8 +429,8 @@ namespace APBox.Controllers.Ajax
         {
             var Conceptos = new Conceptos()
             {
-                ClaveProdServ_Id = ClaveProdServID,
-                ClaveUnidad_Id = ClaveUnidadID,
+                ClavesProdServ = ClaveProdServID,
+                ClavesUnidad = ClaveUnidadID,
                 Descripcion = Descripcion,
                 Traslado = new SubImpuestoC()
                 {
@@ -441,16 +468,23 @@ namespace APBox.Controllers.Ajax
 
         public int Buscar(string valor, String tipo)
         {
-            Console.WriteLine("el valor es: " + valor);
-            //_db.Localidades.Where(a => a.c_Estado_Id == seleccion).ToList()
+           
             var busqueda = 0;
             if (tipo.Equals("serv"))
             {
                 busqueda = _db.ClavesProdServCP.Where(a => a.c_ClaveUnidad.Equals(valor)).Count();
             }
-            else if (tipo.Equals("stcc"))
+            if (tipo.Equals("stcc"))
             {
                 busqueda = _db.ClavesProdSTCC.Where(a => a.ClaveSTCC.Equals(valor)).Count();
+            }
+            if (tipo.Equals("claveUnidad"))
+            {
+                busqueda = _db.ClavesUnidad.Where(a => a.c_ClaveUnidad.Equals(valor)).Count();
+            }
+            if (tipo.Equals("MaterialPeligroso"))
+            {
+                busqueda = _db.MaterialesPeligrosos.Where(a => a.ClaveMaterialPeligroso.Equals(valor)).Count();
             }
 
 

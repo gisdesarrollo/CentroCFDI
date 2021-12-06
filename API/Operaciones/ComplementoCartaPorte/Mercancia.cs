@@ -20,7 +20,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [StringLength(8)]
         //[Required(ErrorMessage = "Campo Obligatorio")]
-        [DisplayName("Bienes Transportados")]
+        [DisplayName("Clave Bienes Transportados")]
         public String ClaveProdServCP { get; set; }
         /*[ForeignKey("ClaveProdServCP_Id")]
         public virtual ClaveProdServCP ClaveProdServCP { get; set; }*/
@@ -42,8 +42,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         public string ClaveUnidad_Id { get; set; }
         [ForeignKey("ClaveUnidad_Id")]
         public virtual ClaveUnidad ClaveUnidad { get; set; }
-        /*[NotMapped]
-        public string ClavesUnidad { get; set; }*/
+        
+        [DisplayName("Clave de Unidad")]
+        public string ClavesUnidad { get; set; }
+        
         [DisplayName("Clave de Material Peligroso")]
         public string MaterialPeligroso_Id { get; set; }
         [ForeignKey("MaterialPeligroso_Id")]
@@ -52,7 +54,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         /*[NotMapped]
         [DisplayName("Material Peligroso")]
         public string MaterialPeligrosos { get; set; }*/
-        [NotMapped]
+        
         [DisplayName("Clave de Material Peligroso")]
         public string ClaveMaterialPeligroso { get; set; }
 
@@ -65,15 +67,15 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public string Dimensiones { get; set; }
 
-        [DisplayName("Tipo Embalaje")]
+        [DisplayName("Clave Embalaje")]
         public string TipoEmbalaje_Id { get; set; }
         [ForeignKey("TipoEmbalaje_Id")]
         public virtual TipoEmbalaje TipoEmbalaje { get; set; }
         /*[NotMapped]
         public string Embalaje { get; set; }*/
 
-        [NotMapped]
-        [DisplayName("Descripción de Embalaje")]
+        
+        [DisplayName("Tipo Embalaje")]
         public string DescripEmbalaje { get; set; }
 
         [DisplayName("Fracción Arancelaria")]
@@ -101,14 +103,13 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Valor de la Mercancía")]
         public String ValorMercancia { get; set; }
 
-        /*public int? DetalleMercanciaId { get; set; }
-        [ForeignKey("DetalleMercanciaId")]*/
-        [NotMapped]
+        public int? DetalleMercanciaId { get; set; }
+        [ForeignKey("DetalleMercanciaId")]
         public virtual DetalleMercancia DetalleMercancia { get; set; }
 
-        [NotMapped]
+        /*[NotMapped]
         public virtual List<DetalleMercancia> DetalleMercanciass { get; set; }
-        
+        */
         [NotMapped]
         public virtual CantidadTransportada CantidadTransportada { get; set; }
 

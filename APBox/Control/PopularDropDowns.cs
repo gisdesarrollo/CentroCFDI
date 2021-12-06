@@ -7,6 +7,7 @@ using CFDI.API.Enums.CFDI33;
 using System.Collections.Generic;
 using API.CatalogosCartaPorte.Domicilio;
 using API.Catalogos;
+using API.CatalogosCartaPorte;
 
 namespace APBox.Control
 {
@@ -39,6 +40,14 @@ namespace APBox.Control
         { 
                 var result=_db.Clientes.Where(a => a.Id == seleccion).Select(a => new { a.Rfc, a.RazonSocial,a.Pais}).ToList();
                 return result.Select(r => (r.Rfc, r.RazonSocial, r.Pais.ToString())).ToList();
+        }
+        public List<ClaveUnidad> PopulaDatosClaveUnidad(string seleccion)
+        {
+            return _db.ClavesUnidad.Where(a => a.c_ClaveUnidad == seleccion).ToList();
+        }
+        public List<ClaveProdServCP> PopulaDatosClaveProdCP(string seleccion)
+        {
+            return _db.ClavesProdServCP.Where(a => a.c_ClaveUnidad == seleccion).ToList();
         }
         public List<Colonia> PopulaColonias(string seleccion)
         {
@@ -87,6 +96,10 @@ namespace APBox.Control
         public SelectList PopulaTiposEstacion()
         {
             return new SelectList(_db.TipoEstaciones.OrderBy(a => a.Descripcion), "ClaveEstacion", "Descripcion");
+        }
+        public SelectList PopulaDerechodePaso()
+        {
+            return new SelectList(_db.DerechosDePasos.OrderBy(a => a.ClavederechoPaso), "ClavederechoPaso", "DerechoDePaso");
         }
         public SelectList PopulaTipoDeComprobante()
         {
@@ -154,7 +167,7 @@ namespace APBox.Control
         }
         public SelectList NumAutorizacionNaviero_Id()
         {
-            return new SelectList(_db.NumAutorizacionNavieros.OrderBy(a => a.NumeroAutorizacion), "NumeroAutorizacion");
+            return new SelectList(_db.NumAutorizacionNavieros.OrderBy(a => a.NumeroAutorizacion), "NumeroAutorizacion", "NumeroAutorizacion");
         }
         public SelectList ContenedorMaritimo_Id()
         {

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace API.RelacionesCartaPorte
 {
-    [Table("cp_rel_MercanciaDetalleMercancia")]
+   // [Table("cp_rel_MercanciaDetalleMercancia")]
     public class MercanciaDetalleMercancia
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+       /* [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public int Mercancia_Id { get; set; }
@@ -20,6 +20,6 @@ namespace API.RelacionesCartaPorte
 
         public int DetalleMercancia_Id { get; set; }
         [ForeignKey("DetalleMercancia_Id")]
-        public virtual DetalleMercancia DetalleMercancia { get; set; }
+        public virtual DetalleMercancia DetalleMercancia { get; set; }*/
     }
 }

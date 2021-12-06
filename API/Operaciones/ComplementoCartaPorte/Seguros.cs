@@ -23,14 +23,19 @@ namespace API.Operaciones.ComplementoCartaPorte
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public string PolizaRespCivil { get; set; }
 
+        [DisplayName("Aseguradora de Daños al medio ambiente")]
         public string AseguraMedAmbiente { get; set; }
 
+        [DisplayName("Número de póliza de seguro por daños al medio ambiente")]
         public  string PolizaMedAmbiente { get; set; }
 
+        [DisplayName("Aseguradora de la carga transportada")]
         public string AseguraCarga { get; set; }
 
+        [DisplayName("Número de póliza de seguro de la carga transportada")]
         public string PolizaCarga { get; set; }
 
+        [DisplayName("Valor de la prima del seguro")]
         public string PrimaSeguro { get; set; }
     }
 }

@@ -217,6 +217,7 @@ namespace API.Context
         public DbSet<ConceptoSubImpuestoConcepto> ConceptoSubImpuestoConcepto { get; set; }
 
         public DbSet<ComplementoCartaPorteUbicacion> ComplementoCartaPorteUbicaciones { get; set; }
+        public DbSet<ComplementoCartaPorteFiguraTransporte> ComplementoCartaPorteFiguraTransporte { get; set; }
         public DbSet<TransporteMaritimoContenedorM> TransporteMaritimoContenedoresM { get; set; }
         public DbSet<MercanciaCantidadTransportada> MercanciaCantidadTransportadas { get; set; }
         public DbSet<MercanciaGuiasIdentificacion> MercanciasGuiasIdentificacion { get; set; }
@@ -226,7 +227,7 @@ namespace API.Context
         public DbSet<TransporteFerroviarioDerechosDePaso> TransporteFerroviarioDerechosDePasos  { get; set; }
         public DbSet<TransporteFerroviarioCarro> TransporteFerroviarioCarros { get; set; }
 
-        public DbSet<MercanciaDetalleMercancia> MercanciaDetalleMercancia { get; set; }
+       // public DbSet<MercanciaDetalleMercancia> MercanciaDetalleMercancia { get; set; }
         #endregion
 
 

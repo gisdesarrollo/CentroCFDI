@@ -24,6 +24,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Tipo de Derecho de Paso")]
         public string TipoDerechoDePaso { get; set; }
         //[Required(ErrorMessage = "Campo Requerido")]
+        [DisplayName("Tipo de Derecho de Paso")]
         public String TipoDerechoDePaso_Id { get; set; }
         [ForeignKey("TipoDerechoDePaso_Id")]
         public virtual DerechosDePaso DerechosDepaso { get; set; }

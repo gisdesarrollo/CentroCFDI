@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
@@ -23,6 +24,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
 
         //[Required(ErrorMessage = "Campo Requerido")]
+        [DisplayName("Tipo de contenedor")]
         public String Contenedor_Id { get; set; }
         [ForeignKey("Contenedor_Id")]
         public virtual Contenedor Contenedor { get; set; }

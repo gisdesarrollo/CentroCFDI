@@ -21,6 +21,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int AnioModeloVM { get; set; }
 
         //[Required(ErrorMessage = "Campo Obligatorio")]
+        [DisplayName("Tipo Configuración Vehicular")]
         public String ConfigAutotransporte_Id { get; set; }
         [ForeignKey("ConfigAutotransporte_Id")]
         public virtual ConfigAutotransporte ConfigAutotransporte { get; set; }

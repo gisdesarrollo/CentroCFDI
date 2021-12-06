@@ -1,5 +1,62 @@
 ﻿<script>
     $(function () {
+
+        //ACTIVA CAMPO PARTE TRANSPORTE
+        $('#TipoFiguraTransporte').change(function () {
+            var TipoFiguraTransporte = $(this).val();
+            
+            if (TipoFiguraTransporte === "02" || TipoFiguraTransporte === "03") {
+
+                $('#ActivaCampoPartesTransporte').show(200);
+            } else { $('#ActivaCampoPartesTransporte').hide(200); }
+        });
+
+        ///obtiene ubicaciones y genera un dropdow en la vista detalle mercancia
+        $(".getMercancias").click(function () {
+            var ubicacionesLength = $('.ubicacion').length;
+            
+            if (ubicacionesLength > 0) {
+                var ubicacionesJson = [];
+                var data = $("#Mercancias_Mercancia_CantidadTransportada_IDOrigen");
+                $(".ubicacion").each(function (index, element) {
+                    var IDClaveUbicacion = $(element).find('#IdUbicacion').text().trim();
+                    var validaTipo = IDClaveUbicacion.indexOf("OR")
+                   
+                    console.log(IDClaveUbicacion);
+                  //  if (validaTipo !== -1) {
+                       
+                       // $("#Mercancias_Mercancia_CantidadTransportada_ddlIDOrigen").removeAttr('disabled');
+                       // $("#Mercancias_Mercancia_CantidadTransportada_ddlIDOrigen").selectpicker('refresh');
+                    //} else {
+                    data.empty();
+
+                    data.append($('<option></option>').text(IDClaveUbicacion))
+                       // $("#Mercancias_Mercancia_CantidadTransportada_ddlIDDestino").removeAttr('disabled');
+                    data.selectpicker('refresh');
+                    //}
+
+                   
+                    ubicacionesJson.push({
+                        "text": IDClaveUbicacion,
+                        "value": IDClaveUbicacion
+                    });
+                   
+                });
+                //var json = jQuery.parseJSON(ubicacionesJson);
+                $.each(ubicacionesJson, function () {
+                    $.each(this, function (key, val) {
+                        $("#Mercancias_Mercancia_CantidadTransportada_ddlIDOrigen").append($('<option></option>').text(val))
+
+
+                    });
+                });
+                
+               
+                
+            }
+        });
+     });
+    $(function () {
         $('#TranspInternac').change(function () {
 
             if ($('#TranspInternac').prop('checked')) {
@@ -17,11 +74,11 @@
         $('#Mercancias_Mercancia_MaterialPeligrosos').change(function () {
 
             if ($('#Mercancias_Mercancia_MaterialPeligrosos').prop('checked')) {
-                console.log("entra");
                 $('.ActivaCampoMatPeligroso').show(200);
+                $('#Mercancias_Mercancia_MaterialPeligrosos').val(true);
             } else {
                 $('.ActivaCampoMatPeligroso').hide(200);
-
+                $('#Mercancias_Mercancia_MaterialPeligrosos').val(false);
             }
         });
 
@@ -59,30 +116,31 @@
     });
     //ACTIVA CAMPOS CON TRANSPORTE INTERNACIONAL Y COMPROBANTE INGRESO
     $(function () {
-       /* $('.ActivaCheckTransInter').change(function () {
+        $('.ActivaCheckTransInter').change(function () {
             var ClaveTransporteId = $('#claveTransporteId').val();
-           
-           
+
+
             if ($('#TranspInternac').prop('checked') && (ClaveTransporteId === "1" || ClaveTransporteId ==="3")) {
                 $('.DivPedimento').show(200);
                 $('#activaFraccionArancelaria').show(200);
                 $('.DivCantidadTransportada').show(200);
+                
 
             } else {
                 $('.DivPedimento').hide(200);
                 $('#activaFraccionArancelaria').hide(200);
-                $('.DivCantidadTransportada').hide(200);
+                //$('.DivCantidadTransportada').hide(200);
 
             }
-        });*/
+        });
 
 
     });
 
     $(function () {
-        /*$('#claveTransporteId').change(function () {
+        $('#claveTransporteId').change(function () {
             var ClaveTransporteId = $('#claveTransporteId').val();
-            
+
             if (ClaveTransporteId === "1" || ClaveTransporteId === "3") {
                 if ($('#TranspInternac').prop('checked')) {
                     $('.DivPedimento').show(200);
@@ -96,39 +154,41 @@
 
                 }
             }
-        });*/
+        });
 
 
     });
 
 
-
-    //Agrega total peso tara mercancia
-    $('#pesoNeto').on("keyup", function () {
-        if ($('#pesoNeto').val() > 0 && $('#pesoBruto').val() > 0 ) {
-            var pesoNeto = parseFloat($('#pesoNeto').val());
-            var pesoBruto = parseFloat($('#pesoBruto').val());
-            var Total;
-            if ($('#pesoNeto').val() === "") { pesoNeto = 0; }
-            if ($('#pesoBruto').val() === "") { pesoBruto = 0; }
-            Total = pesoBruto - pesoNeto;
-            $('#pesoTara').val(Total);
-        } else {
-            $('#pesoTara').val(0);
-        }
-    });
-    $('#pesoBruto').on("keyup", function () {
-        if ($('#pesoBruto').val() > 0 && $('#pesoNeto').val() > 0) {
-            var pesoNeto = parseFloat($('#pesoNeto').val());
-            var pesoBruto = parseFloat($('#pesoBruto').val());
-            var Total;
-            if ($('#pesoNeto').val() === "") { pesoNeto = 0; }
-            if ($('#pesoBruto').val() === "") { pesoBruto = 0; }
-            Total = pesoBruto - pesoNeto;
-            $('#pesoTara').val(Total);
-        } else {
-            $('#pesoTara').val(0);
-        }
+    $(function () {
+        //Agrega total peso tara mercancia
+        $('#pesoNeto').on("keyup", function () {
+            if ($('#pesoNeto').val() > 0 && $('#pesoBruto').val() > 0) {
+                var pesoNeto = parseFloat($('#pesoNeto').val());
+                var pesoBruto = parseFloat($('#pesoBruto').val());
+                var Total;
+                if ($('#pesoNeto').val() === "") { pesoNeto = 0; }
+                if ($('#pesoBruto').val() === "") { pesoBruto = 0; }
+                Total = pesoBruto - pesoNeto;
+                $('#pesoTara').val(Total);
+            } else {
+                $('#pesoTara').val(0);
+            }
+        });
+        $('#pesoBruto').on("keyup", function () {
+            if ($('#pesoBruto').val() > 0 && $('#pesoNeto').val() > 0) {
+                var pesoNeto = parseFloat($('#pesoNeto').val());
+                var pesoBruto = parseFloat($('#pesoBruto').val());
+                var Total;
+                if ($('#pesoNeto').val() === "") { pesoNeto = 0; }
+                if ($('#pesoBruto').val() === "") { pesoBruto = 0; }
+                Total = pesoBruto - pesoNeto;
+               
+                $('#pesoTara').val(Total);
+            } else {
+                $('#pesoTara').val(0);
+            }
+        });
     });
     //DETALLE MERCANCIA
     $(function () {
@@ -192,7 +252,8 @@
             var jsonPedimentos = [];
             $(".Pedimentos").each(function (index, element) {
 
-                var ContenedorId = $(element).find('#Pedimento').text().trim();              
+                var Pedimento = $(element).find('#Pedimento').text().trim();
+       
                 jsonPedimentos.push({
                     "Pedimento": Pedimento
                 });
@@ -224,7 +285,7 @@
                     "Cantidad": Cantidad, "CveTransporte_Id": CveTransporte, "IDOrigen": IDOrigen, "IDDestino": IDDestino
                 });
             });
-
+       
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarMercancia", "AjaxOperaciones")',
@@ -234,16 +295,16 @@
                     Descripcion: $('#Mercancias_Mercancia_Descripcion').val(),
                     Cantidad: $('#Mercancias_Mercancia_Cantidad').val(),
                     Unidad: $('#Mercancias_Mercancia_Unidad').val(),
-                    ClaveUnidadID: $('#Mercancias_Mercancia_ClaveUnidad_Id').val(),//option:selected
+                    ClaveUnidadID: $('#Mercancias_Mercancia_ClavesUnidad').val(),
                     Dimensiones: $('#Mercancias_Mercancia_Dimensiones').val(),
                     MaterialPeligorosoSN: $('#Mercancias_Mercancia_MaterialPeligrosos').val(),
-                    MaterialPeligrosoID: $('#Mercancias_Mercancia_MaterialPeligroso_Id').val(),//option:selected
-                    DescripcionEmbalaje: $('#Mercancias_Mercancia_DescripEmbalaje').val(),
-                    TipoEmbalajeID: $('#Mercancias_Mercancia_TipoEmbalaje_Id').val(),//option:selected
+                    MaterialPeligrosoID: $('#Mercancias_Mercancia_ClaveMaterialPeligroso').val(),
+                    DescripcionEmbalaje: $('#Mercancias_Mercancia_DescripEmbalaje option:selected').text(),
+                    TipoEmbalajeID: $('#Mercancias_Mercancia_TipoEmbalaje_Id').val(),
                     PesoEnKg: $('#Mercancias_Mercancia_PesoEnKg').val(),
                     ValorMercancia: $('#Mercancias_Mercancia_ValorMercancia').val(),
                     Moneda: $('#Mercancias_Mercancia_Moneda').val(),
-                    FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelaria_Id').val(),//option:selected
+                    FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelaria_Id option:selected').val(),//option:selected
                     UUIDComercioExt: $('#Mercancias_Mercancia_UUIDComecioExt').val(),
                     /*PPedimento: $('#Mercancias_Mercancia_Pedimentos_Pedimento').val(),
                     GINumIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_NumeroGuiaIdentificacion').val(),
@@ -254,7 +315,7 @@
                     CTCveOrigen: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionOrigen_Id').val(),//option:selected
                     CTCveDestino: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionDestino_Id').val(),//option:selected
                     */
-                    DEClaveUnidadPesoID: $('#Mercancias_Mercancia.DetalleMercancia_ClaveUnidadPeso_Id').val(),//option:selected
+                    DEClaveUnidadPesoID: $('#Mercancias_Mercancia_DetalleMercancia_ClaveUnidadPeso_Id').val(),//option:selected
                     DEPesoBruto: $('#pesoBruto').val(),
                     DEPEsoNeto: $('#pesoNeto').val(),
                     DEPesoTara: $('#pesoTara').val(),
@@ -287,18 +348,7 @@
         $(elem).parent().parent().parent().remove();
     }
 
-    //ACTIVA FORM GUIAS IDENTIDFICACION
-    $(function () {
-        $('#claveTransporteId').change(function () {
-            console.log("entra:" + $('#claveTransporteId').val())
-            if ($('#claveTransporteId').val() == 1) {
-                $('.GuiasIdentificacionForm').hide(200);
-            } else {
-                $('.GuiasIdentificacionForm').show(200);
-            }
-
-        });
-    });
+    
 
 
     //DETALLE FIGURA TRANSPORTE
@@ -340,8 +390,8 @@
                 jsonParteTransporte.push({
                     "ParteTransporte": ParteTransporte, "Pais": Pais, "Estado": Estado,
                     "Municipio": Municipio, "CodigoPostal": CodigoPostal, "Localidad": Localidad,
-                    "Colonia": Colonia, "Calle": Calle, "NumExterior": NumExterior,
-                    "NumInterior": NumInterior, "Referencia": Referencia
+                    "Colonia": Colonia, "Calle": Calle, "NumeroExterior": NumExterior,
+                    "NumeroInterior": NumInterior, "Referencia": Referencia
                 });
 
 
@@ -352,7 +402,7 @@
                 type: 'POST',
                 url: ' @Url.Action("AgregarFTransporte", "AjaxOperaciones")',
                 data: JSON.stringify({
-                    FTransporte: $('#TiposFigura_FiguraTransporte').val(),
+                    FTransporte: $('#TiposFigura_FiguraTransporte option:selected').val(),
                     RFCFigura: $('#TiposFigura_RFCFigura').val(),
                     NumLicencia: $('#TiposFigura_NumLicencia').val(),
                     NombreFigura: $('#TiposFigura_NombreFigura').val(),
@@ -421,25 +471,34 @@
         message = "#UCodigoPostal";
         FTCP = Boolean(ValidaCampos(CodigoPostal, message));*/
          //se toman valores de  campos de select o input
-        var OREstado = $('#TiposFigura_PartesTransporte_Domicilio_ddlEstados').val();
 
+        var ORPais = $("#TiposFigura_PartesTransporte_Domicilio_Paises option:selected").val();
+        var ORPaisText = $("#TiposFigura_PartesTransporte_Domicilio_Paises option:selected").text();
+
+        var OREstado = $('#TiposFigura_PartesTransporte_Domicilio_ddlEstados option:selected').val();
+        var OREstadoText = $("#TiposFigura_PartesTransporte_Domicilio_ddlEstados option:selected").text();
         if (OREstado === "" || OREstado=== null || OREstado == undefined) {
             OREstado = $('#TiposFigura_PartesTransporte_Domicilio_Estado').val();
+            OREstadoText = OREstado;
         }
 
         var DEMunicipio = $('#TiposFigura_PartesTransporte_Domicilio_ddlMunicipios option:selected').val();
-
+        var DEMunicipioText = $("#TiposFigura_PartesTransporte_Domicilio_ddlMunicipios option:selected").text();
         if (DEMunicipio === "" || DEMunicipio === null || DEMunicipio == undefined) {
-            DEMunicipio = $('#TiposFigura_PartesTransporte_Domicilio__Municipio').val();
+            DEMunicipio = $('#TiposFigura_PartesTransporte_Domicilio_Municipio').val();
+            DEMunicipioText = DEMunicipio;
         }
         var DELocalidad = $('#TiposFigura_PartesTransporte_Domicilio_ddlLocalidades option:selected').val();
-
+        var DELocalidadText = $("#TiposFigura_PartesTransporte_Domicilio_ddlLocalidades option:selected").text();
         if (DELocalidad === "" || DELocalidad === null || DELocalidad == undefined) {
             DELocalidad = $('#TiposFigura_PartesTransporte_Domicilio_Localidad').val();
+            DELocalidadText = DELocalidad;
         }
         var DEColonia = $('#TiposFigura_PartesTransporte_Domicilio_ddlColonias option:selected').val();
+        var DEColoniaText = $("#TiposFigura_PartesTransporte_Domicilio_ddlColonias option:selected").text();
         if (DEColonia === "" || DEColonia === null || DEColonia == undefined) {
             DEColonia = $('#TiposFigura_PartesTransporte_Domicilio_Colonia').val();
+            DEColoniaText = DEColonia;
         }
 
             $.ajax({
@@ -448,11 +507,16 @@
                 data: JSON.stringify({
                     PTransporte: $('#TiposFigura_PartesTransporte_ParteTransporte').val(),
                     Pais: $('#TiposFigura_PartesTransporte_Domicilio_Paises').val(),
+                    PaisText: ORPaisText,
                     Estado: OREstado,
+                    EstadoText: OREstadoText,
                     Municipio: DEMunicipio,
+                    MunicipioText: DEMunicipioText,
                     Localidad: DELocalidad,
+                    LocalidadText: DELocalidadText,
                     CodigoPostal: $('#TiposFigura_PartesTransporte_Domicilio_CodigoPostal').val(),
                     Colonia: DEColonia,
+                    ColoniaText: DEColoniaText,
                     Calle: $('#TiposFigura_PartesTransporte_Domicilio_Calle').val(),
                     NumExterior: $('#TiposFigura_PartesTransporte_Domicilio_NumeroExterior').val(),
                     NumInterior: $('#TiposFigura_PartesTransporte_Domicilio_NumeroInterior').val(),
@@ -481,13 +545,7 @@
         }
         $(elem).parent().parent().parent().remove();
     }
-    //ACTIVA CAMPO PARTE TRANSPORTE
-    $('#TipoFiguraTransporte').change(function () {
-        var TipoFiguraTransporte = $(this).val();
-        if (TipoFiguraTransporte === "02" || TipoFiguraTransporte === "03") {
-            $('#ActivaCampoPartesTransporte').show(200);
-        } else { $('#ActivaCampoPartesTransporte').hide(200); }
-    });
+    
 
     //DETALLE TRANSPORTE MARITIMO CONTENEDOR
     $(function () {
@@ -560,7 +618,7 @@
         var KP = false;
 
         var message;
-        var TipoDPasoID = $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso').val();
+        var TipoDPasoID = $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso_Id').val();
         message = "#TipoDerechosDePasoId";
         TDPI = Boolean(ValidaCampos(TipoDPasoID, message));
         var KilPagado = $('#Mercancias_TransporteFerroviario_DerechosDePasos_KilometrajePagado').val();
@@ -575,7 +633,7 @@
                 type: 'POST',
                 url: ' @Url.Action("AgregarTFDPaso", "AjaxOperaciones")',
                 data: JSON.stringify({
-                    TipoDPasoID: $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso').val(),//option:selected
+                    TipoDPasoID: $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso_Id').val(),//option:selected
                     KilPagado: $('#Mercancias_TransporteFerroviario_DerechosDePasos_KilometrajePagado').val()
                 }),
                 dataType: 'html',
@@ -606,7 +664,7 @@
     $(function () {
     $('#agregarDetalleTFCarro').click(function () {
         var contador = $(".TFCarro").size() + 1;
-        
+
         $(".contadorTFCarro").replaceWith('<span class="contadorTFCarro font-blue">: ' + contador + '</span >');
     });
     });
@@ -645,8 +703,9 @@
                 var PesoNMercancia = $(element).find('#PesoNMercancia').text().trim();
 
                 jsonCarroContenedor.push({
-                    "ContenedorId": ContenedorId, "PesoCVacio": PesoCVacio, "PesoNMercancia": PesoNMercancia
+                    "Contenedor_Id": ContenedorId, "PesoContenedorVacio": PesoCVacio, "PesoNetoMercancia": PesoNMercancia
                 });
+               
             });
 
             $.ajax({
@@ -662,8 +721,9 @@
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
             }).success(function (partialView) {
-                for (var x = 0; x < Contenedor.length; x++) { Contenedor.parent().parent().parent().remove(); }
-                $(".contadorTFContenedor").replaceWith('<span class="contadorTFContenedor font-blue">: ' + 0 + '</span >');
+                
+               /* for (var x = 0; x < Contenedor.length; x++) { Contenedor.parent().parent().parent().remove(); }
+                $(".contadorTFContenedor").replaceWith('<span class="contadorTFContenedor font-blue">: ' + 0 + '</span >');*/
                 $('#detallesTFCarro').append(partialView);
             })
                 .fail(function (jqxhr, textStatus, error) {
@@ -771,7 +831,7 @@
 
     $(function () {
     $("#agregarDetallePedimentos").on('click', function () {
-        
+
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarPedimentos", "AjaxOperaciones")',
@@ -860,8 +920,8 @@
                 data: JSON.stringify({
                     Cantidad: $('#Mercancias_Mercancia_CantidadTransportada_Cantidad').val(),
                     CveTransporteID: $('#Mercancias_Mercancia_CantidadTransportada_CveTransporte_Id').val(),
-                    UbicacionOrigenID: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionOrigen_Id').val(),
-                    UbicacionDestinoID: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionDestino_Id').val()
+                    UbicacionOrigenID: $('#Mercancias_Mercancia_CantidadTransportada_IDOrigen').val(),
+                    UbicacionDestinoID: $('#Mercancias_Mercancia_CantidadTransportada_IDDestino').val()
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
@@ -895,13 +955,13 @@
 
     $(function () {
     $("#agregarDetalleConceptos").on('click', function () {
-
+        
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarConceptos", "AjaxOperaciones")',
                 data: JSON.stringify({
-                    ClaveProdServID: $('#Conceptos_ClaveProdServ_Id').val(),
-                    ClaveUnidadID: $('#Conceptos_ClaveUnidad_Id').val(),
+                    ClaveProdServID: $('#Conceptos_ClavesProdServ').val(),
+                    ClaveUnidadID: $('#Conceptos_ClavesUnidad').val(),
                     Descripcion: $('#Conceptos_Descripcion').val(),
                     TBase: $('#TBase').val(),
                     TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
@@ -994,36 +1054,126 @@
     //Activa datetime input
     $(function () {
         $('.datetimepicker').datetimepicker({ format: 'DD/MM/YYYY HH:mm' }); // format: 'YYYY/MM/DD HH:mm A'
+        $('.time').datetimepicker({ format: 'HH:mm:ss' });
     });
 
-
-    //evelio valid campos
-     $(function () {
+    //valida campos por clave
+    $(function () {
+         //get descripcion claveProdServCP
          $('#Mercancias_Mercancia_ClaveProdServCP').on('keyup', function () {
-
-            console.log("hola");
-             var dato = $('#Mercancias_Mercancia_ClaveProdServCP').val();
+             var claveProdServCP = $('#Mercancias_Mercancia_ClaveProdServCP').val();
             var div = "#ClaveProdServID";
-
-            var valid;
-
-            valid = ValidaEntrada(dato,div,"serv");
+             if (claveProdServCP != "") {
+                 $.get("/ComplementosCartaPorte/DatosClaveProdServCP", { ClaveProdServCP: claveProdServCP }, function (data) {
+                     if (data.length > 0) {
+                         $.each(data, function (index, row) {
+                             $("#Mercancias_Mercancia_Descripcion").val(row.Descripcion);
+                         });
+                         $(div).html("");
+                     } else {
+                         $(div).html("El dato ingresado no existe");
+                         $("#Mercancias_Mercancia_Descripcion").val("");
+                     }
+                 });
+             } else {
+                 $(div).html("");
+                 $("#Mercancias_Mercancia_Descripcion").val("");
+             }
 
         });
-
+         //valida claveProdSTCC de mercancia
          $('#Mercancias_Mercancia_ClaveProdSTCC').on('keyup', function () {
-            console.log("hola2");
              var dato = $('#Mercancias_Mercancia_ClaveProdSTCC').val();
           var div = "#ClaveProdSTCC";
 
             var valid;
+             if (dato != "") {
+                 valid = ValidaEntrada(dato, div, "stcc");
+             } else {
+                 $(div).html("");
+             }
 
-          valid = ValidaEntrada(dato, div, "stcc");
+         });
+        //valida claveMaterialPeligroso
+        $('#Mercancias_Mercancia_ClaveMaterialPeligroso').on('keyup', function () {
+            var dato = $('#Mercancias_Mercancia_ClaveMaterialPeligroso').val();
+            var div = "#ClaveMatPeligroso";
+
+            var valid;
+            if (dato != "") {
+                valid = ValidaEntrada(dato, div, "MaterialPeligroso");
+            } else {
+                $(div).html("");
+            }
 
         });
+
+        //valida Clave unidad de mercancia y get descripcion
+         $('#Mercancias_Mercancia_ClavesUnidad').on('keyup', function () {
+             var claveUnidad = $('#Mercancias_Mercancia_ClavesUnidad').val();
+             var div = "#ClaveUnidadId";
+             if (claveUnidad != "") {
+                 $.get("/ComplementosCartaPorte/DatosClaveUnidad", { ClaveUnidad: claveUnidad }, function (data) {
+                     if (data.length > 0) {
+                         $.each(data, function (index, row) {
+                             $("#Mercancias_Mercancia_Unidad").val(row.Nombre);
+                         });
+                         $(div).html("");
+                     } else {
+                         $(div).html("El dato ingresado no existe");
+                         $("#Mercancias_Mercancia_Unidad").val("");
+                     }
+                 });
+             } else {
+                 $(div).html("");
+                 $("#Mercancias_Mercancia_Unidad").val("");
+             }
+            
+
+         });
+         
+
+         //conceptos clave unidad
+         $('#Conceptos_ClavesUnidad').on('keyup', function () {
+             var claveUnidad = $('#Conceptos_ClavesUnidad').val();
+             var div = "#ClaveUnidadConcepto";
+             if (claveUnidad != "") {
+                 $.get("/ComplementosCartaPorte/DatosClaveUnidad", { ClaveUnidad: claveUnidad }, function (data) {
+                     if (data.length > 0) {
+                         $(div).html("");
+                         
+                     } else {
+                         $(div).html("El dato ingresado no existe");
+                       
+                     }
+                 });
+             } else {
+                 $(div).html("");
+                 
+             }
+
+
+         });
+         //conceptos clave produdServCP
+         $('#Conceptos_ClavesProdServ').on('keyup', function () {
+             var dato = $('#Conceptos_ClavesProdServ').val();
+             var div = "#ClaveProdServCPConceptos";
+             var valid;
+             if (dato != "") {
+                 valid = ValidaEntrada(dato, div, "serv");
+             } else {
+                 $(div).html("");
+             }
+
+         });
+
+         //set  Tipo embalaje_id
+         $('#Mercancias_Mercancia_DescripEmbalaje').change(function () {
+             var tipoEmbalaje = $('#Mercancias_Mercancia_DescripEmbalaje option:selected').val();
+             $('#Mercancias_Mercancia_TipoEmbalaje_Id').val(tipoEmbalaje);
+         });
     });
     function ValidaEntrada(input, div,t) {
-        console.log(input + " : "+div);
          $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("Buscar", "AjaxOperaciones")',
@@ -1044,17 +1194,9 @@
 
          })
          .fail(function (jqxhr, textStatus, error) {
-               // alert("Favor de llenar todos los datos para los detalles");
+
          });
-        //if (input === "" || input === null || input == undefined) {
-
-
-        /*} else {
-            $(div).html("");
-            //return true;
-        }*/
-
     }
 
-
+   
 </script>

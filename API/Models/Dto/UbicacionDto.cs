@@ -39,7 +39,7 @@ namespace API.Models.Dto
         public string NumRegIdTrib { get; set; }
 
         [DisplayName("Residencia Fiscal")]
-        public c_Pais ResidenciaFiscal { get; set; }
+        public c_Pais? ResidenciaFiscal { get; set; }
         public string Estaciones_Id { get; set; }
         [ForeignKey("Estaciones_Id")]
         public virtual Estaciones Estaciones { get; set; }

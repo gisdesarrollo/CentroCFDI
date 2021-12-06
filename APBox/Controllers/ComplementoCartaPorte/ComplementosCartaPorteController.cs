@@ -11,6 +11,8 @@ using Aplicacion.Context;
 using APBox.Control;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones;
 using System.Data.Entity.Validation;
+using API.RelacionesCartaPorte;
+using System.Data.Entity;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -44,14 +46,15 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaTiposDeComprobante();
             PopulaTransporte();
             PopulaTiposEstacion();
-
             PopulaDatosSucursal(ObtenerSucursal());
             PopulaDatosEstaciones();
-
             PopulaPaises();
             PopularUsoCfdi();
             PopulaTiposUbicacion();
             PopulaFiguraTransporte();
+            PopulaNavegacionTrafico();
+            PopulaDerechoPaso();
+
             //PopulaClaveUnidad();
             //PopulaClaveProdServCP();
             PopulaClaveProdSTCC();
@@ -76,6 +79,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaClaveProDServList();
             PopulaFraccionArancelariaList();
             PopulaTiPermiso();
+            Random random = new Random();
+            var randomNumber = random.Next(100000,900000);
             var ComplementoCartaPorte = new ComplementoCartaPorte()
             {
                 Generado = false,
@@ -156,7 +161,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 Ubicacion = new Ubicacion
 
                 {
-                    IDUbicacion = "OR",
+                    IDUbicacion = "OR"+randomNumber,
                     DistanciaRecorrida = 0,
                     TipoUbicacion = "Origen",
                     FechaHoraSalidaLlegada = DateTime.Now,
@@ -230,19 +235,19 @@ namespace APBox.Controllers.ComplementosCartaPorte
            // PopulaClientes(complementoCartaPorte.ReceptorId);
             PopulaBancos(ObtenerSucursal());
             //PopulaCfdiRelacionado(complementoCartaPorte.CfdiRelacionadoId);
-
             PopulaTiposDeComprobante();
             PopulaTransporte();
             PopulaTiposEstacion();
-
             PopulaDatosSucursal(ObtenerSucursal());
             PopulaDatosEstaciones();
-            //PopulaClaveUnidad();
             PopulaPaises();
             PopularUsoCfdi();
             PopulaTiposUbicacion();
             PopulaFiguraTransporte();
-            //
+            PopulaNavegacionTrafico();
+            PopulaDerechoPaso();
+            //PopulaClaveUnidad();
+            //PopulaClaveProdServCP();
             PopulaClaveProdSTCC();
             //PopulaClaveUnida_Id();
             PopulaMaterialPeligroso_Id();
@@ -290,6 +295,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
             //Modelstate True
             try
             {
+                
+               
+                
                 if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.T)
                 {
                     complementoCartaPorte.hidden = false;
@@ -297,28 +305,67 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     complementoCartaPorte.Subtotal = 0;
                     complementoCartaPorte.Total = 0;
                     //carga conceptos
-                    //_acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
+                   _acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
                 }
                 else
                 {
                     complementoCartaPorte.hidden = true;
                     //carga conceptos
-                    //_acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
+                    _acondicionarComplementosCartaPorte.cargaConceptos(ref complementoCartaPorte);
                 }
-                //carga complemento
-                
-                _db.ComplementoCartaPortes.Add(complementoCartaPorte);
-                _db.SaveChanges();
+                complementoCartaPorte.TotalDistRec = 0;
+                //carga Complemento y Transporte
+                _acondicionarComplementosCartaPorte.cargaTransporte(ref complementoCartaPorte);
+               
                 //carga ubicaciones
-                //_acondicionarComplementosCartaPorte.cargaUbicaciones(ref complementoCartaPorte);
+                _acondicionarComplementosCartaPorte.cargaUbicaciones(ref complementoCartaPorte);
                 //carga Mercancias
-                //_acondicionarComplementosCartaPorte.cargaMercancias(ref complementoCartaPorte);
-                //carga Transporte
-                //_acondicionarComplementosCartaPorte.cargaTransporte(ref complementoCartaPorte);
+                _acondicionarComplementosCartaPorte.cargaMercancias(ref complementoCartaPorte);
+                
                 //carga Figura Transporte
-               /// _acondicionarComplementosCartaPorte.cargaFiguraTransporte(ref complementoCartaPorte);
-                //carga complemento
-                //_db.ComplementoCartaPortes.Add(complementoCartaPorte);
+                _acondicionarComplementosCartaPorte.cargaFiguraTransporte(ref complementoCartaPorte);
+                
+                
+                if (complementoCartaPorte.Conceptoss != null)
+                {
+                    foreach(var concepto in complementoCartaPorte.Conceptoss)
+                    {
+                        var relCartaPorteConceptos = new ComplementoCartaPorteConceptos()
+                        {
+                            ComplementoCartaPorte_Id = complementoCartaPorte.Id,
+                            Conceptos_Id = concepto.Id
+                        };
+                    }
+                }
+                if (complementoCartaPorte.Ubicaciones != null)
+                {
+                    
+                    foreach (var ubicacion in complementoCartaPorte.Ubicaciones)
+                    {
+                        var relCartaPorteUbicacion = new ComplementoCartaPorteUbicacion()
+                        {
+                            ComplementoCartaPorte_Id = complementoCartaPorte.Id,
+                            Ubicacion_Id = ubicacion.Id
+                        };
+                        _db.ComplementoCartaPorteUbicaciones.Add(relCartaPorteUbicacion);
+                        _db.SaveChanges();
+                    }
+                }
+                if (complementoCartaPorte.FiguraTransporte != null)
+                {
+                    foreach(var FT in complementoCartaPorte.FiguraTransporte)
+                    {
+                        var relCartaPorteFTransporte = new ComplementoCartaPorteFiguraTransporte()
+                        {
+                            ComplementoCartaPorte_Id = complementoCartaPorte.Id,
+                            FiguraTransporte_Id = FT.Id
+                        };
+                        _db.ComplementoCartaPorteFiguraTransporte.Add(relCartaPorteFTransporte);
+                        _db.SaveChanges();
+                    }
+                }
+               
+
                 return RedirectToAction("Index");
             }
             catch(DbEntityValidationException ex)
@@ -384,6 +431,19 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var Estados = popularDropDowns.PopulaDatosCliente(ClienteId);
             return Json(Estados, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult DatosClaveUnidad(string ClaveUnidad)
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            var Clave = popularDropDowns.PopulaDatosClaveUnidad(ClaveUnidad);
+            return Json(Clave, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DatosClaveProdServCP(string ClaveProdServCP)
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            var Clave = popularDropDowns.PopulaDatosClaveProdCP(ClaveProdServCP);
+            return Json(Clave, JsonRequestBehavior.AllowGet);
+        }
 
 
         #region Popula Forma
@@ -427,9 +487,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
         private void PopulaDatosEstaciones()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.NombreEstacionMaritimo = (popularDropDowns.PopulaDatosEstaciones("02"));
-            ViewBag.NombreEstacionAereo = (popularDropDowns.PopulaDatosEstaciones("03"));
-            ViewBag.NombreEstacionFerroviario = (popularDropDowns.PopulaDatosEstaciones("04"));
+            ViewBag.NombreEstacionMaritimo = (popularDropDowns.PopulaDatosEstaciones("2"));
+            ViewBag.NombreEstacionAereo = (popularDropDowns.PopulaDatosEstaciones("3"));
+            ViewBag.NombreEstacionFerroviario = (popularDropDowns.PopulaDatosEstaciones("4"));
             ViewBag.NombreEstacionMaritimoD = ViewBag.NombreEstacionMaritimo;
             ViewBag.NombreEstacionAereoD = ViewBag.NombreEstacionAereo;
             ViewBag.NombreEstacionFerroviarioD = ViewBag.NombreEstacionFerroviario;
@@ -447,6 +507,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.TipoEstacion = (popularDropDowns.PopulaTiposEstacion());
         }
 
+        private void PopulaDerechoPaso()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TipoDerechoPaso = (popularDropDowns.PopulaDerechodePaso());
+        }
+
         private void PopulaTiposDeComprobante()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -459,6 +525,14 @@ namespace APBox.Controllers.ComplementosCartaPorte
             items.Add(new SelectListItem { Text = "Origen", Value = "Origen", Selected = true });
             items.Add(new SelectListItem { Text = "Destino", Value = "Destino" });
             ViewBag.TipoUbicacion = items;
+        }
+
+        private void PopulaNavegacionTrafico()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Altura", Value = "Altura", Selected = true });
+            items.Add(new SelectListItem { Text = "Cabotaje", Value = "Cabotaje" });
+            ViewBag.TipoNavegacionTrafico = items;
         }
 
         private void PopulaFiguraTransporte()
@@ -534,7 +608,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
         private void TipoEmbalaje_Id()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.TiposEmbalaje_Id = (popularDropDowns.TipoEmbalaje_Id());
+            ViewBag.TiposEmbalaje = (popularDropDowns.TipoEmbalaje_Id());
         }
         private void PopulaFraccionArancelaria_Id()
         {
@@ -544,7 +618,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
         private void ClaveUnidadPeso_Id()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ClavesUnidadPeso_Id = (popularDropDowns.ClaveUnidadPeso_Id());
+            ViewBag.ClavesUnidadPeso = (popularDropDowns.ClaveUnidadPeso_Id());
         }
 
         private void SubTipoRem_Id()

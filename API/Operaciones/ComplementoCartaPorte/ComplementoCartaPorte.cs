@@ -43,20 +43,20 @@ namespace API.Operaciones.ComplementoCartaPorte
         [Required(ErrorMessage ="Campo Obligatorio")]
         public string Version { get; set; }
 
-        public int Conceptos_Id { get; set; }
-        [ForeignKey("Conceptos_Id")]
-        public virtual Conceptos Conceptos { get; set; }
+        [NotMapped]
+        public Conceptos Conceptos { get; set; }
 
         [NotMapped]
         public List<Conceptos> Conceptoss { get; set; }
 
         [DisplayName("Tipo Transporte")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public string ClaveTransporteId { get; set; }
         [ForeignKey("ClaveTransporteId")]
-        public virtual CveTransporte ViaEntradaSalida { get; set; }
-        [NotMapped]
+        public virtual CveTransporte claveTransportes { get; set; }
+        
         [DisplayName("Vía de Entrada o Salida")]
-        public String ClaveTransporte { get; set; }
+        public String viaEntradaSalida { get; set; }
 
         [Required]
         [DisplayName("RFC Receptor")]
@@ -66,11 +66,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         [Required]
         [DisplayName("Tipo de Comprobante")]
         public c_TipoDeComprobante TipoDeComprobante { get; set; }
-        [NotMapped]
+        
         public c_Moneda? Moneda { get; set; }
-        [NotMapped]
+        
         public Decimal Subtotal { get; set; }
-        [NotMapped]
+        
         public Decimal Total { get; set; }
 
         [NotMapped]
@@ -139,6 +139,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Fecha del Documento")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDocumento { get; set; }
+
+        [NotMapped]
+        //[DataType(DataType.Time)]
+        public DateTime Hora { get; set; }
 
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public Meses Mes { get; set; }

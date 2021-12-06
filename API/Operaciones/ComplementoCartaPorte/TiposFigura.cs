@@ -16,15 +16,19 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-       // [Required(ErrorMessage = "Campo Obligatorio")]
+        // [Required(ErrorMessage = "Campo Obligatorio")]
+        [DisplayName("Figura Transporte")]
         public string FiguraTransporte { get; set; }
         [DisplayName("RFC Figura Transporte")]
         public string RFCFigura { get; set; }
         [DisplayName("Número de Licencia")]
         public string NumLicencia { get; set; }
+        [DisplayName("Nombre de Figura")]
         public string NombreFigura { get; set; }
+
+        [DisplayName("Registro fiscal de la figura de transporte")]
         public string NumRegIdTribFigura { get; set; }
-        [DisplayName("Clave País")]
+        [DisplayName("Residencia fiscal de la figura de transporte")]
         public c_Pais ResidenciaFiscalFigura { get; set; }
 
         [NotMapped]

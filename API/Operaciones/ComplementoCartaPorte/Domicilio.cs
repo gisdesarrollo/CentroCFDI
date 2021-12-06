@@ -30,5 +30,17 @@ namespace API.Operaciones.ComplementoCartaPorte
         
         public String Pais { get; set; }
         public String Referencia { get; set; }
+
+        [NotMapped]
+        public string paiss { get; set; }
+        [NotMapped]
+        public string municipios { get; set; }
+        [NotMapped]
+        public string estados { get; set; }
+        [NotMapped]
+        public string localidades { get; set; }
+
+        [NotMapped]
+        public string colonias { get; set; }
     }
 }

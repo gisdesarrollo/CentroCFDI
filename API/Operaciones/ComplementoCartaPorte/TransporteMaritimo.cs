@@ -33,7 +33,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DisplayName("Nacionalidad de Embarcación")]
         //[Required(ErrorMessage = "Campo obligatorio")]
-        public c_Pais NacionalidadEmbarc { get; set; }
+        public string  NacionalidadEmbarc { get; set; }
 
         [DisplayName("Nombre del Agente Naviero")]
         //[Required(ErrorMessage = "Campo obligatorio")]
@@ -44,7 +44,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DisplayName("Nombre de Embarcación")]
         public String NombreEmbarc { get; set; }
-
+        [DisplayName("Numero de Autorización Naviero ")]
         //[Required(ErrorMessage = "Campo obligatorio")]
         public String NumAutorizacionNaviero_Id { get; set; }
         [ForeignKeyAttribute("NumAutorizacionNaviero_Id")]

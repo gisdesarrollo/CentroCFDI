@@ -16,12 +16,16 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [DisplayName("Clave de producto o servicio")]
+        public string ClavesProdServ { get; set; }
 
         [DisplayName("Clave de producto o servicio")]
         public string ClaveProdServ_Id { get; set; }
         [ForeignKey("ClaveProdServ_Id")]
         public virtual ClaveProdServCP ClaveProdServCP { get; set; }
 
+        [DisplayName("Clave de unidad")]
+        public string ClavesUnidad { get; set; }
         [DisplayName("Clave de unidad")]
         public string ClaveUnidad_Id { get; set; }
         [ForeignKey("ClaveUnidad_Id")]

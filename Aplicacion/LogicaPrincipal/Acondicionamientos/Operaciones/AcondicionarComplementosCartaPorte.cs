@@ -3,6 +3,7 @@ using API.RelacionesCartaPorte;
 using Aplicacion.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,33 +78,66 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
         public void cargaUbicaciones(ref ComplementoCartaPorte complementoCartaPorte)
         {
+            var cartaPorteDb = _db.ComplementoCartaPortes.Find(complementoCartaPorte.Id);
+            cartaPorteDb.TotalDistRec = 0;
             if (complementoCartaPorte.Ubicaciones != null)
             {
                 foreach (var ubicacion in complementoCartaPorte.Ubicaciones)
                 {
                     if (ubicacion.TipoUbicacion == "Destino")
                     {
-                        complementoCartaPorte.TotalDistRec += ubicacion.DistanciaRecorrida;
+                        cartaPorteDb.TotalDistRec += ubicacion.DistanciaRecorrida;
+                    }
+                    if(ubicacion.RfcRemitenteDestinatario != "XEXX010101000")
+                    {
+                        ubicacion.NumRegIdTrib = null;
+                        ubicacion.ResidenciaFiscal = null;
+                    }
+                    if(complementoCartaPorte.ClaveTransporteId == "1") {
+                        ubicacion.TipoEstacion_Id = null;
+                        ubicacion.TipoEstaciones = null;
+                        ubicacion.NumEstacion = null;
+                        ubicacion.NavegacionTrafico = null;
+                        ubicacion.NombreEstacion = null;
                     }
                     _db.Domicilios.Add(ubicacion.Domicilio);
                     _db.SaveChanges();
-                    ubicacion.Domicilio_Id = ubicacion.Domicilio.Id;
+                   // ubicacion.Domicilio_Id = ubicacion.Domicilio.Id;
                     _db.UbicacionOrigen.Add(ubicacion);
                     _db.SaveChanges();
 
                 }
+                
+                _db.Entry(cartaPorteDb).State = EntityState.Modified;
+                _db.SaveChanges();
             }
         }
 
         public void cargaMercancias(ref ComplementoCartaPorte complementoCartPorte)
         {
 
-            _db.Mercancias.Add(complementoCartPorte.Mercancias);
-            _db.SaveChanges();
+
+            var mercanciaDb = _db.Mercancias.Find(complementoCartPorte.Mercancias.Id);
             if (complementoCartPorte.Mercanciass != null)
             {
                 foreach(var mercancia in complementoCartPorte.Mercanciass)
                 {
+                    if (mercancia.DetalleMercancia.ClaveUnidadPeso_Id == null)
+                    {
+                        mercancia.DetalleMercancia = null;
+                        //_db.DetalleMercancias.Add(mercancia.DetalleMercancia);
+                        //_db.SaveChanges();
+                    }
+                    else
+                    {
+                        if(complementoCartPorte.ClaveTransporteId=="2" || complementoCartPorte.ClaveTransporteId == "4")
+                        {
+                            mercanciaDb.PesoBrutoTotal += mercancia.DetalleMercancia.PesoBruto;
+                            mercanciaDb.PesoNetoTotal += mercancia.DetalleMercancia.PesoNeto;
+                            _db.Entry(mercanciaDb).State = EntityState.Modified;
+                            _db.SaveChanges();
+                        }
+                    }
                     
                     _db.Mercancia.Add(mercancia);
                     _db.SaveChanges();
@@ -156,18 +190,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         }
                        
                     }
-                    if (mercancia.DetalleMercancia != null)
-                    {
-                        _db.DetalleMercancias.Add(mercancia.DetalleMercancia);
-                        _db.SaveChanges();
-                        var mercanciaDetalle = new MercanciaDetalleMercancia()
-                        {
-                            Mercancia_Id = mercancia.Id,
-                            DetalleMercancia_Id = mercancia.DetalleMercancia.Id
-                        };
-                        _db.MercanciaDetalleMercancia.Add(mercanciaDetalle);
-                        _db.SaveChanges();
-                    }
+                   
                     
                     var RelMercancias = new MercanciasMercancia()
                     {
@@ -182,25 +205,135 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
         public void cargaTransporte(ref ComplementoCartaPorte complementoCartaPorte)
         {
+            //var mercanciaDb = _db.Mercancias.Find(complementoCartaPorte.Mercancias.Id);
+            
             if (complementoCartaPorte.ClaveTransporteId == "1")
             {
-                //error en esta parte
-                _db.AutoTransporte.Add(complementoCartaPorte.Mercancias.AutoTransporte);
+               
+                complementoCartaPorte.Mercancias.TransporteFerroviario = null;
+                complementoCartaPorte.Mercancias.TransporteMaritimo = null;
+                complementoCartaPorte.Mercancias.TransporteAereo = null;
+                
+                _db.ComplementoCartaPortes.Add(complementoCartaPorte);
                 _db.SaveChanges();
+                if (complementoCartaPorte.Mercancias.AutoTransporte.Remolquess != null)
+                {
+                    foreach(var remolque in complementoCartaPorte.Mercancias.AutoTransporte.Remolquess)
+                    {
+                        _db.Remolques.Add(remolque);
+                        _db.SaveChanges();
+                        var relAutoTransporteRemolque = new AutotransporteRemolque()
+                        {
+                            Autotransporte_Id = complementoCartaPorte.Mercancias.AutoTransporte.Id,
+                            Remolques_Id = remolque.Id
+                        };
+                        _db.AutotransporteFederalRemolques.Add(relAutoTransporteRemolque);
+                        _db.SaveChanges();
+                    }
+                    
+                }
             }
-            if(complementoCartaPorte.ClaveTransporteId == "2")
+            else if(complementoCartaPorte.ClaveTransporteId == "2")
             {
-                _db.TransporteMaritimos.Add(complementoCartaPorte.Mercancias.TransporteMaritimo);
+               
+                complementoCartaPorte.Mercancias.TransporteFerroviario = null;
+                complementoCartaPorte.Mercancias.AutoTransporte = null;
+                complementoCartaPorte.Mercancias.TransporteAereo = null;
+                _db.ComplementoCartaPortes.Add(complementoCartaPorte);
                 _db.SaveChanges();
+                if (complementoCartaPorte.Mercancias.TransporteMaritimo.ContenedoresM != null)
+                {
+                    foreach(var contenedor in complementoCartaPorte.Mercancias.TransporteMaritimo.ContenedoresM)
+                    {
+                        _db.ContenedoresM.Add(contenedor);
+                        _db.SaveChanges();
+
+                        var relMaritimoContenedor = new TransporteMaritimoContenedorM() { 
+                        TransporteMaritimo_Id = complementoCartaPorte.Mercancias.TransporteMaritimo.Id,
+                        ContenedorM_Id = contenedor.Id
+                        };
+                        _db.TransporteMaritimoContenedoresM.Add(relMaritimoContenedor);
+                        _db.SaveChanges();
+                    }
+                    
+
+
+                }
+
             }
-            if(complementoCartaPorte.ClaveTransporteId == "3")
+            else if(complementoCartaPorte.ClaveTransporteId == "3")
             {
-                _db.TransporteAereos.Add(complementoCartaPorte.Mercancias.TransporteAereo);
+              
+                complementoCartaPorte.Mercancias.TransporteFerroviario = null;
+                complementoCartaPorte.Mercancias.AutoTransporte = null;
+                complementoCartaPorte.Mercancias.TransporteMaritimo = null;
+                _db.ComplementoCartaPortes.Add(complementoCartaPorte);
                 _db.SaveChanges();
+
             }
-            if(complementoCartaPorte.ClaveTransporteId == "4")
+            else if (complementoCartaPorte.ClaveTransporteId == "4")
             {
-                _db.TransporteFerroviarios.Add(complementoCartaPorte.Mercancias.TransporteFerroviario);
+                
+                complementoCartaPorte.Mercancias.TransporteMaritimo = null;
+                complementoCartaPorte.Mercancias.AutoTransporte = null;
+                complementoCartaPorte.Mercancias.TransporteAereo = null;
+                _db.ComplementoCartaPortes.Add(complementoCartaPorte);
+                _db.SaveChanges();
+                if (complementoCartaPorte.Mercancias.TransporteFerroviario.DerechosDePasoss != null)
+                {
+                    foreach(var derechoDePaso in complementoCartaPorte.Mercancias.TransporteFerroviario.DerechosDePasoss)
+                    {
+                        _db.DerechoDePasos.Add(derechoDePaso);
+                        _db.SaveChanges();
+
+                        var relFerroviarioDDePaso = new TransporteFerroviarioDerechosDePaso() { 
+                        TransporteFerroviario_Id = complementoCartaPorte.Mercancias.TransporteFerroviario.Id,
+                        DerechosDePaso_Id = derechoDePaso.Id
+                        };
+                        _db.TransporteFerroviarioDerechosDePasos.Add(relFerroviarioDDePaso);
+                        _db.SaveChanges();
+                    }
+                   
+                }
+                if (complementoCartaPorte.Mercancias.TransporteFerroviario.Carros != null)
+                {
+                    foreach(var carro in complementoCartaPorte.Mercancias.TransporteFerroviario.Carros)
+                    {
+                        _db.Carros.Add(carro);
+                        _db.SaveChanges();
+                        if (carro.ContenedoresC != null)
+                        {
+                            foreach (var contenedorC in carro.ContenedoresC)
+                            {
+                                _db.ContenedoresC.Add(contenedorC);
+                                _db.SaveChanges();
+                                var relCarroContenedorC = new CarroContenedorC() { 
+                                Carro_Id = carro.Id,
+                                ContenedorC_Id = contenedorC.Id
+                                };
+                                _db.CarrosContenedorC.Add(relCarroContenedorC);
+                                _db.SaveChanges();
+                            }
+                        }
+                        var relFerroviarioCarro = new TransporteFerroviarioCarro()
+                        {
+                            TransporteFerroviario_Id = complementoCartaPorte.Mercancias.TransporteFerroviario.Id,
+                            Carro_Id = carro.Id
+                        };
+                        _db.TransporteFerroviarioCarros.Add(relFerroviarioCarro);
+                        _db.SaveChanges();
+
+                    }
+                }
+
+            }
+            else
+            {
+                complementoCartaPorte.Mercancias.TransporteMaritimo = null;
+                complementoCartaPorte.Mercancias.AutoTransporte = null;
+                complementoCartaPorte.Mercancias.TransporteAereo = null;
+                complementoCartaPorte.Mercancias.TransporteFerroviario = null;
+                _db.ComplementoCartaPortes.Add(complementoCartaPorte);
                 _db.SaveChanges();
             }
         }
@@ -217,6 +350,9 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     {
                         foreach(var PT in FT.PartesTransportes)
                         {
+                            _db.Domicilios.Add(PT.Domicilio);
+                            _db.SaveChanges();
+                            //PT.Domicilio_Id = PT.Domicilio.Id;
                             _db.PartesTransporte.Add(PT);
                             _db.SaveChanges();
 
@@ -226,8 +362,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                             };
                             _db.TiposFiguraPartesTransporte.Add(FiguraParteTransporte);
                             _db.SaveChanges();
-                            _db.Domicilios.Add(PT.Domicilio);
-                            _db.SaveChanges();
+                           
                         }
                     }
                 }

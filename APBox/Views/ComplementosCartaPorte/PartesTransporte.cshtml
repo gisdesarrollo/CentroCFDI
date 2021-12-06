@@ -21,24 +21,27 @@
             <p id="ParteTransporte">@Model.ParteTransporte</p>
             @Html.HiddenFor(model => model.ParteTransporte)
         </div>
-        <div class="form-group col-xs-12 col-sm-3">
-            @Html.LabelFor(model => model.Domicilio.Pais)<br />
-            <p id="Pais">@Model.Domicilio.Pais</p>
-            @Html.HiddenFor(model => model.Domicilio.Pais)
-        </div>
 
+        <div class="clearfix"></div>
         <h3 class="title-hero">
             Partes Transporte : Domicilio
         </h3>
-
+        <div class="form-group col-xs-12 col-sm-3">
+            @Html.LabelFor(model => model.Domicilio.Pais)<br />
+            @Html.DisplayFor(model => model.Domicilio.paiss)
+            <p id="Pais" hidden>@Model.Domicilio.Pais</p>
+            @Html.HiddenFor(model => model.Domicilio.Pais)
+        </div>
         <div class="form-group col-xs-12 col-sm-3">
             @Html.LabelFor(model => model.Domicilio.Estado)<br />
-            <p id="Estado">@Model.Domicilio.Estado</p>
+            @Html.DisplayFor(model => model.Domicilio.estados)
+            <p id="Estado" hidden>@Model.Domicilio.Estado</p>
             @Html.HiddenFor(model => model.Domicilio.Estado)
         </div>
         <div class="form-group col-xs-12 col-sm-3">
             @Html.LabelFor(model => model.Domicilio.Municipio)<br />
-            <p id="Municipio">@Model.Domicilio.Municipio</p>
+            @Html.DisplayFor(model => model.Domicilio.municipios)
+            <p id="Municipio" hidden>@Model.Domicilio.Municipio</p>
             @Html.HiddenFor(model => model.Domicilio.Municipio)
         </div>
         <div class="form-group col-xs-12 col-sm-3">
@@ -48,12 +51,14 @@
         </div>
         <div class="form-group col-xs-12 col-sm-3">
             @Html.LabelFor(model => model.Domicilio.Localidad)<br />
-            <p id="Localidad">@Model.Domicilio.Localidad</p>
+            @Html.DisplayFor(model => model.Domicilio.localidades)
+            <p id="Localidad" hidden>@Model.Domicilio.Localidad</p>
             @Html.HiddenFor(model => model.Domicilio.Localidad)
         </div>
         <div class="form-group col-xs-12 col-sm-3">
             @Html.LabelFor(model => model.Domicilio.Colonia)<br />
-            <p id="Colonia">@Model.Domicilio.Colonia</p>
+            @Html.DisplayFor(model => model.Domicilio.colonias)
+            <p id="Colonia" hidden>@Model.Domicilio.Colonia</p>
             @Html.HiddenFor(model => model.Domicilio.Colonia)
         </div>
         <div class="form-group col-xs-12 col-sm-3">

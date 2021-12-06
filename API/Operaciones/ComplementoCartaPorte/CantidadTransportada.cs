@@ -30,7 +30,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int UbicacionDestino_Id { get; set; }
         [ForeignKey("UbicacionDestino_Id")]
         public virtual UbicacionDestino UbicacionDestino { get; set; }
-        [NotMapped]
+        
         [DisplayName("ID Destino")]
         public String IDDestino { get; set; }
 
@@ -39,7 +39,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int UbicacionOrigen_Id { get; set; }
         [ForeignKey("UbicacionOrigen_Id")]
         public virtual Ubicacion UbicacionOrigen { get; set; }
-        [NotMapped]
+        
         [DisplayName("ID Origen")]
         public String IDOrigen { get; set; }
 
