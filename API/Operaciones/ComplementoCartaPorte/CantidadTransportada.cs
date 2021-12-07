@@ -25,20 +25,20 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public String ClaveTransporte { get; set; }
         
-        [DisplayName("ID Destino")]
+        /*[DisplayName("ID Destino")]
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public int UbicacionDestino_Id { get; set; }
         [ForeignKey("UbicacionDestino_Id")]
-        public virtual UbicacionDestino UbicacionDestino { get; set; }
+        public virtual UbicacionDestino UbicacionDestino { get; set; */
         
         [DisplayName("ID Destino")]
         public String IDDestino { get; set; }
 
-        [DisplayName("ID Origen")]
+        /*[DisplayName("ID Origen")]
         //[Required(ErrorMessage ="Campo Obligatorio")]
         public int UbicacionOrigen_Id { get; set; }
         [ForeignKey("UbicacionOrigen_Id")]
-        public virtual Ubicacion UbicacionOrigen { get; set; }
+        public virtual Ubicacion UbicacionOrigen { get; set; }*/
         
         [DisplayName("ID Origen")]
         public String IDOrigen { get; set; }

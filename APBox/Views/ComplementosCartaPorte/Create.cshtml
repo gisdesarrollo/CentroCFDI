@@ -33,6 +33,7 @@
             </ul>
             @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
             @{
+                
                 string activaCampos = "hidden";
                 string ActCampTransInterc = "hidden";
                 string ActCamposMatPeligroso = "hidden";
@@ -49,7 +50,7 @@
                 string ActPesoMercancia = "hidden";
                 string ActvCargoTasacion = "hidden";
                 string ActNumEstacion = "hidden";
-               
+
 
                 if (Model.hidden)
                 {
@@ -74,7 +75,7 @@
                 if (Model.ClaveTransporteId =="2" || Model.ClaveTransporteId =="4") { ActPesoMercancia = "visible"; } else { ActPesoMercancia = "hidden"; }
                 if (Model.ClaveTransporteId == "3") { ActvCargoTasacion = "visible"; } else { ActvCargoTasacion = "hidden"; }
                 if (Model.ClaveTransporteId != "1") { ActNumEstacion = "visible"; } else { ActNumEstacion = "hidden"; }
-               
+
             }
             <div class="tab-content">
                 <div class="tab-pane active" id="tab1">
@@ -551,6 +552,7 @@
                                                 {
                                                     foreach (var ubicacion in Model.Ubicaciones)
                                                     {
+                                                        
                                                         @Html.Partial("~/Views/ComplementosCartaPorte/Ubicacion.cshtml", ubicacion)
                                                     }
                                                 }
@@ -1051,19 +1053,19 @@
                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.CveTransporte_Id, "", new { @class = "text-danger" })
                                     <div id="CveTransporteId" style="color:red;"></div>
                                 </div>
-
+                               
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     @Html.LabelFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new { @class = "control-label" })
-                                    @*@Html.DropDownList("ddlIDOrigen", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control", @disabled = "disabled" })*@
-                                    @Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new { @class = "form-control " })
+                                    @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control" })
+                                    @* @Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new { @class = "form-control " })*@
                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, "", new { @class = "text-danger" })
                                     <div id="UbicacionOrigenId" style="color:red;"></div>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                     @Html.LabelFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new { @class = "control-label" })
-                                    @*@Html.DropDownList("ddlIDDestino", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control" })*@
-                                    @Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new { @class = "form-control " })
+                                    @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-control" })
+                                    @*@Html.EditorFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new { @class = "form-control " })*@
                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, "", new { @class = "text-danger" })
                                     <div id="UbicacionDestinoId" style="color:red;"></div>
                                 </div>
@@ -2118,7 +2120,7 @@
             
             }
             var clave="";
-            var randomClave = Math.floor(Math.random() * (10000 - 900000 + 1) + 900000);
+            var randomClave = Math.floor(100000 + Math.random() * 900000);
             if ($('#TipoUbicacionRD').val() === "Origen") { clave = "OR" + randomClave; } else { clave = "DE" + randomClave }
         $.ajax({
             type: 'POST',
@@ -2630,7 +2632,7 @@
     $('#TipoUbicacionRD').change(function () {
         var TipoUbicacionRD = $(this).val();
         var clave = "";
-        var randomClave = Math.floor(Math.random() * (10000 - 900000 + 1) + 900000);
+        var randomClave = Math.floor(100000 + Math.random() * 900000);
        
         if (TipoUbicacionRD == "Origen") {
             $('.origenTitulo').show(200);

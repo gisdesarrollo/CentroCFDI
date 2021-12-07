@@ -13,6 +13,7 @@ using Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones;
 using System.Data.Entity.Validation;
 using API.RelacionesCartaPorte;
 using System.Data.Entity;
+using API.Models.Dto;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -80,7 +81,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFraccionArancelariaList();
             PopulaTiPermiso();
             Random random = new Random();
-            var randomNumber = random.Next(100000,900000);
+            var randomNumber = random.Next(0,1000000).ToString("D6");
             var ComplementoCartaPorte = new ComplementoCartaPorte()
             {
                 Generado = false,
@@ -423,6 +424,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             var Estados = popularDropDowns.PopulaColonias(CodigoPostalId);
             return Json(Estados, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult FiltrarUbicaciones(List<UbicacionDropDowDto> ListUbicacionClave)
+        {
+            var clavesUbicacion = ListUbicacionClave;
+            return Json(clavesUbicacion, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult DatosCliente(int ClienteId)
