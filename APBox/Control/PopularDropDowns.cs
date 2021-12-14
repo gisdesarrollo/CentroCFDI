@@ -49,6 +49,10 @@ namespace APBox.Control
         {
             return _db.ClavesProdServCP.Where(a => a.c_ClaveUnidad == seleccion).ToList();
         }
+        public List<FraccionArancelaria> PopulaDatosFraccionArancelaria(string seleccion)
+        {
+            return _db.FraccionesArancelarias.Where(a => a.c_FraccionArancelaria == seleccion).ToList();
+        }
         public List<Colonia> PopulaColonias(string seleccion)
         {
             return _db.Colonias.Where(a => a.c_CodigoPostal_Id == seleccion).ToList();
@@ -112,6 +116,7 @@ namespace APBox.Control
         {
             return new SelectList(_db.CveTransportes.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
         }
+
         public SelectList PopulaTipoPermiso()
         {
             return new SelectList(_db.TipoPermisos.OrderBy(a => a.Clave), "Clave", "Descripcion");

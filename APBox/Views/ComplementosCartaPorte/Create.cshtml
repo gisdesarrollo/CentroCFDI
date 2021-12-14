@@ -62,19 +62,19 @@
                 }
                 if (Model.TranspInternac) { ActCampTransInterc = "visible"; } else { ActCampTransInterc = "hidden"; }
                 if (Model.Mercancias.Mercancia.MaterialPeligrosos) { ActCamposMatPeligroso = "visible"; } else { ActCamposMatPeligroso = "hidden"; }
-                if (Model.ClaveTransporteId == "1") { ActTransporte = "visible"; } else { ActTransporte = "hidden"; }
-                if (Model.ClaveTransporteId == "2") { ActTransporteMaritimo = "visible"; } else { ActTransporteMaritimo = "hidden"; }
-                if (Model.ClaveTransporteId == "3") { ActTransporteAereo = "visible"; } else { ActTransporteAereo = "hidden"; }
-                if (Model.ClaveTransporteId == "4") { ActTransporteFerroviario = "visible"; } else { ActTransporteFerroviario = "hidden"; }
-                if (Model.ClaveTransporteId == "2") { ActDimension = "visible"; } else { ActDimension = "hidden"; }
+                if (Model.ClaveTransporteId == "01") { ActTransporte = "visible"; } else { ActTransporte = "hidden"; }
+                if (Model.ClaveTransporteId == "02") { ActTransporteMaritimo = "visible"; } else { ActTransporteMaritimo = "hidden"; }
+                if (Model.ClaveTransporteId == "03") { ActTransporteAereo = "visible"; } else { ActTransporteAereo = "hidden"; }
+                if (Model.ClaveTransporteId == "04") { ActTransporteFerroviario = "visible"; } else { ActTransporteFerroviario = "hidden"; }
+                if (Model.ClaveTransporteId == "02") { ActDimension = "visible"; } else { ActDimension = "hidden"; }
                 if (Model.TiposFigura.FiguraTransporte == "02" || Model.TiposFigura.FiguraTransporte == "03") { ActParteTransporte = "visible"; } else { ActParteTransporte = "hidden"; }
                 if (Model.Ubicacion.RfcRemitenteDestinatario == "XEXX010101000") { ActCampoUbicacionExtranjero = "visible"; } else { ActCampoUbicacionExtranjero = "hidden"; }
-                if ((Model.ClaveTransporteId == "1" && Model.TranspInternac) || (Model.ClaveTransporteId =="3" && Model.TranspInternac)) { ActFormPedimento = "visible"; } else { ActFormPedimento = "hidden"; }
-                if ((Model.ClaveTransporteId == "1" && Model.TranspInternac) || (Model.ClaveTransporteId == "4" && Model.TranspInternac) || (Model.ClaveTransporteId == "4" && !Model.TranspInternac)) { ActFormCantidadTransportada = "visible"; } else { ActFormCantidadTransportada = "hidden"; }
-                if (Model.ClaveTransporteId == "1" && Model.TranspInternac) { ActFracArancelaria = "visible"; } else { ActFracArancelaria = "hidden"; }
-                if (Model.ClaveTransporteId =="2" || Model.ClaveTransporteId =="4") { ActPesoMercancia = "visible"; } else { ActPesoMercancia = "hidden"; }
-                if (Model.ClaveTransporteId == "3") { ActvCargoTasacion = "visible"; } else { ActvCargoTasacion = "hidden"; }
-                if (Model.ClaveTransporteId != "1") { ActNumEstacion = "visible"; } else { ActNumEstacion = "hidden"; }
+                if ((Model.ClaveTransporteId == "01" && Model.TranspInternac) || (Model.ClaveTransporteId =="03" && Model.TranspInternac)) { ActFormPedimento = "visible"; } else { ActFormPedimento = "hidden"; }
+                if ((Model.ClaveTransporteId == "01" && Model.TranspInternac) || (Model.ClaveTransporteId == "04" && Model.TranspInternac) || (Model.ClaveTransporteId == "04" && !Model.TranspInternac)) { ActFormCantidadTransportada = "visible"; } else { ActFormCantidadTransportada = "hidden"; }
+                if (Model.ClaveTransporteId == "01" && Model.TranspInternac) { ActFracArancelaria = "visible"; } else { ActFracArancelaria = "hidden"; }
+                if (Model.ClaveTransporteId =="02" || Model.ClaveTransporteId =="04") { ActPesoMercancia = "visible"; } else { ActPesoMercancia = "hidden"; }
+                if (Model.ClaveTransporteId == "03") { ActvCargoTasacion = "visible"; } else { ActvCargoTasacion = "hidden"; }
+                if (Model.ClaveTransporteId != "01") { ActNumEstacion = "visible"; } else { ActNumEstacion = "hidden"; }
 
             }
             <div class="tab-content">
@@ -255,6 +255,7 @@
                                 <h3 class="title-hero">
                                     Subsección Impuestos : Traslado
                                 </h3>
+                                @Html.HiddenFor(model => model.Conceptos.Traslado.TipoImpuesto)
                                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                     @Html.LabelFor(model => model.Conceptos.Traslado.Base, htmlAttributes: new { @class = "control-label" })
                                     @Html.EditorFor(model => model.Conceptos.Traslado.Base, new { htmlAttributes = new { @class = "form-control", @id = "TBase", @readonly = "readonly" } })
@@ -292,7 +293,7 @@
                                 <h3 class="title-hero">
                                     Subsección Impuestos : Retencion
                                 </h3>
-
+                                @Html.HiddenFor(model => model.Conceptos.Retencion.TipoImpuesto)
                                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                     @Html.LabelFor(model => model.Conceptos.Retencion.Base, htmlAttributes: new { @class = "control-label" })
                                     @Html.EditorFor(model => model.Conceptos.Retencion.Base, new { htmlAttributes = new { @class = "form-control", @id = "RBase", @readonly = "readonly" } })
@@ -845,9 +846,10 @@
                             </div>
                             <div @ActFracArancelaria id="activaFraccionArancelaria">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-3">
-                                    @Html.LabelFor(model => model.Mercancias.Mercancia.FraccionArancelaria_Id, htmlAttributes: new { @class = "control-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.Mercancia.FraccionArancelaria_Id, (IEnumerable<SelectListItem>)ViewBag.FraccArancelaria, "Favor de hacer su selección", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.FraccionArancelaria_Id, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.Mercancias.Mercancia.FraccionArancelarias, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Mercancias.Mercancia.FraccionArancelarias, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.FraccionArancelarias, "", new { @class = "text-danger" })
+                                    <div id="ClaveFraccionArancelaria" style="color:red;"></div>
                                 </div>
 
                                 <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -1321,7 +1323,7 @@
                         </h3>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
                             @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_M, "Favor de hacer su selección", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermisoList, "Favor de hacer su selección", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -1500,7 +1502,7 @@
 
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
                             @Html.LabelFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_A, "Favor de hacer su selección", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermisoList, "Favor de hacer su selección", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -2172,7 +2174,7 @@
         var ClaveTransporteId = $(this).val();
         
         switch (ClaveTransporteId) {
-            case "2":
+            case "02":
                 $('#DivEstacionMaritimo').show();
                 $('#DivEstacionAereo').hide();
                 $('#DivEstacionFerroviario').hide();
@@ -2198,7 +2200,7 @@
                 $(".activaClaveSTCC").hide();
                 $('.DivCantidadTransportada').hide(200);
                 break;
-            case "3":
+            case "03":
                 $('#DivEstacionMaritimo').hide();
                 $('#DivEstacionAereo').show();
                 $('#DivEstacionFerroviario').hide();
@@ -2223,7 +2225,7 @@
                 $(".pesoBrutoTotalD").removeAttr('disabled');
                 $(".activaClaveSTCC").hide();
                 break;
-            case "4":
+            case "04":
                 $('#DivEstacionMaritimo').hide();
                 $('#DivEstacionAereo').hide();
                 $('#DivEstacionFerroviario').show();
@@ -2248,6 +2250,32 @@
                 $(".pesoBrutoTotalD").attr('disabled', 'disabled');
                 $(".activaClaveSTCC").show();
                 $('.DivCantidadTransportada').show();
+                break;
+            case "05":
+                $('#DivEstacionMaritimo').hide();
+                $('#DivEstacionAereo').hide();
+                $('#DivEstacionFerroviario').hide();
+                $('#DivNumEstacion').hide();
+                $('#NumEstacion').val('');
+                $('#DivEstacionMaritimoD').hide();
+                $('#DivEstacionAereoD').hide();
+                $('#DivEstacionFerroviarioD').hide();
+                $('#DivNumEstacionD').hide();
+                $('#NumEstacionD').val('');
+                $('#TransporteFerroviario').hide();
+                $('#TransporteMaritimo').hide();
+                $('#TransporteAereo').hide();
+                $('#DivAutotransporte').hide();
+                $('#TotalDistRec').hide();
+                $('.activaTipoEstacion').hide();
+                $('#ActivaDimensiones').hide();
+                $('#DivNavegacionTrafico').hide();
+                $('#activaMercPeso').hide();
+                $('.DivDetalleMercancia').hide();
+                $('#DivCargoTasacion').hide();
+                $(".pesoBrutoTotalD").attr('disabled', 'disabled');
+                $(".activaClaveSTCC").hide();
+                $('.DivCantidadTransportada').hide();
                 break;
             default:
                 $('#DivEstacionMaritimo').hide();

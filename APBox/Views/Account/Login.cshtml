@@ -27,7 +27,7 @@
                                 <span class="input-group-addon bg-black">
                                     <i class="glyph-icon icon-user"></i>
                                 </span>
-                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Usuario" })
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control minusculas", @placeholder = "Usuario" })
                             </div>
 
 
@@ -35,7 +35,7 @@
                                 <span class="input-group-addon bg-black">
                                     <i class="glyph-icon icon-unlock-alt"></i>
                                 </span>
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control minusculas", @placeholder = "Contraseña" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Contraseña" })
                             </div>
                             @Html.ValidationMessageFor(m => m.Password)
 

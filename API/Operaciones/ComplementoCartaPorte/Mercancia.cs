@@ -82,9 +82,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         public string FraccionArancelaria_Id { get; set; }
         [ForeignKey("FraccionArancelaria_Id")]
         public virtual FraccionArancelaria FraccionArancelaria { get; set; }
-        /*[NotMapped]
-        [DisplayName("Fracción Arancelaria")]
-        public string  FraccionArancelarias{ get; set; }
+        
+        [DisplayName("Clave Fracción Arancelaria")]
+        public string  FraccionArancelarias { get; set; }
+        /*
         [NotMapped]
         [DisplayName("Descripción de Fracción Arancelaria")]
         public string DescripcionFraccionArancelaria { get; set; }*/

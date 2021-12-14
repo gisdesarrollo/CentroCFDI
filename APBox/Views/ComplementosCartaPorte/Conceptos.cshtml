@@ -41,6 +41,7 @@
                     <h3 class="title-hero">
                         Concepto : Traslado
                     </h3>
+                    @Html.HiddenFor(model => model.Traslado.TipoImpuesto)
                     <div class="form-group col-xs-12 col-sm-3">
                         @Html.LabelFor(model => model.Traslado.Base)<br />
                         @Html.DisplayFor(model => model.Traslado.Base)
@@ -56,11 +57,7 @@
                         @Html.DisplayFor(model => model.Traslado.TipoFactor)
                         @Html.HiddenFor(model => model.Traslado.TipoFactor)
                     </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Traslado.TipoFactor)<br />
-                        @Html.DisplayFor(model => model.Traslado.TipoFactor)
-                        @Html.HiddenFor(model => model.Traslado.TipoFactor)
-                    </div>
+                    
                     <div class="form-group col-xs-12 col-sm-3">
                         @Html.LabelFor(model => model.Traslado.TasaOCuota)<br />
                         @Html.DisplayFor(model => model.Traslado.TasaOCuota)
@@ -78,54 +75,51 @@
                     </div>
                 }
             }
-                    <div class="clearfix"></div>
-                    @if (Model.Retencion != null)
-                    {
-                        if (Model.Retencion.Importe > 0)
-                        {
-                            <hr />
-                            <h3 class="title-hero">
-                                Concepto : Retención
-                            </h3>
-                            <div class="form-group col-xs-12 col-sm-3">
-                                @Html.LabelFor(model => model.Retencion.Base)<br />
-                                @Html.DisplayFor(model => model.Retencion.Base)
-                                @Html.HiddenFor(model => model.Retencion.Base)
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-3">
-                                @Html.LabelFor(model => model.Retencion.Impuesto)<br />
-                                @Html.DisplayFor(model => model.Retencion.Impuesto)
-                                @Html.HiddenFor(model => model.Retencion.Impuesto)
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-3">
-                                @Html.LabelFor(model => model.Retencion.TipoFactor)<br />
-                                @Html.DisplayFor(model => model.Retencion.TipoFactor)
-                                @Html.HiddenFor(model => model.Retencion.TipoFactor)
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-3">
-                                @Html.LabelFor(model => model.Retencion.TipoFactor)<br />
-                                @Html.DisplayFor(model => model.Retencion.TipoFactor)
-                                @Html.HiddenFor(model => model.Retencion.TipoFactor)
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-3">
-                                @Html.LabelFor(model => model.Retencion.TasaOCuota)<br />
-                                @Html.DisplayFor(model => model.Retencion.TasaOCuota)
-                                @Html.HiddenFor(model => model.Retencion.TasaOCuota)
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-3">
-                                @Html.LabelFor(model => model.Retencion.Importe)<br />
-                                @Html.DisplayFor(model => model.Retencion.Importe)
-                                @Html.HiddenFor(model => model.Retencion.Importe)
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-3">
-                                @Html.LabelFor(model => model.Retencion.TotalImpuestosTR)<br />
-                                @Html.DisplayFor(model => model.Retencion.TotalImpuestosTR)
-                                @Html.HiddenFor(model => model.Retencion.TotalImpuestosTR)
-                            </div>
-                        }
-                    }
-                    <div class="clearfix"></div>
-                </div>
+            <div class="clearfix"></div>
+            @if (Model.Retencion != null)
+            {
+                if (Model.Retencion.Importe > 0)
+                {
+                    <hr />
+                    <h3 class="title-hero">
+                        Concepto : Retención
+                    </h3>
+                    @Html.HiddenFor(model => model.Retencion.TipoImpuesto)
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Retencion.Base)<br />
+                        @Html.DisplayFor(model => model.Retencion.Base)
+                        @Html.HiddenFor(model => model.Retencion.Base)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Retencion.Impuesto)<br />
+                        @Html.DisplayFor(model => model.Retencion.Impuesto)
+                        @Html.HiddenFor(model => model.Retencion.Impuesto)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Retencion.TipoFactor)<br />
+                        @Html.DisplayFor(model => model.Retencion.TipoFactor)
+                        @Html.HiddenFor(model => model.Retencion.TipoFactor)
+                    </div>
+                    
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Retencion.TasaOCuota)<br />
+                        @Html.DisplayFor(model => model.Retencion.TasaOCuota)
+                        @Html.HiddenFor(model => model.Retencion.TasaOCuota)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Retencion.Importe)<br />
+                        @Html.DisplayFor(model => model.Retencion.Importe)
+                        @Html.HiddenFor(model => model.Retencion.Importe)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Retencion.TotalImpuestosTR)<br />
+                        @Html.DisplayFor(model => model.Retencion.TotalImpuestosTR)
+                        @Html.HiddenFor(model => model.Retencion.TotalImpuestosTR)
+                    </div>
+                }
+            }
+            <div class="clearfix"></div>
+        </div>
     </div>
 }
 

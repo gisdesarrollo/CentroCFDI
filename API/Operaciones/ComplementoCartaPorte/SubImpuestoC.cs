@@ -1,4 +1,5 @@
-﻿using CFDI.API.Enums.CFDI33;
+﻿using API.Enums.CartaPorteEnums;
+using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,9 +16,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public String TipoImpuesto { get; set; }
+
         public Decimal Base { get; set; }
 
-        public c_Impuesto Impuesto { get; set; }
+        public c_ImpuestoCP Impuesto { get; set; }
 
         [DisplayName("Tipo de Factor")]
         public c_TipoFactor TipoFactor { get; set; }

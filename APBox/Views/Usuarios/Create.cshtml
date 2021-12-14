@@ -84,7 +84,7 @@
 
                     <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
                         @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control minusculas" } })
                         @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
                     </div>
 

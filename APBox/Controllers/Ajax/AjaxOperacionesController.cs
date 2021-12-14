@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using API.Models.Dto;
 using System.Linq;
+using API.Enums.CartaPorteEnums;
 
 namespace APBox.Controllers.Ajax
 {
@@ -216,7 +217,7 @@ namespace APBox.Controllers.Ajax
                 PesoEnKg = PesoEnKg,
                 ValorMercancia = ValorMercancia,
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), Moneda, true), 
-                FraccionArancelaria_Id = FraccionArancelariaID,
+                FraccionArancelarias= FraccionArancelariaID,
                 UUIDComecioExt = UUIDComercioExt,
                 DetalleMercancia = new DetalleMercancia()
                 {
@@ -423,8 +424,8 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/CantidadTransportadas.cshtml", CTransportadas);
         }
 
-        public PartialViewResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Descripcion, Decimal TBase
-            ,string TImpuesto, string TTipoFactor,Decimal TTasaOCuota,Decimal TImporte,Decimal TTImpuestosTR,Decimal RBase,string RImpuesto
+        public PartialViewResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Descripcion,string TTipoImpuesto, Decimal TBase
+            ,string TImpuesto, string TTipoFactor,Decimal TTasaOCuota,Decimal TImporte,Decimal TTImpuestosTR,string RTipoImpuesto, Decimal RBase,string RImpuesto
             ,string RTipofactor,Decimal RTasaOCuota,Decimal RImporte,Decimal RTImpuestoTR)
         {
             var Conceptos = new Conceptos()
@@ -434,8 +435,9 @@ namespace APBox.Controllers.Ajax
                 Descripcion = Descripcion,
                 Traslado = new SubImpuestoC()
                 {
+                    TipoImpuesto = TTipoImpuesto,
                     Base=TBase,
-                    Impuesto = (c_Impuesto)Enum.Parse(typeof(c_Impuesto), TImpuesto, true),
+                    Impuesto = (c_ImpuestoCP)Enum.Parse(typeof(c_ImpuestoCP), TImpuesto, true),
                     TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TTipoFactor, true),
                     TasaOCuota = TTasaOCuota,
                     Importe = TImporte,
@@ -443,8 +445,9 @@ namespace APBox.Controllers.Ajax
                 },
                 Retencion = new SubImpuestoC()
                 {
+                    TipoImpuesto = RTipoImpuesto,
                     Base = RBase,
-                    Impuesto = (c_Impuesto)Enum.Parse(typeof(c_Impuesto), RImpuesto, true),
+                    Impuesto = (c_ImpuestoCP)Enum.Parse(typeof(c_ImpuestoCP), RImpuesto, true),
                     TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RTipofactor, true),
                     TasaOCuota = RTasaOCuota,
                     Importe = RImporte,

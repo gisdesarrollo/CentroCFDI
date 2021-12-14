@@ -1,5 +1,6 @@
 ﻿<script>
     $(function () {
+        
 
         //ACTIVA CAMPO PARTE TRANSPORTE
         $('#TipoFiguraTransporte').change(function () {
@@ -10,7 +11,7 @@
                 $('#ActivaCampoPartesTransporte').show(200);
             } else { $('#ActivaCampoPartesTransporte').hide(200); }
         });
-        
+
         ///obtiene ubicaciones y genera un dropdow en la vista detalle mercancia
         $(".getMercancias").click(function () {
             var ubicacionesLength = $('.ubicacion').length;
@@ -19,18 +20,18 @@
                 var listUbicacion = [];
                 var dataOrigen = $("#Mercancias_Mercancia_CantidadTransportada_IDOrigen");
                 var dataDestino = $("#Mercancias_Mercancia_CantidadTransportada_IDDestino");
-                var comparaCadena = "OR"; 
+                var comparaCadena = "OR";
                 $(".ubicacion").each(function (index, element) {
                     var IDClaveUbicacion = $(element).find('#IdUbicacion').text().trim();
                     listUbicacion.push({ "text": IDClaveUbicacion, "value": IDClaveUbicacion });
-                    
+
                 });
 
                  $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("FiltrarUbicaciones", "ComplementosCartaPorte")',
                 data: JSON.stringify({
-                    ListUbicacionClave: listUbicacion 
+                    ListUbicacionClave: listUbicacion
                 }),
                // dataType: 'html',
                 contentType: "application/json; charset=utf-8",
@@ -38,7 +39,7 @@
                      dataOrigen.empty();
                      dataDestino.empty();
                      $.each(data, function (index, row) {
-                         
+
                          if (row.value.indexOf(comparaCadena) !== -1) {
                              dataOrigen.append("<option value='" + row.value + "'>" + row.text + "</option>")
                          } else {
@@ -53,7 +54,7 @@
                     alert("Error al generar dropdow ubicaciones");
                 });
             return false;
-              
+
             }
         });
     });
@@ -122,7 +123,7 @@
             var ClaveTransporteId = $('#claveTransporteId').val();
 
 
-            if ($('#TranspInternac').prop('checked') && (ClaveTransporteId === "1" || ClaveTransporteId ==="3")) {
+            if ($('#TranspInternac').prop('checked') && (ClaveTransporteId === "01" || ClaveTransporteId ==="03")) {
                 $('.DivPedimento').show(200);
                 $('#activaFraccionArancelaria').show(200);
                 $('.DivCantidadTransportada').show(200);
@@ -143,7 +144,7 @@
         $('#claveTransporteId').change(function () {
             var ClaveTransporteId = $('#claveTransporteId').val();
 
-            if (ClaveTransporteId === "1" || ClaveTransporteId === "3") {
+            if (ClaveTransporteId === "01" || ClaveTransporteId === "03") {
                 if ($('#TranspInternac').prop('checked')) {
                     $('.DivPedimento').show(200);
                     $('#activaFraccionArancelaria').show(200);
@@ -306,7 +307,7 @@
                     PesoEnKg: $('#Mercancias_Mercancia_PesoEnKg').val(),
                     ValorMercancia: $('#Mercancias_Mercancia_ValorMercancia').val(),
                     Moneda: $('#Mercancias_Mercancia_Moneda').val(),
-                    FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelaria_Id option:selected').val(),//option:selected
+                    FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelarias').val(),
                     UUIDComercioExt: $('#Mercancias_Mercancia_UUIDComecioExt').val(),
                     /*PPedimento: $('#Mercancias_Mercancia_Pedimentos_Pedimento').val(),
                     GINumIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_NumeroGuiaIdentificacion').val(),
@@ -404,7 +405,7 @@
                 type: 'POST',
                 url: ' @Url.Action("AgregarFTransporte", "AjaxOperaciones")',
                 data: JSON.stringify({
-                    FTransporte: $('#TiposFigura_FiguraTransporte option:selected').val(),
+                    FTransporte: $('#TipoFiguraTransporte option:selected').val(),
                     RFCFigura: $('#TiposFigura_RFCFigura').val(),
                     NumLicencia: $('#TiposFigura_NumLicencia').val(),
                     NombreFigura: $('#TiposFigura_NombreFigura').val(),
@@ -957,7 +958,7 @@
 
     $(function () {
     $("#agregarDetalleConceptos").on('click', function () {
-
+       
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarConceptos", "AjaxOperaciones")',
@@ -965,18 +966,20 @@
                     ClaveProdServID: $('#Conceptos_ClavesProdServ').val(),
                     ClaveUnidadID: $('#Conceptos_ClavesUnidad').val(),
                     Descripcion: $('#Conceptos_Descripcion').val(),
+                    TTipoImpuesto : $("#Conceptos_Traslado_TipoImpuesto").val(),
                     TBase: $('#TBase').val(),
                     TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
                     TTipoFactor: $('#Conceptos_Traslado_TipoFactor').val(),
                     TTasaOCuota: $('#TTasaOCuota').val(),
                     TImporte: $('#TImporte').val(),
                     TTImpuestosTR: $('#TTotal').val(),
-                    RBase: $('#RBase').val(),
+                    RTipoImpuesto: $("#Conceptos_Retencion_TipoImpuesto").val(),
                     RImpuesto: $('#Conceptos_Retencion_Impuesto').val(),
+                    RBase: $('#RBase').val(),
                     RTipofactor: $('#Conceptos_Retencion_TipoFactor').val(),
                     RTasaOCuota: $('#RTasaOCuota').val(),
                     RImporte: $('#RImporte').val(),
-                    RTImpuestoTR: $('#TTotal').val()
+                    RTImpuestoTR: $('#RTotal').val()
 
                 }),
                 dataType: 'html',
@@ -1168,6 +1171,28 @@
              }
 
          });
+
+        //valida fraccion arancelaria
+        $('#Mercancias_Mercancia_FraccionArancelarias').on('keyup', function () {
+            var claveFraccion = $('#Mercancias_Mercancia_FraccionArancelarias').val();
+            var div = "#ClaveFraccionArancelaria";
+            if (claveFraccion != "") {
+                $.get("/ComplementosCartaPorte/DatosFraccionArancelaria", { ClaveFraccion: claveFraccion }, function (data) {
+                    if (data.length > 0) {
+                        $(div).html("");
+
+                    } else {
+                        $(div).html("El dato ingresado no existe");
+
+                    }
+                });
+            } else {
+                $(div).html("");
+
+            }
+
+
+        });
 
          //set  Tipo embalaje_id
          $('#Mercancias_Mercancia_DescripEmbalaje').change(function () {

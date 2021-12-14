@@ -14,6 +14,9 @@ using System.Data.Entity.Validation;
 using API.RelacionesCartaPorte;
 using System.Data.Entity;
 using API.Models.Dto;
+using System.Net;
+using Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte;
+using API.Enums.CartaPorteEnums;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -23,7 +26,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
         // GET: ComplementosCartaPorte
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly AcondicionarComplementosCartaPorte _acondicionarComplementosCartaPorte = new AcondicionarComplementosCartaPorte();
-       
+        private readonly CartaPorteManager _cartaPorteManager = new CartaPorteManager();
+
         public ActionResult Index()
         {
             var ComplementoCartaPorteModel = new ComplementosCartaPorteModel()
@@ -56,13 +60,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaNavegacionTrafico();
             PopulaDerechoPaso();
 
-            //PopulaClaveUnidad();
-            //PopulaClaveProdServCP();
-            PopulaClaveProdSTCC();
-            //PopulaClaveUnida_Id();
-            PopulaMaterialPeligroso_Id();
+            
             TipoEmbalaje_Id();
-            //PopulaFraccionArancelaria_Id();
+           
             ClaveUnidadPeso_Id();
             SubTipoRem_Id();
             ConfigMaritima_Id();
@@ -75,10 +75,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             TipoDeServicio_Id();
             TipoCarro_Id();
             Contenedor_Id();
-            //list
-            PopulaClaveUnidaList();
-            PopulaClaveProDServList();
-            PopulaFraccionArancelariaList();
+           
             PopulaTiPermiso();
             Random random = new Random();
             var randomNumber = random.Next(0,1000000).ToString("D6");
@@ -97,7 +94,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 {
                     Traslado = new SubImpuestoC()
                     {
-                        Impuesto = c_Impuesto.Iva,
+                        TipoImpuesto = "Traslado",
+                        Impuesto = c_ImpuestoCP.Iva,
                         TipoFactor = c_TipoFactor.Tasa,
                         Base = 0,
                         TasaOCuota = 0,
@@ -105,7 +103,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     },
                     Retencion = new SubImpuestoC()
                     {
-                        Impuesto = c_Impuesto.Iva,
+                        TipoImpuesto = "Retencion",
+                        Impuesto = c_ImpuestoCP.Iva,
                         TipoFactor = c_TipoFactor.Tasa,
                         Base = 0,
                         TasaOCuota = 0,
@@ -167,45 +166,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     TipoUbicacion = "Origen",
                     FechaHoraSalidaLlegada = DateTime.Now,
                     
-                    /*UbicacionOrigen = new UbicacionOrigen
-                    {
-                        Sucursal_Id = ObtenerSucursal(),
-                        RfcRemitente = ViewBag.DatosSucursal.Items[0].Rfc,
-                        NombreRemitente = ViewBag.DatosSucursal.Items[0].Nombre,
-                        ResidenciaFiscal = ViewBag.DatosSucursal.Items[0].Pais,
-                        FechaHoraSalida = DateTime.Now,
-                        IDUbicacionOrigen = "OR",
-                        TipoUbicacion= "Origen",
-                        DistanciaRecorrida = 0,
-                        Domicilio = new Domicilio
-                        {
-
-                        }
-                    },*/
-
-                    /*UbicacionDestino = new UbicacionDestino
-                    {
-                        FechaHoraLlegada = DateTime.Now,
-                        IDUbicacionDestino = "DE",
-                        TipoUbicacion = "Destino",
-                        DistanciaRecorrida = 0,
-                        Domicilio  = new Domicilio
-                        {
-                            
-                        }
-                    }*/
                     Domicilio = new Domicilio
                     {
 
                     }
                 },
-                /*UbicacionDestino = new UbicacionDestino()
-                {
-                    Domicilio = new Domicilio()
-                    {
-
-                    } 
-                },*/
+                
                 TiposFigura = new TiposFigura()
                 {
                     PartesTransporte = new PartesTransporte()
@@ -247,13 +213,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFiguraTransporte();
             PopulaNavegacionTrafico();
             PopulaDerechoPaso();
-            //PopulaClaveUnidad();
-            //PopulaClaveProdServCP();
-            PopulaClaveProdSTCC();
-            //PopulaClaveUnida_Id();
-            PopulaMaterialPeligroso_Id();
+            
             TipoEmbalaje_Id();
-            //PopulaFraccionArancelaria_Id();
+            
             ClaveUnidadPeso_Id();
             SubTipoRem_Id();
             ConfigMaritima_Id();
@@ -266,11 +228,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             TipoDeServicio_Id();
             TipoCarro_Id();
             Contenedor_Id();
-            //list
-            PopulaClaveUnidaList();
-            PopulaClaveProDServList();
-            PopulaFraccionArancelariaList();
             PopulaTiPermiso();
+
             if (!ModelState.IsValid)
             {
                 //Identifica los mensaje de error
@@ -393,12 +352,56 @@ namespace APBox.Controllers.ComplementosCartaPorte
             return View(complementoCartaPorte);
         }
 
-        public void serealizaJson(ComplementoCartaPorte complementoCartaPorte)
+        public ActionResult Generar(int? id)
         {
-
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ComplementoCartaPorte complementoCartaPorte = _db.ComplementoCartaPortes.Find(id);
+            if (complementoCartaPorte == null)
+            {
+                return HttpNotFound();
+            }
+            //PopulaClientes(complementoPago.ReceptorId);
+            return View(complementoCartaPorte);
         }
 
-            public JsonResult FiltrarEstados(string PaisId)
+        [HttpPost]
+        public ActionResult Generar(ComplementoCartaPorte complementoCartaPorte)
+        {
+            //PopulaClientes(complementoCartaPorte.ReceptorId);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var sucursalId = ObtenerSucursal();
+
+                    //Actualizacion Receptor
+
+                    DateTime fechaDoc = complementoCartaPorte.FechaDocumento;
+                    var horaHoy = DateTime.Now;
+                    var fechaTime = new DateTime(fechaDoc.Year, fechaDoc.Month, fechaDoc.Day, horaHoy.Hour, horaHoy.Minute, horaHoy.Second);
+
+                    var complementoCartaPorteDb = _db.ComplementoCartaPortes.Find(complementoCartaPorte.Id);
+                    complementoCartaPorteDb.rfcReceptor = complementoCartaPorte.rfcReceptor;
+                    complementoCartaPorteDb.FechaDocumento = fechaTime;
+                    _db.Entry(complementoCartaPorteDb).State = EntityState.Modified;
+                    _db.SaveChanges();
+
+                    _cartaPorteManager.GenerarComplementoCartaPorte(sucursalId, complementoCartaPorte.Id, "");
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }
+            return View(complementoCartaPorte);
+        }
+
+        public JsonResult FiltrarEstados(string PaisId)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             var Estados = popularDropDowns.PopulaEstados(PaisId);
@@ -451,6 +454,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var Clave = popularDropDowns.PopulaDatosClaveProdCP(ClaveProdServCP);
             return Json(Clave, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult DatosFraccionArancelaria(string ClaveFraccion)
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            var Clave = popularDropDowns.PopulaDatosFraccionArancelaria(ClaveFraccion);
+            return Json(Clave, JsonRequestBehavior.AllowGet);
+        }
 
 
         #region Popula Forma
@@ -494,9 +503,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
         private void PopulaDatosEstaciones()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.NombreEstacionMaritimo = (popularDropDowns.PopulaDatosEstaciones("2"));
-            ViewBag.NombreEstacionAereo = (popularDropDowns.PopulaDatosEstaciones("3"));
-            ViewBag.NombreEstacionFerroviario = (popularDropDowns.PopulaDatosEstaciones("4"));
+            ViewBag.NombreEstacionMaritimo = (popularDropDowns.PopulaDatosEstaciones("02"));
+            ViewBag.NombreEstacionAereo = (popularDropDowns.PopulaDatosEstaciones("03"));
+            ViewBag.NombreEstacionFerroviario = (popularDropDowns.PopulaDatosEstaciones("04"));
             ViewBag.NombreEstacionMaritimoD = ViewBag.NombreEstacionMaritimo;
             ViewBag.NombreEstacionAereoD = ViewBag.NombreEstacionAereo;
             ViewBag.NombreEstacionFerroviarioD = ViewBag.NombreEstacionFerroviario;
@@ -552,32 +561,15 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.TipoFiguraTransporte = items;
         }
 
-        private void PopulaClaveProDServList()
+        private void TipoPermiso_Id()
         {
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "Origen Nacional", Value = "01", Selected = true });
-            items.Add(new SelectListItem { Text = "No existe en el catálogo", Value = "01010101" });
-            items.Add(new SelectListItem { Text = "Caballos", Value = "10101506" });
-            items.Add(new SelectListItem { Text = "Pollos vivos", Value = "10101601" });
-            ViewBag.ProductoSerCPList = items;
-        }
-        private void PopulaClaveUnidaList()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "Grupos", Value = "10", Selected = true });
-            items.Add(new SelectListItem { Text = "Equipos", Value = "11" });
-            items.Add(new SelectListItem { Text = "Raciones", Value = "13" });
-            items.Add(new SelectListItem { Text = "Camión cisterna", Value = "19" });
-            ViewBag.ClaveUnidadList = items;
-        }
-        private void PopulaFraccionArancelariaList()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "Derogada", Value = "01011001", Selected = true });
-            items.Add(new SelectListItem { Text = "Reproductores de raza pura.", Value = "01012101" });
-            items.Add(new SelectListItem { Text = "Sin pedigree, para reproducción", Value = "01012902" });
-            items.Add(new SelectListItem { Text = "Perros", Value = "01061903" });
-            ViewBag.FraccArancelaria = items;
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TipoPermisoMaritimo = (popularDropDowns.TipoPermiso_Id("02"));
+            ViewBag.TipoPermisoAereo = (popularDropDowns.TipoPermiso_Id("03"));
+            ViewBag.TipoPermisoAuto = (popularDropDowns.TipoPermiso_Id("01"));
+            ViewBag.TipoPermiso_M = ViewBag.TipoPermisoMaritimo;
+            ViewBag.TipoPermiso_A = ViewBag.TipoPermisoAereo;
+            ViewBag.TipoPermiso_AT = ViewBag.TipoPermisoAuto;
         }
         private void PopulaTiPermiso()
         {
@@ -590,64 +582,32 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.ClavesTransporte = (popularDropDowns.PopulaTransporte());
         }
         //evelio dropdopw
-        private void PopulaClaveProdSTCC()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ClavesProdSTCC = (popularDropDowns.PopulaClaveProdSTCC());
-        }
-        /*private void PopulaClaveUnida_Id()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ClaveUnidad = popularDropDowns.PopulaClaveUnida_Id();
-        }*/
-
-        private void PopulaMaterialPeligroso_Id()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "PICRATO AMÓNICO seco o humedecido con menos del 10 %, en masa, de agua (Producto o material explosivo)", Value = "M0001", Selected = true });
-            items.Add(new SelectListItem { Text = "CARTUCHOS PARA ARMAS, con carga explosiva (Producto o material explosivo)", Value = "M0002" });
-            items.Add(new SelectListItem { Text = "CARTUCHOS PARA ARMAS, con carga explosiva (Producto o material explosivo)", Value = "M0003" });
-            items.Add(new SelectListItem { Text = "BOMBAS con carga explosiva (Producto o material explosivo)", Value = "M0019" });
-           
-            
-            ViewBag.MaterialesPeligroso_Id = items;
-        }
-        private void TipoEmbalaje_Id()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.TiposEmbalaje = (popularDropDowns.TipoEmbalaje_Id());
-        }
-        private void PopulaFraccionArancelaria_Id()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.FraccionesArancelaria_Id = (popularDropDowns.PopulaFraccionArancelaria_Id());
-        }
-        private void ClaveUnidadPeso_Id()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ClavesUnidadPeso = (popularDropDowns.ClaveUnidadPeso_Id());
-        }
 
         private void SubTipoRem_Id()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.SubTipoRem_Id = popularDropDowns.SubTipoRem_Id();
         }
+        
+        private void TipoEmbalaje_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.TiposEmbalaje = (popularDropDowns.TipoEmbalaje_Id());
+        }
+        
+        private void ClaveUnidadPeso_Id()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ClavesUnidadPeso = (popularDropDowns.ClaveUnidadPeso_Id());
+        }
+
+       
         private void ConfigMaritima_Id()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ConfigMaritima_Id = popularDropDowns.ConfigMaritima_Id();
         }
-        private void TipoPermiso_Id()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.TipoPermisoMaritimo = (popularDropDowns.TipoPermiso_Id("02"));
-            ViewBag.TipoPermisoAereo = (popularDropDowns.TipoPermiso_Id("03"));
-            ViewBag.TipoPermisoAuto = (popularDropDowns.TipoPermiso_Id("01"));
-            ViewBag.TipoPermiso_M = ViewBag.TipoPermisoMaritimo;
-            ViewBag.TipoPermiso_A = ViewBag.TipoPermisoAereo;
-            ViewBag.TipoPermiso_AT = ViewBag.TipoPermisoAuto;
-        }
+       
 
         private void ConfigAutotransporte_Id()
         {
