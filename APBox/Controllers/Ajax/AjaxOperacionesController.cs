@@ -437,7 +437,7 @@ namespace APBox.Controllers.Ajax
                 {
                     TipoImpuesto = TTipoImpuesto,
                     Base=TBase,
-                    Impuesto = (c_ImpuestoCP)Enum.Parse(typeof(c_ImpuestoCP), TImpuesto, true),
+                    Impuesto = (c_Impuesto)Enum.Parse(typeof(c_Impuesto), TImpuesto, true),
                     TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TTipoFactor, true),
                     TasaOCuota = TTasaOCuota,
                     Importe = TImporte,
@@ -447,7 +447,7 @@ namespace APBox.Controllers.Ajax
                 {
                     TipoImpuesto = RTipoImpuesto,
                     Base = RBase,
-                    Impuesto = (c_ImpuestoCP)Enum.Parse(typeof(c_ImpuestoCP), RImpuesto, true),
+                    Impuesto = (c_Impuesto)Enum.Parse(typeof(c_Impuesto), RImpuesto, true),
                     TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RTipofactor, true),
                     TasaOCuota = RTasaOCuota,
                     Importe = RImporte,

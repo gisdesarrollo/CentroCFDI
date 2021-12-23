@@ -95,7 +95,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     Traslado = new SubImpuestoC()
                     {
                         TipoImpuesto = "Traslado",
-                        Impuesto = c_ImpuestoCP.Iva,
+                        Impuesto = c_Impuesto.Iva,
                         TipoFactor = c_TipoFactor.Tasa,
                         Base = 0,
                         TasaOCuota = 0,
@@ -104,7 +104,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     Retencion = new SubImpuestoC()
                     {
                         TipoImpuesto = "Retencion",
-                        Impuesto = c_ImpuestoCP.Iva,
+                        Impuesto = c_Impuesto.Iva,
                         TipoFactor = c_TipoFactor.Tasa,
                         Base = 0,
                         TasaOCuota = 0,
@@ -199,8 +199,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ModelState.Remove("Receptor.RazonSocial");
             ModelState.Remove("Receptor");
             ModelState.Remove("Sucursal.RazonSocial");
-           // PopulaClientes(complementoCartaPorte.ReceptorId);
-            PopulaBancos(ObtenerSucursal());
+            PopulaClientes(complementoCartaPorte.ReceptorId);
+            //PopulaBancos(ObtenerSucursal());
             //PopulaCfdiRelacionado(complementoCartaPorte.CfdiRelacionadoId);
             PopulaTiposDeComprobante();
             PopulaTransporte();
@@ -295,6 +295,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                             ComplementoCartaPorte_Id = complementoCartaPorte.Id,
                             Conceptos_Id = concepto.Id
                         };
+                        _db.ComplementoCartaPorteConceptos.Add(relCartaPorteConceptos);
+                        _db.SaveChanges();
                     }
                 }
                 if (complementoCartaPorte.Ubicaciones != null)
@@ -358,13 +360,16 @@ namespace APBox.Controllers.ComplementosCartaPorte
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var sucursalId = ObtenerSucursal();
             ComplementoCartaPorte complementoCartaPorte = _db.ComplementoCartaPortes.Find(id);
+            _cartaPorteManager.GenerarComplementoCartaPorte(sucursalId, complementoCartaPorte.Id, "");
             if (complementoCartaPorte == null)
             {
                 return HttpNotFound();
             }
             //PopulaClientes(complementoPago.ReceptorId);
-            return View(complementoCartaPorte);
+            //return View(complementoCartaPorte);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -385,10 +390,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     var fechaTime = new DateTime(fechaDoc.Year, fechaDoc.Month, fechaDoc.Day, horaHoy.Hour, horaHoy.Minute, horaHoy.Second);
 
                     var complementoCartaPorteDb = _db.ComplementoCartaPortes.Find(complementoCartaPorte.Id);
-                    complementoCartaPorteDb.rfcReceptor = complementoCartaPorte.rfcReceptor;
+                    complementoCartaPorteDb.ReceptorId = complementoCartaPorte.ReceptorId;
                     complementoCartaPorteDb.FechaDocumento = fechaTime;
-                    _db.Entry(complementoCartaPorteDb).State = EntityState.Modified;
-                    _db.SaveChanges();
+                    //_db.Entry(complementoCartaPorteDb).State = EntityState.Modified;
+                    //_db.SaveChanges();
 
                     _cartaPorteManager.GenerarComplementoCartaPorte(sucursalId, complementoCartaPorte.Id, "");
                     return RedirectToAction("Index");
@@ -399,6 +404,25 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 }
             }
             return View(complementoCartaPorte);
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ComplementoCartaPorte complementoCP = _db.ComplementoCartaPortes.Find(id);
+            if (complementoCP == null)
+            {
+                return HttpNotFound();
+            }
+            PopulaClientes(complementoCP.ReceptorId);
+           
+             
+            _db.ComplementoCartaPortes.Remove(complementoCP);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public JsonResult FiltrarEstados(string PaisId)

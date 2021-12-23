@@ -31,7 +31,18 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("ClaveUnidad_Id")]
         public virtual ClaveUnidad ClaveUnidad { get; set; }  
         
+        public string Unidad { get; set; }
         public string Descripcion { get; set; }
+
+        public string NoIdentificacion { get; set; }
+
+        public string Cantidad { get; set; }
+        [DisplayName("Valor Unitario")]
+        public string ValorUnitario { get; set; }
+
+        public Double Importe { get; set; }
+
+        public string Descuento { get; set; }
         
         [NotMapped]
         public virtual SubImpuestoC Traslado { get; set; }

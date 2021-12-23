@@ -14,5 +14,7 @@ namespace API.CatalogosCartaPorte
         public String NumeroEjes { get; set; }
         public String NumeroLlantas { get; set; }
 
+        public String Remolque { get; set; }
+
     }
 }

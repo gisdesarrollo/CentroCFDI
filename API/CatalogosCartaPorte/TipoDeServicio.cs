@@ -12,5 +12,7 @@ namespace API.CatalogosCartaPorte
         public String c_ClaveUnidad { get; set; }
         public String Descripcion { get; set; }
 
+        public String Contenedor { get; set; }
+
     }
 }

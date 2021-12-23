@@ -1,16 +1,16 @@
-﻿using API.CatalogosCartaPorte;
+﻿using API.Catalogos;
+using API.CatalogosCartaPorte;
+using API.Enums;
+using API.Enums.CartaPorteEnums;
+using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
-using API.Catalogos;
-using API.Enums;
-using API.Operaciones.Facturacion;
-using CFDI.API.Enums.CFDI33;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
@@ -26,13 +26,23 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Método de Pago")]
         public c_MetodoPago MetodoPago { get; set; }
 
+        [DisplayName("Tipo Cambio")]
+        public double? TipoCambio { get; set; }
+
+        [DisplayName("Condiciones Pago")]
+        public string CondicionesPago { get; set; }
+
+        public string Descuento { get; set; }
+
         [DisplayName("Transporte Internacional")]
-        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Boolean TranspInternac { get; set; }
 
 
         [DisplayName("Salida o Entrada de Mercancia")]
-        public Boolean EntradaSalidaMerc { get; set; }
+        public c_CartaPorteEntradaSalidaMerc EntradaSalidaMerc { get; set; }
+
+        [DisplayName("Uso Cfdi")]
+        public c_UsoCFDI UsoCfdi { get; set; }
 
         [DisplayName("Total de Distancia Recorrida")]
         public Decimal TotalDistRec { get; set; }
@@ -40,7 +50,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Pais de origen destino")]
         public c_Pais PaisOrigendestino { get; set; }
 
-        [Required(ErrorMessage ="Campo Obligatorio")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public string Version { get; set; }
 
         [NotMapped]
@@ -54,29 +64,28 @@ namespace API.Operaciones.ComplementoCartaPorte
         public string ClaveTransporteId { get; set; }
         [ForeignKey("ClaveTransporteId")]
         public virtual CveTransporte claveTransportes { get; set; }
-        
+
         [DisplayName("Vía de Entrada o Salida")]
         public String viaEntradaSalida { get; set; }
 
-        [Required]
+        /*[Required]
         [DisplayName("RFC Receptor")]
-        public string rfcReceptor { get; set; }
+        public string rfcReceptor { get; set; }*/
 
-       
+
         [Required]
         [DisplayName("Tipo de Comprobante")]
         public c_TipoDeComprobante TipoDeComprobante { get; set; }
-        
+
         public c_Moneda? Moneda { get; set; }
-        
+
         public Decimal Subtotal { get; set; }
-        
+
         public Decimal Total { get; set; }
 
         [NotMapped]
         public virtual Ubicacion Ubicacion { get; set; }
-        /*[NotMapped]
-        public virtual UbicacionDestino UbicacionDestino { get; set; }*/
+
         [NotMapped]
         public virtual List<Ubicacion> Ubicaciones { get; set; }
         public int Mercancias_Id { get; set; }
@@ -90,7 +99,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual List<Pedimentos> Pedimentoss { get; set; }
 
         [NotMapped]
-        public virtual List<GuiasIdentificacion> GuiasIdentificacioness  { get; set; }
+        public virtual List<GuiasIdentificacion> GuiasIdentificacioness { get; set; }
 
         [NotMapped]
         public virtual List<CantidadTransportada> CantidadTransportadass { get; set; }
@@ -127,13 +136,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
-        //Filtros
-        //[DisplayName("Receptor")]
-        //[Required(ErrorMessage = "Campo Obligatorio")]
-        /*public int ReceptorId { get; set; }
+        [DisplayName("Receptor")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
+        public int ReceptorId { get; set; }
         [ForeignKey("ReceptorId")]
-        */
-        [NotMapped]
         public virtual Cliente Receptor { get; set; }
 
         [DisplayName("Fecha del Documento")]
@@ -177,4 +183,5 @@ namespace API.Operaciones.ComplementoCartaPorte
         #endregion
 
     }
+
 }

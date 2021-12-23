@@ -20,7 +20,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public Decimal Base { get; set; }
 
-        public c_ImpuestoCP Impuesto { get; set; }
+        public c_Impuesto Impuesto { get; set; }
 
         [DisplayName("Tipo de Factor")]
         public c_TipoFactor TipoFactor { get; set; }

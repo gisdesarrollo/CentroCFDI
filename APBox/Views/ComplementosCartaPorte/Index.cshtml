@@ -73,7 +73,9 @@
                             <th>
                                 Fecha del Documento
                             </th>
-
+                            <th>
+                                Estado
+                            </th>
                             <th>
                                 Opciones
                             </th>
@@ -89,10 +91,11 @@
                                     @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FechaDocumento)
                                     @Html.HiddenFor(model => model.ComplementosCartaPorte[i].TipoDeComprobante)
                                     @Html.HiddenFor(model => model.ComplementosCartaPorte[i].ClaveTransporteId)
+                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Receptor.Rfc)
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].rfcReceptor)
+                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Receptor.Rfc)
                                 </td>
                                 <td>
                                     @if (Model.ComplementosCartaPorte[i].TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
@@ -120,6 +123,22 @@
                                     @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FechaDocumento)
                                 </td>
                                 <td>
+                                    @if (Model.ComplementosCartaPorte[i].Generado == true)
+                                    {
+                                        if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
+                                        {
+                                            <p><span class="fa fa-clipboard-check font-green"></span> Generado</p> }
+                                         else
+                                         {
+                                            <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
+                                         }
+                                     }
+                                     else  
+                                     {
+                                        <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                     }
+                                </td>
+                                <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="fa fa-cog"></span> Opciones
@@ -130,8 +149,8 @@
                               
                                 <li>@Html.ActionLink("Editar Carta Porte", "", new {  }, new { @class = "font-size-12" })</li>
                                 
-                                 <li>@Html.ActionLink("Generar", "", new {  }, new { @class = "font-size-12 font-green" })</li>
-                                 <li>@Html.ActionLink("Eliminar", "", new {  }, new { @class = "font-size-12 font-red" })</li>
+                                 <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-green" })</li>
+                                 <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-red" })</li>
                                         </ul>
                                     </div>
                                 </td>

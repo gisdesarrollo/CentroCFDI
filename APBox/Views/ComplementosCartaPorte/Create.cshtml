@@ -122,6 +122,16 @@
                                 @Html.EnumDropDownListSpecialFor(model => model.MetodoPago)
                                 @Html.ValidationMessageFor(model => model.MetodoPago, "", new { @class = "text-danger" })
                             </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.TipoCambio, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TipoCambio, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.CondicionesPago, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.CondicionesPago, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CondicionesPago, "", new { @class = "text-danger" })
+                            </div>
                         </div>
 
                         <div id="validaTipoComprobante" @activaCampos>
@@ -153,16 +163,15 @@
                     </h3>
                     <div class="row">
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
-                            @Html.LabelFor(model => model.rfcReceptor, htmlAttributes: new { @class = "control-label" })
-                            @*@Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-control" })*@
-                            @Html.EditorFor(model => model.rfcReceptor, new { htmlAttributes = new { @class = "form-control"} })
-                            @Html.ValidationMessageFor(model => model.rfcReceptor, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
-                            @Html.LabelFor(model => model.Receptor.UsoCfdi, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.UsoCfdi, htmlAttributes: new { @class = "control-label" })
                             @* @Html.DropDownList("UsoCfdi", null, "Favor de hacer su selección", new { @class = "form-control" })*@
-                            @Html.EnumDropDownListSpecialFor(model => model.Receptor.UsoCfdi)
-                            @Html.ValidationMessageFor(model => model.Receptor.UsoCfdi, "", new { @class = "text-danger" })
+                            @Html.EnumDropDownListSpecialFor(model => model.UsoCfdi)
+                            @Html.ValidationMessageFor(model => model.UsoCfdi, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -239,6 +248,7 @@
                                 @Html.ValidationMessageFor(model => model.Conceptos.ClavesUnidad, "", new { @class = "text-danger" })
                                 <div id="ClaveUnidadConcepto" style="color:red;"></div>
                             </div>
+
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6">
                                     @Html.LabelFor(model => model.Conceptos.Descripcion, htmlAttributes: new { @class = "control-label" })
@@ -378,9 +388,9 @@
                             </div>
                             <div class="divValidaTransInternc" @ActCampTransInterc>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-2 ">
-                                    @Html.CheckBoxFor(model => model.EntradaSalidaMerc)
+                                    
                                     @Html.LabelFor(model => model.EntradaSalidaMerc, htmlAttributes: new { @class = "control-label" })
-
+                                    @Html.EnumDropDownListSpecialFor(model => model.EntradaSalidaMerc)
                                     @Html.ValidationMessageFor(model => model.EntradaSalidaMerc, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -705,10 +715,10 @@
                             @Html.ValidationMessageFor(model => model.Mercancias.PesoBrutoTotal, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-3">
-                            @Html.LabelFor(model => model.Mercancias.UnidadPeso, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.Mercancias.UnidadPeso, (IEnumerable<SelectListItem>)ViewBag.ClavesUnidadPeso, "Favor de hacer su selección", new { @class = "form-control" })
+                            @Html.LabelFor(model => model.Mercancias.ClaveUnidadPeso_Id, htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.Mercancias.ClaveUnidadPeso_Id, (IEnumerable<SelectListItem>)ViewBag.ClavesUnidadPeso, "Favor de hacer su selección", new { @class = "form-control" })
                             
-                            @Html.ValidationMessageFor(model => model.Mercancias.UnidadPeso, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Mercancias.ClaveUnidadPeso_Id, "", new { @class = "text-danger" })
                         </div>
                         <div id="activaMercPeso" @ActPesoMercancia>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">

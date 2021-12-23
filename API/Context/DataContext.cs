@@ -60,6 +60,8 @@ namespace API.Context
                         .WithMany()
                         .HasForeignKey(s => s.GrupoId)
                         .WillCascadeOnDelete(false);
+            
+            //complemento carta porte delete on update
 
             modelBuilder.Entity<ComplementoPago>()
                         .HasRequired(s => s.Receptor)
@@ -85,6 +87,228 @@ namespace API.Context
                         .HasForeignKey(s => s.SucursalId)
                         .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<ComplementoCartaPorte>()
+                        .HasRequired(s =>s.Mercancias)
+                        .WithMany()
+                        .HasForeignKey(s => s.Mercancias_Id)
+                        .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ComplementoCartaPorte>()
+                       .HasRequired(s => s.Receptor)
+                       .WithMany()
+                       .HasForeignKey(s => s.ReceptorId)
+                       .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ComplementoCartaPorte>()
+                       .HasRequired(s => s.claveTransportes)
+                       .WithMany()
+                       .HasForeignKey(s => s.ClaveTransporteId)
+                       .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ComplementoCartaPorte>()
+                       .HasRequired(s => s.Sucursal)
+                       .WithMany()
+                       .HasForeignKey(s => s.SucursalId)
+                       .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Mercancias>()
+                        .HasRequired(s => s.AutoTransporte)
+                        .WithMany()
+                        .HasForeignKey(s => s.AutoTransporte_Id)
+                        .WillCascadeOnDelete(false);
+            
+            modelBuilder.Entity<Mercancias>()
+                       .HasRequired(s => s.TransporteAereo)
+                       .WithMany()
+                       .HasForeignKey(s => s.TransporteAereo_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Mercancias>()
+                       .HasRequired(s => s.TransporteMaritimo)
+                       .WithMany()
+                       .HasForeignKey(s => s.TransporteMaritimo_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Mercancias>()
+                       .HasRequired(s => s.TransporteFerroviario)
+                       .WithMany()
+                       .HasForeignKey(s => s.TransporteFerroviario_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Mercancia>()
+                       .HasRequired(s => s.DetalleMercancia)
+                       .WithMany()
+                       .HasForeignKey(s => s.DetalleMercanciaId)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Ubicacion>()
+                       .HasRequired(s => s.Domicilio)
+                       .WithMany()
+                       .HasForeignKey(s => s.Domicilio_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<AutoTransporte>()
+                       .HasRequired(s => s.IdentificacionVehicular)
+                       .WithMany()
+                       .HasForeignKey(s => s.IdentificacionVehicular_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<AutoTransporte>()
+                       .HasRequired(s => s.Seguros)
+                       .WithMany()
+                       .HasForeignKey(s => s.Seguros_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<PartesTransporte>()
+                       .HasRequired(s => s.Domicilio)
+                       .WithMany()
+                       .HasForeignKey(s => s.Domicilio_Id)
+                       .WillCascadeOnDelete(true);
+
+            //relaciones carta porte delete on update
+            modelBuilder.Entity<ComplementoCartaPorteConceptos>()
+                       .HasRequired(s => s.ComplementoCartaPorte)
+                       .WithMany()
+                       .HasForeignKey(s => s.ComplementoCartaPorte_Id)
+                       .WillCascadeOnDelete(true);
+
+             modelBuilder.Entity<ComplementoCartaPorteConceptos>()
+                        .HasRequired(s =>s.Conceptos)
+                        .WithMany()
+                        .HasForeignKey(s => s.Conceptos_Id)
+                        .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ComplementoCartaPorteFiguraTransporte>()
+                       .HasRequired(s => s.ComplementoCartaPorte)
+                       .WithMany()
+                       .HasForeignKey(s => s.ComplementoCartaPorte_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ComplementoCartaPorteFiguraTransporte>()
+                       .HasRequired(s => s.FiguraTransporte)
+                       .WithMany()
+                       .HasForeignKey(s => s.FiguraTransporte_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ComplementoCartaPorteUbicacion>()
+                       .HasRequired(s => s.ComplementoCartaPorte)
+                       .WithMany()
+                       .HasForeignKey(s => s.ComplementoCartaPorte_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ComplementoCartaPorteUbicacion>()
+                       .HasRequired(s => s.Ubicacion)
+                       .WithMany()
+                       .HasForeignKey(s => s.Ubicacion_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ConceptoSubImpuestoConcepto>()
+                       .HasRequired(s => s.Conceptos)
+                       .WithMany()
+                       .HasForeignKey(s => s.Concepto_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ConceptoSubImpuestoConcepto>()
+                       .HasRequired(s => s.SubImpuestoConcepto)
+                       .WithMany()
+                       .HasForeignKey(s => s.SubImpuestoConcepto_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciaCantidadTransportada>()
+                       .HasRequired(s => s.Mercancia)
+                       .WithMany()
+                       .HasForeignKey(s => s.Mercancia_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciaCantidadTransportada>()
+                       .HasRequired(s => s.CantidadTransportada)
+                       .WithMany()
+                       .HasForeignKey(s => s.CantidadTransportada_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciaGuiasIdentificacion>()
+                       .HasRequired(s => s.Mercancia)
+                       .WithMany()
+                       .HasForeignKey(s => s.Mercancia_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciaGuiasIdentificacion>()
+                       .HasRequired(s => s.GuiasIdentificacion)
+                       .WithMany()
+                       .HasForeignKey(s => s.GuiasIdentificacion_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciaPedimentos>()
+                       .HasRequired(s => s.Mercancia)
+                       .WithMany()
+                       .HasForeignKey(s => s.Mercancia_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciaPedimentos>()
+                       .HasRequired(s => s.Pedimentos)
+                       .WithMany()
+                       .HasForeignKey(s => s.Pedimentos_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciasMercancia>()
+                       .HasRequired(s => s.Mercancias)
+                       .WithMany()
+                       .HasForeignKey(s => s.Mercancias_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<MercanciasMercancia>()
+                       .HasRequired(s => s.Mercancia)
+                       .WithMany()
+                       .HasForeignKey(s => s.Mercancia_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TiposFiguraPartesTransporte>()
+                       .HasRequired(s => s.TiposFigura)
+                       .WithMany()
+                       .HasForeignKey(s => s.TiposFigura_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TiposFiguraPartesTransporte>()
+                       .HasRequired(s => s.PartesTransporte)
+                       .WithMany()
+                       .HasForeignKey(s => s.PartesTransporte_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TransporteFerroviarioCarro>()
+                       .HasRequired(s => s.TransporteFerroviario)
+                       .WithMany()
+                       .HasForeignKey(s => s.TransporteFerroviario_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TransporteFerroviarioCarro>()
+                       .HasRequired(s => s.Carro)
+                       .WithMany()
+                       .HasForeignKey(s => s.Carro_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TransporteFerroviarioDerechosDePaso>()
+                       .HasRequired(s => s.TransporteFerroviario)
+                       .WithMany()
+                       .HasForeignKey(s => s.TransporteFerroviario_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TransporteFerroviarioDerechosDePaso>()
+                       .HasRequired(s => s.DerechosDePasos)
+                       .WithMany()
+                       .HasForeignKey(s => s.DerechosDePaso_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TransporteMaritimoContenedorM>()
+                       .HasRequired(s => s.TransporteMaritimo)
+                       .WithMany()
+                       .HasForeignKey(s => s.TransporteMaritimo_Id)
+                       .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TransporteMaritimoContenedorM>()
+                       .HasRequired(s => s.ContenedorMM)
+                       .WithMany()
+                       .HasForeignKey(s => s.ContenedorM_Id)
+                       .WillCascadeOnDelete(true);
         }
 
         #region Catalogos
@@ -176,7 +400,7 @@ namespace API.Context
         public DbSet<Localidad> Localidades { get; set; }
 
         //Complementos CartaPorte
-        public DbSet<Arrendatario> Arrendatarios { get; set; }
+        //public DbSet<Arrendatario> Arrendatarios { get; set; }
         public DbSet<AutoTransporte> AutoTransporte { get; set; }
         public DbSet<CantidadTransportada> CantidadTransportadas { get; set; }
         public DbSet<Carro> Carros { get; set; }
@@ -190,11 +414,11 @@ namespace API.Context
         public DbSet<IdentificacionVehicular> IdentificacionVehiculares { get; set; }
         public DbSet<Mercancia> Mercancia { get; set; }
         public DbSet<Mercancias> Mercancias { get; set; }
-        public DbSet<Notificado> Notificados { get; set; }
-        public DbSet<Operador> Operadores { get; set; }
+        //public DbSet<Notificado> Notificados { get; set; }
+        //public DbSet<Operador> Operadores { get; set; }
         public DbSet<PartesTransporte> PartesTransporte { get; set; }
         public DbSet<Pedimentos> Pedimentos { get; set; }
-        public DbSet<Propietario> Propietarios { get; set; }
+        //public DbSet<Propietario> Propietarios { get; set; }
         public DbSet<Remolques> Remolques { get; set; }
         public DbSet<Seguros> Seguros { get; set; }
         public DbSet<TiposFigura> Tiposfigura { get; set; }
@@ -202,7 +426,7 @@ namespace API.Context
         public DbSet<TransporteFerroviario> TransporteFerroviarios { get; set; }
         public DbSet<TransporteMaritimo> TransporteMaritimos { get; set; }
         public DbSet<Ubicacion> UbicacionOrigen { get; set; }
-        public DbSet<UbicacionDestino> UbicacionesDestino { get; set; }
+       // public DbSet<UbicacionDestino> UbicacionesDestino { get; set; }
 
         /*public DbSet<UbicacionOrigen> UbuicacionesOrigen { get; set; }*/
         public DbSet<UsoCfdi> UsoCfdis { get; set; }
@@ -216,6 +440,7 @@ namespace API.Context
 
         public DbSet<ConceptoSubImpuestoConcepto> ConceptoSubImpuestoConcepto { get; set; }
 
+        public DbSet<ComplementoCartaPorteConceptos> ComplementoCartaPorteConceptos { get; set; }
         public DbSet<ComplementoCartaPorteUbicacion> ComplementoCartaPorteUbicaciones { get; set; }
         public DbSet<ComplementoCartaPorteFiguraTransporte> ComplementoCartaPorteFiguraTransporte { get; set; }
         public DbSet<TransporteMaritimoContenedorM> TransporteMaritimoContenedoresM { get; set; }

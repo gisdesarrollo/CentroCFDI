@@ -35,7 +35,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 {
                     foreach (var concepto in complementoCartaPorte.Conceptoss)
                     {
-                        if (concepto.Retencion != null && concepto.Traslado != null && complementoCartaPorte.TipoDeComprobante ==CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
+                        if (concepto.Retencion != null && concepto.Traslado != null && complementoCartaPorte.TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
                         {
                             ImpuestoRet = concepto.Retencion.Importe;
                             ImpuestoTrasl = concepto.Traslado.Importe;
@@ -57,6 +57,24 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                             subImp.SubImpuestoConcepto_Id = concepto.Retencion.Id;
                             _db.ConceptoSubImpuestoConcepto.Add(subImp);
                             _db.SaveChanges();
+                            subImp.Concepto_Id = concepto.Id;
+                            subImp.SubImpuestoConcepto_Id = concepto.Traslado.Id;
+                            _db.ConceptoSubImpuestoConcepto.Add(subImp);
+                            _db.SaveChanges();
+                        }
+                        else if (concepto.Traslado != null && concepto.Retencion == null && complementoCartaPorte.TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
+                        {
+                            ImpuestoTrasl = concepto.Traslado.Importe;
+                            Subtotal = complementoCartaPorte.Subtotal;
+                            complementoCartaPorte.Total += Subtotal + ImpuestoTrasl;
+                        
+                            _db.SubImpuestoC.Add(concepto.Traslado);
+                            _db.SaveChanges();
+
+                            _db.Conceptos.Add(concepto);
+                            _db.SaveChanges();
+
+                            ConceptoSubImpuestoConcepto subImp = new ConceptoSubImpuestoConcepto();
                             subImp.Concepto_Id = concepto.Id;
                             subImp.SubImpuestoConcepto_Id = concepto.Traslado.Id;
                             _db.ConceptoSubImpuestoConcepto.Add(subImp);
@@ -93,7 +111,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         ubicacion.NumRegIdTrib = null;
                         ubicacion.ResidenciaFiscal = null;
                     }
-                    if(complementoCartaPorte.ClaveTransporteId == "1") {
+                    if(complementoCartaPorte.ClaveTransporteId == "01") {
                         ubicacion.TipoEstacion_Id = null;
                         ubicacion.TipoEstaciones = null;
                         ubicacion.NumEstacion = null;
@@ -122,15 +140,16 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
             {
                 foreach(var mercancia in complementoCartPorte.Mercanciass)
                 {
-                    if (mercancia.DetalleMercancia.ClaveUnidadPeso_Id == null)
+                    if(mercancia.DetalleMercancia == null)
                     {
+                        
                         mercancia.DetalleMercancia = null;
                         //_db.DetalleMercancias.Add(mercancia.DetalleMercancia);
                         //_db.SaveChanges();
                     }
                     else
                     {
-                        if(complementoCartPorte.ClaveTransporteId=="2" || complementoCartPorte.ClaveTransporteId == "4")
+                        if(complementoCartPorte.ClaveTransporteId=="02" || complementoCartPorte.ClaveTransporteId == "04")
                         {
                             mercanciaDb.PesoBrutoTotal += mercancia.DetalleMercancia.PesoBruto;
                             mercanciaDb.PesoNetoTotal += mercancia.DetalleMercancia.PesoNeto;
@@ -207,13 +226,13 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
         {
             //var mercanciaDb = _db.Mercancias.Find(complementoCartaPorte.Mercancias.Id);
             
-            if (complementoCartaPorte.ClaveTransporteId == "1")
+            if (complementoCartaPorte.ClaveTransporteId == "01")
             {
                
                 complementoCartaPorte.Mercancias.TransporteFerroviario = null;
                 complementoCartaPorte.Mercancias.TransporteMaritimo = null;
                 complementoCartaPorte.Mercancias.TransporteAereo = null;
-                
+               
                 _db.ComplementoCartaPortes.Add(complementoCartaPorte);
                 _db.SaveChanges();
                 if (complementoCartaPorte.Mercancias.AutoTransporte.Remolquess != null)
@@ -233,7 +252,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     
                 }
             }
-            else if(complementoCartaPorte.ClaveTransporteId == "2")
+            else if(complementoCartaPorte.ClaveTransporteId == "02")
             {
                
                 complementoCartaPorte.Mercancias.TransporteFerroviario = null;
@@ -261,7 +280,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 }
 
             }
-            else if(complementoCartaPorte.ClaveTransporteId == "3")
+            else if(complementoCartaPorte.ClaveTransporteId == "03")
             {
               
                 complementoCartaPorte.Mercancias.TransporteFerroviario = null;
@@ -271,7 +290,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 _db.SaveChanges();
 
             }
-            else if (complementoCartaPorte.ClaveTransporteId == "4")
+            else if (complementoCartaPorte.ClaveTransporteId == "04")
             {
                 
                 complementoCartaPorte.Mercancias.TransporteMaritimo = null;
