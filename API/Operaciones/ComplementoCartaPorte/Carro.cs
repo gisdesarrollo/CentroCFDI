@@ -37,10 +37,14 @@ namespace API.Operaciones.ComplementoCartaPorte
         //[Required(ErrorMessage = "Campo Requerido")]
         public Decimal ToneladasNetasCarro { get; set; }
 
+        public int? TransporteFerroviario_Id { get; set; }
+        [ForeignKey("TransporteFerroviario_Id")]
+        public virtual TransporteFerroviario TransporteFerroviario { get; set; }
+
         [NotMapped]
         public virtual ContenedorC ContenedorC { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<ContenedorC> ContenedoresC { get; set; }
     }
 }

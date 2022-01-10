@@ -36,11 +36,11 @@ public partial class CartaPorte {
     
     private string transpInternacField;
     
-    private c_CartaPorteEntradaSalidaMerc entradaSalidaMercField;
+    private string entradaSalidaMercField;
     
     private bool entradaSalidaMercFieldSpecified;
     
-    private c_Pais paisOrigenDestinoField;
+    private string paisOrigenDestinoField;
     
     private bool paisOrigenDestinoFieldSpecified;
     
@@ -112,11 +112,12 @@ public partial class CartaPorte {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_CartaPorteEntradaSalidaMerc EntradaSalidaMerc {
+    public string EntradaSalidaMerc {
         get {
             return this.entradaSalidaMercField;
         }
         set {
+            entradaSalidaMercFieldSpecified = true;
             this.entradaSalidaMercField = value;
         }
     }
@@ -134,11 +135,12 @@ public partial class CartaPorte {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Pais PaisOrigenDestino {
+    public string PaisOrigenDestino {
         get {
             return this.paisOrigenDestinoField;
         }
         set {
+            paisOrigenDestinoFieldSpecified = true;
             this.paisOrigenDestinoField = value;
         }
     }
@@ -161,6 +163,7 @@ public partial class CartaPorte {
             return this.viaEntradaSalidaField;
         }
         set {
+            viaEntradaSalidaFieldSpecified = true;
             this.viaEntradaSalidaField = value;
         }
     }
@@ -183,6 +186,7 @@ public partial class CartaPorte {
             return this.totalDistRecField;
         }
         set {
+            totalDistRecFieldSpecified = true;
             this.totalDistRecField = value;
         }
     }
@@ -223,13 +227,13 @@ public partial class CartaPorteUbicacion {
     
     private bool residenciaFiscalFieldSpecified;
     
-    private c_Estaciones numEstacionField;
+    private string numEstacionField;
     
     private bool numEstacionFieldSpecified;
     
     private string nombreEstacionField;
     
-    private CartaPorteUbicacionNavegacionTrafico navegacionTraficoField;
+    private string navegacionTraficoField;
     
     private bool navegacionTraficoFieldSpecified;
     
@@ -343,7 +347,7 @@ public partial class CartaPorteUbicacion {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Estaciones NumEstacion {
+    public string NumEstacion {
         get {
             return this.numEstacionField;
         }
@@ -376,7 +380,7 @@ public partial class CartaPorteUbicacion {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public CartaPorteUbicacionNavegacionTrafico NavegacionTrafico {
+    public string NavegacionTrafico {
         get {
             return this.navegacionTraficoField;
         }
@@ -476,7 +480,7 @@ public partial class CartaPorteUbicacionDomicilio {
     
     private string estadoField;
     
-    private c_Pais paisField;
+    private string paisField;
     
     private string codigoPostalField;
     
@@ -570,7 +574,7 @@ public partial class CartaPorteUbicacionDomicilio {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Pais Pais {
+    public string Pais {
         get {
             return this.paisField;
         }
@@ -27352,7 +27356,7 @@ public partial class CartaPorteMercancias {
     
     private decimal pesoBrutoTotalField;
     
-    private c_ClaveUnidadPeso unidadPesoField;
+    private string unidadPesoField;
     
     private decimal pesoNetoTotalField;
     
@@ -27428,7 +27432,7 @@ public partial class CartaPorteMercancias {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_ClaveUnidadPeso UnidadPeso {
+    public string UnidadPeso {
         get {
             return this.unidadPesoField;
         }
@@ -28018,7 +28022,7 @@ public enum c_CveTransporte {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte20")]
 public partial class CartaPorteMercanciasMercanciaDetalleMercancia {
     
-    private c_ClaveUnidadPeso unidadPesoMercField;
+    private string unidadPesoMercField;
     
     private decimal pesoBrutoField;
     
@@ -28032,7 +28036,7 @@ public partial class CartaPorteMercanciasMercanciaDetalleMercancia {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_ClaveUnidadPeso UnidadPesoMerc {
+    public string UnidadPesoMerc {
         get {
             return this.unidadPesoMercField;
         }
@@ -128049,7 +128053,7 @@ public partial class CartaPorteMercanciasAutotransporte {
     
     private CartaPorteMercanciasAutotransporteRemolque[] remolquesField;
     
-    private c_TipoPermiso permSCTField;
+    private string permSCTField;
     
     private string numPermisoSCTField;
     
@@ -128086,7 +128090,7 @@ public partial class CartaPorteMercanciasAutotransporte {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_TipoPermiso PermSCT {
+    public string PermSCT {
         get {
             return this.permSCTField;
         }
@@ -128115,7 +128119,7 @@ public partial class CartaPorteMercanciasAutotransporte {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte20")]
 public partial class CartaPorteMercanciasAutotransporteIdentificacionVehicular {
     
-    private c_ConfigAutotransporte configVehicularField;
+    private string configVehicularField;
     
     private string placaVMField;
     
@@ -128123,7 +128127,7 @@ public partial class CartaPorteMercanciasAutotransporteIdentificacionVehicular {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_ConfigAutotransporte ConfigVehicular {
+    public string ConfigVehicular {
         get {
             return this.configVehicularField;
         }
@@ -128616,7 +128620,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     private CartaPorteMercanciasTransporteMaritimoContenedor[] contenedorField;
     
-    private c_TipoPermiso permSCTField;
+    private string permSCTField;
     
     private bool permSCTFieldSpecified;
     
@@ -128626,7 +128630,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     private string numPolizaSeguroField;
     
-    private c_ConfigMaritima tipoEmbarcacionField;
+    private string tipoEmbarcacionField;
     
     private string matriculaField;
     
@@ -128638,11 +128642,11 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     private string nombreEmbarcField;
     
-    private c_Pais nacionalidadEmbarcField;
+    private string nacionalidadEmbarcField;
     
     private decimal unidadesDeArqBrutoField;
     
-    private c_ClaveTipoCarga tipoCargaField;
+    private string tipoCargaField;
     
     private string numCertITCField;
     
@@ -128662,7 +128666,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     private string nombreAgenteNavieroField;
     
-    private c_NumAutorizacionNaviero numAutorizacionNavieroField;
+    private string numAutorizacionNavieroField;
     
     private string numViajeField;
     
@@ -128681,7 +128685,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_TipoPermiso PermSCT {
+    public string PermSCT {
         get {
             return this.permSCTField;
         }
@@ -128736,7 +128740,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_ConfigMaritima TipoEmbarcacion {
+    public string TipoEmbarcacion {
         get {
             return this.tipoEmbarcacionField;
         }
@@ -128802,7 +128806,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Pais NacionalidadEmbarc {
+    public string NacionalidadEmbarc {
         get {
             return this.nacionalidadEmbarcField;
         }
@@ -128824,7 +128828,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_ClaveTipoCarga TipoCarga {
+    public string TipoCarga {
         get {
             return this.tipoCargaField;
         }
@@ -128934,7 +128938,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_NumAutorizacionNaviero NumAutorizacionNaviero {
+    public string NumAutorizacionNaviero {
         get {
             return this.numAutorizacionNavieroField;
         }
@@ -128976,7 +128980,7 @@ public partial class CartaPorteMercanciasTransporteMaritimoContenedor {
     
     private string matriculaContenedorField;
     
-    private c_ContenedorMaritimo tipoContenedorField;
+    private string tipoContenedorField;
     
     private string numPrecintoField;
     
@@ -128993,7 +128997,7 @@ public partial class CartaPorteMercanciasTransporteMaritimoContenedor {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_ContenedorMaritimo TipoContenedor {
+    public string TipoContenedor {
         get {
             return this.tipoContenedorField;
         }
@@ -130328,7 +130332,7 @@ public enum c_NumAutorizacionNaviero {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte20")]
 public partial class CartaPorteMercanciasTransporteAereo {
     
-    private c_TipoPermiso permSCTField;
+    private string permSCTField;
     
     private string numPermisoSCTField;
     
@@ -130342,7 +130346,7 @@ public partial class CartaPorteMercanciasTransporteAereo {
     
     private string lugarContratoField;
     
-    private c_CodigoTransporteAereo codigoTransportistaField;
+    private string codigoTransportistaField;
     
     private string rFCEmbarcadorField;
     
@@ -130356,7 +130360,7 @@ public partial class CartaPorteMercanciasTransporteAereo {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_TipoPermiso PermSCT {
+    public string PermSCT {
         get {
             return this.permSCTField;
         }
@@ -130433,7 +130437,7 @@ public partial class CartaPorteMercanciasTransporteAereo {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_CodigoTransporteAereo CodigoTransportista {
+    public string CodigoTransportista {
         get {
             return this.codigoTransportistaField;
         }
@@ -131080,13 +131084,13 @@ public partial class CartaPorteMercanciasTransporteFerroviario {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte20")]
 public partial class CartaPorteMercanciasTransporteFerroviarioDerechosDePaso {
     
-    private c_DerechosDePaso tipoDerechoDePasoField;
+    private string tipoDerechoDePasoField;
     
     private decimal kilometrajePagadoField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_DerechosDePaso TipoDerechoDePaso {
+    public string TipoDerechoDePaso {
         get {
             return this.tipoDerechoDePasoField;
         }
@@ -131481,7 +131485,7 @@ public partial class CartaPorteMercanciasTransporteFerroviarioCarro {
     
     private CartaPorteMercanciasTransporteFerroviarioCarroContenedor[] contenedorField;
     
-    private c_TipoCarro tipoCarroField;
+    private string tipoCarroField;
     
     private string matriculaCarroField;
     
@@ -131502,7 +131506,7 @@ public partial class CartaPorteMercanciasTransporteFerroviarioCarro {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_TipoCarro TipoCarro {
+    public string TipoCarro {
         get {
             return this.tipoCarroField;
         }
@@ -131553,7 +131557,7 @@ public partial class CartaPorteMercanciasTransporteFerroviarioCarro {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte20")]
 public partial class CartaPorteMercanciasTransporteFerroviarioCarroContenedor {
     
-    private c_Contenedor tipoContenedorField;
+    private string tipoContenedorField;
     
     private decimal pesoContenedorVacioField;
     
@@ -131561,7 +131565,7 @@ public partial class CartaPorteMercanciasTransporteFerroviarioCarroContenedor {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Contenedor TipoContenedor {
+    public string TipoContenedor {
         get {
             return this.tipoContenedorField;
         }
@@ -131675,7 +131679,7 @@ public enum c_TipoDeServicio {
 }*/
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+/*[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos/CartaPorte")]
 public enum c_TipoDeTrafico {
@@ -131691,7 +131695,7 @@ public enum c_TipoDeTrafico {
     
     /// <remarks/>
     TT04,
-}
+}*/
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
@@ -131705,7 +131709,7 @@ public partial class CartaPorteTiposFigura {
     
     private CartaPorteTiposFiguraDomicilio domicilioField;
     
-    private c_FiguraTransporte tipoFiguraField;
+    private string tipoFiguraField;
     
     private string rFCFiguraField;
     
@@ -131742,7 +131746,7 @@ public partial class CartaPorteTiposFigura {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_FiguraTransporte TipoFigura {
+    public string TipoFigura {
         get {
             return this.tipoFiguraField;
         }
@@ -131841,7 +131845,7 @@ public partial class CartaPorteTiposFiguraPartesTransporte {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+/*[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos/CartaPorte")]
 public enum c_ParteTransporte {
@@ -131881,7 +131885,7 @@ public enum c_ParteTransporte {
     
     /// <remarks/>
     PT12,
-}
+}*/
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
@@ -131907,7 +131911,7 @@ public partial class CartaPorteTiposFiguraDomicilio {
     
     private string estadoField;
     
-    private c_Pais paisField;
+    private string paisField;
     
     private string codigoPostalField;
     
@@ -132001,7 +132005,7 @@ public partial class CartaPorteTiposFiguraDomicilio {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Pais Pais {
+    public string Pais {
         get {
             return this.paisField;
         }

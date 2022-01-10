@@ -30,6 +30,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [StringLength(3)]
         //[Required(ErrorMessage = "Campo Obligatorio Clave unida")]
+        [DisplayName("Unidad de Peso")]
         public String ClaveUnidadPeso_Id { get; set; }
         [ForeignKey("ClaveUnidadPeso_Id")]
         public virtual ClaveUnidadPeso ClaveUnidadPeso { get; set; }
@@ -56,7 +57,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual Mercancia Mercancia{ get; set; }
 
-        [NotMapped]
+      //  [NotMapped]
         public virtual List<Mercancia> Mercanciass { get; set; }
     }
 }

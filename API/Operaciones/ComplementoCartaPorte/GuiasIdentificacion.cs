@@ -26,5 +26,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public Decimal PesoGuiaIdentificacion { get; set; }
 
+        public int? Mercancia_Id { get; set; }
+        [ForeignKey("Mercancia_Id")]
+        public virtual Mercancia Mercancia { get; set; }
+
     }
 }

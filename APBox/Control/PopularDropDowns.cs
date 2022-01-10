@@ -53,6 +53,16 @@ namespace APBox.Control
         {
             return _db.FraccionesArancelarias.Where(a => a.c_FraccionArancelaria == seleccion).ToList();
         }
+        public List<API.Operaciones.ComplementoCartaPorte.Cat_Conceptos> PopulaDatosConceptos(int seleccion)
+        {
+            //_db.Configuration.ProxyCreationEnabled = false;
+            return _db.Cat_Conceptos.Where(a => a.Id == seleccion).ToList();
+        }
+        public List<API.Operaciones.ComplementoCartaPorte.Cat_SubImpuestoC> PopulaDatosImpuestos(int seleccion)
+        {
+           // _db.Configuration.ProxyCreationEnabled = false;
+            return _db.Cat_Impuestos.Where(a => a.Id == seleccion).ToList();
+        }
         public List<Colonia> PopulaColonias(string seleccion)
         {
             return _db.Colonias.Where(a => a.c_CodigoPostal_Id == seleccion).ToList();
@@ -71,9 +81,40 @@ namespace APBox.Control
             return _db.Estados.Where(a => a.c_Pais_Id == seleccion).ToList();
  
         }
+
+        public SelectList PopulaConceptos()
+        {
+            var DatosConcatenados = _db.Cat_Conceptos.ToDictionary(a => a.Id, a => (a.NoIdentificacion + "-" + a.Descripcion));
+            return new SelectList(DatosConcatenados, "Key", "Value");
+
+           // return new SelectList(_db.Cat_Conceptos.OrderByDescending(a => a.Id), "Id", "ClavesProdServ");
+        }
+
+        public SelectList PopulaImpuestoT()
+        {
+            return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Traslado"), "Id", "TasaOCuota");
+        }
+
+        public SelectList PopulaImpuestoR()
+        {
+            return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Retencion"), "Id", "TasaOCuota");
+        }
         public SelectList PopulaPaises()
         {
             return new SelectList(_db.Paises.OrderBy(a => a.c_Pais), "c_Pais","Descripcion");
+        }
+
+        public SelectList PopulaImpuestoSat()
+        {
+            return new SelectList(_db.ImpuestoCP.OrderBy(a => a.c_Impuesto), "c_Impuesto", "Descripcion");
+        }
+        public SelectList PopulaFormaPagoFiltro(string seleccion)
+        {
+            return new SelectList(_db.Cat_FormaPago.OrderBy(a => a.c_FormaPago), "c_FormaPago", "Descripcion",seleccion);
+        }
+        public SelectList PopulaFormaPago()
+        {
+            return new SelectList(_db.Cat_FormaPago.OrderBy(a => a.c_FormaPago), "c_FormaPago", "Descripcion");
         }
         public SelectList PopulaClaveUnidad()
         {
@@ -104,6 +145,12 @@ namespace APBox.Control
         public SelectList PopulaDerechodePaso()
         {
             return new SelectList(_db.DerechosDePasos.OrderBy(a => a.ClavederechoPaso), "ClavederechoPaso", "DerechoDePaso");
+        }
+        public SelectList PopulaTipoDeComprobanteFiltro(c_TipoDeComprobante seleccion)
+        {
+            return new SelectList(Enum.GetValues(typeof(c_TipoDeComprobante))
+                        .Cast<c_TipoDeComprobante>()
+                        .Where(e => (e == c_TipoDeComprobante.I || e == c_TipoDeComprobante.T)), seleccion);
         }
         public SelectList PopulaTipoDeComprobante()
         {

@@ -50,6 +50,68 @@
                 @Html.DisplayFor(model => model.ResidenciaFiscalFigura)
                 @Html.HiddenFor(model => model.ResidenciaFiscalFigura)
             </div>
+            @if (Model.Domicilio != null)
+            {
+                if (Model.Domicilio.Pais != "")
+                {
+                    <div class="clearfix"></div>
+                    <h3 class="title-hero">
+                        Figura Transporte : Domicilio
+                    </h3>
+
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.Calle)<br />
+                        @Html.DisplayFor(model => model.Domicilio.Calle)
+                        @Html.HiddenFor(model => model.Domicilio.Calle)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.CodigoPostal)<br />
+                        @Html.DisplayFor(model => model.Domicilio.CodigoPostal)
+                        @Html.HiddenFor(model => model.Domicilio.CodigoPostal)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.Colonia)<br />
+                        @Html.DisplayFor(model => model.Domicilio.Colonia)
+                        @Html.HiddenFor(model => model.Domicilio.Colonia)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.Estado)<br />
+                        @Html.DisplayFor(model => model.Domicilio.Estado)
+                        @Html.HiddenFor(model => model.Domicilio.Estado)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.Localidad)<br />
+                        @Html.DisplayFor(model => model.Domicilio.Localidad)
+                        @Html.HiddenFor(model => model.Domicilio.Localidad)
+
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.Municipio)<br />
+                        @Html.DisplayFor(model => model.Domicilio.Municipio)
+                        @Html.HiddenFor(model => model.Domicilio.Municipio)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.NumeroExterior)<br />
+                        @Html.DisplayFor(model => model.Domicilio.NumeroExterior)
+                        @Html.HiddenFor(model => model.Domicilio.NumeroExterior)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.NumeroInterior)<br />
+                        @Html.DisplayFor(model => model.Domicilio.NumeroInterior)
+                        @Html.HiddenFor(model => model.Domicilio.NumeroInterior)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.Pais)<br />
+                        @Html.DisplayFor(model => model.Domicilio.Pais)
+                        @Html.HiddenFor(model => model.Domicilio.Pais)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Domicilio.Referencia)<br />
+                        @Html.DisplayFor(model => model.Domicilio.Referencia)
+                        @Html.HiddenFor(model => model.Domicilio.Referencia)
+                    </div>
+                }
+            }
             <div class="clearfix"></div>
             @if (Model.PartesTransportes != null)
             {
@@ -65,56 +127,7 @@
                         @Html.DisplayFor(x => x.PartesTransportes[i].ParteTransporte)
                         @Html.HiddenFor(x => x.PartesTransportes[i].ParteTransporte)
                     </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.Pais)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.Pais)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.Pais)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.Estado)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.Estado)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.Estado)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.Municipio)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.Municipio)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.Municipio)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.Localidad)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.Localidad)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.Localidad)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.CodigoPostal)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.CodigoPostal)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.CodigoPostal)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.Calle)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.Calle)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.Calle)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.Colonia)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.Colonia)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.Colonia)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.NumeroExterior)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.NumeroExterior)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.NumeroExterior)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.NumeroInterior)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.NumeroInterior)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.NumeroInterior)
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.PartesTransportes[i].Domicilio.Referencia)<br />
-                        @Html.DisplayFor(x => x.PartesTransportes[i].Domicilio.Referencia)
-                        @Html.HiddenFor(x => x.PartesTransportes[i].Domicilio.Referencia)
-                    </div>
+
                     <div class="clearfix"></div>
                     <hr />
 

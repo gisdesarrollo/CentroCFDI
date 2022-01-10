@@ -1,252 +1,1100 @@
-﻿using API.Enums.CartaPorteEnums;
+﻿using API.Catalogos;
+using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementoCartaPorte;
+using API.Operaciones.ComplementosPagos;
+using API.Operaciones.Facturacion;
+using API.RelacionesCartaPorte;
 using Aplicacion.Context;
+using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Utils;
 
 namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 {
     public class CartaPorteManager
     {
         private readonly AplicacionContext _db = new AplicacionContext();
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
+        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.cer";
+        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.key";
+        private static string passwordKey = "12345678a";
 
-        public void GenerarComplementoCartaPorte(int sucursalId, int complementoCartaPorteId, string mailAlterno)
+        public string GenerarComplementoCartaPorte(int sucursalId, int complementoCartaPorteId, string mailAlterno)
         {
-            byte[] xml = null;
+            string cfdi = null;
             var sucursal = _db.Sucursales.Find(sucursalId);
             var complementoCartaPorte = _db.ComplementoCartaPortes.Find(complementoCartaPorteId);
-            ComprobanteCFDI ocomprobanteCfdi = new ComprobanteCFDI();
-            //llenado factura y complemento
-            ocomprobanteCfdi = GeneraFactura(complementoCartaPorte, sucursalId);
+            try
+            {
+                //llenado CFDI y complemento Carta Porte
+                cfdi = GeneraFactura(complementoCartaPorte, sucursalId);
+            }
+            catch (Exception ex){
+                throw new Exception(String.Format("Error al momento de generar el complemento: {0}", ex.Message));
 
-            
+            }
+
+            return cfdi;
         }
 
-        public ComprobanteCFDI GeneraFactura(ComplementoCartaPorte complementoCartaPorte, int sucursalId)
+        public string GeneraFactura(ComplementoCartaPorte complementoCartaPorte, int sucursalId)
         {
             var sucursal = _db.Sucursales.Find(sucursalId);
-           
-            //------------------comprobante---------------
-            ComprobanteCFDI oComprobante = new ComprobanteCFDI();
-            oComprobante.SubTotal = complementoCartaPorte.Subtotal;
-            oComprobante.Moneda = complementoCartaPorte.Moneda.Value;
-            oComprobante.Total = complementoCartaPorte.Total;
-            oComprobante.TipoDeComprobante = complementoCartaPorte.TipoDeComprobante;
 
-            oComprobante.Folio = "666";
-            oComprobante.Serie = "PRU";
-            oComprobante.Fecha = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-            oComprobante.MetodoPago = complementoCartaPorte.MetodoPago;
-            //-------------------emisor-------------------
-            ComprobanteEmisor oEmisor = new ComprobanteEmisor();
-            oEmisor.Rfc = sucursal.Rfc;
-            oEmisor.Nombre = sucursal.RazonSocial;
-            oEmisor.RegimenFiscal = c_RegimenFiscal.Item601;
-            //-------------------receptor----------------
-            ComprobanteReceptor oReceptor = new ComprobanteReceptor();
-            oReceptor.Nombre = "Pepe";
-            oReceptor.Rfc = "PEP0987654321";
-            oReceptor.UsoCFDI = complementoCartaPorte.UsoCfdi;
-            oComprobante.Emisor = oEmisor;
-            oComprobante.Receptor = oReceptor;
-            //-------------------conceptos---------------
-            var complementoConceptos = _db.ComplementoCartaPorteConceptos.Where(x => x.ComplementoCartaPorte_Id == complementoCartaPorte.Id).Include(x => x.Conceptos).ToList();
-            List<ComprobanteConcepto> listConcepto = new List<ComprobanteConcepto>();
-            List<ComprobanteConceptoImpuestosTraslado> listTraslado = new List<ComprobanteConceptoImpuestosTraslado>();
-            List<ComprobanteConceptoImpuestosRetencion> listRetencion = new List<ComprobanteConceptoImpuestosRetencion>();
-            List<ComprobanteImpuestosRetencion> listImpuestoRetencion = new List<ComprobanteImpuestosRetencion>();
-            List<ComprobanteImpuestosTraslado> listImpuestoTraslado = new List<ComprobanteImpuestosTraslado>();
-            ComprobanteImpuestos impuestoTR = new ComprobanteImpuestos();
+            // Crea instancia
+            RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
 
-            foreach (var concepto in complementoConceptos)
+            objCfdi = LlenadoCfdi(complementoCartaPorte, sucursalId);
+            var facturaEmitidaID = 0;
+            string xml = objCfdi.Xml;
+            if (objCfdi.MensajeError == "")
             {
-                listTraslado = new List<ComprobanteConceptoImpuestosTraslado>();
-                listRetencion = new List<ComprobanteConceptoImpuestosRetencion>();
-                listImpuestoRetencion = new List<ComprobanteImpuestosRetencion>();
-                listImpuestoTraslado = new List<ComprobanteImpuestosTraslado>();
-               
-                //----------------------retencion y traslado-------------------
-                var complementoRT= _db.ConceptoSubImpuestoConcepto.Where(x => x.Concepto_Id == concepto.Conceptos_Id).Include(x => x.SubImpuestoConcepto).ToList();
-                foreach(var impuesto in complementoRT)
+                facturaEmitidaID = GuardarComplemento(objCfdi, complementoCartaPorte, sucursalId);
+
+                try
                 {
-                    if (impuesto.SubImpuestoConcepto.TipoImpuesto == "Traslado")
-                    {
-                        var conceptoImpuestoTrasladado = new ComprobanteConceptoImpuestosTraslado() { 
-                            Base = impuesto.SubImpuestoConcepto.Base,
-                            Impuesto = impuesto.SubImpuestoConcepto.Impuesto,
-                            TipoFactor = impuesto.SubImpuestoConcepto.TipoFactor,
-                            TasaOCuota = impuesto.SubImpuestoConcepto.TasaOCuota,
-                            Importe = impuesto.SubImpuestoConcepto.Importe    
-                        };
-                        listTraslado.Add(conceptoImpuestoTrasladado);
-                        impuestoTR.TotalImpuestosTrasladados = impuesto.SubImpuestoConcepto.TotalImpuestosTR;
-                        var impuestoTrasladado = new ComprobanteImpuestosTraslado()
-                        {
-                            Impuesto = impuesto.SubImpuestoConcepto.Impuesto,
-                            Importe = impuesto.SubImpuestoConcepto.Importe,
-                            TipoFactor = impuesto.SubImpuestoConcepto.TipoFactor,
-                            TasaOCuota = impuesto.SubImpuestoConcepto.TasaOCuota
-                        };
-                        listImpuestoTraslado.Add(impuestoTrasladado);
-                        impuestoTR.Traslados = listImpuestoTraslado.ToArray();
-                    }
-                    else { 
-                        var conceptoImpuestoRetenido = new ComprobanteConceptoImpuestosRetencion(){
-                            Base = impuesto.SubImpuestoConcepto.Base,
-                            Impuesto = impuesto.SubImpuestoConcepto.Impuesto,
-                            TipoFactor = impuesto.SubImpuestoConcepto.TipoFactor,
-                            TasaOCuota = impuesto.SubImpuestoConcepto.TasaOCuota,
-                            Importe = impuesto.SubImpuestoConcepto.Importe
-                        };
-                        listRetencion.Add(conceptoImpuestoRetenido);
-                        impuestoTR.TotalImpuestosRetenidos = impuesto.SubImpuestoConcepto.TotalImpuestosTR;
-                        var impuestoRetenido = new ComprobanteImpuestosRetencion(){
-                            Impuesto = impuesto.SubImpuestoConcepto.Impuesto,
-                            Importe = impuesto.SubImpuestoConcepto.Importe
-                        };
-                        listImpuestoRetencion.Add(impuestoRetenido);
-                        impuestoTR.Retenciones = listImpuestoRetencion.ToArray();
-                    }
-                   
+                    //Incrementar Folio de Sucursal
+                    sucursal.Folio += 1;
+                    _db.Entry(sucursal).State = EntityState.Modified;
+
+                    _db.SaveChanges();
                 }
-                var oConcepto = new ComprobanteConcepto()
+                catch (DbEntityValidationException dbEx)
                 {
-                    ClaveUnidad = concepto.Conceptos.ClavesUnidad,
-                    ClaveProdServ = concepto.Conceptos.ClavesProdServ,
-                    Descripcion = concepto.Conceptos.Descripcion,
-                    Impuestos = new ComprobanteConceptoImpuestos()
+                    var errores = new List<String>();
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
                     {
-                        Retenciones = listRetencion.ToArray(),
-                        Traslados = listTraslado.ToArray()
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            errores.Add(String.Format("Propiedad: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage));
+                        }
                     }
-                    
-
-                };
-                listConcepto.Add(oConcepto);
-                
+                    throw new Exception(string.Join(",", errores.ToArray()));
+                }
+                if (facturaEmitidaID > 0)
+                {
+                    MarcarFacturado(complementoCartaPorte.Id, facturaEmitidaID);
+                }
             }
-            oComprobante.Impuestos = impuestoTR;
-            oComprobante.Conceptos = listConcepto.ToArray();
+            return xml;
+        }
 
-            //------------carta porte---------------
-            
-            CartaPorte ocartaPorte = new CartaPorte();
-            ocartaPorte.PaisOrigenDestino = complementoCartaPorte.PaisOrigendestino;
-            ocartaPorte.TotalDistRec = complementoCartaPorte.TotalDistRec;
-            if (complementoCartaPorte.TranspInternac)
+        
+       
+        private DateTime getFormatoFecha(DateTime fecha, DateTime hora)
+        {
+            //get fecha formateada
+            DateTime fechaDocumentoCompleto = new DateTime(fecha.Year, fecha.Month, fecha.Day, hora.Hour, hora.Minute, hora.Second);
+
+            return fechaDocumentoCompleto;
+        }
+
+        private string CorreccionXMLEsquemasComplementosComprobante(string xml)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xml);
+            StringWriter stringWriter = new StringWriter();
+            XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
+            xmlDoc.WriteTo(xmlTextWriter);
+            xml = stringWriter.ToString();
+
+            int inicioComplemento = xml.IndexOf("<cfdi:Complemento>");
+
+            if (inicioComplemento > -1) //Si existe complemento
             {
-                ocartaPorte.TranspInternac = "Sí";
+                //Obtiene el fragmento del nodo Complemento
+                int finComplemento = xml.IndexOf("</cfdi:Complemento>", inicioComplemento) + 19;
+                string fragmentoComplemento = xml.Substring(inicioComplemento, finComplemento - inicioComplemento);
+                string fragmentoComplementoCopia = fragmentoComplemento;
+
+                //Obtiene el nombre del Complemento
+                int inicioNombreComplemento = fragmentoComplementoCopia.IndexOf("<cfdi:Complemento><") + 19;
+                int finNombreComplemento = fragmentoComplementoCopia.IndexOf(":", inicioNombreComplemento);
+                string nombreComplemento = fragmentoComplementoCopia.Substring(inicioNombreComplemento, finNombreComplemento - inicioNombreComplemento);
+
+                //Obtiene el fragmento del nodo Comprobante
+                int inicioComprobante = xml.IndexOf("<cfdi:Comprobante");
+                int finComprobante = xml.IndexOf(">", inicioComprobante + 17) + 1;
+                string fragmentoComprobante = xml.Substring(inicioComprobante, finComprobante - inicioComprobante);
+                string fragmentoComprobanteCopia = fragmentoComprobante;
+
+                //Verifica que exista xmlns:cfdi="http://www.sat.gob.mx/cfd/3" en el nodo Comprobante
+                int inicioXmlnsCfdi = fragmentoComprobanteCopia.IndexOf("xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"");
+
+                if (inicioXmlnsCfdi == -1) //Si no existe lo agrega
+                {
+                    fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace("<cfdi:Comprobante", "<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"");
+                }
+
+                //Verifica que exista xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" en el nodo Comprobante
+                int inicioXsiSchemaLocationT = fragmentoComprobanteCopia.IndexOf("xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"");
+
+                if (inicioXsiSchemaLocationT == -1) //Si no existe lo agrega
+                {
+                    fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace("<cfdi:Comprobante", "<cfdi:Comprobante xsi:schemaLocation=\"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd\"");
+                }
+
+                //Obtiene el fragmento xsiSchemaLocation del nodo Comprobante
+                int inicioXsiSchemaLocationComprobante = fragmentoComprobanteCopia.IndexOf("xsi:schemaLocation=\"");
+                int finXsiSchemaLocationComprobante = fragmentoComprobanteCopia.IndexOf("\"", inicioXsiSchemaLocationComprobante + 20) + 1;
+                string fragmentoXsiSchemaLocationComprobante = fragmentoComprobanteCopia.Substring(inicioXsiSchemaLocationComprobante, finXsiSchemaLocationComprobante - inicioXsiSchemaLocationComprobante);
+                string fragmentoXsiSchemaLocationComprobanteCopia = fragmentoXsiSchemaLocationComprobante;
+
+
+                //add schema carta porte
+                if (fragmentoComprobanteCopia.IndexOf("xmlns:cartaporte20=\"http://www.sat.gob.mx/CartaPorte20\"") == -1)
+                    fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace("xmlns:cfdi", "xmlns:cartaporte20=\"http://www.sat.gob.mx/CartaPorte20\"" + " " + "xmlns:cfdi");
+
+                if (fragmentoXsiSchemaLocationComprobanteCopia.IndexOf("http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd") == -1)
+                    fragmentoXsiSchemaLocationComprobanteCopia = fragmentoXsiSchemaLocationComprobanteCopia.Replace("xsi:schemaLocation=\"", "xsi:schemaLocation=\"" + "http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd" + " ");
+
+                if (fragmentoXsiSchemaLocationComprobanteCopia.IndexOf("http://www.sat.gob.mx/CartaPorte20") == -1)
+                    fragmentoXsiSchemaLocationComprobanteCopia = fragmentoXsiSchemaLocationComprobanteCopia.Replace("xsi:schemaLocation=\"", "xsi:schemaLocation=\"" + "http://www.sat.gob.mx/CartaPorte20" + " ");
+
+                //Actualiza fragmento xsiSchemaLocation del nodo Comprobante
+                fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace(fragmentoXsiSchemaLocationComprobante, fragmentoXsiSchemaLocationComprobanteCopia);
+
+                //Actualiza fragmento Comprobante
+                xml = xml.Replace(fragmentoComprobante, fragmentoComprobanteCopia);
+
+                //Elimina esquemas del nodo Complemento
+                int inicioXsiSchemaLocation = fragmentoComplementoCopia.IndexOf("xsi:schemaLocation=\"");
+
+                if (inicioXsiSchemaLocation > -1)
+                {
+                    int finXsiSchemaLocation = fragmentoComplementoCopia.IndexOf("\"", inicioXsiSchemaLocation + 20) + 1;
+                    string fragmentoXsiSchemaLocation = fragmentoComplementoCopia.Substring(inicioXsiSchemaLocation, finXsiSchemaLocation - inicioXsiSchemaLocation);
+                    fragmentoComplementoCopia = fragmentoComplementoCopia.Replace(fragmentoXsiSchemaLocation, "");
+                }
+
+                int inicioXlmns = fragmentoComplementoCopia.IndexOf("xmlns:" + nombreComplemento);
+
+                if (inicioXlmns > -1)
+                {
+                    int finXlmns = fragmentoComplementoCopia.IndexOf("\"", inicioXlmns) + 1;
+                    finXlmns = fragmentoComplementoCopia.IndexOf("\"", finXlmns) + 1;
+                    string fragmentoXlmns = fragmentoComplementoCopia.Substring(inicioXlmns, finXlmns - inicioXlmns);
+                    fragmentoComplementoCopia = fragmentoComplementoCopia.Replace(fragmentoXlmns, "");
+                }
+
+                //Actualiza el XML original actualizando el nodo Complemento
+                xml = xml.Replace(fragmentoComplemento, fragmentoComplementoCopia);
+            }
+
+            xmlDoc = new XmlDocument();
+          
+                xmlDoc.LoadXml(xml);
+                stringWriter = new StringWriter();
+                xmlTextWriter = new XmlTextWriter(stringWriter);
+                xmlDoc.WriteTo(xmlTextWriter);
+                xml = stringWriter.ToString();
+           
+            return xml;
+         }
+
+        private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi)
+        {
+            objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            
+            // Verifica el error
+            if (objCfdi.MensajeError == "")
+            {
+                var xmlTimbrado = objCfdi.XmlTimbrado;
+                
+               
+                //guardar string en un archivo
+                System.IO.File.WriteAllText(pathXml, xmlTimbrado);
+
+
             }
             else
             {
-                ocartaPorte.TranspInternac = "No";
+                var error = objCfdi.MensajeError;
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
             }
-             
-            ocartaPorte.Version = complementoCartaPorte.Version;
-            ocartaPorte.ViaEntradaSalida = complementoCartaPorte.viaEntradaSalida;
-            ocartaPorte.EntradaSalidaMerc = complementoCartaPorte.EntradaSalidaMerc;
-            ocartaPorte.PaisOrigenDestino = complementoCartaPorte.PaisOrigendestino;
-            //-----------------ubicaciones------------------
-            
-            var complementoCPUbicaciones = _db.ComplementoCartaPorteUbicaciones.Where(x => x.ComplementoCartaPorte_Id == complementoCartaPorte.Id).Include(x => x.Ubicacion).ToList();
-            
-            List<CartaPorteUbicacion> oListUbicaciones = new List<CartaPorteUbicacion>();
-            
-            foreach (var ubicacion in complementoCPUbicaciones)
-            {
-                var oUbicacion = new CartaPorteUbicacion()
-                {
-                    IDUbicacion = ubicacion.Ubicacion.IDUbicacion,
-                    RFCRemitenteDestinatario = ubicacion.Ubicacion.RfcRemitenteDestinatario,
-                    NombreRemitenteDestinatario = ubicacion.Ubicacion.NombreRemitenteDestinatario,
-                    TipoUbicacion = ubicacion.Ubicacion.TipoUbicacion
-                };
-                oListUbicaciones.Add(oUbicacion);
-            }
-            ocartaPorte.Ubicaciones = oListUbicaciones.ToArray();
+            return objCfdi;
+        }
 
-            //-----------------mercancias-----------------
-            CartaPorteMercancias oMercancia = new CartaPorteMercancias();
-            oMercancia.CargoPorTasacion = complementoCartaPorte.Mercancias.CargoPorTasacion;
-            oMercancia.NumTotalMercancias = complementoCartaPorte.Mercancias.NumTotalMercancias;
-            oMercancia.PesoBrutoTotal = complementoCartaPorte.Mercancias.PesoBrutoTotal;
-            oMercancia.PesoNetoTotal = complementoCartaPorte.Mercancias.PesoNetoTotal;
-            oMercancia.UnidadPeso = (c_ClaveUnidadPeso)Enum.Parse(typeof(c_ClaveUnidadPeso), complementoCartaPorte.Mercancias.ClaveUnidadPeso_Id, true);
+        private RVCFDI33.GeneraCFDI LlenadoCfdi(ComplementoCartaPorte complementoCartaPorte, int sucursalId)
+        {
+            string error = "";
+            var sucursal = _db.Sucursales.Find(sucursalId);
+            // Crea instancia
+            RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
 
-            var complementoCPMercancias = _db.MercanciasMercancias.Where(x => x.Mercancias_Id == complementoCartaPorte.Mercancias_Id).Include(x => x.Mercancia).ToList();
-            foreach(var mercancia in complementoCPMercancias)
-            {
-                var mercanciaPedimento = _db.MercanciaPedimentos.Where(x => x.Mercancia_Id == mercancia.Mercancia_Id).Include(x => x.Pedimentos).ToList();
 
-                var oMMercancia = new CartaPorteMercanciasMercancia()
-                {
 
-                };
-
-                var oMPedimento = new CartaPorteMercanciasMercanciaPedimentos() 
-                { 
-                
-                };
-
-                var oMCantidaTransporta = new CartaPorteMercanciasMercanciaCantidadTransporta()
-                {
-
-                };
-
-                var oMGuiasIdentificacion = new CartaPorteMercanciasMercanciaGuiasIdentificacion()
-                {
-
-                };
-
-                var oMDetalleMercancia = new CartaPorteMercanciasMercanciaDetalleMercancia() 
-                {
-
-                };
-
-            }
+            // Agrega el certificado
+            objCfdi.agregarCertificado(pathCer);
+            //objCfdi.agregarCertificadoBase64(Convert.ToBase64String(sucursal.Cer));
 
             
-            oComprobante.Complemento = new ComprobanteComplementoCP[1];
-            oComprobante.Complemento[0] = new ComprobanteComplementoCP();
-            //-----------------------serealizacion----------------------
-            XmlDocument docCartaPorte = new XmlDocument();
-            XmlSerializerNamespaces xmlNamesPacesCP = new XmlSerializerNamespaces();
-            xmlNamesPacesCP.Add("cartaporte20", "http://www.sat.gob.mx/CartaPorte20");
-
-            using (XmlWriter writter = docCartaPorte.CreateNavigator().AppendChild())
+            string tipoCambio = "";
+            if (complementoCartaPorte.Moneda != null)
             {
-                new XmlSerializer(ocartaPorte.GetType()).Serialize(writter, ocartaPorte, xmlNamesPacesCP);
-            }
-            oComprobante.Complemento[0].Any = new XmlElement[1];
-            oComprobante.Complemento[0].Any[0] = docCartaPorte.DocumentElement;
-
-            //serializamos
-            string path = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
-
-            XmlSerializer oXmlSerealizer = new XmlSerializer(typeof(ComprobanteCFDI));
-            string xml = "";
-
-            using(var sww = new StringWriter())
-            {
-                using (XmlWriter writter = XmlWriter.Create(sww) )
+                if (complementoCartaPorte.Moneda == CFDI.API.Enums.CFDI33.c_Moneda.MXN)
                 {
-                    oXmlSerealizer.Serialize(writter,oComprobante);
-                    xml = sww.ToString();
+                    tipoCambio = "1";
+                }
+                else if (complementoCartaPorte.Moneda == CFDI.API.Enums.CFDI33.c_Moneda.XXX)
+                {
+                    tipoCambio = "";
+                }
+                else
+                {
+                    tipoCambio = "1.0";
                 }
             }
 
-            //guardar string en un archivo
-            System.IO.File.WriteAllText(path,xml);
 
-            return oComprobante;
+            // parseo Enum
+            
+            var regimenFiscal = (int)complementoCartaPorte.Sucursal.RegimenFiscal;
+            
+            objCfdi.agregarComprobante33
+                   (
+                       complementoCartaPorte.Sucursal.Serie, //Serie
+                       "1", //Folio
+                       getFormatoFecha(complementoCartaPorte.FechaDocumento,complementoCartaPorte.Hora).ToString("yyyy-MM-ddTHH:mm:ss"), //Fecha de emision
+                       complementoCartaPorte.FormaPago ?? "",//complementoCartaPorte.FormaPago, //Forma de pago
+                       complementoCartaPorte.CondicionesPago == null ? "" : complementoCartaPorte.CondicionesPago, //Condicion de pago
+                       Decimal.ToDouble(complementoCartaPorte.Subtotal), //Subtotal
+                       0, //Descuento
+                       complementoCartaPorte.Moneda.ToString() ?? "", //Moneda
+                       tipoCambio , //Tipo de cambio
+                       Decimal.ToDouble(complementoCartaPorte.Total), //Total
+                       complementoCartaPorte.TipoDeComprobante.ToString(), //Tipo de comprobante
+                       complementoCartaPorte.MetodoPago.ToString() ?? "", //Metodo de pago
+                       sucursal.CodigoPostal, //Lugar de expedicion
+                       "" //Clave de confirmacion
+                   );
+
+            if(objCfdi.MensajeError != "")
+            {
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
+            }
+            objCfdi.agregarEmisor(
+                        "XIA190128J61", //Rfc
+                        "MB IDEAS DIGITALES SC",  //Nombre
+                        "601" //Regimen fiscal
+                    );
+            
+            /*objCfdi.agregarEmisor(
+                complementoCartaPorte.Sucursal.Rfc, //Rfc
+                complementoCartaPorte.Sucursal.RazonSocial,  //Nombre
+                regimenFiscal.ToString() //Regimen fiscal
+            );*/
+            if (objCfdi.MensajeError != "")
+            {
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
+            }
+            objCfdi.agregarReceptor(
+                       "EKU9003173C9", //Rfc
+                       "demo", //Nombre
+                       "", //Residencia fiscal 
+                       "", //NumRegIdTrib
+                       "P01" //UsoCFDI
+                   );
+            /*objCfdi.agregarReceptor(
+                complementoCartaPorte.Receptor.Rfc, //Rfc
+                complementoCartaPorte.Receptor.RazonSocial, //Nombre
+                complementoCartaPorte.Receptor.Pais.ToString(), //Residencia fiscal 
+                complementoCartaPorte.Receptor.NumRegIdTrib, //NumRegIdTrib
+                complementoCartaPorte.UsoCfdi.ToString() //UsoCFDI
+            );*/
+
+            if (objCfdi.MensajeError != "")
+            {
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
+            }
+            //CONCEPTOS
+            Boolean impuestoRetenido = false;
+            Boolean impuestoTraladado = false;
+            var conceptos = _db.Conceptos.Where(c => c.Complemento_Id == complementoCartaPorte.Id).ToList();
+
+            if (conceptos != null)
+            {
+                if (conceptos.Count > 0)
+                {
+                    foreach (var concepto in conceptos)
+                    {
+                        objCfdi.agregarConcepto(
+                            concepto.ClavesProdServ, //ClaveProdServ
+                            concepto.NoIdentificacion, //NoIdentificacion
+                             Convert.ToDouble(concepto.Cantidad), //Cantidad
+                             concepto.ClavesUnidad, //ClaveUnidad
+                             concepto.Unidad, //Unidad
+                             concepto.Descripcion, //Descripcion
+                             Convert.ToDouble(concepto.ValorUnitario), //ValorUnitario
+                             Convert.ToDouble(concepto.Importe), //Importe
+                             0 //Descuento
+                        );
+
+                        if (objCfdi.MensajeError != "")
+                        {
+                            error = objCfdi.MensajeError;
+                            throw new Exception(string.Join(",", error));
+                        }
+
+                        //RETENCION Y TRASLADO
+                        if (concepto.Traslado != null)
+                        {
+                            impuestoTraladado = true;
+                            objCfdi.agregarImpuestoConceptoTraslado(
+                                Convert.ToDouble(concepto.Traslado.Base),
+                                concepto.Traslado.Impuesto,
+                                concepto.Traslado.TipoFactor.ToString(),
+                                Convert.ToDouble(concepto.Traslado.TasaOCuota),
+                                Convert.ToDouble(concepto.Traslado.Importe)
+                            );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+                        }
+
+
+                        if (concepto.Retencion != null)
+                        {
+                            impuestoRetenido = true;
+                            objCfdi.agregarImpuestoConceptoRetenido(
+                                 Convert.ToDouble(concepto.Retencion.Base),
+                                 concepto.Retencion.Impuesto,
+                                 concepto.Retencion.TipoFactor.ToString(),
+                                 Convert.ToDouble(concepto.Retencion.TasaOCuota),
+                                 Convert.ToDouble(concepto.Retencion.Importe)
+                                );
+
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            
+            if (impuestoTraladado || impuestoRetenido)
+            {
+
+                objCfdi.agregarImpuestos(Convert.ToDouble(complementoCartaPorte.TotalImpuestoRetenidos), Convert.ToDouble(complementoCartaPorte.TotalImpuestoTrasladado));
+
+                if (objCfdi.MensajeError != "")
+                {
+                    error = objCfdi.MensajeError;
+                    throw new Exception(string.Join(",", error));
+                }
+                foreach (var impuesto in conceptos)
+                {
+
+                    if (impuesto.Retencion != null)
+                    {
+                        objCfdi.agregarRetencion
+                            (
+                                impuesto.Retencion.Impuesto,
+                                Convert.ToDouble(impuesto.Retencion.Importe)
+                            );
+                        if (objCfdi.MensajeError != "")
+                        {
+                            error = objCfdi.MensajeError;
+                            throw new Exception(string.Join(",", error));
+                        }
+                    }
+
+
+                    if (impuesto.Traslado != null)
+                    {
+                        objCfdi.agregarTraslado(
+                           impuesto.Traslado.Impuesto,
+                           impuesto.Traslado.TipoFactor.ToString(),
+                           Convert.ToDouble(impuesto.Traslado.TasaOCuota),
+                           Convert.ToDouble(impuesto.Traslado.Importe)
+                           );
+
+                        if (objCfdi.MensajeError != "")
+                        {
+                            error = objCfdi.MensajeError;
+                            throw new Exception(string.Join(",", error));
+                        }
+                    }
+                }
+            }
+
+            //CARTA PORTE
+
+            objCfdi.agregarCartaPorte20
+            (
+                complementoCartaPorte.TranspInternac ? "Sí": "No", //TranspInternac
+                complementoCartaPorte.viaEntradaSalida == null ? "": complementoCartaPorte.EntradaSalidaMerc, //EntradaSalidaMerc
+                complementoCartaPorte.PaisOrigendestino == null ? "": complementoCartaPorte.PaisOrigendestino, //Pais Origen Destino
+                complementoCartaPorte.viaEntradaSalida == null ? "": complementoCartaPorte.viaEntradaSalida, //ViaEntradaSalida
+                Convert.ToDouble(complementoCartaPorte.TotalDistRec) //TotalDistRec
+            );
+
+            if (objCfdi.MensajeError != "")
+            {
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
+            }
+            //UBICACIONES 
+
+            var ubicaciones = _db.UbicacionOrigen.Where(c => c.Complemento_Id == complementoCartaPorte.Id).ToList();
+
+            if (ubicaciones != null)
+            {
+                if (ubicaciones.Count > 0)
+                {
+                    foreach (var ubicacion in ubicaciones)
+                    {
+                        string residenciaFiscal = "";
+                        if (ubicacion.ResidenciaFiscal != null)
+                        {
+                            residenciaFiscal = ubicacion.ResidenciaFiscal.ToString();
+                        }
+                        objCfdi.agregarCartaPorte20_Ubicacion
+                         (
+                             ubicacion.TipoUbicacion, //TipoUbicacion
+                             ubicacion.IDUbicacion, //IDUbicacion
+                             ubicacion.RfcRemitenteDestinatario, //RFCRemitenteDestinatario
+                             ubicacion.NombreRemitenteDestinatario == null ? "" : ubicacion.NombreRemitenteDestinatario, //NombreRemitenteDestinatario
+                             ubicacion.NumRegIdTrib == null ? "" : ubicacion.NumRegIdTrib, //NumRegIdTrib
+                             residenciaFiscal, //ResidenciaFiscal
+                             ubicacion.NumEstacion == null ? "" : ubicacion.NumEstacion, //NumEstacion
+                             ubicacion.NombreEstacion == null ? "" : ubicacion.NombreEstacion, //NombreEstacion
+                             ubicacion.NavegacionTrafico == null ? "" : ubicacion.NavegacionTrafico, //NavegacionTrafico
+                             ubicacion.FechaHoraSalidaLlegada.ToString("s"), //FechaHoraSalidaLlegada
+                             ubicacion.TipoEstacion_Id ?? "", //TipoEstacion
+                             Convert.ToDouble(ubicacion.DistanciaRecorrida == 0 ? 0 : ubicacion.DistanciaRecorrida) //DistanciaRecorrida
+                           );
+
+                        if (objCfdi.MensajeError != "")
+                        {
+                            error = objCfdi.MensajeError;
+                            throw new Exception(string.Join(",", error));
+                        }
+                        if (ubicacion.Domicilio != null)
+                        {
+
+                            objCfdi.agregarCartaPorte20_Ubicacion_Domicilio
+                            (
+                                ubicacion.Domicilio.Calle ?? "", //Calle
+                                ubicacion.Domicilio.NumeroExterior ?? "", //NumeroExterior
+                                ubicacion.Domicilio.NumeroInterior ?? "", //NumeroInterior
+                                ubicacion.Domicilio.Colonia ?? "", //Colonia
+                                ubicacion.Domicilio.Localidad ?? "", //Localidad
+                                ubicacion.Domicilio.Referencia ?? "", //Referencia
+                                ubicacion.Domicilio.Municipio ?? "", //Municipio
+                                ubicacion.Domicilio.Estado ?? "", //Estado
+                                ubicacion.Domicilio.Pais ?? "", //Pais
+                                ubicacion.Domicilio.CodigoPostal ?? "" //CodigoPostal
+                             );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+            //MERCANCIA
+            objCfdi.agregarCartaPorte20_Mercancias
+            (
+                Convert.ToDouble(complementoCartaPorte.Mercancias.PesoBrutoTotal == 0 ? 0: complementoCartaPorte.Mercancias.PesoBrutoTotal), //PesoBrutoTotal
+                complementoCartaPorte.Mercancias.ClaveUnidadPeso_Id ?? "", //UnidadPeso
+                Convert.ToDouble(complementoCartaPorte.Mercancias.PesoNetoTotal == 0 ? 0: complementoCartaPorte.Mercancias.PesoNetoTotal), //PesoNetoTotal
+                complementoCartaPorte.Mercancias.NumTotalMercancias == 0 ? 0: complementoCartaPorte.Mercancias.NumTotalMercancias, //NumTotalMercancias
+                Convert.ToDouble(complementoCartaPorte.Mercancias.CargoPorTasacion == 0 ? 0 : complementoCartaPorte.Mercancias.CargoPorTasacion) //CargoPorTasacion
+            );
+            if (objCfdi.MensajeError != "")
+            {
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
+            }
+            //MERCANCIA - MERCANCIAS
+            var mercancias = _db.Mercancia.Where(c => c.Mercancias_Id == complementoCartaPorte.Mercancias.Id).ToList();
+
+            if (mercancias != null)
+            {
+                if (mercancias.Count > 0)
+                {
+                    foreach (var mercancia in mercancias)
+                    {
+                        
+                        objCfdi.agregarCartaPorte20_Mercancias_Mercancia
+                        (
+                            mercancia.ClaveProdServCP, //BienesTransp
+                            mercancia.ClaveProdSTCC == null ? "" : mercancia.ClaveProdSTCC, //ClaveSTCC
+                            mercancia.Descripcion == null ? "" : mercancia.Descripcion, //Descripcion
+                            mercancia.Cantidad == 0 ? 0 : mercancia.Cantidad, //Cantidad
+                            mercancia.ClavesUnidad, //ClaveUnidad
+                            mercancia.Unidad == null ? "" : mercancia.Unidad, //Unidad
+                            mercancia.Dimensiones == null ? "" : mercancia.Dimensiones, //Dimensiones
+                            mercancia.MaterialPeligrosos ? "Sí" : "No", //MaterialPeligroso
+                            mercancia.ClaveMaterialPeligroso == null ? "" : mercancia.ClaveMaterialPeligroso, //CveMaterialPeligroso
+                            mercancia.TipoEmbalaje_Id == null ? "" : mercancia.TipoEmbalaje_Id, //Embalaje
+                            mercancia.DescripEmbalaje ?? "", //DescripEmbalaje
+                            Convert.ToDouble(mercancia.PesoEnKg == 0 ? 0 : mercancia.PesoEnKg), //PesoEnKg
+                            Convert.ToDouble(mercancia.ValorMercancia == null ? "-1" : mercancia.ValorMercancia), //ValorMercancia. -1 Para no agregar este atributo al XML
+                            mercancia.Moneda.ToString() ?? "", //Moneda
+                            mercancia.FraccionArancelarias ?? "", //FraccionArancelaria
+                            mercancia.UUIDComecioExt ?? "" //UUIDComercioExt
+                         );
+                        if (objCfdi.MensajeError != "")
+                        {
+                            error = objCfdi.MensajeError;
+                            throw new Exception(string.Join(",", error));
+                        }
+
+                        
+                        var pedimentos = _db.Pedimentos.Where(c => c.Mercancia_Id == mercancia.Id).ToList();
+                        if (pedimentos != null)
+                        {
+                            if (pedimentos.Count > 0)
+                            {
+                                foreach (var mPedimento in pedimentos)
+                                {
+                                    objCfdi.agregarCartaPorte20_Mercancias_Mercancia_Pedimentos
+                                        (
+                                            mPedimento.Pedimento
+                                        );
+                                    if (objCfdi.MensajeError != "")
+                                    {
+                                        error = objCfdi.MensajeError;
+                                        throw new Exception(string.Join(",", error));
+                                    }
+                                }
+
+                            }
+                        }
+
+                        var gIdentificacion = _db.GuiasIdentificacion.Where(c => c.Mercancia_Id == mercancia.Id).ToList();
+                        if (gIdentificacion != null)
+                        {
+                            if (gIdentificacion.Count > 0)
+                            {
+                                foreach (var mGIdentificacion in gIdentificacion)
+                                {
+                                    objCfdi.agregarCartaPorte20_Mercancias_Mercancia_GuiasIdentificacion
+                                        (
+                                        mGIdentificacion.NumeroGuiaIdentificacion ?? "",
+                                        mGIdentificacion.DescripGuiaIdentificacion ?? "",
+                                        Convert.ToDouble(mGIdentificacion.PesoGuiaIdentificacion == 0 ? 0 : mGIdentificacion.PesoGuiaIdentificacion)
+                                        );
+                                    if (objCfdi.MensajeError != "")
+                                    {
+                                        error = objCfdi.MensajeError;
+                                        throw new Exception(string.Join(",", error));
+                                    }
+                                }
+
+                            }
+                        }
+                        var cantidadTransportadas = _db.CantidadTransportadas.Where(c => c.Mercancia_Id == mercancia.Id).ToList();
+                        if (cantidadTransportadas != null)
+                        {
+                            if (cantidadTransportadas.Count > 0)
+                            {
+                                foreach (var mCTransportada in cantidadTransportadas)
+                                {
+                                    objCfdi.agregarCartaPorte20_Mercancias_Mercancia_CantidadTransporta(
+                                         Convert.ToDouble(mCTransportada.Cantidad), //Cantidad
+                                         mCTransportada.IDOrigen, //IDOrigen
+                                         mCTransportada.IDDestino, //IDDestino
+                                         mCTransportada.CveTransporte_Id ?? "" //CvesTransporte
+                                     );
+                                    if (objCfdi.MensajeError != "")
+                                    {
+                                        error = objCfdi.MensajeError;
+                                        throw new Exception(string.Join(",", error));
+                                    }
+                                }
+
+                            }
+                        }
+
+                        
+
+                        if (mercancia.DetalleMercancia != null)
+                        {
+                            objCfdi.agregarCartaPorte20_Mercancias_Mercancia_DetalleMercancia
+                                (
+                                mercancia.DetalleMercancia.ClaveUnidadPeso_Id,
+                                Convert.ToDouble(mercancia.DetalleMercancia.PesoBruto),
+                                Convert.ToDouble(mercancia.DetalleMercancia.PesoNeto),
+                                Convert.ToDouble(mercancia.DetalleMercancia.PesoTara),
+                                mercancia.DetalleMercancia.NumPiezas
+                                );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            //TRANSPORTES
+            //AUTOTRANSPORTE
+            if (complementoCartaPorte.Mercancias.AutoTransporte != null)
+            {
+                objCfdi.agregarCartaPorte20_Mercancias_Autotransporte
+                    (
+                        complementoCartaPorte.Mercancias.AutoTransporte.TipoPermiso_Id, //PermSCT
+                        complementoCartaPorte.Mercancias.AutoTransporte.NumPermisoSCT //NumPermisoSCT
+                    );
+                if (objCfdi.MensajeError != "")
+                {
+                    error = objCfdi.MensajeError;
+                    throw new Exception(string.Join(",", error));
+                }
+
+                if (complementoCartaPorte.Mercancias.AutoTransporte.IdentificacionVehicular != null)
+                {
+                    objCfdi.agregarCartaPorte20_Mercancias_Autotransporte_IdentificacionVehicular
+                        (
+                            complementoCartaPorte.Mercancias.AutoTransporte.IdentificacionVehicular.ConfigAutotransporte_Id,
+                            complementoCartaPorte.Mercancias.AutoTransporte.IdentificacionVehicular.PlacaVM,
+                            complementoCartaPorte.Mercancias.AutoTransporte.IdentificacionVehicular.AnioModeloVM
+                        );
+                    if (objCfdi.MensajeError != "")
+                    {
+                        error = objCfdi.MensajeError;
+                        throw new Exception(string.Join(",", error));
+                    }
+                }
+                if (complementoCartaPorte.Mercancias.AutoTransporte.Seguros != null)
+                {
+
+                    objCfdi.agregarCartaPorte20_Mercancias_Autotransporte_Seguros
+                        (
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.AseguraRespCivil,
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.PolizaRespCivil ?? "",
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.AseguraMedAmbiente ?? "",
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.PolizaMedAmbiente ?? "",
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.AseguraCarga ?? "",
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.PolizaCarga ?? "",
+                        Convert.ToDouble(complementoCartaPorte.Mercancias.AutoTransporte.Seguros.PrimaSeguro ?? "0" )
+                        );
+                    if (objCfdi.MensajeError != "")
+                    {
+                        error = objCfdi.MensajeError;
+                        throw new Exception(string.Join(",", error));
+                    }
+                }
+                var remolques = _db.Remolques.Where(c => c.AutoTransporte_Id == complementoCartaPorte.Mercancias.AutoTransporte.Id).ToList();
+
+                if (remolques != null)
+                {
+                    if (remolques.Count > 0)
+                    {
+
+                        if (remolques.Count <= 1)
+                        {
+                            objCfdi.agregarCartaPorte20_Mercancias_Autotransporte_Remolques
+                                    (
+                                        remolques[0].SubTipoRem_Id,
+                                        remolques[0].Placa,
+                                        "",
+                                        ""
+                                    );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+                        }
+                        if (remolques.Count > 1 && remolques.Count <= 2)
+                        {
+                            objCfdi.agregarCartaPorte20_Mercancias_Autotransporte_Remolques
+                                   (
+                                       remolques[0].SubTipoRem_Id,
+                                       remolques[0].Placa,
+                                       remolques[1].SubTipoRem_Id,
+                                       remolques[1].Placa
+                                   );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+                        }
+                    }
+                }
+            }
+            if (complementoCartaPorte.Mercancias.TransporteMaritimo != null)
+            {
+                objCfdi.agregarCartaPorte20_Mercancias_TransporteMaritimo
+                    (
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.TipoPermiso_Id, //PermSCT
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NumPermisoSCT ?? "", //NumPermisoSCT
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NombreAseg ?? "", //NombreAseg
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NumPolizaSeguro ?? "", //NumPolizaSeguro
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.ConfigMaritima_Id ?? "", //TipoEmbarcacion
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.Matricula ?? "", //Matricula
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NumeroOMI ?? "", //NumeroOMI
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.AnioEmbarcacion, //AnioEmbarcacion
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NombreEmbarc ?? "", //NombreEmbarc
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NacionalidadEmbarc ?? "", //NacionalidadEmbarc
+                        Convert.ToDouble(complementoCartaPorte.Mercancias.TransporteMaritimo.UnidadesDeArqBruto == 0 ? 0 : complementoCartaPorte.Mercancias.TransporteMaritimo.UnidadesDeArqBruto), //UnidadesDeArqBruto
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.ClaveTipoCarga_Id ?? "", //TipoCarga
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NumCerITC ?? "", //NumCertITC
+                        Convert.ToDouble(complementoCartaPorte.Mercancias.TransporteMaritimo.Eslora == 0 ? 0: complementoCartaPorte.Mercancias.TransporteMaritimo.Eslora), //Eslora
+                        Convert.ToDouble(complementoCartaPorte.Mercancias.TransporteMaritimo.Manga == 0 ? 0: complementoCartaPorte.Mercancias.TransporteMaritimo.Manga), //Manga
+                        Convert.ToDouble(complementoCartaPorte.Mercancias.TransporteMaritimo.Calado == 0 ? 0: complementoCartaPorte.Mercancias.TransporteMaritimo.Calado), //Calado
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.LineaNaviera ?? "", //LineaNaviera
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NombreAgenteNaviero ?? "", //NombreAgenteNaviero
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NumAutorizacionNaviero_Id ?? "", //NumAutorizacionNaviero
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NumViaje ?? "", //NumViaje
+                        complementoCartaPorte.Mercancias.TransporteMaritimo.NumConocEmbarc ?? "" //NumConocEmbarc
+                    );
+                if (objCfdi.MensajeError != "")
+                {
+                    error = objCfdi.MensajeError;
+                    throw new Exception(string.Join(",", error));
+                }
+
+                var contenedoresM = _db.ContenedoresM.Where(c => c.TransporteMaritimo_Id == complementoCartaPorte.Mercancias.TransporteMaritimo.Id).ToList();
+
+                if (contenedoresM != null)
+                {
+                    if (contenedoresM.Count > 0)
+                    {
+                        foreach (var MContenedor in contenedoresM)
+                        {
+                            objCfdi.agregarCartaPorte20_Mercancias_TransporteMaritimo_Contenedor
+                                (
+                                MContenedor.MatriculaContenedor,
+                                MContenedor.ContenedorMaritimo_Id,
+                                MContenedor.NumPrecinto ?? ""
+                                );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+            if (complementoCartaPorte.Mercancias.TransporteAereo != null)
+            {
+                objCfdi.agregarCartaPorte20_Mercancias_TransporteAereo
+                    (
+                        complementoCartaPorte.Mercancias.TransporteAereo.TipoPermiso_Id, //PermSCT
+                        complementoCartaPorte.Mercancias.TransporteAereo.NumPermisoSCT, //NumPermisoSCT
+                        complementoCartaPorte.Mercancias.TransporteAereo.MatriculaAereonave, //MatriculaAeronave
+                        complementoCartaPorte.Mercancias.TransporteAereo.NombreAseg ?? "", //NombreAseg
+                        complementoCartaPorte.Mercancias.TransporteAereo.NumPolizaSeguro ?? "", //NumPolizaSeguro
+                        complementoCartaPorte.Mercancias.TransporteAereo.NumeroGuia ?? "", //NumeroGuia
+                        complementoCartaPorte.Mercancias.TransporteAereo.LugarContrato ?? "", //LugarContrato
+                        complementoCartaPorte.Mercancias.TransporteAereo.CodigoTransporteAereo_Id ?? "", //CodigoTransportista
+                        complementoCartaPorte.Mercancias.TransporteAereo.RFCEmbarcador ?? "", //RFCEmbarcador
+                        complementoCartaPorte.Mercancias.TransporteAereo.NumRegIdTribEmbarc ?? "", //NumRegIdTribEmbarc
+                        complementoCartaPorte.Mercancias.TransporteAereo.ResidenciaFiscalEmbarc.ToString(), //ResidenciaFiscalEmbarc
+                        complementoCartaPorte.Mercancias.TransporteAereo.NombreEmbarcador ?? "" //NombreEmbarcador
+                    );
+                if (objCfdi.MensajeError != "")
+                {
+                    error = objCfdi.MensajeError;
+                    throw new Exception(string.Join(",", error));
+                }
+            }
+            if (complementoCartaPorte.Mercancias.TransporteFerroviario != null)
+            {
+                objCfdi.agregarCartaPorte20_Mercancias_TransporteFerroviario
+                   (
+                       complementoCartaPorte.Mercancias.TransporteFerroviario.TipoDeServicio_Id, //TipoDeServicio
+                       complementoCartaPorte.Mercancias.TransporteFerroviario.TipoDeTrafico.ToString(),
+                       complementoCartaPorte.Mercancias.TransporteFerroviario.NombreAseg ?? "",
+                       complementoCartaPorte.Mercancias.TransporteFerroviario.NumPolizaSeguro ?? "" //NumPolizaSeguro
+                   );
+                if (objCfdi.MensajeError != "")
+                {
+                    error = objCfdi.MensajeError;
+                    throw new Exception(string.Join(",", error));
+                }
+
+                var derechosDePasos = _db.DerechoDePasos.Where(c => c.TransporteFerroviario_Id == complementoCartaPorte.Mercancias.TransporteFerroviario.Id).ToList();
+                if (derechosDePasos != null)
+                {
+                    if (derechosDePasos.Count > 0)
+                    {
+                        foreach (var DPaso in derechosDePasos)
+                        {
+                            objCfdi.agregarCartaPorte20_Mercancias_TransporteFerroviario_DerechosDePaso
+                                (
+                                DPaso.TipoDerechoDePaso,
+                                Convert.ToDouble(DPaso.KilometrajePagado)
+                                );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+
+                        }
+                    }
+                }
+                var carros = _db.Carros.Where(c => c.TransporteFerroviario_Id == complementoCartaPorte.Mercancias.TransporteFerroviario.Id).ToList();
+                if (carros != null)
+                {
+                    if (carros.Count > 0)
+                    {
+                        foreach (var Carro in carros)
+                        {
+                            objCfdi.agregarCartaPorte20_Mercancias_TransporteFerroviario_Carro
+                                (
+                                Carro.TipoCarro_Id,
+                                Carro.MatriculaCarro,
+                                Carro.GuiaCarro,
+                                Convert.ToDouble(Carro.ToneladasNetasCarro)
+                                );
+                            if (objCfdi.MensajeError != "")
+                            {
+                                error = objCfdi.MensajeError;
+                                throw new Exception(string.Join(",", error));
+                            }
+                            var contenedoresC = _db.ContenedoresC.Where(c => c.Carro_Id == Carro.Id).ToList();
+                            if (contenedoresC != null)
+                            {
+                                if (contenedoresC.Count > 0)
+                                {
+                                    foreach (var contenedorC in contenedoresC)
+                                    {
+                                        objCfdi.agregarCartaPorte20_Mercancias_TransporteFerroviario_Carro_Contenedor
+                                            (
+                                            contenedorC.Contenedor_Id,
+                                            Convert.ToDouble(contenedorC.PesoContenedorVacio),
+                                            Convert.ToDouble(contenedorC.PesoNetoMercancia)
+                                            );
+
+
+                                    }
+                                    if (objCfdi.MensajeError != "")
+                                    {
+                                        error = objCfdi.MensajeError;
+                                        throw new Exception(string.Join(",", error));
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                }
+                
+            }
+
+            // FIGURA TRANSPORTE
+            var figuraTransporte = _db.Tiposfigura.Where(c => c.Complemento_Id == complementoCartaPorte.Id).ToList();
+            if (figuraTransporte != null)
+            {
+                if (figuraTransporte.Count > 0)
+                {
+                    foreach (var TFigura in figuraTransporte)
+                    {
+                        objCfdi.agregarCartaPorte20_TiposFigura(
+                            TFigura.FiguraTransporte, //TipoFigura
+                            TFigura.RFCFigura ?? "", //RFCFigura
+                            TFigura.NumLicencia ?? "", //NumLicencia
+                            TFigura.NombreFigura ?? "", //NombreFigura
+                            TFigura.NumRegIdTribFigura ?? "", //NumRegIdTribFigura
+                            TFigura.ResidenciaFiscalFigura.ToString() ?? ""//ResidenciaFiscalFigura
+                    );
+
+                        
+                        var partesTransportes = _db.PartesTransporte.Where(c => c.TiposFigura_Id == TFigura.Id).ToList();
+                        
+                            if (partesTransportes != null)
+                            {
+                                if (partesTransportes.Count > 0)
+                                {
+                                    foreach (var pTransporte in partesTransportes)
+                                    {
+                                        objCfdi.agregarCartaPorte20_TiposFigura_ParteTransporte
+                                            (
+                                            pTransporte.ToString()
+                                            );
+                                    }
+                                }
+
+                            }
+                        if (TFigura.Domicilio != null)
+                        {
+                            objCfdi.agregarCartaPorte20_TiposFigura_Domicilio
+                                (
+                                TFigura.Domicilio.Calle ?? "",
+                                TFigura.Domicilio.NumeroExterior ?? "",
+                                TFigura.Domicilio.NumeroInterior ?? "",
+                                TFigura.Domicilio.Colonia ?? "",
+                                TFigura.Domicilio.Localidad ?? "",
+                                TFigura.Domicilio.Referencia ?? "",
+                                TFigura.Domicilio.Municipio ?? "",
+                                TFigura.Domicilio.Estado ?? "",
+                                TFigura.Domicilio.Pais ?? "",
+                                TFigura.Domicilio.CodigoPostal
+                                );
+                        }
+
+
+                    }
+                    if (objCfdi.MensajeError != "")
+                    {
+                        error = objCfdi.MensajeError;
+                        throw new Exception(string.Join(",", error));
+                    }
+                }
+            }
+            
+
+            objCfdi.GeneraXML(pathKey, "12345678a");
+            //objCfdi.GenerarXMLBase64(Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
+
+            string xml = objCfdi.Xml;
+            xml = CorreccionXMLEsquemasComplementosComprobante(xml);
+
+            objCfdi.Xml = xml;
+
+            //guardar string en un archivo
+            System.IO.File.WriteAllText(pathXml, xml);
+             objCfdi = Timbra(objCfdi);
+               
+
+            return objCfdi;
         }
+
+        private int GuardarComplemento(RVCFDI33.GeneraCFDI objCfdi,ComplementoCartaPorte complementoCartaPorte, int sucursalId)
+        {
+            var utf8 = new UTF8Encoding();
+           
+            
+            var facturaInternaEmitida = new FacturaEmitida
+            {
+                ComplementosPago = new List<ComplementoPago>(),
+                EmisorId = sucursalId,
+                ReceptorId = complementoCartaPorte.Receptor.Id,
+                Fecha = getFormatoFecha(complementoCartaPorte.FechaDocumento, complementoCartaPorte.Hora),
+                Folio = objCfdi.Folio,
+                Moneda = (c_Moneda)complementoCartaPorte.Moneda,
+                Serie = objCfdi.Serie,
+                Subtotal = (double)complementoCartaPorte.Subtotal,
+                TipoCambio = Convert.ToDouble(complementoCartaPorte.TipoCambio),
+                TipoComprobante = complementoCartaPorte.TipoDeComprobante,
+                Total = (double)complementoCartaPorte.Total,
+                Uuid = objCfdi.UUID,
+                ArchivoFisicoXml = utf8.GetBytes(objCfdi.XmlTimbrado)
+            };
+            
+            if (complementoCartaPorte.FormaPago != null)
+            {
+                facturaInternaEmitida.FormaPago = (c_FormaPago)Enum.Parse(typeof(c_FormaPago), complementoCartaPorte.FormaPago);
+            }
+            else { facturaInternaEmitida.FormaPago = null; }
+            if(complementoCartaPorte.MetodoPago != null)
+            {
+                facturaInternaEmitida.MetodoPago = (c_MetodoPago)Enum.ToObject(typeof(c_MetodoPago), complementoCartaPorte.MetodoPago);
+            }
+            else { facturaInternaEmitida.MetodoPago = null; }
+
+            _db.FacturasEmitidas.Add(facturaInternaEmitida);
+            _db.SaveChanges();
+
+            return facturaInternaEmitida.Id;
+        }
+
+        private void MarcarFacturado(int complementoCartaPorteId, int facturaEmitidaId)
+        {
+            var complementoCartaPorte = _db.ComplementoCartaPortes.Find(complementoCartaPorteId);
+            complementoCartaPorte.FacturaEmitidaId = facturaEmitidaId;
+            complementoCartaPorte.Generado = true;
+            _db.Entry(complementoCartaPorte).State = EntityState.Modified;
+            _db.SaveChanges();
+        }
+
+        public String GenerarZipComplementoCartaPorte(int complementoPagoId)
+        {
+            try
+            {
+                var complementoCartaPorte = _db.ComplementoCartaPortes.Find(complementoPagoId);
+                
+                var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.xml", complementoCartaPorte.FacturaEmitida.Serie, complementoCartaPorte.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+                //guardar string en un archivo
+                System.IO.File.WriteAllText(path, Encoding.UTF8.GetString(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml));
+                //var zip = _facturacionInfodextra.GenerarZip(complementoPago.FacturaEmitida.ArchivoFisicoXml, complementoPago.Sucursal.Logo, null);
+                //_operacionesStreams.ByteArrayArchivo(zip, path);
+                return path;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void GeneraPDF(int complementoCPId)
+        {
+            var complementoCartaPorte = _db.ComplementoCartaPortes.Find(complementoCPId);
+            //OpenFileDialog ArchivoXML = new OpenFileDialog();
+            // Obtenemos el archivo XML
+            string xml = Encoding.UTF8.GetString(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
+            //ArchivoXML.Filter = "archivo(s) XML (.xml)|*.xml";
+            
+                // Crea el objeto
+                RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
+                byte[] Logo = new byte[0];
+                //Logo = System.IO.File.ReadAllBytes(@"C:\Users\Toshiba\Desktop\invalco.png");
+                // Timbra el archivo
+                string Observacion = "";
+                string rutaReporte = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//RPT//rptCFDI33.rpt");
+
+                //string rutaReporte = Application.StartupPath + @"\PDF\rptCfdi33.rpt";
+                objCfdi.GenerarPdf(xml, Logo, true, Observacion, "", "", "SENATOR.pdf", rutaReporte);
+                
+                DataSet obj = objCfdi.ObjDataSetPDF;
+                var resultado = "";
+                // Verifica el resultado
+                if (objCfdi.MensajeError == "")
+                    resultado = "Se generó el PDF con éxito Éxito";
+                else
+                    resultado = "Ocurrió un error al timbrar el XML: " + objCfdi.MensajeError;
+            
+            // Libera memoria
+            //ArchivoXML.Dispose();
+            GC.Collect();
+        }
+
     }
 }

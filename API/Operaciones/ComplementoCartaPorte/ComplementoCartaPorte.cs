@@ -2,6 +2,7 @@
 using API.CatalogosCartaPorte;
 using API.Enums;
 using API.Enums.CartaPorteEnums;
+using API.Operaciones.Facturacion;
 using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,15 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Forma de Pago")]
-        public c_FormaPago FormaPago { get; set; }
+        public string FormaPago { get; set; }
+        [ForeignKeyAttribute("FormaPago")]
+        public virtual FormaPago FormaPagos { get; set; }
 
         [DisplayName("Método de Pago")]
-        public c_MetodoPago MetodoPago { get; set; }
+        public c_MetodoPago? MetodoPago { get; set; }
 
         [DisplayName("Tipo Cambio")]
-        public double? TipoCambio { get; set; }
+        public string TipoCambio { get; set; }
 
         [DisplayName("Condiciones Pago")]
         public string CondicionesPago { get; set; }
@@ -39,16 +42,16 @@ namespace API.Operaciones.ComplementoCartaPorte
 
 
         [DisplayName("Salida o Entrada de Mercancia")]
-        public c_CartaPorteEntradaSalidaMerc EntradaSalidaMerc { get; set; }
+        public string EntradaSalidaMerc { get; set; }
 
         [DisplayName("Uso Cfdi")]
-        public c_UsoCFDI UsoCfdi { get; set; }
+        public c_UsoCfdiCP UsoCfdi { get; set; }
 
         [DisplayName("Total de Distancia Recorrida")]
         public Decimal TotalDistRec { get; set; }
 
         [DisplayName("Pais de origen destino")]
-        public c_Pais PaisOrigendestino { get; set; }
+        public string PaisOrigendestino { get; set; }
 
         [Required(ErrorMessage = "Campo Obligatorio")]
         public string Version { get; set; }
@@ -56,7 +59,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public Conceptos Conceptos { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public List<Conceptos> Conceptoss { get; set; }
 
         [DisplayName("Tipo Transporte")]
@@ -86,7 +89,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual Ubicacion Ubicacion { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<Ubicacion> Ubicaciones { get; set; }
         public int Mercancias_Id { get; set; }
         [ForeignKey("Mercancias_Id")]
@@ -125,8 +128,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual TiposFigura TiposFigura { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<TiposFigura> FiguraTransporte { get; set; }
+
+        [NotMapped]
+        public Boolean ValidaMaterialPeligroso { get; set; }
 
         #region Campos CFDI
 
@@ -146,7 +152,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDocumento { get; set; }
 
-        [NotMapped]
+        public Decimal TotalImpuestoTrasladado { get; set; }
+
+        public Decimal TotalImpuestoRetenidos { get; set; }
+
+        
         //[DataType(DataType.Time)]
         public DateTime Hora { get; set; }
 
@@ -157,10 +167,10 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public Status Status { get; set; }
 
-        /*[DisplayName("Factura Emitida")]
+        [DisplayName("Factura Emitida")]
         public int? FacturaEmitidaId { get; set; }
         [ForeignKey("FacturaEmitidaId")]
-        public virtual FacturaEmitida FacturaEmitida { get; set; }*/
+        public virtual FacturaEmitida FacturaEmitida { get; set; }
 
         [NotMapped]
         public bool hidden { get; set; }

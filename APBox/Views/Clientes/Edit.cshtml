@@ -87,6 +87,17 @@
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
 
+                <div class="form-group col-xs-12 col-lg-3">
+                    @Html.LabelFor(model => model.NumRegIdTrib, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.NumRegIdTrib, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NumRegIdTrib, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-xs-12 col-lg-3">
+                    @Html.LabelFor(model => model.UsoCfdi, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.UsoCfdi, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UsoCfdi, "", new { @class = "text-danger" })
+                </div>
+
                 <div class="clearfix"></div>
 
                 <div class="form-group col-xs-12 col-lg-3">
@@ -174,8 +185,7 @@
                                                 {
                                                     foreach (var banco in Model.Bancos)
                                                     {
-                                                        @Html.Partial("~/Views/Clientes/Bancos.cshtml", banco)
-                                                    }
+                                @Html.Partial("~/Views/Clientes/Bancos.cshtml", banco)}
                                                 }
                                             </div>
                                         </div>

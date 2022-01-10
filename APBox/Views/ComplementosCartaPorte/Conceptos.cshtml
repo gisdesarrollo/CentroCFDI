@@ -28,9 +28,34 @@
                 @Html.HiddenFor(model => model.ClavesUnidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.Unidad)<br />
+                @Html.DisplayFor(model => model.Unidad)
+                @Html.HiddenFor(model => model.Unidad)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.Descripcion)<br />
                 @Html.DisplayFor(model => model.Descripcion)
                 @Html.HiddenFor(model => model.Descripcion)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.NoIdentificacion)<br />
+                @Html.DisplayFor(model => model.NoIdentificacion)
+                @Html.HiddenFor(model => model.NoIdentificacion)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.Cantidad)<br />
+                @Html.DisplayFor(model => model.Cantidad)
+                @Html.HiddenFor(model => model.Cantidad)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.ValorUnitario)<br />
+                @Html.DisplayFor(model => model.ValorUnitario)
+                @Html.HiddenFor(model => model.ValorUnitario)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.Importe)<br />
+                @Html.DisplayFor(model => model.Importe)
+                @Html.HiddenFor(model => model.Importe)
             </div>
             <div class="clearfix"></div>
             @if (Model.Traslado != null)
@@ -57,7 +82,7 @@
                         @Html.DisplayFor(model => model.Traslado.TipoFactor)
                         @Html.HiddenFor(model => model.Traslado.TipoFactor)
                     </div>
-                    
+
                     <div class="form-group col-xs-12 col-sm-3">
                         @Html.LabelFor(model => model.Traslado.TasaOCuota)<br />
                         @Html.DisplayFor(model => model.Traslado.TasaOCuota)
@@ -68,11 +93,11 @@
                         @Html.DisplayFor(model => model.Traslado.Importe)
                         @Html.HiddenFor(model => model.Traslado.Importe)
                     </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Traslado.TotalImpuestosTR)<br />
-                        @Html.DisplayFor(model => model.Traslado.TotalImpuestosTR)
-                        @Html.HiddenFor(model => model.Traslado.TotalImpuestosTR)
-                    </div>
+                    @*<div class="form-group col-xs-12 col-sm-3">
+                    @Html.LabelFor(model => model.Traslado.TotalImpuestosTR)<br />
+                    @Html.DisplayFor(model => model.Traslado.TotalImpuestosTR)
+                    @Html.HiddenFor(model => model.Traslado.TotalImpuestosTR)
+                </div>*@
                 }
             }
             <div class="clearfix"></div>
@@ -100,7 +125,7 @@
                         @Html.DisplayFor(model => model.Retencion.TipoFactor)
                         @Html.HiddenFor(model => model.Retencion.TipoFactor)
                     </div>
-                    
+
                     <div class="form-group col-xs-12 col-sm-3">
                         @Html.LabelFor(model => model.Retencion.TasaOCuota)<br />
                         @Html.DisplayFor(model => model.Retencion.TasaOCuota)
@@ -111,11 +136,11 @@
                         @Html.DisplayFor(model => model.Retencion.Importe)
                         @Html.HiddenFor(model => model.Retencion.Importe)
                     </div>
-                    <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Retencion.TotalImpuestosTR)<br />
-                        @Html.DisplayFor(model => model.Retencion.TotalImpuestosTR)
-                        @Html.HiddenFor(model => model.Retencion.TotalImpuestosTR)
-                    </div>
+                    @*<div class="form-group col-xs-12 col-sm-3">
+                    @Html.LabelFor(model => model.Retencion.TotalImpuestosTR)<br />
+                    @Html.DisplayFor(model => model.Retencion.TotalImpuestosTR)
+                    @Html.HiddenFor(model => model.Retencion.TotalImpuestosTR)
+                </div>*@
                 }
             }
             <div class="clearfix"></div>

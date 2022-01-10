@@ -121,7 +121,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 ImportePagado = importePagado,
                                 ImporteSaldoAnterior = importeSaldoAnterior,
                                 ImporteSaldoInsoluto = importeSaldoInsoluto,
-                                MetodoPago = facturaEmitida.MetodoPago,
+                                MetodoPago = (c_MetodoPago)facturaEmitida.MetodoPago,
                                 Moneda = facturaEmitida.Moneda,
                                 NumeroParcialidad = Convert.ToInt32(String.IsNullOrEmpty(numeroParcialidad) ? "1" : numeroParcialidad),
                                 Serie = facturaEmitida.Serie,

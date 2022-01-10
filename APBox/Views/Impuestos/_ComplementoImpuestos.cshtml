@@ -1,0 +1,80 @@
+﻿<script>
+
+    $(function () {
+        $("#crearImpuesto").on('click', function () {
+            console.log($('#TipoImpuestoImp option:selected').val());
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarImpuesto", "Impuestos")',
+                data: JSON.stringify({
+                    TipoImp: $('#TipoImpuestoImp option:selected').val(),
+                    Base: $('#BaseImp').val(),
+                    Impuesto: $('#Impuesto').val(),
+                    TipoFactor: $('#TipoFactor').val(),
+                    TasaOCuota: $('#TasaOCuotaImp').val(),
+                    Importe: $('#ImporteImp').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function () {
+                alert("Exito");
+                window.location.href = "Index"
+            })
+            .fail(function (jqxhr, textStatus, error) {
+                alert("Favor de llenar todos los datos para los detalles ");
+            });
+            return false;
+        });
+        $("#EditarImpuesto").on('click', function () {
+            console.log("id: " + $('#EditarImpuesto').data("id") +
+                "\ntipoImpuesto" + $('#TipoImpuestoImp').val() +
+                "\nbase" + $('#BaseImp').val() +
+                "\nimpuesto" + $('#Impuesto').val() +
+                "\ntipoFactor" + $('#TipoFactor').val() +
+                "\ntasaocuota" + $('#TasaOCuotaImp').val() +
+                "\nimporte" + $('#ImporteImp').val() );
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("EditarImpuesto", "Impuestos")',
+                data: JSON.stringify({
+                    Id: $("#EditarImpuesto").data("id"),
+                    TipoImp: $('#TipoImpuestoImp option:selected').val(),
+                    Base: $('#BaseImp').val(),
+                    Impuesto: $('#Impuesto').val(),
+                    TipoFactor: $('#TipoFactor').val(),
+                    TasaOCuota: $('#TasaOCuotaImp').val(),
+                    Importe: $('#ImporteImp').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function () {
+                alert("Exito");
+                window.location.href = '../Index'
+            })
+            .fail(function (jqxhr, textStatus, error) {
+                alert("Favor de llenar todos los datos para los detalles ");
+            });
+            return false;
+        });
+        $("#EliminarImpuesto").on('click', function () {
+            console.log("id a eliminar" + $("#EliminarConcepto").data("id"));
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("EliminarImpuesto", "Impuestos")',
+                data: JSON.stringify({
+                    Id: $("#EliminarImpuesto").data("id")
+                 }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function () {
+                alert("Dato Eliminado");
+                window.location.href = '../Index'
+               
+            })
+            .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles ");
+            });
+            return false;
+        });
+    });
+</script>

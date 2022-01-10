@@ -36,16 +36,16 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual ClaveProdSTCC ClaveProdSTCC { get; set; }*/
         [NotMapped]
         public string NameClaveSTCC { get; set; }
-        
+
         [DisplayName("Clave de Unidad")]
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public string ClaveUnidad_Id { get; set; }
         [ForeignKey("ClaveUnidad_Id")]
         public virtual ClaveUnidad ClaveUnidad { get; set; }
-        
+
         [DisplayName("Clave de Unidad")]
         public string ClavesUnidad { get; set; }
-        
+
         [DisplayName("Clave de Material Peligroso")]
         public string MaterialPeligroso_Id { get; set; }
         [ForeignKey("MaterialPeligroso_Id")]
@@ -54,12 +54,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         /*[NotMapped]
         [DisplayName("Material Peligroso")]
         public string MaterialPeligrosos { get; set; }*/
-        
+
         [DisplayName("Clave de Material Peligroso")]
         public string ClaveMaterialPeligroso { get; set; }
 
         [DisplayName("Material Peligroso")]
-        public Boolean  MaterialPeligrosos { get; set; }
+        public Boolean MaterialPeligrosos { get; set; }
         
         [DisplayName("Descripción")]
         //[Required(ErrorMessage = "Campo Obligatorio")]
@@ -108,35 +108,28 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("DetalleMercanciaId")]
         public virtual DetalleMercancia DetalleMercancia { get; set; }
 
-        /*[NotMapped]
-        public virtual List<DetalleMercancia> DetalleMercanciass { get; set; }
-        */
+        public int? Mercancias_Id { get; set; }
+        [ForeignKey("Mercancias_Id")]
+        public virtual Mercancias Mercancias { get; set; }
+
         [NotMapped]
         public virtual CantidadTransportada CantidadTransportada { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<CantidadTransportada> CantidadTransportadass { get; set; }
 
         [NotMapped]
         public virtual GuiasIdentificacion GuiasIdentificacion { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<GuiasIdentificacion> GuiasIdentificacionss { get; set; }
 
         [NotMapped]
         public virtual Pedimentos Pedimentos { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<Pedimentos> Pedimentoss { get; set; }
 
-        [NotMapped]
-        [DisplayName("Agregar Pedimento")]
-        public bool ActivaPedimento { get; set; }
-        [NotMapped]
-        [DisplayName("Agregar Guias Identificación")]
-        public bool ActivaGuiaIdentificacion { get; set; }
-        [NotMapped]
-        [DisplayName("Agregar Cantidad Transportada")]
-        public bool ActivaCantidadTransportada { get; set; }
+        
     }
 }

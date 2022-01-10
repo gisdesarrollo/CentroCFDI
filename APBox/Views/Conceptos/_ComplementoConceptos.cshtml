@@ -1,0 +1,170 @@
+﻿<script>
+    $(function () {
+
+        $("#EliminarConcepto").on('click', function () {
+            console.log("id a eliminar" + $("#EliminarConcepto").data("id"));
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("EliminarConcepto", "Conceptos")',
+                data: JSON.stringify({
+                    Id: $("#EliminarConcepto").data("id")
+                 }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function () {
+                alert("Dato Eliminado");
+                window.location.href = "../Index"
+            })
+            .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles ");
+            });
+            return false;
+        });
+        $("#crearConcepto").on('click', function () {
+            console.log("click: " + $("#CrearConcepto").data("id"));
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarConceptos", "Conceptos")',
+                data: JSON.stringify({
+                    ClaveProdServID: $('#ClaveProdServ_IdConceptos').val(),
+                    ClaveUnidadID: $('#ClavesUnidadConc').val(),
+                    Cantidad: $('#Cantidad').val(),
+                    Unidad: $('#UnidadConceptos').val(),
+                    NoIdentificacion: $('#NoIdentificacion').val(),
+                    Descripcion: $('#DescripcionConc').val(),
+                    ValorUnitario: $('#ValorUnitario').val(),
+                    Importe: $('#Importe').val(),
+                    Descuento: $('#Descuento').val(),
+                    TTipoImpuesto : $("#Conceptos_Traslado_TipoImpuesto").val(),
+                    TBase: $('#TBase').val(),
+                    TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
+                    TTipoFactor: $('#Conceptos_Traslado_TipoFactor').val(),
+                    TTasaOCuota: $('#TTasaOCuota').val(),
+                    TImporte: $('#TImporte').val(),
+                    TTImpuestosTR: $('#TTotal').val(),
+                    RTipoImpuesto: $("#Conceptos_Retencion_TipoImpuesto").val(),
+                    RImpuesto: $('#Conceptos_Retencion_Impuesto').val(),
+                    RBase: $('#RBase').val(),
+                    RTipofactor: $('#Conceptos_Retencion_TipoFactor').val(),
+                    RTasaOCuota: $('#RTasaOCuota').val(),
+                    RImporte: $('#RImporte').val(),
+                    RTImpuestoTR: $('#RTotal').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function () {
+                alert("Exito");
+                window.location.href = "Index"
+            })
+            .fail(function (jqxhr, textStatus, error) {
+                alert("Favor de llenar todos los datos para los detalles ");
+            });
+            return false;
+        });
+
+        $("#EditarConcepto").on('click', function () {
+            console.log("click" + $("#DescripcionConc").val());
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("EditarConceptos", "Conceptos")',
+                data: JSON.stringify({
+                    Id: $("#EditarConcepto").data("id"),
+                    ClaveProdServID: $('#ClaveProdServ_IdConceptos').val(),
+                    ClaveUnidadID: $('#ClavesUnidadConc').val(),
+                    Cantidad: $('#Cantidad').val(),
+                    Unidad: $('#UnidadConceptos').val(),
+                    NoIdentificacion: $('#NoIdentificacion').val(),
+                    Descripcion: $('#DescripcionConc').val(),
+                    ValorUnitario: $('#ValorUnitario').val(),
+                    Importe: $('#Importe').val(),
+                    Descuento: $('#Descuento').val(),
+                    TTipoImpuesto : $("#Conceptos_Traslado_TipoImpuesto").val(),
+                    TBase: $('#TBase').val(),
+                    TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
+                    TTipoFactor: $('#Conceptos_Traslado_TipoFactor').val(),
+                    TTasaOCuota: $('#TTasaOCuota').val(),
+                    TImporte: $('#TImporte').val(),
+                    TTImpuestosTR: $('#TTotal').val(),
+                    RTipoImpuesto: $("#Conceptos_Retencion_TipoImpuesto").val(),
+                    RImpuesto: $('#Conceptos_Retencion_Impuesto').val(),
+                    RBase: $('#RBase').val(),
+                    RTipofactor: $('#Conceptos_Retencion_TipoFactor').val(),
+                    RTasaOCuota: $('#RTasaOCuota').val(),
+                    RImporte: $('#RImporte').val(),
+                    RTImpuestoTR: $('#RTotal').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function () {
+                alert("Exito");
+                window.location.href = "../Index"
+            })
+            .fail(function (jqxhr, textStatus, error) {
+                alert("Favor de llenar todos los datos para los detalles ");
+            });
+            return false;
+        });
+        //Validaciones
+        $('#ClavesUnidadConc').on('keyup', function () {
+            console.log("click keyup");
+            var claveUnidad = $('#ClavesUnidadConc').val();
+            var div = "#ClaveUnidadConcepto";
+            //ValidaEntrada(claveUnidad, div, "claveUnidad");
+
+            if (claveUnidad != "") {
+                $.get("/Conceptos/DatosClaveUnidad", { ClaveUnidad: claveUnidad }, function (data) {
+                    if (data.length > 0) {
+                        $.each(data, function (index, row) {
+                            $('#UnidadConceptos').val(row.Nombre);
+                        });
+                        $(div).html("");
+                    } else {
+                        $(div).html("El dato ingresado no existe");
+                        $('#UnidadConceptos').val("");
+                    }
+                });
+            } else {
+                $(div).html("");
+                $('#UnidadConceptos').val("");
+            }
+
+        });
+        $('#ClaveProdServ_IdConceptos').on('keyup', function () {
+            var dato = $('#ClaveProdServ_IdConceptos').val();
+            var div = "#ClaveProdServcon";
+            var valid;
+            if (dato != "") {
+                valid = ValidaEntrada(dato, div, "serv");
+            } else {
+                $(div).html("");
+            }
+
+        });
+
+    });
+  
+    function ValidaEntrada(input, div,t) {
+         $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("Buscar", "Conceptos")',
+             data: JSON.stringify({
+                 valor: input,
+                 tipo: t
+         }),
+          dataType: 'html',
+            contentType: "application/json; charset=utf-8",
+         }).success(function (valor) {
+             console.log(valor);
+             if (valor == 0) {
+                 $(div).html("El dato ingresado no existe");
+             }
+             else {
+                 $(div).html("");
+             }
+
+         })
+         .fail(function (jqxhr, textStatus, error) {
+
+         });
+    }
+</script>

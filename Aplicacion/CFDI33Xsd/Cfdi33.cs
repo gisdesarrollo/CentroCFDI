@@ -1,6 +1,7 @@
 ﻿
 using API.Enums.CartaPorteEnums;
 using CFDI.API.Enums.CFDI33;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 
@@ -39,7 +40,7 @@ public partial class ComprobanteCFDI {
     
     private string selloField;
     
-    private c_FormaPago formaPagoField;
+    private string formaPagoField;
     
     private bool formaPagoFieldSpecified;
     
@@ -73,7 +74,20 @@ public partial class ComprobanteCFDI {
     private string lugarExpedicionField;
     
     private string confirmacionField;
+
+    [XmlAttribute("cfdi", Namespace = XmlSchema.InstanceNamespace)]
+    public string xmlnsCfdi = "http://www.sat.gob.mx/cfd/3";
+
+    [XmlAttribute("cartaporte20", Namespace = XmlSchema.InstanceNamespace)]
+    public string xmlnsCartaPorte20 = "http://www.sat.gob.mx/CartaPorte20";
+
+
+    [XmlAttribute("schemaLocation", Namespace = XmlSchema.InstanceNamespace)]
+    public string xsiSchemaLocation = "http://www.sat.gob.mx/CartaPorte20 " + "http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd " + "http://www.sat.gob.mx/cfd/3 " + "http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd ";
+
+
     
+
     public ComprobanteCFDI() {
         this.versionField = "3.3";
     }
@@ -207,11 +221,13 @@ public partial class ComprobanteCFDI {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_FormaPago FormaPago {
+    public string FormaPago {
         get {
             return this.formaPagoField;
         }
         set {
+            //se agrega para cuando exista valores en su variable
+            formaPagoFieldSpecified = true;
             this.formaPagoField = value;
         }
     }
@@ -311,6 +327,8 @@ public partial class ComprobanteCFDI {
             return this.tipoCambioField;
         }
         set {
+            //se agrega para cuando exista valores en su variable
+            tipoCambioFieldSpecified = true;
             this.tipoCambioField = value;
         }
     }
@@ -355,6 +373,7 @@ public partial class ComprobanteCFDI {
             return this.metodoPagoField;
         }
         set {
+            metodoPagoFieldSpecified = true;
             this.metodoPagoField = value;
         }
     }
@@ -729,7 +748,7 @@ public partial class ComprobanteReceptor {
 /*[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos")]
-public enum c_UsoCFDI {
+public enum c_UsoCFDICP {
     
     /// <remarks/>
     G01,
@@ -796,8 +815,8 @@ public enum c_UsoCFDI {
     
     /// <remarks/>
     P01,
-}
-*/
+}*/
+
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]

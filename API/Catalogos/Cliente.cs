@@ -1,4 +1,5 @@
 ﻿using API.Enums;
+using API.Enums.CartaPorteEnums;
 using API.Relaciones;
 using CFDI.API.Enums.CFDI33;
 using System;

@@ -23,76 +23,300 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
             var complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal).ToList();
             return complementos;
         }
-        public void cargaConceptos(ref ComplementoCartaPorte complementoCartaPorte)
+
+        public void CargaInicial(ref ComplementoCartaPorte complementoCP)
         {
-            Decimal ImpuestoRet = 0;
-            Decimal ImpuestoTrasl = 0;
-            Decimal Subtotal = 0;
-            var errores = new List<String>();
-            try
+            //factura emitida null
+            complementoCP.FacturaEmitida = null;
+            //fecha documento
+            DateTime fecha = complementoCP.FechaDocumento;
+            DateTime hora = complementoCP.Hora;
+            DateTime fechaDocumentoCompleto = new DateTime(fecha.Year, fecha.Month, fecha.Day, hora.Hour, hora.Minute, hora.Second);
+            complementoCP.Hora = fechaDocumentoCompleto;
+
+            //carga conceptos
+            if (complementoCP.Conceptoss != null)
             {
-                if (complementoCartaPorte.Conceptoss != null)
+                foreach (var concepto in complementoCP.Conceptoss)
                 {
-                    foreach (var concepto in complementoCartaPorte.Conceptoss)
+                    concepto.ComplementoCP = null;
+                    //concepto.ComplementoCP = complementoCP;
+                    if (concepto.Retencion == null)
                     {
-                        if (concepto.Retencion != null && concepto.Traslado != null && complementoCartaPorte.TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
+                       
+                        concepto.Retencion = null;
+                    }
+                    else
+                    {
+                        if (concepto.Retencion.Importe > 0)
                         {
-                            ImpuestoRet = concepto.Retencion.Importe;
-                            ImpuestoTrasl = concepto.Traslado.Importe;
-                            Subtotal = complementoCartaPorte.Subtotal;
-                            concepto.Retencion.TotalImpuestosTR = ImpuestoRet;
-                            concepto.Traslado.TotalImpuestosTR = ImpuestoTrasl;
-                            //calcula total precio pactado + impuestosTrasl - impuestoRet
-                            complementoCartaPorte.Total += (Subtotal + ImpuestoTrasl) - ImpuestoRet;
-                            _db.SubImpuestoC.Add(concepto.Retencion);
-                            _db.SaveChanges();
-                            _db.SubImpuestoC.Add(concepto.Traslado);
-                            _db.SaveChanges();
-
-                            _db.Conceptos.Add(concepto);
-                            _db.SaveChanges();
-
-                            ConceptoSubImpuestoConcepto subImp = new ConceptoSubImpuestoConcepto();
-                            subImp.Concepto_Id = concepto.Id;
-                            subImp.SubImpuestoConcepto_Id = concepto.Retencion.Id;
-                            _db.ConceptoSubImpuestoConcepto.Add(subImp);
-                            _db.SaveChanges();
-                            subImp.Concepto_Id = concepto.Id;
-                            subImp.SubImpuestoConcepto_Id = concepto.Traslado.Id;
-                            _db.ConceptoSubImpuestoConcepto.Add(subImp);
-                            _db.SaveChanges();
+                            complementoCP.TotalImpuestoRetenidos += concepto.Retencion.Importe;
                         }
-                        else if (concepto.Traslado != null && concepto.Retencion == null && complementoCartaPorte.TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
-                        {
-                            ImpuestoTrasl = concepto.Traslado.Importe;
-                            Subtotal = complementoCartaPorte.Subtotal;
-                            complementoCartaPorte.Total += Subtotal + ImpuestoTrasl;
+                        else { concepto.Retencion = null; }
+                    }
+                    if (concepto.Traslado == null)
+                    {
                         
-                            _db.SubImpuestoC.Add(concepto.Traslado);
-                            _db.SaveChanges();
-
-                            _db.Conceptos.Add(concepto);
-                            _db.SaveChanges();
-
-                            ConceptoSubImpuestoConcepto subImp = new ConceptoSubImpuestoConcepto();
-                            subImp.Concepto_Id = concepto.Id;
-                            subImp.SubImpuestoConcepto_Id = concepto.Traslado.Id;
-                            _db.ConceptoSubImpuestoConcepto.Add(subImp);
-                            _db.SaveChanges();
-                        }
-                        else
+                        concepto.Traslado = null;
+                    }
+                    else
+                    {
+                        if (concepto.Traslado.Importe > 0)
                         {
-                            _db.Conceptos.Add(concepto);
-                            _db.SaveChanges();
+                            complementoCP.TotalImpuestoTrasladado += concepto.Traslado.Importe;
                         }
+                        else { concepto.Traslado = null; }
+                    }
+                }
+                complementoCP.Conceptos = null;
+                
+            }
+            //calcula total impuestos
+            if(complementoCP.TotalImpuestoRetenidos > 0 && complementoCP.TotalImpuestoTrasladado > 0)
+            {
+                complementoCP.Total += (complementoCP.Subtotal + complementoCP.TotalImpuestoTrasladado) - complementoCP.TotalImpuestoRetenidos;
+            }else if(complementoCP.TotalImpuestoTrasladado > 0)
+            {
+                complementoCP.Total += complementoCP.Subtotal + complementoCP.TotalImpuestoTrasladado;
+            }else if(complementoCP.TotalImpuestoRetenidos > 0)
+            {
+                complementoCP.Total += complementoCP.Subtotal - complementoCP.TotalImpuestoRetenidos;
+            }
+            else
+            {
+               // complementoCP.Total += complementoCP.Subtotal;
+            }
+            //carga ubicaciones
+            if(complementoCP.Ubicaciones != null)
+            {
+                foreach(var ubicacion in complementoCP.Ubicaciones)
+                {
+                    ubicacion.ComplementoCP = null;
+                    //ubicacion.ComplementoCP = complementoCP;
+                    if (ubicacion.TipoUbicacion == "Destino")
+                    {
+                        complementoCP.TotalDistRec += ubicacion.DistanciaRecorrida;
+                    }
+                    if (ubicacion.RfcRemitenteDestinatario != "XEXX010101000")
+                    {
+                        ubicacion.NumRegIdTrib = null;
+                        ubicacion.ResidenciaFiscal = null;
+                    }
+                    if (complementoCP.ClaveTransporteId == "01")
+                    {
+                        ubicacion.TipoEstacion_Id = null;
+                        ubicacion.TipoEstaciones = null;
+                        ubicacion.NumEstacion = null;
+                        ubicacion.NavegacionTrafico = null;
+                        ubicacion.NombreEstacion = null;
+                    }
+                }
+                complementoCP.Ubicacion = null;
+            }
+            //carga mercancias
+            if(complementoCP.Mercanciass != null)
+            {
+                complementoCP.Mercancias.Mercancia.Mercancias = null;
+                //complementoCP.Mercancias.Mercancia.Mercancias = complementoCP.Mercancias;
+                complementoCP.Mercancias.Mercancia.Pedimentos = null;
+                complementoCP.Mercancias.Mercancia.GuiasIdentificacion = null;
+                complementoCP.Mercancias.Mercancia.CantidadTransportada = null;
+                foreach (var mercancia in complementoCP.Mercanciass)
+                {
+                   
+                    if (complementoCP.Pedimentoss != null)
+                    {
+                        foreach (var pedimento in complementoCP.Pedimentoss)
+                        {
+                            pedimento.Mercancia = null;
+                            //pedimento.Mercancia = mercancia;
+                            mercancia.Pedimentoss.Add(pedimento);
+                        }
+
+                    }
+                    if (complementoCP.GuiasIdentificacioness != null)
+                    {
+                        foreach (var gIdentificacion in complementoCP.GuiasIdentificacioness)
+                        {
+                            gIdentificacion.Mercancia = null;
+                            //gIdentificacion.Mercancia = mercancia;
+                            mercancia.GuiasIdentificacionss.Add(gIdentificacion);
+                        }
+
+                    }
+                    if (complementoCP.CantidadTransportadass != null)
+                    {
+                        foreach (var cTransportada in complementoCP.CantidadTransportadass)
+                        {
+                            cTransportada.Mercancia = null;
+                            //cTransportada.Mercancia = mercancia;
+                            mercancia.CantidadTransportadass.Add(cTransportada);
+                        }
+
+                    }
+
+
+                    if (mercancia.DetalleMercancia == null)
+                    {
+                        mercancia.DetalleMercancia = null;
+                    }
+                    else
+                    {
+                        if (complementoCP.ClaveTransporteId == "02" || complementoCP.ClaveTransporteId == "04")
+                        {
+                            complementoCP.Mercancias.PesoBrutoTotal += mercancia.DetalleMercancia.PesoBruto;
+                            complementoCP.Mercancias.PesoNetoTotal += mercancia.DetalleMercancia.PesoNeto;
+
+                        }
+                    }
+                    if (!mercancia.MaterialPeligrosos)
+                    {
+                        mercancia.ClaveMaterialPeligroso = null;
+                        mercancia.DescripEmbalaje = null;
+                        mercancia.TipoEmbalaje_Id = null;
+                        complementoCP.ValidaMaterialPeligroso = false;
+
+                    }
+                    else { complementoCP.ValidaMaterialPeligroso = true; }
+                    complementoCP.Mercancias.Mercanciass = new List<Mercancia>();
+                    complementoCP.Mercancias.Mercanciass.Add(mercancia);
+
+                }
+            }
+
+            // carga transporte
+            if (!complementoCP.TranspInternac)
+            {
+                complementoCP.EntradaSalidaMerc = null;
+                complementoCP.PaisOrigendestino = null;
+                complementoCP.viaEntradaSalida = null;
+            }
+            if (complementoCP.ClaveTransporteId == "01")
+            {
+                complementoCP.Mercancias.AutoTransporte.Remolque = null;
+                if (!complementoCP.ValidaMaterialPeligroso)
+                {
+                    if (complementoCP.Mercancias.AutoTransporte.Seguros != null)
+                    {
+                        complementoCP.Mercancias.AutoTransporte.Seguros.AseguraMedAmbiente = null;
+                        complementoCP.Mercancias.AutoTransporte.Seguros.PolizaMedAmbiente = null;
+                    }
+                }
+                if (complementoCP.Mercancias.AutoTransporte.Remolquess != null)
+                {
+                    foreach(var remoques in complementoCP.Mercancias.AutoTransporte.Remolquess)
+                    {
+                        remoques.AutoTransporte = null;
+                        //remoques.AutoTransporte = complementoCP.Mercancias.AutoTransporte;
+                        
+                    }
+                    
+                   
+                    
+                }
+                complementoCP.Mercancias.TransporteFerroviario = null;
+                complementoCP.Mercancias.TransporteMaritimo = null;
+                complementoCP.Mercancias.TransporteAereo = null;
+            }
+            else if (complementoCP.ClaveTransporteId == "02")
+            {
+
+                complementoCP.Mercancias.TransporteFerroviario = null;
+                complementoCP.Mercancias.AutoTransporte = null;
+                complementoCP.Mercancias.TransporteAereo = null;
+                complementoCP.Mercancias.TransporteMaritimo.ContenedorM = null;
+                if(complementoCP.Mercancias.TransporteMaritimo.ContenedoresM != null)
+                {
+                    foreach(var contenedorM in complementoCP.Mercancias.TransporteMaritimo.ContenedoresM)
+                    {
+                        contenedorM.TransporteMaritimo = null;
+                        //contenedorM.TransporteMaritimo = complementoCP.Mercancias.TransporteMaritimo;
                     }
                 }
             }
-            catch (Exception e) {
-               
+            else if (complementoCP.ClaveTransporteId == "03")
+            {
+
+                complementoCP.Mercancias.TransporteFerroviario = null;
+                complementoCP.Mercancias.AutoTransporte = null;
+                complementoCP.Mercancias.TransporteMaritimo = null;
+                
+            }
+            else if (complementoCP.ClaveTransporteId == "04")
+            {
+
+                complementoCP.Mercancias.TransporteMaritimo = null;
+                complementoCP.Mercancias.AutoTransporte = null;
+                complementoCP.Mercancias.TransporteAereo = null;
+                complementoCP.Mercancias.TransporteFerroviario.DerechosDePasos = null;
+                if (complementoCP.Mercancias.TransporteFerroviario.DerechosDePasoss != null)
+                {
+                    foreach (var derechoDePaso in complementoCP.Mercancias.TransporteFerroviario.DerechosDePasoss)
+                    {
+
+                        derechoDePaso.TransporteFerroviario = null;
+                        //derechoDePaso.TransporteFerroviario = complementoCP.Mercancias.TransporteFerroviario;
+                    }
+
+                }
+                if (complementoCP.Mercancias.TransporteFerroviario.Carros != null)
+                {
+                    complementoCP.Mercancias.TransporteFerroviario.Carro = null;
+                    foreach (var carro in complementoCP.Mercancias.TransporteFerroviario.Carros)
+                    {
+                        carro.TransporteFerroviario = null;
+                        carro.ContenedorC = null;
+                        if (carro.ContenedoresC != null)
+                        {
+                            foreach (var contenedorC in carro.ContenedoresC)
+                            {
+                                contenedorC.Carro = null;
+                                
+                            }
+                        }
+                        
+                    }
+                }
+
+            }
+            else
+            {
+                complementoCP.Mercancias.TransporteMaritimo = null;
+                complementoCP.Mercancias.AutoTransporte = null;
+                complementoCP.Mercancias.TransporteAereo = null;
+                complementoCP.Mercancias.TransporteFerroviario = null;
+                
             }
 
+            //figura transporte
+            if(complementoCP.FiguraTransporte != null)
+            {
+                complementoCP.TiposFigura = null;
+                foreach(var figuraTransporte in complementoCP.FiguraTransporte)
+                {
+                    figuraTransporte.ComplementoCP = null;
+                    if (figuraTransporte.Domicilio != null)
+                    {
+                        if(figuraTransporte.Domicilio.Pais == null)
+                        {
+                            figuraTransporte.Domicilio = null;
+                        }
+
+                    }
+                    else { figuraTransporte.Domicilio = null; }
+                    if (figuraTransporte.PartesTransportes != null)
+                    {
+                        figuraTransporte.PartesTransporte = null;
+                        foreach (var parteTransporte in figuraTransporte.PartesTransportes)
+                        {
+                            parteTransporte.TiposFigura = null;
+                        }
+                    }
+                }
+
+            }
         }
+        
 
         public void cargaUbicaciones(ref ComplementoCartaPorte complementoCartaPorte)
         {
@@ -157,7 +381,15 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                             _db.SaveChanges();
                         }
                     }
-                    
+                    if (!mercancia.MaterialPeligrosos)
+                    {
+                        mercancia.ClaveMaterialPeligroso = null;
+                        mercancia.DescripEmbalaje = null;
+                        mercancia.TipoEmbalaje_Id = null;
+                        complementoCartPorte.ValidaMaterialPeligroso = false;
+
+                    }
+                    else { complementoCartPorte.ValidaMaterialPeligroso = true; }
                     _db.Mercancia.Add(mercancia);
                     _db.SaveChanges();
                     if (mercancia.Pedimentoss != null)
@@ -170,7 +402,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                             
                             mercanciaPedimento.Mercancia_Id = mercancia.Id;
                             mercanciaPedimento.Pedimentos_Id = pe.Id;
-                            _db.MercanciaPedimentos.Add(mercanciaPedimento);
+                           // _db.MercanciaPedimentos.Add(mercanciaPedimento);
                             _db.SaveChanges();
                         }
                         
@@ -188,7 +420,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                                 GuiasIdentificacion_Id = GI.Id
                             };
 
-                            _db.MercanciasGuiasIdentificacion.Add(mercanciGuiasIdent);
+                            //_db.MercanciasGuiasIdentificacion.Add(mercanciGuiasIdent);
                             _db.SaveChanges();
                         }
                         
@@ -204,7 +436,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                                 Mercancia_Id = mercancia.Id,
                                 CantidadTransportada_Id = CT.Id
                             };
-                            _db.MercanciaCantidadTransportadas.Add(mercanciaCantidaTransp);
+                            //_db.MercanciaCantidadTransportadas.Add(mercanciaCantidaTransp);
                             _db.SaveChanges();
                         }
                        
@@ -216,7 +448,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         Mercancias_Id = complementoCartPorte.Mercancias.Id,
                         Mercancia_Id = mercancia.Id
                     };
-                    _db.MercanciasMercancias.Add(RelMercancias);
+                    //_db.MercanciasMercancias.Add(RelMercancias);
                     _db.SaveChanges();
                 }
             }
@@ -225,13 +457,31 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
         public void cargaTransporte(ref ComplementoCartaPorte complementoCartaPorte)
         {
             //var mercanciaDb = _db.Mercancias.Find(complementoCartaPorte.Mercancias.Id);
-            
+            DateTime fecha = complementoCartaPorte.FechaDocumento;
+            DateTime hora = complementoCartaPorte.Hora;
+            DateTime fechaDocumentoCompleto = new DateTime(fecha.Year, fecha.Month, fecha.Day, hora.Hour, hora.Minute, hora.Second);
+            complementoCartaPorte.Hora = fechaDocumentoCompleto;
+            complementoCartaPorte.FacturaEmitida = null;
+            if (!complementoCartaPorte.TranspInternac)
+            {
+                complementoCartaPorte.EntradaSalidaMerc = null;
+                complementoCartaPorte.PaisOrigendestino = null;
+                complementoCartaPorte.viaEntradaSalida = null;
+            }
             if (complementoCartaPorte.ClaveTransporteId == "01")
             {
-               
+                if (!complementoCartaPorte.ValidaMaterialPeligroso)
+                {
+                    if (complementoCartaPorte.Mercancias.AutoTransporte.Seguros != null)
+                    {
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.AseguraMedAmbiente = null;
+                        complementoCartaPorte.Mercancias.AutoTransporte.Seguros.PolizaMedAmbiente = null;
+                    }
+                }
                 complementoCartaPorte.Mercancias.TransporteFerroviario = null;
                 complementoCartaPorte.Mercancias.TransporteMaritimo = null;
                 complementoCartaPorte.Mercancias.TransporteAereo = null;
+
                
                 _db.ComplementoCartaPortes.Add(complementoCartaPorte);
                 _db.SaveChanges();
@@ -246,7 +496,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                             Autotransporte_Id = complementoCartaPorte.Mercancias.AutoTransporte.Id,
                             Remolques_Id = remolque.Id
                         };
-                        _db.AutotransporteFederalRemolques.Add(relAutoTransporteRemolque);
+                       // _db.AutotransporteFederalRemolques.Add(relAutoTransporteRemolque);
                         _db.SaveChanges();
                     }
                     
@@ -271,7 +521,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         TransporteMaritimo_Id = complementoCartaPorte.Mercancias.TransporteMaritimo.Id,
                         ContenedorM_Id = contenedor.Id
                         };
-                        _db.TransporteMaritimoContenedoresM.Add(relMaritimoContenedor);
+                        //_db.TransporteMaritimoContenedoresM.Add(relMaritimoContenedor);
                         _db.SaveChanges();
                     }
                     
@@ -309,7 +559,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         TransporteFerroviario_Id = complementoCartaPorte.Mercancias.TransporteFerroviario.Id,
                         DerechosDePaso_Id = derechoDePaso.Id
                         };
-                        _db.TransporteFerroviarioDerechosDePasos.Add(relFerroviarioDDePaso);
+                        //_db.TransporteFerroviarioDerechosDePasos.Add(relFerroviarioDDePaso);
                         _db.SaveChanges();
                     }
                    
@@ -330,7 +580,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                                 Carro_Id = carro.Id,
                                 ContenedorC_Id = contenedorC.Id
                                 };
-                                _db.CarrosContenedorC.Add(relCarroContenedorC);
+                               // _db.CarrosContenedorC.Add(relCarroContenedorC);
                                 _db.SaveChanges();
                             }
                         }
@@ -339,7 +589,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                             TransporteFerroviario_Id = complementoCartaPorte.Mercancias.TransporteFerroviario.Id,
                             Carro_Id = carro.Id
                         };
-                        _db.TransporteFerroviarioCarros.Add(relFerroviarioCarro);
+                        //_db.TransporteFerroviarioCarros.Add(relFerroviarioCarro);
                         _db.SaveChanges();
 
                     }
@@ -363,15 +613,29 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
             {
                 foreach(var FT in complementoCartaPorte.FiguraTransporte)
                 {
+                    if (FT.Domicilio != null)
+                    {
+                        if (FT.Domicilio.Pais != null)
+                        {
+                            _db.Domicilios.Add(FT.Domicilio);
+                            _db.SaveChanges();
+                        }
+                        else
+                        {
+                            FT.Domicilio = null;
+                        }
+                    }
+                    else
+                    {
+                        FT.Domicilio = null;
+                    }
                     _db.Tiposfigura.Add(FT);
                     _db.SaveChanges();
                     if (FT.PartesTransportes != null)
                     {
                         foreach(var PT in FT.PartesTransportes)
                         {
-                            _db.Domicilios.Add(PT.Domicilio);
-                            _db.SaveChanges();
-                            //PT.Domicilio_Id = PT.Domicilio.Id;
+
                             _db.PartesTransporte.Add(PT);
                             _db.SaveChanges();
 
@@ -379,13 +643,40 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                                 TiposFigura_Id = FT.Id,
                                 PartesTransporte_Id = PT.Id
                             };
-                            _db.TiposFiguraPartesTransporte.Add(FiguraParteTransporte);
+                            //_db.TiposFiguraPartesTransporte.Add(FiguraParteTransporte);
                             _db.SaveChanges();
                            
                         }
                     }
                 }
             }
+        }
+
+        public void cargaConceptosEdit(ref ComplementoCartaPorte complementoCP)
+        {
+            complementoCP.Conceptoss.ForEach(p => _db.Entry(p).State = EntityState.Modified);
+            //_db.Entry(complementoCP.Conceptoss).State = EntityState.Modified;
+            _db.SaveChanges();
+        }
+        public void cargaMercanciasEdit(ref ComplementoCartaPorte complementoCP)
+        {
+            _db.Entry(complementoCP.Mercanciass).State = EntityState.Modified;
+            _db.SaveChanges();
+        }
+
+        public void cargaUbicacionesEdit(ref ComplementoCartaPorte complementoCP)
+        {
+
+        }
+
+        public void cargaTransportesEdit(ref ComplementoCartaPorte complementoCP) 
+        {
+        
+        }
+
+        public void cargaFiguraTransporteEdit(ref ComplementoCartaPorte complementoCP)
+        {
+
         }
     }
 }

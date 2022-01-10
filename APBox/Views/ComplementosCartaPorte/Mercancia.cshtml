@@ -183,8 +183,10 @@
                 }
             }
             <div class="clearfix"></div>
-            @if (Model.DetalleMercancia.ClaveUnidadPeso_Id != "")
+            @if (Model.DetalleMercancia != null)
             {
+                if (Model.DetalleMercancia.ClaveUnidadPeso_Id != "")
+                {
             <hr />
             <h3 class="title-hero">
                 Mercancía : Detalle Mercancia
@@ -214,6 +216,7 @@
                 @Html.DisplayFor(model => model.DetalleMercancia.NumPiezas)
                 @Html.HiddenFor(model => model.DetalleMercancia.NumPiezas)
             </div>
+                }
             }
             <div class="clearfix"></div>
         </div>

@@ -1,0 +1,176 @@
+﻿@model IEnumerable<API.Operaciones.ComplementoCartaPorte.Cat_SubImpuestoC>
+
+@{
+    ViewBag.Title = "Impuestos";
+}
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Impuestos</h2>
+            <p>Crea los impuestos de la empresa</p>
+        </div>
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Create", "Impuestos")';return false;">
+                <span>Nuevo Impuesto</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        @*<div id="page-title">
+            <div class="row">
+                <div class="col-lg-9">
+                    <h2>Traslados</h2>
+                </div>
+            </div>
+        </div>*@
+        <div class="row">
+            <table class="table table-condensed dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TipoImpuesto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Base)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Impuesto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TipoFactor)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TasaOCuota)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Importe)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+
+                        @*if ("TRASLADO" == item.TipoImpuesto)
+                        {*@
+
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoImpuesto)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Base)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Impuesto)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoFactor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TasaOCuota)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Importe)
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-caret-down"></span> Acciones
+                                        </button>
+                                        <ul class="dropdown-menu float-left">
+                                            <li>@Html.ActionLink("Editar", "Editar", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                            <li>@Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @*}*@
+                    }
+                </tbody>
+            </table>
+            <div class="clearfix"><br /></div>
+            @*<div id="page-title">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h2>Retenciones</h2>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-condensed dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TipoImpuesto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Base)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Impuesto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TipoFactor)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TasaOCuota)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Importe)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if ("RETENCION" == item.TipoImpuesto)
+                        {
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoImpuesto)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Base)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Impuesto)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoFactor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TasaOCuota)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Importe)
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-caret-down"></span> Acciones
+                                        </button>
+                                        <ul class="dropdown-menu float-left">
+                                            <li>@Html.ActionLink("Editar", "Editar", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                            <li>@Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>*@
+        </div>
+    </div>
+</div>

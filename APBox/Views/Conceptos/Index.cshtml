@@ -1,0 +1,105 @@
+﻿@model IEnumerable<API.Operaciones.ComplementoCartaPorte.Cat_Conceptos>
+
+@{
+    ViewBag.Title = "Conceptos";
+}
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Conceptos</h2>
+            <p>Crea y modifica las conceptos de la empresa</p>
+        </div>
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Create", "Conceptos")';return false;">
+                <span>Nuevo Concepto</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <table class="table table-condensed dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ClaveProdServ_Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ClaveUnidad_Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cantidad)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Unidad)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NoIdentificacion)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Descripcion)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ValorUnitario)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Importe)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Descuento)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClaveProdServ_Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClaveUnidad_Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cantidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Unidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NoIdentificacion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValorUnitario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Importe)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descuento)
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="fa fa-caret-down"></span> Acciones
+                                </button>
+                                <ul class="dropdown-menu float-left">
+                                    <li>@Html.ActionLink("Editar", "Editar", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                    <li>@Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id }, new { @class = "font-size-13" })</li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -65,6 +65,9 @@
                                 RFCReceptor
                             </th>
                             <th>
+                                Folio
+                            </th>
+                            <th>
                                 Tipo Comprobante
                             </th>
                             <th>
@@ -84,82 +87,105 @@
                     <tbody>
                         @for (int i = 0; i < Model.ComplementosCartaPorte.Count; i++)
                         {
-                            <tr>
-                                <td>
-                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Id)
-                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FormaPago)
-                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FechaDocumento)
-                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].TipoDeComprobante)
-                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].ClaveTransporteId)
-                                    @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Receptor.Rfc)
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Id)
+                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FormaPago)
+                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FechaDocumento)
+                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].TipoDeComprobante)
+                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].ClaveTransporteId)
+                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Receptor.Rfc)
 
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Receptor.Rfc)
-                                </td>
-                                <td>
-                                    @if (Model.ComplementosCartaPorte[i].TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Receptor.Rfc)
+                            </td>
+                            <td>
+                                @if (Model.ComplementosCartaPorte[i].FacturaEmitida != null)
+                                {
+                                @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FacturaEmitida.Folio);
+                                }
+                                else
+                                {
+                                     @Html.Raw("Pendiente")}
+                            </td>
+                            <td>
+                                @if (Model.ComplementosCartaPorte[i].TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
+                                {
+                                    @Html.Raw("Ingreso")
+                                }
+                                else
+                                {
+                                    @Html.Raw("Tralado")
+                                }
+                            </td>
+                            <td>
+                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "01")
+                                {@Html.Raw("AutoTransporte")}
+                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "02")
+                                {@Html.Raw("Transporte Maritimo")}
+                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "03")
+                                {@Html.Raw("Transporte Aereo")}
+                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "04")
+                                {@Html.Raw("Transporte Ferroviario")}
+                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "05")
+                                {@Html.Raw("Ducto")}
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FechaDocumento)
+                            </td>
+                            <td>
+                                @if (Model.ComplementosCartaPorte[i].Generado == true)
+                                {
+                                    if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
                                     {
-                                        @Html.Raw("Ingreso")
-                                    }
+                                        <p><span class="fa fa-clipboard-check font-green"></span> Generado</p> }
                                     else
                                     {
-                                    @Html.Raw("Tralado")
+                                        <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
                                     }
-                                </td>
-                                <td>
-                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "01")
-                                    {@Html.Raw("AutoTransporte")}
-                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "02")
-                                    {@Html.Raw("Transporte Maritimo")}
-                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "03")
-                                    {@Html.Raw("Transporte Aereo")}
-                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "04")
-                                    {@Html.Raw("Transporte Ferroviario")}
-                                    @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "05")
-                                    {@Html.Raw("Ducto")}
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FechaDocumento)
-                                </td>
-                                <td>
-                                    @if (Model.ComplementosCartaPorte[i].Generado == true)
-                                    {
-                                        if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
+                                }
+                                else
+                                {
+                                    <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="fa fa-cog"></span> Opciones
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        @if (Model.ComplementosCartaPorte[i].Generado)
                                         {
-                                            <p><span class="fa fa-clipboard-check font-green"></span> Generado</p> }
-                                         else
-                                         {
-                                            <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
-                                         }
-                                     }
-                                     else  
-                                     {
-                                        <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
-                                     }
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="fa fa-cog"></span> Opciones
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            
-                                <li>@Html.ActionLink("Descargar", "", new { }, new { @class = "font-size-12" })</li>
-                              
-                                <li>@Html.ActionLink("Editar Carta Porte", "", new {  }, new { @class = "font-size-12" })</li>
-                                
-                                 <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-green" })</li>
-                                 <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-red" })</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                        </tbody>
-                            </table>
+                                            if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
+                                            {
+                                                <li>@Html.ActionLink("Descargar XML", "Descargar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
+                                                <li>@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
+                                                <li>@Html.ActionLink("Cancelar", "", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-red", onclick = "return confirm('¿Está seguro que desea cancelar este CFDI?');" })</li>
+                                            }
+                                            else
+                                            {
+                                                @*<li>@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>*@
+                                            }
 
-                        </div>
+                                        }
+                                        else
+                                        {
+                                            <li>@Html.ActionLink("Descargar", "", new { }, new { @class = "font-size-12" })</li>
+                                            <li>@Html.ActionLink("Editar Carta Porte", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
+                                            <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-green" })</li>
+                                            <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-red" })</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     </div>
 }

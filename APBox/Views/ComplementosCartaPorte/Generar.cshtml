@@ -1,0 +1,81 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.ComplementoCartaPorte
+
+@{
+    ViewBag.Title = "Generar";
+}
+
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Generar CFDi</h2>
+        </div>
+    </div>
+</div>
+@Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+<div class="panel" id="areaImprimir">
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+             @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.Version)
+            @Html.HiddenFor(model => model.Generado)
+            @Html.HiddenFor(model => model.SucursalId)
+            @Html.HiddenFor(model => model.Sucursal.Id)
+            @Html.HiddenFor(model => model.Sucursal.Nombre)
+            @Html.HiddenFor(model => model.Sucursal.RazonSocial)
+            @Html.HiddenFor(model => model.Sucursal.Rfc)
+            @Html.HiddenFor(model => model.Sucursal.CodigoPostal)
+            @Html.HiddenFor(model => model.Sucursal.Pais)
+            <div class="row">
+                <h2 class="title-hero">
+                    @Model.Sucursal.Nombre
+                </h2>
+                <h3 class="title-hero">
+                    Complemento de Carta Porte
+                </h3>
+
+                <table class="table">
+                    <tr>
+                        <td class="font-bold">Versión Complemento</td>
+                        <td class="font-bold">Fecha de Generación</td>
+                        <td class="font-bold" colspan="4">Receptor</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.Version)
+                            @Html.HiddenFor(model => model.Version)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(model => model.FechaDocumento)
+                                @Html.HiddenFor(model => model.FechaDocumento)*@
+                            @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control date", style = "height:33px" } })
+                            @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
+                        </td>
+                        <td colspan="4">
+                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="clearfix"></div>
+
+            <hr />
+
+            <div class="form-group pull-right">
+                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
+                    <span>Regresar</span>
+                    <i class="glyph-icon icon-arrow-left"></i>
+                </button>
+                <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
+                    <span>Timbrar</span>
+                    <i class="glyph-icon icon-arrow-right"></i>
+                </button>
+            </div>
+        }
+    </div>
+</div>
+<div class="clearfix"></div>

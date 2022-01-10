@@ -28,9 +28,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String ContenedorMaritimo_Id { get; set; }
         [ForeignKey("ContenedorMaritimo_Id")]
         public virtual ContenedorMaritimo ContenedorMaritimo { get; set; }
-        /*[NotMapped]
-        [DisplayName("Tipo de Contenedor")]
-        public String TipoContenedor { get; set; }
-        */
+
+        public int? TransporteMaritimo_Id { get; set; }
+        [ForeignKey("TransporteMaritimo_Id")]
+        public virtual TransporteMaritimo TransporteMaritimo { get; set; }
     }
 }

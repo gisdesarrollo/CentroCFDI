@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using API.Enums.CartaPorteEnums;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
@@ -26,7 +27,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String NumPolizaSeguro { get; set; }
         [DisplayName("Tipo de Trafico")]
         //[Required(ErrorMessage = "Campo Obligatorio")]
-        public String TipoDeTrafico { get; set; }
+        public c_TipoDeTrafico TipoDeTrafico { get; set; }
 
 
         [DisplayName("Tipo de Servicio")]
@@ -38,16 +39,17 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Tipo de Servicio")]
         public String TipoDeServicios { get; set; }*/
 
+
         [NotMapped]
         public virtual Carro Carro { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<Carro> Carros { get; set; }
 
         [NotMapped]
         public virtual DerechosDePasos DerechosDePasos { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<DerechosDePasos> DerechosDePasoss { get; set; }
 
 

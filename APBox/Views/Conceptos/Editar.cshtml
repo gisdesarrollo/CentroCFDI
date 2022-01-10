@@ -1,0 +1,89 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.Cat_Conceptos
+@{
+    ViewBag.Title = "Editar";
+}
+@Html.Partial("_ComplementoConceptos")
+
+
+<div class="panel">
+    <div class="panel-body">
+        <h3 class="title-hero">
+            Información
+        </h3>
+        <div class="form">
+            <div class="clearfix"></div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.ClaveProdServ_Id, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ClaveProdServ_Id, new { htmlAttributes = new { @class = "form-control", @id = "ClaveProdServ_IdConceptos" } })
+                @Html.ValidationMessageFor(model => model.ClaveProdServ_Id, "", new { @class = "text-danger" })
+                <div id="ClaveProdServcon" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                <br />
+                @Html.LabelFor(model => model.ClaveUnidad_Id, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ClaveUnidad_Id, new { htmlAttributes = new { @class = "form-control", @id = "ClavesUnidadConc" } })
+                @Html.ValidationMessageFor(model => model.ClaveUnidad_Id, "", new { @class = "text-danger" })
+                <div id="ClaveUnidadConcepto" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                <br />
+                @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control", @id = "Cantidad" } })
+                @Html.ValidationMessageFor(model => model.Cantidad, "", new { @class = "text-danger" })
+                <div id="CantidadConcepto" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                <br />
+                @Html.LabelFor(model => model.Unidad, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Unidad, new { htmlAttributes = new { @class = "form-control", @id = "UnidadConceptos" } })
+                @Html.ValidationMessageFor(model => model.Unidad, "", new { @class = "text-danger" })
+                <div id="UnidadConceptosCon" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                <br />
+                @Html.LabelFor(model => model.NoIdentificacion, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.NoIdentificacion, new { htmlAttributes = new { @class = "form-control", @id = "NoIdentificacion" } })
+                @Html.ValidationMessageFor(model => model.NoIdentificacion, "", new { @class = "text-danger" })
+                <div id="NoIdentificacionConcepto" style="color:red;"></div>
+            </div>
+            @*<div class="row">*@
+            <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", @id = "DescripcionConc" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+            @*</div>*@
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.ValorUnitario, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ValorUnitario, new { htmlAttributes = new { @class = "form-control", @id = "ValorUnitario" } })
+                @Html.ValidationMessageFor(model => model.ValorUnitario, "", new { @class = "text-danger" })
+                <div id="ValorUnitarioConceptos" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Importe, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Importe, new { htmlAttributes = new { @class = "form-control", @id = "Importe" } })
+                @Html.ValidationMessageFor(model => model.Importe, "", new { @class = "text-danger" })
+                <div id="ImporteConceptos" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Descuento, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Descuento, new { htmlAttributes = new { @class = "form-control", @id = "Descuento" } })
+                @Html.ValidationMessageFor(model => model.Descuento, "", new { @class = "text-danger" })
+                <div id="DescuentoConceptos" style="color:red;"></div>
+            </div>
+            <div class="clearfix"></div>
+            <hr />
+            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
+                    <span>Regresar</span>
+                    <i class="glyph-icon icon-arrow-left"></i>
+                </button>
+                <button type="submit" id="EditarConcepto" data-id="@Model.Id" class="btn btn-alt btn-blue-alt" style="text-transform: uppercase;">
+                    <span>GUARDAR</span>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+</div>

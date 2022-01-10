@@ -23,20 +23,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public string IdUbicacionDestino { get; set; }
 
-        /*public int UbicacionD_Id { get; set; }
-        [ForeignKey("UbicacionD_Id")]
-        public virtual UbicacionDestino UbicacionDestino { get; set; }
-        public int UbicacionO_Id { get; set; }
-        [ForeignKey("UbicacionO_Id")]
-        public virtual UbicacionOrigen UbicacionOrigen { get; set; }
-        */
-
-        /*[NotMapped]
-        [DisplayName("Distancias Recorridas")]
-        public Decimal DistanciaRecorridas { get; set; }*/
-
-        /*[NotMapped]
-        public List<UbicacionDestino> UbicacionDestinos { get; set; }*/
+        public int? Complemento_Id { get; set; }
+        [ForeignKey("Complemento_Id")]
+        public virtual ComplementoCartaPorte ComplementoCP { get; set; }
 
     }
 }

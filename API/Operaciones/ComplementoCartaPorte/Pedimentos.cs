@@ -15,5 +15,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public string Pedimento { get; set; }
+
+        public int? Mercancia_Id { get; set; }
+        [ForeignKey("Mercancia_Id")]
+        public virtual Mercancia Mercancia { get; set; }
     }
 }

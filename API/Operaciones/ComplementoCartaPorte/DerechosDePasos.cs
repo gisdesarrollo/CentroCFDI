@@ -28,8 +28,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String TipoDerechoDePaso_Id { get; set; }
         [ForeignKey("TipoDerechoDePaso_Id")]
         public virtual DerechosDePaso DerechosDepaso { get; set; }
-        /*[NotMapped]
-        [DisplayName("Tipo de Derecho de Paso")]
-        public String TipoDerechoDePago { get; set; }*/
+
+        public int? TransporteFerroviario_Id { get; set; }
+        [ForeignKey("TransporteFerroviario_Id")]
+        public virtual TransporteFerroviario TransporteFerroviario { get; set; }
     }
 }

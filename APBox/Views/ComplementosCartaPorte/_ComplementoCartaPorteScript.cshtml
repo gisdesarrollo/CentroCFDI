@@ -380,26 +380,44 @@
             $(".PTransporte").each(function (index, element) {
 
                 var ParteTransporte = $(element).find('#ParteTransporte').text().trim();
-                var Pais = $(element).find('#Pais').text().trim();
-                var Estado = $(element).find('#Estado').text().trim();
-                var Municipio = $(element).find('#Municipio').text().trim();
-                var CodigoPostal = $(element).find('#CodigoPostal').text().trim();
-                var Localidad = $(element).find('#Localidad').text().trim();
-                var Colonia = $(element).find('#Colonia').text().trim();
-                var Calle = $(element).find('#Calle').text().trim();
-                var NumExterior = $(element).find('#NumExterior').text().trim();
-                var NumInterior = $(element).find('#NumInterior').text().trim();
-                var Referencia = $(element).find('#Referencia').text().trim();
                 jsonParteTransporte.push({
-                    "ParteTransporte": ParteTransporte, "Pais": Pais, "Estado": Estado,
-                    "Municipio": Municipio, "CodigoPostal": CodigoPostal, "Localidad": Localidad,
-                    "Colonia": Colonia, "Calle": Calle, "NumeroExterior": NumExterior,
-                    "NumeroInterior": NumInterior, "Referencia": Referencia
+                    "ParteTransporte": ParteTransporte
                 });
-
-
-
             });
+
+            var ORPais = $("#TiposFigura_Domicilio_Paises option:selected").val();
+            if (ORPais === "" || ORPais === null || ORPais == undefined || ORPais === "Seleccionar") {
+                ORPais = "";
+            }
+            var ORPaisText = $("#TiposFigura_Domicilio_Paises option:selected").text();
+            if (ORPaisText === "" || ORPaisText === null || ORPaisText == undefined || ORPaisText === "Seleccionar") {
+                ORPaisText = "";
+            }
+            var OREstado = $('#TiposFigura_Domicilio_ddlEstados option:selected').val();
+            var OREstadoText = $("#TiposFigura_Domicilio_ddlEstados option:selected").text();
+            if (OREstado === "" || OREstado === null || OREstado == undefined) {
+                OREstado = $('#TiposFigura_Domicilio_Estado').val();
+                OREstadoText = OREstado;
+            }
+
+            var DEMunicipio = $('#TiposFigura_Domicilio_ddlMunicipios option:selected').val();
+            var DEMunicipioText = $("#TiposFigura_Domicilio_ddlMunicipios option:selected").text();
+            if (DEMunicipio === "" || DEMunicipio === null || DEMunicipio == undefined) {
+                DEMunicipio = $('#TiposFigura_Domicilio_Municipio').val();
+                DEMunicipioText = DEMunicipio;
+            }
+            var DELocalidad = $('#TiposFigura_Domicilio_ddlLocalidades option:selected').val();
+            var DELocalidadText = $("#TiposFigura_Domicilio_ddlLocalidades option:selected").text();
+            if (DELocalidad === "" || DELocalidad === null || DELocalidad == undefined) {
+                DELocalidad = $('#TiposFigura_Domicilio_Localidad').val();
+                DELocalidadText = DELocalidad;
+            }
+            var DEColonia = $('#TiposFigura_Domicilio_ddlColonias option:selected').val();
+            var DEColoniaText = $("#TiposFigura_Domicilio_ddlColonias option:selected").text();
+            if (DEColonia === "" || DEColonia === null || DEColonia == undefined) {
+                DEColonia = $('#TiposFigura_Domicilio_Colonia').val();
+                DEColoniaText = DEColonia;
+            }
 
             $.ajax({
                 type: 'POST',
@@ -411,6 +429,21 @@
                     NombreFigura: $('#TiposFigura_NombreFigura').val(),
                     NumRegIdTribFigura: $('#TiposFigura_NumRegIdTribFigura').val(),
                     ResidenciaFiscalFigura: $('#TiposFigura_ResidenciaFiscalFigura').val(),
+                    Pais: $('#TiposFigura_Domicilio_Paises').val(),
+                    PaisText: ORPaisText,
+                    Estado: OREstado,
+                    EstadoText: OREstadoText,
+                    Municipio: DEMunicipio,
+                    MunicipioText: DEMunicipioText,
+                    Localidad: DELocalidad,
+                    LocalidadText: DELocalidadText,
+                    CodigoPostal: $('#TiposFigura_Domicilio_CodigoPostal').val(),
+                    Colonia: DEColonia,
+                    ColoniaText: DEColoniaText,
+                    Calle: $('#TiposFigura_Domicilio_Calle').val(),
+                    NumExterior: $('#TiposFigura_Domicilio_NumeroExterior').val(),
+                    NumInterior: $('#TiposFigura_Domicilio_NumeroInterior').val(),
+                    Referencia: $('#TiposFigura_Domicilio_Referencia').val(),
                     PartesTransporte: jsonParteTransporte
                 }),
                 dataType: 'html',
@@ -450,80 +483,12 @@
 
     $(function () {
     $("#agregarDetallePTransporte").on('click', function () {
-        var FTPT = false;
-        var FTE = false;
-        var FTP = false;
-        var FTCP = false;
-
-        var message;
-        /*var PTransporte = $('#TiposFigura_PartesTransporte_ParteTransporte').val();
-        message = "#FTPartesTransporte";
-        FTPT = Boolean(ValidaCampos(PTransporte, message));
-        var Estado = $('#TiposFigura_PartesTransporte_Domicilio_ddlEstados').val();
-        message = "#UEstados";
-        FTE = Boolean(ValidaCampos(Estado, message));
-        if (!FTE) {
-            Estado = $('#TiposFigura_PartesTransporte_Domicilio_Estado').val();
-            message = "#UEstados"
-            FTE = Boolean(ValidaCampos(Estado, message));
-        }
-        var Pais = $('#TiposFigura_PartesTransporte_Domicilio_Paises').val();
-        message = "#UPaiss";
-        FTP = Boolean(ValidaCampos(Pais, message));
-        var CodigoPostal = $('#TiposFigura_PartesTransporte_Domicilio_CodigoPostal').val();
-        message = "#UCodigoPostal";
-        FTCP = Boolean(ValidaCampos(CodigoPostal, message));*/
-         //se toman valores de  campos de select o input
-
-        var ORPais = $("#TiposFigura_PartesTransporte_Domicilio_Paises option:selected").val();
-        var ORPaisText = $("#TiposFigura_PartesTransporte_Domicilio_Paises option:selected").text();
-
-        var OREstado = $('#TiposFigura_PartesTransporte_Domicilio_ddlEstados option:selected').val();
-        var OREstadoText = $("#TiposFigura_PartesTransporte_Domicilio_ddlEstados option:selected").text();
-        if (OREstado === "" || OREstado=== null || OREstado == undefined) {
-            OREstado = $('#TiposFigura_PartesTransporte_Domicilio_Estado').val();
-            OREstadoText = OREstado;
-        }
-
-        var DEMunicipio = $('#TiposFigura_PartesTransporte_Domicilio_ddlMunicipios option:selected').val();
-        var DEMunicipioText = $("#TiposFigura_PartesTransporte_Domicilio_ddlMunicipios option:selected").text();
-        if (DEMunicipio === "" || DEMunicipio === null || DEMunicipio == undefined) {
-            DEMunicipio = $('#TiposFigura_PartesTransporte_Domicilio_Municipio').val();
-            DEMunicipioText = DEMunicipio;
-        }
-        var DELocalidad = $('#TiposFigura_PartesTransporte_Domicilio_ddlLocalidades option:selected').val();
-        var DELocalidadText = $("#TiposFigura_PartesTransporte_Domicilio_ddlLocalidades option:selected").text();
-        if (DELocalidad === "" || DELocalidad === null || DELocalidad == undefined) {
-            DELocalidad = $('#TiposFigura_PartesTransporte_Domicilio_Localidad').val();
-            DELocalidadText = DELocalidad;
-        }
-        var DEColonia = $('#TiposFigura_PartesTransporte_Domicilio_ddlColonias option:selected').val();
-        var DEColoniaText = $("#TiposFigura_PartesTransporte_Domicilio_ddlColonias option:selected").text();
-        if (DEColonia === "" || DEColonia === null || DEColonia == undefined) {
-            DEColonia = $('#TiposFigura_PartesTransporte_Domicilio_Colonia').val();
-            DEColoniaText = DEColonia;
-        }
-
+        
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarPTransporte", "AjaxOperaciones")',
                 data: JSON.stringify({
-                    PTransporte: $('#TiposFigura_PartesTransporte_ParteTransporte').val(),
-                    Pais: $('#TiposFigura_PartesTransporte_Domicilio_Paises').val(),
-                    PaisText: ORPaisText,
-                    Estado: OREstado,
-                    EstadoText: OREstadoText,
-                    Municipio: DEMunicipio,
-                    MunicipioText: DEMunicipioText,
-                    Localidad: DELocalidad,
-                    LocalidadText: DELocalidadText,
-                    CodigoPostal: $('#TiposFigura_PartesTransporte_Domicilio_CodigoPostal').val(),
-                    Colonia: DEColonia,
-                    ColoniaText: DEColoniaText,
-                    Calle: $('#TiposFigura_PartesTransporte_Domicilio_Calle').val(),
-                    NumExterior: $('#TiposFigura_PartesTransporte_Domicilio_NumeroExterior').val(),
-                    NumInterior: $('#TiposFigura_PartesTransporte_Domicilio_NumeroInterior').val(),
-                    Referencia: $('#TiposFigura_PartesTransporte_Domicilio_Referencia').val()
+                    PTransporte: $('#TiposFigura_PartesTransporte_ParteTransporte').val()
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
@@ -965,21 +930,26 @@
                 data: JSON.stringify({
                     ClaveProdServID: $('#Conceptos_ClavesProdServ').val(),
                     ClaveUnidadID: $('#Conceptos_ClavesUnidad').val(),
+                    Unidad: $('#Conceptos_Unidad').val(),
                     Descripcion: $('#Conceptos_Descripcion').val(),
+                    NumIdentificacion: $('#Conceptos_NoIdentificacion').val(),
+                    Cantidad: $('#Conceptos_Cantidad').val(),
+                    ValorUnitario: $('#Conceptos_ValorUnitario').val(),
+                    Importe: $('#Conceptos_Importe').val(),
                     TTipoImpuesto : $("#Conceptos_Traslado_TipoImpuesto").val(),
                     TBase: $('#TBase').val(),
                     TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
                     TTipoFactor: $('#Conceptos_Traslado_TipoFactor').val(),
                     TTasaOCuota: $('#TTasaOCuota').val(),
                     TImporte: $('#TImporte').val(),
-                    TTImpuestosTR: $('#TTotal').val(),
+                    //TTImpuestosTR: $('#TTotal').val(),
                     RTipoImpuesto: $("#Conceptos_Retencion_TipoImpuesto").val(),
                     RImpuesto: $('#Conceptos_Retencion_Impuesto').val(),
                     RBase: $('#RBase').val(),
                     RTipofactor: $('#Conceptos_Retencion_TipoFactor').val(),
                     RTasaOCuota: $('#RTasaOCuota').val(),
                     RImporte: $('#RImporte').val(),
-                    RTImpuestoTR: $('#RTotal').val()
+                    ///RTImpuestoTR: $('#RTotal').val()
 
                 }),
                 dataType: 'html',
@@ -1145,16 +1115,21 @@
              if (claveUnidad != "") {
                  $.get("/ComplementosCartaPorte/DatosClaveUnidad", { ClaveUnidad: claveUnidad }, function (data) {
                      if (data.length > 0) {
+                        
                          $(div).html("");
+                         $.each(data, function (index, row) {
+                             $("#Conceptos_Unidad").val(row.Nombre);
+                         });
+                         
 
                      } else {
                          $(div).html("El dato ingresado no existe");
-
+                         $("#Conceptos_Unidad").val("");
                      }
                  });
              } else {
                  $(div).html("");
-
+                 $("#Conceptos_Unidad").val("");
              }
 
 
@@ -1225,5 +1200,94 @@
          });
     }
 
+
+    $(function () {
+        //catalogo impuestos
+        $('#CImpuestoT').change(function () {
+            var ImpuestoT = $(this).val();
+            var TipoImpuesto = "";
+            var base = "";
+            var TImpuesto = "";
+            var TipoFactor = "";
+            var TasaCuota = "";
+            if (ImpuestoT != "") {
+                $.get("/ComplementosCartaPorte/DatosCatalogoImpuesto", { IdImpuesto: ImpuestoT }, function (data) {
+                    if (data.length > 0) {
+                        $.each(data, function (index, row) {
+                            TipoImpuesto = row.TipoImpuesto;
+                            base = $("#TBase").val(row.Base);
+                            TImpuesto = $("#Conceptos_Traslado_Impuesto").val(row.Impuesto);
+                            TipoFactor = $("#Conceptos_Traslado_TipoFactor").val(row.TipoFactor);
+                            TasaCuota = $("#TTasaOCuota").val(row.TasaOCuota);
+                            // $("#TImporte").val(row.Importe);
+                        });
+                        if (TipoImpuesto === "Traslado") {
+                            $("#TBase").val(base);
+                            $("#Conceptos_Traslado_Impuesto").val(TImpuesto);
+                            $("#Conceptos_Traslado_TipoFactor").val(TipoFactor);
+                            $("#TTasaOCuota").val(TasaCuota);
+                        } else {
+                            $("#RBase").val(base);
+                            $("#Conceptos_Retencion_Impuesto").val(TImpuesto);
+                            $("#Conceptos_Retencion_TipoFactor").val(TipoFactor);
+                            $("#RTasaOCuota").val(TasaCuota);
+                        }
+
+                    } else {
+                        $("#TBase").val("");
+                        $("#Conceptos_Traslado_Impuesto").val("");
+                        $("#Conceptos_Traslado_TipoFactor").val("");
+                        $("#TTasaOCuota").val("");
+                        $("#TImporte").val("");
+                    }
+                });
+            } else {
+                $("#TBase").val("");
+                $("#Conceptos_Traslado_Impuesto").val("");
+                $("#Mercancias_Mercancia_Unidad").val("");
+                $("#TTasaOCuota").val("");
+                $("#TImporte").val("");
+            }
+        });
+        //catalogo conceptos
+        $('#CConcepto').change(function () {
+            var CConcepto = $(this).val();
+
+            if (CConcepto != "") {
+                $.get("/ComplementosCartaPorte/DatosCatalogoConceptos", { IdConcepto: CConcepto }, function (data) {
+                    if (data.length > 0) {
+                        $.each(data, function (index, row) {
+                            $("#Conceptos_ClavesProdServ").val(row.ClavesProdServ);
+                            $("#Conceptos_ClavesUnidad").val(row.ClavesUnidad);
+                            $("#Conceptos_Unidad").val(row.Unidad);
+                            $("#Conceptos_Descripcion").val(row.Descripcion);
+                            $("#Conceptos_NoIdentificacion").val(row.NoIdentificacion);
+                            $("#Conceptos_Cantidad").val(row.Cantidad);
+                            $("#Conceptos_ValorUnitario").val(row.ValoUnitario);
+
+                        });
+
+                    } else {
+                        $("#Conceptos_ClavesProdServ").val("");
+                        $("#Conceptos_ClavesUnidad").val("");
+                        $("#Conceptos_Unidad").val("");
+                        $("#Conceptos_Descripcion").val("");
+                        $("#Conceptos_NoIdentificacion").val("");
+                        $("#Conceptos_Cantidad").val("");
+                        $("#Conceptos_ValorUnitario").val("");
+                    }
+                });
+            } else {
+                $("#Conceptos_ClavesProdServ").val("");
+                $("#Conceptos_ClavesUnidad").val("");
+                $("#Conceptos_Unidad").val("");
+                $("#Conceptos_Descripcion").val("");
+                $("#Conceptos_NoIdentificacion").val("");
+                $("#Conceptos_Cantidad").val("");
+                $("#Conceptos_ValorUnitario").val("");
+            }
+        });
+
+    });
 
 </script>

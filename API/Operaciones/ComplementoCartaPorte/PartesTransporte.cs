@@ -1,4 +1,5 @@
-﻿using System;
+﻿using API.Enums.CartaPorteEnums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,11 +16,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int Id { get; set; }
 
         [DisplayName("Parte del Transporte")]
-        public String ParteTransporte { get; set; }
+        public c_ParteTransporte ParteTransporte { get; set; }
        
-        public int? Domicilio_Id { get; set; }
-        [ForeignKey("Domicilio_Id")]
-        public virtual Domicilio Domicilio { get; set; }
+        public int? TiposFigura_Id { get; set; }
+        [ForeignKey("TiposFigura_Id")]
+        public virtual TiposFigura TiposFigura { get; set; }
        
 
     }

@@ -13,14 +13,14 @@ namespace API.Operaciones.ComplementoCartaPorte
     [Table("cp_SubImpuestoC")]
     public class SubImpuestoC
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        /*[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }*/
 
         public String TipoImpuesto { get; set; }
 
         public Decimal Base { get; set; }
 
-        public c_Impuesto Impuesto { get; set; }
+        public string Impuesto { get; set; }
 
         [DisplayName("Tipo de Factor")]
         public c_TipoFactor TipoFactor { get; set; }
@@ -30,6 +30,10 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public Decimal Importe { get; set; }
 
-        public Decimal TotalImpuestosTR { get; set; }
+        [NotMapped]
+        [DisplayName("Catalogo Impuesto")]
+        public string CatImpuesto { get; set; }
+
+        //  public Decimal TotalImpuestosTR { get; set; }
     }
 }

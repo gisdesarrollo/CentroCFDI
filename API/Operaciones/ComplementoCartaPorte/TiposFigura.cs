@@ -29,12 +29,21 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Registro fiscal de la figura de transporte")]
         public string NumRegIdTribFigura { get; set; }
         [DisplayName("Residencia fiscal de la figura de transporte")]
-        public c_Pais ResidenciaFiscalFigura { get; set; }
+        public c_Pais? ResidenciaFiscalFigura { get; set; }
+
+        
+        public int? Domicilio_Id { get; set; }
+        [ForeignKey("Domicilio_Id")]
+        public virtual Domicilio Domicilio { get; set; }
+
+        public int? Complemento_Id { get; set; }
+        [ForeignKey("Complemento_Id")]
+        public virtual ComplementoCartaPorte ComplementoCP { get; set; }
 
         [NotMapped]
         public virtual PartesTransporte PartesTransporte { get; set; }
 
-        [NotMapped]
+       //[NotMapped]
         public virtual List<PartesTransporte> PartesTransportes { get; set; }
 
         

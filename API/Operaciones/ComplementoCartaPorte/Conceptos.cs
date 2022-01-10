@@ -43,12 +43,24 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Double Importe { get; set; }
 
         public string Descuento { get; set; }
-        
-        [NotMapped]
-        public virtual SubImpuestoC Traslado { get; set; }
 
+       
         [NotMapped]
-        public virtual SubImpuestoC Retencion { get; set; }
+        [DisplayName("Catalogo Concepto")]
+        public string CatConcepto { get; set; }
+
+
+        public int? Traslado_Id { get; set; }
+        [ForeignKey("Traslado_Id")]
+        public virtual TrasladoCP Traslado { get; set; }
+
+        public int? Retencion_Id { get; set; }
+        [ForeignKey("Retencion_Id")]
+        public virtual RetencionCP Retencion { get; set; }
+
+        public int? Complemento_Id { get; set; }
+        [ForeignKey("Complemento_Id")]
+        public virtual ComplementoCartaPorte ComplementoCP { get; set; }
 
     }
 }

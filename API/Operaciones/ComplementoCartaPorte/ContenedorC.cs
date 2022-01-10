@@ -28,9 +28,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String Contenedor_Id { get; set; }
         [ForeignKey("Contenedor_Id")]
         public virtual Contenedor Contenedor { get; set; }
-      
-        /*[NotMapped]
-        public String TipoContenedor { get; set; }*/
+
+        public int? Carro_Id { get; set; }
+        [ForeignKey("Carro_Id")]
+        public virtual Carro Carro { get; set; }
+
 
     }
 }

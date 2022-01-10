@@ -60,7 +60,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public virtual Remolques Remolque { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public virtual List<Remolques> Remolquess { get; set; }
 
 

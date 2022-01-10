@@ -1,0 +1,69 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.Cat_SubImpuestoC
+@{
+    ViewBag.Title = "Create";
+}
+@Html.Partial("_ComplementoImpuestos")
+<div id="page-title">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>impuestos</h2>
+            <p>Crea los impuestos de la empresa</p>
+        </div>
+    </div>
+</div>
+<div class="panel">
+    <div class="panel-body">
+        <div class="form">
+            <div class="clearfix"></div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.TipoImpuesto, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.TipoImpuesto, (IEnumerable<SelectListItem>)ViewBag.TImpuesto, "Favor de hacer su selección", new { @class = "form-control", @id = "TipoImpuestoImp" })
+               @* @Html.EditorFor(model => model.TipoImpuesto, new { htmlAttributes = new { @class = "form-control", @id = "TipoImpuestoImp" } })*@
+                @Html.ValidationMessageFor(model => model.TipoImpuesto, "", new { @class = "text-danger" })
+                <div id="TipoImpuestoImpSignal" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Base, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Base, new { htmlAttributes = new { @class = "form-control", @id = "BaseImp" } })
+                @Html.ValidationMessageFor(model => model.Base, "", new { @class = "text-danger" })
+                <div id="BaseImpSignal" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Impuesto, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Impuesto, "", new { @class = "text-danger" })
+                <div id="ImpuestoImpSignal" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.TipoFactor, htmlAttributes: new { @class = "control-label" })
+                @Html.EnumDropDownListSpecialFor(model => model.TipoFactor)
+                @*@Html.EditorFor(model => model.TipoFactor, new { htmlAttributes = new { @class = "form-control", @id = "TipoFactorImp" } })*@
+                @Html.ValidationMessageFor(model => model.TipoFactor, "", new { @class = "text-danger" })
+                <div id="TipoFactorImpSignal" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.TasaOCuota, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.TasaOCuota, new { htmlAttributes = new { @class = "form-control", @id = "TasaOCuotaImp" } })
+                @Html.ValidationMessageFor(model => model.TasaOCuota, "", new { @class = "text-danger" })
+                <div id="TasaOCuotaImpSignal" style="color:red;"></div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Importe, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Importe, new { htmlAttributes = new { @class = "form-control", @id = "ImporteImp" } })
+                @Html.ValidationMessageFor(model => model.Importe, "", new { @class = "text-danger" })
+                <div id="ImporteImpSignal" style="color:red;"></div>
+            </div>
+            <div class="clearfix"></div>
+            <hr />
+            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
+                    <span>Regresar</span>
+                    <i class="glyph-icon icon-arrow-left"></i>
+                </button>
+                <button type="submit" id="crearImpuesto" class="btn btn-alt btn-blue-alt" style="text-transform: uppercase;">
+                    <span>Crear</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

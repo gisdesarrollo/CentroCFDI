@@ -30,7 +30,7 @@ namespace API.Models.Facturas
 
         public String Version { get; set; }
 
-        public c_FormaPago FormaPago { get; set; }
+        public c_FormaPago? FormaPago { get; set; }
 
         public String NumeroCuentaPago { get; set; }
 
@@ -41,7 +41,7 @@ namespace API.Models.Facturas
         public String LugarExpedicion { get; set; }
 
         [DisplayName("Metodo de Pago")]
-        public c_MetodoPago MetodoPago { get; set; }
+        public c_MetodoPago? MetodoPago { get; set; }
 
         //Totales
         public Double Descuento { get; set; }

@@ -87,7 +87,7 @@ namespace API.Context
                         .HasForeignKey(s => s.SucursalId)
                         .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<ComplementoCartaPorte>()
+           /* modelBuilder.Entity<ComplementoCartaPorte>()
                         .HasRequired(s =>s.Mercancias)
                         .WithMany()
                         .HasForeignKey(s => s.Mercancias_Id)
@@ -159,7 +159,7 @@ namespace API.Context
                        .HasForeignKey(s => s.Seguros_Id)
                        .WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<PartesTransporte>()
+            modelBuilder.Entity<TiposFigura>()
                        .HasRequired(s => s.Domicilio)
                        .WithMany()
                        .HasForeignKey(s => s.Domicilio_Id)
@@ -308,7 +308,7 @@ namespace API.Context
                        .HasRequired(s => s.ContenedorMM)
                        .WithMany()
                        .HasForeignKey(s => s.ContenedorM_Id)
-                       .WillCascadeOnDelete(true);
+                       .WillCascadeOnDelete(true);*/
         }
 
         #region Catalogos
@@ -365,7 +365,14 @@ namespace API.Context
         #region CartaPorte
 
         //CatalogosCartaPorte
-        
+
+        public DbSet<RetencionCP> RetencionesCP { get; set; }
+        public DbSet<TrasladoCP> TrasladosCP { get; set; }
+        public DbSet<c_impuestoCFDI> ImpuestoCP { get; set; }
+        public DbSet<FormaPago> Cat_FormaPago { get; set; }
+        public DbSet<Cat_Conceptos> Cat_Conceptos { get; set; }
+
+        public DbSet<Cat_SubImpuestoC> Cat_Impuestos { get; set; }
         public DbSet<Conceptos> Conceptos { get; set; }
         public DbSet<ClaveProdServCP> ClavesProdServCP { get; set; }
         public DbSet<ClaveProdSTCC> ClavesProdSTCC { get; set; }
@@ -431,26 +438,26 @@ namespace API.Context
         /*public DbSet<UbicacionOrigen> UbuicacionesOrigen { get; set; }*/
         public DbSet<UsoCfdi> UsoCfdis { get; set; }
 
-        public DbSet<SubImpuestoC> SubImpuestoC { get; set; }
+       // public DbSet<SubImpuestoC> SubImpuestoC { get; set; }
         public DbSet<GuiasIdentificacion> GuiasIdentificacion { get; set; }
 
         //Relaciones CartaPorte
-        public DbSet<AutotransporteRemolque> AutotransporteFederalRemolques { get; set; }
-        public DbSet<CarroContenedorC> CarrosContenedorC { get; set; }
+        //public DbSet<AutotransporteRemolque> AutotransporteFederalRemolques { get; set; }
+        //public DbSet<CarroContenedorC> CarrosContenedorC { get; set; }
 
-        public DbSet<ConceptoSubImpuestoConcepto> ConceptoSubImpuestoConcepto { get; set; }
+        //public DbSet<ConceptoSubImpuestoConcepto> ConceptoSubImpuestoConcepto { get; set; }
 
-        public DbSet<ComplementoCartaPorteConceptos> ComplementoCartaPorteConceptos { get; set; }
-        public DbSet<ComplementoCartaPorteUbicacion> ComplementoCartaPorteUbicaciones { get; set; }
-        public DbSet<ComplementoCartaPorteFiguraTransporte> ComplementoCartaPorteFiguraTransporte { get; set; }
-        public DbSet<TransporteMaritimoContenedorM> TransporteMaritimoContenedoresM { get; set; }
-        public DbSet<MercanciaCantidadTransportada> MercanciaCantidadTransportadas { get; set; }
-        public DbSet<MercanciaGuiasIdentificacion> MercanciasGuiasIdentificacion { get; set; }
-        public DbSet<MercanciaPedimentos> MercanciaPedimentos { get; set; }
-        public DbSet<MercanciasMercancia> MercanciasMercancias  { get; set; }
-        public DbSet<TiposFiguraPartesTransporte>TiposFiguraPartesTransporte { get; set; }
-        public DbSet<TransporteFerroviarioDerechosDePaso> TransporteFerroviarioDerechosDePasos  { get; set; }
-        public DbSet<TransporteFerroviarioCarro> TransporteFerroviarioCarros { get; set; }
+        //public DbSet<ComplementoCartaPorteConceptos> ComplementoCartaPorteConceptos { get; set; }
+        //public DbSet<ComplementoCartaPorteUbicacion> ComplementoCartaPorteUbicaciones { get; set; }
+        //public DbSet<ComplementoCartaPorteFiguraTransporte> ComplementoCartaPorteFiguraTransporte { get; set; }
+        //public DbSet<TransporteMaritimoContenedorM> TransporteMaritimoContenedoresM { get; set; }
+        //public DbSet<MercanciaCantidadTransportada> MercanciaCantidadTransportadas { get; set; }
+        //public DbSet<MercanciaGuiasIdentificacion> MercanciasGuiasIdentificacion { get; set; }
+        //public DbSet<MercanciaPedimentos> MercanciaPedimentos { get; set; }
+        //public DbSet<MercanciasMercancia> MercanciasMercancias  { get; set; }
+        //public DbSet<TiposFiguraPartesTransporte>TiposFiguraPartesTransporte { get; set; }
+        //public DbSet<TransporteFerroviarioDerechosDePaso> TransporteFerroviarioDerechosDePasos  { get; set; }
+        //public DbSet<TransporteFerroviarioCarro> TransporteFerroviarioCarros { get; set; }
 
        // public DbSet<MercanciaDetalleMercancia> MercanciaDetalleMercancia { get; set; }
         #endregion
