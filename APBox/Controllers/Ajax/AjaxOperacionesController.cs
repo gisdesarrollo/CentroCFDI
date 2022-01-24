@@ -496,7 +496,7 @@ namespace APBox.Controllers.Ajax
             ,string TImpuesto, string TTipoFactor,Decimal TTasaOCuota,Decimal TImporte,string RTipoImpuesto, Decimal RBase,string RImpuesto
             ,string RTipofactor,Decimal RTasaOCuota,Decimal RImporte)
         {
-            var totalImporte = Convert.ToDouble(ValorUnitario) * Convert.ToDouble(Cantidad);
+           // var totalImporte = Convert.ToDouble(ValorUnitario) * Convert.ToDouble(Cantidad);
             var Conceptos = new Conceptos()
             {
                 ClavesProdServ = ClaveProdServID,
@@ -506,7 +506,7 @@ namespace APBox.Controllers.Ajax
                 NoIdentificacion = NumIdentificacion,
                 Cantidad = Cantidad,
                 ValorUnitario = ValorUnitario,
-                Importe = Convert.ToDouble(totalImporte),
+                Importe = Convert.ToDouble(Importe),
                 Traslado = new TrasladoCP()
                 {
                     TipoImpuesto = TTipoImpuesto,
