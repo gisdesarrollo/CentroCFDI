@@ -2,17 +2,26 @@
 
     $(function () {
         $("#crearImpuesto").on('click', function () {
-            console.log($('#TipoImpuestoImp option:selected').val());
+            console.log(
++               "\ntipoImpuesto :" + $('#TipoImpuestoImp').val() +
+                "\nnombre: " + $("#NombreImp").val() +
+                "\nbase: " + $('#BaseImp').val() +
+                "\nimpuesto: "  + $('#Impuesto').val() +
+                "\ntipoFactor: " + $('#TipoFactor').val() +
+                "\ntasaocuota: " + $('#TasaOCuotaImp').val() +
+                "\nimporte: " + $('#ImporteImp').val());                 
+            
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarImpuesto", "Impuestos")',
                 data: JSON.stringify({
                     TipoImp: $('#TipoImpuestoImp option:selected').val(),
+                    Nombre: $('#NombreImp').val(),
                     Base: $('#BaseImp').val(),
                     Impuesto: $('#Impuesto').val(),
                     TipoFactor: $('#TipoFactor').val(),
                     TasaOCuota: $('#TasaOCuotaImp').val(),
-                    Importe: $('#ImporteImp').val()
+                    //Importe: $('#ImporteImp').val()
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
@@ -39,6 +48,7 @@
                 data: JSON.stringify({
                     Id: $("#EditarImpuesto").data("id"),
                     TipoImp: $('#TipoImpuestoImp option:selected').val(),
+                    Nombre: $('#NombreImp').val(),
                     Base: $('#BaseImp').val(),
                     Impuesto: $('#Impuesto').val(),
                     TipoFactor: $('#TipoFactor').val(),

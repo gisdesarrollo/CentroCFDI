@@ -1,6 +1,29 @@
 ﻿<script>
     $(function () {
+        $('#ValorUnitario').on("keyup", function () {
+            calculo();
+        });
+        $('#Cantidad').on("keyup", function () {
+            calculo();
+        });
+        function calculo() {
+            var multi = 0;
+            var cantidad = 0;
 
+            var precio = 0;
+            precio = cero($("#ValorUnitario").val());
+            cantidad = cero($("#Cantidad").val());
+            multi = cantidad * precio;
+            console.log("multi: " + multi + " cantidad: " + $("#Cantidad").val() + " precio: " + $("#ValorUnitario").val());
+            $("#Importe").val(multi);
+        }
+        function cero(valor) {
+            if (valor == "" || valor == "undefined") {
+                return valor = 0;
+            }else {
+                return parseFloat(valor);
+            }
+        }
         $("#EliminarConcepto").on('click', function () {
             console.log("id a eliminar" + $("#EliminarConcepto").data("id"));
             $.ajax({
@@ -21,7 +44,15 @@
             return false;
         });
         $("#crearConcepto").on('click', function () {
-            console.log("click: " + $("#CrearConcepto").data("id"));
+            var ImpRet = $("#CImpuestoR").val();
+            var ImpTras = $("#CImpuestoT").val();
+            console.log("impret: " + ImpRet + " ImpTras: " + ImpTras);
+            if (ImpRet == "") {
+                ImpRet = 0;
+            }
+            if (ImpTras == "") {
+                ImpTras = 0;
+            }
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarConceptos", "Conceptos")',
@@ -35,20 +66,8 @@
                     ValorUnitario: $('#ValorUnitario').val(),
                     Importe: $('#Importe').val(),
                     Descuento: $('#Descuento').val(),
-                    TTipoImpuesto : $("#Conceptos_Traslado_TipoImpuesto").val(),
-                    TBase: $('#TBase').val(),
-                    TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
-                    TTipoFactor: $('#Conceptos_Traslado_TipoFactor').val(),
-                    TTasaOCuota: $('#TTasaOCuota').val(),
-                    TImporte: $('#TImporte').val(),
-                    TTImpuestosTR: $('#TTotal').val(),
-                    RTipoImpuesto: $("#Conceptos_Retencion_TipoImpuesto").val(),
-                    RImpuesto: $('#Conceptos_Retencion_Impuesto').val(),
-                    RBase: $('#RBase').val(),
-                    RTipofactor: $('#Conceptos_Retencion_TipoFactor').val(),
-                    RTasaOCuota: $('#RTasaOCuota').val(),
-                    RImporte: $('#RImporte').val(),
-                    RTImpuestoTR: $('#RTotal').val()
+                    ImpuestoR: parseInt(ImpRet),
+                    ImpuestoT: parseInt(ImpTras),
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
@@ -63,7 +82,16 @@
         });
 
         $("#EditarConcepto").on('click', function () {
-            console.log("click" + $("#DescripcionConc").val());
+            var ImpRet = $("#CImpuestoR").val();
+            var ImpTras = $("#CImpuestoT").val();
+            console.log("impret: " + ImpRet + " ImpTras: " + ImpTras);
+            if (ImpRet == "") {
+                ImpRet = 0;
+            }
+            if (ImpTras == "") {
+                ImpTras = 0;
+            }
+            console.log("impret: " + ImpRet + " ImpTras: " + ImpTras);
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("EditarConceptos", "Conceptos")',
@@ -78,20 +106,8 @@
                     ValorUnitario: $('#ValorUnitario').val(),
                     Importe: $('#Importe').val(),
                     Descuento: $('#Descuento').val(),
-                    TTipoImpuesto : $("#Conceptos_Traslado_TipoImpuesto").val(),
-                    TBase: $('#TBase').val(),
-                    TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
-                    TTipoFactor: $('#Conceptos_Traslado_TipoFactor').val(),
-                    TTasaOCuota: $('#TTasaOCuota').val(),
-                    TImporte: $('#TImporte').val(),
-                    TTImpuestosTR: $('#TTotal').val(),
-                    RTipoImpuesto: $("#Conceptos_Retencion_TipoImpuesto").val(),
-                    RImpuesto: $('#Conceptos_Retencion_Impuesto').val(),
-                    RBase: $('#RBase').val(),
-                    RTipofactor: $('#Conceptos_Retencion_TipoFactor').val(),
-                    RTasaOCuota: $('#RTasaOCuota').val(),
-                    RImporte: $('#RImporte').val(),
-                    RTImpuestoTR: $('#RTotal').val()
+                    ImpuestoR: ImpRet,
+                    ImpuestoT: ImpTras
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",

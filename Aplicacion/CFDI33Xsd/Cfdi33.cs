@@ -75,19 +75,16 @@ public partial class ComprobanteCFDI {
     
     private string confirmacionField;
 
-    [XmlAttribute("cfdi", Namespace = XmlSchema.InstanceNamespace)]
-    public string xmlnsCfdi = "http://www.sat.gob.mx/cfd/3";
-
-    [XmlAttribute("cartaporte20", Namespace = XmlSchema.InstanceNamespace)]
-    public string xmlnsCartaPorte20 = "http://www.sat.gob.mx/CartaPorte20";
-
-
     [XmlAttribute("schemaLocation", Namespace = XmlSchema.InstanceNamespace)]
     public string xsiSchemaLocation = "http://www.sat.gob.mx/CartaPorte20 " + "http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd " + "http://www.sat.gob.mx/cfd/3 " + "http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd ";
 
+    public TimbreFiscalDigital TimbreFiscalDigital;
 
-    
+    public CartaPorte CartaPorte;
 
+    public string CodigoQR;
+
+    public string Logo;
     public ComprobanteCFDI() {
         this.versionField = "3.3";
     }

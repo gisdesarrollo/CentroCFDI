@@ -24,8 +24,8 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Forma de Pago")]
         public string FormaPago { get; set; }
         [ForeignKeyAttribute("FormaPago")]
-        public virtual FormaPago FormaPagos { get; set; }
-
+        public virtual FormaPagos FormaPagos { get; set; }
+        
         [DisplayName("Método de Pago")]
         public c_MetodoPago? MetodoPago { get; set; }
 
@@ -45,7 +45,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public string EntradaSalidaMerc { get; set; }
 
         [DisplayName("Uso Cfdi")]
-        public c_UsoCfdiCP UsoCfdi { get; set; }
+        public c_UsoCfdiCP UsoCfdiCP { get; set; }
 
         [DisplayName("Total de Distancia Recorrida")]
         public Decimal TotalDistRec { get; set; }
@@ -60,7 +60,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Conceptos Conceptos { get; set; }
 
         //[NotMapped]
-        public List<Conceptos> Conceptoss { get; set; }
+        public  virtual List<Conceptos> Conceptoss { get; set; }
 
         [DisplayName("Tipo Transporte")]
         [Required(ErrorMessage = "Campo Obligatorio")]
@@ -192,6 +192,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         #endregion
 
+        
     }
 
 }

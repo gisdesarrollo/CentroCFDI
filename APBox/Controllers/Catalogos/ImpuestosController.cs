@@ -67,18 +67,19 @@ namespace APBox.Controllers.Catalogos
             var cat_subImpuestoC = new Cat_SubImpuestoC();
             return View(cat_subImpuestoC);
         }
-        public ActionResult AgregarImpuesto(String TipoImp, Decimal Base, c_Impuesto Impuesto,c_TipoFactor TipoFactor,Decimal TasaOCuota,Decimal Importe)
+        public ActionResult AgregarImpuesto(String TipoImp, String Nombre, int Base, c_Impuesto Impuesto,c_TipoFactor TipoFactor,Decimal TasaOCuota/*,Decimal Importe*/)
         {
             try
             {
                 var cat_SubImpuestoC = new Cat_SubImpuestoC()
                 {
                     TipoImpuesto = TipoImp,
+                    Nombre = Nombre,
                     Base = Base,
                     Impuesto = Impuesto,
                     TipoFactor = TipoFactor,
                     TasaOCuota = TasaOCuota,
-                    Importe = Importe,
+                    //Importe = Importe,
                     SucursalId = ObtenerSucursal(),
                 };
                 _db.Cat_Impuestos.Add(cat_SubImpuestoC);
@@ -108,19 +109,19 @@ namespace APBox.Controllers.Catalogos
 
             return View(cat_SubImpuestoC);
         }
-        public ActionResult EditarImpuesto(int Id,string TipoImp, Decimal Base, c_Impuesto Impuesto, c_TipoFactor TipoFactor, Decimal TasaOCuota, Decimal Importe)
+        public ActionResult EditarImpuesto(int Id, String Nombre, string TipoImp, int Base, c_Impuesto Impuesto, c_TipoFactor TipoFactor, Decimal TasaOCuota/*, Decimal Importe*/)
         {
             try {
                 var impuesto = new Cat_SubImpuestoC();
                     
                 impuesto = _db.Cat_Impuestos.Find(Id);
-
+                impuesto.Nombre = Nombre;
                 impuesto.TipoImpuesto = TipoImp;
                 impuesto.Base = Base;
                 impuesto.Impuesto = Impuesto;
                 impuesto.TipoFactor = TipoFactor;
                 impuesto.TasaOCuota = TasaOCuota;
-                impuesto.Importe = Importe;
+                //impuesto.Importe = Importe;
 
                 _db.Entry(impuesto).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -145,30 +146,5 @@ namespace APBox.Controllers.Catalogos
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ImpuestoSat = (popularDropDowns.PopulaImpuestoSat());
         }
-        /*public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }*/
     }
 }

@@ -11,6 +11,7 @@ using System.IO;
 using System.Web;
 using Utilerias.LogicaPrincipal;
 using CFDI.API.Enums.CFDI33;
+using System.Text;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -225,6 +226,7 @@ namespace APBox.Controllers.Catalogos
 
         private void SubirArchivos(ref Sucursal sucursal)
         {
+            var utf8 = new UTF8Encoding();
             if (Request.Files.Count > 1)
             {
                 for (int i = 0; i <= 2; i++)
@@ -256,16 +258,19 @@ namespace APBox.Controllers.Catalogos
                     fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
                     mStreamer.Seek(0, SeekOrigin.Begin);
                     _operacionesStreams.StreamArchivo(mStreamer, pathDestino);
-
+                    
                     switch (Path.GetExtension(archivo.FileName.ToLower()))
                     {
                         case ".key":
                             sucursal.NombreArchivoKey = Path.GetFileName(archivo.FileName);
-                            sucursal.Key = _operacionesStreams.ArchivoStream(pathDestino).ToArray();
+
+                            byte[] Key = System.IO.File.ReadAllBytes(pathDestino);
+                            sucursal.Key = Key;/*_operacionesStreams.ArchivoStream(pathDestino).ToArray();*/
                             break;
                         case ".cer":
                             sucursal.NombreArchivoCer = Path.GetFileName(archivo.FileName);
-                            sucursal.Cer = _operacionesStreams.ArchivoStream(pathDestino).ToArray();
+                            byte[] Cer = System.IO.File.ReadAllBytes(pathDestino);
+                            sucursal.Cer = Cer;/*_operacionesStreams.ArchivoStream(pathDestino).ToArray();*/
                             break;
                         case ".jpg":
                         case ".jpeg":

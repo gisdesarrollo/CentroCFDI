@@ -51,11 +51,22 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int SucursalId { get; set; }
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
-       /* [NotMapped]
-        public virtual SubImpuestoC Traslado { get; set; }
+
+        [DisplayName("Impuesto Traslado")]
+        public int? ImpuestoIdTras { get; set; }
+        [ForeignKey("ImpuestoIdTras")]
+        public virtual Cat_SubImpuestoC ImpuestoT { get; set; }
+
+
+        [DisplayName("Impuesto Retencion")]
+        public int? ImpuestoIdRet { get; set; }
+        [ForeignKey("ImpuestoIdRet")]
+        public virtual Cat_SubImpuestoC ImpuestoR { get; set; }
+
+        [NotMapped]
+        public virtual Cat_SubImpuestoC Traslado { get; set; }
 
         [NotMapped]
         public virtual SubImpuestoC Retencion { get; set; }
-       */
     }
 }

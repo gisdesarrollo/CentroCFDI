@@ -62,6 +62,7 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo obligatorio")]
         public c_RegimenFiscal RegimenFiscal { get; set; }
 
+
         #endregion
 
         #region Informacion Correo
@@ -110,6 +111,11 @@ namespace API.Catalogos
 
         public int Folio { get; set; }
 
+        [DisplayName("Folio Carta Porte")]
+        public int FolioCartaPorte { get; set; }
+
+        [DisplayName("Serie Carta Porte")]
+        public String SerieCartaPorte { get; set; }
         #endregion
 
         #region Informacion XSA

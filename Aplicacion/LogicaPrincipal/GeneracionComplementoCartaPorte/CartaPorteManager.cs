@@ -26,11 +26,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
     public class CartaPorteManager
     {
         private readonly AplicacionContext _db = new AplicacionContext();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
-        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.cer";
-        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.key";
-        private static string passwordKey = "12345678a";
-
+        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
+        //private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.cer";
+        //private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.key";
+        //private static string passwordKey = "12345678a";
+        
         public string GenerarComplementoCartaPorte(int sucursalId, int complementoCartaPorteId, string mailAlterno)
         {
             string cfdi = null;
@@ -66,7 +66,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 try
                 {
                     //Incrementar Folio de Sucursal
-                    sucursal.Folio += 1;
+                    sucursal.FolioCartaPorte += 1;
                     _db.Entry(sucursal).State = EntityState.Modified;
 
                     _db.SaveChanges();
@@ -204,10 +204,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             return xml;
          }
 
-        private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi)
+        private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi,Sucursal sucursal)
         {
-            objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
-            
+            //objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
             // Verifica el error
             if (objCfdi.MensajeError == "")
             {
@@ -215,7 +215,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 
                
                 //guardar string en un archivo
-                System.IO.File.WriteAllText(pathXml, xmlTimbrado);
+               // System.IO.File.WriteAllText(pathXml, xmlTimbrado);
 
 
             }
@@ -238,10 +238,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
 
             // Agrega el certificado
-            objCfdi.agregarCertificado(pathCer);
-            //objCfdi.agregarCertificadoBase64(Convert.ToBase64String(sucursal.Cer));
-
+            //objCfdi.agregarCertificado(pathCer);
             
+            
+            objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
+            if (objCfdi.MensajeError != "")
+            {
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
+            }
+
             string tipoCambio = "";
             if (complementoCartaPorte.Moneda != null)
             {
@@ -266,8 +272,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             
             objCfdi.agregarComprobante33
                    (
-                       complementoCartaPorte.Sucursal.Serie, //Serie
-                       "1", //Folio
+                       complementoCartaPorte.Sucursal.SerieCartaPorte, //Serie
+                       complementoCartaPorte.Sucursal.FolioCartaPorte.ToString(), //Folio
                        getFormatoFecha(complementoCartaPorte.FechaDocumento,complementoCartaPorte.Hora).ToString("yyyy-MM-ddTHH:mm:ss"), //Fecha de emision
                        complementoCartaPorte.FormaPago ?? "",//complementoCartaPorte.FormaPago, //Forma de pago
                        complementoCartaPorte.CondicionesPago == null ? "" : complementoCartaPorte.CondicionesPago, //Condicion de pago
@@ -287,36 +293,36 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-            objCfdi.agregarEmisor(
+            /*objCfdi.agregarEmisor(
                         "XIA190128J61", //Rfc
                         "MB IDEAS DIGITALES SC",  //Nombre
                         "601" //Regimen fiscal
-                    );
+                    );*/
             
-            /*objCfdi.agregarEmisor(
+            objCfdi.agregarEmisor(
                 complementoCartaPorte.Sucursal.Rfc, //Rfc
                 complementoCartaPorte.Sucursal.RazonSocial,  //Nombre
                 regimenFiscal.ToString() //Regimen fiscal
-            );*/
+            );
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-            objCfdi.agregarReceptor(
+            /*objCfdi.agregarReceptor(
                        "EKU9003173C9", //Rfc
                        "demo", //Nombre
                        "", //Residencia fiscal 
                        "", //NumRegIdTrib
                        "P01" //UsoCFDI
-                   );
-            /*objCfdi.agregarReceptor(
+                   );*/
+            objCfdi.agregarReceptor(
                 complementoCartaPorte.Receptor.Rfc, //Rfc
                 complementoCartaPorte.Receptor.RazonSocial, //Nombre
                 complementoCartaPorte.Receptor.Pais.ToString(), //Residencia fiscal 
-                complementoCartaPorte.Receptor.NumRegIdTrib, //NumRegIdTrib
-                complementoCartaPorte.UsoCfdi.ToString() //UsoCFDI
-            );*/
+                complementoCartaPorte.Receptor.NumRegIdTrib ?? "", //NumRegIdTrib
+                complementoCartaPorte.UsoCfdiCP.ToString() //UsoCFDI
+            );
 
             if (objCfdi.MensajeError != "")
             {
@@ -976,8 +982,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
             
 
-            objCfdi.GeneraXML(pathKey, "12345678a");
-            //objCfdi.GenerarXMLBase64(Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
+            //objCfdi.GeneraXML(pathKey, "LE02SA04");
+            objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
 
             string xml = objCfdi.Xml;
             xml = CorreccionXMLEsquemasComplementosComprobante(xml);
@@ -985,8 +991,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             objCfdi.Xml = xml;
 
             //guardar string en un archivo
-            System.IO.File.WriteAllText(pathXml, xml);
-             objCfdi = Timbra(objCfdi);
+           // System.IO.File.WriteAllText(pathXml, xml);
+             objCfdi = Timbra(objCfdi,sucursal);
                
 
             return objCfdi;
@@ -995,8 +1001,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
         private int GuardarComplemento(RVCFDI33.GeneraCFDI objCfdi,ComplementoCartaPorte complementoCartaPorte, int sucursalId)
         {
             var utf8 = new UTF8Encoding();
-           
             
+
             var facturaInternaEmitida = new FacturaEmitida
             {
                 ComplementosPago = new List<ComplementoPago>(),
@@ -1011,7 +1017,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 TipoComprobante = complementoCartaPorte.TipoDeComprobante,
                 Total = (double)complementoCartaPorte.Total,
                 Uuid = objCfdi.UUID,
-                ArchivoFisicoXml = utf8.GetBytes(objCfdi.XmlTimbrado)
+                ArchivoFisicoXml = utf8.GetBytes(objCfdi.XmlTimbrado),
+                CodigoQR = objCfdi.GenerarQrCode()
             };
             
             if (complementoCartaPorte.FormaPago != null)
@@ -1054,8 +1061,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 }
                 //guardar string en un archivo
                 System.IO.File.WriteAllText(path, Encoding.UTF8.GetString(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml));
-                //var zip = _facturacionInfodextra.GenerarZip(complementoPago.FacturaEmitida.ArchivoFisicoXml, complementoPago.Sucursal.Logo, null);
-                //_operacionesStreams.ByteArrayArchivo(zip, path);
+                
                 return path;
             }
             catch (Exception ex)
@@ -1064,37 +1070,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
         }
 
-        public void GeneraPDF(int complementoCPId)
-        {
-            var complementoCartaPorte = _db.ComplementoCartaPortes.Find(complementoCPId);
-            //OpenFileDialog ArchivoXML = new OpenFileDialog();
-            // Obtenemos el archivo XML
-            string xml = Encoding.UTF8.GetString(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
-            //ArchivoXML.Filter = "archivo(s) XML (.xml)|*.xml";
-            
-                // Crea el objeto
-                RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
-                byte[] Logo = new byte[0];
-                //Logo = System.IO.File.ReadAllBytes(@"C:\Users\Toshiba\Desktop\invalco.png");
-                // Timbra el archivo
-                string Observacion = "";
-                string rutaReporte = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//RPT//rptCFDI33.rpt");
-
-                //string rutaReporte = Application.StartupPath + @"\PDF\rptCfdi33.rpt";
-                objCfdi.GenerarPdf(xml, Logo, true, Observacion, "", "", "SENATOR.pdf", rutaReporte);
-                
-                DataSet obj = objCfdi.ObjDataSetPDF;
-                var resultado = "";
-                // Verifica el resultado
-                if (objCfdi.MensajeError == "")
-                    resultado = "Se generó el PDF con éxito Éxito";
-                else
-                    resultado = "Ocurrió un error al timbrar el XML: " + objCfdi.MensajeError;
-            
-            // Libera memoria
-            //ArchivoXML.Dispose();
-            GC.Collect();
-        }
+       
 
     }
 }

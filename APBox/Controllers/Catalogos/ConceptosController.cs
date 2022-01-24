@@ -25,42 +25,134 @@ namespace APBox.Controllers.Catalogos
         //Agregar Conceptos
         public ActionResult Create()
         {
+            PopulaImpuestoR();
+            PopulaImpuestoT();
             var sucursal = ObtenerSucursal();
             var cat_Conceptos = new Cat_Conceptos();
             return View(cat_Conceptos);
         }
-        public ActionResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento)
+        public ActionResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento, int? ImpuestoR, int? ImpuestoT)
         {
 
-            var claveP = _db.ClavesProdServCP.Find(ClaveProdServID);
+            var claveP = _db.claveProdServ.Find(ClaveProdServID);
             var claveunidad = _db.ClavesUnidad.Find(ClaveUnidadID);
+            var pruebaRet = ImpuestoR;
+            var pruebaTras = ImpuestoT;
+
+
             try
             {
-                var Conceptos = new Cat_Conceptos()
+                if (pruebaRet == 0 && ImpuestoT == 0)
                 {
-                    ClaveProdServ_Id = ClaveProdServID,
-                    ClavesProdServ = claveP.Descripcion,
-                    ClaveUnidad_Id = ClaveUnidadID,
-                    ClavesUnidad = claveunidad.Nombre,
-                    Cantidad = Cantidad,
-                    Unidad = Unidad,
-                    NoIdentificacion = NoIdentificacion,
-                    Descripcion = Descripcion,
-                    ValorUnitario = ValorUnitario,
-                    Importe = Importe,
-                    Descuento = Descuento,
-                    SucursalId = ObtenerSucursal(),
-                };
-                _db.Cat_Conceptos.Add(Conceptos);
-                _db.SaveChanges();
+                    var Conceptos = new Cat_Conceptos()
+                    {
+                        ClaveProdServ_Id = ClaveProdServID,
+                        ClavesProdServ = claveP.Descripcion,
+                        ClaveUnidad_Id = ClaveUnidadID,
+                        ClavesUnidad = claveunidad.Nombre,
+                        Cantidad = Cantidad,
+                        Unidad = Unidad,
+                        NoIdentificacion = NoIdentificacion,
+                        Descripcion = Descripcion,
+                        ValorUnitario = ValorUnitario,
+                        Importe = Importe,
+                        Descuento = Descuento,
+                        SucursalId = ObtenerSucursal(),
+                        //ImpuestoIdTras = ImpuestoT,
+                        //ImpuestoIdRet = ImpuestoR
+                    };
+                    _db.Cat_Conceptos.Add(Conceptos);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    if (pruebaRet > 0 && ImpuestoT > 0)
+                    {
+                        var Conceptos = new Cat_Conceptos()
+                        {
+                            ClaveProdServ_Id = ClaveProdServID,
+                            ClavesProdServ = claveP.Descripcion,
+                            ClaveUnidad_Id = ClaveUnidadID,
+                            ClavesUnidad = claveunidad.Nombre,
+                            Cantidad = Cantidad,
+                            Unidad = Unidad,
+                            NoIdentificacion = NoIdentificacion,
+                            Descripcion = Descripcion,
+                            ValorUnitario = ValorUnitario,
+                            Importe = Importe,
+                            Descuento = Descuento,
+                            SucursalId = ObtenerSucursal(),
+                            ImpuestoIdTras = ImpuestoT,
+                            ImpuestoIdRet = ImpuestoR
+                        };
+                        _db.Cat_Conceptos.Add(Conceptos);
+                        _db.SaveChanges();
+                    }
+                    else
+                    {
+                        if (ImpuestoR > 0)
+                        {
+                            var Conceptos = new Cat_Conceptos()
+                            {
+                                ClaveProdServ_Id = ClaveProdServID,
+                                ClavesProdServ = claveP.Descripcion,
+                                ClaveUnidad_Id = ClaveUnidadID,
+                                ClavesUnidad = claveunidad.Nombre,
+                                Cantidad = Cantidad,
+                                Unidad = Unidad,
+                                NoIdentificacion = NoIdentificacion,
+                                Descripcion = Descripcion,
+                                ValorUnitario = ValorUnitario,
+                                Importe = Importe,
+                                Descuento = Descuento,
+                                SucursalId = ObtenerSucursal(),
+                                ImpuestoIdRet = ImpuestoR
+                                //ImpuestoIdTras = ImpuestoT,
+                                //ImpuestoIdRet = ImpuestoR
+                            };
+                            _db.Cat_Conceptos.Add(Conceptos);
+                            _db.SaveChanges();
+                        }
+                        else
+                        {
+                            var Conceptos = new Cat_Conceptos()
+                            {
+                                ClaveProdServ_Id = ClaveProdServID,
+                                ClavesProdServ = claveP.Descripcion,
+                                ClaveUnidad_Id = ClaveUnidadID,
+                                ClavesUnidad = claveunidad.Nombre,
+                                Cantidad = Cantidad,
+                                Unidad = Unidad,
+                                NoIdentificacion = NoIdentificacion,
+                                Descripcion = Descripcion,
+                                ValorUnitario = ValorUnitario,
+                                Importe = Importe,
+                                Descuento = Descuento,
+                                SucursalId = ObtenerSucursal(),
+                                ImpuestoIdTras = ImpuestoT
+                                //ImpuestoIdTras = ImpuestoT,
+                                //ImpuestoIdRet = ImpuestoR
+                            };
+                            _db.Cat_Conceptos.Add(Conceptos);
+                            _db.SaveChanges();
+                        }
+                    }
+
+                }
+
+
+
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 ModelState.AddModelError("", e.Message);
             }
-            
+
+
+
             return RedirectToAction("Index");
         }
-        
+
         //Eliminar Conceptos
         public ActionResult Eliminar(int? id)
         {
@@ -95,6 +187,8 @@ namespace APBox.Controllers.Catalogos
         //Editar Conceptos
         public ActionResult Editar(int? id)
         {
+            PopulaImpuestoR();
+            PopulaImpuestoT();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -107,8 +201,12 @@ namespace APBox.Controllers.Catalogos
 
             return View(cat_conceptos);
         }
-        public ActionResult EditarConceptos(int Id,string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento)
+        public ActionResult EditarConceptos(int Id, string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento, int? ImpuestoR, int? ImpuestoT)
         {
+            var ImpT = ImpuestoT;
+            var ImpR = ImpuestoR;
+
+
             try
             {
                 var Conceptos = new Cat_Conceptos();
@@ -124,6 +222,23 @@ namespace APBox.Controllers.Catalogos
                 Conceptos.ValorUnitario = ValorUnitario;
                 Conceptos.Importe = Importe;
                 Conceptos.Descuento = Descuento;
+                if (ImpT == 0)
+                {
+                    Conceptos.ImpuestoIdRet = null;
+                }
+                else
+                {
+                    Conceptos.ImpuestoIdRet = ImpuestoR;
+                }
+                if (ImpR == 0)
+                {
+                    Conceptos.ImpuestoIdTras = null;
+                }
+                else
+                {
+                    Conceptos.ImpuestoIdTras = ImpuestoT;
+                }
+
 
                 _db.Entry(Conceptos).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -147,7 +262,7 @@ namespace APBox.Controllers.Catalogos
             var busqueda = 0;
             if (tipo.Equals("serv"))
             {
-                busqueda = _db.ClavesProdServCP.Where(a => a.c_ClaveUnidad.Equals(valor)).Count();
+                busqueda = _db.claveProdServ.Where(a => a.c_ClaveUnidad.Equals(valor)).Count();
             }
             if (tipo.Equals("claveUnidad"))
             {
@@ -163,7 +278,18 @@ namespace APBox.Controllers.Catalogos
             var Clave = popularDropDowns.PopulaDatosClaveUnidad(ClaveUnidad);
             return Json(Clave, JsonRequestBehavior.AllowGet);
         }
+        //DropsDown
+        private void PopulaImpuestoT()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ImpuestoT = (popularDropDowns.PopulaImpuestoT());
+        }
 
+        private void PopulaImpuestoR()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ImpuestoR = (popularDropDowns.PopulaImpuestoR());
+        }
 
 
 

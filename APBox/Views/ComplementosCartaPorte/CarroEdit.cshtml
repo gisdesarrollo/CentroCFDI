@@ -1,0 +1,81 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.Carro
+
+
+@using (Html.BeginCollectionItem("Carros"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+    <div class="content-box mrg20L mrg20R">
+        <h3 class="content-box-header bg-default">
+            <i class="glyph-icon icon-money"></i>
+            Carros
+            <div class="header-buttons-separator">
+                <a href="#" class="icon-separator" onclick="removeDetalleTFCarro(this)">
+                    <i class="glyph-icon icon-times font-red"></i>
+                </a>
+            </div>
+        </h3>
+        <h3 class="title-hero">
+            Carro
+        </h3>
+        <div class="content-box-wrapper TFCarroEdit">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.TransporteFerroviario_Id)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.TipoCarro_Id)<br />
+                @Html.DisplayFor(model => model.TipoCarro_Id)
+                @Html.HiddenFor(model => model.TipoCarro_Id)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.MatriculaCarro)<br />
+                @Html.DisplayFor(model => model.MatriculaCarro)
+                @Html.HiddenFor(model => model.MatriculaCarro)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.GuiaCarro)<br />
+                @Html.DisplayFor(model => model.GuiaCarro)
+                @Html.HiddenFor(model => model.GuiaCarro)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.ToneladasNetasCarro)<br />
+                @Html.DisplayFor(model => model.ToneladasNetasCarro)
+                @Html.HiddenFor(model => model.ToneladasNetasCarro)
+            </div>
+            <div class="clearfix"></div>
+            @if (Model.ContenedoresC != null)
+            {
+
+
+                for (var x = 0; x < Model.ContenedoresC.Count; x++)
+                {
+                    <hr />
+                    <h3 class="title-hero">
+                        Carro : Contenedor
+                    </h3>
+                    @Html.HiddenFor(i => i.ContenedoresC[x].Id);
+                    @Html.HiddenFor(i => i.ContenedoresC[x].Carro_Id);
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(i => i.ContenedoresC[x].Contenedor_Id)<br />
+                        @Html.DisplayFor(i => i.ContenedoresC[x].Contenedor_Id)
+                        @Html.HiddenFor(i => i.ContenedoresC[x].Contenedor_Id)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(i => i.ContenedoresC[x].PesoNetoMercancia)<br />
+                        @Html.DisplayFor(i => i.ContenedoresC[x].PesoNetoMercancia)
+                        @Html.HiddenFor(i => i.ContenedoresC[x].PesoNetoMercancia)
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(i => i.ContenedoresC[x].PesoContenedorVacio)<br />
+                        @Html.DisplayFor(i => i.ContenedoresC[x].PesoContenedorVacio)
+                        @Html.HiddenFor(i => i.ContenedoresC[x].PesoContenedorVacio)
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr />
+                }
+            }
+            <div class="clearfix"></div>
+        </div>
+    </div>
+}
+
+

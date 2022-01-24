@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using API.CatalogosCartaPorte.Domicilio;
 using API.Catalogos;
 using API.CatalogosCartaPorte;
+using API.Operaciones.ComplementoCartaPorte;
 
 namespace APBox.Control
 {
@@ -53,7 +54,7 @@ namespace APBox.Control
         {
             return _db.FraccionesArancelarias.Where(a => a.c_FraccionArancelaria == seleccion).ToList();
         }
-        public List<API.Operaciones.ComplementoCartaPorte.Cat_Conceptos> PopulaDatosConceptos(int seleccion)
+        /*public List<API.Operaciones.ComplementoCartaPorte.Cat_Conceptos> PopulaDatosConceptos(int seleccion)
         {
             //_db.Configuration.ProxyCreationEnabled = false;
             return _db.Cat_Conceptos.Where(a => a.Id == seleccion).ToList();
@@ -62,6 +63,16 @@ namespace APBox.Control
         {
            // _db.Configuration.ProxyCreationEnabled = false;
             return _db.Cat_Impuestos.Where(a => a.Id == seleccion).ToList();
+        }*/
+        public List<Cat_Conceptos> PopulaCatConceptos(int claveProd)
+        {
+            _db.Configuration.ProxyCreationEnabled = false;
+            return _db.Cat_Conceptos.Where(a => a.Id == claveProd).ToList();
+        }
+        public List<Cat_SubImpuestoC> PopulaCatImpuestos(int IdImpuesto)
+        {
+            _db.Configuration.ProxyCreationEnabled = false;
+            return _db.Cat_Impuestos.Where(a => a.Id == IdImpuesto).ToList();
         }
         public List<Colonia> PopulaColonias(string seleccion)
         {
@@ -82,12 +93,12 @@ namespace APBox.Control
  
         }
 
-        public SelectList PopulaConceptos()
+        public SelectList PopulaConceptos(int sucursalId)
         {
-            var DatosConcatenados = _db.Cat_Conceptos.ToDictionary(a => a.Id, a => (a.NoIdentificacion + "-" + a.Descripcion));
+            var DatosConcatenados = _db.Cat_Conceptos.Where(a => a.SucursalId == sucursalId).ToDictionary(a => a.Id, a => (a.NoIdentificacion + "-" + a.Descripcion));
             return new SelectList(DatosConcatenados, "Key", "Value");
 
-           // return new SelectList(_db.Cat_Conceptos.OrderByDescending(a => a.Id), "Id", "ClavesProdServ");
+            // return new SelectList(_db.Cat_Conceptos.OrderByDescending(a => a.Id), "Id", "ClavesProdServ");
         }
 
         public SelectList PopulaImpuestoT()

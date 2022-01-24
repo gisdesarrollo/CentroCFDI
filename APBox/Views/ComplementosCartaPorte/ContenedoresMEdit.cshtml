@@ -1,7 +1,7 @@
 ﻿@model API.Operaciones.ComplementoCartaPorte.ContenedorM
 
 
-@using (Html.BeginCollectionItem("Mercancias.TransporteMaritimo.ContenedoresM"))
+@using (Html.BeginCollectionItem("ContenedoresM"))
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
@@ -15,9 +15,9 @@
                 </a>
             </div>
         </h3>
-        <div class="content-box-wrapper TMContenedor">
-            @Html.HiddenFor(model=>model.Id)
-            @Html.HiddenFor(model=>model.TransporteMaritimo_Id)
+        <div class="content-box-wrapper TMContenedorEdit">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.TransporteMaritimo_Id)
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.ContenedorMaritimo_Id)<br />
                 @Html.DisplayFor(model => model.ContenedorMaritimo_Id)
@@ -37,3 +37,4 @@
         </div>
     </div>
 }
+

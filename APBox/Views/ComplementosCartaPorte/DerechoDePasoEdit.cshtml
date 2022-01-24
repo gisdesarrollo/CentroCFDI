@@ -1,23 +1,23 @@
 ﻿@model API.Operaciones.ComplementoCartaPorte.DerechosDePasos
 
 
-@using (Html.BeginCollectionItem("Mercancias.TransporteFerroviario.DerechosDePasoss"))
+@using (Html.BeginCollectionItem("DerechosDePasoss"))
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
     <div class="content-box mrg20L mrg20R">
         <h3 class="content-box-header bg-default">
             <i class="glyph-icon icon-money"></i>
-            Derechos de Paso 
+            Derechos de Paso
             <div class="header-buttons-separator">
                 <a href="#" class="icon-separator" onclick="removeDetalleTFDPaso(this)">
                     <i class="glyph-icon icon-times font-red"></i>
                 </a>
             </div>
         </h3>
-        <div class="content-box-wrapper TFDPaso">
-            @Html.HiddenFor(model=>model.Id)
-            @Html.HiddenFor(model=>model.TransporteFerroviario_Id)
+        <div class="content-box-wrapper TFDPasoEdit">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.TransporteFerroviario_Id)
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.TipoDerechoDePaso_Id)<br />
                 @Html.DisplayFor(model => model.TipoDerechoDePaso_Id)

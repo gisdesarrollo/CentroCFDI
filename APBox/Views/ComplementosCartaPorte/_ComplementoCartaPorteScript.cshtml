@@ -1,6 +1,6 @@
 ﻿<script>
     $(function () {
-        
+
 
         //ACTIVA CAMPO PARTE TRANSPORTE
         $('#TipoFiguraTransporte').change(function () {
@@ -86,33 +86,42 @@
         });
 
     });
-    //DETALLE MERCANCIAS
+    //checkbox activa pedimento,guias identificacion ,cantidad transportada  y detalle mercancia
     $(function () {
-    /*$('.addPedimento').change(function () {
+    $('.addPedimento').change(function () {
         if ($('.addPedimento').prop('checked')) {
-            $('.divPedimento').show(200);
-            $('.divPedimento').css('display', 'inline');
+            $('.DivPedimento').show(200);
+            $('.DivPedimento').css('display', 'inline');
         } else {
-            $('.divPedimento').hide(200);
+            $('.DivPedimento').hide(200);
         }
     });
 
         $('.addGIdentificacion').change(function () {
             if ($('.addGIdentificacion').prop('checked')) {
-                $('.divGIdentificacion').show(200);
-                $('.divGIdentificacion').css('display', 'inline');
+                $('.GuiasIdentificacionForm').show(200);
+                $('.GuiasIdentificacionForm').css('display', 'inline');
             } else {
-                $('.divGIdentificacion').hide(200);
+                $('.GuiasIdentificacionForm').hide(200);
             }
-        });*/
+        });
 
 
         $('.addCTransportada').change(function () {
             if ($('.addCTransportada').prop('checked')) {
-                $('.divCTransportada').show(200);
-                $('.divCTransportada').css('display', 'inline');
+                $('.DivCantidadTransportada').show(200);
+                $('.DivCantidadTransportada').css('display', 'inline');
             } else {
-                $('.divCTransportada').hide(200);
+                $('.DivCantidadTransportada').hide(200);
+            }
+        });
+
+        $('.addDMercancia').change(function () {
+            if ($('.addDMercancia').prop('checked')) {
+                $('.DivDetalleMercancia').show(200);
+                $('.DivDetalleMercancia').css('display', 'inline');
+            } else {
+                $('.DivDetalleMercancia').hide(200);
             }
         });
 
@@ -124,13 +133,13 @@
 
 
             if ($('#TranspInternac').prop('checked') && (ClaveTransporteId === "01" || ClaveTransporteId ==="03")) {
-                $('.DivPedimento').show(200);
+                //$('.DivPedimento').show(200);
                 $('#activaFraccionArancelaria').show(200);
-                $('.DivCantidadTransportada').show(200);
+                //$('.DivCantidadTransportada').show(200);
 
 
             } else {
-                $('.DivPedimento').hide(200);
+                //$('.DivPedimento').hide(200);
                 $('#activaFraccionArancelaria').hide(200);
                 //$('.DivCantidadTransportada').hide(200);
 
@@ -146,14 +155,14 @@
 
             if (ClaveTransporteId === "01" || ClaveTransporteId === "03") {
                 if ($('#TranspInternac').prop('checked')) {
-                    $('.DivPedimento').show(200);
+                    //$('.DivPedimento').show(200);
                     $('#activaFraccionArancelaria').show(200);
-                    $('.DivCantidadTransportada').show(200);
+                   // $('.DivCantidadTransportada').show(200);
 
                 } else {
-                    $('.DivPedimento').hide(200);
+                    //$('.DivPedimento').hide(200);
                     $('#activaFraccionArancelaria').hide(200);
-                    $('.DivCantidadTransportada').hide(200);
+                    //$('.DivCantidadTransportada').hide(200);
 
                 }
             }
@@ -214,43 +223,7 @@
         var CTCD = true;
         var message;
 
-        /*var ClaveProdServID = $('#Mercancias_Mercancia_ClaveProdServCP').val();
-        message = "#ClaveProdServID"
-        CPSI = Boolean(ValidaCampos(ClaveProdServID, message));
-        var Descripcion = $('#Mercancias_Mercancia_Descripcion').val();
-        message = "#Descripcion"
-        D = Boolean(ValidaCampos(Descripcion, message));
-        var Cantidad = $('#Mercancias_Mercancia_Cantidad').val();
-        message = "#Cantidad"
-        C = Boolean(ValidaCampos(Cantidad, message));
-        var ClaveUnidadID = $('#Mercancias_Mercancia_ClaveUnidad_Id').val();
-        message = "#ClaveUnidadId"
-        CUI = Boolean(ValidaCampos(ClaveUnidadID, message));
-        var PesoEnKg = $('#Mercancias_Mercancia_PesoEnKg').val();
-        message = "#PesoEnKg"
-        PKG = Boolean(ValidaCampos(PesoEnKg, message));
 
-        //valida check Cantidad Transportada
-        if ($('.addCTransportada').prop('checked')) {
-            var CTCantidad= $('#Mercancias_Mercancia_CantidadTransportada_Cantidad').val();
-            message = "#CTCantidad"
-            CTC = Boolean(ValidaCampos(CTCantidad, message));
-            var CTCveTransporteID = $('#Mercancias_Mercancia_CantidadTransportada_CveTransporte_Id').val();
-            message = "#CveTransporteId"
-            CTCTI = Boolean(ValidaCampos(CTCveTransporteID, message));
-            var CTCveOrigen = $('#Mercancias_Mercancia_CantidadTransportada_UbicacionOrigen_Id').val();
-            message = "#UbicacionOrigenId"
-            CTCO = Boolean(ValidaCampos(CTCveOrigen, message));
-            var CTCveDestino = $('#Mercancias_Mercancia_CantidadTransportada_UbicacionDestino_Id').val();
-            message = "#UbicacionDestinoId"
-            CTCD = Boolean(ValidaCampos(CTCveDestino, message));
-        }
-
-
-        if (!CPSI || !D || !C || !CUI || !PKG || !CTC || !CTCTI || !CTCO || !CTCD ) {
-
-        }
-        else {*/
             //pedimento
             var jsonPedimentos = [];
             $(".Pedimentos").each(function (index, element) {
@@ -309,15 +282,6 @@
                     Moneda: $('#Mercancias_Mercancia_Moneda').val(),
                     FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelarias').val(),
                     UUIDComercioExt: $('#Mercancias_Mercancia_UUIDComecioExt').val(),
-                    /*PPedimento: $('#Mercancias_Mercancia_Pedimentos_Pedimento').val(),
-                    GINumIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_NumeroGuiaIdentificacion').val(),
-                    GIDescripIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_DescripGuiaIdentificacion').val(),
-                    GIPesoIdent: $('#Mercancias_Mercancia_GuiasIdentificacion_PesoGuiaIdentificacion').val(),
-                    CTCantidad: $('#Mercancias_Mercancia_CantidadTransportada_Cantidad').val(),
-                    CTCveTransporteID: $('#Mercancias_Mercancia_CantidadTransportada_CveTransporte_Id').val(),//option:selected
-                    CTCveOrigen: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionOrigen_Id').val(),//option:selected
-                    CTCveDestino: $('#Mercancias_Mercancia_CantidadTransportada_UbicacionDestino_Id').val(),//option:selected
-                    */
                     DEClaveUnidadPesoID: $('#Mercancias_Mercancia_DetalleMercancia_ClaveUnidadPeso_Id').val(),//option:selected
                     DEPesoBruto: $('#pesoBruto').val(),
                     DEPEsoNeto: $('#pesoNeto').val(),
@@ -336,7 +300,7 @@
                     alert("Favor de llenar todos los datos para los detalles");
                 });
             return false;
-        /*}*/
+
         });
     });
 
@@ -350,6 +314,122 @@
         }
         $(elem).parent().parent().parent().remove();
     }
+
+    //DETALLE MERCANCIAS EDITAR
+     $(function () {
+         $('#agregarDetalleMercanciaEdit').click(function () {
+        var contador = $(".mercanciaEdit").size() + 1;
+        $(".contadorMercanciasEdit").replaceWith('<span class="contadorMercanciasEdit font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleMercanciaEdit").on('click', function () {
+        var CPSI = false;
+        var D = false;
+        var C = false;
+        var CUI = false;
+        var PKG = false;
+        var CTC = true;
+        var CTCTI = true;
+        var CTCO = true;
+        var CTCD = true;
+        var message;
+
+
+            //pedimento
+            var jsonPedimentos = [];
+            $(".Pedimentos").each(function (index, element) {
+
+                var Pedimento = $(element).find('#Pedimento').text().trim();
+
+                jsonPedimentos.push({
+                    "Pedimento": Pedimento
+                });
+            });
+            //Guia identificacion
+            var jsonGIdentificacion = [];
+
+            $(".GIdentificacion").each(function (index, element) {
+
+                var NumGuiaIdentificacion = $(element).find('#NumGuiaIdentificacion').text().trim();
+                var DescripGuiaIdentificacion = $(element).find('#DescripGuiaIdentificacion').text().trim();
+                var PesoGuiaIdentificacion = $(element).find('#PesoGuiaIdentificacion').text().trim();
+
+                jsonGIdentificacion.push({
+                    "NumeroGuiaIdentificacion": NumGuiaIdentificacion, "DescripGuiaIdentificacion": DescripGuiaIdentificacion, "PesoGuiaIdentificacion": PesoGuiaIdentificacion
+                });
+            });
+            //Cantidad transportada
+            var jsonCTransportadas = [];
+
+            $(".CTransportadas").each(function (index, element) {
+
+                var Cantidad = $(element).find('#Cantidad').text().trim();
+                var CveTransporte = $(element).find('#CveTransporte').text().trim();
+                var IDOrigen = $(element).find('#IDOrigen').text().trim();
+                var IDDestino = $(element).find('#IDDestino').text().trim();
+
+                jsonCTransportadas.push({
+                    "Cantidad": Cantidad, "CveTransporte_Id": CveTransporte, "IDOrigen": IDOrigen, "IDDestino": IDDestino
+                });
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarMercanciaEdit", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    ClaveProdServID: $('#Mercancias_Mercancia_ClaveProdServCP').val(),//option:selected
+                    ClaveProdSTCCID: $('#Mercancias_Mercancia_ClaveProdSTCC').val(),//option:selected
+                    Descripcion: $('#Mercancias_Mercancia_Descripcion').val(),
+                    Cantidad: $('#Mercancias_Mercancia_Cantidad').val(),
+                    Unidad: $('#Mercancias_Mercancia_Unidad').val(),
+                    ClaveUnidadID: $('#Mercancias_Mercancia_ClavesUnidad').val(),
+                    Dimensiones: $('#Mercancias_Mercancia_Dimensiones').val(),
+                    MaterialPeligorosoSN: $('#Mercancias_Mercancia_MaterialPeligrosos').val(),
+                    MaterialPeligrosoID: $('#Mercancias_Mercancia_ClaveMaterialPeligroso').val(),
+                    DescripcionEmbalaje: $('#Mercancias_Mercancia_DescripEmbalaje option:selected').text(),
+                    TipoEmbalajeID: $('#Mercancias_Mercancia_TipoEmbalaje_Id').val(),
+                    PesoEnKg: $('#Mercancias_Mercancia_PesoEnKg').val(),
+                    ValorMercancia: $('#Mercancias_Mercancia_ValorMercancia').val(),
+                    Moneda: $('#Mercancias_Mercancia_Moneda').val(),
+                    FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelarias').val(),
+                    UUIDComercioExt: $('#Mercancias_Mercancia_UUIDComecioExt').val(),
+                    DEClaveUnidadPesoID: $('#Mercancias_Mercancia_DetalleMercancia_ClaveUnidadPeso_Id').val(),//option:selected
+                    DEPesoBruto: $('#pesoBruto').val(),
+                    DEPEsoNeto: $('#pesoNeto').val(),
+                    DEPesoTara: $('#pesoTara').val(),
+                    DENumPiezas: $('#Mercancias_Mercancia_DetalleMercancia_NumPiezas').val(),
+                    PedimentoArray: jsonPedimentos,
+                    GIdentificacionArray: jsonGIdentificacion,
+                    CTransportadaArray: jsonCTransportadas,
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesMercancias').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+
+        });
+    });
+
+    function removeDetalleMercancia(elem) {
+        var totalU = $(".mercanciaEdit").size();
+        if (totalU > 0) {
+            var contador = $(".mercanciaEdit").size() - 1;
+            $(".contadorMercanciasEdit").replaceWith('<span class="contadorMercanciasEdit font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorMercanciasEdit").replaceWith('<span class="contadorMercanciasEdit font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    /////////////
+
 
 
 
@@ -483,7 +563,7 @@
 
     $(function () {
     $("#agregarDetallePTransporte").on('click', function () {
-        
+
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarPTransporte", "AjaxOperaciones")',
@@ -572,6 +652,65 @@
         $(elem).parent().parent().parent().remove();
     }
 
+
+    //DETALLE TRANSPORTE MARITIMO CONTENEDOR EDITAR
+    $(function () {
+    $('#agregarDetalleTMContenedorEdit').click(function () {
+        var contador = $(".TMContenedorEdit").size() + 1;
+        $(".contadorTMContenedorEdit").replaceWith('<span class="contadorTMContenedorEdit font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+        $("#agregarDetalleTMContenedorEdit").on('click', function () {
+            var MT = false;
+            var CMI = false;
+
+
+            var message;
+            var MatContenedor = $('#Mercancias_TransporteMaritimo_ContenedorM_MatriculaContenedor').val();
+            message = "#MatContenedor";
+            MT = Boolean(ValidaCampos(MatContenedor, message));
+            var ContenedorMaritId = $('#contenedorMaritimo option:selected').val();
+            message = "#ContenedorMaritId";
+            CMI = Boolean(ValidaCampos(ContenedorMaritId, message));
+            if (!MT || !CMI) {
+
+            } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("AgregarTMContenedorEdit", "AjaxOperaciones")',
+                    data: JSON.stringify({
+                        MatContenedor: $('#Mercancias_TransporteMaritimo_ContenedorM_MatriculaContenedor').val(),
+                        ContenedorMaritId: $('#contenedorMaritimo option:selected').val(),//option:selected
+                        NumPrecinto: $('#Mercancias_TransporteMaritimo_ContenedorM_NumPrecinto').val()
+                    }),
+                    dataType: 'html',
+                    contentType: "application/json; charset=utf-8",
+                }).success(function (partialView) {
+                    $('#detallesTMContenedor').append(partialView);
+                })
+                    .fail(function (jqxhr, textStatus, error) {
+                        alert("Favor de llenar todos los datos para los detalles");
+                    });
+                return false;
+            }
+        });
+    });
+
+    function removeDetalleTMContenedor(elem) {
+        var totalU = $(".TMContenedorEdit").size();
+        if (totalU > 0) {
+            var contador = $(".TMContenedorEdit").size() - 1;
+            $(".contadorTMContenedorEdit").replaceWith('<span class="contadorTMContenedorEdit font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorTMContenedorEdit").replaceWith('<span class="contadorTMContenedorEdit font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+    //////////////////////
+
     //DETALLE TRANSPORTE FERROVIARIO DERECHOS DE PASO
     $(function () {
     $('#agregarDetalleTFDPaso').click(function () {
@@ -627,7 +766,63 @@
         }
         $(elem).parent().parent().parent().remove();
     }
+    ///DETALLE TRASNPORTE FERROVIARIO DERECHO DE PASOS EDITAR
+    $(function () {
+    $('#agregarDetalleTFDPasoEdit').click(function () {
+        var contador = $(".TFDPasoEdit").size() + 1;
+        $(".contadorTFDPasoEdit").replaceWith('<span class="contadorTFDPasoEdit font-blue">: ' + contador + '</span >');
+    });
+    });
 
+    $(function () {
+    $("#agregarDetalleTFDPasoEdit").on('click', function () {
+        var TDPI = false;
+        var KP = false;
+
+        var message;
+        var TipoDPasoID = $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso_Id').val();
+        message = "#TipoDerechosDePasoId";
+        TDPI = Boolean(ValidaCampos(TipoDPasoID, message));
+        var KilPagado = $('#Mercancias_TransporteFerroviario_DerechosDePasos_KilometrajePagado').val();
+        message = "#KilPagado";
+        KP = Boolean(ValidaCampos(KilPagado, message));
+
+
+        if (!TDPI || !KP) {
+
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarTFDPasoEdit", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoDPasoID: $('#Mercancias_TransporteFerroviario_DerechosDePasos_TipoDerechoDePaso_Id').val(),//option:selected
+                    KilPagado: $('#Mercancias_TransporteFerroviario_DerechosDePasos_KilometrajePagado').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesTFDPaso').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        }
+        });
+    });
+
+    function removeDetalleTFDPaso(elem) {
+        var totalU = $(".TFDPasoEdit").size();
+        if (totalU > 0) {
+            var contador = $(".TFDPasoEdit").size() - 1;
+            $(".contadorTFDPasoEdit").replaceWith('<span class="contadorTFDPasoEdit font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorTFDPasoEdit").replaceWith('<span class="contadorTFDPasoEdit font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    //////
      //DETALLE TRANSPORTE FERROVIARIO CARRO
     $(function () {
     $('#agregarDetalleTFCarro').click(function () {
@@ -709,6 +904,91 @@
             $(".contadorTFCarro").replaceWith('<span class="contadorTFCarro font-blue">: ' + contador + '</span >');
         } else {
             $(".contadorTFCarro").replaceWith('<span class="contadorTFCarro font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+     //DETALLE TRANSPORTE FERROVIARIO CARRO EDITAR
+    $(function () {
+    $('#agregarDetalleTFCarroEdit').click(function () {
+        var contador = $(".TFCarroEdit").size() + 1;
+
+        $(".contadorTFCarroEdit").replaceWith('<span class="contadorTFCarroEdit font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleTFCarroEdit").on('click', function () {
+        var TCI = false;
+        var MC = false;
+        var GC = false;
+        var TNC = false;
+        var Contenedor = $('.TFContenedor');
+        var message;
+        var TipoCarroID = $('#Mercancias_TransporteFerroviario_Carro_TipoCarro_Id').val();
+        message = "#TFTipoCarroID";
+        TCI = Boolean(ValidaCampos(TipoCarroID, message));
+        var MatriculaCarro = $('#Mercancias_TransporteFerroviario_Carro_MatriculaCarro').val();
+        message = "#TFMatriculaCarro";
+        MC = Boolean(ValidaCampos(MatriculaCarro, message));
+        var GuiaCarro = $('#Mercancias_TransporteFerroviario_Carro_GuiaCarro').val();
+        message = "#TFGuiaCarro";
+        GC = Boolean(ValidaCampos(GuiaCarro, message));
+        var TonNetasCarro = $('#Mercancias_TransporteFerroviario_Carro_ToneladasNetasCarro').val();
+        message = "#TFTNetasCarro";
+        TNC = Boolean(ValidaCampos(TonNetasCarro, message));
+
+        if (!TCI || !MC || !GC || !TNC) {
+
+        } else {
+
+            var jsonCarroContenedor = [];
+
+            $(".TFContenedor").each(function (index, element) {
+
+                var ContenedorId = $(element).find('#ContenedorId').text().trim();
+                var PesoCVacio = $(element).find('#PesoCVacio').text().trim();
+                var PesoNMercancia = $(element).find('#PesoNMercancia').text().trim();
+
+                jsonCarroContenedor.push({
+                    "Contenedor_Id": ContenedorId, "PesoContenedorVacio": PesoCVacio, "PesoNetoMercancia": PesoNMercancia
+                });
+
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarTFCarroEdit", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoCarroID: $('#Mercancias_TransporteFerroviario_Carro_TipoCarro_Id').val(),//option:selected
+                    MatriculaCarro: $('#Mercancias_TransporteFerroviario_Carro_MatriculaCarro').val(),
+                    GuiaCarro: $('#Mercancias_TransporteFerroviario_Carro_GuiaCarro').val(),
+                    TonNetasCarro: $('#Mercancias_TransporteFerroviario_Carro_ToneladasNetasCarro').val(),
+                    ContenedorC: jsonCarroContenedor
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+
+               /* for (var x = 0; x < Contenedor.length; x++) { Contenedor.parent().parent().parent().remove(); }
+                $(".contadorTFContenedor").replaceWith('<span class="contadorTFContenedor font-blue">: ' + 0 + '</span >');*/
+                $('#detallesTFCarro').append(partialView);
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                });
+            return false;
+        }
+        });
+    });
+
+    function removeDetalleTFCarro(elem) {
+        var totalU = $(".TFCarroEdit").size();
+        if (totalU > 0) {
+            var contador = $(".TFCarroEdit").size() - 1;
+            $(".contadorTFCarroEdit").replaceWith('<span class="contadorTFCarroEdit font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorTFCarroEdit").replaceWith('<span class="contadorTFCarroEdit font-blue">');
         }
         $(elem).parent().parent().parent().remove();
     }
@@ -923,7 +1203,7 @@
 
     $(function () {
     $("#agregarDetalleConceptos").on('click', function () {
-       
+
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarConceptos", "AjaxOperaciones")',
@@ -1025,10 +1305,61 @@
         $(elem).parent().parent().parent().remove();
     }
 
+    // DETALLE REMOLQUES EDITAR
 
+     $(function () {
+         $('#agregarDetalleRemolqueAuTranspEdit').click(function () {
+             var RemolqueLegth = $('.RemolqueAutoTranspEdit').length;
+             if (RemolqueLegth < 2) {
+                 var contador = $(".RemolqueAutoTranspEdit").size() + 1;
+                 $(".contadorRemolquesAuTranspEdit").replaceWith('<span class="contadorRemolquesAuTranspEdit font-blue">: ' + contador + '</span >');
+             }
+             });
+    });
+
+    $(function () {
+        $("#agregarDetalleRemolqueAuTranspEdit").on('click', function () {
+            var RemolqueLegth = $('.RemolqueAutoTranspEdit').length;
+            if (RemolqueLegth > 1) {
+                alert("No puedes agregar mas de dos Remolques")
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("AgregarRemolqueEdit", "AjaxOperaciones")',
+                    data: JSON.stringify({
+                        Placa: $('#Mercancias_AutoTransporte_Remolque_Placa').val(),
+                        TipoRemolqueId: $('#Mercancias_AutoTransporte_Remolque_SubTipoRem_Id').val(),
+                        TipoRemolque: $('#Mercancias_AutoTransporte_Remolque_SubTipoRem_Id').text()
+                    }),
+                    dataType: 'html',
+                    contentType: "application/json; charset=utf-8",
+                }).success(function (partialView) {
+                    $('#detallesRemolqueAuTransp').append(partialView);
+                })
+                    .fail(function (jqxhr, textStatus, error) {
+                        alert("Favor de llenar todos los datos para los detalles");
+                    });
+                return false;
+            }
+        });
+    });
+
+    function removeDetalleRemolque(elem) {
+        var totalU = $(".RemolqueAutoTranspEdit").size();
+        if (totalU > 0) {
+            var contador = $(".RemolqueAutoTranspEdit").size() - 1;
+            $(".contadorRemolquesAuTranspEdit").replaceWith('<span class="contadorRemolquesAuTranspEdit font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorRemolquesAuTranspEdit").replaceWith('<span class="contadorRemolquesAuTranspEdit font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
     //Activa datetime input
     $(function () {
-        $('.datetimepicker').datetimepicker({ format: 'DD/MM/YYYY HH:mm' }); // format: 'YYYY/MM/DD HH:mm A'
+        $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY HH:mm'
+            //sideBySide: true
+        }); // format: 'YYYY/MM/DD HH:mm A'
         $('.time').datetimepicker({ format: 'HH:mm:ss' });
     });
 
@@ -1115,12 +1446,12 @@
              if (claveUnidad != "") {
                  $.get("/ComplementosCartaPorte/DatosClaveUnidad", { ClaveUnidad: claveUnidad }, function (data) {
                      if (data.length > 0) {
-                        
+
                          $(div).html("");
                          $.each(data, function (index, row) {
                              $("#Conceptos_Unidad").val(row.Nombre);
                          });
-                         
+
 
                      } else {
                          $(div).html("El dato ingresado no existe");
@@ -1134,13 +1465,13 @@
 
 
          });
-         //conceptos clave produdServCP
+         //conceptos clave produdServ
          $('#Conceptos_ClavesProdServ').on('keyup', function () {
              var dato = $('#Conceptos_ClavesProdServ').val();
              var div = "#ClaveProdServCPConceptos";
              var valid;
              if (dato != "") {
-                 valid = ValidaEntrada(dato, div, "serv");
+                 valid = ValidaEntrada(dato, div, "claveServ");
              } else {
                  $(div).html("");
              }
@@ -1201,91 +1532,268 @@
     }
 
 
-    $(function () {
-        //catalogo impuestos
-        $('#CImpuestoT').change(function () {
-            var ImpuestoT = $(this).val();
-            var TipoImpuesto = "";
-            var base = "";
-            var TImpuesto = "";
-            var TipoFactor = "";
-            var TasaCuota = "";
-            if (ImpuestoT != "") {
-                $.get("/ComplementosCartaPorte/DatosCatalogoImpuesto", { IdImpuesto: ImpuestoT }, function (data) {
-                    if (data.length > 0) {
-                        $.each(data, function (index, row) {
-                            TipoImpuesto = row.TipoImpuesto;
-                            base = $("#TBase").val(row.Base);
-                            TImpuesto = $("#Conceptos_Traslado_Impuesto").val(row.Impuesto);
-                            TipoFactor = $("#Conceptos_Traslado_TipoFactor").val(row.TipoFactor);
-                            TasaCuota = $("#TTasaOCuota").val(row.TasaOCuota);
-                            // $("#TImporte").val(row.Importe);
-                        });
-                        if (TipoImpuesto === "Traslado") {
-                            $("#TBase").val(base);
-                            $("#Conceptos_Traslado_Impuesto").val(TImpuesto);
-                            $("#Conceptos_Traslado_TipoFactor").val(TipoFactor);
-                            $("#TTasaOCuota").val(TasaCuota);
-                        } else {
-                            $("#RBase").val(base);
-                            $("#Conceptos_Retencion_Impuesto").val(TImpuesto);
-                            $("#Conceptos_Retencion_TipoFactor").val(TipoFactor);
-                            $("#RTasaOCuota").val(TasaCuota);
-                        }
+    
 
-                    } else {
-                        $("#TBase").val("");
-                        $("#Conceptos_Traslado_Impuesto").val("");
-                        $("#Conceptos_Traslado_TipoFactor").val("");
-                        $("#TTasaOCuota").val("");
-                        $("#TImporte").val("");
-                    }
-                });
-            } else {
-                $("#TBase").val("");
-                $("#Conceptos_Traslado_Impuesto").val("");
-                $("#Mercancias_Mercancia_Unidad").val("");
-                $("#TTasaOCuota").val("");
-                $("#TImporte").val("");
+    ///SCRIPT CONCEPTOS PARA ACTIVAR DROPDOW Y RELLENAR LOS CAMPOS CONCEPTOS, RETENCIONES Y TRASLADOS
+
+    $(function () {
+        $('#CConcepto').change(function () {
+            var ConceptosClaveProd = $("#CConcepto").val();
+            $("#ClaveProdServCPConceptos").html("");
+            $("#ClaveUnidadConceptoConceptos_ClavesProdServ").html("");
+            cambioImpRet();
+            cambioImpTras();
+
+            consultaConcepto(ConceptosClaveProd);
+        });
+        
+        $("#confDelete").on('click', function () {
+            let text = "¿seguro que deseas eliminarlo?";
+            if (confirm(text) == false) {
+                window.location.href = "../Index";
             }
         });
-        //catalogo conceptos
-        $('#CConcepto').change(function () {
-            var CConcepto = $(this).val();
+        function borrarConceptos() {
+            //eliminar los conceptos ya agregados
+            $(".conceptos").parent().remove();
+            $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">: 0</span >');
+            cambioImpRet();
+            cambioImpTras();
+            $("#total").val("0");
+            $("#subtotal").val("0");
+            $("#TTotal").val("0");
+            $("#RTotal").val("0");
+        }
+        function consultaConcepto(concepto) {
 
-            if (CConcepto != "") {
-                $.get("/ComplementosCartaPorte/DatosCatalogoConceptos", { IdConcepto: CConcepto }, function (data) {
+            if (concepto != "") {
+                $.get("/ComplementosCartaPorte/DatosCatalogoConceptos", { claveProd: concepto }, function (data) {
                     if (data.length > 0) {
                         $.each(data, function (index, row) {
-                            $("#Conceptos_ClavesProdServ").val(row.ClavesProdServ);
-                            $("#Conceptos_ClavesUnidad").val(row.ClavesUnidad);
+
+                            $("#Conceptos_ClavesProdServ").val(row.ClaveProdServ_Id);
+                            $("#Conceptos_ClavesUnidad").val(row.ClaveUnidad_Id);
                             $("#Conceptos_Unidad").val(row.Unidad);
                             $("#Conceptos_Descripcion").val(row.Descripcion);
                             $("#Conceptos_NoIdentificacion").val(row.NoIdentificacion);
                             $("#Conceptos_Cantidad").val(row.Cantidad);
-                            $("#Conceptos_ValorUnitario").val(row.ValoUnitario);
-
+                            $("#Conceptos_ValorUnitario").val(row.ValorUnitario);
+                            $("#Conceptos_Importe").val(row.Importe);
+                            $("#Descuento").val(row.Descuento)
+                            if ($("#tipoComprobante").val() == "I") {
+                                console.log("ImpuestoIdTras: " + row.ImpuestoIdTras + "\nImpuestoIdRet" + row.ImpuestoIdRet);
+                                if (row.ImpuestoIdTras != null) {
+                                    var ImpuestoT = row.ImpuestoIdTras;
+                                    agregarImpuestos(ImpuestoT);
+                                } else {
+                                    cambioImpTras();
+                                }
+                                if (row.ImpuestoIdRet != null) {
+                                    var ImpuestoT = row.ImpuestoIdRet;
+                                    agregarImpuestos(ImpuestoT);
+                                } else {
+                                    cambioImpRet();
+                                }
+                            }
+                            else {
+                                cambioImpTras();
+                                cambioImpRet();
+                            }
                         });
-
-                    } else {
-                        $("#Conceptos_ClavesProdServ").val("");
-                        $("#Conceptos_ClavesUnidad").val("");
-                        $("#Conceptos_Unidad").val("");
-                        $("#Conceptos_Descripcion").val("");
-                        $("#Conceptos_NoIdentificacion").val("");
-                        $("#Conceptos_Cantidad").val("");
-                        $("#Conceptos_ValorUnitario").val("");
                     }
                 });
-            } else {
-                $("#Conceptos_ClavesProdServ").val("");
-                $("#Conceptos_ClavesUnidad").val("");
-                $("#Conceptos_Unidad").val("");
-                $("#Conceptos_Descripcion").val("");
-                $("#Conceptos_NoIdentificacion").val("");
-                $("#Conceptos_Cantidad").val("");
-                $("#Conceptos_ValorUnitario").val("");
             }
+        }
+        function cambioImpRet() {
+            $("#RBase").val("0.00");
+            $("#Conceptos_Retencion_Impuesto").val("001").change();;
+            $("#Conceptos_Retencion_TipoFactor").val("Tasa").change();;
+            $("#RTasaOCuota").val("0.00");
+            $("#RImporte").val("0");
+            $("#RTotal").val("0");
+
+        }
+        function cambioImpTras() {
+            $("#TBase").val("0.00");
+            $("#Conceptos_Traslado_Impuesto").val("001").change();
+            $("#Conceptos_Traslado_TipoFactor").val("Tasa").change();;
+            $("#TTasaOCuota").val("0.00");
+            $("#TImporte").val("0");
+            $("#TTotal").val("0");
+        }
+
+        $('#CImpuestoT').change(function () {
+            var ImpuestoT = $(this).val();
+            agregarImpuestos(ImpuestoT);
+        });
+        $('#CImpuestoR').change(function () {
+            var ImpuestoT = $(this).val();
+            agregarImpuestos(ImpuestoT);
+        });
+        $("#Conceptos_Importe").change(function () {
+            //Retencion
+            cambioimporte();
+        });
+
+    });
+    function cambioimporte() {
+        
+        $("#RBase").val(($("#RBaseP").val() * $("#Conceptos_Importe").val()) / 100);
+        var RBase = parseFloat($('#RBase').val());
+        var RTasaOCuota = parseFloat($('#RTasaOCuota').val());
+        if ($('#RBase').val() === "") {
+            RBase = 0;
+
+        }
+        if ($('#RTasaOCuota').val() === "") {
+            RTasaOCuota = 0;
+        }
+        
+        var TotalRet = (RBase * RTasaOCuota);
+        
+        $('#RImporte').val(TotalRet);
+
+        //traslado
+        $("#TBase").val(($("#TBaseP").val() * $("#Conceptos_Importe").val()) / 100);
+        var TBase = parseFloat($('#TBase').val());
+        var TTasaOCuota = parseFloat($('#TTasaOCuota').val());
+        if ($('#TBase').val() === "") {
+            TBase = 0;
+
+        }
+        if ($('#TTasaOCuota').val() === "") {
+            TTasaOCuota = 0;
+        }
+        
+        var TotalTras = (TBase * TTasaOCuota);
+        $('#TImporte').val(TotalTras);
+    }
+
+    function agregarImpuestos(ImpuestoT) {
+        console.log("impuesto: " + ImpuestoT);
+        var TipoImpuesto = "";
+        var base = "";
+        var basePor = "";
+        var TImpuesto = "";
+        var TipoFactor = "";
+        var TasaCuota = "";
+        var Importe = "";
+        if (ImpuestoT != "") {
+            $.get("/ComplementosCartaPorte/DatosCatalogoImpuesto", { IdImpuesto: ImpuestoT }, function (data) {
+                console.log("data l: " + data.length);
+
+                if (data.length > 0) {
+                    $.each(data, function (index, row) {
+                        TipoImpuesto = row.TipoImpuesto;
+                        base = (row.Base * $("#Conceptos_Importe").val()/100);
+                        console.log("b= " + base + "base= " + row.Base + "importe= " + $("#Conceptos_Importe").val());
+                        basePor = row.Base;
+                        TImpuesto = row.Impuesto;
+                        TipoFactor = row.TipoFactor;
+                        TasaCuota = row.TasaOCuota;
+                        Importe = (base * TasaCuota);
+                    });
+                    console.log("impuest: " + TImpuesto + "factor" + TipoFactor);
+                    if (TipoFactor == 0) {
+                        TipoFactor = "Tasa";
+                    } else if (TipoFactor == 1) {
+                        TipoFactor = "Cuota";
+
+                    } else if (TipoFactor == 2) {
+                        TipoFactor = "Exento";
+                    }
+
+                    if (TImpuesto == 1) {
+                        TImpuesto = "001";
+                    } else if (TImpuesto == 2) {
+                        TImpuesto = "002";
+
+                    } else if (TImpuesto == 3) {
+                        TImpuesto = "003";
+                    }
+                    //$("#Conceptos_Traslado_Impuesto").val("002").change();
+
+                    if (TipoImpuesto === "Traslado") {
+                        bT = base;
+                        $("#TBaseP").val(basePor);
+                        $("#TBase").val(base);
+                        $("#Conceptos_Traslado_Impuesto").val(TImpuesto).change();
+                        $("#Conceptos_Traslado_TipoFactor").val(TipoFactor).change();
+                        $("#TTasaOCuota").val(TasaCuota);
+                        $("#TImporte").val(Importe);
+                        //$("#TTotal").val(totalImporteT);
+
+                    } else {
+                        bR = base;
+                        $("#RBaseP").val(basePor);
+                        $("#RBase").val(base);
+                        $("#Conceptos_Retencion_Impuesto").val(TImpuesto).change();
+                        $("#Conceptos_Retencion_TipoFactor").val(TipoFactor).change();
+                        $("#RTasaOCuota").val(TasaCuota);
+                        $("#RImporte").val(Importe);
+                        //$("#RTotal").val(totalImporteR);
+                    }
+                    //cambioimporte();
+
+                } else {
+                    $("#TBaseP").val("0");
+                    $("#TBase").val("0");
+                    $("#Conceptos_Traslado_Impuesto").val("0");
+                    $("#Conceptos_Traslado_TipoFactor").val("0");
+                    $("#TTasaOCuota").val("0");
+                    $("#TImporte").val("0");
+                }
+
+
+
+
+            });
+        }
+    }
+    $(function () {
+        $('#Conceptos_ValorUnitario').on("keyup", function () {
+            calculo();
+            cambioimporte();
+        });
+        $('#Conceptos_Cantidad').on("keyup", function () {
+            calculo();
+            cambioimporte();
+        });
+        function calculo() {
+            var multi = 0;
+            var cantidad = 0;
+
+            var precio = 0;
+            precio = cero($("#Conceptos_ValorUnitario").val());
+            cantidad = cero($("#Conceptos_Cantidad").val());
+            multi = cantidad * precio;
+            console.log("multi: " + multi + " cantidad: " + $("#Conceptos_Cantidad").val() + " precio: " + $("#Conceptos_ValorUnitario").val());
+            $("#Conceptos_Importe").val(multi);
+        }
+
+        function cero(valor) {
+            if (valor == "" || valor == "undefined") {
+                return valor = 0;
+            } else {
+                return parseFloat(valor);
+            }
+        }
+
+        $('#TBaseP').on("keyup", function () {
+            
+            cambioimporte();
+        });
+        $('#TBaseP').change(function () {
+
+            cambioimporte();
+        });
+        $('#RBaseP').on("keyup", function () {
+
+            cambioimporte();
+        });
+        $('#RBaseP').change(function () {
+
+            cambioimporte();
         });
 
     });

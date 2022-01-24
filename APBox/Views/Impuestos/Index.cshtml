@@ -35,6 +35,9 @@
                             @Html.DisplayNameFor(model => model.TipoImpuesto)
                         </th>
                         <th>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.Base)
                         </th>
                         <th>
@@ -45,9 +48,6 @@
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.TasaOCuota)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Importe)
                         </th>
                         <th></th>
                     </tr>
@@ -67,6 +67,9 @@
                                     @Html.DisplayFor(modelItem => item.TipoImpuesto)
                                 </td>
                                 <td>
+                                    @Html.DisplayFor(modelItem => item.Nombre)
+                                </td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.Base)
                                 </td>
                                 <td>
@@ -77,9 +80,6 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TasaOCuota)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Importe)
                                 </td>
                                 <td>
                                     <div class="dropdown">

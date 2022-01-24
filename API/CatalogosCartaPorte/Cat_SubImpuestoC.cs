@@ -17,9 +17,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [DisplayName("Nombre")]
+        public String Nombre { get; set; }
+
         public String TipoImpuesto { get; set; }
 
-        public Decimal Base { get; set; }
+        public int Base { get; set; }
 
         public c_Impuesto Impuesto { get; set; }
 
@@ -36,6 +39,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int SucursalId { get; set; }
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
+
+        [NotMapped]
+        [DisplayName("Catalogo Impuesto")]
+        public string CatImpuesto { get; set; }
     }
 }
 

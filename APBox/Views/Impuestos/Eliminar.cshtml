@@ -30,7 +30,7 @@
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
                     @Html.LabelFor(model => model.TipoImpuesto, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownListFor(model => model.TipoImpuesto, (IEnumerable<SelectListItem>)ViewBag.TImpuesto, "Favor de hacer su selección", new { @class = "form-control", @id = "TipoImpuestoImp" })
+                    @Html.EditorFor(model => model.TipoImpuesto, new { htmlAttributes = new { @class = "form-control", @id = "ClaveProdServ_IdConceptos" } })
                     @Html.ValidationMessageFor(model => model.TipoImpuesto, "", new { @class = "text-danger" })
                     <div id="UnidadConceptosCon" style="color:red;"></div>
                 </div>

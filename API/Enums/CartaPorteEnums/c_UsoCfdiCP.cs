@@ -6,73 +6,75 @@ using System.Threading.Tasks;
 
 namespace API.Enums.CartaPorteEnums
 {
-   public enum c_UsoCfdiCP
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.sat.gob.mx/sitio_internet/cfd/catalogos")]
+    public enum c_UsoCfdiCP
     {
 
         /// <remarks/>
-        G01,
+        G01 = 0,
 
         /// <remarks/>
-        G02,
+        G02 = 1,
 
         /// <remarks/>
-        G03,
+        G03 = 2,
 
         /// <remarks/>
-        I01,
+        I01 = 3,
 
         /// <remarks/>
-        I02,
+        I02 = 4,
 
         /// <remarks/>
-        I03,
+        I03 = 5,
 
         /// <remarks/>
-        I04,
+        I04 = 6,
 
         /// <remarks/>
-        I05,
+        I05 = 7,
 
         /// <remarks/>
-        I06,
+        I06 = 8,
 
         /// <remarks/>
-        I07,
+        I07 = 9,
 
         /// <remarks/>
-        I08,
+        I08 = 10,
 
         /// <remarks/>
-        D01,
+        D01 = 11,
 
         /// <remarks/>
-        D02,
+        D02 = 12,
 
         /// <remarks/>
-        D03,
+        D03 = 13,
 
         /// <remarks/>
-        D04,
+        D04 = 14,
 
         /// <remarks/>
-        D05,
+        D05 = 15,
 
         /// <remarks/>
-        D06,
+        D06 = 16,
 
         /// <remarks/>
-        D07,
+        D07 = 17,
 
         /// <remarks/>
-        D08,
+        D08 = 18,
 
         /// <remarks/>
-        D09,
+        D09 = 19,
 
         /// <remarks/>
-        D10,
+        D10 = 20,
 
         /// <remarks/>
-        P01,
+        P01 = 21,
     }
 }

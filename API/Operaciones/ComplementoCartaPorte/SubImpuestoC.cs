@@ -18,6 +18,9 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public String TipoImpuesto { get; set; }
 
+        [DisplayName("Base %")]
+        public int BasePorcentaje { get; set; } 
+
         public Decimal Base { get; set; }
 
         public string Impuesto { get; set; }

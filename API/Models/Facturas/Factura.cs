@@ -82,6 +82,7 @@ namespace API.Models.Facturas
         [DisplayName("Path PDF")]
         public String PathPdf { get; set; }
 
+        public byte[] CodigoQR { get; set; }
         #endregion
 
         #region Objetos
