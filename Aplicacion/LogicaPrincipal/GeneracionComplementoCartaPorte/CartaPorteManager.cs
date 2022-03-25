@@ -26,10 +26,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
     public class CartaPorteManager
     {
         private readonly AplicacionContext _db = new AplicacionContext();
-        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
-        //private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.cer";
-        //private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.key";
-        //private static string passwordKey = "12345678a";
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
+        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.cer";
+        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.key";
+        private static string passwordKey = "12345678a";
         
         public string GenerarComplementoCartaPorte(int sucursalId, int complementoCartaPorteId, string mailAlterno)
         {
@@ -319,8 +319,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             objCfdi.agregarReceptor(
                 complementoCartaPorte.Receptor.Rfc, //Rfc
                 complementoCartaPorte.Receptor.RazonSocial, //Nombre
-                complementoCartaPorte.Receptor.Pais.ToString(), //Residencia fiscal 
-                complementoCartaPorte.Receptor.NumRegIdTrib ?? "", //NumRegIdTrib
+                "",//complementoCartaPorte.Receptor.Pais.ToString(), //Residencia fiscal 
+                "",//complementoCartaPorte.Receptor.NumRegIdTrib ?? "", //NumRegIdTrib
                 complementoCartaPorte.UsoCfdiCP.ToString() //UsoCFDI
             );
 
@@ -399,7 +399,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 }
             }
 
-            
+            decimal sumaTipoFactorI = 0;
+            int totalTasaI = 0;
+            string impuestoI = "";
+            string tipoFactorI = "";
+            decimal tasaCuotaI = 0;
             if (impuestoTraladado || impuestoRetenido)
             {
 
@@ -410,6 +414,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                     error = objCfdi.MensajeError;
                     throw new Exception(string.Join(",", error));
                 }
+                
                 foreach (var impuesto in conceptos)
                 {
 
@@ -427,16 +432,28 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         }
                     }
 
-
+                    
                     if (impuesto.Traslado != null)
                     {
-                        objCfdi.agregarTraslado(
-                           impuesto.Traslado.Impuesto,
-                           impuesto.Traslado.TipoFactor.ToString(),
-                           Convert.ToDouble(impuesto.Traslado.TasaOCuota),
-                           Convert.ToDouble(impuesto.Traslado.Importe)
-                           );
 
+                        if (impuesto.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                        {
+                            sumaTipoFactorI += impuesto.Traslado.Importe;
+                            totalTasaI++;
+
+                            impuestoI = impuesto.Traslado.Impuesto;
+                            tipoFactorI = impuesto.Traslado.TipoFactor.ToString();
+                            tasaCuotaI = impuesto.Traslado.TasaOCuota;
+                        }
+                        else
+                        {
+                            objCfdi.agregarTraslado(
+                               impuesto.Traslado.Impuesto,
+                               impuesto.Traslado.TipoFactor.ToString(),
+                               Convert.ToDouble(impuesto.Traslado.TasaOCuota),
+                               Convert.ToDouble(impuesto.Traslado.Importe)
+                               );
+                        }
                         if (objCfdi.MensajeError != "")
                         {
                             error = objCfdi.MensajeError;
@@ -446,6 +463,15 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 }
             }
 
+            if(sumaTipoFactorI > 0)
+            {
+                objCfdi.agregarTraslado(
+                               impuestoI,
+                               tipoFactorI,
+                               Convert.ToDouble(tasaCuotaI),
+                               Convert.ToDouble(sumaTipoFactorI)
+                               );
+            }
             //CARTA PORTE
 
             objCfdi.agregarCartaPorte20
@@ -547,9 +573,15 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             {
                 if (mercancias.Count > 0)
                 {
+                   
                     foreach (var mercancia in mercancias)
                     {
-                        
+                        //valida clave al obtener si o no o vacio
+                        var validaMPeligroso = _db.ClavesProdServCP.Where(c => c.c_ClaveUnidad == mercancia.ClaveProdServCP).FirstOrDefault();
+                        string valorMaterialPeligroso="";
+                        if(validaMPeligroso.MaterialPeligroso == "0,1") { valorMaterialPeligroso = mercancia.MaterialPeligrosos ? "Sí" : "No"; }
+                        if(validaMPeligroso.MaterialPeligroso == "1") { valorMaterialPeligroso = mercancia.MaterialPeligrosos ? "Sí" : "No"; }
+                        if(validaMPeligroso.MaterialPeligroso == "0") { valorMaterialPeligroso = mercancia.MaterialPeligrosos ? "Sí" : ""; }
                         objCfdi.agregarCartaPorte20_Mercancias_Mercancia
                         (
                             mercancia.ClaveProdServCP, //BienesTransp
@@ -559,7 +591,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                             mercancia.ClavesUnidad, //ClaveUnidad
                             mercancia.Unidad == null ? "" : mercancia.Unidad, //Unidad
                             mercancia.Dimensiones == null ? "" : mercancia.Dimensiones, //Dimensiones
-                            mercancia.MaterialPeligrosos ? "Sí" : "No", //MaterialPeligroso
+                            valorMaterialPeligroso, //MaterialPeligroso
                             mercancia.ClaveMaterialPeligroso == null ? "" : mercancia.ClaveMaterialPeligroso, //CveMaterialPeligroso
                             mercancia.TipoEmbalaje_Id == null ? "" : mercancia.TipoEmbalaje_Id, //Embalaje
                             mercancia.DescripEmbalaje ?? "", //DescripEmbalaje
@@ -991,7 +1023,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             objCfdi.Xml = xml;
 
             //guardar string en un archivo
-           // System.IO.File.WriteAllText(pathXml, xml);
+           System.IO.File.WriteAllText(pathXml, xml);
              objCfdi = Timbra(objCfdi,sucursal);
                
 
@@ -1070,7 +1102,126 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
         }
 
-       
+        public void Cancelar(ComplementoCartaPorte complementoCartaP)
+        {
+            var complementoCP = _db.ComplementoCartaPortes.Find(complementoCartaP.Id);
+            var sucursal = _db.Sucursales.Find(complementoCP.SucursalId);
+
+
+            //Obtenemos el contenido del XML seleccionado.
+            string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoCP.FacturaEmitida.ArchivoFisicoXml);
+            string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
+            if (UUID == "")
+            {
+                throw new Exception(String.Format("El CFDI seleccionado no está timbrado."));
+
+            }
+
+            //Creamos el objeto de cancelación de la DLL.
+            RVCFDI33.RVCancelacion.Cancelacion objCan = new RVCFDI33.RVCancelacion.Cancelacion();
+            //Definimos la ruta en donde se guardará el XML de Solicitud de Cancelación en el disco duro.
+            string ArchivoCancelacion = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCancelados//{0}-{1}-{2}.xml", complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+           
+            //ruta temp cer y key produccion
+            string cerRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.cer", complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+            string keyRuta  = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.key", complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+            System.IO.File.WriteAllBytes(cerRuta, sucursal.Cer);
+            System.IO.File.WriteAllBytes(keyRuta, sucursal.Key);
+            //Creamos el XML de Solicitud de Cancelación.
+            string folioSustitucion = (complementoCartaP.FolioSustitucion == null ? "" : complementoCartaP.FolioSustitucion);
+
+            objCan.crearXMLCancelacionArchivo(cerRuta, keyRuta, sucursal.PasswordKey, UUID,ArchivoCancelacion, complementoCartaP.MotivoCancelacion, folioSustitucion);
+            System.IO.File.Delete(cerRuta);
+            System.IO.File.Delete(keyRuta);
+            if (objCan.CodigoDeError != 0)
+            {
+                throw new Exception(String.Format("Ocurrió un error al crear el XML de Solicitud de Cancelación: " + objCan.MensajeDeError));
+            }
+            
+            //Ejecutamos el proceso de cancelación en el Ambiente de Pruebas.
+            //objCan.enviarCancelacionArchivo(ArchivoCancelacion, "fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            //System.IO.File.Delete(ArchivoCancelacion);
+            //Ejecutamos el proceso de cancelación en el Ambiente de Producción.
+            objCan.enviarCancelacionArchivo(ArchivoCancelacion, sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+            System.IO.File.Delete(ArchivoCancelacion);
+            // Verifica el resultado
+            if (objCan.MensajeDeError == "")
+            {
+                MarcarNoFacturado(complementoCP.Id);
+                //throw new Exception(String.Format("Proceso de cancelación finalizado con éxito."));
+                
+            }
+            else
+            {
+                throw new Exception(String.Format("Ocurrió un error al cancelar el XML: " + objCan.MensajeDeError));
+            }
+            
+        }
+
+        public string DowloadAcuseCancelacion(ComplementoCartaPorte complementoCP)
+        {
+            var sucursal = _db.Sucursales.Find(complementoCP.SucursalId);
+            string xmlCancelacion = null;
+
+            //Obtenemos el contenido del XML seleccionado.
+            string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoCP.FacturaEmitida.ArchivoFisicoXml);
+            string RFCEmisor = LeerValorXML(CadenaXML, "Rfc", "Emisor");
+            string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
+            if (UUID == "")
+            {
+                throw new Exception(String.Format("El CFDI seleccionado no está timbrado."));
+
+            }
+
+            RVCFDI33.WSConsultasCFDReal.Service1 objConsulta = new RVCFDI33.WSConsultasCFDReal.Service1();
+            RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct objCancel = new RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct();
+           // objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, "fgomez", "12121212", RFCEmisor);
+            //consulta a produccion
+            objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, sucursal.Rfc, sucursal.Rfc, RFCEmisor);
+            if(objCancel._ERROR == "")
+            {
+                if(objCancel.xml !=null && objCancel.xml != "")
+                {
+                    xmlCancelacion = objCancel.xml;
+                }
+            }
+            
+            return xmlCancelacion;
+        }
+
+        public string LeerValorXML(string xml, string atributo, string nodo)
+        {
+            //Variables
+            string valor;
+            int inicio = 0;
+            int fin = 0;
+            int indexNodo = 0;
+            atributo = " " + atributo + "=\"";
+            if (!string.IsNullOrEmpty(nodo))
+            {
+                indexNodo = xml.IndexOf(nodo);
+            }
+            if (indexNodo < 0)
+                return "";
+            //Buscamos y leemos el nombre del atributo
+            inicio = xml.IndexOf(atributo, indexNodo) + atributo.Length;
+            if (inicio < atributo.Length)
+            {
+                return "";
+            }
+            fin = xml.IndexOf("\"", inicio);
+            valor = xml.Substring(inicio, fin - inicio);
+            //Regreso de valores si encontro
+            return valor;
+        }
+
+        private void MarcarNoFacturado(int complementoCPId)
+        {
+            var complementoCP = _db.ComplementoCartaPortes.Find(complementoCPId);
+            complementoCP.Status = API.Enums.Status.Cancelado;
+            _db.Entry(complementoCP).State = EntityState.Modified;
+            _db.SaveChanges();
+        }
 
     }
 }

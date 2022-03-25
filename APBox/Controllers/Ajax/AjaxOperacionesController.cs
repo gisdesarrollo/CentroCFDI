@@ -582,12 +582,16 @@ namespace APBox.Controllers.Ajax
 
             return busqueda;
         }
+
+        
         #region PopulaForma
 
         private int ObtenerSucursal()
         {
             return Convert.ToInt32(Session["SucursalId"]);
         }
+
+       
 
         #endregion
 

@@ -34,10 +34,9 @@ namespace APBox.Controllers.Catalogos
         public ActionResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento, int? ImpuestoR, int? ImpuestoT)
         {
 
-            var claveP = _db.claveProdServ.Find(ClaveProdServID);
-            var claveunidad = _db.ClavesUnidad.Find(ClaveUnidadID);
+            
             var pruebaRet = ImpuestoR;
-            var pruebaTras = ImpuestoT;
+           
 
 
             try
@@ -46,10 +45,8 @@ namespace APBox.Controllers.Catalogos
                 {
                     var Conceptos = new Cat_Conceptos()
                     {
-                        ClaveProdServ_Id = ClaveProdServID,
-                        ClavesProdServ = claveP.Descripcion,
-                        ClaveUnidad_Id = ClaveUnidadID,
-                        ClavesUnidad = claveunidad.Nombre,
+                        ClavesProdServ = ClaveProdServID,
+                        ClavesUnidad = ClaveUnidadID,
                         Cantidad = Cantidad,
                         Unidad = Unidad,
                         NoIdentificacion = NoIdentificacion,
@@ -58,8 +55,7 @@ namespace APBox.Controllers.Catalogos
                         Importe = Importe,
                         Descuento = Descuento,
                         SucursalId = ObtenerSucursal(),
-                        //ImpuestoIdTras = ImpuestoT,
-                        //ImpuestoIdRet = ImpuestoR
+                        
                     };
                     _db.Cat_Conceptos.Add(Conceptos);
                     _db.SaveChanges();
@@ -70,10 +66,8 @@ namespace APBox.Controllers.Catalogos
                     {
                         var Conceptos = new Cat_Conceptos()
                         {
-                            ClaveProdServ_Id = ClaveProdServID,
-                            ClavesProdServ = claveP.Descripcion,
-                            ClaveUnidad_Id = ClaveUnidadID,
-                            ClavesUnidad = claveunidad.Nombre,
+                            ClavesProdServ = ClaveProdServID,
+                            ClavesUnidad = ClaveUnidadID,
                             Cantidad = Cantidad,
                             Unidad = Unidad,
                             NoIdentificacion = NoIdentificacion,
@@ -94,10 +88,8 @@ namespace APBox.Controllers.Catalogos
                         {
                             var Conceptos = new Cat_Conceptos()
                             {
-                                ClaveProdServ_Id = ClaveProdServID,
-                                ClavesProdServ = claveP.Descripcion,
-                                ClaveUnidad_Id = ClaveUnidadID,
-                                ClavesUnidad = claveunidad.Nombre,
+                                ClavesProdServ = ClaveProdServID,
+                                ClavesUnidad = ClaveUnidadID,
                                 Cantidad = Cantidad,
                                 Unidad = Unidad,
                                 NoIdentificacion = NoIdentificacion,
@@ -107,8 +99,7 @@ namespace APBox.Controllers.Catalogos
                                 Descuento = Descuento,
                                 SucursalId = ObtenerSucursal(),
                                 ImpuestoIdRet = ImpuestoR
-                                //ImpuestoIdTras = ImpuestoT,
-                                //ImpuestoIdRet = ImpuestoR
+                                
                             };
                             _db.Cat_Conceptos.Add(Conceptos);
                             _db.SaveChanges();
@@ -117,10 +108,8 @@ namespace APBox.Controllers.Catalogos
                         {
                             var Conceptos = new Cat_Conceptos()
                             {
-                                ClaveProdServ_Id = ClaveProdServID,
-                                ClavesProdServ = claveP.Descripcion,
-                                ClaveUnidad_Id = ClaveUnidadID,
-                                ClavesUnidad = claveunidad.Nombre,
+                                ClavesProdServ = ClaveProdServID,
+                                ClavesUnidad = ClaveUnidadID,
                                 Cantidad = Cantidad,
                                 Unidad = Unidad,
                                 NoIdentificacion = NoIdentificacion,
@@ -130,8 +119,7 @@ namespace APBox.Controllers.Catalogos
                                 Descuento = Descuento,
                                 SucursalId = ObtenerSucursal(),
                                 ImpuestoIdTras = ImpuestoT
-                                //ImpuestoIdTras = ImpuestoT,
-                                //ImpuestoIdRet = ImpuestoR
+                                
                             };
                             _db.Cat_Conceptos.Add(Conceptos);
                             _db.SaveChanges();
@@ -213,8 +201,8 @@ namespace APBox.Controllers.Catalogos
 
                 Conceptos = _db.Cat_Conceptos.Find(Id);
 
-                Conceptos.ClaveProdServ_Id = ClaveProdServID;
-                Conceptos.ClaveUnidad_Id = ClaveUnidadID;
+                Conceptos.ClavesProdServ = ClaveProdServID;
+                Conceptos.ClavesUnidad = ClaveUnidadID;
                 Conceptos.Cantidad = Cantidad;
                 Conceptos.Unidad = Unidad;
                 Conceptos.NoIdentificacion = NoIdentificacion;
@@ -298,30 +286,6 @@ namespace APBox.Controllers.Catalogos
         {
             return Convert.ToInt32(Session["GrupoId"]);
         }
-        /*public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }*/
+        
     }
 }

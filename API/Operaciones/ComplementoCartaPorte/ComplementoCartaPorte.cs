@@ -25,6 +25,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public string FormaPago { get; set; }
         [ForeignKeyAttribute("FormaPago")]
         public virtual FormaPagos FormaPagos { get; set; }
+
+        [NotMapped]
+        public string IdFormaPago { get; set; }
         
         [DisplayName("Método de Pago")]
         public c_MetodoPago? MetodoPago { get; set; }
@@ -141,6 +144,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int SucursalId { get; set; }
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
+        
+        [NotMapped]
+        public int IDCliente { get; set; }
 
         [DisplayName("Receptor")]
         [Required(ErrorMessage = "Campo Obligatorio")]
@@ -156,8 +162,9 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public Decimal TotalImpuestoRetenidos { get; set; }
 
-        
+
         //[DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Hora { get; set; }
 
         //[Required(ErrorMessage = "Campo Obligatorio")]
@@ -172,11 +179,21 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("FacturaEmitidaId")]
         public virtual FacturaEmitida FacturaEmitida { get; set; }
 
+        
+
         [NotMapped]
         public bool hidden { get; set; }
 
         [NotMapped]
         public bool Seleccionado { get; set; }
+
+        [NotMapped]
+        [DisplayName("Motivo Cancelación")]
+        public string MotivoCancelacion { get; set; }
+
+        [NotMapped]
+        [DisplayName("Folio sustitución")]
+        public string FolioSustitucion { get; set; }
         #endregion
 
 

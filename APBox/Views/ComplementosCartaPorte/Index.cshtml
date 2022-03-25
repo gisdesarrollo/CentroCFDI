@@ -13,15 +13,42 @@
             <div class="col-lg-6">
                 <h2>Complementos de Recepción de CartaPorte</h2>
             </div>
-            <div class="col-sm-2">
-                @Html.EnumDropDownListFor(model => model.Mes, new { htmlAttributes = new { @class = "clean form-control" } })
-                @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+            <br />
+            <div class="clearfix"></div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control date" } })
+                @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
             </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control date" } })
+                @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.TipoDeComprobante, (IEnumerable<SelectListItem>)ViewBag.TipoDeComprobante, "Todas", new { @class = "form-control" })
 
-            <div class="col-sm-2">
-                @Html.EditorFor(model => model.Anio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Anio, "", new { @class = "text-danger" })
             </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.ClaveTransporteId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.ClaveTransporteId, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Todas", new { @class = "form-control" })
+
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-control" })
+
+            </div>
+            @*<div class="col-sm-2">
+                    @Html.EnumDropDownListFor(model => model.Mes, new { htmlAttributes = new { @class = "clean form-control" } })
+                    @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-sm-2">
+                    @Html.EditorFor(model => model.Anio, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Anio, "", new { @class = "text-danger" })
+                </div>*@
 
             <div class="col-lg-1">
                 <button class="btn btn-alt btn-primary float-left multiple" type="submit" value="Filtrar" name="actionName">
@@ -36,156 +63,227 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a onclick="location.href='@Url.Action("Create", "ComplementosCartaporte")';return false;">Manual</a></li>
-                        <li><a onclick="location.href='@Url.Action("Cargar", "ComplementosCartaPorte")';return false;">Layout</a></li>
                     </ul>
                 </div>
             </div>
 
         </div>
     </div>
+    <div id="cancelar-view"></div>
+    if (Model.ComplementosCartaPorte != null && Model.ComplementosCartaPorte.Count > 0)
+    {
+        <div class="panel">
+            <div class="panel-body">
+                <h3 class="title-hero">
+                    CFDi Generados con complemento de Carta Porte
+                </h3>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <table class="table table-condensed ">
 
-    <div class="panel">
-        <div class="panel-body">
-            <h3 class="title-hero">
-                CFDi Generados con complemento de Carta Porte
-            </h3>
-            <button class="btn btn-alt btn-primary float-left btn-xs" type="" value="" name="">
-                <span> Timbrar Seleccionados </span>
-            </button>
-            <div class="clearfix"></div>
-            <div class="row">
-                <table class="table table-condensed ">
-
-                    <thead>
-                        <tr>
-                            <th>
-                                Seleccionado
-                            </th>
-                            <th>
-                                RFCReceptor
-                            </th>
-                            <th>
-                                Folio
-                            </th>
-                            <th>
-                                Tipo Comprobante
-                            </th>
-                            <th>
-                                Tipo Transporte
-                            </th>
-                            <th>
-                                Fecha del Documento
-                            </th>
-                            <th>
-                                Estado
-                            </th>
-                            <th>
-                                Opciones
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.ComplementosCartaPorte.Count; i++)
-                        {
-                        <tr>
-                            <td>
-                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Id)
-                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FormaPago)
-                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].FechaDocumento)
-                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].TipoDeComprobante)
-                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].ClaveTransporteId)
-                                @Html.HiddenFor(model => model.ComplementosCartaPorte[i].Receptor.Rfc)
-
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Receptor.Rfc)
-                            </td>
-                            <td>
-                                @if (Model.ComplementosCartaPorte[i].FacturaEmitida != null)
-                                {
-                                @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FacturaEmitida.Folio);
-                                }
-                                else
-                                {
-                                     @Html.Raw("Pendiente")}
-                            </td>
-                            <td>
-                                @if (Model.ComplementosCartaPorte[i].TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
-                                {
-                                    @Html.Raw("Ingreso")
-                                }
-                                else
-                                {
-                                    @Html.Raw("Tralado")
-                                }
-                            </td>
-                            <td>
-                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "01")
-                                {@Html.Raw("AutoTransporte")}
-                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "02")
-                                {@Html.Raw("Transporte Maritimo")}
-                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "03")
-                                {@Html.Raw("Transporte Aereo")}
-                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "04")
-                                {@Html.Raw("Transporte Ferroviario")}
-                                @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "05")
-                                {@Html.Raw("Ducto")}
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FechaDocumento)
-                            </td>
-                            <td>
-                                @if (Model.ComplementosCartaPorte[i].Generado == true)
-                                {
-                                    if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
-                                    {
-                                        <p><span class="fa fa-clipboard-check font-green"></span> Generado</p> }
-                                    else
-                                    {
-                                        <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
-                                    }
-                                }
-                                else
-                                {
-                                    <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
-                                }
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="fa fa-cog"></span> Opciones
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        @if (Model.ComplementosCartaPorte[i].Generado)
+                        <thead>
+                            <tr>
+                                <th>
+                                    RFCReceptor
+                                </th>
+                                <th>
+                                    Folio
+                                </th>
+                                <th>
+                                    Tipo Comprobante
+                                </th>
+                                <th>
+                                    Tipo Transporte
+                                </th>
+                                <th>
+                                    Ubicaciones
+                                </th>
+                                <th>
+                                    Fecha del Documento
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+                                <th>
+                                    Opciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.ComplementosCartaPorte.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Receptor.Rfc)
+                                    </td>
+                                    <td>
+                                        @if (Model.ComplementosCartaPorte[i].FacturaEmitida != null)
                                         {
-                                            if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
-                                            {
-                                                <li>@Html.ActionLink("Descargar XML", "Descargar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
-                                                <li>@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
-                                                <li>@Html.ActionLink("Cancelar", "", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-red", onclick = "return confirm('¿Está seguro que desea cancelar este CFDI?');" })</li>
-                                            }
-                                            else
-                                            {
-                                                @*<li>@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>*@
-                                            }
-
+                                            @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FacturaEmitida.Folio);
                                         }
                                         else
                                         {
-                                            <li>@Html.ActionLink("Descargar", "", new { }, new { @class = "font-size-12" })</li>
-                                            <li>@Html.ActionLink("Editar Carta Porte", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
-                                            <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-green" })</li>
-                                            <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { onclick = "return confirm('Are you sure you wish to delete this complemento?');" } )</li>
+                                            @Html.Raw("Pendiente")}
+                                    </td>
+                                    <td>
+                                        @if (Model.ComplementosCartaPorte[i].TipoDeComprobante == CFDI.API.Enums.CFDI33.c_TipoDeComprobante.I)
+                                        {
+                                            @Html.Raw("Ingreso")
                                         }
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
+                                        else
+                                        {
+                                            @Html.Raw("Tralado")
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "01")
+                                        {@Html.Raw("AutoTransporte")}
+                                        @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "02")
+                                        {@Html.Raw("Transporte Maritimo")}
+                                        @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "03")
+                                        {@Html.Raw("Transporte Aereo")}
+                                        @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "04")
+                                        {@Html.Raw("Transporte Ferroviario")}
+                                        @if (Model.ComplementosCartaPorte[i].ClaveTransporteId == "05")
+                                        {@Html.Raw("Ducto")}
+                                    </td>
+                                    <td>
+                                        @if (Model.ComplementosCartaPorte[i].Ubicaciones != null)
+                                        {
+                                            for (int x = 0; x < Model.ComplementosCartaPorte[i].Ubicaciones.Count(); x++)
+                                            {
 
+
+                                                if (Model.ComplementosCartaPorte[i].Ubicaciones[x].TipoUbicacion.Equals("Origen"))
+                                                {
+                                                    @Html.Raw("Origen: ");
+                                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Ubicaciones[x].Domicilio.Pais);
+                                                    @Html.Raw(" - ");
+                                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Ubicaciones[x].Domicilio.Estado);
+                                                    @Html.Raw(" - ");
+                                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Ubicaciones[x].NombreRemitenteDestinatario);
+                                                    <br />
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw("Destino: ");
+                                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Ubicaciones[x].Domicilio.Pais);
+                                                    @Html.Raw(" - ");
+                                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Ubicaciones[x].Domicilio.Estado);
+                                                    @Html.Raw(" - ");
+                                                    @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].Ubicaciones[x].NombreRemitenteDestinatario);
+                                                }
+
+                                            }
+
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => Model.ComplementosCartaPorte[i].FechaDocumento)
+                                    </td>
+                                    <td>
+                                        @if (Model.ComplementosCartaPorte[i].Generado == true)
+                                        {
+                                            if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
+                                            {
+                                                <p><span class="fa fa-clipboard-check font-green"></span> Generado</p> }
+                                            else
+                                            {
+                                                <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-cog"></span> Opciones
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                @if (Model.ComplementosCartaPorte[i].Generado)
+                                                {
+                                                    if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
+                                                    {
+                                                        <li>@Html.ActionLink("Descargar XML", "Descargar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
+                                                        <li>@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
+                                                        <li class="list-group-item dcancelar" data-id="@Model.ComplementosCartaPorte[i].Id">Cancelar</li>
+
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
+                                                    }
+
+                                                }
+                                                else
+                                                {
+
+                                                    <li>@Html.ActionLink("Editar Carta Porte", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12" })</li>
+                                                    <li>@Html.ActionLink("Timbrar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "font-size-12 font-green" })</li>
+                                                    <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { onclick = "return confirm('Are you sure you wish to delete this complemento?');" })</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
         </div>
-    </div>
+    }
 }
+
+<script>
+     //activa modal cancelar carta porte
+    $(function () {
+        var cancelarModal = $('#cancelar-view');
+        $(".dcancelar").on("click", function () {
+            var Id = $(this).attr("data-id");
+            var url = "@Url.Action("Cancelar", "ComplementosCartaPorte")/" + Id;
+            $.get(url).done(function (data) {
+                cancelarModal.html(data);
+                cancelarModal.find('.modal').modal('show');
+            })
+
+        })
+
+        cancelarModal.on('click', '#submit-cancelar', function (event) {
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var url =  "@Url.Action("Cancelar", "ComplementosCartaPorte")/"
+            var sendData = form.serialize();
+            $.post(url, sendData).done(function (data) {
+                cancelarModal.find('.modal').modal('hide');
+                ValidaEntradaModal();
+               cancelarModal.html(data);
+                cancelarModal.find('.modal').modal('show');
+
+            })
+        })
+
+        cancelarModal.on('click', '#close-modal', function(event){
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            var form = $(this).parents('.modal').find('form');
+            var messageError = form.attr('error-data');
+            var messageSuccess = form.attr('success-data');
+            if (messageError == undefined && messageSuccess != undefined) {
+                window.location.href = "/ComplementosCartaPorte"
+            }
+           
+        })
+         function ValidaEntradaModal() {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }
+        
+    });
+</script>

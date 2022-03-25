@@ -24,6 +24,7 @@ using System.Web.Services.Description;
 using System.Xml.Serialization;
 using System.IO;
 using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
+using System.Text;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -39,30 +40,42 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
         public ActionResult Index()
         {
-            ViewBag.Mensaje = null;
-            var ComplementoCartaPorteModel = new ComplementosCartaPorteModel()
+            PopulaTiposDeComprobante();
+            PopulaTransporte();
+            PopulaEstatus();
+            var complementoCartaPorteModel = new ComplementosCartaPorteModel()
             {
                 Mes = (Meses)(DateTime.Now.Month),
                 Anio = DateTime.Now.Year
             };
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
-            var fechaFinal = DateTime.Now;
-            ComplementoCartaPorteModel.ComplementosCartaPorte = _acondicionarComplementosCartaPorte.Filtrar(fechaInicial, fechaFinal, ObtenerSucursal());
 
-            return View(ComplementoCartaPorteModel);
+            
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59); ;
+            complementoCartaPorteModel.FechaInicial = fechaInicial;
+            complementoCartaPorteModel.FechaFinal = fechaFinal;
+             
+             complementoCartaPorteModel.ComplementosCartaPorte = _acondicionarComplementosCartaPorte.Filtrar(fechaInicial, fechaFinal,null,null,false, ObtenerSucursal());
+
+            return View(complementoCartaPorteModel);
         }
 
         [HttpPost]
         public ActionResult Index(ComplementosCartaPorteModel complementosCPorteModel, string actionName)
         {
+            PopulaTiposDeComprobante();
+            PopulaTransporte();
+            PopulaEstatus();
             if (actionName == "Filtrar")
             {
-                var dia = DateTime.DaysInMonth(complementosCPorteModel.Anio, (int)complementosCPorteModel.Mes);
+                DateTime fechaI = complementosCPorteModel.FechaInicial;
+                DateTime fechaF = complementosCPorteModel.FechaFinal;
+               
+                var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+                var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
 
-                var fechaInicial = new DateTime(complementosCPorteModel.Anio, (int)complementosCPorteModel.Mes, 1, 0, 0, 0);
-                var fechaFinal = new DateTime(complementosCPorteModel.Anio, (int)complementosCPorteModel.Mes, dia, 23, 59, 59);
-
-                complementosCPorteModel.ComplementosCartaPorte = _acondicionarComplementosCartaPorte.Filtrar(fechaInicial, fechaFinal, ObtenerSucursal());
+                complementosCPorteModel.ComplementosCartaPorte = _acondicionarComplementosCartaPorte.Filtrar(fechaInicial, fechaFinal,
+                    complementosCPorteModel.TipoDeComprobante,complementosCPorteModel.ClaveTransporteId,complementosCPorteModel.Estatus, ObtenerSucursal());
             }
             return View(complementosCPorteModel);
         }
@@ -111,6 +124,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFormaPago();
             Random random = new Random();
             var randomNumber = random.Next(0,1000000).ToString("D6");
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            var cliente = _db.Clientes.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
             var ComplementoCartaPorte = new ComplementoCartaPorte()
             {
                 Generado = false,
@@ -118,16 +133,17 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 FechaDocumento = DateTime.Now,
                 Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
                 SucursalId = ObtenerSucursal(),
+                IDCliente = cliente.Id,
                 Version = "2.0",
                 TotalDistRec = 0,
                 Moneda = c_Moneda.MXN,
+                TipoCambio = "1",
                 hidden = false,
                 Conceptos = new Conceptos()
                 {
                     Traslado = new TrasladoCP()
                     {
                         TipoImpuesto = "Traslado",
-                        //Impuesto = c_Impuesto.Iva,
                         TipoFactor = c_TipoFactor.Tasa,
                         Base = 0,
                         TasaOCuota = 0,
@@ -136,7 +152,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     Retencion = new RetencionCP()
                     {
                         TipoImpuesto = "Retencion",
-                        //Impuesto = c_Impuesto.Iva,
                         TipoFactor = c_TipoFactor.Tasa,
                         Base = 0,
                         TasaOCuota = 0,
@@ -146,6 +161,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 },
                 Mercancias = new Mercancias
                 {
+                    ClaveUnidadPeso_Id = "KGM",
                     Mercancia = new Mercancia()
                     {
                         Moneda = c_Moneda.MXN,
@@ -306,6 +322,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                    
                 }
                 complementoCartaPorte.TotalDistRec = 0;
+                complementoCartaPorte.Subtotal = 0;
+                complementoCartaPorte.Total = 0;
                 _acondicionarComplementosCartaPorte.CargaInicial(ref complementoCartaPorte);
                 
                 
@@ -566,6 +584,22 @@ namespace APBox.Controllers.ComplementosCartaPorte
                         _db.SaveChanges();
                     }
                 }
+
+                //transporte ferroviario derecho de paso
+                if(derechoPasos != null)
+                {
+                    if(derechoPasos.Count > 0)
+                    {
+                        foreach(var dPaso in derechoPasos)
+                        {
+                            dPaso.TransporteFerroviario = null;
+                            dPaso.TransporteFerroviario_Id = complementoCartaPorte.Mercancias.TransporteFerroviario.Id;
+                            _db.DerechoDePasos.Add(dPaso);
+                        }
+                        _db.SaveChanges();
+                    }
+                }
+                
                     //transporte ferroviario carro contenedor
                     for (int x = 0; x < carro.Count; x++)
                     {
@@ -676,8 +710,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ComplementoCartaPorte complementoCP = _db.ComplementoCartaPortes.Find(id);
-            //complementoCP = _acondicionarComplementosCartaPorte.cargaRelaciones(complementoCP);
-            complementoCP.Mercancias.Mercanciass.ForEach(c => c.Mercancias = null);
+            //complementoCP.Mercancias.Mercanciass.ForEach(c => c.Mercancias = null);
 
 
             if (complementoCP.TipoDeComprobante == c_TipoDeComprobante.I)
@@ -724,8 +757,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFormaPago();
             Random random = new Random();
             var randomNumber = random.Next(0, 1000000).ToString("D6");
-
-            
+            //
+            var sucursal = _db.Sucursales.Find(complementoCP.Sucursal.Id);
+            var cliente = _db.Clientes.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
+            complementoCP.IDCliente = cliente.Id;
+            complementoCP.IdFormaPago = complementoCP.FormaPago;
             complementoCP.Conceptos = new Conceptos()
             {
                 Traslado = new TrasladoCP()
@@ -771,29 +807,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     PesoGuiaIdentificacion = 0
                 }
             };
-            /*complementoCP.Mercancias.TransporteFerroviario = new TransporteFerroviario()
-            {
-                DerechosDePasos = new DerechosDePasos()
-                {
-                    KilometrajePagado = 0
-                },
-                Carro = new Carro()
-                {
-                    ToneladasNetasCarro = 0,
-                    ContenedorC = new ContenedorC()
-                    {
-                        PesoContenedorVacio = 0,
-                        PesoNetoMercancia = 0
-                    }
-                }
-            };
-            complementoCP.Mercancias.TransporteMaritimo = new TransporteMaritimo()
-                {
-                    ContenedorM = new ContenedorM() { }
-                };
-
-            */
-
+            
             complementoCP.Ubicacion = new Ubicacion
 
             {
@@ -1005,7 +1019,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     complementoCartaPorteDb.Conceptoss = null;
                     complementoCartaPorteDb.Ubicaciones = null;
                     complementoCartaPorteDb.Mercancias.Mercanciass = null;
-                    complementoCartaPorte.Mercancias.Mercancia = null;
+                   // complementoCartaPorte.Mercancias.Mercancia = null;
                     complementoCartaPorte.FiguraTransporte = null;
                 if (complementoCartaPorteDb.Mercancias.TransporteMaritimo != null && complementoCartaPorteDb.Mercancias.TransporteMaritimo_Id != null)
                 {
@@ -1094,7 +1108,63 @@ namespace APBox.Controllers.ComplementosCartaPorte
             return new FileStreamResult(Response.OutputStream, "application/pdf");
         }
 
+        
+        public ActionResult Cancelar(int id)
+        {
+            PopulaMotivoCancelacion();
+            ViewBag.Error = null;
+            ViewBag.Success = null;
+            var complementoCP = _db.ComplementoCartaPortes.Find(id);
+            return PartialView("~/Views/ComplementosCartaPorte/_Cancelacion.cshtml", complementoCP);
+        }
 
+        [HttpPost]
+        public ActionResult Cancelar(ComplementoCartaPorte complementoCP)
+        {
+            PopulaMotivoCancelacion();
+            string error = null;
+            var complementoCartaP = _db.ComplementoCartaPortes.Find(complementoCP.Id);
+            complementoCartaP.FolioSustitucion = complementoCP.FolioSustitucion;
+            complementoCartaP.MotivoCancelacion = complementoCP.MotivoCancelacion;
+            try
+            {
+                _cartaPorteManager.Cancelar(complementoCP);
+               
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+
+            }
+            if (error == null)
+            {
+                ViewBag.Success = "Proceso de cancelación finalizado con éxito.";
+                ViewBag.Error = null;
+            }
+            else
+            {
+                ViewBag.Error = error;
+                ViewBag.Success = null;
+            }
+            return PartialView("~/Views/ComplementosCartaPorte/_Cancelacion.cshtml", complementoCartaP);
+        }
+
+        public ActionResult DescargarAcuse(int id)
+        {
+            var complementoCP = _db.ComplementoCartaPortes.Find(id);
+           string xmlCancelacion =  _cartaPorteManager.DowloadAcuseCancelacion(complementoCP);
+            byte[] byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
+            MemoryStream ms = new MemoryStream(byteXml, 0, 0, true, true);
+            string nameArchivo = complementoCP.FacturaEmitida.Serie + "-" + complementoCP.FacturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");
+            Response.Buffer = true;
+            Response.Clear();
+            Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.End();
+
+            return new FileStreamResult(Response.OutputStream, "application/xml");
+        }
 
         public ActionResult Delete(int? id)
         {
@@ -1175,18 +1245,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
             return Json(Clave, JsonRequestBehavior.AllowGet);
         }
 
-        /*public JsonResult DatosCatalogoConcepto(int  IdConcepto)
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            var Clave = popularDropDowns.PopulaDatosConceptos(IdConcepto);
-            return Json(Clave, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult DatosCatalogoImpuesto(int IdImpuesto)
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            var Clave = popularDropDowns.PopulaDatosImpuestos(IdImpuesto);
-            return Json(Clave, JsonRequestBehavior.AllowGet);
-        }*/
         public JsonResult DatosCatalogoConceptos(int claveProd)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -1207,6 +1265,15 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
         #region Popula Forma
 
+        private void PopulaMotivoCancelacion()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "01 - Comprobante Emitido con errores con relación", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "02 - Comprobante emitido con errores sin relacion", Value = "02" });
+            items.Add(new SelectListItem { Text = "03 - No se llevo a cabo la operación", Value = "03" });
+            items.Add(new SelectListItem { Text = "04 - Operación nominativa relacionada en una factura global", Value = "04" });
+            ViewBag.motivoCancelacion = items;
+        }
         private int ObtenerGrupo()
         {
 
@@ -1318,6 +1385,13 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.TipoDeComprobante = (popularDropDowns.PopulaTipoDeComprobante());
         }
 
+        private void PopulaEstatus()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Generado", Value = "true"});
+            items.Add(new SelectListItem { Text = "Pendiente", Value = "false" });
+            ViewBag.StatusCP = items;
+        }
         private void PopulaTiposUbicacion()
         {
             List<SelectListItem> items = new List<SelectListItem>();

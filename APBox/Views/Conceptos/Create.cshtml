@@ -3,8 +3,18 @@
     ViewBag.Title = "Create";
 }
 @Html.Partial("_ComplementoConceptos")
+@Html.Partial("_Modal")
 <div id="page-title">
-    <h2>Crear Concepto de Carta Porte</h2>
+    <div class="row">
+        <div class="col-lg-8 col-md-6">
+            <h2>Crear Concepto</h2>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
+                <span class="fa fa-question-circle"></span>
+            </button>
+        </div>
+    </div>
 </div>
 
 <div class="panel">
@@ -13,16 +23,16 @@
             <div class="clearfix"></div>
 
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ClaveProdServ_Id, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ClaveProdServ_Id, new { htmlAttributes = new { @class = "form-control", @id = "ClaveProdServ_IdConceptos" } })
-                @Html.ValidationMessageFor(model => model.ClaveProdServ_Id, "", new { @class = "text-danger" })
+                @Html.LabelFor(model => model.ClavesProdServ, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ClavesProdServ, new { htmlAttributes = new { @class = "form-control", @id = "ClaveProdServ_IdConceptos" } })
+                @Html.ValidationMessageFor(model => model.ClavesProdServ, "", new { @class = "text-danger" })
                 <div id="ClaveProdServcon" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.ClaveUnidad_Id, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ClaveUnidad_Id, new { htmlAttributes = new { @class = "form-control", @id = "ClavesUnidadConc" } })
-                @Html.ValidationMessageFor(model => model.ClaveUnidad_Id, "", new { @class = "text-danger" })
+                @Html.LabelFor(model => model.ClavesUnidad, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.ClavesUnidad, new { htmlAttributes = new { @class = "form-control", @id = "ClavesUnidadConc" } })
+                @Html.ValidationMessageFor(model => model.ClavesUnidad, "", new { @class = "text-danger" })
                 <div id="ClaveUnidadConcepto" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">

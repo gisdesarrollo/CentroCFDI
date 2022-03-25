@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using API.Enums.CartaPorteEnums;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
@@ -83,7 +84,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String DescripcionPermSCT { get; set; }
 
         [DisplayName("Residencia Fiscal del Embarcador")]
-        public c_Pais ResidenciaFiscalEmbarc { get; set; }
+        public c_PaisCP ResidenciaFiscalEmbarc { get; set; }
 
         /*[DisplayName("Residencia Fiscal del Transportista")]
         public c_Pais ResidenciaFiscalTranspor { get; set; }*/

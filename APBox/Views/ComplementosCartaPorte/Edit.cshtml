@@ -18,6 +18,8 @@
             @Html.HiddenFor(model => model.Status)
             @Html.HiddenFor(model => model.Generado)
             @Html.HiddenFor(model => model.SucursalId)
+            @Html.HiddenFor(model => model.IDCliente)
+            @Html.HiddenFor(model => model.IdFormaPago)
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.FacturaEmitidaId)
             @Html.HiddenFor(model => model.Mercancias_Id)
@@ -131,13 +133,6 @@
                                     @Html.EditorFor(model => model.Hora, new { htmlAttributes = new { @class = "form-control time" } })
                                     @Html.ValidationMessageFor(model => model.Hora, "", new { @class = "text-danger" })
                                 </div>
-
-                                @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                    @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "control-label" })
-                                    @Html.EnumDropDownListSpecialFor(model => model.Mes)
-                                    @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
-                                </div>*@
-
                                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                     @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "control-label" })
                                     @Html.DropDownList("TipoDecomprobante", null, new { @class = "form-control", @id = "tipoComprobante" })
@@ -197,6 +192,7 @@
                             Sección Receptor
                         </h3>
                         <div class="row">
+                            <i class="col-xs-12 InformacionReceptor"></i>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                 @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "control-label" })
                                 @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-control" })
@@ -340,10 +336,10 @@
                                         Subsección Impuestos : Traslado
                                     </h3>
                                     @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
-            @Html.LabelFor(model => model.Conceptos.Traslado.CatImpuesto, htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(model => model.Conceptos.Traslado.CatImpuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-control", @id = "CImpuestoT" })
-            @Html.ValidationMessageFor(model => model.Conceptos.Traslado.CatImpuesto, "", new { @class = "text-danger" })
-        </div>*@
+                                        @Html.LabelFor(model => model.Conceptos.Traslado.CatImpuesto, htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownListFor(model => model.Conceptos.Traslado.CatImpuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-control", @id = "CImpuestoT" })
+                                        @Html.ValidationMessageFor(model => model.Conceptos.Traslado.CatImpuesto, "", new { @class = "text-danger" })
+                                    </div>*@
                                     @Html.HiddenFor(model => model.Conceptos.Traslado.TipoImpuesto)
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                         @Html.LabelFor(model => model.Conceptos.Traslado.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
@@ -376,10 +372,10 @@
                                         @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Importe, "", new { @class = "text-danger" })
                                     </div>
                                     @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
-            <label>Total de Impuestos Trasladados</label>
-            @Html.EditorFor(model => model.Conceptos.Traslado.TotalImpuestosTR, new { htmlAttributes = new { @class = "form-control", @id = "TTotal", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.Conceptos.Traslado.TotalImpuestosTR, "", new { @class = "text-danger" })
-        </div>*@
+                                        <label>Total de Impuestos Trasladados</label>
+                                        @Html.EditorFor(model => model.Conceptos.Traslado.TotalImpuestosTR, new { htmlAttributes = new { @class = "form-control", @id = "TTotal", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Conceptos.Traslado.TotalImpuestosTR, "", new { @class = "text-danger" })
+                                    </div>*@
                                     <div class="clearfix"></div>
                                     <hr />
                                     <br />
@@ -388,16 +384,16 @@
                                         Subsección Impuestos : Retencion
                                     </h3>
                                     @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
-            @Html.LabelFor(model => model.Conceptos.Retencion.CatImpuesto, htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(model => model.Conceptos.Retencion.CatImpuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Conceptos.Retencion.CatImpuesto, "", new { @class = "text-danger" })
-        </div>*@
+                                        @Html.LabelFor(model => model.Conceptos.Retencion.CatImpuesto, htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownListFor(model => model.Conceptos.Retencion.CatImpuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Conceptos.Retencion.CatImpuesto, "", new { @class = "text-danger" })
+                                    </div>*@
                                     @Html.HiddenFor(model => model.Conceptos.Retencion.TipoImpuesto)
-                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                    @Html.LabelFor(model => model.Conceptos.Retencion.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Conceptos.Retencion.BasePorcentaje, new { htmlAttributes = new { @class = "form-control", @id = "RBaseP" } })
-                                    @Html.ValidationMessageFor(model => model.Conceptos.Retencion.BasePorcentaje, "", new { @class = "text-danger" })
-                                </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                        @Html.LabelFor(model => model.Conceptos.Retencion.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Conceptos.Retencion.BasePorcentaje, new { htmlAttributes = new { @class = "form-control", @id = "RBaseP" } })
+                                        @Html.ValidationMessageFor(model => model.Conceptos.Retencion.BasePorcentaje, "", new { @class = "text-danger" })
+                                    </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                         @Html.LabelFor(model => model.Conceptos.Retencion.Base, htmlAttributes: new { @class = "control-label" })
                                         @Html.EditorFor(model => model.Conceptos.Retencion.Base, new { htmlAttributes = new { @class = "form-control", @id = "RBase" } })
@@ -424,10 +420,10 @@
                                         @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Importe, "", new { @class = "text-danger" })
                                     </div>
                                     @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
-            <label>Total de Impuestos Retenidos</label>
-            @Html.EditorFor(model => model.Conceptos.Retencion.TotalImpuestosTR, new { htmlAttributes = new { @class = "form-control", @id = "RTotal", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.Conceptos.Retencion.TotalImpuestosTR, "", new { @class = "text-danger" })
-        </div>*@
+                                        <label>Total de Impuestos Retenidos</label>
+                                        @Html.EditorFor(model => model.Conceptos.Retencion.TotalImpuestosTR, new { htmlAttributes = new { @class = "form-control", @id = "RTotal", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.Conceptos.Retencion.TotalImpuestosTR, "", new { @class = "text-danger" })
+                                    </div>*@
                                     @*</div>*@
                                 </div>
                                 <div class="clearfix"></div>
@@ -683,7 +679,7 @@
                             </h3>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                 @Html.LabelFor(model => model.Mercancias.PesoBrutoTotal, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Mercancias.PesoBrutoTotal, new { htmlAttributes = new { @class = "form-control pesoBrutoTotalD", @disabled = "disabled" } })
+                                @Html.EditorFor(model => model.Mercancias.PesoBrutoTotal, new { htmlAttributes = new { @class = "form-control pesoBrutoTotalD" } })
                                 @Html.ValidationMessageFor(model => model.Mercancias.PesoBrutoTotal, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -707,7 +703,7 @@
 
                             <div class="form-group col-xs-12 col-sm-6 col-md-3">
                                 @Html.LabelFor(model => model.Mercancias.NumTotalMercancias, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Mercancias.NumTotalMercancias, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Mercancias.NumTotalMercancias, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                 @Html.ValidationMessageFor(model => model.Mercancias.NumTotalMercancias, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -776,10 +772,10 @@
                                     </div>
 
                                     @*<div class="form-group col-xs-12 col-sm-6 col-md-3">
-                @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, "", new { @class = "text-danger" })
-            </div>*@
+                                        @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, "", new { @class = "text-danger" })
+                                    </div>*@
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                         @Html.CheckBoxFor(model => model.Mercancias.Mercancia.MaterialPeligrosos)
                                         @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, htmlAttributes: new { @class = "control-label" })
@@ -1105,9 +1101,9 @@
                                     </div>
                                 </div>
                                 @*<div class="clearfix"></div>
-        </div>*@
+                                </div>*@
                                 @*<div class="clearfix"></div>
-        </div>*@
+                                </div>*@
 
 
                                 <div class="clearfix"></div>
@@ -1138,8 +1134,8 @@
 
                                 <div class="clearfix"></div>
                             </div>
-                            </div>
                         </div>
+                    </div>
                     <!--</div>-->
                     @**@
 
@@ -2178,7 +2174,7 @@
                 $('#activaMercPeso').show();
                 //$('.DivDetalleMercancia').show();
                 $('#DivCargoTasacion').hide();
-                $(".pesoBrutoTotalD").attr('disabled', 'disabled');
+                //$(".pesoBrutoTotalD").attr('disabled', 'disabled');
                 $(".activaClaveSTCC").hide();
                 //$('.DivCantidadTransportada').hide(200);
                 break;
@@ -2204,7 +2200,7 @@
                 $('#activaMercPeso').hide();
                // $('.DivDetalleMercancia').hide();
                 $('#DivCargoTasacion').show();
-                $(".pesoBrutoTotalD").removeAttr('disabled');
+               // $(".pesoBrutoTotalD").removeAttr('disabled');
                 $(".activaClaveSTCC").hide();
                 break;
             case "04":
@@ -2229,7 +2225,7 @@
                 $('#activaMercPeso').show();
                 //$('.DivDetalleMercancia').show();
                 $('#DivCargoTasacion').hide();
-                $(".pesoBrutoTotalD").attr('disabled', 'disabled');
+                //$(".pesoBrutoTotalD").attr('disabled', 'disabled');
                 $(".activaClaveSTCC").show();
                 //$('.DivCantidadTransportada').show();
                 break;
@@ -2255,7 +2251,7 @@
                 $('#activaMercPeso').hide();
                // $('.DivDetalleMercancia').hide();
                 $('#DivCargoTasacion').hide();
-                $(".pesoBrutoTotalD").attr('disabled', 'disabled');
+                //$(".pesoBrutoTotalD").attr('disabled', 'disabled');
                 $(".activaClaveSTCC").hide();
                // $('.DivCantidadTransportada').hide();
                 break;
@@ -2281,7 +2277,7 @@
                 $('#activaMercPeso').hide();
                // $('.DivDetalleMercancia').hide();
                 $('#DivCargoTasacion').hide();
-                $(".pesoBrutoTotalD").removeAttr('disabled');
+                //$(".pesoBrutoTotalD").removeAttr('disabled');
                 $(".activaClaveSTCC").hide();
         }
 
@@ -2674,5 +2670,14 @@
             $('.activaCamposRFCExtranjero').hide(200);
         }
     });
+
+    $(function () {
+        $("#tipoComprobante").change(function () {
+            if ($(this).val() === "I") {
+                alert('Si el tipo de comprobante es I(Ingreso) agregar Nuevo  Rfc receptor y usoCFDI');
+            }
+        });
+    });
+    $("#FormaPago").selectpicker('val', $("#IdFormaPago").val());
 </script>
 

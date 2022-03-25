@@ -295,6 +295,9 @@
                 contentType: "application/json; charset=utf-8",
             }).success(function (partialView) {
                 $('#detallesMercancias').append(partialView);
+                var totalMercancia = $(".mercancia").length;
+                console.log("Total mercancia: " + totalMercancia);
+                $("#Mercancias_NumTotalMercancias").val(totalMercancia);
             })
                 .fail(function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles");
@@ -313,6 +316,9 @@
             $(".contadorMercancias").replaceWith('<span class="contadorMercancias font-blue">');
         }
         $(elem).parent().parent().parent().remove();
+        var totalMercancia = $(".mercancia").length;
+        console.log("Total mercancia: " + totalMercancia);
+        $("#Mercancias_NumTotalMercancias").val(totalMercancia);
     }
 
     //DETALLE MERCANCIAS EDITAR
@@ -408,6 +414,9 @@
                 contentType: "application/json; charset=utf-8",
             }).success(function (partialView) {
                 $('#detallesMercancias').append(partialView);
+                var totalMercancia = $(".mercanciaEdit").length;
+                console.log("Total mercancia: " + totalMercancia);
+                $("#Mercancias_NumTotalMercancias").val(totalMercancia);
             })
                 .fail(function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles");
@@ -417,7 +426,7 @@
         });
     });
 
-    function removeDetalleMercancia(elem) {
+    function removeDetalleMercanciaEdit(elem) {
         var totalU = $(".mercanciaEdit").size();
         if (totalU > 0) {
             var contador = $(".mercanciaEdit").size() - 1;
@@ -426,6 +435,9 @@
             $(".contadorMercanciasEdit").replaceWith('<span class="contadorMercanciasEdit font-blue">');
         }
         $(elem).parent().parent().parent().remove();
+        var totalMercancia = $(".mercanciaEdit").length;
+        console.log("Total mercancia: " + totalMercancia);
+        $("#Mercancias_NumTotalMercancias").val(totalMercancia);
     }
 
     /////////////
@@ -1236,6 +1248,7 @@
                 contentType: "application/json; charset=utf-8",
             }).success(function (partialView) {
                 $('#detallesConceptos').append(partialView);
+               // incrementaDecrementaImportes();
             })
                 .fail(function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles ");
@@ -1247,12 +1260,38 @@
     function removeDetalleConceptos(elem) {
         var totalU = $(".conceptos").size();
         if (totalU > 0) {
+
             var contador = $(".conceptos").size() - 1;
             $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">: ' + contador + '</span >');
         } else {
             $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">');
         }
+
         $(elem).parent().parent().parent().remove();
+        //incrementaDecrementaImportes();
+    }
+
+    function incrementaDecrementaImportes() {
+        var sumaImporte = 0;
+        var sumatImporte = 0;
+        var sumarImporte = 0;
+        if ($("#tipoComprobante").val() === "I") {
+            $(".conceptos").each(function (index, element) {
+
+                var cImporte = $(element).find('#cImporte').text().trim();
+                var tImporte = $(element).find('#tImporte').text().trim();
+                var rImporte = $(element).find('#rImporte').text().trim();
+                sumaImporte += Number(cImporte);
+                sumatImporte += Number(tImporte);
+                sumarImporte += Number(rImporte);
+            });
+            console.log("importe: " + sumaImporte + " RImporte: " + sumarImporte + " TImporte: " + sumatImporte);
+            $('#subtotal').val(parseFloat(sumaImporte));
+            //calcula Total
+
+            var total = (parseFloat(sumaImporte) + parseFloat(sumatImporte)) - parseFloat(sumarImporte);
+            $('#total').val(total);
+        }
     }
 
     // DETALLE REMOLQUES
@@ -1532,7 +1571,7 @@
     }
 
 
-    
+
 
     ///SCRIPT CONCEPTOS PARA ACTIVAR DROPDOW Y RELLENAR LOS CAMPOS CONCEPTOS, RETENCIONES Y TRASLADOS
 
@@ -1546,7 +1585,7 @@
 
             consultaConcepto(ConceptosClaveProd);
         });
-        
+
         $("#confDelete").on('click', function () {
             let text = "¿seguro que deseas eliminarlo?";
             if (confirm(text) == false) {
@@ -1570,9 +1609,8 @@
                 $.get("/ComplementosCartaPorte/DatosCatalogoConceptos", { claveProd: concepto }, function (data) {
                     if (data.length > 0) {
                         $.each(data, function (index, row) {
-
-                            $("#Conceptos_ClavesProdServ").val(row.ClaveProdServ_Id);
-                            $("#Conceptos_ClavesUnidad").val(row.ClaveUnidad_Id);
+                            $("#Conceptos_ClavesProdServ").val(row.ClavesProdServ);
+                            $("#Conceptos_ClavesUnidad").val(row.ClavesUnidad);
                             $("#Conceptos_Unidad").val(row.Unidad);
                             $("#Conceptos_Descripcion").val(row.Descripcion);
                             $("#Conceptos_NoIdentificacion").val(row.NoIdentificacion);
@@ -1637,7 +1675,7 @@
 
     });
     function cambioimporte() {
-        
+
         $("#RBase").val(($("#RBaseP").val() * $("#Conceptos_Importe").val()) / 100);
         var RBase = parseFloat($('#RBase').val());
         var RTasaOCuota = parseFloat($('#RTasaOCuota').val());
@@ -1648,9 +1686,9 @@
         if ($('#RTasaOCuota').val() === "") {
             RTasaOCuota = 0;
         }
-        
+
         var TotalRet = (RBase * RTasaOCuota);
-        
+
         $('#RImporte').val(TotalRet);
 
         //traslado
@@ -1664,7 +1702,7 @@
         if ($('#TTasaOCuota').val() === "") {
             TTasaOCuota = 0;
         }
-        
+
         var TotalTras = (TBase * TTasaOCuota);
         $('#TImporte').val(TotalTras);
     }
@@ -1780,7 +1818,7 @@
         }
 
         $('#TBaseP').on("keyup", function () {
-            
+
             cambioimporte();
         });
         $('#TBaseP').change(function () {
@@ -1798,4 +1836,128 @@
 
     });
 
+
+    ///cambios lalo
+    $(function () {
+        $("#tipoComprobante").change(function () {
+            if ($(this).val() === "T") {
+                var idCliente = $("#IDCliente").val();
+                console.log("idsucursal: " + idCliente);
+                $('#ReceptorId').selectpicker('val', idCliente);
+                $('#UsoCfdiCP').selectpicker('val', 'P01');
+                //
+                $('#recep').text($('#ReceptorId option:selected').text());
+                $('#cfdi').text('P01');
+                //
+                $('#ReceptorId').val(idCliente);
+                $('#UsoCfdiCP').val('P01')
+                //
+                $('#receptorDrop').hide();
+                $('#receptorText').show();
+                $('.InformacionReceptor').text('Al ser un CFDi de tipo T de Traslado, el RFC del Receptor tiene que ser el mismo del Emisor.');
+            }
+            if ($(this).val() === "I") {
+
+                $('#ReceptorId').selectpicker('val', 1);
+                $('#UsoCfdiCP').selectpicker('val', 1);
+                $('#receptorDrop').show();
+                $('#receptorText').hide();
+                $('.InformacionReceptor').text('');
+            }
+        });
+    });
+    $(function () {
+        tippy('#TipoCambio', {
+            content: 'Si la moneda es diferente de MXN asegúrate de actualizar el Tipo de Cambio',
+        });
+        tippy('#Mercancias_Mercancia_Dimensiones', {
+            content: 'Esribe las dimensiones en cm o in. Ejemplo: Dimensiones= 30/40/30cm',
+        });
+    });
+
+    //Funciones pestaña Comprobante
+    $("#Moneda").change(function () {
+        if ($(this).val() === "MXN") {
+            /*$('#subtotal').attr("disabled", "disabled")*/
+            $('#TipoCambio').val("1");
+
+            //$('#claveTransporte').val("0.00");
+            $('#subtotal').val("0.00");
+            $('#total').val("0.00");
+        } else {
+
+        }
+    });
+    $(function () {
+        $('#TiposFigura_RFCFigura').on('keyup', function () {
+            var rfcFigura = $('#TiposFigura_RFCFigura').val();
+            if (rfcFigura === "XEXX010101000") {
+                $('#rfcExtranjero').show();
+
+            } else {
+                $('#rfcExtranjero').hide();
+            }
+        });
+    });
+
+    $(function () {
+        $(".espacio").on('keyup', function () {
+            var key = $(this).attr("id");
+            var text = $("#" + key).val();
+            let exp = new RegExp('^ *');
+
+            if (text.match(exp) != null && text.match(exp) != "") {
+                $("#" + key).val(text.replace(exp, ""));
+            }
+            /*if (text == " ") {
+                $("#" + key).val("");
+            }*/
+        });
+    });
+
+    //valida RFC
+    $(function () {
+    $(".rfc").on('keyup', function () {
+        var key = $(this).attr("id");
+        var text = $("#" + key).val();
+
+        let exp = /\$|#|%|&|"|\)|\(|\/|\?|¿|'|!|¡|=|-|\.|\,|\+|\*|;|:|\s+/g;
+        let rfc = /^[A-Z&Ñ]{3,4}[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])[A-Z0-9]{2}[0-9A]$/;
+
+        if (text.match(rfc) == null || text.match(rfc) == "") {
+            $("#Error_" + key).text("Formato de RFC no valido");
+        } else {
+            $("#Error_" + key).text("");
+        }
+
+        if (text.match(exp) != null && text.match(exp) != "") {
+            $("#" + key).val(text.replace(exp, ""));
+            $("#Error_" + key).text("");
+        }
+    });
+
+    //valida entrada de texto 
+    $("#Ubicacion_Domicilio_Calle").on('keyup', function () {
+        var key = $(this).attr("id");
+        var text = $("#" + key).val();
+
+        let exp = /\$|#|%|&|"|\)|\(|\/|\?|¿|'|!|¡|=+/g;
+
+        if (text.match(exp) != null && text.match(exp) != "") {
+            $("#" + key).val(text.replace(exp, ""));
+            $("#Error_" + key).text("");
+        }
+
+        if (text.length > 100) {
+            $("#Error_Calle").text("Se ha excedido el numero de caracteres");
+        } else {
+            $("#Error_Calle").text("");
+        }
+
+    });
+
+    });
+   
 </script>
+
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,70 +12,70 @@ namespace API.Enums.CartaPorteEnums
     public enum c_UsoCfdiCP
     {
 
-        /// <remarks/>
+        [DescriptionAttribute("G01-Adquisición de mercancías")]
         G01 = 0,
 
-        /// <remarks/>
+        [DescriptionAttribute("G02-Devoluciones, descuentos o bonificaciones")]
         G02 = 1,
 
-        /// <remarks/>
+        [DescriptionAttribute("G03-Gastos en general")]
         G03 = 2,
 
-        /// <remarks/>
+        [DescriptionAttribute("I01-Construcciones")]
         I01 = 3,
 
-        /// <remarks/>
+        [DescriptionAttribute("I02-Mobiliario y equipo de oficina por inversiones")]
         I02 = 4,
 
-        /// <remarks/>
+        [DescriptionAttribute("I03-Equipo de transporte")]
         I03 = 5,
 
-        /// <remarks/>
+        [DescriptionAttribute("I04-Equipo de cómputo y accesorios")]
         I04 = 6,
 
-        /// <remarks/>
+        [DescriptionAttribute("I05-Dados, troqueles, moldes, matrices y herramental")]
         I05 = 7,
 
-        /// <remarks/>
+        [DescriptionAttribute("I06-Comunicaciones telefónicas")]
         I06 = 8,
 
-        /// <remarks/>
+        [DescriptionAttribute("I07-Comunicaciones satelitales")]
         I07 = 9,
 
-        /// <remarks/>
+        [DescriptionAttribute("I08-Otra maquinaria y equipo")]
         I08 = 10,
 
-        /// <remarks/>
+        [DescriptionAttribute("D01-Honorarios médicos, dentales y gastos hospitalarios")]
         D01 = 11,
 
-        /// <remarks/>
+        [DescriptionAttribute("D02-Gastos médicos por incapacidad o discapacidad")]
         D02 = 12,
 
-        /// <remarks/>
+        [DescriptionAttribute("D03-Gastos funerales")]
         D03 = 13,
 
-        /// <remarks/>
+        [DescriptionAttribute("D04-Donativos")]
         D04 = 14,
 
-        /// <remarks/>
+        [DescriptionAttribute("D05-Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)")]
         D05 = 15,
 
-        /// <remarks/>
+        [DescriptionAttribute("D06-Aportaciones voluntarias al SAR")]
         D06 = 16,
 
-        /// <remarks/>
+        [DescriptionAttribute("D07-Primas por seguros de gastos médicos")]
         D07 = 17,
 
-        /// <remarks/>
+        [DescriptionAttribute("D08-Gastos de transportación escolar obligatoria.")]
         D08 = 18,
 
-        /// <remarks/>
+        [DescriptionAttribute("D09-Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones")]
         D09 = 19,
 
-        /// <remarks/>
+        [DescriptionAttribute("D10-Pagos por servicios educativos (colegiaturas)")]
         D10 = 20,
 
-        /// <remarks/>
+        [DescriptionAttribute("P01-Por definir")]
         P01 = 21,
     }
 }

@@ -112,7 +112,8 @@ namespace APBox.Control
         }
         public SelectList PopulaPaises()
         {
-            return new SelectList(_db.Paises.OrderBy(a => a.c_Pais), "c_Pais","Descripcion");
+            var concat = _db.Paises.OrderBy(a => a.c_Pais).ToDictionary(a => a.c_Pais, a => a.c_Pais + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
 
         public SelectList PopulaImpuestoSat()
@@ -125,7 +126,8 @@ namespace APBox.Control
         }
         public SelectList PopulaFormaPago()
         {
-            return new SelectList(_db.Cat_FormaPago.OrderBy(a => a.c_FormaPago), "c_FormaPago", "Descripcion");
+            var concat = _db.Cat_FormaPago.OrderBy(a => a.c_FormaPago).ToDictionary(a => a.c_FormaPago, a => a.c_FormaPago + "-" + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList PopulaClaveUnidad()
         {
@@ -143,7 +145,8 @@ namespace APBox.Control
        
         public SelectList PopulaDatosEstaciones(string seleccion)
         {
-            return new SelectList(_db.Estaciones.Where(a => a.ClaveTransporte_Id == seleccion).OrderBy(a=>a.Descripcion), "ClaveIdentificacion", "Descripcion");
+            var concat = _db.Estaciones.Where(a => a.ClaveTransporte_Id == seleccion).OrderBy(a => a.Descripcion).ToDictionary(a => a.ClaveIdentificacion, a => a.ClaveIdentificacion + "-" + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList PopulaDatosSucursal(int? seleccion)
         {
@@ -155,8 +158,9 @@ namespace APBox.Control
         }
         public SelectList PopulaDerechodePaso()
         {
-            return new SelectList(_db.DerechosDePasos.OrderBy(a => a.ClavederechoPaso), "ClavederechoPaso", "DerechoDePaso");
-        }
+              var concat = _db.DerechosDePasos.OrderBy(a => a.ClavederechoPaso).ToDictionary(a => a.ClavederechoPaso, a=>a.DerechoDePaso+" "+a.Concesionario);
+            return new SelectList(concat,"key","value");
+         }
         public SelectList PopulaTipoDeComprobanteFiltro(c_TipoDeComprobante seleccion)
         {
             return new SelectList(Enum.GetValues(typeof(c_TipoDeComprobante))
@@ -172,7 +176,8 @@ namespace APBox.Control
 
         public SelectList PopulaTransporte()
         {
-            return new SelectList(_db.CveTransportes.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
+            var concat = _db.CveTransportes.OrderBy(a => a.c_ClaveUnidad).ToDictionary(a => a.c_ClaveUnidad, a => a.c_ClaveUnidad + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
 
         public SelectList PopulaTipoPermiso()
@@ -205,28 +210,34 @@ namespace APBox.Control
 
         public SelectList ClaveUnidadPeso_Id()
         {
-            return new SelectList(_db.ClavesUnidadPeso.OrderBy(a => a.ClaveUnidad), "ClaveUnidad", "Nombre");
+            var concat = _db.ClavesUnidadPeso.OrderBy(a => a.ClaveUnidad).ToDictionary(a => a.ClaveUnidad, a => a.ClaveUnidad + " - " + a.Nombre);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList SubTipoRem_Id()
         {
-            return new SelectList(_db.SubTipoRems.OrderBy(a => a.ClaveTipoRemolque), "ClaveTipoRemolque", "Remolque");
+            var concat = _db.SubTipoRems.OrderBy(a => a.ClaveTipoRemolque).ToDictionary(a => a.ClaveTipoRemolque, a => a.ClaveTipoRemolque + " - " + a.Remolque);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList ConfigMaritima_Id()
         {
-            return new SelectList(_db.ConfigMaritimas.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
+            var concat = _db.ConfigMaritimas.OrderBy(a => a.c_ClaveUnidad).ToDictionary(a => a.c_ClaveUnidad, a => a.c_ClaveUnidad + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
 
         public SelectList TipoPermiso_Id(string seleccion)
         {
-            return new SelectList(_db.TipoPermisos.Where(a => a.Nota == seleccion).OrderBy(a => a.Descripcion), "Clave", "Descripcion");
+            var concat = _db.TipoPermisos.Where(a => a.Nota == seleccion).OrderBy(a => a.Descripcion).ToDictionary(a => a.Clave, a => a.Clave + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList ConfigAutotransporte_Id()
         {
-            return new SelectList(_db.ConfigAutotransportes.OrderBy(a => a.Descripcion), "c_ClaveNomeclatura", "Descripcion");
+            var concat = _db.ConfigAutotransportes.OrderBy(a => a.Descripcion).ToDictionary(a => a.c_ClaveNomeclatura, a => a.c_ClaveNomeclatura + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "value");
         }
         public SelectList ClaveTipoCarga_Id()
         {
-            return new SelectList(_db.ClavesTipoCarga.OrderBy(a => a.ClaveTipocarga), "ClaveTipocarga", "Descripcion");
+            var concat = _db.ClavesTipoCarga.OrderBy(a => a.ClaveTipocarga).ToDictionary(a => a.ClaveTipocarga, a => a.ClaveTipocarga + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList NumAutorizacionNaviero_Id()
         {
@@ -234,23 +245,28 @@ namespace APBox.Control
         }
         public SelectList ContenedorMaritimo_Id()
         {
-            return new SelectList(_db.ContenedoresMaritimos.OrderBy(a => a.ClaveContenedorMaritimo), "ClaveContenedorMaritimo", "Descripcion");
+            var concat = _db.ContenedoresMaritimos.OrderBy(a => a.ClaveContenedorMaritimo).ToDictionary(a => a.ClaveContenedorMaritimo, a => a.ClaveContenedorMaritimo + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList CodigoTransporteAereo_Id()
         {
-            return new SelectList(_db.CodigosTransporteAereo.OrderBy(a => a.ClaveIdentificacion), "ClaveIdentificacion", "Designador");
+            var concat = _db.CodigosTransporteAereo.OrderBy(a => a.ClaveIdentificacion).ToDictionary(a => a.ClaveIdentificacion, a => a.Designador + " - " + a.NombreAreolinea);
+            return new SelectList(concat, "key", "value");
         }
         public SelectList TipoDeServicio_Id()
         {
-            return new SelectList(_db.TipoDeServicios.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Descripcion");
+            var concat = _db.TipoDeServicios.OrderBy(a => a.c_ClaveUnidad).ToDictionary(a => a.c_ClaveUnidad, a => a.c_ClaveUnidad + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList TipoCarro_Id()
         {
-            return new SelectList(_db.TipoCarros.OrderBy(a => a.TipoDeCarro), "Clave", "TipoDeCarro");
+            var concat = _db.TipoCarros.OrderBy(a => a.TipoDeCarro).ToDictionary(a => a.Clave, a => a.Clave + " - " + a.TipoDeCarro);
+            return new SelectList(concat, "key", "Value");
         }
         public SelectList Contenedor_Id()
         {
-            return new SelectList(_db.Contenedores.OrderBy(a => a.Clave), "Clave", "Descripcion");
+            var concat = _db.Contenedores.OrderBy(a => a.Clave).ToDictionary(a => a.Clave, a => a.Clave + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
         }
 
         //

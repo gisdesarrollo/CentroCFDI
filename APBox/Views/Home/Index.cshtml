@@ -6,7 +6,7 @@
 <!-- page content -->
 
 @if (Request.IsAuthenticated)
-    {
+{
     <div id="page-title">
         <h2>APBox</h2>
         <p>Centro de control e información de sus CFDi Generados y Complementos de Pago</p>
@@ -56,31 +56,21 @@
             <div class="panel">
                 <div class="panel-body">
                     <h3 class="title-hero">
-                        Accesos rápidos - Complemento de Recepción de Pagos
+                        Accesos rápidos - Complemento de Carta Porte
                     </h3>
                     <div class="row">
 
                         <div class="form-group col-xs-12 col-md-3">
-                            <a href="@Url.Action("Index", "ComplementosPagos")" class="tile-box tile-box-shortcut btn-info">
+                            <a href="@Url.Action("Index", "ComplementosCartaPorte")" class="tile-box tile-box-shortcut btn-info">
                                 <span class="fas fa-building fa-3x mrg10A"></span>
                                 <h3 class="title-hero">
-                                    Pagos
-                                </h3>
-                            </a>
-                        </div>
-                        
-                        <div class="form-group col-xs-12 col-md-3">
-                            <a href="@Url.Action("Cargar", "ComplementosPagos" )" class="tile-box tile-box-shortcut btn-info">
-                                <span class="fas fa-th-list fa-3x mrg10A"></span>
-                                <h3 class="title-hero">
-                                    Layout
+                                    Cartas Porte
                                 </h3>
                             </a>
                         </div>
 
-
                         <div class="form-group col-xs-12 col-md-3">
-                            <a href="@Url.Action("Create", "ComplementosPagos")" class="tile-box tile-box-shortcut btn-info">
+                            <a href="@Url.Action("Create", "ComplementosCartaPorte")" class="tile-box tile-box-shortcut btn-info">
                                 <span class="fas fa-file fa-3x mrg10A"></span>
                                 <h3 class="title-hero">
                                     Manual
@@ -154,9 +144,9 @@
             </div>
         </div>
     </div>
-    }
+}
 else
-    {
+{
     <script>
         $("body").addClass("closed-sidebar");
     </script>
@@ -212,4 +202,4 @@ else
         </div>
     </div>
 
-    }
+}

@@ -1,4 +1,5 @@
-﻿using API.Enums.CartaPorteEnums;
+﻿using API.Enums;
+using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementoCartaPorte;
 using API.RelacionesCartaPorte;
 using Aplicacion.Context;
@@ -21,10 +22,55 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
         #endregion
 
-        public List<ComplementoCartaPorte> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId)
+        public List<ComplementoCartaPorte> Filtrar(DateTime fechaInicial, DateTime fechaFinal, c_TipoDeComprobante? tipoComprobante,string claveTransporte, bool? estatus, int sucursalId)
         {
-            var complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal).ToList();
-            return complementos;
+            var complementos = new List<ComplementoCartaPorte>();
+            if (estatus == null && claveTransporte!= null && tipoComprobante !=null)
+            {
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal &&
+            cp.TipoDeComprobante == tipoComprobante && cp.ClaveTransporteId == claveTransporte).ToList();
+
+            }
+            else if (claveTransporte == null && estatus !=null && tipoComprobante !=null)
+            {
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal &&
+            cp.TipoDeComprobante == tipoComprobante && cp.Generado == estatus).ToList();
+            }
+            else if (tipoComprobante == null && estatus !=null && claveTransporte !=null)
+            {
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal
+             && cp.ClaveTransporteId == claveTransporte && cp.Generado == estatus).ToList();
+
+            }
+            else if (tipoComprobante == null && claveTransporte == null && estatus == null)
+            {
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal).ToList();
+            }
+            else if (tipoComprobante == null && claveTransporte == null)
+            {
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal &&
+                cp.Generado == estatus).ToList();
+
+            }
+            else if (claveTransporte == null && estatus == null)
+            {
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal &&
+            cp.TipoDeComprobante == tipoComprobante).ToList();
+
+            }
+            else if (tipoComprobante == null && estatus == null)
+            {
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal &&
+             cp.ClaveTransporteId == claveTransporte).ToList();
+
+            }
+            else if (tipoComprobante != null && claveTransporte != null && estatus != null)
+            {
+
+                complementos = _db.ComplementoCartaPortes.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal &&
+                cp.TipoDeComprobante == tipoComprobante && cp.ClaveTransporteId == claveTransporte && cp.Generado == estatus).ToList();
+            }
+                return complementos;
         }
 
         public void CargaInicial(ref ComplementoCartaPorte complementoCP)
@@ -42,6 +88,10 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
             {
                 foreach (var concepto in complementoCP.Conceptoss)
                 {
+                    if(complementoCP.TipoDeComprobante == c_TipoDeComprobante.I)
+                    {
+                        complementoCP.Subtotal += (decimal)concepto.Importe;
+                    }
                     concepto.ComplementoCP = null;
                     //concepto.ComplementoCP = complementoCP;
                     if (concepto.Retencion == null)
@@ -53,7 +103,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     {
                         if (concepto.Retencion.Importe > 0)
                         {
-                            complementoCP.TotalImpuestoRetenidos += concepto.Retencion.Importe;
+                            complementoCP.TotalImpuestoRetenidos += decimal.Round(concepto.Retencion.Importe,2);
                         }
                         else { concepto.Retencion = null; }
                     }
@@ -66,7 +116,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     {
                         if (concepto.Traslado.Importe > 0)
                         {
-                            complementoCP.TotalImpuestoTrasladado += concepto.Traslado.Importe;
+                            complementoCP.TotalImpuestoTrasladado += decimal.Round(concepto.Traslado.Importe,2);
                         }
                         else { concepto.Traslado = null; }
                     }
@@ -124,36 +174,39 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 complementoCP.Mercancias.Mercancia.Pedimentos = null;
                 complementoCP.Mercancias.Mercancia.GuiasIdentificacion = null;
                 complementoCP.Mercancias.Mercancia.CantidadTransportada = null;
+                complementoCP.Mercancias.Mercanciass = new List<Mercancia>();
                 foreach (var mercancia in complementoCP.Mercanciass)
                 {
-                   
-                    if (complementoCP.Pedimentoss != null)
+                    complementoCP.Mercancias.PesoBrutoTotal += mercancia.PesoEnKg;
+
+
+                    if (mercancia.Pedimentoss != null)
                     {
-                        foreach (var pedimento in complementoCP.Pedimentoss)
+                        foreach (var pedimento in mercancia.Pedimentoss)
                         {
                             pedimento.Mercancia = null;
                             //pedimento.Mercancia = mercancia;
-                            mercancia.Pedimentoss.Add(pedimento);
+                            //mercancia.Pedimentoss.Add(pedimento);
                         }
 
                     }
-                    if (complementoCP.GuiasIdentificacioness != null)
+                    if (mercancia.GuiasIdentificacionss != null)
                     {
-                        foreach (var gIdentificacion in complementoCP.GuiasIdentificacioness)
+                        foreach (var gIdentificacion in mercancia.GuiasIdentificacionss)
                         {
                             gIdentificacion.Mercancia = null;
                             //gIdentificacion.Mercancia = mercancia;
-                            mercancia.GuiasIdentificacionss.Add(gIdentificacion);
+                            //mercancia.GuiasIdentificacionss.Add(gIdentificacion);
                         }
 
                     }
-                    if (complementoCP.CantidadTransportadass != null)
+                    if (mercancia.CantidadTransportadass != null)
                     {
-                        foreach (var cTransportada in complementoCP.CantidadTransportadass)
+                        foreach (var cTransportada in mercancia.CantidadTransportadass)
                         {
                             cTransportada.Mercancia = null;
                             //cTransportada.Mercancia = mercancia;
-                            mercancia.CantidadTransportadass.Add(cTransportada);
+                            //mercancia.CantidadTransportadass.Add(cTransportada);
                         }
 
                     }
@@ -165,12 +218,12 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     }
                     else
                     {
-                        if (complementoCP.ClaveTransporteId == "02" || complementoCP.ClaveTransporteId == "04")
+                        /*if (complementoCP.ClaveTransporteId == "02" || complementoCP.ClaveTransporteId == "04")
                         {
                             complementoCP.Mercancias.PesoBrutoTotal += mercancia.DetalleMercancia.PesoBruto;
                             complementoCP.Mercancias.PesoNetoTotal += mercancia.DetalleMercancia.PesoNeto;
 
-                        }
+                        }*/
                     }
                     if (!mercancia.MaterialPeligrosos)
                     {
@@ -181,7 +234,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
                     }
                     else { complementoCP.ValidaMaterialPeligroso = true; }
-                    complementoCP.Mercancias.Mercanciass = new List<Mercancia>();
+                   //complementoCP.Mercancias.Mercanciass = new List<Mercancia>();
                     complementoCP.Mercancias.Mercanciass.Add(mercancia);
 
                 }
@@ -497,11 +550,13 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
                 _db.Mercancia.RemoveRange(mercanciasAnteriores);
                 _db.SaveChanges();
-
+                complementoCP.Mercancias.PesoBrutoTotal = 0;
                 foreach (var mercancia in complementoCP.Mercancias.Mercanciass.Except(mercanciasAnteriores))
                 {
+                    complementoCP.Mercancias.PesoBrutoTotal += mercancia.PesoEnKg;
                     if (mercancia.Mercancias_Id == null)
                     {
+                        
                         if (!mercancia.MaterialPeligrosos)
                         {
                             mercancia.ClaveMaterialPeligroso = null;
@@ -529,12 +584,12 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         }
                         else
                         {
-                            if (complementoCP.ClaveTransporteId == "02" || complementoCP.ClaveTransporteId == "04")
+                            /*if (complementoCP.ClaveTransporteId == "02" || complementoCP.ClaveTransporteId == "04")
                             {
                                 complementoCP.Mercancias.PesoBrutoTotal += mercancia.DetalleMercancia.PesoBruto;
                                 complementoCP.Mercancias.PesoNetoTotal += mercancia.DetalleMercancia.PesoNeto;
 
-                            }
+                            }*/
                         }
                     }
                     if (!mercancia.MaterialPeligrosos)

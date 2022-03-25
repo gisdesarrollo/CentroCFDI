@@ -110,17 +110,17 @@
                                     </li>
                                 }
                                 <li>
-                                      @Html.ActionLink("Conceptos", "Index", "Conceptos")
+                                    @Html.ActionLink("Conceptos", "Index", "Conceptos")
                                 </li>
                                 <li>
-                                       @Html.ActionLink("Impuestos", "Index", "Impuestos")
+                                    @Html.ActionLink("Impuestos", "Index", "Impuestos")
                                 </li>
                                 @*@if (User.IsInRole("BANCOS"))
-                            {
-                            <li>
-                                @Html.ActionLink("Bancos", "Index", "Bancos")
-                            </li>
-                            }*@
+                                    {
+                                    <li>
+                                        @Html.ActionLink("Bancos", "Index", "Bancos")
+                                    </li>
+                                    }*@
                             </ul>
                         </div>
                     </li>
@@ -150,120 +150,121 @@
                 </li>
 
 
+                @* Comment goes here
+                        if (!User.IsInRole("RECEPCIONCFDI"))
+                        {
+                            <li class="header"><span>Recepción de CFDi</span></li>
+                            <li>
+                                <a href="#" title="PortalAdministrativo">
+                                    <i class="glyph-icon icon-linecons-inbox"></i>
+                                    <span>CFDi Recibidos</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink("Ver todos", "VerTodos", "OperacionesCfdisRecibidos")
+                                        </li>
 
-                if (!User.IsInRole("RECEPCIONCFDI"))
-                {
-                    <li class="header"><span>Recepción de CFDi</span></li>
-                    <li>
-                        <a href="#" title="PortalAdministrativo">
-                            <i class="glyph-icon icon-linecons-inbox"></i>
-                            <span>CFDi Recibidos</span>
+                                        <li>
+                                            @Html.ActionLink("CFDIs de Gastos de Personal", "VerGastosPersonal", "OperacionesCfdisRecibidos")
+                                        </li>
+
+                                        <li>
+                                            @Html.ActionLink("CFDIs de Proveedores", "VerGastosProveedores", "OperacionesCfdisRecibidos")
+                                        </li>
+
+                                        <li>
+                                            @Html.ActionLink("Documentos Extranjeros", "Index", "DocumentosExtranjeros")
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#" title="PortalAdministrativo">
+                                    <i class="glyph-icon icon-linecons-attach"></i>
+                                    <span>Carga de CFDi Recibidos</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink("Carga General", "CargaGeneral", "OperacionesCfdisRecibidos")
+                                        </li>
+
+                                        <li>
+                                            @Html.ActionLink("Carga de Gastos de Personal", "CargaGastosPersonal", "OperacionesCfdisRecibidos")
+                                        </li>
+
+                                        <li>
+                                            @Html.ActionLink("Carga de Proveedores", "CargaGastosProveedores", "OperacionesCfdisRecibidos")
+                                        </li>
+
+                                        <li>
+                                            @Html.ActionLink("Carga Facturas Extranjero", "Create", "DocumentosExtranjeros")
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li>
+                                <a href="#" title="PortalAdministrativo">
+                                    <i class="glyph-icon icon-linecons-cog"></i>
+                                    <span>Operaciones</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink("Autorizar Accesos", "Index", "SolicitudesAccesos")
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        }
+                        <li class="header"><span>Complementos de Pago</span></li>
+                        <li>
+                            <a href="#" title="ComplementoPagos">
+                                <i class="glyph-icon icon-linecons-money"></i>
+                                <span>Complementos de Pago</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("Complementos de Pago", "Index", "ComplementosPagos")
+
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                        </li>
+                        <li>
+                            <a href="#" title="ComplementoPagos">
+                                <i class="glyph-icon icon-linecons-money"></i>
+                                <span>CFDi Emitidos</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("Facturas Emitidas", "Index", "FacturasEmitidas")
+                                    </li>
+
+                                    <li>
+                                        @Html.ActionLink("Cargar CFDi Externos", "CargarDocumentosExternos", "RecepcionDocumentos")
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Reporte Facturas con Pago", "detallePago", "FacturasEmitidas")
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        @*<li>
+                        <a href="/FacturasEmitidas/detallePago" title="ComplementoPagos">
+                            <i class="glyph-icon icon-linecons-money"></i>
+                            <span>Reporte Facturas con Pago</span>
                         </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    @Html.ActionLink("Ver todos", "VerTodos", "OperacionesCfdisRecibidos")
-                                </li>
+                    </li>*@
 
-                                <li>
-                                    @Html.ActionLink("CFDIs de Gastos de Personal", "VerGastosPersonal", "OperacionesCfdisRecibidos")
-                                </li>
-
-                                <li>
-                                    @Html.ActionLink("CFDIs de Proveedores", "VerGastosProveedores", "OperacionesCfdisRecibidos")
-                                </li>
-
-                                <li>
-                                    @Html.ActionLink("Documentos Extranjeros", "Index", "DocumentosExtranjeros")
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" title="PortalAdministrativo">
-                            <i class="glyph-icon icon-linecons-attach"></i>
-                            <span>Carga de CFDi Recibidos</span>
-                        </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    @Html.ActionLink("Carga General", "CargaGeneral", "OperacionesCfdisRecibidos")
-                                </li>
-
-                                <li>
-                                    @Html.ActionLink("Carga de Gastos de Personal", "CargaGastosPersonal", "OperacionesCfdisRecibidos")
-                                </li>
-
-                                <li>
-                                    @Html.ActionLink("Carga de Proveedores", "CargaGastosProveedores", "OperacionesCfdisRecibidos")
-                                </li>
-
-                                <li>
-                                    @Html.ActionLink("Carga Facturas Extranjero", "Create", "DocumentosExtranjeros")
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li>
-                        <a href="#" title="PortalAdministrativo">
-                            <i class="glyph-icon icon-linecons-cog"></i>
-                            <span>Operaciones</span>
-                        </a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li>
-                                    @Html.ActionLink("Autorizar Accesos", "Index", "SolicitudesAccesos")
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                }
-                <li class="header"><span>Complementos de Pago</span></li>
-                <li>
-                    <a href="#" title="ComplementoPagos">
-                        <i class="glyph-icon icon-linecons-money"></i>
-                        <span>Complementos de Pago</span>
-                    </a>
-                    <div class="sidebar-submenu">
-                        <ul>
-                            <li>
-                                @Html.ActionLink("Complementos de Pago", "Index", "ComplementosPagos")
-
-                            </li>
-                        </ul>
-                    </div>
-
-
-                </li>
-                <li>
-                    <a href="#" title="ComplementoPagos">
-                        <i class="glyph-icon icon-linecons-money"></i>
-                        <span>CFDi Emitidos</span>
-                    </a>
-                    <div class="sidebar-submenu">
-                        <ul>
-                            <li>
-                                @Html.ActionLink("Facturas Emitidas", "Index", "FacturasEmitidas")
-                            </li>
-
-                            <li>
-                                @Html.ActionLink("Cargar CFDi Externos", "CargarDocumentosExternos", "RecepcionDocumentos")
-                            </li>
-                            <li>
-                                @Html.ActionLink("Reporte Facturas con Pago", "detallePago", "FacturasEmitidas")
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                @*<li>
-                    <a href="/FacturasEmitidas/detallePago" title="ComplementoPagos">
-                        <i class="glyph-icon icon-linecons-money"></i>
-                        <span>Reporte Facturas con Pago</span>
-                    </a>
-                </li>*@
-                 <li class="header"><span>Complementos de CartaPorte</span></li>
+                <li class="header"><span>Complementos de CartaPorte</span></li>
                 <li>
                     <a href="#" title="ComplementoCartaPorte">
                         <i class="glyph-icon icon-linecons-money"></i>
@@ -280,7 +281,7 @@
 
 
                 </li>
-             
+
                 <li class="header"><span>Reportes</span></li>
 
                 <li>
@@ -317,12 +318,3 @@ else
         </div>
     </div>
 }
-
-
-
-
-
-
-
-
-
