@@ -269,8 +269,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
             // parseo Enum
 
-            var regimenFiscal = complementoCartaPorte.Sucursal.RegimenFiscal.Descripcion;
-            //var regimenFiscal = (int)complementoCartaPorte.Sucursal.RegimenFiscal;
+            var regimenFiscal = (int)complementoCartaPorte.Sucursal.RegimenFiscal;
             objCfdi.agregarComprobante40
                    (
                        complementoCartaPorte.Sucursal.SerieCartaPorte, //Serie
@@ -318,6 +317,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                        "", //NumRegIdTrib
                        "P01" //UsoCFDI
                    );*/
+            var RegimeFiscalReceptor = (int)complementoCartaPorte.Receptor.RegimenFiscal;
             objCfdi.agregarReceptor(
                 complementoCartaPorte.Receptor.Rfc, //Rfc
                 complementoCartaPorte.Receptor.RazonSocial, //Nombre
@@ -325,7 +325,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 "",//complementoCartaPorte.Receptor.NumRegIdTrib ?? "", //NumRegIdTrib
                 complementoCartaPorte.UsoCfdiCP.ToString(), //UsoCFDI
                 complementoCartaPorte.Receptor.CodigoPostal, //Domicilio Fiscal CFDI40
-                complementoCartaPorte.Receptor.RegimenFiscalId.ToString() //Regimen Fiscal CFDI40
+                RegimeFiscalReceptor.ToString() //Regimen Fiscal CFDI40
             );
 
             if (objCfdi.MensajeError != "")
