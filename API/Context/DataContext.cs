@@ -147,7 +147,7 @@ namespace API.Context
 
         public DbSet<Exportacion> Exportacion { get; set; }
         public DbSet<ObjetoImpuesto> ObjetoImpuesto { get; set; }
-        public DbSet<RegimenFiscal> RegimenFiscal { get; set; }
+       
         public DbSet<RetencionCP> RetencionesCP { get; set; }
         public DbSet<TrasladoCP> TrasladosCP { get; set; }
         public DbSet<c_impuestoCFDI> ImpuestoCP { get; set; }

@@ -58,17 +58,10 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo obligatorio")]
         public c_Pais Pais { get; set; }
 
-        /*[DisplayName("Régimen Fiscal")]
-        [Required(ErrorMessage = "Campo obligatorio")]
-        public c_RegimenFiscal RegimenFiscal { get; set; }
-        */
         [DisplayName("Régimen Fiscal")]
         [Required(ErrorMessage = "Campo obligatorio")]
-        public int? RegimenFiscalId { get; set; }
-        [ForeignKey("RegimenFiscalId")]
-        public virtual RegimenFiscal RegimenFiscal { get; set; }
-
-
+        public c_RegimenFiscal RegimenFiscal { get; set; }
+        
         [DisplayName("Numero operación Adquirente")]
         public string FactAtrAdquirente { get; set; }
 

@@ -44,7 +44,7 @@ namespace API.Catalogos
         [DisplayName("RFC - Razón Social")]
         public String RfcRazonSocial { get { return String.Format("{0} - {1}", Rfc, RazonSocial); } }
 
-        [DisplayName("Domicilio Fiscal")]
+        [DisplayName("Código Postal")]
         [RegularExpression("[\\s]{0,3}([0-9]{5})[\\s]{0,3}", ErrorMessage = "El código postal tiene que conformarse de 5 caracteres numéricos")]
         public String CodigoPostal { get; set; }
 
@@ -63,11 +63,9 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo Obligatorio")]
         public string DomicilioFiscal { get; set; }*/
         
-        [DisplayName("Regimen Fiscal")]
-        [Required(ErrorMessage = "Campo Obligatorio")]
-        public int? RegimenFiscalId { get; set; }
-        [ForeignKey("RegimenFiscalId")]
-        public virtual RegimenFiscal RegimenFiscal { get; set; }
+        [DisplayName("Régimen Fiscal")]
+        [Required(ErrorMessage = "Campo obligatorio")]
+        public c_RegimenFiscal RegimenFiscal { get; set; }
 
         [NotMapped]
         public virtual BancoCliente Banco { get; set; }
