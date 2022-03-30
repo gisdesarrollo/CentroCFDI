@@ -1,6 +1,7 @@
 ﻿using API.Catalogos;
+using API.Enums;
+using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementosPagos;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +31,7 @@ namespace API.Models.Facturas
 
         public String Version { get; set; }
 
-        public c_FormaPago? FormaPago { get; set; }
+        public string FormaPago { get; set; }
 
         public String NumeroCuentaPago { get; set; }
 

@@ -17,7 +17,7 @@ using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using System.Collections.Generic;
 using API.Models.ComplementosPagos;
 using System.Linq;
-using CFDI.API.Enums.CFDI33;
+
 
 namespace APBox.Controllers.ComplementosPago
 {
@@ -70,7 +70,7 @@ namespace APBox.Controllers.ComplementosPago
                 {
                     try
                     {
-                        _pagosManager.GenerarComplementoPago(complementoPago.SucursalId, complementoPago.Id, "");
+                        //_pagosManager.GenerarComplementoPago(complementoPago.SucursalId, complementoPago.Id, "");
                     }
                     catch (Exception ex)
                     {
@@ -113,7 +113,7 @@ namespace APBox.Controllers.ComplementosPago
                 Pago = new Pago
                 {
                     FechaPago = DateTime.Now,
-                    FormaPago = c_FormaPago.TransferenciaElectronicaDeFondos,
+                    FormaPago = "03", //Transferencia Electronica de Fondos,
                     Moneda = c_Moneda.MXN,
                     TipoCambio = 1,
                     Monto = 0.0,
@@ -193,7 +193,7 @@ namespace APBox.Controllers.ComplementosPago
             complementoPago.Pago = new Pago
             {
                 FechaPago = DateTime.Now,
-                FormaPago = c_FormaPago.TransferenciaElectronicaDeFondos,
+                FormaPago = "03",//TransferenciaElectronicaDeFondos,
                 Moneda = c_Moneda.MXN,
                 TipoCambio = 1,
                 Monto = 0.0,
@@ -438,7 +438,7 @@ namespace APBox.Controllers.ComplementosPago
                     _db.Entry(complementoPagoDb).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                    _pagosManager.GenerarComplementoPago(sucursalId, complementoPago.Id, "");
+                   // _pagosManager.GenerarComplementoPago(sucursalId, complementoPago.Id, "");
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)

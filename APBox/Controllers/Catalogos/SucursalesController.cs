@@ -10,7 +10,6 @@ using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 using System.IO;
 using System.Web;
 using Utilerias.LogicaPrincipal;
-using CFDI.API.Enums.CFDI33;
 using System.Text;
 
 namespace APBox.Controllers.Catalogos
@@ -53,7 +52,7 @@ namespace APBox.Controllers.Catalogos
         {
             var sucursal = new Sucursal
             {
-                Pais = c_Pais.MEX,
+                Pais = (API.Enums.c_Pais)c_Pais.MEX,
                 Status = API.Enums.Status.Activo,
                 GrupoId = ObtenerGrupo(),
 

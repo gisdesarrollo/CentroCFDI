@@ -1,0 +1,14 @@
+Fecha de Pago,Forma de Pago,Monto,Moneda,Tipo de cambio del dia del pago para moneda del pago,Tipo de cambio del dia del pago para moneda del documento relacionado,Numero de Operacion,Banco Ordenante,Banco Beneficiario,Numero de Parcialidad,Serie de la Factura,Folio de la Factura,Importe Pagado,Importe Saldo Anterior,Importe Saldo Insoluto
+29/10/2020,3,8870.4,MXN,1,1,,,,1,FAC,77761,8870.4,8870.4,0
+29/10/2020,3,43155.03,MXN,1,21.1648,,,,1,FAC,79284,2039,2039,0
+30/10/2020,3,555042.28,MXN,1,1,,,,1,FAC,81791,"109,056.46","109,056.46",0
+30/10/2020,3,555042.28,MXN,1,1,,,,1,FAC,81241,"111,835.96","111,835.96",0
+30/10/2020,3,555042.28,MXN,1,1,,,,1,FAC,80044,"71,799.35","71,799.35",0
+30/10/2020,3,555042.28,MXN,1,1,,,,1,FAC,81792,"135,881.43","135,881.43",0
+30/10/2020,3,555042.28,MXN,1,1,,,,1,FAC,81282,"91,778.64","91,778.64",0
+30/10/2020,3,555042.28,MXN,1,1,,,,1,FAC,81781,"15,178.76","15,178.76",0
+30/10/2020,3,555042.28,MXN,1,1,,,,1,FAC,80038,"19,511.68","19,511.68",0
+30/10/2020,3,852.94,MXN,1,1,,,,1,FAC,81109,852.94,852.94,0
+29/10/2020,3,151200,MXN,1,1,,,,1,FAC,81869,151200,151200,0
+30/10/2020,3,29127.76,MXN,1,1,,,,1,FAC,82069,29127.76,29127.76,0
+15/10/2020,3,31599.4,MXN,1,1,,,,1,FAC,81930,31599.4,31599.4,0

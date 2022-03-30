@@ -1,5 +1,4 @@
-﻿using CFDI.API.CFDI33.CFDI;
-using CFDI.API.Complementos.Timbre11;
+﻿
 using System;
 using System.IO;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
 {
     public class Decodificar
     {
-        public Comprobante DecodificarComprobante(String path)
+        /*public Comprobante DecodificarComprobante(String path)
         {
             var version = string.Empty;
             try
@@ -37,9 +36,9 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                 default:
                     throw new Exception("Versión de comprobante Incorrecto");
             }
-        }
+        }*/
 
-        public TimbreFiscalDigital DecodificarTimbre(Comprobante comprobante)
+        /*public TimbreFiscalDigital DecodificarTimbre(Comprobante comprobante)
         {
             TimbreFiscalDigital timbreFiscalDigital = null;
             foreach (var complemento in comprobante.Complemento)
@@ -55,7 +54,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                 timbreFiscalDigital = ObtenerComplemento<TimbreFiscalDigital>(timbreFiscalDigitalFisico);
             }
             return timbreFiscalDigital;
-        }
+        }*/
 
         private T ObtenerComplemento<T>(XmlElement element)
         {
@@ -90,7 +89,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
 
         #region Funciones Internas CFDI 3.2
 
-        private void GenerarComplementoComprobante(ref Comprobante comprobante, TimbreFiscalDigital complemento)
+       /* private void GenerarComplementoComprobante(ref Comprobante comprobante, TimbreFiscalDigital complemento)
         {
             comprobante.Complemento = new ComprobanteComplemento[1];
 
@@ -104,7 +103,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             {
                     elementoXml
             };
-        }
+        }*/
 
         private XmlElement CrearComplemento(object complemento)
         {

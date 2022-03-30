@@ -1,6 +1,5 @@
 ﻿using API.Catalogos;
 using API.Enums.CartaPorteEnums;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +23,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public int Base { get; set; }
 
-        public c_Impuesto Impuesto { get; set; }
+        public string Impuesto { get; set; }
 
         [DisplayName("Tipo de Factor")]
         public c_TipoFactor TipoFactor { get; set; }

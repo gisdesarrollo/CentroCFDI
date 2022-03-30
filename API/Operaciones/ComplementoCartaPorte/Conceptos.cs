@@ -1,5 +1,4 @@
 ﻿using API.CatalogosCartaPorte;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,8 +28,8 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Clave de unidad")]
         public string ClaveUnidad_Id { get; set; }
         [ForeignKey("ClaveUnidad_Id")]
-        public virtual ClaveUnidad ClaveUnidad { get; set; }  
-        
+        public virtual ClaveUnidad ClaveUnidad { get; set; }
+
         public string Unidad { get; set; }
         public string Descripcion { get; set; }
 
@@ -43,6 +42,11 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Double Importe { get; set; }
 
         public string Descuento { get; set; }
+
+        [DisplayName("Objeto Impuesto")]
+        public string ObjetoImpuestoId { get; set; }
+        [ForeignKey("ObjetoImpuestoId")]
+        public virtual ObjetoImpuesto ObjetoImpuesto { get; set;}
 
        
         [NotMapped]

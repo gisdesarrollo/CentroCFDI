@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace API.Enums.CartaPorteEnums
 {
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.sat.gob.mx/sitio_internet/cfd/catalogos")]
-    public enum c_UsoCfdiCP
+   public enum c_UsoCfdiCP
     {
 
         [DescriptionAttribute("G01-Adquisición de mercancías")]
@@ -77,5 +75,14 @@ namespace API.Enums.CartaPorteEnums
 
         [DescriptionAttribute("P01-Por definir")]
         P01 = 21,
+
+        [DescriptionAttribute("S01-Sin efectos fiscales.")]
+        S01 = 22,
+
+        [DescriptionAttribute("CP01-Pagos")]
+        CP01 = 23,
+
+        [DescriptionAttribute("CN01-Nómina")]
+        CN01 = 24
     }
 }

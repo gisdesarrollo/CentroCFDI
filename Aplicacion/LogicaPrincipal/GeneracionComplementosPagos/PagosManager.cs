@@ -30,7 +30,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
         #endregion
 
-        public byte[] GenerarComplementoPago(int sucursalId, int complementoPagoId, string mailAlterno)
+        /*public byte[] GenerarComplementoPago(int sucursalId, int complementoPagoId, string mailAlterno)
         {
             lock(obj)
             {
@@ -91,7 +91,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
                 return facturaDto.Xml;
             }
-        }
+        }*/
 
         #region Generacion Archivos
 
@@ -302,7 +302,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
         #region Funciones Internas
 
-        private int GuardarComprobante(FacturaDto facturaDto, int sucursalId, int clienteId)
+        /*private int GuardarComprobante(FacturaDto facturaDto, int sucursalId, int clienteId)
         {
             var facturaInternaEmitida = new FacturaEmitida
             {
@@ -327,7 +327,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             _db.SaveChanges();
 
             return facturaInternaEmitida.Id;
-        }
+        }*/
 
         private void MarcarFacturado(int complementoPagoId, int facturaEmitidaId)
         {

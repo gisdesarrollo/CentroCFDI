@@ -1,7 +1,6 @@
 ﻿using API.Catalogos;
 using API.Enums;
 using API.Operaciones.Facturacion;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -63,7 +62,7 @@ namespace API.Operaciones.ComplementosPagos
         #region Cfdis Relacionados
 
         [DisplayName("Tipo de Relación")]
-        public c_TipoRelacion? TipoRelacion { get; set; }
+        public string TipoRelacion { get; set; }
 
         [DisplayName("CFDI Relacionado")]
         public int? CfdiRelacionadoId { get; set; }

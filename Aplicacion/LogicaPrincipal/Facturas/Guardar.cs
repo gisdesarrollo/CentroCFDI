@@ -1,7 +1,6 @@
 ﻿using API.Catalogos;
 using API.Operaciones.Facturacion;
 using Aplicacion.Context;
-using CFDI.API.CFDI33.CFDI;
 using System;
 using System.Linq;
 using Utilerias.LogicaPrincipal;
@@ -18,7 +17,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
 
         #endregion
 
-        public FacturaEmitida GuardarFacturaEmitida(Comprobante comprobante, byte[] xml)
+        /*public FacturaEmitida GuardarFacturaEmitida(Comprobante comprobante, byte[] xml)
         {
             var facturaEmitida = new FacturaEmitida
             {
@@ -81,9 +80,9 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             _db.SaveChanges();
 
             return facturaEmitida;
-        }
+        }*/
 
-        public FacturaRecibida GuardarFacturaRecibida(Comprobante comprobante, byte[] xml)
+        /*public FacturaRecibida GuardarFacturaRecibida(Comprobante comprobante, byte[] xml)
         {
             var facturaRecibida = new FacturaRecibida
             {
@@ -119,6 +118,6 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             _db.SaveChanges();
 
             return facturaRecibida;
-        }
+        }*/
     }
 }

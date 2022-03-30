@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using API.Enums;
-using CFDI.API.Enums.CFDI33;
 using API.Relaciones;
 using System.Collections.Generic;
 using System.Web;
+using API.CatalogosCartaPorte;
 
 namespace API.Catalogos
 {
@@ -58,10 +58,19 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo obligatorio")]
         public c_Pais Pais { get; set; }
 
-        [DisplayName("Régimen Fiscal")]
+        /*[DisplayName("Régimen Fiscal")]
         [Required(ErrorMessage = "Campo obligatorio")]
         public c_RegimenFiscal RegimenFiscal { get; set; }
+        */
+        [DisplayName("Régimen Fiscal")]
+        [Required(ErrorMessage = "Campo obligatorio")]
+        public int? RegimenFiscalId { get; set; }
+        [ForeignKey("RegimenFiscalId")]
+        public virtual RegimenFiscal RegimenFiscal { get; set; }
 
+
+        [DisplayName("Numero operación Adquirente")]
+        public string FactAtrAdquirente { get; set; }
 
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿using APBox.Context;
+using API.Enums;
 using API.Operaciones.Facturacion;
-using CFDI.API.Enums.CFDI33;
+
 using System;
 using System.Data.Entity;
 using System.Linq;

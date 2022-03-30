@@ -1,8 +1,5 @@
 ﻿using API.Catalogos;
 using API.Operaciones.Facturacion;
-using CFDI.API.CFDI33.CFDI;
-using CFDI.API.Complementos.Pagos10;
-using CFDI.API.Complementos.Timbre11;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,7 +10,7 @@ namespace Aplicacion.LogicaPrincipal.Validacion
 {
     public class DecodificaFacturas
     {
-        public void DecodificarFactura(ref FacturaRecibida facturaRecibida, String pathCompleto)
+        /*public void DecodificarFactura(ref FacturaRecibida facturaRecibida, String pathCompleto)
         {
             var serializador = new XmlSerializer(typeof(Comprobante));
             var comprobante = (Comprobante)serializador.Deserialize(new MemoryStream(facturaRecibida.ArchivoFisicoXml));
@@ -81,7 +78,7 @@ namespace Aplicacion.LogicaPrincipal.Validacion
             catch (Exception)
             {
             }
-        }
+        }*/
 
         #region Funciones
 

@@ -2,7 +2,6 @@
 using API.Catalogos;
 using System;
 using System.Collections.Generic;
-using CFDI.API.Enums.CFDI33;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

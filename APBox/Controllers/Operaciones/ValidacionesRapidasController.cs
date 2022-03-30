@@ -67,7 +67,7 @@ namespace APBox.Controllers.Operaciones
                     var pathFactura = Path.Combine(Server.MapPath("~/Archivos/Validaciones/"), facturaRecibida.NombreArchivoXml);
                     _operacionesStreams.ByteArrayArchivo(facturaRecibida.ArchivoFisicoXml, pathFactura);
 
-                    _decodificaFacturas.DecodificarFactura(ref facturaRecibida, pathFactura);
+                   // _decodificaFacturas.DecodificarFactura(ref facturaRecibida, pathFactura);
 
                     var rfcReceptor = facturaRecibida.Receptor.Rfc;
                     facturaRecibida.Receptor = _db.Sucursales.FirstOrDefault(s => s.Rfc == rfcReceptor);

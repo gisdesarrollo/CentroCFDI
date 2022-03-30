@@ -3,14 +3,13 @@ using API.Operaciones.ComplementosPagos;
 using API.Operaciones.ComplementoCartaPorte;
 using API.CatalogosCartaPorte;
 using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
-using CFDI.API.Enums.CFDI33;
-using CFDI.API.Enums.Complementos.Pagos10;
 using System;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using API.Models.Dto;
 using System.Linq;
 using API.Enums.CartaPorteEnums;
+using API.Enums;
 
 namespace APBox.Controllers.Ajax
 {
@@ -33,7 +32,7 @@ namespace APBox.Controllers.Ajax
                 BancoBeneficiarioId = bancoReceptorId,
                 CadenaPago = cadenaPago,
                 FechaPago = fechaPago,
-                FormaPago = (c_FormaPago)Enum.Parse(typeof(c_FormaPago), formaPago, true),
+                FormaPago = formaPago,
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), moneda, true),
                 Monto = monto,
                 NumeroOperacion = numeroOperacion,
@@ -49,7 +48,7 @@ namespace APBox.Controllers.Ajax
                 var operacionesSpei = new OperacionesSpei();
                 var xmlSpei = operacionesSpei.Decodificar(pathSpei);
 
-                pago.TipoCadenaPago = c_TipoCadenaPago.Spei;
+                pago.TipoCadenaPago = c_TipoCadenaPago.Item01.ToString();
                 pago.CertificadoPago = xmlSpei.numeroCertificado;
                 pago.CadenaPago = xmlSpei.cadenaCDA;
                 pago.SelloPago = xmlSpei.sello;
@@ -127,7 +126,7 @@ namespace APBox.Controllers.Ajax
                 RfcRemitenteDestinatario = RFCRemitenteDestinatario,
                 NombreRemitenteDestinatario = NombreRemitenteDestinatario,
                 NumRegIdTrib = NumRegIdTrib,
-                ResidenciaFiscal = ResidenciaFiscalParse,
+                ResidenciaFiscal = (API.Enums.c_Pais?)ResidenciaFiscalParse,
                 NombreEstacion = NombreEstacion,
                 NumEstacion = NumEstacion,
                 Estaciones_Id = NumEstacion,
@@ -319,7 +318,7 @@ namespace APBox.Controllers.Ajax
             };
             if (ResidenciaFiscalFigura != null && ResidenciaFiscalFigura != "")
             {
-                TiposFigura.ResidenciaFiscalFigura = (c_Pais)Enum.Parse(typeof(c_Pais), ResidenciaFiscalFigura, true);
+                TiposFigura.ResidenciaFiscalFigura = (API.Enums.c_Pais?)(c_Pais)Enum.Parse(typeof(c_Pais), ResidenciaFiscalFigura, true);
             }
             else
             {
@@ -512,7 +511,7 @@ namespace APBox.Controllers.Ajax
                     TipoImpuesto = TTipoImpuesto,
                     Base=TBase,
                     Impuesto = TImpuesto,
-                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TTipoFactor, true),
+                    TipoFactor = (API.Enums.CartaPorteEnums.c_TipoFactor)(c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TTipoFactor, true),
                     TasaOCuota = TTasaOCuota,
                     Importe = TImporte,
                    // TotalImpuestosTR = TTImpuestosTR,
@@ -522,7 +521,7 @@ namespace APBox.Controllers.Ajax
                     TipoImpuesto = RTipoImpuesto,
                     Base = RBase,
                     Impuesto = RImpuesto,
-                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RTipofactor, true),
+                    TipoFactor = (API.Enums.CartaPorteEnums.c_TipoFactor)(c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RTipofactor, true),
                     TasaOCuota = RTasaOCuota,
                     Importe = RImporte,
                     //TotalImpuestosTR = RTImpuestoTR

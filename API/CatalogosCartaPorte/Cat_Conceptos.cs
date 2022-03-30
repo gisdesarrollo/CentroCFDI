@@ -1,6 +1,5 @@
 ﻿using API.Catalogos;
 using API.CatalogosCartaPorte;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

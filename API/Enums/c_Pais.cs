@@ -2,11 +2,11 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace API.Enums.CartaPorteEnums
+namespace API.Enums
 {
     [GeneratedCode("xsd", "4.6.1055.0")]
     [XmlType(Namespace = "http://www.sat.gob.mx/sitio_internet/cfd/catalogos")]
-    public enum c_PaisCP
+    public enum c_Pais
     {
         [DescriptionAttribute("AFG-Afganistán")]
         AFG = 0,

@@ -1,5 +1,4 @@
 ﻿using API.Enums.CartaPorteEnums;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +19,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DisplayName("Base %")]
         public int BasePorcentaje { get; set; } 
-
+        
         public Decimal Base { get; set; }
 
         public string Impuesto { get; set; }

@@ -1,7 +1,7 @@
 ﻿using API.Catalogos;
 using API.DTOs.Pagos;
+using API.Enums;
 using API.Operaciones.ComplementosPagos;
-using CFDI.API.Enums.CFDI33;
 using DTOs.Correos;
 using DTOs.Facturacion.Facturacion;
 using System;
@@ -13,7 +13,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
     {
         #region Factura
 
-        public FacturaDto GenerarFactura(Sucursal sucursal, Cliente cliente)
+        /*public FacturaDto GenerarFactura(Sucursal sucursal, Cliente cliente)
         {
             var facturaDto = new FacturaDto
             {
@@ -38,7 +38,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                     LugarExpedicion = sucursal.CodigoPostal,
                     PasswordKey = sucursal.PasswordKey,
                     RazonSocial = sucursal.RazonSocial,
-                    RegimenFiscal = sucursal.RegimenFiscal,
+                    //RegimenFiscal = sucursal.RegimenFiscal,
                     Rfc = sucursal.Rfc,
                     DobleValidacion = true,
                     Logo = sucursal.Logo,
@@ -67,13 +67,13 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             facturaDto.ConceptosDto.Add(conceptoDto);
 
             return facturaDto;
-        }
+        }*/
 
         #endregion
 
         #region Complementos de Pago
 
-        public ComplementoPagoDto GenerarComplemento(ComplementoPago complementoPago)
+       /* public ComplementoPagoDto GenerarComplemento(ComplementoPago complementoPago)
         {
             var complementoPagoDto = new ComplementoPagoDto
             {
@@ -82,7 +82,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 {
                     LugarExpedicion = complementoPago.Sucursal.CodigoPostal,
                     RazonSocial = complementoPago.Sucursal.RazonSocial,
-                    RegimenFiscal = complementoPago.Sucursal.RegimenFiscal,
+                    //RegimenFiscal = complementoPago.Sucursal.RegimenFiscal,
                     Rfc = complementoPago.Sucursal.Rfc
                 },
                 Receptor = new ReceptorDto
@@ -174,20 +174,20 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             }
 
             return complementoPagoDto;
-        }
+        }*/
 
         #endregion
 
         #region CFDIs Relacionados
 
-        public void CfdisRelacionados(ref FacturaDto facturaDto, ComplementoPago complementoPago)
+        /*public void CfdisRelacionados(ref FacturaDto facturaDto, ComplementoPago complementoPago)
         {
             if(complementoPago.CfdiRelacionadoId != null && complementoPago.TipoRelacion != null)
             {
                 facturaDto.TipoRelacion = complementoPago.TipoRelacion;
                 facturaDto.CfdisRelacionados = new List<string> { complementoPago.CfdiRelacionado.Uuid };
             }
-        }
+        }*/
 
         #endregion
     }

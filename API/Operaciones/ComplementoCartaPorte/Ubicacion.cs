@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
-using CFDI.API.Enums.CFDI33;
 using API.Catalogos;
 using API.Models.Dto;
 

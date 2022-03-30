@@ -38,7 +38,7 @@ namespace BusApBox
                         _logicaFacade = new LogicaFacadeFacturas();
 
                         Console.WriteLine("Inicio: {0}", DateTime.Now);
-                        _logicaFacade.Decodificar(archivo);
+                        //_logicaFacade.Decodificar(archivo);
                         Console.WriteLine("Fin: {0}", DateTime.Now);
                     }
                     catch (Exception ex)

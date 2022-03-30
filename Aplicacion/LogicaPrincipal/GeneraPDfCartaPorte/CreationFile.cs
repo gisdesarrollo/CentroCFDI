@@ -34,9 +34,8 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
 
 
                 //complementos
-                foreach (var oComplemento in oComprobante.Complemento)
-                {
-                    foreach (var oComplementoInterior in oComplemento.Any)
+              
+                    foreach (var oComplementoInterior in oComprobante.Complemento.Any)
                     {
                         if (oComplementoInterior.Name.Contains("TimbreFiscalDigital"))
                         {
@@ -60,7 +59,7 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
                         }
 
                     }
-                }
+                
             }
 
 

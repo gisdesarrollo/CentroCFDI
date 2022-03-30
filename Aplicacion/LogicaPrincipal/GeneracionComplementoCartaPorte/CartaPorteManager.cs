@@ -1,11 +1,11 @@
 ﻿using API.Catalogos;
+using API.Enums;
 using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementoCartaPorte;
 using API.Operaciones.ComplementosPagos;
 using API.Operaciones.Facturacion;
 using API.RelacionesCartaPorte;
 using Aplicacion.Context;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -206,6 +206,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi,Sucursal sucursal)
         {
+            
             //objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
             objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
             // Verifica el error
@@ -251,11 +252,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             string tipoCambio = "";
             if (complementoCartaPorte.Moneda != null)
             {
-                if (complementoCartaPorte.Moneda == CFDI.API.Enums.CFDI33.c_Moneda.MXN)
+                if (complementoCartaPorte.Moneda == API.Enums.c_Moneda.MXN)
                 {
                     tipoCambio = "1";
                 }
-                else if (complementoCartaPorte.Moneda == CFDI.API.Enums.CFDI33.c_Moneda.XXX)
+                else if (complementoCartaPorte.Moneda == API.Enums.c_Moneda.XXX)
                 {
                     tipoCambio = "";
                 }
@@ -267,10 +268,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
 
             // parseo Enum
-            
-            var regimenFiscal = (int)complementoCartaPorte.Sucursal.RegimenFiscal;
-            
-            objCfdi.agregarComprobante33
+
+            var regimenFiscal = complementoCartaPorte.Sucursal.RegimenFiscal.Descripcion;
+            //var regimenFiscal = (int)complementoCartaPorte.Sucursal.RegimenFiscal;
+            objCfdi.agregarComprobante40
                    (
                        complementoCartaPorte.Sucursal.SerieCartaPorte, //Serie
                        complementoCartaPorte.Sucursal.FolioCartaPorte.ToString(), //Folio
@@ -285,7 +286,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                        complementoCartaPorte.TipoDeComprobante.ToString(), //Tipo de comprobante
                        complementoCartaPorte.MetodoPago.ToString() ?? "", //Metodo de pago
                        sucursal.CodigoPostal, //Lugar de expedicion
-                       "" //Clave de confirmacion
+                       "", //Clave de confirmacion
+                       complementoCartaPorte.ExportacionId //Exportacion CFDI40
                    );
 
             if(objCfdi.MensajeError != "")
@@ -321,7 +323,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 complementoCartaPorte.Receptor.RazonSocial, //Nombre
                 "",//complementoCartaPorte.Receptor.Pais.ToString(), //Residencia fiscal 
                 "",//complementoCartaPorte.Receptor.NumRegIdTrib ?? "", //NumRegIdTrib
-                complementoCartaPorte.UsoCfdiCP.ToString() //UsoCFDI
+                complementoCartaPorte.UsoCfdiCP.ToString(), //UsoCFDI
+                complementoCartaPorte.Receptor.CodigoPostal, //Domicilio Fiscal CFDI40
+                complementoCartaPorte.Receptor.RegimenFiscalId.ToString() //Regimen Fiscal CFDI40
             );
 
             if (objCfdi.MensajeError != "")
@@ -399,32 +403,45 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 }
             }
 
-            decimal sumaTipoFactorI = 0;
-            int totalTasaI = 0;
-            string impuestoI = "";
-            string tipoFactorI = "";
-            decimal tasaCuotaI = 0;
+            decimal sumaImporteT = 0;
+            decimal sumaImporteR = 0;
+            
+            string impuestoT = "";
+            string impuestoR = "";
+            string tipoFactorT = "";
+            decimal tasaCuotaT = 0;
+            decimal baseT = 0;
+
             if (impuestoTraladado || impuestoRetenido)
             {
 
                 objCfdi.agregarImpuestos(Convert.ToDouble(complementoCartaPorte.TotalImpuestoRetenidos), Convert.ToDouble(complementoCartaPorte.TotalImpuestoTrasladado));
+
 
                 if (objCfdi.MensajeError != "")
                 {
                     error = objCfdi.MensajeError;
                     throw new Exception(string.Join(",", error));
                 }
-                
+                //retenido
                 foreach (var impuesto in conceptos)
                 {
 
                     if (impuesto.Retencion != null)
                     {
-                        objCfdi.agregarRetencion
-                            (
-                                impuesto.Retencion.Impuesto,
-                                Convert.ToDouble(impuesto.Retencion.Importe)
-                            );
+                        if (impuesto.Retencion.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa)
+                        {
+                            sumaImporteR += impuesto.Retencion.Importe;
+                            impuestoR = impuesto.Retencion.Impuesto;
+                        }
+                        else
+                        {
+                            objCfdi.agregarRetencion
+                                (
+                                    impuesto.Retencion.Impuesto,
+                                    Convert.ToDouble(impuesto.Retencion.Importe)
+                                );
+                        }
                         if (objCfdi.MensajeError != "")
                         {
                             error = objCfdi.MensajeError;
@@ -432,18 +449,29 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         }
                     }
 
-                    
+                }
+
+                if (sumaImporteR > 0)
+                {
+                    objCfdi.agregarRetencion(
+                                   impuestoR,
+                                   Convert.ToDouble(sumaImporteR)
+                                   );
+                }
+
+                //traslado
+                foreach (var impuesto in conceptos)
+                {
                     if (impuesto.Traslado != null)
                     {
 
-                        if (impuesto.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                        if (impuesto.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa)
                         {
-                            sumaTipoFactorI += impuesto.Traslado.Importe;
-                            totalTasaI++;
-
-                            impuestoI = impuesto.Traslado.Impuesto;
-                            tipoFactorI = impuesto.Traslado.TipoFactor.ToString();
-                            tasaCuotaI = impuesto.Traslado.TasaOCuota;
+                            sumaImporteT += impuesto.Traslado.Importe;
+                            impuestoT = impuesto.Traslado.Impuesto;
+                            tipoFactorT = impuesto.Traslado.TipoFactor.ToString();
+                            tasaCuotaT = impuesto.Traslado.TasaOCuota;
+                            baseT = impuesto.Traslado.Base;
                         }
                         else
                         {
@@ -461,16 +489,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         }
                     }
                 }
-            }
-
-            if(sumaTipoFactorI > 0)
-            {
-                objCfdi.agregarTraslado(
-                               impuestoI,
-                               tipoFactorI,
-                               Convert.ToDouble(tasaCuotaI),
-                               Convert.ToDouble(sumaTipoFactorI)
-                               );
+                if (sumaImporteT > 0)
+                {
+                    objCfdi.agregarTraslado(
+                                   impuestoT,
+                                   tipoFactorT,
+                                   Convert.ToDouble(tasaCuotaT),
+                                   Convert.ToDouble(sumaImporteT),
+                                   Convert.ToDouble(baseT) //CFDI40
+                                   );
+                }
             }
             //CARTA PORTE
 
@@ -1018,12 +1046,13 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
 
             string xml = objCfdi.Xml;
-            xml = CorreccionXMLEsquemasComplementosComprobante(xml);
+            //se omite para la version CFDI40
+            //xml = CorreccionXMLEsquemasComplementosComprobante(xml);
 
             objCfdi.Xml = xml;
 
             //guardar string en un archivo
-           System.IO.File.WriteAllText(pathXml, xml);
+           //System.IO.File.WriteAllText(pathXml, xml);
              objCfdi = Timbra(objCfdi,sucursal);
                
 
@@ -1042,7 +1071,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 ReceptorId = complementoCartaPorte.Receptor.Id,
                 Fecha = getFormatoFecha(complementoCartaPorte.FechaDocumento, complementoCartaPorte.Hora),
                 Folio = objCfdi.Folio,
-                Moneda = (c_Moneda)complementoCartaPorte.Moneda,
+                Moneda = (API.Enums.c_Moneda)complementoCartaPorte.Moneda,
                 Serie = objCfdi.Serie,
                 Subtotal = (double)complementoCartaPorte.Subtotal,
                 TipoCambio = Convert.ToDouble(complementoCartaPorte.TipoCambio),
@@ -1055,7 +1084,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             
             if (complementoCartaPorte.FormaPago != null)
             {
-                facturaInternaEmitida.FormaPago = (c_FormaPago)Enum.Parse(typeof(c_FormaPago), complementoCartaPorte.FormaPago);
+                facturaInternaEmitida.FormaPago = complementoCartaPorte.FormaPago;
             }
             else { facturaInternaEmitida.FormaPago = null; }
             if(complementoCartaPorte.MetodoPago != null)

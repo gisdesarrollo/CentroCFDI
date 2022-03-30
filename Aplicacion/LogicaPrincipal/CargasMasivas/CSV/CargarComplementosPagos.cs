@@ -3,7 +3,6 @@ using API.Operaciones.ComplementosPagos;
 using API.Relaciones;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
-using CFDI.API.Enums.CFDI33;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
@@ -54,7 +53,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                         try
                         {
                             var fechaPago = Convert.ToDateTime(registros[i][0]);
-                            var formaPago = ParseEnum<c_FormaPago>(registros[i][1], i);
+                            var formaPago = (registros[i][1], i);
                             var monto = Convert.ToDouble(registros[i][2]);
                             var moneda = ParseEnum<c_Moneda>(registros[i][3], i);
                             var tipoCambioPago = Convert.ToDouble(registros[i][4]);
@@ -139,7 +138,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 var pago = new Pago
                                 {
                                     FechaPago = fechaPago,
-                                    FormaPago = formaPago,
+                                    FormaPago = formaPago.ToString(),
                                     Moneda = moneda,
                                     Monto = monto,
                                     NumeroOperacion = numeroOperacion,

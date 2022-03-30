@@ -1,7 +1,7 @@
 ﻿using APBox.Context;
 using APBox.Control;
+using API.Enums;
 using API.Operaciones.ComplementosPagos;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Data.Entity;
 using System.Linq;

@@ -3,7 +3,6 @@ using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementoCartaPorte;
 using API.RelacionesCartaPorte;
 using Aplicacion.Context;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

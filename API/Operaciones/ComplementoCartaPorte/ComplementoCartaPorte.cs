@@ -3,7 +3,6 @@ using API.CatalogosCartaPorte;
 using API.Enums;
 using API.Enums.CartaPorteEnums;
 using API.Operaciones.Facturacion;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -74,10 +73,6 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Vía de Entrada o Salida")]
         public String viaEntradaSalida { get; set; }
 
-        /*[Required]
-        [DisplayName("RFC Receptor")]
-        public string rfcReceptor { get; set; }*/
-
 
         [Required]
         [DisplayName("Tipo de Comprobante")]
@@ -140,7 +135,6 @@ namespace API.Operaciones.ComplementoCartaPorte
         #region Campos CFDI
 
         [DisplayName("Sucursal")]
-        //[Required(ErrorMessage = "Campo Obligatorio")]
         public int SucursalId { get; set; }
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
@@ -179,7 +173,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("FacturaEmitidaId")]
         public virtual FacturaEmitida FacturaEmitida { get; set; }
 
-        
+        [DisplayName("Exportacion")]
+        public string ExportacionId { get; set; }
+        [ForeignKey("ExportacionId")]
+        public virtual Exportacion Exportacion { get; set; }
 
         [NotMapped]
         public bool hidden { get; set; }
@@ -200,7 +197,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         #region Cfdis Relacionados
 
         [DisplayName("Tipo de Relación")]
-        public c_TipoRelacion? TipoRelacion { get; set; }
+        public string TipoRelacion { get; set; }
 
         /*[DisplayName("CFDI Relacionado")]
         public int? CfdiRelacionadoId { get; set; }

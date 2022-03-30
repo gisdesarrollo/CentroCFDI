@@ -2,7 +2,6 @@
 using API.Operaciones.Facturacion;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
-using CFDI.API.CFDI33.CFDI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +29,7 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
             return complementos;
         }
 
-        public FacturaEmitida Decodificar(String pathXml)
+        /*public FacturaEmitida Decodificar(String pathXml)
         {
             Comprobante comprobante;
 
@@ -86,6 +85,6 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
             File.Delete(pathXml);
 
             return factura;
-        }
+        }*/
     }
 }

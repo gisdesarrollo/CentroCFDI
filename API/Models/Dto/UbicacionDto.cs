@@ -1,7 +1,7 @@
 ﻿using API.Catalogos;
 using API.CatalogosCartaPorte;
+using API.Enums;
 using API.Operaciones.ComplementoCartaPorte;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,5 +1,4 @@
 ﻿using API.CatalogosCartaPorte;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using API.Enums;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {

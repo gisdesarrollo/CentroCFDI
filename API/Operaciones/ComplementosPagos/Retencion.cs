@@ -1,4 +1,4 @@
-﻿using CFDI.API.Enums.CFDI33;
+﻿
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +12,7 @@ namespace API.Operaciones.ComplementosPagos
         public int Id { get; set; }
 
         [DisplayName("Impuesto")]
-        public c_Impuesto NombreImpuesto { get; set; }
+        public string NombreImpuesto { get; set; }
 
         [Required(ErrorMessage = "Campo Obligatorio")]
         public double Importe { get; set; }

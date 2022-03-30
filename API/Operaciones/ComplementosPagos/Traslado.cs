@@ -1,4 +1,5 @@
-﻿using CFDI.API.Enums.CFDI33;
+﻿
+using API.Enums.CartaPorteEnums;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +13,7 @@ namespace API.Operaciones.ComplementosPagos
         public int Id { get; set; }
 
         [DisplayName("Impuesto")]
-        public c_Impuesto NombreImpuesto { get; set; }
+        public string NombreImpuesto { get; set; }
 
         [DisplayName("Tipo de Factor")]
         [Required(ErrorMessage = "Campo Obligatorio")]

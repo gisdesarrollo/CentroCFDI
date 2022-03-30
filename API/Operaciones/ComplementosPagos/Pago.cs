@@ -1,7 +1,6 @@
 ﻿using API.Catalogos;
+using API.Enums;
 using API.Relaciones;
-using CFDI.API.Enums.CFDI33;
-using CFDI.API.Enums.Complementos.Pagos10;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +22,7 @@ namespace API.Operaciones.ComplementosPagos
 
         [DisplayName("Forma de Pago")]
         [Required(ErrorMessage = "Campo Obligatorio")]
-        public c_FormaPago FormaPago { get; set; }
+        public string FormaPago { get; set; }
 
         [Required(ErrorMessage = "Campo Obligatorio")]
         public c_Moneda Moneda { get; set; }
@@ -49,7 +48,7 @@ namespace API.Operaciones.ComplementosPagos
         #region Spei
 
         [DisplayName("Tipo de Cadena de Pago")]
-        public c_TipoCadenaPago? TipoCadenaPago { get; set; }
+        public string TipoCadenaPago { get; set; }
 
         [DisplayName("Certificado de Pago")]
         public String CertificadoPago { get; set; }

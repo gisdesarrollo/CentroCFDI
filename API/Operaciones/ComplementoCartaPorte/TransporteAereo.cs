@@ -1,6 +1,5 @@
 ﻿using API.CatalogosCartaPorte;
 using API.Catalogos;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using API.Enums.CartaPorteEnums;
+using API.Enums;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
@@ -84,7 +84,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String DescripcionPermSCT { get; set; }
 
         [DisplayName("Residencia Fiscal del Embarcador")]
-        public c_PaisCP ResidenciaFiscalEmbarc { get; set; }
+        public c_Pais ResidenciaFiscalEmbarc { get; set; }
 
         /*[DisplayName("Residencia Fiscal del Transportista")]
         public c_Pais ResidenciaFiscalTranspor { get; set; }*/

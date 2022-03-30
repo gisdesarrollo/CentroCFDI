@@ -7,7 +7,6 @@ using API.Catalogos;
 using System;
 using APBox.Control;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
-using CFDI.API.Enums.CFDI33;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -56,7 +55,7 @@ namespace APBox.Controllers.Catalogos
             {
                 Status = API.Enums.Status.Activo,
                 FechaAlta = DateTime.Now,
-                Pais = c_Pais.MEX,
+                Pais = (API.Enums.c_Pais)c_Pais.MEX,
                 SucursalId = ObtenerSucursal()
             };
 

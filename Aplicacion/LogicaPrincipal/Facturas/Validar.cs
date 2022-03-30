@@ -1,7 +1,5 @@
 ﻿using API.Catalogos;
 using Aplicacion.Context;
-using CFDI.API.CFDI33.CFDI;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -19,7 +17,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
 
         #endregion
 
-        public void ChecarUuidRepetido(Comprobante comprobante)
+       /* public void ChecarUuidRepetido(Comprobante comprobante)
         {
             var timbreFiscalDigital = _decodificar.DecodificarTimbre(comprobante);
             var fecha = Convert.ToDateTime(comprobante.Fecha);
@@ -30,9 +28,9 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             {
                 throw new Exception(String.Format("El folio fiscal {0} ya fue cargado al sistema", timbreFiscalDigital.UUID));
             }
-        }
+        }*/
 
-        public void ChecarRfcReceptor(Comprobante comprobante)
+        /*public void ChecarRfcReceptor(Comprobante comprobante)
         {
             var emisor = _db.Sucursales.FirstOrDefault(s => s.Rfc == comprobante.Emisor.Rfc);
             if(emisor == null)
@@ -84,6 +82,6 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                     throw new Exception(string.Join(",", errores.ToArray()));
                 }
             }
-        }
+        }*/
     }
 }

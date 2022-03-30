@@ -1,5 +1,5 @@
-﻿using API.Operaciones.Facturacion;
-using CFDI.API.Enums.CFDI33;
+﻿using API.Enums;
+using API.Operaciones.Facturacion;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

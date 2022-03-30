@@ -1,6 +1,5 @@
 ﻿using API.Catalogos;
 using API.Enums;
-using CFDI.API.Enums.CFDI33;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

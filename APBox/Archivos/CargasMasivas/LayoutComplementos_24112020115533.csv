@@ -1,0 +1,6 @@
+*Fecha de Pago,*Forma de Pago,*Monto,*Moneda,*Tipo de cambio del dia del pago para moneda del pago,Tipo de cambio del dia del pago para moneda del documento relacionado,*Numero de Operacion,Banco Ordenante,Banco Beneficiario,*Numero de Parcialidad,*Serie de la Factura,*Folio de la Factura,Importe Pagado,Importe Saldo Anterior,Importe Saldo Insoluto
+23/11/2020,17,1201286.89,USD,20.1172,22.014309,,,,1,FAC,80311,159.73,159.73,0
+23/11/2020,3,297548.86,USD,20.1172,21.374829,,,,1,FAC,82311,1406.48,1406.48,0
+23/11/2020,17,1201286.89,USD,20.1172,21.274785,,,,1,FAC,78923,237.39,237.39,0
+23/11/2020,17,1201286.89,USD,20.1172,21.274785,,,,1,FAC,78924,237.39,237.39,0
+23/11/2020,17,1201286.89,USD,20.1172,21.227366,,,,1,FAC,78926,403.99,403.99,0
