@@ -12,6 +12,9 @@ namespace API.Operaciones.ComplementosPagos
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [DisplayName("Base")]
+        public double Base { get; set; }
+        
         [DisplayName("Impuesto")]
         public string NombreImpuesto { get; set; }
 

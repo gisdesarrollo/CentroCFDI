@@ -38,26 +38,30 @@ namespace APBox.Controllers.Ajax
                 NumeroOperacion = numeroOperacion,
                 TipoCambio = tipoCambio,
                 SucursalId = ObtenerSucursal(),
+                //TipoCadenaPago = "01" //SPEI
             };
 
-            if (spei != null)
+            /*if (spei != null)
             {
                 var pathSpei = String.Format(@"C:/Infodextra/Temp/{0}.xml", DateTime.Now.ToString("ddMMyyyymmssttt"));
                 System.IO.File.WriteAllText(pathSpei, spei);
 
                 var operacionesSpei = new OperacionesSpei();
                 var xmlSpei = operacionesSpei.Decodificar(pathSpei);
-
-                pago.TipoCadenaPago = c_TipoCadenaPago.Item01.ToString();
+                var TipoCadena = (int)c_TipoCadenaPago.Item01;
+                pago.TipoCadenaPago = TipoCadena.ToString();
                 pago.CertificadoPago = xmlSpei.numeroCertificado;
                 pago.CadenaPago = xmlSpei.cadenaCDA;
                 pago.SelloPago = xmlSpei.sello;
-            }
+            }*/
 
             return PartialView("~/Views/ComplementosPagos/Pagos.cshtml", pago);
         }
 
-        public PartialViewResult AgregarFacturaComplementoPago(int pagoId, int facturaEmitidaId, int numeroParcialidad, string moneda, double tipoCambio, double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto)
+        public PartialViewResult AgregarFacturaComplementoPago(int pagoId, int facturaEmitidaId, int numeroParcialidad, string moneda, 
+            double tipoCambio, double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto,Decimal baseTraslado,string impuestoTraslado,
+            string tipoFactorTraslado,Decimal tasaOCuotaTraslado,Decimal importeTraslado,Decimal baseRetencion,string impuestoRetencion, string tipoFactorRetencion,
+            Decimal tasaOCuotaRetencion, Decimal importeRetencion)
         {
             var facturaEmitida = _db.FacturasEmitidas.Find(facturaEmitidaId);
 
@@ -75,8 +79,25 @@ namespace APBox.Controllers.Ajax
 
                 IdDocumento = facturaEmitida.Uuid,
                 Folio = facturaEmitida.Folio.ToString(),
-                MetodoPago = c_MetodoPago.PPD,
-                Serie = facturaEmitida.Serie
+                //MetodoPago = c_MetodoPago.PPD,
+                Serie = facturaEmitida.Serie,
+                ObjetoImpuestoId = objetoImpuesto,
+                Traslado = new TrasladoDR()
+                { 
+                    Base = baseTraslado,
+                    Impuesto = impuestoTraslado,
+                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor),tipoFactorTraslado,true),
+                    TasaOCuota = tasaOCuotaTraslado,
+                    Importe = importeTraslado
+                },
+                Retencion = new RetencionDR()
+                {
+                    Base = baseRetencion,
+                    Impuesto = impuestoRetencion,
+                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), tipoFactorRetencion, true),
+                    TasaOCuota = tasaOCuotaRetencion,
+                    Importe = importeRetencion
+                }
             };
 
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
@@ -491,7 +512,7 @@ namespace APBox.Controllers.Ajax
         }
 
         public PartialViewResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID,string Unidad, string Descripcion,string NumIdentificacion,
-            string Cantidad, string ValorUnitario,string Importe,string TTipoImpuesto, Decimal TBase
+            string Cantidad, string ValorUnitario,string Importe, string ObjetoImpuesto, string TTipoImpuesto, Decimal TBase
             ,string TImpuesto, string TTipoFactor,Decimal TTasaOCuota,Decimal TImporte,string RTipoImpuesto, Decimal RBase,string RImpuesto
             ,string RTipofactor,Decimal RTasaOCuota,Decimal RImporte)
         {
@@ -506,6 +527,7 @@ namespace APBox.Controllers.Ajax
                 Cantidad = Cantidad,
                 ValorUnitario = ValorUnitario,
                 Importe = Convert.ToDouble(Importe),
+                ObjetoImpuestoId = ObjetoImpuesto,
                 Traslado = new TrasladoCP()
                 {
                     TipoImpuesto = TTipoImpuesto,

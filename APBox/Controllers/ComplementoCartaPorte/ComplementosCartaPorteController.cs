@@ -121,6 +121,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
+            PopulaExportacion();
+            PopulaObjetoImpuesto();
             Random random = new Random();
             var randomNumber = random.Next(0,1000000).ToString("D6");
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
@@ -241,6 +243,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ModelState.Remove("Receptor.RazonSocial");
             ModelState.Remove("Receptor");
             ModelState.Remove("Sucursal.RazonSocial");
+            ModelState.Remove("Conceptos.ObjetoImpuesto");
             PopulaClientes(complementoCartaPorte.ReceptorId);
             
             PopulaTiposDeComprobante();
@@ -276,6 +279,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
+            PopulaExportacion();
+            PopulaObjetoImpuesto();
             if (!ModelState.IsValid)
             {
                 //Identifica los mensaje de error
@@ -754,6 +759,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
+            PopulaExportacion();
+            PopulaObjetoImpuesto();
             Random random = new Random();
             var randomNumber = random.Next(0, 1000000).ToString("D6");
             //
@@ -889,7 +896,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
-            
+            PopulaExportacion();
+            PopulaObjetoImpuesto();
 
             if (ModelState.IsValid)
             {
@@ -1536,8 +1544,18 @@ namespace APBox.Controllers.ComplementosCartaPorte
         private void PopulaCfdiRelacionado(int? cfdiRelacionadoId = null)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-
             ViewBag.CfdiRelacionadoId = popularDropDowns.PopulaFacturasEmitidas(false, 0, cfdiRelacionadoId);
+        }
+        private void PopulaExportacion()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.exportacion = (popularDropDowns.PopulaExportacion());
+        }
+
+        private void PopulaObjetoImpuesto()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.objetoImpuesto = (popularDropDowns.PopulaObjetoImpuesto());
         }
         #endregion
 

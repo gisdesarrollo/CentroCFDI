@@ -56,8 +56,18 @@ namespace API.Operaciones.ComplementosPagos
         [ForeignKey("FacturaEmitidaId")]
         public virtual FacturaEmitida FacturaEmitida { get; set; }
 
+        [DisplayName("Exportacion")]
+        public string ExportacionId { get; set; }
+
+
         [NotMapped]
         public bool Seleccionado { get; set; }
+
+        [NotMapped]
+        public string FolioSustitucion { get; set; }
+
+        [NotMapped]
+        public string MotivoCancelacion { get; set; }
 
         #region Cfdis Relacionados
 
@@ -68,6 +78,10 @@ namespace API.Operaciones.ComplementosPagos
         public int? CfdiRelacionadoId { get; set; }
         [ForeignKey("CfdiRelacionadoId")]
         public virtual FacturaEmitida CfdiRelacionado { get; set; }
+
+        public int? TotalesPagoImpuestoId { get; set; }
+        [ForeignKey("TotalesPagoImpuestoId")]
+        public virtual TotalesPagosImpuestos TotalesPagosImpuestos { get; set; }
 
         #endregion
 

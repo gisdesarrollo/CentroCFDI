@@ -27,8 +27,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
     {
         private readonly AplicacionContext _db = new AplicacionContext();
         private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
-        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.cer";
-        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\Pruebas.key";
+        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         private static string passwordKey = "12345678a";
         
         public string GenerarComplementoCartaPorte(int sucursalId, int complementoCartaPorteId, string mailAlterno)
@@ -101,124 +101,18 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             return fechaDocumentoCompleto;
         }
 
-        private string CorreccionXMLEsquemasComplementosComprobante(string xml)
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            StringWriter stringWriter = new StringWriter();
-            XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
-            xmlDoc.WriteTo(xmlTextWriter);
-            xml = stringWriter.ToString();
-
-            int inicioComplemento = xml.IndexOf("<cfdi:Complemento>");
-
-            if (inicioComplemento > -1) //Si existe complemento
-            {
-                //Obtiene el fragmento del nodo Complemento
-                int finComplemento = xml.IndexOf("</cfdi:Complemento>", inicioComplemento) + 19;
-                string fragmentoComplemento = xml.Substring(inicioComplemento, finComplemento - inicioComplemento);
-                string fragmentoComplementoCopia = fragmentoComplemento;
-
-                //Obtiene el nombre del Complemento
-                int inicioNombreComplemento = fragmentoComplementoCopia.IndexOf("<cfdi:Complemento><") + 19;
-                int finNombreComplemento = fragmentoComplementoCopia.IndexOf(":", inicioNombreComplemento);
-                string nombreComplemento = fragmentoComplementoCopia.Substring(inicioNombreComplemento, finNombreComplemento - inicioNombreComplemento);
-
-                //Obtiene el fragmento del nodo Comprobante
-                int inicioComprobante = xml.IndexOf("<cfdi:Comprobante");
-                int finComprobante = xml.IndexOf(">", inicioComprobante + 17) + 1;
-                string fragmentoComprobante = xml.Substring(inicioComprobante, finComprobante - inicioComprobante);
-                string fragmentoComprobanteCopia = fragmentoComprobante;
-
-                //Verifica que exista xmlns:cfdi="http://www.sat.gob.mx/cfd/3" en el nodo Comprobante
-                int inicioXmlnsCfdi = fragmentoComprobanteCopia.IndexOf("xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"");
-
-                if (inicioXmlnsCfdi == -1) //Si no existe lo agrega
-                {
-                    fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace("<cfdi:Comprobante", "<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"");
-                }
-
-                //Verifica que exista xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" en el nodo Comprobante
-                int inicioXsiSchemaLocationT = fragmentoComprobanteCopia.IndexOf("xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"");
-
-                if (inicioXsiSchemaLocationT == -1) //Si no existe lo agrega
-                {
-                    fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace("<cfdi:Comprobante", "<cfdi:Comprobante xsi:schemaLocation=\"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd\"");
-                }
-
-                //Obtiene el fragmento xsiSchemaLocation del nodo Comprobante
-                int inicioXsiSchemaLocationComprobante = fragmentoComprobanteCopia.IndexOf("xsi:schemaLocation=\"");
-                int finXsiSchemaLocationComprobante = fragmentoComprobanteCopia.IndexOf("\"", inicioXsiSchemaLocationComprobante + 20) + 1;
-                string fragmentoXsiSchemaLocationComprobante = fragmentoComprobanteCopia.Substring(inicioXsiSchemaLocationComprobante, finXsiSchemaLocationComprobante - inicioXsiSchemaLocationComprobante);
-                string fragmentoXsiSchemaLocationComprobanteCopia = fragmentoXsiSchemaLocationComprobante;
-
-
-                //add schema carta porte
-                if (fragmentoComprobanteCopia.IndexOf("xmlns:cartaporte20=\"http://www.sat.gob.mx/CartaPorte20\"") == -1)
-                    fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace("xmlns:cfdi", "xmlns:cartaporte20=\"http://www.sat.gob.mx/CartaPorte20\"" + " " + "xmlns:cfdi");
-
-                if (fragmentoXsiSchemaLocationComprobanteCopia.IndexOf("http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd") == -1)
-                    fragmentoXsiSchemaLocationComprobanteCopia = fragmentoXsiSchemaLocationComprobanteCopia.Replace("xsi:schemaLocation=\"", "xsi:schemaLocation=\"" + "http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd" + " ");
-
-                if (fragmentoXsiSchemaLocationComprobanteCopia.IndexOf("http://www.sat.gob.mx/CartaPorte20") == -1)
-                    fragmentoXsiSchemaLocationComprobanteCopia = fragmentoXsiSchemaLocationComprobanteCopia.Replace("xsi:schemaLocation=\"", "xsi:schemaLocation=\"" + "http://www.sat.gob.mx/CartaPorte20" + " ");
-
-                //Actualiza fragmento xsiSchemaLocation del nodo Comprobante
-                fragmentoComprobanteCopia = fragmentoComprobanteCopia.Replace(fragmentoXsiSchemaLocationComprobante, fragmentoXsiSchemaLocationComprobanteCopia);
-
-                //Actualiza fragmento Comprobante
-                xml = xml.Replace(fragmentoComprobante, fragmentoComprobanteCopia);
-
-                //Elimina esquemas del nodo Complemento
-                int inicioXsiSchemaLocation = fragmentoComplementoCopia.IndexOf("xsi:schemaLocation=\"");
-
-                if (inicioXsiSchemaLocation > -1)
-                {
-                    int finXsiSchemaLocation = fragmentoComplementoCopia.IndexOf("\"", inicioXsiSchemaLocation + 20) + 1;
-                    string fragmentoXsiSchemaLocation = fragmentoComplementoCopia.Substring(inicioXsiSchemaLocation, finXsiSchemaLocation - inicioXsiSchemaLocation);
-                    fragmentoComplementoCopia = fragmentoComplementoCopia.Replace(fragmentoXsiSchemaLocation, "");
-                }
-
-                int inicioXlmns = fragmentoComplementoCopia.IndexOf("xmlns:" + nombreComplemento);
-
-                if (inicioXlmns > -1)
-                {
-                    int finXlmns = fragmentoComplementoCopia.IndexOf("\"", inicioXlmns) + 1;
-                    finXlmns = fragmentoComplementoCopia.IndexOf("\"", finXlmns) + 1;
-                    string fragmentoXlmns = fragmentoComplementoCopia.Substring(inicioXlmns, finXlmns - inicioXlmns);
-                    fragmentoComplementoCopia = fragmentoComplementoCopia.Replace(fragmentoXlmns, "");
-                }
-
-                //Actualiza el XML original actualizando el nodo Complemento
-                xml = xml.Replace(fragmentoComplemento, fragmentoComplementoCopia);
-            }
-
-            xmlDoc = new XmlDocument();
-          
-                xmlDoc.LoadXml(xml);
-                stringWriter = new StringWriter();
-                xmlTextWriter = new XmlTextWriter(stringWriter);
-                xmlDoc.WriteTo(xmlTextWriter);
-                xml = stringWriter.ToString();
-           
-            return xml;
-         }
-
+        
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi,Sucursal sucursal)
         {
             
-            //objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
-            objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
-            // Verifica el error
+            objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            //objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+            // Verifica Response
             if (objCfdi.MensajeError == "")
             {
                 var xmlTimbrado = objCfdi.XmlTimbrado;
-                
-               
                 //guardar string en un archivo
-               // System.IO.File.WriteAllText(pathXml, xmlTimbrado);
-
-
+                System.IO.File.WriteAllText(pathXml, xmlTimbrado);
             }
             else
             {
@@ -239,10 +133,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
 
             // Agrega el certificado
-            //objCfdi.agregarCertificado(pathCer);
+             objCfdi.agregarCertificado(pathCer);
             
             
-            objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
+            //objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
@@ -294,17 +188,13 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
+            objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
+
             /*objCfdi.agregarEmisor(
-                        "XIA190128J61", //Rfc
-                        "MB IDEAS DIGITALES SC",  //Nombre
-                        "601" //Regimen fiscal
-                    );*/
-            
-            objCfdi.agregarEmisor(
                 complementoCartaPorte.Sucursal.Rfc, //Rfc
                 complementoCartaPorte.Sucursal.RazonSocial,  //Nombre
                 regimenFiscal.ToString() //Regimen fiscal
-            );
+            );*/
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
@@ -317,16 +207,17 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                        "", //NumRegIdTrib
                        "P01" //UsoCFDI
                    );*/
+            objCfdi.agregarReceptor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "", "", c_UsoCfdiCP.S01.ToString(), "26670", "601");
             var RegimeFiscalReceptor = (int)complementoCartaPorte.Receptor.RegimenFiscal;
-            objCfdi.agregarReceptor(
+            /*objCfdi.agregarReceptor(
                 complementoCartaPorte.Receptor.Rfc, //Rfc
                 complementoCartaPorte.Receptor.RazonSocial, //Nombre
                 "",//complementoCartaPorte.Receptor.Pais.ToString(), //Residencia fiscal 
                 "",//complementoCartaPorte.Receptor.NumRegIdTrib ?? "", //NumRegIdTrib
-                complementoCartaPorte.UsoCfdiCP.ToString(), //UsoCFDI
+                complementoCartaPorte.UsoCfdiCP.ToString(), //UsoCFDI //para Comprobante traslado CFDI40 agregar c_UsoCfdiCP.S01.ToString()
                 complementoCartaPorte.Receptor.CodigoPostal, //Domicilio Fiscal CFDI40
                 RegimeFiscalReceptor.ToString() //Regimen Fiscal CFDI40
-            );
+            );*/
 
             if (objCfdi.MensajeError != "")
             {
@@ -353,7 +244,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                              concepto.Descripcion, //Descripcion
                              Convert.ToDouble(concepto.ValorUnitario), //ValorUnitario
                              Convert.ToDouble(concepto.Importe), //Importe
-                             0 //Descuento
+                             0, //Descuento
+                             concepto.ObjetoImpuestoId
                         );
 
                         if (objCfdi.MensajeError != "")
@@ -479,7 +371,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                                impuesto.Traslado.Impuesto,
                                impuesto.Traslado.TipoFactor.ToString(),
                                Convert.ToDouble(impuesto.Traslado.TasaOCuota),
-                               Convert.ToDouble(impuesto.Traslado.Importe)
+                               Convert.ToDouble(impuesto.Traslado.Importe),
+                               Convert.ToDouble(impuesto.Traslado.Base) //CFDI40
                                );
                         }
                         if (objCfdi.MensajeError != "")
@@ -1042,8 +935,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
             
 
-            //objCfdi.GeneraXML(pathKey, "LE02SA04");
-            objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
+            objCfdi.GeneraXML(pathKey, passwordKey);
+           // objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
 
             string xml = objCfdi.Xml;
             //se omite para la version CFDI40
@@ -1052,7 +945,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             objCfdi.Xml = xml;
 
             //guardar string en un archivo
-           //System.IO.File.WriteAllText(pathXml, xml);
+            System.IO.File.WriteAllText(pathXml, xml);
              objCfdi = Timbra(objCfdi,sucursal);
                
 

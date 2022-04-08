@@ -21,7 +21,27 @@
         $.ajax({
             type: 'POST',
             url: ' @Url.Action("AgregarFacturaComplementoPago", "AjaxOperaciones")',
-            data: JSON.stringify({ pagoId: $('#PagoId').val(), facturaEmitidaId: $('#FacturaEmitidaId').val(), numeroParcialidad: $('#Pago_DocumentoRelacionado_NumeroParcialidad').val(), moneda: $('#Pago_DocumentoRelacionado_Moneda').val(), tipoCambio: $('#Pago_DocumentoRelacionado_TipoCambio').val(), importeSaldoAnterior: $('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val(), importePagado: $('#Pago_DocumentoRelacionado_ImportePagado').val(), importeSaldoInsoluto: $('#Pago_DocumentoRelacionado_ImporteSaldoInsoluto').val() }),
+            data: JSON.stringify({
+                pagoId: $('#PagoId').val(),
+                facturaEmitidaId: $('#FacturaEmitidaId').val(),
+                numeroParcialidad: $('#Pago_DocumentoRelacionado_NumeroParcialidad').val(),
+                moneda: $('#Pago_DocumentoRelacionado_Moneda').val(),
+                tipoCambio: $('#Pago_DocumentoRelacionado_TipoCambio').val(),
+                importeSaldoAnterior: $('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val(),
+                importePagado: $('#Pago_DocumentoRelacionado_ImportePagado').val(),
+                importeSaldoInsoluto: $('#Pago_DocumentoRelacionado_ImporteSaldoInsoluto').val(),
+                objetoImpuesto: $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val(),
+                baseTraslado: $('#TBase').val(),
+                impuestoTraslado: $('#Pago_DocumentoRelacionado_Traslado_Impuesto').val(),
+                tipoFactorTraslado: $('#Pago_DocumentoRelacionado_Traslado_TipoFactor').val(),
+                tasaOCuotaTraslado: $('#TTasaOCuota').val(),
+                importeTraslado: $('#TImporte').val(),
+                baseRetencion: $('#RBase').val(),
+                impuestoRetencion: $('#Pago_DocumentoRelacionado_Retencion_Impuesto').val(),
+                tipoFactorRetencion: $('#Pago_DocumentoRelacionado_Retencion_TipoFactor').val(),
+                tasaOCuotaRetencion: $('#RTasaOCuota').val(),
+                importeRetencion: $('#RImporte').val()
+            }),
             dataType: 'html',
             contentType: "application/json; charset=utf-8",
         }).success(function (partialView) {
@@ -107,4 +127,69 @@
             console.log('Error: ', error);
         };
     }
+    //calcula el porcentaje de total a pagar 
+    $(function () {
+        $('#Pago_DocumentoRelacionado_ImportePagado').on("keyup", function () {
+            cambioimporte();
+        });
+
+        $('#RTasaOCuota').on("keyup", function () {
+            cambioimporte();
+        });
+        $('#TTasaOCuota').on("keyup", function () {
+            cambioimporte();
+        });
+
+
+        function cambioimporte() {
+
+            //Retencion
+            $("#RBase").val(($("#RBaseP").val() * $("#Pago_DocumentoRelacionado_ImportePagado").val()) / 100);
+            var RBase = parseFloat($('#RBase').val());
+            var RTasaOCuota = parseFloat($('#RTasaOCuota').val());
+            if ($('#RBase').val() === "") {
+                RBase = 0;
+
+            }
+            if ($('#RTasaOCuota').val() === "") {
+                RTasaOCuota = 0;
+            }
+
+            var TotalRet = (RBase * RTasaOCuota);
+
+            $('#RImporte').val(TotalRet);
+
+            //traslado
+            $("#TBase").val(($("#TBaseP").val() * $("#Pago_DocumentoRelacionado_ImportePagado").val()) / 100);
+            var TBase = parseFloat($('#TBase').val());
+            var TTasaOCuota = parseFloat($('#TTasaOCuota').val());
+            if ($('#TBase').val() === "") {
+                TBase = 0;
+
+            }
+            if ($('#TTasaOCuota').val() === "") {
+                TTasaOCuota = 0;
+            }
+
+            var TotalTras = (TBase * TTasaOCuota);
+            $('#TImporte').val(TotalTras);
+        }
+
+        $('#TBaseP').on("keyup", function () {
+
+            cambioimporte();
+        });
+        $('#TBaseP').change(function () {
+
+            cambioimporte();
+        });
+        $('#RBaseP').on("keyup", function () {
+
+            cambioimporte();
+        });
+        $('#RBaseP').change(function () {
+
+            cambioimporte();
+        });
+    });
 </script>

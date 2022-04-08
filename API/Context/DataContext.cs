@@ -119,6 +119,10 @@ namespace API.Context
         public DbSet<Impuesto> Impuestos { get; set; }
         public DbSet<Retencion> Retenciones { get; set; }
         public DbSet<Traslado> Traslados { get; set; }
+        public DbSet<TrasladoDR> TrasladoDR { get; set; }
+        public DbSet<RetencionDR> RetencionDR { get; set; }
+
+        public DbSet<TotalesPagosImpuestos> TotalesPagosImpuestos { get; set; }
 
         //Facturacion
         public DbSet<DocumentoExtranjero> DocumentosExtranjeros { get; set; }

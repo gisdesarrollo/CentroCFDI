@@ -55,6 +55,11 @@
                         @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-control clean readonly" })
                         @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
                     </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                        @Html.LabelFor(model => model.ExportacionId, new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.ExportacionId, (IEnumerable<SelectListItem>)ViewBag.exportacion, "Favor de hacer su selección", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ExportacionId, "", new { @class = "text-danger" })
+                    </div>
                 </div>
 
                 <div class="clearfix"></div>
@@ -76,7 +81,7 @@
 
                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             @Html.LabelFor(model => model.TipoRelacion, new { @class = "control-label" })
-                            @Html.EnumDropDownListSpecialFor(model => model.TipoRelacion)
+                            @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
                         </div>
 
@@ -118,7 +123,7 @@
 
                             <div class="form-group col-xs-12 col-sm-3">
                                 @Html.LabelFor(model => model.Pago.FormaPago, new { @class = "control-label" })
-                                @Html.EnumDropDownListSpecialFor(model => model.Pago.FormaPago)
+                                @Html.DropDownListFor(model => model.Pago.FormaPago, (IEnumerable<SelectListItem>)ViewBag.formaPago, "Favor de hacer su selección", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Pago.FormaPago, "", new { @class = "text-danger" })
                             </div>
 

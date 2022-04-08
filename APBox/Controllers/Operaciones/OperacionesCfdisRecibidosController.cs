@@ -322,7 +322,7 @@ namespace APBox.Controllers.Operaciones
             String archivoZip = null;
             try
             {
-                archivoZip = _pagosManager.GenerarZipFacturaRecibida(facturaRecibidaId);
+                //archivoZip = _pagosManager.GenerarZipFacturaRecibida(facturaRecibidaId);
             }
             catch (Exception ex)
             {

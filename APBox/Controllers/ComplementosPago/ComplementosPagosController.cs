@@ -17,7 +17,8 @@ using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using System.Collections.Generic;
 using API.Models.ComplementosPagos;
 using System.Linq;
-
+using System.Text;
+using System.Data.Entity.Migrations;
 
 namespace APBox.Controllers.ComplementosPago
 {
@@ -101,6 +102,9 @@ namespace APBox.Controllers.ComplementosPago
             PopulaClientes();
             PopulaBancos(ObtenerSucursal());
             PopulaCfdiRelacionado();
+            PopulaTipoRelacion();
+            PopulaFormaPago();
+            PopulaExportacion();
 
             var complementoPago = new ComplementoPago
             {
@@ -109,7 +113,7 @@ namespace APBox.Controllers.ComplementosPago
                 FechaDocumento = DateTime.Now,
                 Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
                 SucursalId = ObtenerSucursal(),
-                Version = "1.0",
+                Version = "2.0",
                 Pago = new Pago
                 {
                     FechaPago = DateTime.Now,
@@ -143,6 +147,9 @@ namespace APBox.Controllers.ComplementosPago
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
             PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+            PopulaTipoRelacion();
+            PopulaFormaPago();
+            PopulaExportacion();
 
             if (ModelState.IsValid)
             {
@@ -154,6 +161,9 @@ namespace APBox.Controllers.ComplementosPago
                     pagos.ForEach(p => p.ComplementoPago = null);
 
                     complementoPago.Pagos = null;
+                    complementoPago.TotalesPagoImpuestoId = null;
+                    complementoPago.TotalesPagosImpuestos = null;
+                    complementoPago.Status = Status.Activo;
                     _db.ComplementosPago.Add(complementoPago);
                     _db.SaveChanges();
 
@@ -184,6 +194,7 @@ namespace APBox.Controllers.ComplementosPago
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ComplementoPago complementoPago = _db.ComplementosPago.Find(id);
+            
 
             if (complementoPago == null)
             {
@@ -202,6 +213,9 @@ namespace APBox.Controllers.ComplementosPago
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
             PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+            PopulaTipoRelacion();
+            PopulaFormaPago();
+            PopulaExportacion();
 
             return View(complementoPago);
         }
@@ -225,6 +239,9 @@ namespace APBox.Controllers.ComplementosPago
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
             PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+            PopulaTipoRelacion();
+            PopulaFormaPago();
+            PopulaExportacion();
 
             if (ModelState.IsValid)
             {
@@ -253,7 +270,9 @@ namespace APBox.Controllers.ComplementosPago
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
             PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
-            PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+            PopulaTipoRelacion();
+            PopulaFormaPago();
+            PopulaExportacion();
 
             return View(complementoPago);
         }
@@ -351,6 +370,8 @@ namespace APBox.Controllers.ComplementosPago
 
             PopulaFacturas(complementoPago.ReceptorId);
             PopulaPagos(id);
+            PopulaObjetoImpuesto();
+            PopulaImpuestoSat();
 
             complementoPago.Pago = new Pago
             {
@@ -358,7 +379,22 @@ namespace APBox.Controllers.ComplementosPago
                 {
                     Moneda = c_Moneda.MXN,
                     TipoCambio = 1,
-                    NumeroParcialidad = 1
+                    NumeroParcialidad = 1,
+                    ImporteSaldoAnterior = 0,
+                    ImportePagado = 0,
+                    ImporteSaldoInsoluto = 0,
+                    Retencion =  new RetencionDR()
+                    {
+                        Base = 0,
+                        TasaOCuota = 0,
+                        Importe = 0
+                    },
+                    Traslado = new TrasladoDR()
+                    {
+                        Base = 0,
+                        TasaOCuota = 0,
+                        Importe = 0
+                    }
                 },
                 SucursalId = ObtenerSucursal()
             };
@@ -367,34 +403,116 @@ namespace APBox.Controllers.ComplementosPago
         }
 
         [HttpPost]
-        public ActionResult DocumentosRelacionados(ComplementoPago complementoPago)
+        public ActionResult DocumentosRelacionados(ComplementoPago complementoP)
         {
-            PopulaFacturas(complementoPago.ReceptorId);
-            PopulaPagos(complementoPago.Id);
+            PopulaFacturas(complementoP.ReceptorId);
+            PopulaPagos(complementoP.Id);
+            PopulaObjetoImpuesto();
+            PopulaImpuestoSat();
 
             ModelState.Remove("Receptor.Nombre");
             ModelState.Remove("Receptor.Pais");
             ModelState.Remove("Pago.DocumentoRelacionado.IdDocumento");
+            ModelState.Remove("Pago.DocumentoRelacionado.ObjetoImpuesto");
+            ModelState.Remove("Pago.FormaPago");
 
+            complementoP.Pago = null;
+
+            ComplementoPago complementoPago = _db.ComplementosPago.Find(complementoP.Id);
             complementoPago.Pago = null;
-
+            complementoPago.DocumentosRelacionados = complementoP.DocumentosRelacionados;
             if (ModelState.IsValid)
             {
+                
                 _acondicionarComplementosPagos.DocumentosRelacionados(complementoPago);
-
-                if(complementoPago.DocumentosRelacionados != null)
+                decimal totalRetencionesISR = 0;
+                decimal totalRetencionesIVA = 0;
+                decimal totalTrasladosBaseIVA16 = 0;
+                decimal totalTrasladosImpuestoIVA16 = 0;
+                decimal totalTrasladosBaseIVA8 = 0;
+                decimal totalTrasladosImpuestoIVA8 = 0;
+                if (complementoPago.DocumentosRelacionados != null)
                 {
                     foreach (var pago in complementoPago.DocumentosRelacionados)
                     {
-                        complementoPago.DocumentosRelacionados.ForEach(dr => dr.FacturaEmitida = null);
-                        complementoPago.DocumentosRelacionados.ForEach(dr => dr.Pago = null);
-                        complementoPago.DocumentosRelacionados.ForEach(dr => _db.DocumentosRelacionados.Add(dr));
+                        pago.FacturaEmitida = null;
+                        pago.Pago = null;
+                        if (pago.Traslado != null)
+                        {
+                            if(pago.Traslado.Base == 0)
+                            {
+                                pago.Traslado = null;
+                            }
+                            else {
+                                if (pago.Traslado.Impuesto == "002" && pago.Traslado.TasaOCuota == (decimal)0.16) 
+                                { 
+                                    totalTrasladosBaseIVA16 += pago.Traslado.Base;
+                                    totalTrasladosImpuestoIVA16 += pago.Traslado.Importe; 
+                                }
+                                if (pago.Traslado.Impuesto == "002" && pago.Traslado.TasaOCuota == (decimal)0.08)
+                                {
+                                    totalTrasladosBaseIVA8 += pago.Traslado.Base;
+                                    totalTrasladosImpuestoIVA8 += pago.Traslado.Importe;
+                                }
+
+                            }
+                        }
+                        else { pago.Traslado = null; }
+                        if (pago.Retencion != null)
+                        {
+                            if (pago.Retencion.Base == 0)
+                            {
+                                pago.Retencion = null;
+                            }
+                            else
+                            {
+                                if (pago.Retencion.Impuesto == "001") { totalRetencionesISR += pago.Retencion.Importe; }
+                                if (pago.Retencion.Impuesto == "002") { totalRetencionesIVA += pago.Retencion.Importe; }
+                            }
+                        }
+                        else { pago.Retencion = null; }
+                        _db.DocumentosRelacionados.Add(pago);
+                        _db.SaveChanges();
                     }
                 }
+                double montoTPagos = 0;
+                if(complementoPago.Pagos != null)
+                {
+                    foreach(var pg in complementoPago.Pagos)
+                    {
+                        montoTPagos = pg.Monto;
+                    }
+                }
+                
 
+                //Totales Pagos Impuestos
+                TotalesPagosImpuestos totalPagosImpuesto = new TotalesPagosImpuestos();
+                totalPagosImpuesto.TotalRetencionesIVA = Decimal.ToDouble(totalRetencionesIVA);
+                totalPagosImpuesto.TotalRetencionesISR = Decimal.ToDouble(totalRetencionesISR);
+                totalPagosImpuesto.TotalTrasladosBaseIVA16 = Decimal.ToDouble(totalTrasladosBaseIVA16);
+                totalPagosImpuesto.TotalTrasladosBaseIVA8 = Decimal.ToDouble(totalTrasladosBaseIVA8);
+                totalPagosImpuesto.TotalTrasladosImpuestoIVA16 = Decimal.ToDouble(totalTrasladosImpuestoIVA16);
+                totalPagosImpuesto.TotalTrasladosImpuestoIVA8 = Decimal.ToDouble(totalTrasladosImpuestoIVA8);
+                totalPagosImpuesto.MontoTotalPagos = montoTPagos;
+                _db.TotalesPagosImpuestos.Add(totalPagosImpuesto);
                 _db.SaveChanges();
-
+                //actualiza complemento agregando totales pagos impuestos
+                complementoPago.TotalesPagoImpuestoId = totalPagosImpuesto.Id;
+                 _db.Entry(complementoPago).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                //Identifica los mensaje de error
+                var errors = ModelState.Values.Where(E => E.Errors.Count > 0)
+                         .SelectMany(E => E.Errors)
+                         .Select(E => E.ErrorMessage)
+                         .ToList();
+                //Identifica el campo del Required
+                var modelErrors = ModelState.Where(m => ModelState[m.Key].Errors.Any());
+                ModelState.AddModelError("", "Error revisar los campos requeridos");
+
             }
 
             return View(complementoPago);
@@ -419,7 +537,7 @@ namespace APBox.Controllers.ComplementosPago
         public ActionResult Generar(ComplementoPago complementoPago)
         {
             PopulaClientes(complementoPago.ReceptorId);
-
+            string error = "";
             if (ModelState.IsValid)
             {
                 try
@@ -438,12 +556,21 @@ namespace APBox.Controllers.ComplementosPago
                     _db.Entry(complementoPagoDb).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                   // _pagosManager.GenerarComplementoPago(sucursalId, complementoPago.Id, "");
+                    _pagosManager.GenerarComplementoPago(sucursalId, complementoPago.Id, "");
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    error = ex.Message;
+
+                }
+                if (error == "")
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", error);
                 }
             }
             return View(complementoPago);
@@ -451,16 +578,75 @@ namespace APBox.Controllers.ComplementosPago
 
         public ActionResult Cancelar(int id)
         {
+            PopulaMotivoCancelacion();
+            ViewBag.Error = null;
+            ViewBag.Success = null;
+            var complementoP = _db.ComplementosPago.Find(id);
+            return PartialView("~/Views/ComplementosPagos/_Cancelacion.cshtml", complementoP);
+        }
+
+        [HttpPost]
+        public ActionResult Cancelar(ComplementoPago complementoPagos)
+        {
+            PopulaMotivoCancelacion();
+            string error = null;
+            var complementoP = _db.ComplementosPago.Find(complementoPagos.Id);
+            complementoP.FolioSustitucion = complementoPagos.FolioSustitucion;
+            complementoP.MotivoCancelacion = complementoPagos.MotivoCancelacion;
             try
             {
-                _pagosManager.Cancelar(id);
+                _pagosManager.Cancelar(complementoP);
+
             }
             catch (Exception ex)
-            { 
-                throw new Exception(ex.Message);
+            {
+                error = ex.Message;
+
             }
-            
-            return RedirectToAction("Index");
+            if (error == null)
+            {
+                ViewBag.Success = "Proceso de cancelación finalizado con éxito.";
+                ViewBag.Error = null;
+            }
+            else
+            {
+                ViewBag.Error = error;
+                ViewBag.Success = null;
+            }
+            return PartialView("~/Views/ComplementosPagos/_Cancelacion.cshtml", complementoP);
+        }
+
+
+        /*public ActionResult Descargar(int id)
+        {
+            var pathCompleto = _pagosManager.GenerarZipComplementoPago(id);
+            byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
+            string contentType = MimeMapping.GetMimeMapping(pathCompleto);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = Path.GetFileName(pathCompleto),
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            return File(archivoFisico, contentType);
+        }*/
+
+        public ActionResult DescargarAcuse(int id)
+        {
+            var complementoP = _db.ComplementosPago.Find(id);
+            string xmlCancelacion = _pagosManager.DowloadAcuseCancelacion(complementoP);
+            byte[] byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
+            MemoryStream ms = new MemoryStream(byteXml, 0, 0, true, true);
+            string nameArchivo = complementoP.FacturaEmitida.Serie + "-" + complementoP.FacturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");
+            Response.Buffer = true;
+            Response.Clear();
+            Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.End();
+
+            return new FileStreamResult(Response.OutputStream, "application/xml");
         }
 
         public ActionResult Descargar(int id)
@@ -477,14 +663,6 @@ namespace APBox.Controllers.ComplementosPago
             Response.AppendHeader("Content-Disposition", cd.ToString());
             return File(archivoFisico, contentType);
         }
-
-        public ActionResult DescargarAcuse(int id)
-        {
-            var pathCompleto = _pagosManager.DescargarAcuse(id);
-            string contentType = MimeMapping.GetMimeMapping(Path.GetFileName(pathCompleto));
-            return File(pathCompleto, contentType);
-        }
-
         #endregion
 
         protected override void Dispose(bool disposing)
@@ -543,7 +721,45 @@ namespace APBox.Controllers.ComplementosPago
 
             ViewBag.CfdiRelacionadoId = popularDropDowns.PopulaFacturasEmitidas(false, 0, cfdiRelacionadoId);
         }
+        private void PopulaTipoRelacion()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.tipoRelacion = (popularDropDowns.PopulaTipoRelacion());
+        }
 
+        private void PopulaFormaPago()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.formaPago = (popularDropDowns.PopulaFormaPago());
+        }
+
+        private void PopulaObjetoImpuesto()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.objetoImpuesto = (popularDropDowns.PopulaObjetoImpuesto());
+        }
+
+        private void PopulaImpuestoSat()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.ImpuestoSat = (popularDropDowns.PopulaImpuestoSat());
+        }
+
+        private void PopulaMotivoCancelacion()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "01 - Comprobante Emitido con errores con relación", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "02 - Comprobante emitido con errores sin relacion", Value = "02" });
+            items.Add(new SelectListItem { Text = "03 - No se llevo a cabo la operación", Value = "03" });
+            items.Add(new SelectListItem { Text = "04 - Operación nominativa relacionada en una factura global", Value = "04" });
+            ViewBag.motivoCancelacion = items;
+        }
+
+        private void PopulaExportacion()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.exportacion = (popularDropDowns.PopulaExportacion());
+        }
         #endregion
 
         #region Operaciones Archivos
@@ -572,5 +788,7 @@ namespace APBox.Controllers.ComplementosPago
         }
 
         #endregion
+
+        
     }
 }

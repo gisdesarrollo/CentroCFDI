@@ -43,7 +43,7 @@
 
         </div>
     </div>
-
+    <div id="cancelar-view"></div>
     <div class="panel">
         <div class="panel-body">
             <h3 class="title-hero">
@@ -193,7 +193,7 @@
                                                 if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
                                                     {
                                                     <li>@Html.ActionLink("Descargar", "Descargar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
-                                                    <li>@Html.ActionLink("Cancelar", "Cancelar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-red", onclick = "return confirm('¿Está seguro que desea cancelar este CFDI?');" })</li>
+                                                    <li class="list-group-item dcancelar" data-id="@Model.ComplementosPago[i].Id">Cancelar</li>
                                                     }
                                                 else
                                                     {
@@ -219,3 +219,49 @@
         </div>
     </div>
     }
+<script>
+     //activa modal cancelar pagos
+    $(function () {
+        var cancelarModal = $('#cancelar-view');
+        $(".dcancelar").on("click", function () {
+            var Id = $(this).attr("data-id");
+            var url = "@Url.Action("Cancelar", "ComplementosPagos")/" + Id;
+            $.get(url).done(function (data) {
+                cancelarModal.html(data);
+                cancelarModal.find('.modal').modal('show');
+            })
+
+        })
+
+        cancelarModal.on('click', '#submit-cancelar', function (event) {
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var url =  "@Url.Action("Cancelar", "ComplementosPagos")/"
+            var sendData = form.serialize();
+            $.post(url, sendData).done(function (data) {
+                cancelarModal.find('.modal').modal('hide');
+                ValidaEntradaModal();
+               cancelarModal.html(data);
+                cancelarModal.find('.modal').modal('show');
+
+            })
+        })
+
+        cancelarModal.on('click', '#close-modal', function(event){
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            var form = $(this).parents('.modal').find('form');
+            var messageError = form.attr('error-data');
+            var messageSuccess = form.attr('success-data');
+            if (messageError == undefined && messageSuccess != undefined) {
+                window.location.href = "/ComplementosPagos"
+            }
+
+        })
+         function ValidaEntradaModal() {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }
+
+    });
+</script>

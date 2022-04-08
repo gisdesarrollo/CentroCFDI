@@ -177,7 +177,7 @@ namespace APBox.Controllers.Catalogos
             return View(facturaEmitida);
         }
 
-        public ActionResult Descargar(int id)
+        /*public ActionResult Descargar(int id)
         {
             var pathCompleto = _pagosManager.GenerarZipFacturaEmitida(id);
             byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
@@ -190,7 +190,7 @@ namespace APBox.Controllers.Catalogos
             };
             Response.AppendHeader("Content-Disposition", cd.ToString());
             return File(archivoFisico, contentType);
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

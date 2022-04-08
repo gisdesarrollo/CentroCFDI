@@ -115,12 +115,12 @@
                                 <li>
                                     @Html.ActionLink("Impuestos", "Index", "Impuestos")
                                 </li>
-                                @*@if (User.IsInRole("BANCOS"))
+                                @if (User.IsInRole("BANCOS"))
                                     {
                                     <li>
                                         @Html.ActionLink("Bancos", "Index", "Bancos")
                                     </li>
-                                    }*@
+                                    }
                             </ul>
                         </div>
                     </li>
@@ -150,7 +150,7 @@
                 </li>
 
 
-                @* Comment goes here
+             
                         if (!User.IsInRole("RECEPCIONCFDI"))
                         {
                             <li class="header"><span>Recepción de CFDi</span></li>
@@ -257,12 +257,12 @@
                                 </ul>
                             </div>
                         </li>
-                        @*<li>
+                        <li>
                         <a href="/FacturasEmitidas/detallePago" title="ComplementoPagos">
                             <i class="glyph-icon icon-linecons-money"></i>
                             <span>Reporte Facturas con Pago</span>
                         </a>
-                    </li>*@
+                    </li>
 
                 <li class="header"><span>Complementos de CartaPorte</span></li>
                 <li>

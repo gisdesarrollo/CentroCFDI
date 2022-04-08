@@ -119,6 +119,11 @@ namespace APBox.Control
         {
             return new SelectList(_db.ImpuestoCP.OrderBy(a => a.c_Impuesto), "c_Impuesto", "Descripcion");
         }
+        public SelectList PopulaExportacion()
+        {
+            var concat = _db.Exportacion.OrderBy(a => a.c_Exportacion).ToDictionary(a => a.c_Exportacion, a => a.c_Exportacion + " - " + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
+        }
         public SelectList PopulaFormaPagoFiltro(string seleccion)
         {
             return new SelectList(_db.Cat_FormaPago.OrderBy(a => a.c_FormaPago), "c_FormaPago", "Descripcion",seleccion);
@@ -126,6 +131,11 @@ namespace APBox.Control
         public SelectList PopulaFormaPago()
         {
             var concat = _db.Cat_FormaPago.OrderBy(a => a.c_FormaPago).ToDictionary(a => a.c_FormaPago, a => a.c_FormaPago + "-" + a.Descripcion);
+            return new SelectList(concat, "key", "Value");
+        }
+        public SelectList PopulaObjetoImpuesto()
+        {
+            var concat = _db.ObjetoImpuesto.OrderBy(a => a.c_ObjetoImp).ToDictionary(a => a.c_ObjetoImp, a => a.c_ObjetoImp + "-" + a.Descripcion);
             return new SelectList(concat, "key", "Value");
         }
         public SelectList PopulaClaveUnidad()
@@ -159,7 +169,12 @@ namespace APBox.Control
         {
               var concat = _db.DerechosDePasos.OrderBy(a => a.ClavederechoPaso).ToDictionary(a => a.ClavederechoPaso, a=>a.DerechoDePaso+" "+a.Concesionario);
             return new SelectList(concat,"key","value");
-         }
+        }
+        public SelectList PopulaTipoRelacion()
+        {
+            var concat = _db.TiposRelaciones.OrderBy(a => a.c_TipoRelacion).ToDictionary(a => a.c_TipoRelacion, a => a.c_TipoRelacion + " " + a.Descripcion);
+            return new SelectList(concat, "key", "value");
+        }
         public SelectList PopulaTipoDeComprobanteFiltro(c_TipoDeComprobante seleccion)
         {
             return new SelectList(Enum.GetValues(typeof(c_TipoDeComprobante))
