@@ -67,7 +67,7 @@ namespace APBox.Controllers.Catalogos
             var cat_subImpuestoC = new Cat_SubImpuestoC();
             return View(cat_subImpuestoC);
         }
-        public ActionResult AgregarImpuesto(String TipoImp, String Nombre, int Base, string Impuesto,c_TipoFactor TipoFactor,Decimal TasaOCuota/*,Decimal Importe*/)
+        public ActionResult AgregarImpuesto(String TipoImp, String Nombre, int Base, c_ImpuestoCP Impuesto,c_TipoFactor TipoFactor,Decimal TasaOCuota/*,Decimal Importe*/)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace APBox.Controllers.Catalogos
 
             return View(cat_SubImpuestoC);
         }
-        public ActionResult EditarImpuesto(int Id, String Nombre, string TipoImp, int Base, string Impuesto, c_TipoFactor TipoFactor, Decimal TasaOCuota/*, Decimal Importe*/)
+        public ActionResult EditarImpuesto(int Id, String Nombre, string TipoImp, int Base, c_ImpuestoCP Impuesto, c_TipoFactor TipoFactor, Decimal TasaOCuota/*, Decimal Importe*/)
         {
             try {
                 var impuesto = new Cat_SubImpuestoC();

@@ -41,30 +41,18 @@ namespace APBox.Controllers.Ajax
                 //TipoCadenaPago = "01" //SPEI
             };
 
-            /*if (spei != null)
-            {
-                var pathSpei = String.Format(@"C:/Infodextra/Temp/{0}.xml", DateTime.Now.ToString("ddMMyyyymmssttt"));
-                System.IO.File.WriteAllText(pathSpei, spei);
-
-                var operacionesSpei = new OperacionesSpei();
-                var xmlSpei = operacionesSpei.Decodificar(pathSpei);
-                var TipoCadena = (int)c_TipoCadenaPago.Item01;
-                pago.TipoCadenaPago = TipoCadena.ToString();
-                pago.CertificadoPago = xmlSpei.numeroCertificado;
-                pago.CadenaPago = xmlSpei.cadenaCDA;
-                pago.SelloPago = xmlSpei.sello;
-            }*/
+           
 
             return PartialView("~/Views/ComplementosPagos/Pagos.cshtml", pago);
         }
 
         public PartialViewResult AgregarFacturaComplementoPago(int pagoId, int facturaEmitidaId, int numeroParcialidad, string moneda, 
-            double tipoCambio, double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto,Decimal baseTraslado,string impuestoTraslado,
+            double equivalencia, double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto,Decimal baseTraslado,string impuestoTraslado,
             string tipoFactorTraslado,Decimal tasaOCuotaTraslado,Decimal importeTraslado,Decimal baseRetencion,string impuestoRetencion, string tipoFactorRetencion,
             Decimal tasaOCuotaRetencion, Decimal importeRetencion)
         {
             var facturaEmitida = _db.FacturasEmitidas.Find(facturaEmitidaId);
-
+            
             var documentoRelacionado = new DocumentoRelacionado
             {
                 FacturaEmitidaId = facturaEmitida.Id,
@@ -74,7 +62,7 @@ namespace APBox.Controllers.Ajax
                 ImporteSaldoInsoluto = importeSaldoInsoluto,
                 NumeroParcialidad = numeroParcialidad,
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), moneda, true),
-                TipoCambio = tipoCambio,
+                EquivalenciaDR = equivalencia,
                 PagoId = pagoId,
 
                 IdDocumento = facturaEmitida.Uuid,
@@ -516,7 +504,7 @@ namespace APBox.Controllers.Ajax
             ,string TImpuesto, string TTipoFactor,Decimal TTasaOCuota,Decimal TImporte,string RTipoImpuesto, Decimal RBase,string RImpuesto
             ,string RTipofactor,Decimal RTasaOCuota,Decimal RImporte)
         {
-           // var totalImporte = Convert.ToDouble(ValorUnitario) * Convert.ToDouble(Cantidad);
+           
             var Conceptos = new Conceptos()
             {
                 ClavesProdServ = ClaveProdServID,
@@ -550,6 +538,47 @@ namespace APBox.Controllers.Ajax
                 }
             };
             return PartialView("~/Views/ComplementosCartaPorte/Conceptos.cshtml", Conceptos);
+        }
+
+        public PartialViewResult AgregarConceptosComprobante(string ClaveProdServID, string ClaveUnidadID, string Unidad, string Descripcion, string NumIdentificacion,
+            string Cantidad, string ValorUnitario, string Importe, string ObjetoImpuesto, string TTipoImpuesto, Decimal TBase
+            , string TImpuesto, string TTipoFactor, Decimal TTasaOCuota, Decimal TImporte, string RTipoImpuesto, Decimal RBase, string RImpuesto
+            , string RTipofactor, Decimal RTasaOCuota, Decimal RImporte)
+        {
+           
+            var Conceptos = new Conceptos()
+            {
+                ClavesProdServ = ClaveProdServID,
+                ClavesUnidad = ClaveUnidadID,
+                Unidad = Unidad,
+                Descripcion = Descripcion,
+                NoIdentificacion = NumIdentificacion,
+                Cantidad = Cantidad,
+                ValorUnitario = ValorUnitario,
+                Importe = Convert.ToDouble(Importe),
+                ObjetoImpuestoId = ObjetoImpuesto,
+                Traslado = new TrasladoCP()
+                {
+                    TipoImpuesto = TTipoImpuesto,
+                    Base = TBase,
+                    Impuesto = TImpuesto,
+                    TipoFactor = (API.Enums.CartaPorteEnums.c_TipoFactor)(c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TTipoFactor, true),
+                    TasaOCuota = TTasaOCuota,
+                    Importe = TImporte,
+                    // TotalImpuestosTR = TTImpuestosTR,
+                },
+                Retencion = new RetencionCP()
+                {
+                    TipoImpuesto = RTipoImpuesto,
+                    Base = RBase,
+                    Impuesto = RImpuesto,
+                    TipoFactor = (API.Enums.CartaPorteEnums.c_TipoFactor)(c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RTipofactor, true),
+                    TasaOCuota = RTasaOCuota,
+                    Importe = RImporte,
+                    //TotalImpuestosTR = RTImpuestoTR
+                }
+            };
+            return PartialView("~/Views/ComprobantesCfdi/Concepto.cshtml", Conceptos);
         }
 
         public PartialViewResult AgregarRemolque(string Placa,string TipoRemolqueId, string TipoRemolque)

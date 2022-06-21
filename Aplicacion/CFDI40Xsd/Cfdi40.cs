@@ -2,6 +2,7 @@
 
 using API.Enums;
 using API.Enums.CartaPorteEnums;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
  
@@ -13,7 +14,7 @@ using System.Xml.Serialization;
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/cfd/4")]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.sat.gob.mx/cfd/4", IsNullable=false)]
+[System.Xml.Serialization.XmlRootAttribute("Comprobante",Namespace ="http://www.sat.gob.mx/cfd/4", IsNullable=false)]
 public partial class ComprobanteCFDI {
     
     private ComprobanteInformacionGlobal informacionGlobalField;
@@ -81,6 +82,8 @@ public partial class ComprobanteCFDI {
     public TimbreFiscalDigital TimbreFiscalDigital;
 
     public CartaPorte CartaPorte;
+
+    public Pagos Pagos;
 
     public string CodigoQR;
 
@@ -338,7 +341,7 @@ public partial class ComprobanteCFDI {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+  /*  [System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TipoCambioSpecified {
         get {
             return this.tipoCambioFieldSpecified;
@@ -346,7 +349,7 @@ public partial class ComprobanteCFDI {
         set {
             this.tipoCambioFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -590,7 +593,7 @@ public partial class ComprobanteCfdiRelacionados {
     
     private ComprobanteCfdiRelacionadosCfdiRelacionado[] cfdiRelacionadoField;
     
-    private c_TipoRelacion tipoRelacionField;
+    private string tipoRelacionField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("CfdiRelacionado")]
@@ -605,7 +608,7 @@ public partial class ComprobanteCfdiRelacionados {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_TipoRelacion TipoRelacion {
+    public string TipoRelacion {
         get {
             return this.tipoRelacionField;
         }
@@ -746,98 +749,98 @@ public partial class ComprobanteEmisor {
 [System.SerializableAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos")]
 public enum c_RegimenFiscal {
-    
+
     /// <remarks/>
+    [DescriptionAttribute("601-General de Ley Personas Morales")]
     [System.Xml.Serialization.XmlEnumAttribute("601")]
-    Item601,
-    
-    /// <remarks/>
+    Item601 = 601,
+
+    [DescriptionAttribute("603-Personas Morales con Fines no Lucrativos")]
     [System.Xml.Serialization.XmlEnumAttribute("603")]
-    Item603,
-    
-    /// <remarks/>
+    Item603=603,
+
+    [DescriptionAttribute("605-Sueldos y Salarios e Ingresos Asimilados a Salarios")]
     [System.Xml.Serialization.XmlEnumAttribute("605")]
-    Item605,
-    
-    /// <remarks/>
+    Item605 = 605,
+
+    [DescriptionAttribute("606-Arrendamiento")]
     [System.Xml.Serialization.XmlEnumAttribute("606")]
-    Item606,
-    
-    /// <remarks/>
+    Item606 = 606,
+
+    [DescriptionAttribute("607-Régimen de Enajenación o Adquisición de Bienes")]
     [System.Xml.Serialization.XmlEnumAttribute("607")]
-    Item607,
-    
-    /// <remarks/>
+    Item607=607,
+
+    [DescriptionAttribute("608-Demás ingresos")]
     [System.Xml.Serialization.XmlEnumAttribute("608")]
-    Item608,
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("609")]
-    Item609,
-    
-    /// <remarks/>
+    Item608=608,
+
+    [DescriptionAttribute("610-Residentes en el Extranjero sin Establecimiento Permanente en México")]
     [System.Xml.Serialization.XmlEnumAttribute("610")]
-    Item610,
-    
-    /// <remarks/>
+    Item610=610,
+
+    [DescriptionAttribute("611-Ingresos por Dividendos (socios y accionistas)")]
     [System.Xml.Serialization.XmlEnumAttribute("611")]
-    Item611,
-    
-    /// <remarks/>
+    Item611=611,
+
+    [DescriptionAttribute("612-Personas Físicas con Actividades Empresariales y Profesionales")]
     [System.Xml.Serialization.XmlEnumAttribute("612")]
-    Item612,
-    
-    /// <remarks/>
+    Item612=612,
+
+    [DescriptionAttribute("614-Ingresos por intereses")]
     [System.Xml.Serialization.XmlEnumAttribute("614")]
-    Item614,
-    
-    /// <remarks/>
+    Item614=614,
+
+    [DescriptionAttribute("615-Régimen de los ingresos por obtención de premios")]
     [System.Xml.Serialization.XmlEnumAttribute("615")]
-    Item615,
-    
-    /// <remarks/>
+    Item615=615,
+
+    [DescriptionAttribute("616-Sin obligaciones fiscales")]
     [System.Xml.Serialization.XmlEnumAttribute("616")]
-    Item616,
-    
-    /// <remarks/>
+    Item616=616,
+
+    [DescriptionAttribute("620-Sociedades Cooperativas de Producción que optan por diferir sus ingresos")]
     [System.Xml.Serialization.XmlEnumAttribute("620")]
-    Item620,
-    
-    /// <remarks/>
+    Item620=620,
+
+    [DescriptionAttribute("621-Incorporación Fiscal")]
     [System.Xml.Serialization.XmlEnumAttribute("621")]
-    Item621,
-    
-    /// <remarks/>
+    Item621=621,
+
+    [DescriptionAttribute("622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras")]
     [System.Xml.Serialization.XmlEnumAttribute("622")]
-    Item622,
-    
-    /// <remarks/>
+    Item622=622,
+
+    [DescriptionAttribute("623-Opcional para Grupos de Sociedades")]
     [System.Xml.Serialization.XmlEnumAttribute("623")]
-    Item623,
-    
-    /// <remarks/>
+    Item623=623,
+
+    [DescriptionAttribute("624-Coordinados")]
     [System.Xml.Serialization.XmlEnumAttribute("624")]
-    Item624,
-    
-    /// <remarks/>
+    Item624=624,
+
+    [DescriptionAttribute("625-Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas")]
     [System.Xml.Serialization.XmlEnumAttribute("625")]
-    Item625,
+    Item625=625,
     
-    /// <remarks/>
+    [DescriptionAttribute("626-Régimen Simplificado de Confianza")]
     [System.Xml.Serialization.XmlEnumAttribute("626")]
-    Item626,
-    
+    Item626=626,
+
     /// <remarks/>
+    [DescriptionAttribute("628-Hidrocarburos")]
     [System.Xml.Serialization.XmlEnumAttribute("628")]
-    Item628,
-    
+    Item628=628,
+
     /// <remarks/>
+    [DescriptionAttribute("629-De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales")]
     [System.Xml.Serialization.XmlEnumAttribute("629")]
-    Item629,
-    
+    Item629=629,
+
     /// <remarks/>
+    [DescriptionAttribute("630-Enajenación de acciones en bolsa de valores")]
     [System.Xml.Serialization.XmlEnumAttribute("630")]
-    Item630,
+    Item630=630,
 }
 
 /// <remarks/>
@@ -862,7 +865,7 @@ public partial class ComprobanteReceptor {
     
     private c_RegimenFiscal regimenFiscalReceptorField;
     
-    private c_UsoCFDI usoCFDIField;
+    private c_UsoCfdiCP usoCFDIField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -943,7 +946,7 @@ public partial class ComprobanteReceptor {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_UsoCFDI UsoCFDI {
+    public c_UsoCfdiCP UsoCFDI {
         get {
             return this.usoCFDIField;
         }
@@ -1997,7 +2000,7 @@ public partial class ComprobanteConcepto {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool DescuentoSpecified {
         get {
             return this.descuentoFieldSpecified;
@@ -2005,7 +2008,7 @@ public partial class ComprobanteConcepto {
         set {
             this.descuentoFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -2534,16 +2537,17 @@ public partial class ComprobanteConceptoParteInformacionAduanera {
 [System.SerializableAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos")]
 public enum c_ObjetoImp {
-    
+
     /// <remarks/>
+    [DescriptionAttribute("01-No objeto de impuesto")]
     [System.Xml.Serialization.XmlEnumAttribute("01")]
     Item01,
-    
-    /// <remarks/>
+
+    [DescriptionAttribute("02-Sí objeto de impuesto")]
     [System.Xml.Serialization.XmlEnumAttribute("02")]
     Item02,
-    
-    /// <remarks/>
+
+    [DescriptionAttribute("03-Sí objeto del impuesto y no obligado al desglose")]
     [System.Xml.Serialization.XmlEnumAttribute("03")]
     Item03,
 }
@@ -2771,11 +2775,11 @@ public partial class ComprobanteImpuestosTraslado {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/cfd/4")]
+//[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+//[System.SerializableAttribute()]
+//[System.Diagnostics.DebuggerStepThroughAttribute()]
+//[System.ComponentModel.DesignerCategoryAttribute("code")]
+//[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/cfd/4")]
 public partial class ComprobanteComplemento {
     
     private System.Xml.XmlElement[] anyField;

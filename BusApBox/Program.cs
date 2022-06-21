@@ -13,7 +13,7 @@ namespace BusApBox
 {
     public class Program
     {
-        public void ProcesarArchivoExterno()
+        public void ProcesarArchivoExterno(List<String> archivos)
         {
             //Console.WriteLine("***************Inicio Cola***************");
             LogicaFacadeFacturas _logicaFacade;
@@ -23,10 +23,11 @@ namespace BusApBox
             SolicitudArchivosXsa _solicitudArchivosXsa = new SolicitudArchivosXsa();
             ObtenerConfiguraciones _obtenerConfiguraciones = new ObtenerConfiguraciones();
             //var pathArchivosSftp = Properties.Settings.Default.PathSftp;
-            var pathArchivosExternos = Properties.Settings.Default.PathArchivos;
-            var archivos = new List<String>();
-            var obtenerArchivos = new ObtenerArchivosLocales(pathArchivosExternos);
-                archivos = obtenerArchivos.ObtenerArchivos();
+            //var path = Path.Combine(Server.MapPath("~/Archivos/RecibosExternos/"), fileName);
+            //var pathArchivosExternos = Properties.Settings.Default.PathArchivos;
+            //var archivos = new List<String>();
+            //var obtenerArchivos = new ObtenerArchivosLocales(pathArchivosExternos);
+              //  archivos = obtenerArchivos.ObtenerArchivos();
 
                 foreach (var archivo in archivos.Where(a => a.Contains(".xml") || a.Contains(".XML")))
                 {
@@ -38,13 +39,15 @@ namespace BusApBox
                         _logicaFacade = new LogicaFacadeFacturas();
 
                         Console.WriteLine("Inicio: {0}", DateTime.Now);
-                        //_logicaFacade.Decodificar(archivo);
+                        _logicaFacade.Decodificar(archivo);
                         Console.WriteLine("Fin: {0}", DateTime.Now);
                     }
                     catch (Exception ex)
                     {
-                    Console.WriteLine("Error: {0}", ex.Message);
-                        _manejoArchivos.MoverErroneo(archivo);
+                    
+                    _manejoArchivos.MoverErroneo(archivo);
+                    throw new Exception(String.Format("Error: {0} " ,ex.Message));
+                    
                     }
                     Console.WriteLine("**************Finalizando Proceso de Archivos**************");
                     Console.WriteLine("");

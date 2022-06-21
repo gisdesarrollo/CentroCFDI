@@ -8,7 +8,7 @@ namespace API.CatalogosCartaPorte
     public class FraccionArancelaria
     {
         [Key]
-        [StringLength(8)]
+        [StringLength(10)]
         public String c_FraccionArancelaria { get; set; }
         public String Descripcion { get; set; }
 

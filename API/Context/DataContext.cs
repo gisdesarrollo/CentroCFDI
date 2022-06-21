@@ -11,6 +11,8 @@ using MySql.Data.Entity;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using API.CatalogosCartaPorte.Domicilio;
+using API.Operaciones.ComprobantesCfdi;
+
 
 namespace API.Context
 {
@@ -114,6 +116,8 @@ namespace API.Context
 
         //Complementos de Pago
         public DbSet<ComplementoPago> ComplementosPago { get; set; }
+
+        public DbSet<ComprobanteCfdi> ComprobantesCfdi { get; set; }
         public DbSet<Pago> Pagos { get; set; }
         public DbSet<DocumentoRelacionado> DocumentosRelacionados { get; set; }
         public DbSet<Impuesto> Impuestos { get; set; }

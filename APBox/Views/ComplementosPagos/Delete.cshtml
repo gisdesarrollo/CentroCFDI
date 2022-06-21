@@ -86,7 +86,7 @@
                                                 </div>
                                                 <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     @Html.LabelFor(model => model.Pago.FormaPago, new { @class = "control-label" })
-                                                    @Html.EnumDropDownListSpecialFor(model => model.Pago.FormaPago)
+                                                    @Html.DropDownListFor(model => model.Pago.FormaPago, (IEnumerable<SelectListItem>)ViewBag.formaPago, "Favor de hacer su selección", new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(model => model.Pago.FormaPago, "", new { @class = "text-danger" })
                                                 </div>
                                                 <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">

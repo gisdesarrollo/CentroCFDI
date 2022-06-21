@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using API.Operaciones.ComprobantesCfdi;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +66,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int? Complemento_Id { get; set; }
         [ForeignKey("Complemento_Id")]
         public virtual ComplementoCartaPorte ComplementoCP { get; set; }
+
+        public int? Comprobante_Id { get; set; }
+        [ForeignKey("Comprobante_Id")]
+        public virtual ComprobanteCfdi ComprobanteCfdi { get; set; }
 
     }
 }

@@ -41,7 +41,7 @@ namespace API.Operaciones.ComplementosPagos
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaDocumento { get; set; }
 
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         public Meses Mes { get; set; }
 
         public bool Generado { get; set; }

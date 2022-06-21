@@ -76,7 +76,7 @@
                 </div>
                 <div class="form-group col-xs-12 col-lg-3">
                     @Html.LabelFor(model => model.UsoCfdi, htmlAttributes: new { @class = "control-label" })
-                    @Html.EnumDropDownListFor(model => model.UsoCfdi, htmlAttributes: new { @class = "form-control" })
+                    @Html.EnumDropDownListSpecialFor(model => model.UsoCfdi)
                     @Html.ValidationMessageFor(model => model.UsoCfdi, "", new { @class = "text-danger" })
                 </div>
                 <div class="clearfix"></div>

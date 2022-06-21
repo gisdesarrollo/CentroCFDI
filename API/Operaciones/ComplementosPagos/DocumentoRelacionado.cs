@@ -23,8 +23,8 @@ namespace API.Operaciones.ComplementosPagos
 
         public c_Moneda Moneda { get; set; }
 
-        [DisplayName("Tipo de cambio del dia del pago para moneda del documento relacionado")]
-        public double TipoCambio { get; set; }
+        [DisplayName("Equivalencia")]
+        public double EquivalenciaDR { get; set; }
 
        /* [DisplayName("Método de Pago")]
         public c_MetodoPago MetodoPago { get; set; }
@@ -46,6 +46,9 @@ namespace API.Operaciones.ComplementosPagos
         public String ObjetoImpuestoId { get; set; }
         [ForeignKey("ObjetoImpuestoId")]
         public virtual ObjetoImpuesto ObjetoImpuesto { get; set; }
+
+        [NotMapped]
+        public string DescripcionObjetoImpuesto { get; set; }
 
         [DisplayName("Factura Emitida")]
         [Required(ErrorMessage = "Campo Obligatorio")]

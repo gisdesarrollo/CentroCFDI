@@ -14,7 +14,7 @@
             precio = cero($("#ValorUnitario").val());
             cantidad = cero($("#Cantidad").val());
             multi = cantidad * precio;
-            console.log("multi: " + multi + " cantidad: " + $("#Cantidad").val() + " precio: " + $("#ValorUnitario").val());
+            
             $("#Importe").val(multi);
         }
         function cero(valor) {
@@ -25,7 +25,7 @@
             }
         }
         $("#EliminarConcepto").on('click', function () {
-            console.log("id a eliminar" + $("#EliminarConcepto").data("id"));
+            
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("EliminarConcepto", "Conceptos")',
@@ -35,7 +35,6 @@
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
             }).success(function () {
-                alert("Dato Eliminado");
                 window.location.href = "../Index"
             })
             .fail(function (jqxhr, textStatus, error) {
@@ -46,38 +45,45 @@
         $("#crearConcepto").on('click', function () {
             var ImpRet = $("#CImpuestoR").val();
             var ImpTras = $("#CImpuestoT").val();
-            console.log("impret: " + ImpRet + " ImpTras: " + ImpTras);
+            
             if (ImpRet == "") {
                 ImpRet = 0;
             }
             if (ImpTras == "") {
                 ImpTras = 0;
             }
-            $.ajax({
-                type: 'POST',
-                url: ' @Url.Action("AgregarConceptos", "Conceptos")',
-                data: JSON.stringify({
-                    ClaveProdServID: $('#ClaveProdServ_IdConceptos').val(),
-                    ClaveUnidadID: $('#ClavesUnidadConc').val(),
-                    Cantidad: $('#Cantidad').val(),
-                    Unidad: $('#UnidadConceptos').val(),
-                    NoIdentificacion: $('#NoIdentificacion').val(),
-                    Descripcion: $('#DescripcionConc').val(),
-                    ValorUnitario: $('#ValorUnitario').val(),
-                    Importe: $('#Importe').val(),
-                    Descuento: $('#Descuento').val(),
-                    ImpuestoR: parseInt(ImpRet),
-                    ImpuestoT: parseInt(ImpTras),
-                }),
-                dataType: 'html',
-                contentType: "application/json; charset=utf-8",
-            }).success(function () {
-                window.location.href = "Index"
-            })
-            .fail(function (jqxhr, textStatus, error) {
-                alert("Favor de llenar todos los datos para los detalles ");
-            });
-            return false;
+          
+            if ($('#objetoImpuestoDrop').val() ==="") {
+                alert("Favor de llenar El Campo Objeto Impuesto REQUERIDO!");
+            } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("AgregarConceptos", "Conceptos")',
+                    data: JSON.stringify({
+                        ClaveProdServID: $('#ClaveProdServ_IdConceptos').val(),
+                        ClaveUnidadID: $('#ClavesUnidadConc').val(),
+                        Cantidad: $('#Cantidad').val(),
+                        Unidad: $('#UnidadConceptos').val(),
+                        NoIdentificacion: $('#NoIdentificacion').val(),
+                        Descripcion: $('#DescripcionConc').val(),
+                        ValorUnitario: $('#ValorUnitario').val(),
+                        Importe: $('#Importe').val(),
+                        Descuento: $('#Descuento').val(),
+                        ObjetoImpuesto: $('#objetoImpuestoDrop').val(),
+                        ImpuestoR: parseInt(ImpRet),
+                        ImpuestoT: parseInt(ImpTras),
+                    }),
+                    dataType: 'html',
+                    contentType: "application/json; charset=utf-8",
+                }).success(function () {
+                    window.location.href = "Index"
+                })
+                    .fail(function (jqxhr, textStatus, error) {
+                        alert("Favor de llenar todos los datos para los detalles ");
+                    });
+                return false;
+            }
         });
 
         $("#EditarConcepto").on('click', function () {
@@ -90,7 +96,7 @@
             if (ImpTras == "") {
                 ImpTras = 0;
             }
-            console.log("impret: " + ImpRet + " ImpTras: " + ImpTras);
+            
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("EditarConceptos", "Conceptos")',
@@ -105,6 +111,7 @@
                     ValorUnitario: $('#ValorUnitario').val(),
                     Importe: $('#Importe').val(),
                     Descuento: $('#Descuento').val(),
+                    ObjetoImpuesto: $('#objetoImpuestoDrop').val(),
                     ImpuestoR: ImpRet,
                     ImpuestoT: ImpTras
                 }),
@@ -181,4 +188,14 @@
 
          });
     }
+    //habilita campos impuestos en conceptos 
+    $(function () {
+        $('#objetoImpuestoDrop').change(function () {
+            var objetoImpuesto = $(this).val();
+
+            if (objetoImpuesto === "02") {
+                $('#habilita-impuesto').show();
+            } else { $('#habilita-impuesto').hide(); }
+        });
+    });
 </script>

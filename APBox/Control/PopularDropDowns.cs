@@ -49,6 +49,7 @@ namespace APBox.Control
         {
             return _db.ClavesProdServCP.Where(a => a.c_ClaveUnidad == seleccion).ToList();
         }
+
         public List<FraccionArancelaria> PopulaDatosFraccionArancelaria(string seleccion)
         {
             return _db.FraccionesArancelarias.Where(a => a.c_FraccionArancelaria == seleccion).ToList();
@@ -186,6 +187,13 @@ namespace APBox.Control
             return new SelectList(Enum.GetValues(typeof(c_TipoDeComprobante))
                         .Cast<c_TipoDeComprobante>()
                         .Where(e => (e == c_TipoDeComprobante.I || e == c_TipoDeComprobante.T)));
+        }
+
+        public SelectList PopulaTipoDeComprobanteCfdi()
+        {
+            return new SelectList(Enum.GetValues(typeof(c_TipoDeComprobante))
+                        .Cast<c_TipoDeComprobante>()
+                        .Where(e => (e == c_TipoDeComprobante.I || e == c_TipoDeComprobante.E)));
         }
 
         public SelectList PopulaTransporte()

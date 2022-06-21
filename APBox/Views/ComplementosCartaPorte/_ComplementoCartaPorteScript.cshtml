@@ -317,7 +317,6 @@
         }
         $(elem).parent().parent().parent().remove();
         var totalMercancia = $(".mercancia").length;
-        console.log("Total mercancia: " + totalMercancia);
         $("#Mercancias_NumTotalMercancias").val(totalMercancia);
     }
 
@@ -1206,6 +1205,24 @@
         $(elem).parent().parent().parent().remove();
     }
     //DETALLE CONCEPTOS
+    //function para verificar que se haya seleccionado una opcion
+    function comprobarDropDown(id) {
+        var ConceptosError = $("#" + id).val();
+        
+        if (ConceptosError == "") {
+            $("#" + id + "_Error").text("Campo Obligatorio");
+            return false;
+        } else {
+            $("#" + id + "_Error").text("");
+        }
+    }
+    //Elimina mensaje error objeto impuesto
+    $(function () {
+        $("#Conceptos_ObjetoImpuesto").change(function () {
+            comprobarDropDown("Conceptos_ObjetoImpuesto");
+        });
+    });
+
     $(function () {
     $('#agregarDetalleConceptos').click(function () {
         var contador = $(".conceptos").size() + 1;
@@ -1215,7 +1232,10 @@
 
     $(function () {
     $("#agregarDetalleConceptos").on('click', function () {
-
+        //validación para ver si se ha seleccionado una opcion
+        if (comprobarDropDown("Conceptos_ObjetoImpuesto") == false) {
+            return false;
+        } 
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarConceptos", "AjaxOperaciones")',
@@ -1462,7 +1482,7 @@
                  $.get("/ComplementosCartaPorte/DatosClaveUnidad", { ClaveUnidad: claveUnidad }, function (data) {
                      if (data.length > 0) {
                          $.each(data, function (index, row) {
-                             $("#Mercancias_Mercancia_Unidad").val(row.Nombre);
+                             //$("#Mercancias_Mercancia_Unidad").val(row.Nombre);
                          });
                          $(div).html("");
                      } else {
@@ -1557,7 +1577,7 @@
           dataType: 'html',
             contentType: "application/json; charset=utf-8",
          }).success(function (valor) {
-             console.log(valor);
+             
              if (valor == 0) {
                  $(div).html("El dato ingresado no existe");
              }
@@ -1618,9 +1638,11 @@
                             $("#Conceptos_Cantidad").val(row.Cantidad);
                             $("#Conceptos_ValorUnitario").val(row.ValorUnitario);
                             $("#Conceptos_Importe").val(row.Importe);
-                            $("#Descuento").val(row.Descuento)
+                            $("#Descuento").val(row.Descuento);
+                          
                             if ($("#tipoComprobante").val() == "I") {
-                                console.log("ImpuestoIdTras: " + row.ImpuestoIdTras + "\nImpuestoIdRet" + row.ImpuestoIdRet);
+                               
+                                $("#Conceptos_ObjetoImpuesto").selectpicker('val', row.ObjetoImpuesto);
                                 if (row.ImpuestoIdTras != null) {
                                     var ImpuestoT = row.ImpuestoIdTras;
                                     agregarImpuestos(ImpuestoT);
@@ -1635,6 +1657,9 @@
                                 }
                             }
                             else {
+                                
+                                $("#Conceptos_ObjetoImpuesto").val("01");
+                                $('.objetoImpuestoText').text("01-No objeto de impuesto");
                                 cambioImpTras();
                                 cambioImpRet();
                             }
@@ -1719,20 +1744,19 @@
         var Importe = "";
         if (ImpuestoT != "") {
             $.get("/ComplementosCartaPorte/DatosCatalogoImpuesto", { IdImpuesto: ImpuestoT }, function (data) {
-                console.log("data l: " + data.length);
-
+                
                 if (data.length > 0) {
                     $.each(data, function (index, row) {
                         TipoImpuesto = row.TipoImpuesto;
                         base = (row.Base * $("#Conceptos_Importe").val()/100);
-                        console.log("b= " + base + "base= " + row.Base + "importe= " + $("#Conceptos_Importe").val());
+                        
                         basePor = row.Base;
                         TImpuesto = row.Impuesto;
                         TipoFactor = row.TipoFactor;
                         TasaCuota = row.TasaOCuota;
                         Importe = (base * TasaCuota);
                     });
-                    console.log("impuest: " + TImpuesto + "factor" + TipoFactor);
+                    
                     if (TipoFactor == 0) {
                         TipoFactor = "Tasa";
                     } else if (TipoFactor == 1) {
@@ -1806,7 +1830,7 @@
             precio = cero($("#Conceptos_ValorUnitario").val());
             cantidad = cero($("#Conceptos_Cantidad").val());
             multi = cantidad * precio;
-            console.log("multi: " + multi + " cantidad: " + $("#Conceptos_Cantidad").val() + " precio: " + $("#Conceptos_ValorUnitario").val());
+            
             $("#Conceptos_Importe").val(multi);
         }
 
@@ -1843,19 +1867,23 @@
         $("#tipoComprobante").change(function () {
             if ($(this).val() === "T") {
                 var idCliente = $("#IDCliente").val();
-                console.log("idsucursal: " + idCliente);
+                
                 $('#ReceptorId').selectpicker('val', idCliente);
-                $('#UsoCfdiCP').selectpicker('val', 'P01');
+                $('#UsoCfdiCP').selectpicker('val', 'S01');
                 //
                 $('#recep').text($('#ReceptorId option:selected').text());
-                $('#cfdi').text('P01');
+                $('#cfdi').text($('#UsoCfdiCP option:selected').text());
                 //
                 $('#ReceptorId').val(idCliente);
-                $('#UsoCfdiCP').val('P01')
+                $('#UsoCfdiCP').val('S01')
                 //
                 $('#receptorDrop').hide();
                 $('#receptorText').show();
                 $('.InformacionReceptor').text('Al ser un CFDi de tipo T de Traslado, el RFC del Receptor tiene que ser el mismo del Emisor.');
+                $('#activaObjetoImpI').hide();
+                $('#activaObjetoImpT').show();
+                $("#Conceptos_ObjetoImpuesto").val("01");
+                $('#objetoImpuestoText').text("01-No objeto de impuesto");
             }
             if ($(this).val() === "I") {
 
@@ -1864,6 +1892,9 @@
                 $('#receptorDrop').show();
                 $('#receptorText').hide();
                 $('.InformacionReceptor').text('');
+                $('#activaObjetoImpI').show();
+                $('#activaObjetoImpT').hide();
+                
             }
         });
     });

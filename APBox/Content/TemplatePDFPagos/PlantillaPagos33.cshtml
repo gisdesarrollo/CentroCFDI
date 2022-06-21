@@ -1,0 +1,786 @@
+@using System
+@using System.Globalization
+@using API.Enums;
+@using Aplicacion.Utilidades;
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CFDI</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <table>
+
+            <tr>
+
+                @*<td><img src="@Model.Logo" style="height:100px; float:right; width:auto;" /></td>*@
+                <td>
+                    <div style="width: 66%; float: left; display: flex;">
+                        <img src="@Model.Logo" width="200" /><br />
+                    </div>
+                    <h1 align="right">
+                        @Model.Emisor.Nombre
+                        <br />
+                        @Model.Emisor.Rfc
+                    </h1>
+                    <h5 align="right" class="title">Comprobante Fiscal Digital por Internet</h5>
+
+                    <h5 align="right">Folio: <b class="title">@Model.Serie - @Model.Folio</b></h5>
+                    <h5 align="right">Folio Fiscal UUID - <b class="title">@Model.TimbreFiscalDigital.UUID.ToString().ToUpper()</b></h5>
+                </td>
+            </tr>
+        </table>
+        <hr />
+
+        <table>
+            <tr>
+                <td class="title">
+                    Información CFDi
+                </td>
+            </tr>
+            <tr>
+                <td class="col-style title">
+                    Serie - Folio
+                </td>
+                <td class="col-style title">
+                    Forma de Pago
+                </td>
+                <td class="col-style title">
+                    Metodo de Pago
+                </td>
+                <td class="col-style title">
+                    Tipo de Comprobante
+                </td>
+                <td class="col-style title">
+                    Fecha de Emisión
+                </td>
+                <td class="col-style title">
+                    Fecha de Timbrado
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-style">
+                    @Model.Serie - @Model.Folio
+                </td>
+                <td class="col-style">
+                    @if (Model.TipoDeComprobante != c_TipoDeComprobante.P)
+                    {
+
+                    }
+                </td>
+                <td class="col-style">
+                    @if (Model.TipoDeComprobante != c_TipoDeComprobante.P)
+                    {
+
+                    }
+                </td>
+                <td class="col-style">
+                    Pago
+                </td>
+                <td class="col-style">
+                    @Model.Fecha
+                </td>
+                <td class="col-style">
+                    @Model.TimbreFiscalDigital.FechaTimbrado
+                </td>
+            </tr>
+        </table>
+        <hr />
+
+        <table>
+
+            <tr>
+                <td class="title" colspan="5">Emisor</td>
+                <td class="title" colspan="5">Receptor</td>
+            </tr>
+            <tr>
+                <td class="col-style" colspan="1"><small>Nombre</small></td>
+                <td class="col-style" colspan="4">
+                    <small>@Model.Emisor.Nombre</small>
+                </td>
+                <td class="col-style" colspan="1"><small>Nombre</small></td>
+                <td class="col-style" colspan="4"><small>@Model.Receptor.Nombre</small></td>
+            </tr>
+            <tr>
+                <td class="col-style" colspan="1"><small>RFC</small></td>
+                <td class="col-style" colspan="4">
+                    <small>@Model.Emisor.Rfc</small>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-style" colspan="1"><small>Régimen</small></td>
+                <td class="col-style" colspan="4">
+                    <small>@DescripcionesEnum.ObtenerDescripcionEnum(Model.Emisor.RegimenFiscal)</small>
+                </td>
+                <td class="col-style" colspan="1"><small>Uso del CFDI</small></td>
+                <td class="col-style" colspan="4"><small>@DescripcionesEnum.ObtenerDescripcionEnum(Model.Receptor.UsoCFDI)</small></td>
+            </tr>
+            <tr>
+                <td class="col-style" colspan="1"><small>Lugar de Expedición</small></td>
+                <td class="col-style" colspan="4"><small>@Model.LugarExpedicion</small></td>
+                <td class="col-style" colspan="5"></td>
+            </tr>
+        </table>
+        <div class="fa fa-circle"></div>
+        <hr />
+
+        <table>
+            <tr>
+                <td class="title">Conceptos</td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td class="col-style title">Cantidad</td>
+                            <td class="col-style title" colspan="3">Descripción</td>
+                            <td class="col-style title">Unidad</td>
+                            <td class="col-style title">Valor Unitario</td>
+                            <td class="col-style title">Descuento</td>
+                            <td class="col-style title">Importe</td>
+                            @*<td class="col-style title">Objeto Impuesto</td>*@
+                        </tr>
+                        @if (Model.Conceptos != null)
+                        {
+                            foreach (var concepto in Model.Conceptos)
+                            {
+                                <tr>
+                                    <td class="col-style">@concepto.Cantidad</td>
+                                    @if (concepto.NoIdentificacion == null)
+                                    {
+                                        <td class="col-style" colspan="3">@concepto.Descripcion / @concepto.ClaveProdServ</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-style" colspan="3">@concepto.NoIdentificacion - @concepto.Descripcion / @concepto.ClaveProdServ</td>
+                                    }
+
+                                    @if (concepto.Unidad == null)
+                                    {
+                                        <td class="col-style">@concepto.ClaveUnidad</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-style">@concepto.Unidad / @concepto.ClaveUnidad</td>
+                                    }
+
+                                    <td class="col-style">@concepto.ValorUnitario</td>
+                                    <td class="col-style">@concepto.Descuento</td>
+                                    <td class="col-style">@concepto.Importe</td>
+                                    @*<td class="col-style">@DescripcionesEnum.ObtenerDescripcionEnum(concepto.ObjetoImp)</td>*@
+                                </tr>
+
+                                if (concepto.Impuestos != null)
+                                {
+                                    if (concepto.Impuestos.Traslados != null)
+                                    {
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="col-style title">Base</td>
+                                            <td class="col-style title">Tipo de Factor</td>
+                                            <td class="col-style title">Impuesto</td>
+                                            <td class="col-style title">Tasa / Cuota</td>
+                                            <td class="col-style title">Importe</td>
+                                        </tr>
+
+                                        foreach (var traslado in concepto.Impuestos.Traslados)
+                                        {
+                                            <tr>
+                                                <td class="col-style"></td>
+                                                <td class="col-style"></td>
+                                                <td class="col-style title">Traslado</td>
+                                                <td class="col-style">@traslado.Base</td>
+                                                <td class="col-style">@traslado.TipoFactor</td>
+                                                <td class="col-style">@DescripcionesEnum.GetDescripcionImpuesto(traslado.Impuesto)</td>
+                                                <td class="col-style">@traslado.TasaOCuota</td>
+                                                <td class="col-style">@traslado.Importe</td>
+                                            </tr>
+                                        }
+                                    }
+
+                                    if (concepto.Impuestos.Retenciones != null)
+                                    {
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="col-style title">Base</td>
+                                            <td class="col-style title">Tipo de Factor</td>
+                                            <td class="col-style title">Impuesto</td>
+                                            <td class="col-style title">Tasa / Cuota</td>
+                                            <td class="col-style title">Importe</td>
+                                        </tr>
+                                        foreach (var retencion in concepto.Impuestos.Retenciones)
+                                        {
+                                            <tr>
+                                                <td class="col-style"></td>
+                                                <td class="col-style"></td>
+                                                <td class="col-style title">Retención</td>
+                                                <td class="col-style">@retencion.Base</td>
+                                                <td class="col-style">@retencion.TipoFactor.ToString()</td>
+                                                <td class="col-style">@DescripcionesEnum.GetDescripcionImpuesto(retencion.Impuesto)</td>
+                                                <td class="col-style">@retencion.TasaOCuota</td>
+                                                <td class="col-style">@retencion.Importe</td>
+                                            </tr>
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <hr />
+
+        @if (Model.Pagos != null)
+        {
+            <table width="100%">
+                <tr>
+                    <td class="title" colspan="6">Complemento de Recepción de Pago</td>
+                </tr>
+
+                @Model.Pagos.Version
+                @{
+                    var i = 0;
+                }
+
+                @foreach (var pago in Model.Pagos.Pago)
+                {
+                    i += 1;
+                    <tr style="background-color:#f1f1f1; padding:5px;">
+                        <td class="title" colspan="5">Pago @i</td>
+                    </tr>
+                    <tr>
+                        <td class="col-style">
+                            Fecha de Pago: <br /> @pago.FechaPago
+                        </td>
+                        <td class="col-style">
+                            Forma de Pago: <br /> @DescripcionesEnum.GetDescripcionFormaPago(pago.FormaDePagoP)
+                        </td>
+                        <td class="col-style">
+                            Moneda: <br /> @DescripcionesEnum.ObtenerDescripcionEnum(pago.MonedaP)
+                        </td>
+                        <td class="col-style">
+                            Tipo de Cambio: <br /> @pago.TipoCambioP
+                        </td>
+                        <td class="col-style">
+                            Monto: <br />  @Convert.ToDouble(pago.Monto).ToString("c")
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (pago.RfcEmisorCtaOrd != null)
+                        {
+                        <td class="col-style">
+                            Banco Ordenante: <br /> @pago.RfcEmisorCtaOrd
+                        </td>
+                        }
+                        @if (pago.CtaOrdenante != null)
+                        {
+                        <td class="col-style">
+                            Cuenta Ordenante: <br /> @pago.CtaOrdenante
+                        </td>
+                        }
+                        @if (pago.RfcEmisorCtaBen != null)
+                        {
+                        <td class="col-style">
+                            Banco Beneficiario: <br /> @pago.RfcEmisorCtaBen
+                        </td>
+                        }
+                        @if (pago.CtaBeneficiario != null)
+                        {
+                        <td class="col-style">
+                            Cuenta Beneficiario: <br /> @pago.CtaBeneficiario
+                        </td>
+                        }
+                        @if (pago.NumOperacion != null)
+                        {
+                        <td class="col-style">
+                            Numero de Operación: <br /> @pago.NumOperacion
+                        </td>
+                        }
+                    </tr>
+                    var j = 0;
+                    if (pago.DoctoRelacionado != null)
+                    {
+                        foreach (var documentoRelacionado in pago.DoctoRelacionado)
+                        {
+                            j += 1;
+                            <tr>
+                                <td></td>
+                                <td class="col-style title" colspan="1">Documento Relacionado: @j</td>
+                                <td class="col-style title" colspan="1">UUID:</td>
+                                <td class="col-style" colspan="2">@documentoRelacionado.IdDocumento</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="col-style">
+                                    Factura: <br /> @documentoRelacionado.Serie - @documentoRelacionado.Folio
+                                </td>
+                                <td class="col-style">
+                                    Moneda: <br /> @DescripcionesEnum.ObtenerDescripcionEnum(documentoRelacionado.MonedaDR)
+                                </td>
+                                <td class="col-style">
+                                    Tipo de Cambio: <br /> @documentoRelacionado.EquivalenciaDR
+                                </td>
+                                <td class="col-style">
+                                    Método de Pago: <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="col-style">
+                                    Imp Saldo Anterior: <br />@Convert.ToDouble(documentoRelacionado.ImpSaldoAnt).ToString("c")
+                                </td>
+                                <td class="col-style">
+                                    Imp Pagado: <br />@Convert.ToDouble(documentoRelacionado.ImpPagado).ToString("c")
+                                </td>
+                                <td class="col-style">
+                                    Imp Saldo Insoluto: <br />@Convert.ToDouble(documentoRelacionado.ImpSaldoInsoluto).ToString("c")
+                                </td>
+                                <td class="col-style">
+                                    Núm Parcialidad: <br /> @documentoRelacionado.NumParcialidad
+                                </td>
+                                <td class="col-style">
+                                    Objeto Impuesto: <br /> @DescripcionesEnum.ObtenerDescripcionEnum(documentoRelacionado.ObjetoImpDR)
+                                </td>
+                            </tr>
+                            if (documentoRelacionado.ImpuestosDR != null)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td class="col-style title" colspan="1">Impuesto Documento Relacionado</td>
+                                </tr>
+                                if (documentoRelacionado.ImpuestosDR.TrasladosDR != null)
+                                {
+                                    foreach (var trasladoDR in documentoRelacionado.ImpuestosDR.TrasladosDR)
+                                    {
+                                        <tr>
+                                            <td></td>
+                                            <td class="col-style title" colspan="1">Traslado</td>
+                                            <td class="col-style">
+                                                Base: <br /> @trasladoDR.BaseDR
+                                            </td>
+                                            <td class="col-style">
+                                                Impuesto: <br /> @DescripcionesEnum.GetDescripcionImpuesto(trasladoDR.ImpuestoDR)
+                                            </td>
+                                            <td class="col-style">
+                                                Tipo Factor : <br /> @trasladoDR.TipoFactorDR
+                                            </td>
+                                            <td class="col-style">
+                                                Tasa / Cuota: <br /> @trasladoDR.TasaOCuotaDR
+                                            </td>
+                                            <td class="col-style">
+                                                Importe: <br /> @trasladoDR.ImporteDR
+                                            </td>
+                                        </tr>
+                                    }
+                                    if (documentoRelacionado.ImpuestosDR.RetencionesDR != null)
+                                    {
+                                        foreach (var retencionDR in documentoRelacionado.ImpuestosDR.RetencionesDR)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td class="col-style title" colspan="1">Retencion</td>
+                                                <td class="col-style">
+                                                    Base: <br /> @retencionDR.BaseDR
+                                                </td>
+                                                <td class="col-style">
+                                                    Impuesto: <br /> @DescripcionesEnum.GetDescripcionImpuesto(retencionDR.ImpuestoDR)
+                                                </td>
+                                                <td class="col-style">
+                                                    Tipo Factor : <br /> @retencionDR.TipoFactorDR
+                                                </td>
+                                                <td class="col-style">
+                                                    Tasa / Cuota: <br /> @retencionDR.TasaOCuotaDR
+                                                </td>
+                                                <td class="col-style">
+                                                    Importe: <br /> @retencionDR.ImporteDR
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            </table>
+            <hr />
+        }
+
+
+        @if (Model.Impuestos != null)
+        {
+            <table>
+                <tr>
+                    <td class="title" colspan="5">Impuestos Federales</td>
+                </tr>
+
+                @if (Model.Impuestos.Traslados != null)
+                {
+                    <tr>
+                        <td></td>
+                        <td class="col-style title">Tipo de Factor</td>
+                        <td class="col-style title">Impuesto</td>
+                        <td class="col-style title">Tasa</td>
+                        <td class="col-style title">Importe</td>
+                    </tr>
+
+                    foreach (var traslado in Model.Impuestos.Traslados)
+                    {
+                        <tr>
+                            <td class="col-style title">Traslado</td>
+                            <td class="col-style">@traslado.TipoFactor</td>
+                            <td class="col-style">@DescripcionesEnum.GetDescripcionImpuesto(traslado.Impuesto)</td>
+                            <td class="col-style">@traslado.TasaOCuota</td>
+                            <td class="col-style">@traslado.Importe)</td>
+                        </tr>
+                    }
+
+                    <tr>
+                        <td class="col-style title" colspan="4">Total de Impuestos Traslados</td>
+                        <td class="col-style">@Model.Impuestos.TotalImpuestosTrasladados)</td>
+                    </tr>
+                }
+
+                @if (Model.Impuestos.Retenciones != null)
+                {
+                    foreach (var retencion in Model.Impuestos.Retenciones)
+                    {
+                        <tr>
+                            <td class="col-style title">Retención</td>
+                            <td></td>
+                            <td class="col-style">@DescripcionesEnum.GetDescripcionImpuesto(retencion.Impuesto)</td>
+                            <td></td>
+                            <td class="col-style">@retencion.Importe)</td>
+                        </tr>
+                    }
+
+                    <tr>
+                        <td class="col-style title" colspan="4">Total de Impuestos Retenidos</td>
+                        <td class="col-style">@Model.Impuestos.TotalImpuestosRetenidos)</td>
+                    </tr>
+                }
+            </table>
+
+            <hr />
+        }
+        @if(Model.Pagos.Totales !=null)
+        {
+            <table>
+                <tr>
+                    <td class="title" colspan="7">Pagos Totales</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    @if (Model.Pagos.Totales.TotalRetencionesIVA > 0)
+                    {
+                        <td class="col-style">
+                            TotalRetencionesIVA: <br /> @Model.Pagos.Totales.TotalRetencionesIVA
+                        </td>
+                    }
+                        @if (Model.Pagos.Totales.TotalRetencionesISR > 0)
+                        {
+                            <td class="col-style">
+                                TotalRetencionesISR: <br /> @Model.Pagos.Totales.TotalRetencionesISR
+                            </td>
+                        }
+                        @if (Model.Pagos.Totales.TotalRetencionesIEPS > 0)
+                        {
+                            <td class="col-style">
+                                TotalRetencionesIEPS : <br /> @Model.Pagos.Totales.TotalRetencionesIEPS
+                            </td>
+                        }
+                        @if (Model.Pagos.Totales.TotalTrasladosBaseIVA16 > 0)
+                        {
+                            <td class="col-style">
+                                TotalTrasladosBaseIVA16: <br /> @Model.Pagos.Totales.TotalTrasladosBaseIVA16
+                            </td>
+                        }
+
+                    </tr>
+                <tr>
+                    <td></td>
+                    @if(Model.Pagos.Totales.TotalTrasladosImpuestoIVA16 > 0)
+                    {
+                        <td class="col-style">
+                            TotalTrasladosImpuestoIVA16: <br /> @Model.Pagos.Totales.TotalTrasladosImpuestoIVA16
+                        </td>
+                    }
+                    @if(Model.Pagos.Totales.TotalTrasladosBaseIVA8 > 0)
+                    {
+                        <td class="col-style">
+                            TotalTrasladosBaseIVA8: <br /> @Model.Pagos.Totales.TotalTrasladosBaseIVA8
+                        </td>
+                    }
+                    @if(Model.Pagos.Totales.TotalTrasladosImpuestoIVA8 > 0)
+                    {
+                        <td class="col-style">
+                            TotalTrasladosImpuestoIVA8: <br /> @Model.Pagos.Totales.TotalTrasladosImpuestoIVA8
+                        </td>
+                    }
+                   
+                        <td class="col-style">
+                            MontoTotalPagos: <br /> @Model.Pagos.Totales.MontoTotalPagos
+                        </td>
+                    
+
+                </tr>
+
+            </table>
+
+            <hr />
+
+        }
+
+        <table>
+            <tr>
+                <td class="title" colspan="7">Especificaciones del Comprobante</td>
+            </tr>
+            <tr>
+                @if (Model.TipoCambio == null || Convert.ToDouble(Model.TipoCambio) == 0)
+                {
+                    <td class="col-style title">
+                        Moneda
+                    </td>
+                }
+                else
+                {
+                    <td class="col-style title">
+                        Moneda (TC)
+                    </td>
+                }
+                <td class="title" colspan="2" align="right">
+                    Totales
+                </td>
+            </tr>
+
+
+            <tr>
+                @if (Model.TipoCambio == null || Convert.ToDouble(Model.TipoCambio) == 0)
+                {
+                    <td class="col-style">
+                        @Model.Moneda
+                    </td>
+                }
+                else
+                {
+                    <td class="col-style">
+                        @Model.Moneda (@Model.TipoCambio)
+                    </td>
+                }
+                <td></td>
+            </tr>
+            <tr>
+                <td class="col-style" align="right" colspan="6"></td>
+                <td class="col-style" align="right" colspan="1">@String.Format("Subtotal: {0:C}", @Model.SubTotal)</td>
+            </tr>
+            @if (Model.Descuento != null)
+            {
+                <tr>
+                    <td class="col-style" align="right" colspan="6"></td>
+                    <td class="col-style" align="right" colspan="1">@String.Format("Descuento: {0:C}", @Model.Descuento)</td>
+                </tr>
+            }
+            <tr>
+                <td class="col-style" colspan="4">Importe con Letra: @DescripcionesEnum.NumerosLetras(@Model.Total.ToString())</td>
+                <td class="col-style" align="right" colspan="2"></td>
+                <td class="col-style" align="right" colspan="1">@String.Format("Total: {0:C}", @Model.Total)</td>
+            </tr>
+        </table>
+
+        @if (Model.CfdiRelacionados != null)
+        {
+            <hr />
+
+            <table>
+                <tr>
+                    <td class="title" colspan="7">CFDIs Relacionados</td>
+                </tr>
+                <tr>
+				<td class="col-style">Tipo de Relación</td>
+                    <td class="col-style" colspan="4">@DescripcionesEnum.GetDescripcionTipoRelacion(@Model.CfdiRelacionados.TipoRelacion)</td>
+
+                    @foreach (var cfdiRelacionado in Model.CfdiRelacionados.CfdiRelacionado)
+                    {
+                        
+                        
+                            <td class="col-style">@cfdiRelacionado.UUID</td>
+                        
+                    }
+                </tr>
+            </table>
+        }
+
+        <hr />
+
+
+        <div class="title">Datos de timbrado</div>
+
+        <table>
+            <div style="width: 30%">
+                <table>
+                    <tr>
+                        <td><img src="@Model.CodigoQR" width="250" height="250" /></td>
+                    </tr>
+                </table>
+            </div>
+            <tr>
+                <td width="80%">
+                    @if (Model.TimbreFiscalDigital != null)
+                    {
+                        <table>
+                            <tr>
+                                <td><small><b>Versión: </b></small><small>@Model.Version</small></td>
+                                <td><small><b>Certificado SAT: </b></small><small>@Model.TimbreFiscalDigital.NoCertificadoSAT</small></td>
+                                <td><small><b>Certificado CFD: </b></small><small>@Model.NoCertificado</small></td>
+                            </tr>
+                        </table>
+                        <p><small><b>Sello Digital SAT: </b></small><small>@Model.TimbreFiscalDigital.SelloSAT</small></p>
+                        <p><small><b>Sello Digital CFD: </b></small><small>@Model.TimbreFiscalDigital.SelloCFD</small></p>
+                    }
+                    else
+                    {
+                        <table>
+                            <tr>
+                                <td><small><b>Versión: </b></small><small>@Model.Version</small></td>
+                                <td><small><b>Certificado SAT: </b></small><small>Prueba</small></td>
+                                <td><small><b>Certificado CFD: </b></small><small>Prueba</small></td>
+                            </tr>
+                        </table>
+                        <p><small><b>Sello Digital SAT: </b></small><small>Prueba</small></p>
+                        <p><small><b>Sello Digital CFD: </b></small><small>Prueba</small></p>
+                    }
+                </td>
+                @*<td width="20%" align="right">
+                    <img src="@Model.CodigoQR" height="100" width="100" />
+                </td>*@
+
+            </tr>
+            <tr>
+                <td colspan="2" style="font-size:8px">
+                    <p>
+                        <small><b>Cadena original del complemento de certificación digital:</b></small>
+                        <br />
+                        <small>
+                            ||@Model.TimbreFiscalDigital.Version|@Model.TimbreFiscalDigital.UUID|@Model.TimbreFiscalDigital.FechaTimbrado|@Model.TimbreFiscalDigital.SelloCFD|@Model.TimbreFiscalDigital.NoCertificadoSAT||
+                        </small>
+                    </p>
+                    <p><small><b>Certificado</b></small> <br /><small><small>@Model.Certificado</small></small></p>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="col-style title" align="center">Este documento es una representación impresa de un CFDI</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+<style>
+    * {
+        background: white;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    p {
+        font-size: 10px !important;
+    }
+
+    .col {
+        width: 20%;
+    }
+
+    .col-style {
+        font-size: 10px;
+        background-color: white;
+    }
+
+    .border {
+        border-radius: 20px 20px 20px 20px;
+        background-color: green;
+        padding: 0px;
+    }
+
+    .col-style title {
+        padding: 0px;
+    }
+
+    .title {
+        color: #008080;
+        font-weight: bold;
+    }
+
+    .country {
+        color: #5f9ea0;
+    }
+
+    .column1 {
+        width: 10%;
+        text-align: center;
+    }
+
+    .column2 {
+        width: 75%;
+    }
+
+    .column3 {
+        width: 15%;
+    }
+
+    p {
+        font-size: 12pt;
+        margin: 1em 0;
+    }
+
+    h1 {
+        font-size: 14pt;
+        font-weight: bold;
+        margin: 0.67em 0;
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: 0.4pt;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+        text-indent: 0;
+    }
+
+    tr {
+        vertical-align: inherit;
+    }
+
+    table > tr {
+        vertical-align: middle;
+    }
+
+    td {
+        font-size: 10pt;
+        padding: 1px;
+        text-align: inherit;
+        vertical-align: inherit;
+    }
+
+    th {
+        display: table-cell;
+        font-weight: bold;
+        padding: 1px;
+        vertical-align: inherit;
+    }
+    </style>

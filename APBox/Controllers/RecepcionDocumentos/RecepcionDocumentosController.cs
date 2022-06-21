@@ -24,10 +24,22 @@ namespace APBox.Controllers.RecepcionDocumentos
             {
 
                 var archivos = SubeArchivos();
-                if (archivos.Count > 0) {
-                    bus.ProcesarArchivoExterno();
+                if (archivos.Count > 0)
+                {
+                    try
+                    {
+                        bus.ProcesarArchivoExterno(archivos);
+                        ModelState.AddModelError("", "Comando realizado con éxito");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("",String.Format("Error: {0}",ex.Message));
+                    }
                 
-                ModelState.AddModelError("", "Comando realizado con éxito");
+                }
+                else {
+                    ModelState.AddModelError("", "No Se Encontraron Archivos XML");
+
                 }
             }
 

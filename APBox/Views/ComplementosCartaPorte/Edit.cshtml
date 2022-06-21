@@ -26,6 +26,7 @@
             @Html.HiddenFor(model => model.Mercancias.Id)
             @Html.HiddenFor(model => model.TotalImpuestoTrasladado)
             @Html.HiddenFor(model => model.TotalImpuestoRetenidos)
+            @Html.HiddenFor(model => model.ExportacionId)
             if (Model.Mercancias.AutoTransporte != null && Model.Mercancias.AutoTransporte_Id != null)
             {
                 @Html.HiddenFor(model => model.Mercancias.AutoTransporte_Id)
@@ -139,11 +140,11 @@
                                     @Html.ValidationMessageFor(model => model.TipoDeComprobante, "Comprobante no puede ir vacío", new { @class = "text-danger" })
 
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
                                     @Html.LabelFor(model => model.ExportacionId, new { @class = "control-label" })
                                     @Html.DropDownListFor(model => model.ExportacionId, (IEnumerable<SelectListItem>)ViewBag.exportacion, "Favor de hacer su selección", new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.ExportacionId, "", new { @class = "text-danger" })
-                                </div>
+                                </div>*@
 
 
 
@@ -331,7 +332,11 @@
                                     @Html.ValidationMessageFor(model => model.Conceptos.Importe, "", new { @class = "text-danger" })
                                     <div id="ClaveUnidadConcepto" style="color:red;"></div>
                                 </div>
-
+                                <div class="form-group col-xs-12 col-sm-3">
+                                    @Html.LabelFor(model => model.Conceptos.ObjetoImpuesto, new { @class = "control-label" })
+                                    @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.ObjetoImpuesto, "", new { @class = "text-danger" })
+                                </div>
                                 <div class="clearfix"></div>
                                 <hr />
 
@@ -340,7 +345,7 @@
                                     <h3 class="title-hero">
                                         Subsección Impuestos : Traslado
                                     </h3>
-                                    
+
                                     @Html.HiddenFor(model => model.Conceptos.Traslado.TipoImpuesto)
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                         @Html.LabelFor(model => model.Conceptos.Traslado.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
@@ -372,11 +377,7 @@
                                         @Html.EditorFor(model => model.Conceptos.Traslado.Importe, new { htmlAttributes = new { @class = "form-control", @id = "TImporte", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Importe, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="form-group col-xs-12 col-sm-3">
-                                        @Html.LabelFor(model => model.Conceptos.ObjetoImpuesto, new { @class = "control-label" })
-                                        @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.Conceptos.ObjetoImpuesto, "", new { @class = "text-danger" })
-                                    </div>
+
                                     <div class="clearfix"></div>
                                     <hr />
                                     <br />
@@ -384,7 +385,7 @@
                                     <h3 class="title-hero">
                                         Subsección Impuestos : Retencion
                                     </h3>
-                                    
+
                                     @Html.HiddenFor(model => model.Conceptos.Retencion.TipoImpuesto)
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                         @Html.LabelFor(model => model.Conceptos.Retencion.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
@@ -416,7 +417,7 @@
                                         @Html.EditorFor(model => model.Conceptos.Retencion.Importe, new { htmlAttributes = new { @class = "form-control", @id = "RImporte", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Importe, "", new { @class = "text-danger" })
                                     </div>
-                                   
+
                                 </div>
                                 <div class="clearfix"></div>
 

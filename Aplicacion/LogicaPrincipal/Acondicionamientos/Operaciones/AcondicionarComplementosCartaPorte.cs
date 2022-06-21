@@ -92,6 +92,8 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         complementoCP.Subtotal += (decimal)concepto.Importe;
                     }
                     concepto.ComplementoCP = null;
+                    concepto.ComprobanteCfdi = null;
+                    concepto.Comprobante_Id = null;
                     //concepto.ComplementoCP = complementoCP;
                     if (concepto.Retencion == null)
                     {
@@ -136,7 +138,10 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
             }
             else
             {
-               // complementoCP.Total += complementoCP.Subtotal;
+                if (complementoCP.TipoDeComprobante == c_TipoDeComprobante.I)
+                {
+                     complementoCP.Total = complementoCP.Subtotal;
+                }
             }
             //carga ubicaciones
             if(complementoCP.Ubicaciones != null)
@@ -389,6 +394,8 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 {
                     concepto.Complemento_Id = complementoCP.Id;
                     concepto.ComplementoCP = null;
+                    concepto.ComprobanteCfdi = null;
+                    concepto.Comprobante_Id = null;
                     if (concepto.Traslado == null)
                     {
                         concepto.Traslado = null;
@@ -900,7 +907,12 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 complementoCP.Total += complementoCP.Subtotal - complementoCP.TotalImpuestoRetenidos;
             }
             else
-            { }
+            {
+                if(complementoCP.TipoDeComprobante == c_TipoDeComprobante.I)
+                {
+                    complementoCP.Total = complementoCP.Subtotal;
+                }
+            }
         }
        
     }

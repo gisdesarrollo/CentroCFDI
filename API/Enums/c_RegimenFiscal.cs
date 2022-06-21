@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace API.Enums
 {
-    public enum c_RegimenFiscal
+   public enum c_RegimenFiscal
     {
         [DescriptionAttribute("601-General de Ley Personas Morales")]
         A = 601,
@@ -47,6 +47,5 @@ namespace API.Enums
         R = 625,
         [DescriptionAttribute("626-Régimen Simplificado de Confianza")]
         S = 626
-
     }
 }

@@ -120,6 +120,17 @@ namespace API.Catalogos
         public String SerieCartaPorte { get; set; }
         #endregion
 
+        [DisplayName("Folio Ingreso")]
+        public int FolioIngreso { get; set; }
+        [DisplayName("Serie Ingreso")]
+        public String SerieIngreso { get; set; }
+
+        [DisplayName("Folio Comprobante Egreso")]
+        public int FolioEgreso { get; set; }
+        
+        [DisplayName("Serie Egreso")]
+        public String SerieEgreso { get; set; }
+        
         #region Informacion XSA
 
         [DisplayName("Servicio")]

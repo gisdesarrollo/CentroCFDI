@@ -12,17 +12,25 @@
             <div class="col-lg-6">
                 <h2>Complementos de Recepción de Pagos</h2>
             </div>
+             <br />
+            <div class="clearfix"></div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control date" } })
+                @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control date" } })
+                @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-control" })
 
-            <div class="col-sm-2">
-                @Html.EnumDropDownListFor(model => model.Mes, new { htmlAttributes = new { @class = "clean form-control" } })
-                @Html.ValidationMessageFor(model => model.Mes, "", new { @class = "text-danger" })
             </div>
 
-            <div class="col-sm-2">
-                @Html.EditorFor(model => model.Anio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Anio, "", new { @class = "text-danger" })
-            </div>
-
+            
             <div class="col-lg-1">
                 <button class="btn btn-alt btn-primary float-left multiple" type="submit" value="Filtrar" name="actionName">
                     <span></span> <i class="fas fa-search"></i>
@@ -49,18 +57,13 @@
             <h3 class="title-hero">
                 CFDi Generados con complemento de pagos
             </h3>
-            <button class="btn btn-alt btn-primary float-left btn-xs" type="submit" value="Timbrar" name="actionName">
-                <span> Timbrar Seleccionados </span>
-            </button>
+            
             <div class="clearfix"></div>
             <div class="row">
                 <table class="table table-condensed dataTable">
 
                     <thead>
                         <tr>
-                            <th>
-                                Seleccionado
-                            </th>
                             <th>
                                 Folio
                             </th>
@@ -70,9 +73,9 @@
                             <th>
                                 Fecha del Documento
                             </th>
-                            <th>
+                            @*<th>
                                 Mes
-                            </th>
+                            </th>*@
                             <th>
                                 Estado
                             </th>
@@ -86,66 +89,7 @@
                         @for (int i = 0; i < Model.ComplementosPago.Count; i++)
                             {
                             <tr>
-                                <td>
-                                    @if (Model.ComplementosPago[i].FacturaEmitida == null)
-                                        {
-                                        @Html.EditorFor(model => Model.ComplementosPago[i].Seleccionado)
-                                        }
-
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Id)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitidaId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FechaDocumento)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Generado)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Mes)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].ReceptorId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Status)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].SucursalId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Version)
-
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.ArchivoFisicoXml)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.CadenaOriginal)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.CentroCostoId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Certificado)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.DepartamentoId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Descuento)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.EmisorId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Fecha)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.FechaTimbrado)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Folio)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.FormaPago)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Id)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.LugarExpedicion)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.MetodoPago)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Moneda)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.MotivoDescuento)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NoCertificado)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NoCertificadoSat)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NombreArchivoXml)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.NumeroCuentaPago)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.ReceptorId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.SelloDigitalCfdi)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.SelloSat)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Serie)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Subtotal)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.TipoCambio)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.TipoComprobante)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Total)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Uuid)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].FacturaEmitida.Version)
-
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.CodigoPostal)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Email)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.FechaAlta)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Id)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Observaciones)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Pais)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.RazonSocial)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Rfc)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Status)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.SucursalId)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Telefono1)
-                                    @Html.HiddenFor(model => model.ComplementosPago[i].Receptor.Telefono2)
-                                </td>
+                               
                                 <td>
                                     @if (Model.ComplementosPago[i].FacturaEmitida != null)
                                         {
@@ -162,9 +106,9 @@
                                 <td>
                                     @Html.DisplayFor(model => Model.ComplementosPago[i].FechaDocumento)
                                 </td>
-                                <td>
+                                @*<td>
                                     @Html.DisplayFor(model => Model.ComplementosPago[i].Mes)
-                                </td>
+                                </td>*@
                                 <td>
                                     @if (Model.ComplementosPago[i].Generado == true)
                                         {
@@ -192,7 +136,8 @@
                                                 {
                                                 if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
                                                     {
-                                                    <li>@Html.ActionLink("Descargar", "Descargar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                    <li>@Html.ActionLink("Descargar XML", "DescargarXml", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                     <li>@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
                                                     <li class="list-group-item dcancelar" data-id="@Model.ComplementosPago[i].Id">Cancelar</li>
                                                     }
                                                 else

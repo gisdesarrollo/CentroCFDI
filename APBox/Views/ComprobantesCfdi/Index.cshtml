@@ -1,0 +1,223 @@
+﻿@model API.Models.Operaciones.ComprobanteCfdiModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="page-title">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Comprobantes de CFDI</h2>
+            </div>
+            <br />
+            <div class="clearfix"></div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control date" } })
+                @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control date" } })
+                @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.TipoDeComprobante, (IEnumerable<SelectListItem>)ViewBag.TipoDeComprobante, "Todas", new { @class = "form-control" })
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-control" })
+
+            </div>
+
+
+            <div class="col-lg-1">
+                <button class="btn btn-alt btn-primary float-left multiple" type="submit" value="Filtrar" name="actionName">
+                    <span></span> <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="col-lg-1">
+                <div class="btn-group pull-right float-right">
+                    <button type="button" class="btn btn-primary dropdown-toggle float-right" data-toggle="dropdown" aria-expanded="false">
+                        <span>Nuevo</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a onclick="location.href='@Url.Action("Create", "ComprobantesCfdi")';return false;">Manual</a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="cancelar-view"></div>
+    <div class="panel">
+        <div class="panel-body">
+            <h3 class="title-hero">
+                CFDi Generados
+            </h3>
+
+            <div class="clearfix"></div>
+            <div class="row">
+                <table class="table table-condensed dataTable">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                Folio
+                            </th>
+                            <th>
+                                Receptor
+                            </th>
+                            <th>
+                                Fecha del Documento
+                            </th>
+                            <th>
+                                Tipo Comprobante
+                            </th>
+                            <th>
+                                Estado
+                            </th>
+                            <th>
+                                Opciones
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.ComprobanteCfdi.Count; i++)
+                        {
+                            <tr>
+
+                                <td>
+                                    @if (Model.ComprobanteCfdi[i].FacturaEmitida != null)
+                                    {
+                                        @Html.DisplayFor(model => Model.ComprobanteCfdi[i].FacturaEmitida.Folio);
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw("Pendinte")
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => Model.ComprobanteCfdi[i].Receptor.RazonSocial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => Model.ComprobanteCfdi[i].FechaDocumento)
+                                </td>
+                                <td>
+                                    @if (Model.ComprobanteCfdi[i].TipoDeComprobante == API.Enums.c_TipoDeComprobante.I)
+                                    {
+                                        @Html.Raw("Ingreso")
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw("Egreso")
+                                    }
+                                </td>
+                                <td>
+                                    @if (Model.ComprobanteCfdi[i].Generado == true)
+                                    {
+                                        if (Model.ComprobanteCfdi[i].Status == API.Enums.Status.Activo)
+                                        {
+                                            <p><span class="fa fa-clipboard-check font-green"></span> Generado</p>
+                                        }
+                                        else
+                                        {
+                                            <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-cog"></span> Opciones
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            @if (Model.ComprobanteCfdi[i].Generado)
+                                            {
+                                                if (Model.ComprobanteCfdi[i].Status == API.Enums.Status.Activo)
+                                                {
+                                                    <li>@Html.ActionLink("Descargar XML", "DescargarXml", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12" })</li>
+                                                    <li>@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12" })</li>
+                                                    <li class="list-group-item dcancelar" data-id="@Model.ComprobanteCfdi[i].Id">Cancelar</li>
+                                                }
+                                                else
+                                                {
+                                                    <li>@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12" })</li>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <li>@Html.ActionLink("Editar Comprobante", "Edit", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12" })</li>
+                                                <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12 font-green" })</li>
+                                                <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12 font-red" , onclick = "return confirm('Are you sure you wish to delete this comprobante?');" })</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+<script>
+     //activa modal cancelar comrpobante CFDI
+    $(function () {
+        var cancelarModal = $('#cancelar-view');
+        $(".dcancelar").on("click", function () {
+            var Id = $(this).attr("data-id");
+            var url = "@Url.Action("Cancelar", "ComprobantesCfdi")/" + Id;
+            $.get(url).done(function (data) {
+                cancelarModal.html(data);
+                cancelarModal.find('.modal').modal('show');
+            })
+
+        })
+
+        cancelarModal.on('click', '#submit-cancelar', function (event) {
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var url =  "@Url.Action("Cancelar", "ComprobantesCfdi")/"
+            var sendData = form.serialize();
+            $.post(url, sendData).done(function (data) {
+                cancelarModal.find('.modal').modal('hide');
+                ValidaEntradaModal();
+               cancelarModal.html(data);
+                cancelarModal.find('.modal').modal('show');
+
+            })
+        })
+
+        cancelarModal.on('click', '#close-modal', function(event){
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            var form = $(this).parents('.modal').find('form');
+            var messageError = form.attr('error-data');
+            var messageSuccess = form.attr('success-data');
+            if (messageError == undefined && messageSuccess != undefined) {
+                window.location.href = "/ComprobantesCfdi"
+            }
+
+        })
+         function ValidaEntradaModal() {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }
+
+    });
+</script>

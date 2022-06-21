@@ -10,51 +10,76 @@ namespace Aplicacion.LogicaPrincipal.Facturas
 {
     public class Decodificar
     {
-        /*public Comprobante DecodificarComprobante(String path)
+        public ComprobanteCFDI DecodificarComprobante40(String path, String version)
         {
-            var version = string.Empty;
-            try
+            
+            switch (version)
             {
-                version = ObtenerPropiedad(path, "cfdi:Comprobante", "Version");
+                case "3.2":
+                    throw new Exception("Versión incorrecta de comprobante");
+                case "4.0":
+                    var serializer40 = new XmlSerializer(typeof(ComprobanteCFDI));
+                    StreamReader reader40 = new StreamReader(path);
+                    var comprobante40 = (ComprobanteCFDI)serializer40.Deserialize(reader40);
+                    reader40.Close();
+                    reader40.Dispose();
+                    return comprobante40;
+                default:
+                    throw new Exception("Versión de comprobante Incorrecto");
             }
-            catch (Exception)
-            {
-                version = ObtenerPropiedad(path, "cfdi:Comprobante", "version");
-            }
-
+        }
+        public ComprobanteCFDI33 DecodificarComprobante33(String path, String version )
+        {
+            
             switch (version)
             {
                 case "3.2":
                     throw new Exception("Versión incorrecta de comprobante");
                 case "3.3":
-                    var serializer = new XmlSerializer(typeof(Comprobante));
-                    StreamReader reader = new StreamReader(path);
-                    var comprobante = (Comprobante)serializer.Deserialize(reader);
-                    reader.Close();
-                    reader.Dispose();
-                    return comprobante;
+                    var serializer33 = new XmlSerializer(typeof(ComprobanteCFDI33));
+                    StreamReader reader33 = new StreamReader(path);
+                    var comprobante33 = (ComprobanteCFDI33)serializer33.Deserialize(reader33);
+                    reader33.Close();
+                    reader33.Dispose();
+                    return comprobante33;
                 default:
                     throw new Exception("Versión de comprobante Incorrecto");
             }
-        }*/
+        }
 
-        /*public TimbreFiscalDigital DecodificarTimbre(Comprobante comprobante)
+        public TimbreFiscalDigital DecodificarTimbre(ComprobanteCFDI comprobante40, ComprobanteCFDI33 comprobante33)
         {
             TimbreFiscalDigital timbreFiscalDigital = null;
-            foreach (var complemento in comprobante.Complemento)
+            if (comprobante40 != null)
             {
-                XmlElement timbreFiscalDigitalFisico = complemento.Any.FirstOrDefault(p => p.OuterXml.Contains("tfd"));
+               
+                    XmlElement timbreFiscalDigitalFisico = comprobante40.Complemento.Any.FirstOrDefault(p => p.OuterXml.Contains("tfd"));
 
+                    if (timbreFiscalDigitalFisico == null)
+                    {
+                        throw new Exception("Documento sin Timbre Fiscal Digital");
+                    }
 
-                if (timbreFiscalDigitalFisico == null)
+                    timbreFiscalDigital = ObtenerComplemento<TimbreFiscalDigital>(timbreFiscalDigitalFisico);
+                
+            }
+            if(comprobante33 != null)
+            {
+                foreach (var complemento in comprobante33.Complemento)
                 {
-                    throw new Exception("Documento sin Timbre Fiscal Digital");
-                }
+                    XmlElement timbreFiscalDigitalFisico = complemento.Any.FirstOrDefault(p => p.OuterXml.Contains("tfd"));
 
-                timbreFiscalDigital = ObtenerComplemento<TimbreFiscalDigital>(timbreFiscalDigitalFisico);
+
+                    if (timbreFiscalDigitalFisico == null)
+                    {
+                        throw new Exception("Documento sin Timbre Fiscal Digital");
+                    }
+
+                    timbreFiscalDigital = ObtenerComplemento<TimbreFiscalDigital>(timbreFiscalDigitalFisico);
+                }
             }
             return timbreFiscalDigital;
-        }*/
+        }
 
         private T ObtenerComplemento<T>(XmlElement element)
         {

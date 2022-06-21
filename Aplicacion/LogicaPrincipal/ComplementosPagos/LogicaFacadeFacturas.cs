@@ -1,4 +1,6 @@
-﻿using API.Operaciones.ComplementosPagos;
+﻿using API.Enums;
+using API.Operaciones.ComplementosPagos;
+using API.Operaciones.ComprobantesCfdi;
 using API.Operaciones.Facturacion;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
@@ -23,20 +25,64 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
 
         #endregion
 
-        public List<ComplementoPago> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId)
+        public List<ComplementoPago> Filtrar(DateTime fechaInicial, DateTime fechaFinal,bool? status, int sucursalId)
         {
-            var complementos = _db.ComplementosPago.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal).ToList();
+            var complementos = new List<ComplementoPago>();
+            if (status != null)
+            {
+                complementos = _db.ComplementosPago.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal && cp.Generado == status).ToList();
+            }
+            else
+            {
+                complementos = _db.ComplementosPago.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal).ToList();
+            }
             return complementos;
         }
 
-        /*public FacturaEmitida Decodificar(String pathXml)
+        public List<ComprobanteCfdi> FiltrarComprobanteCFDI(DateTime fechaInicial, DateTime fechaFinal, bool? status,c_TipoDeComprobante? tipoComprobante , int sucursalId)
         {
-            Comprobante comprobante;
+            var comprobante = new List<ComprobanteCfdi>();
+            if (status != null && tipoComprobante != null)
+            {
+                comprobante = _db.ComprobantesCfdi.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal && cp.Generado == status && cp.TipoDeComprobante == tipoComprobante).ToList();
 
+            }
+            else if(status != null)
+            {
+                comprobante = _db.ComprobantesCfdi.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal && cp.Generado == status).ToList();
+
+            }
+            else if (tipoComprobante !=null)
+            {
+                comprobante = _db.ComprobantesCfdi.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal && cp.TipoDeComprobante == tipoComprobante).ToList();
+            }
+            else
+            {
+                comprobante = _db.ComprobantesCfdi.Where(cp => cp.SucursalId == sucursalId && cp.FechaDocumento >= fechaInicial && cp.FechaDocumento <= fechaFinal).ToList();
+            }
+            return comprobante;
+        }
+
+        public FacturaEmitida Decodificar(String pathXml)
+        {
+            ComprobanteCFDI comprobante40 = new ComprobanteCFDI();
+            ComprobanteCFDI33 comprobante33 = new ComprobanteCFDI33();
+            var version = string.Empty;
             var xml = _operacionesStreams.ArchivoByteArray(pathXml);
             try
             {
-                comprobante = _decodificar.DecodificarComprobante(pathXml);
+                version  = _decodificar.ObtenerPropiedad(pathXml, "cfdi:Comprobante", "Version");
+                if(version == "3.3") 
+                {
+                    comprobante33 = _decodificar.DecodificarComprobante33(pathXml,version);
+                    comprobante40 = null;
+                }
+                if(version == "4.0") 
+                {
+                    comprobante40 = _decodificar.DecodificarComprobante40(pathXml,version);
+                    comprobante33 = null;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -45,7 +91,14 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
 
             try
             {
-                _validar.ChecarUuidRepetido(comprobante);
+                if (comprobante33 == null && comprobante40 != null)
+                {
+                    _validar.ChecarUuidRepetido(comprobante40, null);
+                }
+                if (comprobante33 != null && comprobante40 == null)
+                {
+                    _validar.ChecarUuidRepetido(null, comprobante33);
+                }
             }
             catch (Exception ex)
             {
@@ -55,7 +108,9 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
 
             try
             {
-                _validar.ChecarRfcReceptor(comprobante);
+                
+                   _validar.ChecarRfcReceptor(comprobante40,comprobante33);
+                
             }
             catch (Exception ex)
             {
@@ -64,7 +119,7 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
 
             try
             {
-                
+
                 //_cfdiInfodextra.Validar(xml, comprobante.Emisor.Rfc);
             }
             catch (Exception ex)
@@ -72,10 +127,18 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
                 throw ex;
             }
 
-            FacturaEmitida factura;
+            FacturaEmitida factura = new FacturaEmitida();
             try
             {
-                factura = _guardar.GuardarFacturaEmitida(comprobante, xml);
+                if (comprobante33 != null && comprobante40 == null) 
+                {
+                    factura = _guardar.GuardarFacturaEmitida33(comprobante33, xml);
+                }
+                if (comprobante33 == null && comprobante40 != null)
+                {
+                    factura = _guardar.GuardarFacturaEmitida40(comprobante40, xml);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -85,6 +148,8 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
             File.Delete(pathXml);
 
             return factura;
-        }*/
+        }
+
+
     }
 }

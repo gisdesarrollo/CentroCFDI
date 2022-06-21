@@ -1,4 +1,5 @@
 ﻿using API.Enums;
+using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementosPagos;
 using API.Relaciones;
 using Aplicacion.Context;
@@ -6,6 +7,7 @@ using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
@@ -53,7 +55,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                         try
                         {
                             var fechaPago = Convert.ToDateTime(registros[i][0]);
-                            var formaPago = (registros[i][1], i);
+                            var formaPago = registros[i][1];
                             var monto = Convert.ToDouble(registros[i][2]);
                             var moneda = ParseEnum<c_Moneda>(registros[i][3], i);
                             var tipoCambioPago = Convert.ToDouble(registros[i][4]);
@@ -124,7 +126,8 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 Moneda = facturaEmitida.Moneda,
                                 NumeroParcialidad = Convert.ToInt32(String.IsNullOrEmpty(numeroParcialidad) ? "1" : numeroParcialidad),
                                 Serie = facturaEmitida.Serie,
-                                TipoCambio = tipoCambioDocumentoRelacionado
+                                EquivalenciaDR = tipoCambioDocumentoRelacionado,
+                                ObjetoImpuestoId = "01"
                             };
 
                             #endregion
@@ -143,7 +146,8 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                     Monto = monto,
                                     NumeroOperacion = numeroOperacion,
                                     SucursalId = sucursalId,
-                                    TipoCambio = tipoCambioPago
+                                    TipoCambio = tipoCambioPago,
+                                    
                                 };
 
                                 if (bancoOrdenante != null)
@@ -199,8 +203,9 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 Mes = mes,
                                 SucursalId = sucursal.Id,
                                 Sucursal = sucursal,
-                                Version = "1.0",
-                                Pagos = new List<Pago> { pago }
+                                Version = "2.0",
+                                Pagos = new List<Pago> { pago },
+                                ExportacionId = "01"
                             };
                             complementosPago.Add(complementoPago);
                         }
@@ -233,7 +238,105 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     _db.ComplementosPago.Add(complementoPago);
                     try
                     {
+                       // _db.SaveChanges();
+
+                        decimal totalRetencionesISR = 0;
+                        decimal totalRetencionesIVA = 0;
+                        decimal totalRetencionesIEPS = 0;
+                        decimal totalTrasladosBaseIVA16 = 0;
+                        decimal totalTrasladosImpuestoIVA16 = 0;
+                        decimal totalTrasladosBaseIVA8 = 0;
+                        decimal totalTrasladosImpuestoIVA8 = 0;
+                        decimal totalTrasladosBaseIVA0 = 0;
+                        decimal totalTrasladosImpuestoIVA0 = 0;
+                        decimal totalTrasladosBaseIVAExento = 0;
+
+                        foreach (var pago in complementoPago.Pagos)
+                            {
+                                foreach (var docRelacionado in pago.DocumentosRelacionados)
+                                {
+                                    
+                                    if (docRelacionado.Traslado != null)
+                                    {
+                                        if (docRelacionado.Traslado.Base == 0)
+                                        {
+                                            
+                                        }
+                                        else
+                                        {
+                                            if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TasaOCuota == (decimal)0.16 && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                            {
+                                                totalTrasladosBaseIVA16 += docRelacionado.Traslado.Base;
+                                                totalTrasladosImpuestoIVA16 += docRelacionado.Traslado.Importe;
+                                            }
+                                            if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TasaOCuota == (decimal)0.08 && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                            {
+                                                totalTrasladosBaseIVA8 += docRelacionado.Traslado.Base;
+                                                totalTrasladosImpuestoIVA8 += docRelacionado.Traslado.Importe;
+                                            }
+                                        if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TasaOCuota == (decimal)0.0 && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                        {
+                                            totalTrasladosBaseIVA0 += docRelacionado.Traslado.Base;
+                                            totalTrasladosImpuestoIVA0 += docRelacionado.Traslado.Importe;
+                                        }
+                                        if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Exento)
+                                        {
+                                            totalTrasladosBaseIVAExento += docRelacionado.Traslado.Base;
+                                        }
+
+                                    }
+                                    }
+                                    //else { docRelacionado.Traslado = null; }
+                                    if (docRelacionado.Retencion != null)
+                                    {
+                                        if (docRelacionado.Retencion.Base == 0)
+                                        {
+                                          //docRelacionado.Retencion = null;
+                                        }
+                                        else
+                                        {
+                                            if (docRelacionado.Retencion.Impuesto == "001") { totalRetencionesISR += docRelacionado.Retencion.Importe; }
+                                            if (docRelacionado.Retencion.Impuesto == "002") { totalRetencionesIVA += docRelacionado.Retencion.Importe; }
+                                            if (docRelacionado.Retencion.Impuesto == "003") { totalRetencionesIEPS += docRelacionado.Retencion.Importe; }
+                                        }
+                                    }
+                                    //else { docRelacionado.Retencion = null; }
+                                    
+                                }
+                            }
+                        double montoTPagos = 0;
+                        if (complementoPago.Pagos != null)
+                        {
+                            foreach (var pg in complementoPago.Pagos)
+                            {
+                                montoTPagos += pg.Monto;
+                            }
+                        }
+
+
+                        //Totales Pagos Impuestos
+                        //TotalesPagosImpuestos totalPagosImpuesto = new TotalesPagosImpuestos();
+                        complementoPago.TotalesPagosImpuestos = new TotalesPagosImpuestos()
+                        {
+                           TotalRetencionesIVA = Decimal.ToDouble(totalRetencionesIVA),
+                           TotalRetencionesISR = Decimal.ToDouble(totalRetencionesISR),
+                           TotalRetencionesIEPS = Decimal.ToDouble(totalRetencionesIEPS),
+                           TotalTrasladosBaseIVA16 = Decimal.ToDouble(totalTrasladosBaseIVA16),
+                           TotalTrasladosBaseIVA8 = Decimal.ToDouble(totalTrasladosBaseIVA8),
+                           TotalTrasladosBaseIVA0 = Decimal.ToDouble(totalTrasladosBaseIVA0),
+                           TotalTrasladosImpuestoIVA16 = Decimal.ToDouble(totalTrasladosImpuestoIVA16),
+                           TotalTrasladosImpuestoIVA8 = Decimal.ToDouble(totalTrasladosImpuestoIVA8),
+                           TotalTrasladosImpuestoIVA0 = Decimal.ToDouble(totalTrasladosImpuestoIVA0),
+                           TotalTrasladosBaseIVAExento = Decimal.ToDouble(totalTrasladosBaseIVAExento),
+                           MontoTotalPagos = montoTPagos
+                    };
+                        
+                        //_db.TotalesPagosImpuestos.Add(totalPagosImpuesto);
                         _db.SaveChanges();
+                        //actualiza complemento agregando totales pagos impuestos
+                        //complementoPago.TotalesPagoImpuestoId = totalPagosImpuesto.Id;
+                        //_db.Entry(complementoPago).State = EntityState.Modified;
+                        //_db.SaveChanges();
                     }
                     catch (DbEntityValidationException dbEx)
                     {
@@ -268,7 +371,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
         public String Exportar()
         {
-            var path = String.Format("C:/Infodextra/Temp/LayoutComplementos_{0}.csv", DateTime.Now.ToString("ddMMyyyyHHmmss"));
+            var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//LayoutComplementos_{0}.csv", DateTime.Now.ToString("ddMMyyyyHHmmss"));
 
             #region Encabezados
 
@@ -279,7 +382,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                 "*Monto",
                 "*Moneda",
                 "*Tipo de cambio del dia del pago para moneda del pago",
-                "Tipo de cambio del dia del pago para moneda del documento relacionado",
+                "*Equivalencia del dia del pago para moneda del documento relacionado",
                 "*Numero de Operacion",
                 "Banco Ordenante",
                 "Banco Beneficiario",

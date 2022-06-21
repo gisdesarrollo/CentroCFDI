@@ -18,6 +18,7 @@
     });
 
     function agregarFactura() {
+
         $.ajax({
             type: 'POST',
             url: ' @Url.Action("AgregarFacturaComplementoPago", "AjaxOperaciones")',
@@ -26,21 +27,21 @@
                 facturaEmitidaId: $('#FacturaEmitidaId').val(),
                 numeroParcialidad: $('#Pago_DocumentoRelacionado_NumeroParcialidad').val(),
                 moneda: $('#Pago_DocumentoRelacionado_Moneda').val(),
-                tipoCambio: $('#Pago_DocumentoRelacionado_TipoCambio').val(),
+                equivalencia: $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(),
                 importeSaldoAnterior: $('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val(),
                 importePagado: $('#Pago_DocumentoRelacionado_ImportePagado').val(),
                 importeSaldoInsoluto: $('#Pago_DocumentoRelacionado_ImporteSaldoInsoluto').val(),
                 objetoImpuesto: $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val(),
-                baseTraslado: $('#TBase').val(),
+                baseTraslado: $('#Pago_DocumentoRelacionado_Traslado_Base').val(),
                 impuestoTraslado: $('#Pago_DocumentoRelacionado_Traslado_Impuesto').val(),
                 tipoFactorTraslado: $('#Pago_DocumentoRelacionado_Traslado_TipoFactor').val(),
-                tasaOCuotaTraslado: $('#TTasaOCuota').val(),
-                importeTraslado: $('#TImporte').val(),
-                baseRetencion: $('#RBase').val(),
+                tasaOCuotaTraslado: $('#Pago_DocumentoRelacionado_Traslado_TasaOCuota').val(),
+                importeTraslado: $('#Pago_DocumentoRelacionado_Traslado_Importe').val(),
+                baseRetencion: $('#Pago_DocumentoRelacionado_Retencion_Base').val(),
                 impuestoRetencion: $('#Pago_DocumentoRelacionado_Retencion_Impuesto').val(),
                 tipoFactorRetencion: $('#Pago_DocumentoRelacionado_Retencion_TipoFactor').val(),
-                tasaOCuotaRetencion: $('#RTasaOCuota').val(),
-                importeRetencion: $('#RImporte').val()
+                tasaOCuotaRetencion: $('#Pago_DocumentoRelacionado_Retencion_TasaOCuota').val(),
+                importeRetencion: $('#Pago_DocumentoRelacionado_Retencion_Importe').val()
             }),
             dataType: 'html',
             contentType: "application/json; charset=utf-8",
@@ -55,31 +56,40 @@
 
     $(function () {
         $('#ReceptorId').on('change', function () {
-            var bancoSeleccionado = $('#Pago_BancoOrdenanteId');
-            var cfdisCancelados = $('#CfdiRelacionadoId');
+            
+            var receptorSeleccionado = $(this).val();
+            drowdop(receptorSeleccionado);
 
-            var receptorSeleccionado = $(this);
-
-            bancoSeleccionado.empty();
-            cfdisCancelados.empty();
-            //bancoSeleccionado.prop('disabled', '');
-
-
-            bancoSeleccionado.append($('<option>', {
-                text: "Sin seleccionar",
-                value: null
-            }));
+            
 
             //cfdisCancelados.append($('<option>', {
             //    text: "Favor de hacer su selección",
             //    value: null
             //}));
 
-            if (receptorSeleccionado.val().length > 0 && receptorSeleccionado.val() !== 0) {
+
+        });
+    });
+
+    function drowdop(receptorSeleccionado) {
+        var bancoSeleccionado = $('#Pago_BancoOrdenanteId');
+        var cfdisCancelados = $('#CfdiRelacionadoId');
+
+        bancoSeleccionado.empty();
+        cfdisCancelados.empty();
+        //bancoSeleccionado.prop('disabled', '');
+
+
+        bancoSeleccionado.append($('<option>', {
+            text: "Sin seleccionar",
+            value: null
+        }));
+
+        if (receptorSeleccionado.length > 0 && receptorSeleccionado !== 0) {
                 $.ajax({
                     type: 'POST',
                     url: ' @Url.Action("GetBancosClientes", "AjaxCatalogos")',
-                    data: JSON.stringify({ clienteId: receptorSeleccionado.val() }),
+                    data: JSON.stringify({ clienteId: receptorSeleccionado }),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
@@ -98,7 +108,7 @@
                 $.ajax({
                     type: 'POST',
                     url: ' @Url.Action("GetCfdisCancelados", "AjaxCatalogos")',
-                    data: JSON.stringify({ clienteId: receptorSeleccionado.val() }),
+                    data: JSON.stringify({ clienteId: receptorSeleccionado }),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data2) {
@@ -113,8 +123,28 @@
                     }
                 });
             }
+    }
+    //add documento relacionado
+    $(function () {
+        $('#agregarDetalleDocRelacionado').click(function () {
+            var contador = $(".pago").size() + 1;
+            $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
         });
     });
+
+    //remove documento relacionado
+    function removeDetalleDocRelacionado(elem) {
+        var totalU = $(".pago").size();
+        if (totalU > 0) {
+            var contador = $(".pago").size() - 1;
+            $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+
+    }
+
 
     //JavaScript
     function getBase64(file) {
@@ -127,9 +157,11 @@
             console.log('Error: ', error);
         };
     }
-    //calcula el porcentaje de total a pagar 
+    //calcula el porcentaje de total a pagar
     $(function () {
-        $('#Pago_DocumentoRelacionado_ImportePagado').on("keyup", function () {
+
+
+       /* $('#Pago_DocumentoRelacionado_ImportePagado').on("keyup", function () {
             cambioimporte();
         });
 
@@ -190,6 +222,83 @@
         $('#RBaseP').change(function () {
 
             cambioimporte();
+        });*/
+
+        //retorno los impuestos de una factura externa Relacionada
+        $('#FacturaEmitidaId').on("change", function () {
+            var factEmitidaId = $('#FacturaEmitidaId').val()
+
+           $.get("/ComplementosPagos/GetDataFactura", { FacturaEmitidaId: factEmitidaId }, function (data) {
+               if (data.length > 0) {
+                   $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('02');
+                   $('#DescripcionObjetoImpuesto').text('02-Sí objeto de impuesto');
+                   $('.ObjetoImpuesto').show();
+                    $.each(data, function (index, row) {
+                        if (row.TipoImpuesto == "Traslado") {
+                            $('#Pago_DocumentoRelacionado_Traslado_Base').val(row.Base);
+                            $('#DescripcionBaseT').text(row.Base);
+                            $('#Pago_DocumentoRelacionado_Traslado_Impuesto').val(row.Impuesto);
+                            $('#DescripcionImpuestoT').text(ValidaImpuesto(row.Impuesto));
+                            $("#Pago_DocumentoRelacionado_Traslado_TipoFactor").val(row.TipoFactor);
+                            $('#DescripcionTipoFactorT').text(row.TipoFactor);
+                            $("#Pago_DocumentoRelacionado_Traslado_TasaOCuota").val(row.TasaOCuota);
+                            $('#DescripcionTasaOCuotaT').text(row.TasaOCuota);
+                            $("#Pago_DocumentoRelacionado_Traslado_Importe").val(row.Importe);
+                            $('#DescripcionImporteT').text(row.Importe);
+                            $('.validacion-traslado').show();
+                        }
+                        if (row.TipoImpuesto == "Retencion") {
+                            $('#Pago_DocumentoRelacionado_Retencion_Base').val(row.Base);
+                            $('#DescripcionBaseR').text(row.Base);
+                            $('#Pago_DocumentoRelacionado_Retencion_Impuesto').val(row.Impuesto);
+                            $('#DescripcionImpuestoR').text(ValidaImpuesto(row.Impuesto));
+                            $("#Pago_DocumentoRelacionado_Retencion_TipoFactor").val(row.TipoFactor);
+                            $('#DescripcionTipoFactorR').text(row.TipoFactor);
+                            $("#Pago_DocumentoRelacionado_Retencion_TasaOCuota").val(row.TasaOCuota);
+                            $('#DescripcionTasaOCuotaR').text(row.TasaOCuota);
+                            $("#Pago_DocumentoRelacionado_Retencion_Importe").val(row.Importe);
+                            $('#DescripcionImporteR').text(row.Importe);
+                            $('.validacion-retencion').show();
+                        }
+
+                    });
+
+
+               } else {
+                   $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('01');
+                   $('#DescripcionObjetoImpuesto').text('01-No objeto de impuesto');
+                   $('.ObjetoImpuesto').show();
+                   $('.validacion-traslado').hide();
+                   $('#Pago_DocumentoRelacionado_Traslado_Base').val(0);
+                   $('#Pago_DocumentoRelacionado_Traslado_Impuesto').val('');
+                   $("#Pago_DocumentoRelacionado_Traslado_TipoFactor").val("0");
+                   $("#Pago_DocumentoRelacionado_Traslado_TasaOCuota").val(0);
+                   $("#Pago_DocumentoRelacionado_Traslado_Importe").val(0);
+                   $('.validacion-retencion').hide();
+                   $('#Pago_DocumentoRelacionado_Retencion_Base').val(0);
+                   $('#Pago_DocumentoRelacionado_Retencion_Impuesto').val('');
+                   $("#Pago_DocumentoRelacionado_Retencion_TipoFactor").val("0");
+                   $("#Pago_DocumentoRelacionado_Retencion_TasaOCuota").val(0);
+                   $("#Pago_DocumentoRelacionado_Retencion_Importe").val(0);
+                }
+            });
+
         });
     });
+
+    function ValidaImpuesto(valor){
+        var resultado = "";
+        switch (valor) {
+            case "001":
+                resultado = "001-ISR";
+                break;
+            case "002":
+                resultado = "002-IVA";
+                break;
+            case "003":
+                resultado = "003-IEPS"
+                break;
+        }
+        return resultado;
+    }
 </script>

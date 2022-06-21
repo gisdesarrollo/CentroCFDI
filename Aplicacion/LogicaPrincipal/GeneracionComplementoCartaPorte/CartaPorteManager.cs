@@ -156,7 +156,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 }
                 else
                 {
-                    tipoCambio = "1.0";
+                    tipoCambio = complementoCartaPorte.TipoCambio;
                 }
             }
 
@@ -207,7 +207,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                        "", //NumRegIdTrib
                        "P01" //UsoCFDI
                    );*/
-            objCfdi.agregarReceptor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "", "", c_UsoCfdiCP.S01.ToString(), "26670", "601");
+            objCfdi.agregarReceptor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "", "", complementoCartaPorte.UsoCfdiCP.ToString(), "26670", "601");
             var RegimeFiscalReceptor = (int)complementoCartaPorte.Receptor.RegimenFiscal;
             /*objCfdi.agregarReceptor(
                 complementoCartaPorte.Receptor.Rfc, //Rfc

@@ -27,20 +27,18 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaImpuestoR();
             PopulaImpuestoT();
+            PopulaObjetoImpuesto();
             var sucursal = ObtenerSucursal();
             var cat_Conceptos = new Cat_Conceptos();
             return View(cat_Conceptos);
         }
-        public ActionResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento, int? ImpuestoR, int? ImpuestoT)
-        {
-
-            
+        public ActionResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento,string ObjetoImpuesto, int? ImpuestoR, int? ImpuestoT)
+        { 
             var pruebaRet = ImpuestoR;
            
-
-
             try
             {
+                if (ObjetoImpuesto == "01") { ImpuestoT = 0; pruebaRet = 0; }
                 if (pruebaRet == 0 && ImpuestoT == 0)
                 {
                     var Conceptos = new Cat_Conceptos()
@@ -55,7 +53,7 @@ namespace APBox.Controllers.Catalogos
                         Importe = Importe,
                         Descuento = Descuento,
                         SucursalId = ObtenerSucursal(),
-                        
+                        ObjetoImpuesto = ObjetoImpuesto
                     };
                     _db.Cat_Conceptos.Add(Conceptos);
                     _db.SaveChanges();
@@ -76,6 +74,7 @@ namespace APBox.Controllers.Catalogos
                             Importe = Importe,
                             Descuento = Descuento,
                             SucursalId = ObtenerSucursal(),
+                            ObjetoImpuesto = ObjetoImpuesto,
                             ImpuestoIdTras = ImpuestoT,
                             ImpuestoIdRet = ImpuestoR
                         };
@@ -98,6 +97,7 @@ namespace APBox.Controllers.Catalogos
                                 Importe = Importe,
                                 Descuento = Descuento,
                                 SucursalId = ObtenerSucursal(),
+                                ObjetoImpuesto = ObjetoImpuesto,
                                 ImpuestoIdRet = ImpuestoR
                                 
                             };
@@ -118,6 +118,7 @@ namespace APBox.Controllers.Catalogos
                                 Importe = Importe,
                                 Descuento = Descuento,
                                 SucursalId = ObtenerSucursal(),
+                                ObjetoImpuesto = ObjetoImpuesto,
                                 ImpuestoIdTras = ImpuestoT
                                 
                             };
@@ -177,6 +178,7 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaImpuestoR();
             PopulaImpuestoT();
+            PopulaObjetoImpuesto();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -186,10 +188,10 @@ namespace APBox.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
-
+            cat_conceptos.ObjetoImpuestoId = cat_conceptos.ObjetoImpuesto;
             return View(cat_conceptos);
         }
-        public ActionResult EditarConceptos(int Id, string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento, int? ImpuestoR, int? ImpuestoT)
+        public ActionResult EditarConceptos(int Id, string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento,string ObjetoImpuesto, int? ImpuestoR, int? ImpuestoT)
         {
             var ImpT = ImpuestoT;
             var ImpR = ImpuestoR;
@@ -197,6 +199,7 @@ namespace APBox.Controllers.Catalogos
 
             try
             {
+                if (ObjetoImpuesto == "01") { ImpT = 0; ImpR = 0; }
                 var Conceptos = new Cat_Conceptos();
 
                 Conceptos = _db.Cat_Conceptos.Find(Id);
@@ -210,6 +213,7 @@ namespace APBox.Controllers.Catalogos
                 Conceptos.ValorUnitario = ValorUnitario;
                 Conceptos.Importe = Importe;
                 Conceptos.Descuento = Descuento;
+                Conceptos.ObjetoImpuesto = ObjetoImpuesto;
                 if (ImpT == 0)
                 {
                     Conceptos.ImpuestoIdRet = null;
@@ -279,6 +283,11 @@ namespace APBox.Controllers.Catalogos
             ViewBag.ImpuestoR = (popularDropDowns.PopulaImpuestoR());
         }
 
+        private void PopulaObjetoImpuesto()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.objetoImpuesto = (popularDropDowns.PopulaObjetoImpuesto());
+        }
 
 
 

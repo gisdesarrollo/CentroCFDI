@@ -195,7 +195,7 @@
                                                                             @*<th>Método Pago</th>*@
                                                                             <th>Num Parcialidad</th>
                                                                             <th>Moneda</th>
-                                                                            <th>TC o Factor</th>
+                                                                            <th>Equivalencia</th>
                                                                             <th>Imp Saldo Anterior</th>
                                                                             <th>Imp Pagado</th>
                                                                             <th>Imp Saldo Insoluto</th>
@@ -211,7 +211,7 @@
                                                                                 @Model.Pagos[i].DocumentosRelacionados[j].Moneda
                                                                             </td>
                                                                             <td>
-                                                                                @Model.Pagos[i].DocumentosRelacionados[j].TipoCambio
+                                                                                @Model.Pagos[i].DocumentosRelacionados[j].EquivalenciaDR
                                                                             </td>
                                                                             <td>
                                                                                 @Model.Pagos[i].DocumentosRelacionados[j].ImporteSaldoAnterior.Value.ToString("c")

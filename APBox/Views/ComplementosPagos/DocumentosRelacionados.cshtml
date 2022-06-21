@@ -55,7 +55,7 @@
                         <i class="glyph-icon icon-cog"></i>
                         Agregar Pago
                         <div class="header-buttons-separator">
-                            <a href="#" class="icon-separator" onclick="agregarFactura()">
+                            <a href="#" class="icon-separator" id="agregarDetalleDocRelacionado" onclick="agregarFactura()">
                                 <i class="glyph-icon icon-plus"></i>
                             </a>
                         </div>
@@ -89,10 +89,10 @@
                         </div>
 
                         <div class="form-group col-xs-12 col-sm-2">
-                            <label class="control-label">TC o Factor</label>
+                            <label class="control-label">Equivalencia</label>
                             @*@Html.LabelFor(model => model.Pago.DocumentoRelacionado.TipoCambio, new { @class = "control-label" })*@
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.TipoCambio, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.TipoCambio, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.EquivalenciaDR, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.EquivalenciaDR, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group col-xs-12 col-sm-2">
@@ -115,78 +115,84 @@
                             @Html.EditorFor(model => model.Pago.DocumentoRelacionado.ImporteSaldoInsoluto, new { @class = "form-control dinero2" })
                             @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.ImporteSaldoInsoluto, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-xs-12 col-sm-3">
+                        <div class="form-group col-xs-12 col-sm-3 ObjetoImpuesto" hidden>
                             @Html.LabelFor(model => model.Pago.DocumentoRelacionado.ObjetoImpuesto, new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.Pago.DocumentoRelacionado.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control" })
+                            @*@Html.DropDownListFor(model => model.Pago.DocumentoRelacionado.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control", @readonly = "readonly" })*@
+                            <p id="DescripcionObjetoImpuesto"></p>
+                            @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.ObjetoImpuesto)
                             @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.ObjetoImpuesto, "", new { @class = "text-danger" })
                         </div>
                         <div class="clearfix"></div>
-                        <h3 class="title-hero">
-                            Traslado
-                        </h3>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Traslado.BasePorcentaje, new { htmlAttributes = new { @class = "form-control", @id = "TBaseP" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.BasePorcentaje, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.Base, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Traslado.Base, new { htmlAttributes = new { @class = "form-control", @id = "TBase" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.Base, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.Impuesto, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.Pago.DocumentoRelacionado.Traslado.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.Impuesto, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.TipoFactor, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListSpecialFor(model => model.Pago.DocumentoRelacionado.Traslado.TipoFactor)
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.TipoFactor, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.TasaOCuota, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Traslado.TasaOCuota, new { htmlAttributes = new { @class = "form-control", @id = "TTasaOCuota" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.TasaOCuota, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.Importe, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Traslado.Importe, new { htmlAttributes = new { @class = "form-control", @id = "TImporte", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.Importe, "", new { @class = "text-danger" })
+                        <div class="validacion-traslado" hidden>
+                            <h3 class="title-hero">
+                                Traslado
+                            </h3>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.Base, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionBaseT"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Traslado.Base)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.Base, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.Impuesto, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionImpuestoT"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Traslado.Impuesto)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.Impuesto, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.TipoFactor, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionTipoFactorT"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Traslado.TipoFactor)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.TipoFactor, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.TasaOCuota, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionTasaOCuotaT"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Traslado.TasaOCuota)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.TasaOCuota, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Traslado.Importe, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionImporteT"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Traslado.Importe)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Traslado.Importe, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                         <div class="clearfix"></div>
-                        <h3 class="title-hero">
-                            Retencion
-                        </h3>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Retencion.BasePorcentaje, new { htmlAttributes = new { @class = "form-control", @id = "RBaseP" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.BasePorcentaje, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.Base, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Retencion.Base, new { htmlAttributes = new { @class = "form-control", @id = "RBase" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.Base, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.Impuesto, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.Pago.DocumentoRelacionado.Retencion.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.Impuesto, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.TipoFactor, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListSpecialFor(model => model.Pago.DocumentoRelacionado.Retencion.TipoFactor)
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.TipoFactor, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.TasaOCuota, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Retencion.TasaOCuota, new { htmlAttributes = new { @class = "form-control", @id = "RTasaOCuota" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.TasaOCuota, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.Importe, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pago.DocumentoRelacionado.Retencion.Importe, new { htmlAttributes = new { @class = "form-control", @id = "RImporte", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.Importe, "", new { @class = "text-danger" })
+                        <div class="validacion-retencion" hidden>
+                            <h3 class="title-hero">
+                                Retencion
+                            </h3>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.Base, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionBaseR"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Retencion.Base)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.Base, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.Impuesto, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionImpuestoR"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Retencion.Impuesto)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.Impuesto, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.TipoFactor, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionTipoFactorR"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Retencion.TipoFactor)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.TipoFactor, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.TasaOCuota, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionTasaOCuotaR"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Retencion.TasaOCuota)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.TasaOCuota, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                @Html.LabelFor(model => model.Pago.DocumentoRelacionado.Retencion.Importe, htmlAttributes: new { @class = "control-label" })
+                                <p id="DescripcionImporteR"></p>
+                                @Html.HiddenFor(model => model.Pago.DocumentoRelacionado.Retencion.Importe)
+                                @Html.ValidationMessageFor(model => model.Pago.DocumentoRelacionado.Retencion.Importe, "", new { @class = "text-danger" })
+                            </div>
                         </div>
 
                         @if (Model.Pagos != null)
@@ -243,9 +249,9 @@
                                                             }
                     </div>
 
-                    <div class="clearfix"></div>
+                        <div class="clearfix"></div>
 
-                </div>
+                    </div>
 
                 <div class="clearfix"></div>
 

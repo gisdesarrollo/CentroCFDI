@@ -23,7 +23,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         public int Base { get; set; }
 
-        public string Impuesto { get; set; }
+        public c_ImpuestoCP Impuesto { get; set; }
 
         [DisplayName("Tipo de Factor")]
         public c_TipoFactor TipoFactor { get; set; }

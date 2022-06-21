@@ -44,7 +44,7 @@ namespace API.Catalogos
         [DisplayName("RFC - Razón Social")]
         public String RfcRazonSocial { get { return String.Format("{0} - {1}", Rfc, RazonSocial); } }
 
-        [DisplayName("Código Postal")]
+        [DisplayName("Domicilio Fiscal")]
         [RegularExpression("[\\s]{0,3}([0-9]{5})[\\s]{0,3}", ErrorMessage = "El código postal tiene que conformarse de 5 caracteres numéricos")]
         public String CodigoPostal { get; set; }
 

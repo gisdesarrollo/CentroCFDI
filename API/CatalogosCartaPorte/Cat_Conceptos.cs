@@ -51,6 +51,12 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
+        [DisplayName("Objeto Impuesto")]
+        public string ObjetoImpuesto { get; set; }
+
+        [NotMapped]
+        public string ObjetoImpuestoId { get; set; }
+        
         [DisplayName("Impuesto Traslado")]
         public int? ImpuestoIdTras { get; set; }
         [ForeignKey("ImpuestoIdTras")]

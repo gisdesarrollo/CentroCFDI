@@ -66,43 +66,43 @@ public partial class PagosTotales {
     
     private decimal totalRetencionesIVAField;
     
-    private bool totalRetencionesIVAFieldSpecified;
+    //private bool totalRetencionesIVAFieldSpecified;
     
     private decimal totalRetencionesISRField;
     
-    private bool totalRetencionesISRFieldSpecified;
+    //private bool totalRetencionesISRFieldSpecified;
     
     private decimal totalRetencionesIEPSField;
     
-    private bool totalRetencionesIEPSFieldSpecified;
+    //private bool totalRetencionesIEPSFieldSpecified;
     
     private decimal totalTrasladosBaseIVA16Field;
     
-    private bool totalTrasladosBaseIVA16FieldSpecified;
+    //private bool totalTrasladosBaseIVA16FieldSpecified;
     
     private decimal totalTrasladosImpuestoIVA16Field;
     
-    private bool totalTrasladosImpuestoIVA16FieldSpecified;
+    //private bool totalTrasladosImpuestoIVA16FieldSpecified;
     
     private decimal totalTrasladosBaseIVA8Field;
     
-    private bool totalTrasladosBaseIVA8FieldSpecified;
+    //private bool totalTrasladosBaseIVA8FieldSpecified;
     
     private decimal totalTrasladosImpuestoIVA8Field;
     
-    private bool totalTrasladosImpuestoIVA8FieldSpecified;
+    //private bool totalTrasladosImpuestoIVA8FieldSpecified;
     
     private decimal totalTrasladosBaseIVA0Field;
     
-    private bool totalTrasladosBaseIVA0FieldSpecified;
+    //private bool totalTrasladosBaseIVA0FieldSpecified;
     
     private decimal totalTrasladosImpuestoIVA0Field;
     
-    private bool totalTrasladosImpuestoIVA0FieldSpecified;
+    //private bool totalTrasladosImpuestoIVA0FieldSpecified;
     
     private decimal totalTrasladosBaseIVAExentoField;
     
-    private bool totalTrasladosBaseIVAExentoFieldSpecified;
+    //private bool totalTrasladosBaseIVAExentoFieldSpecified;
     
     private decimal montoTotalPagosField;
     
@@ -117,7 +117,7 @@ public partial class PagosTotales {
         }
     }
     
-    /// <remarks/>
+    /*/// <remarks/>
     [System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalRetencionesIVASpecified {
         get {
@@ -126,7 +126,7 @@ public partial class PagosTotales {
         set {
             this.totalRetencionesIVAFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -139,7 +139,7 @@ public partial class PagosTotales {
         }
     }
     
-    /// <remarks/>
+    /*/// <remarks/>
     [System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalRetencionesISRSpecified {
         get {
@@ -148,7 +148,7 @@ public partial class PagosTotales {
         set {
             this.totalRetencionesISRFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -162,7 +162,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalRetencionesIEPSSpecified {
         get {
             return this.totalRetencionesIEPSFieldSpecified;
@@ -170,7 +170,7 @@ public partial class PagosTotales {
         set {
             this.totalRetencionesIEPSFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -184,7 +184,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalTrasladosBaseIVA16Specified {
         get {
             return this.totalTrasladosBaseIVA16FieldSpecified;
@@ -192,7 +192,7 @@ public partial class PagosTotales {
         set {
             this.totalTrasladosBaseIVA16FieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -206,7 +206,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalTrasladosImpuestoIVA16Specified {
         get {
             return this.totalTrasladosImpuestoIVA16FieldSpecified;
@@ -214,7 +214,7 @@ public partial class PagosTotales {
         set {
             this.totalTrasladosImpuestoIVA16FieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -228,7 +228,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalTrasladosBaseIVA8Specified {
         get {
             return this.totalTrasladosBaseIVA8FieldSpecified;
@@ -236,7 +236,7 @@ public partial class PagosTotales {
         set {
             this.totalTrasladosBaseIVA8FieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -250,7 +250,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalTrasladosImpuestoIVA8Specified {
         get {
             return this.totalTrasladosImpuestoIVA8FieldSpecified;
@@ -258,7 +258,7 @@ public partial class PagosTotales {
         set {
             this.totalTrasladosImpuestoIVA8FieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -272,7 +272,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalTrasladosBaseIVA0Specified {
         get {
             return this.totalTrasladosBaseIVA0FieldSpecified;
@@ -280,7 +280,7 @@ public partial class PagosTotales {
         set {
             this.totalTrasladosBaseIVA0FieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -294,7 +294,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalTrasladosImpuestoIVA0Specified {
         get {
             return this.totalTrasladosImpuestoIVA0FieldSpecified;
@@ -302,7 +302,7 @@ public partial class PagosTotales {
         set {
             this.totalTrasladosImpuestoIVA0FieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -316,7 +316,7 @@ public partial class PagosTotales {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TotalTrasladosBaseIVAExentoSpecified {
         get {
             return this.totalTrasladosBaseIVAExentoFieldSpecified;
@@ -324,7 +324,7 @@ public partial class PagosTotales {
         set {
             this.totalTrasladosBaseIVAExentoFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -885,11 +885,11 @@ public partial class PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR {
     
     private decimal tasaOCuotaDRField;
     
-    private bool tasaOCuotaDRFieldSpecified;
+    //private bool tasaOCuotaDRFieldSpecified;
     
     private decimal importeDRField;
     
-    private bool importeDRFieldSpecified;
+    //private bool importeDRFieldSpecified;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -936,7 +936,7 @@ public partial class PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TasaOCuotaDRSpecified {
         get {
             return this.tasaOCuotaDRFieldSpecified;
@@ -944,7 +944,7 @@ public partial class PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR {
         set {
             this.tasaOCuotaDRFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -958,7 +958,7 @@ public partial class PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool ImporteDRSpecified {
         get {
             return this.importeDRFieldSpecified;
@@ -966,7 +966,7 @@ public partial class PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR {
         set {
             this.importeDRFieldSpecified = value;
         }
-    }
+    }*/
 }
 
 

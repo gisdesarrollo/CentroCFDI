@@ -1,0 +1,476 @@
+﻿<script>
+$(function () {
+    $('#agregarDetalleConceptos').click(function () {
+        var contador = $(".conceptos").size() + 1;
+        $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">: ' + contador + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleConceptos").on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarConceptosComprobante", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    ClaveProdServID: $('#Conceptos_ClavesProdServ').val(),
+                    ClaveUnidadID: $('#Conceptos_ClavesUnidad').val(),
+                    Unidad: $('#Conceptos_Unidad').val(),
+                    Descripcion: $('#Conceptos_Descripcion').val(),
+                    NumIdentificacion: $('#Conceptos_NoIdentificacion').val(),
+                    Cantidad: $('#Conceptos_Cantidad').val(),
+                    ValorUnitario: $('#Conceptos_ValorUnitario').val(),
+                    Importe: $('#Conceptos_Importe').val(),
+                    ObjetoImpuesto: $('#Conceptos_ObjetoImpuesto').val(),
+                    TTipoImpuesto : $("#Conceptos_Traslado_TipoImpuesto").val(),
+                    TBase: $('#TBase').val(),
+                    TImpuesto: $('#Conceptos_Traslado_Impuesto').val(),
+                    TTipoFactor: $('#Conceptos_Traslado_TipoFactor').val(),
+                    TTasaOCuota: $('#TTasaOCuota').val(),
+                    TImporte: $('#TImporte').val(),
+                    //TTImpuestosTR: $('#TTotal').val(),
+                    RTipoImpuesto: $("#Conceptos_Retencion_TipoImpuesto").val(),
+                    RImpuesto: $('#Conceptos_Retencion_Impuesto').val(),
+                    RBase: $('#RBase').val(),
+                    RTipofactor: $('#Conceptos_Retencion_TipoFactor').val(),
+                    RTasaOCuota: $('#RTasaOCuota').val(),
+                    RImporte: $('#RImporte').val(),
+                    ///RTImpuestoTR: $('#RTotal').val()
+
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+            }).success(function (partialView) {
+                $('#detallesConceptos').append(partialView);
+                incrementaDecrementaImportes();
+            })
+                .fail(function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles ");
+                });
+            return false;
+        });
+    });
+
+    function removeDetalleConceptos(elem) {
+        var totalU = $(".conceptos").size();
+        if (totalU > 0) {
+
+            var contador = $(".conceptos").size() - 1;
+            $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">');
+        }
+
+        $(elem).parent().parent().parent().remove();
+        incrementaDecrementaImportes();
+    }
+
+    function incrementaDecrementaImportes() {
+        var sumaImporte = 0;
+        var sumatImporte = 0;
+        var sumarImporte = 0;
+        
+            $(".conceptos").each(function (index, element) {
+
+                var cImporte = $(element).find('#cImporte').text().trim();
+                var tImporte = $(element).find('#tImporte').text().trim();
+                var rImporte = $(element).find('#rImporte').text().trim();
+                sumaImporte += Number(cImporte);
+                sumatImporte += Number(tImporte);
+                sumarImporte += Number(rImporte);
+            });
+            
+            $('#subtotal').val(parseFloat(sumaImporte));
+            //calcula Total
+
+            var total = (parseFloat(sumaImporte) + parseFloat(sumatImporte)) - parseFloat(sumarImporte);
+            $('#total').val(total);
+        
+    }
+
+    $(function () {
+        //conceptos clave produdServ
+        $('#Conceptos_ClavesProdServ').on('keyup', function () {
+            var dato = $('#Conceptos_ClavesProdServ').val();
+            var div = "#ClaveProdServConcepto";
+            var valid;
+            if (dato != "") {
+                valid = ValidaEntrada(dato, div, "claveServ");
+            } else {
+                $(div).html("");
+            }
+
+        });
+
+        //conceptos clave unidad
+        $('#Conceptos_ClavesUnidad').on('keyup', function () {
+            var claveUnidad = $('#Conceptos_ClavesUnidad').val();
+            var div = "#ClaveUnidadConcepto";
+            if (claveUnidad != "") {
+                $.get("/ComprobantesCfdi/DatosClaveUnidad", { ClaveUnidad: claveUnidad }, function (data) {
+                    if (data.length > 0) {
+
+                        $(div).html("");
+                        $.each(data, function (index, row) {
+                            $("#Conceptos_Unidad").val(row.Nombre);
+                        });
+
+
+                    } else {
+                        $(div).html("El dato ingresado no existe");
+                        $("#Conceptos_Unidad").val("");
+                    }
+                });
+            } else {
+                $(div).html("");
+                $("#Conceptos_Unidad").val("");
+            }
+        });
+    });
+     function ValidaEntrada(input, div,t) {
+         $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("Buscar", "AjaxOperaciones")',
+             data: JSON.stringify({
+                 valor: input,
+                 tipo: t
+         }),
+          dataType: 'html',
+            contentType: "application/json; charset=utf-8",
+         }).success(function (valor) {
+             console.log(valor);
+             if (valor == 0) {
+                 $(div).html("El dato ingresado no existe");
+             }
+             else {
+                 $(div).html("");
+             }
+
+         })
+         .fail(function (jqxhr, textStatus, error) {
+
+         });
+    }
+
+    $(function () {
+        $('#Conceptos_ValorUnitario').on("keyup", function () {
+            calculo();
+            cambioimporte();
+
+        });
+        $('#Conceptos_Cantidad').on("keyup", function () {
+            calculo();
+            cambioimporte();
+
+        });
+        //cambia impuestos por objeto impuesto seleccionado
+        $('#Conceptos_ObjetoImpuesto').change(function () {
+            var objetoImpuesto = $("#Conceptos_ObjetoImpuesto").val();
+            if (objetoImpuesto === "02") {
+                $("#activaImpuestos").show();
+                cambioimporte();
+            } else {
+                $("#activaImpuestos").hide();
+                cambioImpTras();
+                cambioImpRet();
+            }
+
+        });
+
+        //cambia valores impuesto al agregar porcentaje base Traslado y Retencion
+        $('#TBaseP').on("keyup", function () {
+
+            cambioimporte();
+        });
+        $('#TBaseP').change(function () {
+
+            cambioimporte();
+        });
+        $('#RBaseP').on("keyup", function () {
+
+            cambioimporte();
+        });
+        $('#RBaseP').change(function () {
+
+            cambioimporte();
+        });
+        //calcula la tasa/cuota Traslado
+        $('#TTasaOCuota').on("keyup", function () {
+            if ($('#TTasaOCuota').val() > 0) {
+
+                var TBase = parseFloat($('#TBase').val());
+                var TTasaOCuota = parseFloat($('#TTasaOCuota').val());
+                if ($('#TBase').val() === "") {
+                    TBase = 0;
+
+                }
+                if ($('#TTasaOCuota').val() === "") {
+                    TTasaOCuota = 0;
+                }
+
+                Total = TBase * TTasaOCuota;
+                $('#TTotal').val(Total);
+                $('#TImporte').val(Total);
+            } else {
+                $('#TTotal').val(0);
+                $('#TImporte').val(0);
+            }
+        });
+        //calcula tasa/cuota retencion
+        $('#RTasaOCuota').on("keyup", function () {
+            if ($('#RTasaOCuota').val() > 0) {
+                var TBase = parseFloat($('#RBase').val());
+                var TTasaOCuota = parseFloat($('#RTasaOCuota').val());
+                if ($('#RBase').val() === "") {
+                    TBase = 0;
+
+                }
+                if ($('#RTasaOCuota').val() === "") {
+                    TTasaOCuota = 0;
+                }
+
+                Total = TBase * TTasaOCuota;
+                $('#RTotal').val(Total);
+                $('#RImporte').val(Total);
+            } else {
+                $('#RTotal').val(0);
+                $('#RImporte').val(0);
+            }
+        });
+
+       
+        function calculo() {
+            var multi = 0;
+            var cantidad = 0;
+
+            var precio = 0;
+            precio = cero($("#Conceptos_ValorUnitario").val());
+            cantidad = cero($("#Conceptos_Cantidad").val());
+            multi = cantidad * precio;
+
+            $("#Conceptos_Importe").val(multi);
+            //$("#subtotal").val(multi);
+        }
+        
+            
+        
+
+        function cero(valor) {
+            if (valor == "" || valor == "undefined") {
+                return valor = 0;
+            } else {
+                return parseFloat(valor);
+            }
+        }
+
+        function cambioimporte() {
+
+            $("#RBase").val(($("#RBaseP").val() * $("#Conceptos_Importe").val()) / 100);
+            var RBase = parseFloat($('#RBase').val());
+            var RTasaOCuota = parseFloat($('#RTasaOCuota').val());
+            if ($('#RBase').val() === "") {
+                RBase = 0;
+
+            }
+            if ($('#RTasaOCuota').val() === "") {
+                RTasaOCuota = 0;
+            }
+
+            var TotalRet = (RBase * RTasaOCuota);
+
+            $('#RImporte').val(TotalRet);
+
+            //traslado
+            $("#TBase").val(($("#TBaseP").val() * $("#Conceptos_Importe").val()) / 100);
+            var TBase = parseFloat($('#TBase').val());
+            var TTasaOCuota = parseFloat($('#TTasaOCuota').val());
+            if ($('#TBase').val() === "") {
+                TBase = 0;
+
+            }
+            if ($('#TTasaOCuota').val() === "") {
+                TTasaOCuota = 0;
+            }
+
+            var TotalTras = (TBase * TTasaOCuota);
+            $('#TImporte').val(TotalTras);
+        }
+
+        //obtiene los cfdiCancelados del receptor
+        $('#ReceptorId').on('change', function () {
+            var cfdisCancelados = $('#CfdiRelacionadoId');
+            var receptorSeleccionado = $(this);
+            cfdisCancelados.empty();
+
+            if (receptorSeleccionado.val().length > 0 && receptorSeleccionado.val() !== 0) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("GetCfdisCancelados", "AjaxCatalogos")',
+                    data: JSON.stringify({ clienteId: receptorSeleccionado.val() }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data2) {
+                        $.each(data2, function (i, cfdi) {
+                            cfdisCancelados.append($('<option>', {
+                                value: cfdi.FacturaEmitida.Id,
+                                text: cfdi.FacturaEmitida.Desplegado
+                            }));
+                        });
+                        $('select').selectpicker('refresh');
+                        return false;
+                    }
+                });
+            }
+
+        });
+
+    });
+
+    ///SCRIPT CONCEPTOS PARA ACTIVAR DROPDOW Y RELLENAR LOS CAMPOS CONCEPTOS, RETENCIONES Y TRASLADOS
+
+    $(function () {
+        $('#CConcepto').change(function () {
+            var ConceptosClaveProd = $("#CConcepto").val();
+            $("#ClaveProdServCPConceptos").html("");
+            $("#ClaveUnidadConceptoConceptos_ClavesProdServ").html("");
+            cambioImpRet();
+            cambioImpTras();
+
+            consultaConcepto(ConceptosClaveProd);
+        });
+    });
+        function consultaConcepto(concepto) {
+
+            if (concepto != "") {
+                $.get("/ComprobantesCfdi/DatosCatalogoConceptos", { claveProd: concepto }, function (data) {
+                    if (data.length > 0) {
+                        $.each(data, function (index, row) {
+                            $("#Conceptos_ClavesProdServ").val(row.ClavesProdServ);
+                            $("#Conceptos_ClavesUnidad").val(row.ClavesUnidad);
+                            $("#Conceptos_Unidad").val(row.Unidad);
+                            $("#Conceptos_Descripcion").val(row.Descripcion);
+                            $("#Conceptos_NoIdentificacion").val(row.NoIdentificacion);
+                            $("#Conceptos_Cantidad").val(row.Cantidad);
+                            $("#Conceptos_ValorUnitario").val(row.ValorUnitario);
+                            $("#Conceptos_Importe").val(row.Importe);
+                            $("#Descuento").val(row.Descuento);
+
+
+                            $("#Conceptos_ObjetoImpuesto").selectpicker('val', row.ObjetoImpuesto);
+                            if (row.ObjetoImpuesto === "02") { $("#activaImpuestos").show(); } else { $("#activaImpuestos").hide();}
+                            if (row.ImpuestoIdTras != null) {
+                                var ImpuestoT = row.ImpuestoIdTras;
+                                agregarImpuestos(ImpuestoT);
+                            } else {
+                                cambioImpTras();
+                            }
+                            if (row.ImpuestoIdRet != null) {
+                                var ImpuestoT = row.ImpuestoIdRet;
+                                agregarImpuestos(ImpuestoT);
+                            } else {
+                                cambioImpRet();
+                            }
+
+                        });
+                    }
+                });
+            }
+        }
+
+        function agregarImpuestos(ImpuestoT) {
+            console.log("impuesto: " + ImpuestoT);
+            var TipoImpuesto = "";
+            var base = "";
+            var basePor = "";
+            var TImpuesto = "";
+            var TipoFactor = "";
+            var TasaCuota = "";
+            var Importe = "";
+            if (ImpuestoT != "") {
+                $.get("/ComprobantesCfdi/DatosCatalogoImpuesto", { IdImpuesto: ImpuestoT }, function (data) {
+
+                    if (data.length > 0) {
+                        $.each(data, function (index, row) {
+                            TipoImpuesto = row.TipoImpuesto;
+                            base = (row.Base * $("#Conceptos_Importe").val() / 100);
+
+                            basePor = row.Base;
+                            TImpuesto = row.Impuesto;
+                            TipoFactor = row.TipoFactor;
+                            TasaCuota = row.TasaOCuota;
+                            Importe = (base * TasaCuota);
+                        });
+
+                        if (TipoFactor == 0) {
+                            TipoFactor = "Tasa";
+                        } else if (TipoFactor == 1) {
+                            TipoFactor = "Cuota";
+
+                        } else if (TipoFactor == 2) {
+                            TipoFactor = "Exento";
+                        }
+
+                        if (TImpuesto == 1) {
+                            TImpuesto = "001";
+                        } else if (TImpuesto == 2) {
+                            TImpuesto = "002";
+
+                        } else if (TImpuesto == 3) {
+                            TImpuesto = "003";
+                        }
+
+                        if (TipoImpuesto === "Traslado") {
+                            bT = base;
+                            $("#TBaseP").val(basePor);
+                            $("#TBase").val(base);
+                            $("#Conceptos_Traslado_Impuesto").val(TImpuesto).change();
+                            $("#Conceptos_Traslado_TipoFactor").val(TipoFactor).change();
+                            $("#TTasaOCuota").val(TasaCuota);
+                            $("#TImporte").val(Importe);
+                            //$("#TTotal").val(totalImporteT);
+
+                        } else {
+                            bR = base;
+                            $("#RBaseP").val(basePor);
+                            $("#RBase").val(base);
+                            $("#Conceptos_Retencion_Impuesto").val(TImpuesto).change();
+                            $("#Conceptos_Retencion_TipoFactor").val(TipoFactor).change();
+                            $("#RTasaOCuota").val(TasaCuota);
+                            $("#RImporte").val(Importe);
+                            //$("#RTotal").val(totalImporteR);
+                        }
+                        //cambioimporte();
+
+                    } else {
+                        $("#TBaseP").val("0");
+                        $("#TBase").val("0");
+                        $("#Conceptos_Traslado_Impuesto").val("0");
+                        $("#Conceptos_Traslado_TipoFactor").val("0");
+                        $("#TTasaOCuota").val("0");
+                        $("#TImporte").val("0");
+                    }
+                });
+            }
+        }
+
+        //cambia valores de los campos sino tiene impuestos retenidos o trasladados
+        function cambioImpRet() {
+            $("#RBase").val("0.00");
+            $("#Conceptos_Retencion_Impuesto").val("001").change();;
+            $("#Conceptos_Retencion_TipoFactor").val("Tasa").change();;
+            $("#RTasaOCuota").val("0.00");
+            $("#RImporte").val("0");
+            $("#RTotal").val("0");
+
+        }
+        function cambioImpTras() {
+            $("#TBase").val("0.00");
+            $("#Conceptos_Traslado_Impuesto").val("001").change();
+            $("#Conceptos_Traslado_TipoFactor").val("Tasa").change();;
+            $("#TTasaOCuota").val("0.00");
+            $("#TImporte").val("0");
+            $("#TTotal").val("0");
+        }
+    
+</script>

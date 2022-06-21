@@ -24,6 +24,7 @@ using System.Xml.Serialization;
 using System.IO;
 using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
 using System.Text;
+using Aplicacion.LogicaPrincipal.Validacion;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -36,6 +37,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
         private readonly CartaPorteManager _cartaPorteManager = new CartaPorteManager();
         private readonly CreationFile _creationFile = new CreationFile();
         private readonly Timbrar _TimbrarCFDI = new Timbrar();
+        private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
 
         public ActionResult Index()
         {
@@ -50,7 +52,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
             
             var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59); ;
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59); 
             complementoCartaPorteModel.FechaInicial = fechaInicial;
             complementoCartaPorteModel.FechaFinal = fechaFinal;
              
@@ -139,6 +141,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 TotalDistRec = 0,
                 Moneda = c_Moneda.MXN,
                 TipoCambio = "1",
+                ExportacionId = "01", //no aplica
                 hidden = false,
                 Conceptos = new Conceptos()
                 {
@@ -306,7 +309,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             //Modelstate True
             try
             {
-                 
+
                 if (complementoCartaPorte.TipoDeComprobante == c_TipoDeComprobante.T)
                 {
                     complementoCartaPorte.hidden = false;
@@ -318,22 +321,22 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     complementoCartaPorte.MetodoPago = null;
                     complementoCartaPorte.TipoCambio = null;
                     complementoCartaPorte.CondicionesPago = null;
-                    
+
                 }
                 else
                 {
                     complementoCartaPorte.hidden = true;
-                   
+
                 }
                 complementoCartaPorte.TotalDistRec = 0;
                 complementoCartaPorte.Subtotal = 0;
                 complementoCartaPorte.Total = 0;
                 _acondicionarComplementosCartaPorte.CargaInicial(ref complementoCartaPorte);
-                
-                
-                    //copia conceptos
-                    var conceptos = complementoCartaPorte.Conceptoss;
-                    conceptos.ForEach(c => c.ComplementoCP = null);
+
+
+                //copia conceptos
+                var conceptos = complementoCartaPorte.Conceptoss;
+                conceptos.ForEach(c => { c.ComplementoCP = null; c.ComprobanteCfdi = null; });
                     //copia ubicaciones
                     var ubicaciones = complementoCartaPorte.Ubicaciones;
                     ubicaciones.ForEach(u => u.ComplementoCP = null);
@@ -463,6 +466,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     foreach (var concepto in conceptos)
                     {
                         concepto.ComplementoCP = null;
+                        concepto.ComprobanteCfdi = null;
                         concepto.Complemento_Id = complementoCartaPorte.Id;
                         _db.Conceptos.Add(concepto);
                     }
@@ -714,7 +718,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ComplementoCartaPorte complementoCP = _db.ComplementoCartaPortes.Find(id);
-            //complementoCP.Mercancias.Mercanciass.ForEach(c => c.Mercancias = null);
+            
 
 
             if (complementoCP.TipoDeComprobante == c_TipoDeComprobante.I)
@@ -861,6 +865,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ModelState.Remove("Receptor.RazonSocial");
             ModelState.Remove("Receptor");
             ModelState.Remove("Sucursal.RazonSocial");
+            ModelState.Remove("Conceptos.ObjetoImpuesto");
+
             PopulaClientes(complementoCP.ReceptorId);
 
             PopulaTiposDeComprobanteFiltro(complementoCP.TipoDeComprobante);
@@ -1099,9 +1105,23 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
         public ActionResult DescargarPDF(int id)
         {
+            ComprobanteCFDI oComprobante = new ComprobanteCFDI();
+            ComprobanteCFDI33 oComprobante33 = new ComprobanteCFDI33();
+            byte[] archivoFisico = new byte[255];
             var complementoCartaPorte = _db.ComplementoCartaPortes.Find(id);
-            ComprobanteCFDI oComprobante = _creationFile.DeserealizarXml(id);
-            byte[] archivoFisico = _creationFile.GeneraPDF(oComprobante,id) ;
+            //checar version del CFDI
+            string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
+            string versionCfdi = _decodifica.LeerValorXML(CadenaXML, "Version", "Comprobante");
+            if (versionCfdi == "3.3")
+            {
+                oComprobante33 = _creationFile.DeserealizarXml33CartaPorte(id);
+                archivoFisico = _creationFile.GeneraPDF33CartaPorte(oComprobante33, id);
+            }
+            else {
+                oComprobante = _creationFile.DeserealizarXml(id);
+                archivoFisico = _creationFile.GeneraPDF(oComprobante, id);
+            }
+            
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = complementoCartaPorte.FacturaEmitida.Serie +"-"+complementoCartaPorte.FacturaEmitida.Folio+"-"+DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= "+nameArchivo+".pdf");
