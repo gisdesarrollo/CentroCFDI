@@ -13,7 +13,7 @@ namespace APBox.Migrations
             //SetSqlGenerator("MySql.Data.MySqlClient", new MySqlMigrationSqlGenerator());
             //se agrega new dbMigrationSQLGenerator para resolver error del Hash al crear un index en tablas mysql
             SetSqlGenerator("MySql.Data.MySqlClient", new dbMigrationSQLGenerator());
-            CodeGenerator = new MySqlMigrationCodeGenerator();
+            CodeGenerator = new MySqlMigrationCodeGenerator();/*new MySql.Data.Entity.MySqlMigrationCodeGenerator();*/
             AutomaticMigrationDataLossAllowed = true;  // or false in case data loss is not allowed.
         }
 
