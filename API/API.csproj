@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CFDI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Aplicacion\lib\CFDI.dll</HintPath>
-    </Reference>
     <Reference Include="DTOs">
       <HintPath>..\Aplicacion\lib\DTOs.dll</HintPath>
     </Reference>
@@ -63,7 +59,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web">
@@ -94,9 +89,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BUS\Mensaje.cs" />
+    <Compile Include="CatalogosCartaPorte\Cat_Conceptos.cs" />
+    <Compile Include="CatalogosCartaPorte\Cat_SubImpuestoC.cs" />
+    <Compile Include="CatalogosCartaPorte\ClaveProdServ.cs" />
     <Compile Include="CatalogosCartaPorte\ClaveProdServCP.cs" />
     <Compile Include="CatalogosCartaPorte\ClaveProdSTCC.cs" />
     <Compile Include="CatalogosCartaPorte\ClaveTipoCarga.cs" />
+    <Compile Include="CatalogosCartaPorte\c_impuestoCFDI.cs" />
     <Compile Include="CatalogosCartaPorte\Domicilio\Estado.cs" />
     <Compile Include="CatalogosCartaPorte\Domicilio\Localidad.cs" />
     <Compile Include="CatalogosCartaPorte\Domicilio\Colonia.cs" />
@@ -113,9 +112,13 @@
     <Compile Include="CatalogosCartaPorte\CveTransporte.cs" />
     <Compile Include="CatalogosCartaPorte\DerechosDePaso.cs" />
     <Compile Include="CatalogosCartaPorte\Estaciones.cs" />
+    <Compile Include="CatalogosCartaPorte\Exportacion.cs" />
+    <Compile Include="CatalogosCartaPorte\FormaPagos.cs" />
     <Compile Include="CatalogosCartaPorte\FraccionArancelaria.cs" />
     <Compile Include="CatalogosCartaPorte\MaterialPeligroso.cs" />
     <Compile Include="CatalogosCartaPorte\NumAutorizacionNaviero.cs" />
+    <Compile Include="CatalogosCartaPorte\ObjetoImpuesto.cs" />
+    <Compile Include="CatalogosCartaPorte\SubImpuestoConcepto.cs" />
     <Compile Include="CatalogosCartaPorte\SubTipoRem.cs" />
     <Compile Include="CatalogosCartaPorte\TipoCarro.cs" />
     <Compile Include="CatalogosCartaPorte\TipoDeServicio.cs" />
@@ -134,6 +137,17 @@
     <Compile Include="Catalogos\Usuario.cs" />
     <Compile Include="Context\DataContext.cs" />
     <Compile Include="Control\Configuracion.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_CartaPorteEntradaSalidaMerc.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_ImpuestoCP.cs" />
+    <Compile Include="Enums\c_Pais.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_ParteTransporte.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_TipoDeTrafico.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_TipoFactor.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_UsoCfdiCP.cs" />
+    <Compile Include="Enums\c_MetodoPago.cs" />
+    <Compile Include="Enums\c_Moneda.cs" />
+    <Compile Include="Enums\c_RegimenFiscal.cs" />
+    <Compile Include="Enums\c_TipoDeComprobante.cs" />
     <Compile Include="Enums\Meses.cs" />
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Enums\StatusFacturas.cs" />
@@ -147,16 +161,28 @@
     <Compile Include="Models\ComplementosPagos\CargasComplementosModel.cs" />
     <Compile Include="Models\Control\ConfiguracionesModel.cs" />
     <Compile Include="Models\Control\HomeModel.cs" />
+    <Compile Include="Models\Dto\ComplementoCartaPorteDto.cs" />
+    <Compile Include="Models\Dto\ImpuestoDeserealizadoDto.cs" />
+    <Compile Include="Models\Dto\ImpuestosRTDto.cs" />
+    <Compile Include="Models\Dto\PartesTransporteDto.cs" />
+    <Compile Include="Models\Dto\UbicacionDropDowDto.cs" />
+    <Compile Include="Models\Dto\UbicacionDto.cs" />
     <Compile Include="Models\Facturas\Factura.cs" />
     <Compile Include="Models\Facturas\FacturasEmitidasModel.cs" />
     <Compile Include="Models\Operaciones\ComplementosCartaPorteModel.cs" />
     <Compile Include="Models\Operaciones\ComplementosPagosModel.cs" />
+    <Compile Include="Models\Operaciones\ComprobanteCfdiModel.cs" />
     <Compile Include="Models\Operaciones\FacturasModel.cs" />
     <Compile Include="Models\Reportes\FechasModel.cs" />
     <Compile Include="Models\Reportes\HorasModel.cs" />
     <Compile Include="Models\Spei\SPEI_Tercero.cs" />
     <Compile Include="Models\Spei\SPEI_TerceroBeneficiario.cs" />
     <Compile Include="Models\Spei\SPEI_TerceroOrdenante.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\Conceptos.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\PartesTransporte.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\RetencionCP.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\Seguros.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\GuiasIdentificacion.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Notificado.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\ComplementoCartaPorte.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\ContenedorC.cs" />
@@ -164,29 +190,36 @@
     <Compile Include="Operaciones\ComplementoCartaPorte\CantidadTransportada.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\IdentificacionVehicular.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Arrendatario.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\Pedimentos.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Propietario.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Remolques.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\ContenedorM.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\DerechosDePasos.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Carro.cs" />
-    <Compile Include="Operaciones\ComplementoCartaPorte\FiguraTransporte.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Operador.cs" />
-    <Compile Include="Operaciones\ComplementoCartaPorte\UbicacionDestino.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\SubImpuestoC.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\TiposFigura.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\DetalleMercancia.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Domicilio.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Mercancia.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\TransporteMaritimo.cs" />
-    <Compile Include="Operaciones\ComplementoCartaPorte\AutoTransporteFederal.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\AutoTransporte.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\TransporteAereo.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\TransporteFerroviario.cs" />
-    <Compile Include="Operaciones\ComplementoCartaPorte\UbicacionOrigen.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\TrasladoCP.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Ubicacion.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\UbicacionDestino.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\UsoCfdi.cs" />
     <Compile Include="Operaciones\ComplementosPagos\Pago.cs" />
     <Compile Include="Operaciones\ComplementosPagos\DocumentoRelacionado.cs" />
     <Compile Include="Operaciones\ComplementosPagos\Impuesto.cs" />
     <Compile Include="Operaciones\ComplementosPagos\ComplementoPago.cs" />
     <Compile Include="Operaciones\ComplementosPagos\Retencion.cs" />
+    <Compile Include="Operaciones\ComplementosPagos\RetencionDR.cs" />
+    <Compile Include="Operaciones\ComplementosPagos\TotalesPagosImpuestos.cs" />
     <Compile Include="Operaciones\ComplementosPagos\Traslado.cs" />
+    <Compile Include="Operaciones\ComplementosPagos\TrasladoDR.cs" />
+    <Compile Include="Operaciones\ComprobantesCfdi\ComprobanteCfdi.cs" />
     <Compile Include="Operaciones\Facturacion\DocumentoExtranjero.cs" />
     <Compile Include="Operaciones\Facturacion\FacturaEmitida.cs" />
     <Compile Include="Operaciones\Facturacion\FacturaRecibida.cs" />
@@ -199,17 +232,21 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RelacionesCartaPorte\FiguraTransporteNotificado.cs" />
-    <Compile Include="RelacionesCartaPorte\FiguraTransporteArrendatario.cs" />
-    <Compile Include="RelacionesCartaPorte\FiguraTransportePropietario.cs" />
+    <Compile Include="RelacionesCartaPorte\ComplementoCartaPorteConceptos.cs" />
+    <Compile Include="RelacionesCartaPorte\ComplementoCartaPorteFiguraTransporte.cs" />
+    <Compile Include="RelacionesCartaPorte\ComplementoCartaPorteUbicacion.cs" />
+    <Compile Include="RelacionesCartaPorte\ComplementoCartaPorteUbicacionDestino.cs" />
+    <Compile Include="RelacionesCartaPorte\ConceptoSubImpuestoConcepto.cs" />
+    <Compile Include="RelacionesCartaPorte\MercanciaDetalleMercancia.cs" />
+    <Compile Include="RelacionesCartaPorte\MercanciaGuiasIdentificacion.cs" />
+    <Compile Include="RelacionesCartaPorte\MercanciaPedimentos.cs" />
+    <Compile Include="RelacionesCartaPorte\TiposFiguraPartesTransporte.cs" />
     <Compile Include="RelacionesCartaPorte\TransporteFerroviarioCarro.cs" />
     <Compile Include="RelacionesCartaPorte\TransporteFerroviarioDerechosDePaso.cs" />
     <Compile Include="RelacionesCartaPorte\MercanciaCantidadTransportada.cs" />
     <Compile Include="RelacionesCartaPorte\MercanciasMercancia.cs" />
-    <Compile Include="RelacionesCartaPorte\FiguraTransporteOperador.cs" />
     <Compile Include="RelacionesCartaPorte\TransporteMaritimoContenedorM.cs" />
-    <Compile Include="RelacionesCartaPorte\ComplementoCartaPorteUbicacion.cs" />
-    <Compile Include="RelacionesCartaPorte\AutotransporteFederalRemolque.cs" />
+    <Compile Include="RelacionesCartaPorte\AutotransporteRemolque.cs" />
     <Compile Include="RelacionesCartaPorte\CarroContenedorC.cs" />
     <Compile Include="Relaciones\BancoCliente.cs" />
     <Compile Include="Relaciones\BancoSucursal.cs" />
