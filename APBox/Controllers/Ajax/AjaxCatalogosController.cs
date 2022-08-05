@@ -115,7 +115,7 @@ namespace InventorAid.Controllers.Ajax
             foreach (var cfdi in cfdis)
             {
                 cfdi.FacturaEmitida.ArchivoFisicoXml = null;
-
+                cfdi.FacturaEmitida.CodigoQR = null;
                 cfdi.FacturaEmitida.Emisor.Bancos.Clear();
                 cfdi.FacturaEmitida.Emisor.Cer = null;
                 cfdi.FacturaEmitida.Emisor.Key = null;
@@ -136,6 +136,45 @@ namespace InventorAid.Controllers.Ajax
                 cfdi.Sucursal = null;
             }
 
+            return Json(cfdis, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult GetCfdisCanceladosCP(int? clienteId)
+        {
+            var cfdis = _db.ComplementoCartaPortes.Where(f => f.ReceptorId == clienteId && f.Status == API.Enums.Status.Cancelado).ToList();
+
+            foreach (var cfdi in cfdis)
+            {
+                //ModelState.Remove("Banco.Id");
+                cfdi.FacturaEmitida.ArchivoFisicoXml = null;
+                cfdi.FacturaEmitida.CodigoQR = null;
+                cfdi.FacturaEmitida.Emisor.Bancos.Clear();
+                cfdi.FacturaEmitida.Emisor.Cer = null;
+                cfdi.FacturaEmitida.Emisor.Key = null;
+                cfdi.FacturaEmitida.Emisor.Grupo = null;
+                cfdi.FacturaEmitida.Emisor.Logo = null;
+
+                cfdi.FacturaEmitida.Receptor.Bancos.Clear();
+                cfdi.FacturaEmitida.Receptor.Sucursal = null;
+                cfdi.FacturaEmitida.CentroCosto = null;
+                cfdi.FacturaEmitida.ComplementosPago.Clear();
+                cfdi.FacturaEmitida.ComplementosPago = null;
+                cfdi.FacturaEmitida.Departamento = null;
+
+                cfdi.Conceptoss.Clear();
+                cfdi.Conceptoss = null;
+                cfdi.Ubicaciones.Clear();
+                cfdi.Ubicaciones = null;
+                cfdi.Mercanciass = null;
+                cfdi.Mercancias.Mercanciass.Clear();
+                cfdi.Mercancias.Mercanciass = null;
+                cfdi.FiguraTransporte.Clear();
+                cfdi.FiguraTransporte = null;
+                cfdi.Receptor = null;
+                cfdi.Sucursal = null;
+            }
+            cfdis.ForEach(c => c.Mercancias = null);
             return Json(cfdis, JsonRequestBehavior.AllowGet);
         }
 

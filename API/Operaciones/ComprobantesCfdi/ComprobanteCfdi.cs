@@ -1,7 +1,6 @@
 ﻿using API.Catalogos;
 using API.CatalogosCartaPorte;
 using API.Enums;
-using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementoCartaPorte;
 using API.Operaciones.Facturacion;
 using System;
@@ -9,9 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace API.Operaciones.ComprobantesCfdi
 {
@@ -119,5 +116,7 @@ namespace API.Operaciones.ComprobantesCfdi
         public Conceptos Conceptos { get; set; }
 
         public virtual List<Conceptos> Conceptoss { get; set; }
+
+       
     }
 }

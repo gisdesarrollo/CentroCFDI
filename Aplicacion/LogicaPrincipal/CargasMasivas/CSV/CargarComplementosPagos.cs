@@ -27,6 +27,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
         public List<ComplementoPago> Importar(string path, int sucursalId, Meses mes, bool previsualizacion)
         {
             var errores = new List<String>();
+            double equivalencia = 1;
             var complementosPago = new List<ComplementoPago>();
             using (StreamReader archivo = File.OpenText(path))
             {
@@ -59,16 +60,16 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var monto = Convert.ToDouble(registros[i][2]);
                             var moneda = ParseEnum<c_Moneda>(registros[i][3], i);
                             var tipoCambioPago = Convert.ToDouble(registros[i][4]);
-                            var tipoCambioDocumentoRelacionado = Convert.ToDouble(registros[i][5]);
-                            var numeroOperacion = registros[i][6];
+                            //var tipoCambioDocumentoRelacionado = Convert.ToDouble(registros[i][5]);
+                            var numeroOperacion = registros[i][5];
                             if (String.IsNullOrEmpty(numeroOperacion))
                             {
                                 numeroOperacion = null;
                             }
 
 
-                            var serie = registros[i][10];
-                            var folio = registros[i][11];
+                            var serie = registros[i][9];
+                            var folio = registros[i][10];
 
                             var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
                             if (facturaEmitida == null)
@@ -78,7 +79,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             }
 
                             //Se desorganizaron los numeros por que necesito el cliente para determinar el banco
-                            var nombreBancoOrdenante = registros[i][7];
+                            var nombreBancoOrdenante = registros[i][6];
                             BancoCliente bancoOrdenante = null;
                             if (!String.IsNullOrEmpty(nombreBancoOrdenante))
                             {
@@ -90,7 +91,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 }
                             }
 
-                            var nombreBancoBeneficiario = registros[i][8];
+                            var nombreBancoBeneficiario = registros[i][7];
                             BancoSucursal bancoBeneficiario = null;
                             if (!String.IsNullOrEmpty(nombreBancoBeneficiario))
                             {
@@ -102,17 +103,29 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 }
                             }
 
-                            var numeroParcialidad = registros[i][9];
+                            var numeroParcialidad = registros[i][8];
                             
 
-                            var importePagado = String.IsNullOrEmpty(registros[i][12]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][12]);
-                            var importeSaldoAnterior = String.IsNullOrEmpty(registros[i][13]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][13]);
-                            var importeSaldoInsoluto = String.IsNullOrEmpty(registros[i][14]) ? 0.0 : Convert.ToDouble(registros[i][14]);
+                            var importePagado = String.IsNullOrEmpty(registros[i][11]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][11]);
+                            var importeSaldoAnterior = String.IsNullOrEmpty(registros[i][12]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][12]);
+                            var importeSaldoInsoluto = String.IsNullOrEmpty(registros[i][13]) ? 0.0 : Convert.ToDouble(registros[i][13]);
 
                             #region Pagos
 
                             #region Documentos Relacionados
-
+                            
+                            //Genera EquivalenciaDR
+                            if (facturaEmitida.Moneda == moneda)
+                            {
+                                equivalencia = 1;
+                            }
+                            else if (facturaEmitida.Moneda != moneda)
+                            {
+                                //CALCULA EQUIVALENCIA 
+                                equivalencia = (importePagado / monto);
+                                //PARSEO A 6 DECIMALES
+                                equivalencia = Math.Truncate(equivalencia * 1000000) / 1000000;
+                            }
                             var documentoRelacionado = new DocumentoRelacionado
                             {
                                 FacturaEmitidaId = facturaEmitida.Id,
@@ -126,7 +139,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 Moneda = facturaEmitida.Moneda,
                                 NumeroParcialidad = Convert.ToInt32(String.IsNullOrEmpty(numeroParcialidad) ? "1" : numeroParcialidad),
                                 Serie = facturaEmitida.Serie,
-                                EquivalenciaDR = tipoCambioDocumentoRelacionado,
+                                EquivalenciaDR = equivalencia,
                                 ObjetoImpuestoId = "01"
                             };
 
@@ -382,7 +395,6 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                 "*Monto",
                 "*Moneda",
                 "*Tipo de cambio del dia del pago para moneda del pago",
-                "*Equivalencia del dia del pago para moneda del documento relacionado",
                 "*Numero de Operacion",
                 "Banco Ordenante",
                 "Banco Beneficiario",

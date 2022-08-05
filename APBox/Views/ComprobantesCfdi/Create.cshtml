@@ -6,14 +6,24 @@
 
 @Html.Partial("_ComprobanteScripts")
 <div id="page-title">
-    <h2>Crear Comprobante CFDI</h2>
-</div>
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Crear Comprobante CFDI</h2>
+         </div>
+            <div class="col-lg-3">
+                <button class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Exportar", "ComplementosPagos")'">
+                    <span>Descargar Layout Vacío</span>
+                    <i class="glyph-icon icon-arrow-down"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
 <div class="panel">
     <div class="panel-body">
 
-        @using (Html.BeginForm())
-            {
+        @using (Html.BeginForm("Create", "ComprobantesCfdi", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             @Html.AntiForgeryToken()
 
             @Html.HiddenFor(model => model.Status)
@@ -111,7 +121,7 @@
 
                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         @Html.LabelFor(model => model.TipoRelacion, new { @class = "control-label" })
-                        @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-control"})
+                        @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
                     </div>
 
@@ -127,7 +137,22 @@
                 </div>
 
             </div>
-
+            @*@using (Html.BeginForm("Cargar", "ComplementosPagos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {*@
+        <div class="row">
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label class="control-label" for="Grupos">Cargar layout Conceptos</label>
+                <input class="file-input" type="file" name="Archivo" typeof="Archivo" accept=".csv, .dat" />
+                <br />
+                <div class="form-group">
+                    <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
+                        <span>Procesar</span>
+                        <i class="glyph-icon icon-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            </div>
+            @*}*@
             <div class="row">
                 <h3 class="title-hero">
                     Conceptos
@@ -147,6 +172,7 @@
                     <i class="col-xs-12">Puedes administrar ese catálogo de Conceptos desde el menú de Empresa -> Conceptos</i>
                     <div class="clearfix"></div>
                     <hr />
+
                     <div class="form-group col-xs-12">
                         @Html.LabelFor(model => model.Conceptos.CatConcepto, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(model => model.Conceptos.CatConcepto, (IEnumerable<SelectListItem>)ViewBag.Conceptos, "Favor de hacer su selección", new { @class = "form-control", @id = "CConcepto" })
@@ -308,7 +334,7 @@
                                             {
                                                 foreach (var concepto in Model.Conceptoss)
                                                 {
-                                                    @Html.Partial("~/Views/ComprobanteCfdi/Concepto.cshtml", concepto)}
+                                                    @Html.Partial("~/Views/ComprobantesCfdi/Concepto.cshtml", concepto)}
                                             }
                                         </div>
                                     </div>
@@ -337,7 +363,7 @@
 
         </div>
             }
-    </div>
+        </div>
 </div>
 
 <script>
@@ -350,7 +376,18 @@
         }
     });
 
-    
+    //JavaScript
+    /*function getBase64(file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            console.log(reader.result);
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+
+        };
+    }*/
 </script>
 
 

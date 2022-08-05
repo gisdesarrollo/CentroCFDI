@@ -1208,7 +1208,7 @@
     //function para verificar que se haya seleccionado una opcion
     function comprobarDropDown(id) {
         var ConceptosError = $("#" + id).val();
-        
+
         if (ConceptosError == "") {
             $("#" + id + "_Error").text("Campo Obligatorio");
             return false;
@@ -1235,7 +1235,7 @@
         //validación para ver si se ha seleccionado una opcion
         if (comprobarDropDown("Conceptos_ObjetoImpuesto") == false) {
             return false;
-        } 
+        }
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarConceptos", "AjaxOperaciones")',
@@ -1577,7 +1577,7 @@
           dataType: 'html',
             contentType: "application/json; charset=utf-8",
          }).success(function (valor) {
-             
+
              if (valor == 0) {
                  $(div).html("El dato ingresado no existe");
              }
@@ -1639,9 +1639,9 @@
                             $("#Conceptos_ValorUnitario").val(row.ValorUnitario);
                             $("#Conceptos_Importe").val(row.Importe);
                             $("#Descuento").val(row.Descuento);
-                          
+
                             if ($("#tipoComprobante").val() == "I") {
-                               
+
                                 $("#Conceptos_ObjetoImpuesto").selectpicker('val', row.ObjetoImpuesto);
                                 if (row.ImpuestoIdTras != null) {
                                     var ImpuestoT = row.ImpuestoIdTras;
@@ -1657,7 +1657,7 @@
                                 }
                             }
                             else {
-                                
+
                                 $("#Conceptos_ObjetoImpuesto").val("01");
                                 $('.objetoImpuestoText').text("01-No objeto de impuesto");
                                 cambioImpTras();
@@ -1744,19 +1744,19 @@
         var Importe = "";
         if (ImpuestoT != "") {
             $.get("/ComplementosCartaPorte/DatosCatalogoImpuesto", { IdImpuesto: ImpuestoT }, function (data) {
-                
+
                 if (data.length > 0) {
                     $.each(data, function (index, row) {
                         TipoImpuesto = row.TipoImpuesto;
                         base = (row.Base * $("#Conceptos_Importe").val()/100);
-                        
+
                         basePor = row.Base;
                         TImpuesto = row.Impuesto;
                         TipoFactor = row.TipoFactor;
                         TasaCuota = row.TasaOCuota;
                         Importe = (base * TasaCuota);
                     });
-                    
+
                     if (TipoFactor == 0) {
                         TipoFactor = "Tasa";
                     } else if (TipoFactor == 1) {
@@ -1830,7 +1830,7 @@
             precio = cero($("#Conceptos_ValorUnitario").val());
             cantidad = cero($("#Conceptos_Cantidad").val());
             multi = cantidad * precio;
-            
+
             $("#Conceptos_Importe").val(multi);
         }
 
@@ -1867,7 +1867,7 @@
         $("#tipoComprobante").change(function () {
             if ($(this).val() === "T") {
                 var idCliente = $("#IDCliente").val();
-                
+
                 $('#ReceptorId').selectpicker('val', idCliente);
                 $('#UsoCfdiCP').selectpicker('val', 'S01');
                 //
@@ -1884,6 +1884,8 @@
                 $('#activaObjetoImpT').show();
                 $("#Conceptos_ObjetoImpuesto").val("01");
                 $('#objetoImpuestoText').text("01-No objeto de impuesto");
+                var receptorSeleccionado = $('#ReceptorId').val();
+                drowdop(receptorSeleccionado);
             }
             if ($(this).val() === "I") {
 
@@ -1894,7 +1896,7 @@
                 $('.InformacionReceptor').text('');
                 $('#activaObjetoImpI').show();
                 $('#activaObjetoImpT').hide();
-                
+
             }
         });
     });
@@ -1968,7 +1970,7 @@
         }
     });
 
-    //valida entrada de texto 
+    //valida entrada de texto
     $("#Ubicacion_Domicilio_Calle").on('keyup', function () {
         var key = $(this).attr("id");
         var text = $("#" + key).val();
@@ -1989,7 +1991,40 @@
     });
 
     });
-   
+
+    // rellena drowdop cfdirelacionado
+    $(function () {
+        $('#ReceptorId').on('change', function () {
+            var receptorSeleccionado = $(this).val();
+            drowdop(receptorSeleccionado);
+        });
+    });
+     function drowdop(receptorSeleccionado) {
+            var cfdisCancelados = $('#CfdiRelacionadoId');
+            cfdisCancelados.empty();
+
+
+            if (receptorSeleccionado.length > 0 && receptorSeleccionado !== 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("GetCfdisCanceladosCP", "AjaxCatalogos")',
+                    data: JSON.stringify({ clienteId: receptorSeleccionado }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data2) {
+                        $.each(data2, function (i, cfdi) {
+                            cfdisCancelados.append($('<option>', {
+                                value: cfdi.FacturaEmitida.Id,
+                                text: cfdi.FacturaEmitida.Desplegado
+                            }));
+                        });
+                        $('select').selectpicker('refresh');
+                        return false;
+                    }
+                });
+            }
+        }
+
 </script>
 
 

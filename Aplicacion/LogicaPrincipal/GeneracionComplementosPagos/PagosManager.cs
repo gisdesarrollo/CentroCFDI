@@ -11,9 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Utilerias.LogicaPrincipal;
 
 namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
@@ -23,9 +25,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         #region Variables
 
         private readonly AplicacionContext _db = new AplicacionContext();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagos.xml";
-        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
-        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagos.xml";
+        //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         private static string passwordKey = "12345678a";
         #endregion
 
@@ -227,28 +231,20 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                         ""
                         );
                     //Agrega Documento Relacionado
-                    double tipoCambio = 0;
+                    double equivalencia = 0;
+                    
                     if (complementoPago.Pagos[x].DocumentosRelacionados != null)
                     {
                         for (int i = 0; i < complementoPago.Pagos[x].DocumentosRelacionados.Count; i++)
                         {
-                            //validacion equivalencia DR
-                            if (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda == complementoPago.Pagos[x].Moneda)
-                            {
-                                tipoCambio = 1.0;
-                            }
-                            else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda == c_Moneda.MXN &&
-                                complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda != complementoPago.Pagos[x].Moneda)
-                            {
-                                tipoCambio = 1;
-                            }
+                            
                             
                             objCfdi.agregarPago20DoctoRelacionado(
                                 complementoPago.Pagos[x].DocumentosRelacionados[i].IdDocumento,
                                 complementoPago.Pagos[x].DocumentosRelacionados[i].Serie,
                                 complementoPago.Pagos[x].DocumentosRelacionados[i].Folio,
                                 complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString(),
-                                tipoCambio,
+                                complementoPago.Pagos[x].DocumentosRelacionados[i].EquivalenciaDR, //se calcula segun su monedaP y monedaDR 
                                 (int)complementoPago.Pagos[x].DocumentosRelacionados[i].NumeroParcialidad,
                                 (double)complementoPago.Pagos[x].DocumentosRelacionados[i].ImporteSaldoAnterior,
                                 (double)complementoPago.Pagos[x].DocumentosRelacionados[i].ImportePagado,
@@ -404,7 +400,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             objCfdi.GeneraXML(pathKey, passwordKey);
             string xml = objCfdi.Xml;
             //guardar string en un archivo
-             System.IO.File.WriteAllText(pathXml, xml);
+             //System.IO.File.WriteAllText(pathXml, xml);
             //Timbrado
             objCfdi = Timbra(objCfdi, sucursal);
             return objCfdi;
@@ -418,7 +414,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             {
                 var xmlTimbrado = objCfdi.XmlTimbrado;
                 //guardar string en un archivo
-                 System.IO.File.WriteAllText(pathXml, xmlTimbrado);
+                 //System.IO.File.WriteAllText(pathXml, xmlTimbrado);
             }
             else
             {
@@ -618,6 +614,37 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         }
         #endregion
 
-        
+        private double ConvertToDouble(string s)
+        {
+            char systemSeparator = Thread.CurrentThread.CurrentCulture.NumberFormat.CurrencyDecimalSeparator[0];
+            double result = 0;
+            try
+            {
+                if (s != null)
+                    if (!s.Contains(","))
+                        result = double.Parse(s, CultureInfo.InvariantCulture);
+                    else
+                        result = Convert.ToDouble(s.Replace(".", systemSeparator.ToString()).Replace(",", systemSeparator.ToString()));
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    result = Convert.ToDouble(s);
+                }
+                catch
+                {
+                    try
+                    {
+                        result = Convert.ToDouble(s.Replace(",", ";").Replace(".", ",").Replace(";", "."));
+                    }
+                    catch
+                    {
+                        throw new Exception("Wrong string-to-double format");
+                    }
+                }
+            }
+            return result;
+        }
     }
 }

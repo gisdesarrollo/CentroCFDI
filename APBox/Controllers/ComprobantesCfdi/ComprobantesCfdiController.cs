@@ -1,7 +1,9 @@
 ﻿using APBox.Context;
 using APBox.Control;
+using API.Catalogos;
 using API.Enums;
 using API.Enums.CartaPorteEnums;
+using API.Models.Dto;
 using API.Models.Operaciones;
 using API.Operaciones.ComplementoCartaPorte;
 using API.Operaciones.ComplementosPagos;
@@ -30,6 +32,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             private readonly LogicaFacadeFacturas _logicaFacadeFacturas = new LogicaFacadeFacturas();
             private readonly AcondicionarComprobanteCfdi _acondicionarComprobante = new AcondicionarComprobanteCfdi();
             private readonly ComprobanteManager _ComprobanteManager = new ComprobanteManager();
+            private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
             private readonly CreationFile _creationFile = new CreationFile();
         #endregion
 
@@ -132,6 +135,17 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaImpuestoSat();
             PopulaTiposDeComprobante();
             PopulaConceptos();
+
+            if (Request.Files.Count > 0)
+            {
+                var archivo = Request.Files[0];
+                if (archivo.ContentLength > 0)
+                {
+
+                    return View(comprobanteCfdi);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 _acondicionarComprobante.CargaInicial(ref comprobanteCfdi);
@@ -300,6 +314,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ComprobanteCfdi comprobanteCfdi = _db.ComprobantesCfdi.Find(id);
+            
             if (comprobanteCfdi == null)
             {
                 return HttpNotFound();
@@ -319,18 +334,32 @@ namespace APBox.Controllers.ComprobantesCfdi
                 try
                 {
                     var sucursalId = ObtenerSucursal();
+                    Sucursal sucursal = _db.Sucursales.Find(sucursalId);
                     DateTime fechaDoc = comprobanteCfdi.FechaDocumento;
                     var horaHoy = DateTime.Now;
                     var fechaTime = new DateTime(fechaDoc.Year, fechaDoc.Month, fechaDoc.Day, horaHoy.Hour, horaHoy.Minute, horaHoy.Second);
-
                     var CCfdi = _db.ComprobantesCfdi.Find(comprobanteCfdi.Id);
                     CCfdi.ReceptorId = comprobanteCfdi.ReceptorId;
                     CCfdi.FechaDocumento = fechaTime;
-                    _db.Entry(CCfdi).State = EntityState.Modified;
-                    _db.SaveChanges();
+                    
 
-                    _ComprobanteManager.GenerarComprobanteCfdi(sucursalId, comprobanteCfdi.Id);
-                
+                    
+                    if (sucursal.Trv && sucursal.Txsa)
+                    {
+                        throw new Exception("Seleccionar Solo Un Tipo De Timbrado..");
+                    }
+                    else if (sucursal.Trv)
+                    {
+                        _db.Entry(CCfdi).State = EntityState.Modified;
+                        _db.SaveChanges();
+                        _ComprobanteManager.GenerarComprobanteCfdi(sucursalId, comprobanteCfdi.Id);
+                    }
+                    else if(sucursal.Txsa) {
+                        _db.Entry(CCfdi).State = EntityState.Modified;
+                        _db.SaveChanges();
+                        _ComprobanteXsaManager.GenerarComprobanteCfdi(sucursalId, comprobanteCfdi.Id); 
+                    }
+                    else { throw new Exception("Seleccionar Un Tipo De Timbrado!!"); }
 
                 }
                 catch (Exception ex)
@@ -367,15 +396,17 @@ namespace APBox.Controllers.ComprobantesCfdi
         public ActionResult DescargarPDF(int id)
         {
             ComprobanteCFDI oComprobante = new ComprobanteCFDI();
-            byte[] archivoFisico = new byte[255];
+            byte[] archivoFisico = new byte[1024];
             var comprobanteCfdi = _db.ComprobantesCfdi.Find(id);
-            //checar version del CFDI
-            string CadenaXML = System.Text.Encoding.UTF8.GetString(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml);
-           
-            oComprobante = _creationFile.DeserealizarComprobanteXML(id);
-            archivoFisico = _creationFile.GeneraPDFComprobante(oComprobante, id);
-
-            
+            if (comprobanteCfdi.Sucursal.Trv)
+            {
+                oComprobante = _creationFile.DeserealizarComprobanteXML(id);
+                archivoFisico = _creationFile.GeneraPDFComprobante(oComprobante, id);
+            }
+            if (comprobanteCfdi.Sucursal.Txsa) 
+            {
+                archivoFisico =_ComprobanteXsaManager.DownloadPDFXsa(comprobanteCfdi.Id);   
+            }            
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = comprobanteCfdi.FacturaEmitida.Serie + "-" + comprobanteCfdi.FacturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
@@ -403,12 +434,19 @@ namespace APBox.Controllers.ComprobantesCfdi
         {
             PopulaMotivoCancelacion();
             string error = null;
+            List<DataCancelacionResponseXsaDto> dataXsa = new List<DataCancelacionResponseXsaDto>();
             var comprobante = _db.ComprobantesCfdi.Find(comprobanteCfdi.Id);
             comprobante.FolioSustitucion = comprobanteCfdi.FolioSustitucion;
             comprobante.MotivoCancelacion = comprobanteCfdi.MotivoCancelacion;
             try
             {
-                _ComprobanteManager.Cancelar(comprobante);
+                if (comprobante.Sucursal.Trv) { 
+                    _ComprobanteManager.Cancelar(comprobante); 
+                }
+                if (comprobante.Sucursal.Txsa) { 
+                    dataXsa = _ComprobanteXsaManager.Cancelar(comprobanteCfdi); 
+                   
+                }
 
             }
             catch (Exception ex)
@@ -418,8 +456,17 @@ namespace APBox.Controllers.ComprobantesCfdi
             }
             if (error == null)
             {
-                ViewBag.Success = "Proceso de cancelación finalizado con éxito.";
-                ViewBag.Error = null;
+                if (dataXsa.Count < 1)
+                {
+                    ViewBag.Success = "Proceso de cancelación finalizado con éxito.";
+                }
+                else {
+                    foreach (var d in dataXsa)
+                    {
+                        ViewBag.Success = "STATUS:" + d.status + "-" + d.descripcion;
+                    }
+                }
+                    ViewBag.Error = null;
             }
             else
             {
@@ -433,8 +480,29 @@ namespace APBox.Controllers.ComprobantesCfdi
         public ActionResult DescargarAcuse(int id)
         {
             var comprobante = _db.ComprobantesCfdi.Find(id);
-            string xmlCancelacion = _ComprobanteManager.DowloadAcuseCancelacion(comprobante);
-            byte[] byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
+            string xmlCancelacion = "";
+            byte[] byteXml = new byte[1024];
+            string error = "";
+            try {
+                if (comprobante.Sucursal.Trv)
+                {
+                    xmlCancelacion = _ComprobanteManager.DowloadAcuseCancelacion(comprobante);
+                    byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
+                }
+                if(comprobante.Sucursal.Txsa)
+                {
+                    byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(comprobante);
+                }
+           }
+            catch (Exception ex){
+                error = ex.Message;
+            }
+            if (error != "")
+            {
+                ModelState.AddModelError("", error);
+                return RedirectToAction("Index");
+            }
+            
             MemoryStream ms = new MemoryStream(byteXml, 0, 0, true, true);
             string nameArchivo = comprobante.FacturaEmitida.Serie + "-" + comprobante.FacturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");

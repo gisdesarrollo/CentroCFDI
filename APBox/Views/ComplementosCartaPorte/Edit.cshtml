@@ -9,7 +9,18 @@
 
 <div class="panel">
     <div class="panel-body">
-
+        @{
+            var ObjImpI = "hidden";
+            var ObjImpT = "hidden";
+            if (Model.TipoDeComprobante == API.Enums.c_TipoDeComprobante.T)
+            {
+                ObjImpT = "visible";
+            }
+            else
+            {
+                ObjImpI = "visible";
+            }
+        }
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -217,7 +228,7 @@
 
                     <div class="clearfix"></div>
 
-                    @*<div class="row">
+                    <div class="row">
                         <div class="form-group col-xs-12 col-sm-6 col-md-6">
                             <div class="checkbox">
                                 <input type="checkbox" class="cfdiRelacionado" />
@@ -249,10 +260,10 @@
 
                         </div>
 
-                    </div>*@
+                    </div>
 
-                    @*<div class="clearfix"></div>*@
-                    @*<hr />*@
+                    <div class="clearfix"></div>
+                    
                     <div class="tab-pane" id="tab3">
                         <div class="row">
 
@@ -332,10 +343,16 @@
                                     @Html.ValidationMessageFor(model => model.Conceptos.Importe, "", new { @class = "text-danger" })
                                     <div id="ClaveUnidadConcepto" style="color:red;"></div>
                                 </div>
-                                <div class="form-group col-xs-12 col-sm-3">
+
+                                <div class="form-group col-xs-12 col-sm-3" id="activaObjetoImpI">
                                     @Html.LabelFor(model => model.Conceptos.ObjetoImpuesto, new { @class = "control-label" })
                                     @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.Conceptos.ObjetoImpuesto, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-3" id="activaObjetoImpT">
+                                    <p>Objeto Impuesto</p>
+                                    <p id="objetoImpuestoText"></p>
+                                    @Html.HiddenFor(model => model.Conceptos.ObjetoImpuesto)
                                 </div>
                                 <div class="clearfix"></div>
                                 <hr />
@@ -2672,5 +2689,16 @@
         });
     });
     $("#FormaPago").selectpicker('val', $("#IdFormaPago").val());
+
+    if ($('#tipoComprobante').val() === "T") {
+        $('#UsoCfdiCP').selectpicker('val', 'S01');
+        $('#activaObjetoImpI').hide();
+        $('#activaObjetoImpT').show();
+        $("#Conceptos_ObjetoImpuesto").val("01");
+        $('#objetoImpuestoText').text("01-No objeto de impuesto");
+    } else {
+        $('#activaObjetoImpI').show();
+        $('#activaObjetoImpT').hide();
+    }
 </script>
 

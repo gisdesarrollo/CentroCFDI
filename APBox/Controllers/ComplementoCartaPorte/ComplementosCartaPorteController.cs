@@ -86,7 +86,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaClientes();
             PopulaBancos(ObtenerSucursal());
             PopulaCfdiRelacionado();
-
+            PopulaTipoRelacion();
             PopulaTiposDeComprobante();
             PopulaTransporte();
             PopulaTiposEstacion();
@@ -248,7 +248,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ModelState.Remove("Sucursal.RazonSocial");
             ModelState.Remove("Conceptos.ObjetoImpuesto");
             PopulaClientes(complementoCartaPorte.ReceptorId);
-            
+            PopulaCfdiRelacionado();
+            PopulaTipoRelacion();
+
             PopulaTiposDeComprobante();
             PopulaTransporte();
             PopulaTiposEstacion();
@@ -733,6 +735,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
             }
             PopulaClientes(complementoCP.ReceptorId);
             PopulaTiposDeComprobanteFiltro(complementoCP.TipoDeComprobante);
+            PopulaCfdiRelacionado();
+            PopulaTipoRelacion();
+
             PopulaTransporte();
             PopulaTiposEstacion();
             PopulaDatosSucursal(ObtenerSucursal());
@@ -870,6 +875,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaClientes(complementoCP.ReceptorId);
 
             PopulaTiposDeComprobanteFiltro(complementoCP.TipoDeComprobante);
+            PopulaCfdiRelacionado();
+            PopulaTipoRelacion();
             PopulaTransporte();
             PopulaTiposEstacion();
             PopulaDatosSucursal(ObtenerSucursal());
@@ -1565,6 +1572,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.CfdiRelacionadoId = popularDropDowns.PopulaFacturasEmitidas(false, 0, cfdiRelacionadoId);
+        }
+
+        private void PopulaTipoRelacion()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.tipoRelacion = (popularDropDowns.PopulaTipoRelacion());
         }
         private void PopulaExportacion()
         {

@@ -25,6 +25,8 @@
                 }
             <form action="Cancelar" error-data="@ViewBag.Error" success-data="@ViewBag.Success">
                 @Html.HiddenFor(model => model.Id)
+                @*@Html.HiddenFor(model => model.Trvc)
+                @Html.HiddenFor(model => model.Txsa)*@
                 <div class=" form-group col-xs-12">
                     <span class="form-inline">UUID: </span><span>@Model.FacturaEmitida.Uuid</span>
                 </div>

@@ -47,11 +47,12 @@ namespace APBox.Controllers.Ajax
         }
 
         public PartialViewResult AgregarFacturaComplementoPago(int pagoId, int facturaEmitidaId, int numeroParcialidad, string moneda, 
-            double equivalencia, double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto,Decimal baseTraslado,string impuestoTraslado,
+            double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto,Decimal baseTraslado,string impuestoTraslado,
             string tipoFactorTraslado,Decimal tasaOCuotaTraslado,Decimal importeTraslado,Decimal baseRetencion,string impuestoRetencion, string tipoFactorRetencion,
             Decimal tasaOCuotaRetencion, Decimal importeRetencion)
         {
             var facturaEmitida = _db.FacturasEmitidas.Find(facturaEmitidaId);
+            Pago pago = _db.Pagos.Find(pagoId);
             
             var documentoRelacionado = new DocumentoRelacionado
             {
@@ -62,7 +63,7 @@ namespace APBox.Controllers.Ajax
                 ImporteSaldoInsoluto = importeSaldoInsoluto,
                 NumeroParcialidad = numeroParcialidad,
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), moneda, true),
-                EquivalenciaDR = equivalencia,
+                //EquivalenciaDR = equivalencia,
                 PagoId = pagoId,
 
                 IdDocumento = facturaEmitida.Uuid,
@@ -87,6 +88,18 @@ namespace APBox.Controllers.Ajax
                     Importe = importeRetencion
                 }
             };
+           
+            double equivalencia = 1;
+            var Moneda =(c_Moneda)Enum.Parse(typeof(c_Moneda), moneda, true);
+            //calcula EquivalenciaDR
+            if (pago.Moneda == Moneda) { equivalencia = 1; documentoRelacionado.EquivalenciaDR = equivalencia; }
+            if (pago.Moneda != Moneda)
+            {
+                equivalencia = ((double)(importePagado / pago.Monto));
+                //PARSEO A 6 DECIMALES
+                equivalencia = Math.Truncate(equivalencia * 1000000) / 1000000;
+                documentoRelacionado.EquivalenciaDR = equivalencia;
+            }
 
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
         }

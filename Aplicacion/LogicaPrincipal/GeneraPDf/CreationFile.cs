@@ -2,21 +2,12 @@
 using API.Operaciones.ComprobantesCfdi;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Validacion;
-using Grpc.Core;
 using MessagingToolkit.QRCode.Codec;
 using OpenHtmlToPdf;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Xml.Serialization;
 
 
@@ -277,6 +268,8 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
             return pdf;
 
         }
+
+        
         public byte[] GeneraPDF(ComprobanteCFDI oComprobante, int complementoCartaPorteId)
         {
             var complementoCartaPorte = _db.ComplementoCartaPortes.Find(complementoCartaPorteId);

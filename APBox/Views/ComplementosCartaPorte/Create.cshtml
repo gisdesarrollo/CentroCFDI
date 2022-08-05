@@ -24,8 +24,9 @@
     
         <div class="form">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab">Comprobante</a></li>
-                <li><a href="#tab2" data-toggle="tab">Receptor</a></li>
+                <li class="active"><a href="#tab0" data-toggle="tab">Comprobante</a></li>
+                <li><a href="#tab1" data-toggle="tab">Receptor</a></li>
+                <li><a href="#tab2" data-toggle="tab">CFDI Relacionado</a></li>
                 <li><a href="#tab3" data-toggle="tab">Conceptos</a></li>
                 <li><a href="#tab4" data-toggle="tab">Carta Porte</a></li>
                 <li><a href="#tab5" data-toggle="tab">Ubicaciones</a></li>
@@ -81,7 +82,7 @@
 
             }
             <div class="tab-content">
-                <div class="tab-pane active" id="tab1">
+                <div class="tab-pane active" id="tab0">
                     <div class="row">
                         <h3 class="title-hero">
                             Información de la Sección de Comprobante
@@ -163,7 +164,7 @@
                 </div>
                 <div class="clearfix"></div>
                 
-                <div class="tab-pane" id="tab2">
+                <div class="tab-pane" id="tab1">
                     <h3 class="title-hero">
                         Sección Receptor
                     </h3>
@@ -200,7 +201,7 @@
 
                 <div class="clearfix"></div>
 
-                @*<div class="row">
+                <div class="row tab-pane" id="tab2" >
                 <div class="form-group col-xs-12 col-sm-6 col-md-6">
                     <div class="checkbox">
                         <input type="checkbox" class="cfdiRelacionado" />
@@ -211,14 +212,14 @@
 
                 <div class="clearfix"></div>
 
-                <div class="cfdiRelacionadoSeccion" hidden>
+                <div class="cfdiRelacionadoSeccion"  hidden>
                     <h3 class="title-hero">
                         CFDI Relacionado
                     </h3>
 
                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         @Html.LabelFor(model => model.TipoRelacion, new { @class = "control-label" })
-                        @Html.EnumDropDownListSpecialFor(model => model.TipoRelacion)
+                        @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
                     </div>
 
@@ -232,10 +233,10 @@
 
                 </div>
 
-            </div>*@
+            </div>
 
-                @*<div class="clearfix"></div>*@
-                @*<hr />*@
+                <div class="clearfix"></div>
+               
                 <div class="tab-pane" id="tab3">
                     <div class="row">
                         <h3 class="title-hero col-lg-8 col-md-6">

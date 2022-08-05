@@ -199,10 +199,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Tipo de Relación")]
         public string TipoRelacion { get; set; }
 
-        /*[DisplayName("CFDI Relacionado")]
+        [DisplayName("CFDI Relacionado")]
         public int? CfdiRelacionadoId { get; set; }
         [ForeignKey("CfdiRelacionadoId")]
-        public virtual FacturaEmitida CfdiRelacionado { get; set; }*/
+        public virtual FacturaEmitida CfdiRelacionado { get; set; }
 
         #endregion
 

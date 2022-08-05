@@ -20,9 +20,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
         #region Variables
 
         private readonly AplicacionContext _db = new AplicacionContext();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\comprobanteCFDI.xml";
-        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
-        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\comprobanteCFDI.xml";
+        private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        //private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         private static string passwordKey = "12345678a";
         #endregion
 
@@ -46,6 +48,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             return cfdi;
 
         }
+
+        
 
         public string GeneraFactura(ComprobanteCfdi comprobanteCfdi, int sucursalId)
         {
@@ -348,7 +352,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             objCfdi.GeneraXML(pathKey, passwordKey);
             string xml = objCfdi.Xml;
             //guardar string en un archivo
-             System.IO.File.WriteAllText(pathXml, xml);
+            // System.IO.File.WriteAllText(pathXml, xml);
             //Timbrado
             objCfdi = Timbra(objCfdi, sucursal);
             return objCfdi;
@@ -534,6 +538,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                     xmlCancelacion = objCancel.xml;
                 }
             }
+            else { throw new Exception("Error: " + objCancel._ERROR); }
 
             return xmlCancelacion;
         }

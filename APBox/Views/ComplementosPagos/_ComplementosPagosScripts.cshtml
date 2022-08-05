@@ -27,7 +27,7 @@
                 facturaEmitidaId: $('#FacturaEmitidaId').val(),
                 numeroParcialidad: $('#Pago_DocumentoRelacionado_NumeroParcialidad').val(),
                 moneda: $('#Pago_DocumentoRelacionado_Moneda').val(),
-                equivalencia: $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(),
+                //equivalencia: $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(),
                 importeSaldoAnterior: $('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val(),
                 importePagado: $('#Pago_DocumentoRelacionado_ImportePagado').val(),
                 importeSaldoInsoluto: $('#Pago_DocumentoRelacionado_ImporteSaldoInsoluto').val(),
@@ -155,6 +155,7 @@
         };
         reader.onerror = function (error) {
             console.log('Error: ', error);
+            
         };
     }
     //calcula el porcentaje de total a pagar

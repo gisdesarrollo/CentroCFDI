@@ -10,25 +10,27 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
+/*using System.Data.Entity.Core.Objects;*/
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+/*using System.Reflection;*/
 using System.Text;
-using System.Threading.Tasks;
+/*using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using Utils;
+using Utils;*/
 
 namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 {
     public class CartaPorteManager
     {
         private readonly AplicacionContext _db = new AplicacionContext();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
-        private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
-        private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
+        //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         private static string passwordKey = "12345678a";
         
         public string GenerarComplementoCartaPorte(int sucursalId, int complementoCartaPorteId, string mailAlterno)
@@ -104,15 +106,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
         
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi,Sucursal sucursal)
         {
-            
+            //prueba
             objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            //produccion
             //objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
             // Verifica Response
             if (objCfdi.MensajeError == "")
             {
                 var xmlTimbrado = objCfdi.XmlTimbrado;
                 //guardar string en un archivo
-                System.IO.File.WriteAllText(pathXml, xmlTimbrado);
+               // System.IO.File.WriteAllText(pathXml, xmlTimbrado);
             }
             else
             {
@@ -132,10 +135,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
 
 
-            // Agrega el certificado
+            // Agrega el certificado prueba
              objCfdi.agregarCertificado(pathCer);
             
-            
+            // certificado de produccion
             //objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
             if (objCfdi.MensajeError != "")
             {
@@ -934,8 +937,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 }
             }
             
-
+            // key pruebas
             objCfdi.GeneraXML(pathKey, passwordKey);
+            // key produccion
            // objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
 
             string xml = objCfdi.Xml;
@@ -945,7 +949,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             objCfdi.Xml = xml;
 
             //guardar string en un archivo
-            System.IO.File.WriteAllText(pathXml, xml);
+            //System.IO.File.WriteAllText(pathXml, xml);
              objCfdi = Timbra(objCfdi,sucursal);
                
 
@@ -1061,10 +1065,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
             
             //Ejecutamos el proceso de cancelación en el Ambiente de Pruebas.
-            //objCan.enviarCancelacionArchivo(ArchivoCancelacion, "fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            objCan.enviarCancelacionArchivo(ArchivoCancelacion, "fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
             //System.IO.File.Delete(ArchivoCancelacion);
             //Ejecutamos el proceso de cancelación en el Ambiente de Producción.
-            objCan.enviarCancelacionArchivo(ArchivoCancelacion, sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+            //objCan.enviarCancelacionArchivo(ArchivoCancelacion, sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
             System.IO.File.Delete(ArchivoCancelacion);
             // Verifica el resultado
             if (objCan.MensajeDeError == "")
@@ -1097,9 +1101,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
             RVCFDI33.WSConsultasCFDReal.Service1 objConsulta = new RVCFDI33.WSConsultasCFDReal.Service1();
             RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct objCancel = new RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct();
-           // objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, "fgomez", "12121212", RFCEmisor);
+            objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, "fgomez", "12121212", RFCEmisor);
             //consulta a produccion
-            objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, sucursal.Rfc, sucursal.Rfc, RFCEmisor);
+            //objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, sucursal.Rfc, sucursal.Rfc, RFCEmisor);
             if(objCancel._ERROR == "")
             {
                 if(objCancel.xml !=null && objCancel.xml != "")

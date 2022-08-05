@@ -139,6 +139,12 @@ namespace API.Catalogos
         [DisplayName("Key XSA")]
         public String KeyXsa { get; set; }
 
+        [DisplayName("Tipo CFD XSA")]
+        public String TipoCfdXsa { get; set; }
+
+        [DisplayName("ID Sucursal XSA")]
+        public String IdSucursalXsa { get; set; }
+
         [DisplayName("Fecha Inicial")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaInicial { get; set; }
@@ -162,5 +168,13 @@ namespace API.Catalogos
         public virtual Grupo Grupo { get; set; }
 
         #endregion
+
+        //[NotMapped]
+        [DisplayName("RealVirtual")]
+        public bool Trv { get; set; }
+
+        //[NotMapped]
+        [DisplayName("XSA Tralix")]
+        public bool Txsa { get; set; }
     }
 }

@@ -465,65 +465,81 @@ namespace APBox.Controllers.ComplementosPago
                 decimal totalTrasladosBaseIVA0 = 0;
                 decimal totalTrasladosImpuestoIVA0 = 0;
                 decimal totalTrasladosBaseIVAExento = 0;
-                
+                double equivalencia = 1;
                 if (complementoPago.DocumentosRelacionados != null)
                 {
-                    foreach (var pago in complementoPago.DocumentosRelacionados)
+                    foreach (var DRelacionado in complementoPago.DocumentosRelacionados)
                     {
+                        //calcula EquivalenciaDR
+                        /*if(DRelacionado.PagoId > 0){
+                            Pago p= _db.Pagos.Find(DRelacionado.PagoId);
+                            if(p != null) {
+                                if(p.Moneda == DRelacionado.Moneda) { equivalencia = 1; DRelacionado.EquivalenciaDR = equivalencia; }
+                                if(p.Moneda != DRelacionado.Moneda)
+                                {
+                                    //CALCULA EQUIVALENCIA 
+                                    equivalencia = ((double)(DRelacionado.ImportePagado / p.Monto));
+                                    //PARSEO A 6 DECIMALES
+                                    equivalencia = Math.Truncate(equivalencia * 1000000) / 1000000;
+                                    DRelacionado.EquivalenciaDR = equivalencia;
+                                }
+                            }
+                        
+                        }*/
                         
                         
-                            pago.FacturaEmitida = null;
-                            pago.Pago = null;
+                            DRelacionado.FacturaEmitida = null;
+                            DRelacionado.Pago = null;
                         /*if (pago.Id == null || pago.Id == 0)
                         {*/
-                            if (pago.Traslado != null)
+                            if (DRelacionado.Traslado != null)
                             {
-                                if (pago.Traslado.Base == 0)
+                                if (DRelacionado.Traslado.Base == 0)
                                 {
-                                    pago.Traslado = null;
+                                    DRelacionado.Traslado = null;
                                 }
                                 else
                                 {
-                                    if (pago.Traslado.Impuesto == "002" && pago.Traslado.TasaOCuota == (decimal)0.16 && pago.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                    if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TasaOCuota == (decimal)0.16 && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
                                     {
-                                        totalTrasladosBaseIVA16 += pago.Traslado.Base;
-                                        totalTrasladosImpuestoIVA16 += pago.Traslado.Importe;
+                                        totalTrasladosBaseIVA16 += DRelacionado.Traslado.Base;
+                                        totalTrasladosImpuestoIVA16 += DRelacionado.Traslado.Importe;
                                     }
-                                    if (pago.Traslado.Impuesto == "002" && pago.Traslado.TasaOCuota == (decimal)0.08 && pago.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                    if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TasaOCuota == (decimal)0.08 && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
                                     {
-                                        totalTrasladosBaseIVA8 += pago.Traslado.Base;
-                                        totalTrasladosImpuestoIVA8 += pago.Traslado.Importe;
+                                        totalTrasladosBaseIVA8 += DRelacionado.Traslado.Base;
+                                        totalTrasladosImpuestoIVA8 += DRelacionado.Traslado.Importe;
                                     }
-                                if (pago.Traslado.Impuesto == "002" && pago.Traslado.TasaOCuota == (decimal)0.0 && pago.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TasaOCuota == (decimal)0.0 && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
                                 {
-                                    totalTrasladosBaseIVA0 += pago.Traslado.Base;
-                                    totalTrasladosImpuestoIVA0 += pago.Traslado.Importe;
+                                    totalTrasladosBaseIVA0 += DRelacionado.Traslado.Base;
+                                    totalTrasladosImpuestoIVA0 += DRelacionado.Traslado.Importe;
                                 }
-                                if (pago.Traslado.Impuesto == "002" && pago.Traslado.TipoFactor == c_TipoFactor.Exento)
+                                if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Exento)
                                 {
-                                    totalTrasladosBaseIVAExento += pago.Traslado.Base;
+                                    totalTrasladosBaseIVAExento += DRelacionado.Traslado.Base;
                                 }
 
                             }
                             }
-                            else { pago.Traslado = null; }
-                            if (pago.Retencion != null)
+                            else { DRelacionado.Traslado = null; }
+                            if (DRelacionado.Retencion != null)
                             {
-                                if (pago.Retencion.Base == 0)
+                                if (DRelacionado.Retencion.Base == 0)
                                 {
-                                    pago.Retencion = null;
+                                    DRelacionado.Retencion = null;
                                 }
                                 else
                                 {
-                                    if (pago.Retencion.Impuesto == "001") { totalRetencionesISR += pago.Retencion.Importe; }
-                                    if (pago.Retencion.Impuesto == "002") { totalRetencionesIVA += pago.Retencion.Importe; }
-                                    if (pago.Retencion.Impuesto == "003") { totalRetencionesIEPS += pago.Retencion.Importe; }
+                                    if (DRelacionado.Retencion.Impuesto == "001") { totalRetencionesISR += DRelacionado.Retencion.Importe; }
+                                    if (DRelacionado.Retencion.Impuesto == "002") { totalRetencionesIVA += DRelacionado.Retencion.Importe; }
+                                    if (DRelacionado.Retencion.Impuesto == "003") { totalRetencionesIEPS += DRelacionado.Retencion.Importe; }
                                 }
                             }
-                            else { pago.Retencion = null; }
-                        if (pago.Id == null || pago.Id == 0)
+                            else { DRelacionado.Retencion = null; }
+                        if (DRelacionado.Id == null || DRelacionado.Id == 0)
                         {
-                            _db.DocumentosRelacionados.Add(pago);
+                            _db.DocumentosRelacionados.Add(DRelacionado);
                             _db.SaveChanges();
                         }
                     }
@@ -599,6 +615,7 @@ namespace APBox.Controllers.ComplementosPago
 
         public ActionResult Generar(int? id)
         {
+           
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -634,6 +651,7 @@ namespace APBox.Controllers.ComplementosPago
                     complementoPagoDb.FechaDocumento = fechaTime;
                     _db.Entry(complementoPagoDb).State = EntityState.Modified;
                     _db.SaveChanges();
+                   
 
                     _pagosManager.GenerarComplementoPago(sucursalId, complementoPago.Id, "");
                     return RedirectToAction("Index");
