@@ -129,16 +129,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 );
 
             //Agrega DocRelacionado Cancelado
-            if (comprobanteCfdi.TipoRelacion != null && comprobanteCfdi.CfdiRelacionadoId != null)
+            if (comprobanteCfdi.TipoRelacion != null && comprobanteCfdi.UUIDCfdiRelacionado != null)
             {
                 objCfdi.agregarCfdiRelacionados(
                         comprobanteCfdi.TipoRelacion
                     );
                 //Obtenemos el contenido del XML seleccionado.
-                string CadenaXML = System.Text.Encoding.UTF8.GetString(comprobanteCfdi.CfdiRelacionado.ArchivoFisicoXml);
-                string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
+                //string CadenaXML = System.Text.Encoding.UTF8.GetString(comprobanteCfdi.CfdiRelacionado.ArchivoFisicoXml);
+                //string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
                 objCfdi.agregarCfdiRelacionado(
-                        UUID
+                        comprobanteCfdi.UUIDCfdiRelacionado
                     );
 
             }

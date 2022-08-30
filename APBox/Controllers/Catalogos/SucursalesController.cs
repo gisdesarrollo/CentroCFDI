@@ -22,7 +22,10 @@ namespace APBox.Controllers.Catalogos
         private readonly OperacionesStreams _operacionesStreams = new OperacionesStreams();
         private readonly AcondicionarSucursales _acondicionarSucursales = new AcondicionarSucursales();
 
+
         // GET: Sucursales
+        //[Authorize(Roles = "SUCURSALES")]
+        
         public ActionResult Index()
         {
             var grupoId = ObtenerGrupo();
@@ -48,6 +51,7 @@ namespace APBox.Controllers.Catalogos
         }
 
         // GET: Sucursales/Create
+        [Authorize(Roles = "SUCURSALES")]
         public ActionResult Create()
         {
             var sucursal = new Sucursal

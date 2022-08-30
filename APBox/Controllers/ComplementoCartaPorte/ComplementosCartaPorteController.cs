@@ -10,17 +10,13 @@ using Aplicacion.Context;
 using APBox.Control;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones;
 using System.Data.Entity.Validation;
-using API.RelacionesCartaPorte;
 using System.Data.Entity;
 using API.Models.Dto;
 using System.Net;
 using Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte;
 using API.Enums.CartaPorteEnums;
 using Aplicacion.LogicaPrincipal.Facturas.Timbrado;
-using System.ServiceModel;
-using System.Xml;
-using System.Web.Services.Description;
-using System.Xml.Serialization;
+
 using System.IO;
 using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
 using System.Text;
@@ -85,7 +81,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
         {
             PopulaClientes();
             PopulaBancos(ObtenerSucursal());
-            PopulaCfdiRelacionado();
             PopulaTipoRelacion();
             PopulaTiposDeComprobante();
             PopulaTransporte();
@@ -119,8 +114,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaEntradaSalidaMerc();
 
             PopulaConceptos();
-            PopulaImpuestoR();
-            PopulaImpuestoT();
+            //PopulaImpuestoR();
+            //PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
             PopulaExportacion();
@@ -248,7 +243,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ModelState.Remove("Sucursal.RazonSocial");
             ModelState.Remove("Conceptos.ObjetoImpuesto");
             PopulaClientes(complementoCartaPorte.ReceptorId);
-            PopulaCfdiRelacionado();
             PopulaTipoRelacion();
 
             PopulaTiposDeComprobante();
@@ -280,8 +274,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaTiPermiso();
             PopulaEntradaSalidaMerc();
             PopulaConceptos();
-            PopulaImpuestoR();
-            PopulaImpuestoT();
+            //PopulaImpuestoR();
+            //PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
             PopulaExportacion();
@@ -764,8 +758,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaTiPermiso();
             PopulaEntradaSalidaMerc();
             PopulaConceptos();
-            PopulaImpuestoR();
-            PopulaImpuestoT();
+            //PopulaImpuestoR();
+            //PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
             PopulaExportacion();
@@ -777,6 +771,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var cliente = _db.Clientes.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
             complementoCP.IDCliente = cliente.Id;
             complementoCP.IdFormaPago = complementoCP.FormaPago;
+            complementoCP.IdTipoRelacion = complementoCP.TipoRelacion;
             complementoCP.Conceptos = new Conceptos()
             {
                 Traslado = new TrasladoCP()
@@ -905,8 +900,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaTiPermiso();
             PopulaEntradaSalidaMerc();
             PopulaConceptos();
-            PopulaImpuestoR();
-            PopulaImpuestoT();
+            //PopulaImpuestoR();
+            //PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
             PopulaExportacion();
@@ -1117,6 +1112,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
             byte[] archivoFisico = new byte[255];
             var complementoCartaPorte = _db.ComplementoCartaPortes.Find(id);
             //checar version del CFDI
+            //get byte xml local
+            //byte[] xmlLocal = System.IO.File.ReadAllBytes(@"D:\Descargas(C)\CP - 1413 - 20220829124852255.xml");
+            //string CadenaXML = System.Text.Encoding.UTF8.GetString(xmlLocal);
             string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
             string versionCfdi = _decodifica.LeerValorXML(CadenaXML, "Version", "Comprobante");
             if (versionCfdi == "3.3")
@@ -1344,7 +1342,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Conceptos = (popularDropDowns.PopulaConceptos(ObtenerSucursal()));
         }
 
-        private void PopulaImpuestoT()
+        /*private void PopulaImpuestoT()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ImpuestoT = (popularDropDowns.PopulaImpuestoT());
@@ -1354,7 +1352,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ImpuestoR = (popularDropDowns.PopulaImpuestoR());
-        }
+        }*/
 
         private void PopulaPaises()
         {

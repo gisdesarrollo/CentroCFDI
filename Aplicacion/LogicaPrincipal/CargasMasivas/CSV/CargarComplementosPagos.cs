@@ -363,20 +363,6 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     }
                 }
 
-                //foreach (var complementoPago in complementosPago)
-                //{
-                //    try
-                //    {
-                //        _pagosManager.GenerarComplementoPago(sucursalId, complementoPago.ReceptorId, complementoPago.Id);
-                //        errores.Add(String.Format("Comando realizado con éxito del complemento del receptor {0} con total de montos {1:c}", complementoPago.Receptor.RazonSocial, complementoPago.Pagos.Sum(p => p.Monto)));
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        errores.Add(String.Format("Error de generación del complemento del receptor {0} con total de montos {1:c}: {2}", complementoPago.Receptor.RazonSocial, complementoPago.Pagos.Sum(p => p.Monto), ex.Message));
-                //    }
-
-                //}
-
             }
 
             return complementosPago;

@@ -224,9 +224,9 @@
                     </div>
 
                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        @Html.LabelFor(model => model.CfdiRelacionadoId, new { @class = "control-label" })
-                        @Html.DropDownList("CfdiRelacionadoId", null, "Favor de hacer su selección", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CfdiRelacionadoId, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "control-label" })
+                        @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="clearfix"></div>

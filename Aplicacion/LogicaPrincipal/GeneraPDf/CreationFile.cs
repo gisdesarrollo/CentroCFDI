@@ -191,10 +191,12 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
         public ComprobanteCFDI33 DeserealizarXml33CartaPorte(int complementoCartaPorteId)
         {
             var complementoCartaPorte = _db.ComplementoCartaPortes.Find(complementoCartaPorteId);
+            //byte[] xmlLocal = System.IO.File.ReadAllBytes(@"D:\Descargas(C)\CP - 1413 - 20220829124852255.xml");
 
             ComprobanteCFDI33 oComprobante;
             XmlSerializer oSerializer = new XmlSerializer(typeof(ComprobanteCFDI33));
 
+            //using (StreamReader reader = new StreamReader(new MemoryStream(xmlLocal), Encoding.UTF8))
             using (StreamReader reader = new StreamReader(new MemoryStream(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml), Encoding.UTF8))
             {
                 //aqui deserializamos
@@ -317,7 +319,7 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
             //Razor Html a PDF
 
             string path = AppDomain.CurrentDomain.BaseDirectory;
-            string pathHTMLPlantilla = path + "//Content//TemplatePDFCartaPorte//PlantillaCartaPorte.cshtml";
+            string pathHTMLPlantilla = path + "//Content//TemplatePDFCartaPorte//PlantillaCartaPorte33.cshtml";
             string sHtml = GetStringOfFile(pathHTMLPlantilla);
             string resultHtml = "";
             resultHtml = RazorEngine.Razor.Parse(sHtml, oComprobante);

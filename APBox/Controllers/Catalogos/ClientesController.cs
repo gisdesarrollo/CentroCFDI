@@ -21,6 +21,7 @@ namespace APBox.Controllers.Catalogos
 
         #endregion
 
+       
         // GET: Clientes
         public ActionResult Index()
         {

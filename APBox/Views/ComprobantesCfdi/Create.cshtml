@@ -11,7 +11,7 @@
             <h2>Crear Comprobante CFDI</h2>
          </div>
             <div class="col-lg-3">
-                <button class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Exportar", "ComplementosPagos")'">
+                <button class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Exportar", "ComprobantesCfdi")'">
                     <span>Descargar Layout Vacío</span>
                     <i class="glyph-icon icon-arrow-down"></i>
                 </button>
@@ -126,9 +126,9 @@
                     </div>
 
                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        @Html.LabelFor(model => model.CfdiRelacionadoId, new { @class = "control-label" })
-                        @Html.DropDownList("CfdiRelacionadoId", null, "Favor de hacer su selección", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CfdiRelacionadoId, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "control-label" })
+                        @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
                     </div>
 
 
@@ -137,22 +137,9 @@
                 </div>
 
             </div>
-            @*@using (Html.BeginForm("Cargar", "ComplementosPagos", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {*@
-        <div class="row">
-            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <label class="control-label" for="Grupos">Cargar layout Conceptos</label>
-                <input class="file-input" type="file" name="Archivo" typeof="Archivo" accept=".csv, .dat" />
-                <br />
-                <div class="form-group">
-                    <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
-                        <span>Procesar</span>
-                        <i class="glyph-icon icon-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-            </div>
-            @*}*@
+           
+        
+           
             <div class="row">
                 <h3 class="title-hero">
                     Conceptos
@@ -168,8 +155,22 @@
                             </a>
                         </div>
                     </h3>
-                    <i class="col-xs-12">Puedes prellenar los Conceptos seleccionandolos dese esta lista y solo modificar el importe antes de agregar</i>
-                    <i class="col-xs-12">Puedes administrar ese catálogo de Conceptos desde el menú de Empresa -> Conceptos</i>
+                    <i class="col-xs-12">*Puedes prellenar los Conceptos seleccionandolos de esta lista y solo modificar el importe antes de agregar</i>
+                    <i class="col-xs-12">*Puedes administrar ese catálogo de Conceptos desde el menú de Empresa -> Conceptos</i>
+                    <i class="col-xs-12">*Puedes cargar un layout de conceptos, El layout lo puedes descargar desde este menú en la parte superior derecha</i>
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <label class="control-label" for="Grupos">Cargar layout Conceptos</label>
+                            <input class="file-input" type="file" name="Archivo" typeof="Archivo" accept=".csv, .dat" />
+                            <br />
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
+                                    <span>Procesar</span>
+                                    <i class="glyph-icon icon-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="clearfix"></div>
                     <hr />
 
@@ -356,7 +357,7 @@
                     <i class="glyph-icon icon-arrow-left"></i>
                 </button>
                 <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
-                    <span>Siguiente</span>
+                    <span>Guardar</span>
                     <i class="glyph-icon icon-arrow-right"></i>
                 </button>
             </div>
@@ -375,6 +376,8 @@
             $('.cfdiRelacionadoSeccion').hide(200);
         }
     });
+    
+    //$("#total").val($("#Total").val());
 
     //JavaScript
     /*function getBase64(file) {

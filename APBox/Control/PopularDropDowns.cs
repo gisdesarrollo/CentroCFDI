@@ -101,14 +101,18 @@ namespace APBox.Control
             // return new SelectList(_db.Cat_Conceptos.OrderByDescending(a => a.Id), "Id", "ClavesProdServ");
         }
 
-        public SelectList PopulaImpuestoT()
+        public SelectList PopulaImpuestoT(int sucursalId)
         {
-            return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Traslado"), "Id", "TasaOCuota");
+            var DatosConcatenados = _db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Traslado" && a.SucursalId == sucursalId).ToDictionary(a => a.Id, a => (a.Nombre));
+            return new SelectList(DatosConcatenados, "Key", "Value");
+            //return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Traslado"), "Id", "TasaOCuota");
         }
 
-        public SelectList PopulaImpuestoR()
+        public SelectList PopulaImpuestoR(int sucursalId)
         {
-            return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Retencion"), "Id", "TasaOCuota");
+            var DatosConcatenados = _db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Retencion" && a.SucursalId == sucursalId).ToDictionary(a => a.Id, a => (a.Nombre));
+            return new SelectList(DatosConcatenados, "Key", "Value");
+            //return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Retencion"), "Id", "TasaOCuota");
         }
         public SelectList PopulaPaises()
         {
