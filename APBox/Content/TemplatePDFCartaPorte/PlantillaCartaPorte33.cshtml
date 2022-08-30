@@ -1,0 +1,666 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+
+<body>
+    <div class="row">
+        <div style="width: 66%; float: left; display: flex;">
+            <img src="@Model.Logo" width="200" /><br />
+        </div>
+        <div style="width: 33%; float: right; display: flex;">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">FACTURA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fecha</td>
+                        <td>@Model.Fecha</td>
+                    </tr>
+                    <tr>
+                        <td>Folio</td>
+                        <td>@Model.Folio</td>
+                    </tr>
+                    <tr>
+                        <td>UUID</td>
+                        <td>@Model.TimbreFiscalDigital.UUID</td>
+                    </tr>
+                    <tr>
+                        <td>Tipo de Comprobante</td>
+                        <td>@Model.TipoDeComprobante</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="salto"></div>
+
+    <div class="row">
+        <div class="column">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">DATOS EMISOR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>@Model.Emisor.Nombre</td>
+                    </tr>
+                    <tr>
+                        <td>RFC</td>
+                        <td>@Model.Emisor.Rfc</td>
+                    </tr>
+                    <tr>
+                        <td>Régimen Fiscal</td>
+                        <td>@Model.Emisor.RegimenFiscal</td>
+                    </tr>
+                    <tr>
+                        <td>Lugar de expedición</td>
+                        <td>@Model.LugarExpedicion</td>
+                    </tr>
+                    <tr>
+                        <td>Moneda</td>
+                        <td>@Model.Moneda</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">DATOS RECEPTOR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>@Model.Receptor.Nombre</td>
+                    </tr>
+                    <tr>
+                        <td>RFC</td>
+                        <td>@Model.Receptor.Rfc</td>
+                    </tr>
+                    <tr>
+                        <td>Uso de CFDi</td>
+                        <td>@Model.Receptor.UsoCFDI</td>
+                    </tr>
+                    <tr>
+                        <td>Forma de Pago / Método de Pago</td>
+                        <td>@Model.FormaPago / @Model.MetodoPago</td>
+                    </tr>
+                    <tr>
+                        <td>Tipo de Cambio</td>
+                        <td>@Model.TipoCambio</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="salto"></div>
+
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th>CveProdServ</th>
+                    <th>No. Identificación</th>
+                    <th>Cantidad</th>
+                    <th>Clave unidad</th>
+                    <th>Descripción</th>
+                    <th>Valor Unitario</th>
+                    <th>Importe</th>
+                    <th>Descuento</th>
+                    <th>Impuesto</th>
+                    <th>Importe del impuesto</th>
+                    <th>Tipo factor</th>
+                    <th>Tasa / Cuota</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var concepto in Model.Conceptos)
+                {
+                <tr style="font-size: smaller;">
+
+
+                    <td>@concepto.ClaveProdServ</td>
+                    <td>@concepto.NoIdentificacion</td>
+                    <td>@concepto.Cantidad</td>
+                    <td>@concepto.ClaveUnidad</td>
+                    <td>@concepto.Descripcion</td>
+                    <td>@concepto.ValorUnitario</td>
+                    <td>@concepto.Importe</td>
+                    <td>@concepto.Descuento</td>
+                    @if(concepto.Impuestos != null)
+                    {
+                    if(concepto.Impuestos.Traslados != null)
+                    {
+
+                    foreach(var traslado in concepto.Impuestos.Traslados)
+                    {
+
+                    <td>Traslado</td>
+                    <td>@traslado.Importe</td>
+                    <td>@traslado.TipoFactor</td>
+                    <td>@traslado.TasaOCuota</td>
+
+                    }
+                    }
+                    }
+                </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="salto"></div>
+
+    <div class="row">
+        <div style="width: 66%; float: left; display: flex;">
+        </div>
+        <div style="width: 33%; float: right; display: flex;">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2"><span style="float: right;">Totales</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SubTotal</td>
+                        <td>@Model.SubTotal</td>
+                    </tr>
+                    @if (Model.Impuestos != null)
+                    {
+                    <tr>
+                        <td>Total de Impuestos Trasladados</td>
+                        <td>@Model.Impuestos.TotalImpuestosTrasladados</td>
+
+                    </tr>
+                    if(Model.Impuestos.TotalImpuestosRetenidos!=null){
+                    <tr>
+                        <td>Total de Impuestos Retenidos</td>
+                        <td>@Model.Impuestos.TotalImpuestosRetenidos</td>
+                    </tr>
+                    }
+                    }
+                    <tr>
+                        <td> <b>Total</b></td>
+                        <td>@Model.Total</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!---->
+    <div class="salto"></div>
+    @if(Model.CfdiRelacionados != null){
+    <div class="row">
+            <div class="column">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">CFDI Relacionado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tipo Relacion</td>
+                            <td>@Model.CfdiRelacionados.TipoRelacion</td>
+                        </tr>
+                        <tr>
+                            <td>UUID</td>
+                            @foreach (var R in Model.CfdiRelacionados.CfdiRelacionado)
+                            {
+                                <td>@R.UUID</td>
+                            }
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            
+        </div>
+        }
+        <div class="salto"></div>
+
+        <!-- Area de  CartaPorte -->
+        <div style="width:100%">
+
+            <!-- Destinos -->
+            @foreach (var ubicacion in Model.CartaPorte.Ubicaciones)
+            {
+            if (@ubicacion.TipoUbicacion == "Origen")
+            {
+            <table class="table-carta-porte" style="width:100%;">
+                <caption class="seccion">Origen</caption>
+                <thead>
+                    <tr>
+                        <th>Ubicación</th>
+                        <th>Remitente</th>
+                        <th>Fecha</th>
+                        <th>Calle</th>
+                        <th>Localidad</th>
+                        <th>Colonia</th>
+                        <th>CodigoPostal</th>
+                        <th>Municipio</th>
+                        <th>Estado</th>
+                        <th>Pais</th>
+                        <th>Referencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th>@ubicacion.TipoUbicacion</th>
+                        <td>@ubicacion.NombreRemitenteDestinatario</td>
+                        <td>@ubicacion.FechaHoraSalidaLlegada</td>
+                        <td>@ubicacion.Domicilio.Calle</td>
+                        <td>@ubicacion.Domicilio.Localidad</td>
+                        <td>@ubicacion.Domicilio.Colonia</td>
+                        <td>@ubicacion.Domicilio.CodigoPostal</td>
+                        <td>@ubicacion.Domicilio.Municipio</td>
+                        <td>@ubicacion.Domicilio.Estado</td>
+                        <td>@ubicacion.Domicilio.Pais</td>
+                        <td>@ubicacion.Domicilio.Referencia</td>
+                    </tr>
+                </tbody>
+            </table>
+            }
+            if (@ubicacion.TipoUbicacion == "Destino")
+            {
+            <table class="table-carta-porte" style="width:100%;">
+                <caption class="seccion">Destino</caption>
+                <thead>
+                    <tr>
+                        <th>Ubicación</th>
+                        <th>Destinatario</th>
+                        <th>Distancia recorrida</th>
+                        <th>Fecha</th>
+                        <th>Calle</th>
+                        <th>Localidad</th>
+                        <th>Colonia</th>
+                        <th>CodigoPostal</th>
+                        <th>Municipio</th>
+                        <th>Estado</th>
+                        <th>Pais</th>
+                        <th>Referencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th>@ubicacion.TipoUbicacion</th>
+                        <td>@ubicacion.NombreRemitenteDestinatario</td>
+                        <td>@ubicacion.DistanciaRecorrida</td>
+                        <td>@ubicacion.FechaHoraSalidaLlegada</td>
+                        <td>@ubicacion.Domicilio.Calle</td>
+                        <td>@ubicacion.Domicilio.Localidad</td>
+                        <td>@ubicacion.Domicilio.Colonia</td>
+                        <td>@ubicacion.Domicilio.CodigoPostal</td>
+                        <td>@ubicacion.Domicilio.Municipio</td>
+                        <td>@ubicacion.Domicilio.Estado</td>
+                        <td>@ubicacion.Domicilio.Pais</td>
+                        <td>@ubicacion.Domicilio.Referencia</td>
+                    </tr>
+                </tbody>
+            </table>
+            }
+            <div class="salto"></div>
+            }
+
+
+            <!-- Mercancias -->
+            @foreach (var mercancia in Model.CartaPorte.Mercancias.Mercancia)
+            {
+            <table class="table-carta-porte" style="width: 100%;">
+                <caption class="seccion">Mercancías</caption>
+                <thead>
+                    <tr>
+                        <th>Cantidad</th>
+                        <th>Clave</th>
+                        <th>Descripción</th>
+                        <th>Peso en kilogramos</th>
+                        <th>ValorMercancia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@mercancia.Cantidad</td>
+                        <td>@mercancia.ClaveUnidad</td>
+                        <td>@mercancia.Descripcion</td>
+                        <td>@mercancia.PesoEnKg</td>
+                        <td>@mercancia.ValorMercancia</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="salto"></div>
+            }
+
+            <!-- AutoTransporte Federal  -->
+            @if (Model.CartaPorte.Mercancias.Autotransporte != null)
+            {
+            <table class="table-carta-porte" style="width: 100%;">
+                <caption class="seccion">Autotransporte</caption>
+                <thead>
+                    <tr>
+                        <th>PermSCT</th>
+                        <th>NumPermisoSCT</th>
+                        <th>NombreAseg</th>
+                        <th>NumPolizaSeguro</th>
+                        <th>ConfigVehicular</th>
+                        <th>PlacaVM</th>
+                        <th>AñoModeloVM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.CartaPorte.Mercancias.Autotransporte.PermSCT</td>
+                        <td>@Model.CartaPorte.Mercancias.Autotransporte.NumPermisoSCT</td>
+                        <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil</td>
+                        <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil</td>
+                        <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular</td>
+                        <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM</td>
+                        <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="salto"></div>
+            }
+            <!--Transporte Maritimo-->
+            @if (Model.CartaPorte.Mercancias.TransporteMaritimo != null)
+            {
+            <table class="table-carta-porte" style="width: 100%;">
+                <caption class="seccion">Transporte Maritimo</caption>
+                <thead>
+                    <tr>
+                        <th>PermSCT</th>
+                        <th>NumPermisoSCT</th>
+                        <th>NombreAseg</th>
+                        <th>NumPolizaSeguro</th>
+                        <th>TipoEmbarcacion</th>
+                        <th>Matricula</th>
+                        <th>AñoEmbarcacion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.PermSCT</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPermisoSCT</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NombreAseg</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPolizaSeguro</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.TipoEmbarcacion</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.Matricula</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.AnioEmbarcacion</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="salto"></div>
+            }
+            <!--Transporte Aereo-->
+            @if (Model.CartaPorte.Mercancias.TransporteAereo != null)
+            {
+            <table class="table-carta-porte" style="width: 100%;">
+                <caption class="seccion">Transporte Aereo</caption>
+                <thead>
+                    <tr>
+                        <th>PermSCT</th>
+                        <th>NumPermisoSCT</th>
+                        <th>MatriculaAeronave</th>
+                        <th>NombreAseg</th>
+                        <th>NumeroGuia</th>
+                        <th>LugarContrato</th>
+                        <th>CodigoTransportista</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.PermSCT</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumPermisoSCT</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.MatriculaAeronave</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.NombreAseg</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumeroGuia</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.LugarContrato</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.CodigoTransportista</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="salto"></div>
+            }
+            <!--Transporte Ferroviario-->
+            @if (Model.CartaPorte.Mercancias.TransporteFerroviario != null)
+            {
+            <table class="table-carta-porte" style="width: 100%;">
+                <caption class="seccion">Transporte Ferroviario</caption>
+                <thead>
+                    <tr>
+                        <th>TipoDeServicio</th>
+                        <th>TipoDeTrafico</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeServicio</td>
+                        <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeTrafico</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="salto"></div>
+            }
+            <!-- Figura Transporte  -->
+            @if (Model.CartaPorte.FiguraTransporte != null)
+            {
+            foreach (var tipoFigura in Model.CartaPorte.FiguraTransporte)
+            {
+            <table class="table-carta-porte" style="width: 100%;">
+                <caption class="seccion">Figura Transporte</caption>
+                <thead>
+                    <tr>
+                        <th>RFCFigura</th>
+
+                        <th>
+                            NombreFigura
+
+                        </th>
+                        <th>Calle</th>
+                        <th>Localidad</th>
+                        <th>Colonia</th>
+                        <th>
+                            Codigo
+                            Postal
+                        </th>
+                        <th>Municipio</th>
+                        <th>Estado</th>
+                        <th>País</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@tipoFigura.RFCFigura</td>
+                        <td>@tipoFigura.NombreFigura</td>
+                        @if(@tipoFigura.Domicilio !=null){
+                        <td>@tipoFigura.Domicilio.Calle</td>
+                        <td>
+                            @tipoFigura.Domicilio.Localidad
+
+
+                        </td>
+                        <td>
+                            @tipoFigura.Domicilio.Colonia
+
+
+                        </td>
+                        <td>
+                            @tipoFigura.Domicilio.CodigoPostal
+
+                        </td>
+                        <td>@tipoFigura.Domicilio.Municipio</td>
+
+                        <td>
+                            @tipoFigura.Domicilio.Estado
+
+
+                        </td>
+                        <td>@tipoFigura.Domicilio.Pais</td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+            }
+            }
+        </div>
+
+        <div class="salto"></div>
+
+        <!-- Area Sellos SAT-->
+        <div style="width: 100%; display: flex; margin-top: 20px">
+            <div style="width: 30%">
+                <table>
+                    <td><img src="@Model.CodigoQR" width="250" height="250" /></td>
+                </table>
+            </div>
+            <div style="width: 70%;">
+                <table class="table-sellos-sat">
+                    <tr>
+                        <td>
+                            <label class="seccion">CADENA ORIGINAL DEL COMPLEMENTO DIGITAL DEL SAT</label>
+                            <p>
+                                @Model.Certificado
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="seccion">SELLO</label>
+                            <p>
+                                @Model.Sello
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="seccion">SELLO DEL SAT:</label>
+                            <p>
+                                @Model.TimbreFiscalDigital.SelloSAT
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="seccion">NO. SERIE CERT: DEL SAT:</label>
+                            <p>@Model.TimbreFiscalDigital.NoCertificadoSAT</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="seccion">RFC DEL PAC.</label>
+                            <p>@Model.TimbreFiscalDigital.RfcProvCertif</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+</body>
+
+</html>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial;
+        padding: 30px;
+    }
+
+
+
+    td span {
+        width: 100%;
+        display: block;
+        padding: 4px 1px 4px 0px;
+    }
+
+        td span.etiqueta {
+            font-weight: bold;
+            background-color: #ccc;
+        }
+
+    table {
+        width: 100%;
+        border: solid 1px #DDEEEE;
+        border-collapse: collapse;
+        border-spacing: 0;
+        font: normal 13px Arial, sans-serif;
+    }
+
+    thead th {
+        background-color: #DDEFEF;
+        border: solid 1px #DDEEEE;
+        color: #336B6B;
+        padding: 10px;
+        text-align: left;
+        text-shadow: 1px 1px 1px #fff;
+    }
+
+    tbody td {
+        border: solid 1px #DDEEEE;
+        color: #333;
+        padding: 10px;
+        text-shadow: 1px 1px 1px #fff;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create a two-column layout */
+    .column {
+        float: left;
+        width: 50%;
+    }
+
+    /* Clearfix (clear floats) */
+    .row::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .salto {
+        height: 20px;
+    }
+
+    .seccion {
+        font-size: large;
+        font-weight: bold;
+        color: #557272;
+    }
+
+
+    .table-sellos-sat td p {
+        font-size: 0.5em;
+        color: gray;
+    }
+</style>

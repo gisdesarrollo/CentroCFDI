@@ -32,9 +32,6 @@ namespace API.Operaciones.ComprobantesCfdi
         public String FormaPagoId { get; set; }
 
         [NotMapped]
-        public String TipoRelacionId { get; set; }
-
-        [NotMapped]
         public c_TipoDeComprobante TipoComprobanteId { get; set; }
 
         [DisplayName("Método de Pago")]
@@ -105,10 +102,15 @@ namespace API.Operaciones.ComprobantesCfdi
         [DisplayName("Tipo de Relación")]
         public String TipoRelacion { get; set; }
 
-        [DisplayName("CFDI Relacionado")]
-        public int? CfdiRelacionadoId { get; set; }
-        [ForeignKey("CfdiRelacionadoId")]
-        public virtual FacturaEmitida CfdiRelacionado { get; set; }
+        [NotMapped]
+        public string IdTipoRelacion { get; set; }
+
+        [DisplayName("UUID De CFDI Relacionado")]
+        public String UUIDCfdiRelacionado { get; set; }
+
+        //public int? CfdiRelacionadoId { get; set; }
+        //[ForeignKey("CfdiRelacionadoId")]
+        //public virtual FacturaEmitida CfdiRelacionado { get; set; }
 
         #endregion
 

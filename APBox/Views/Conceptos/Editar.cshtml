@@ -5,6 +5,8 @@
 @Html.Partial("_ComplementoConceptos")
 
 @Html.HiddenFor(model => model.ObjetoImpuestoId)
+@Html.HiddenFor(model => model.ImpuestoTID)
+@Html.HiddenFor(model => model.ImpuestoRID)
 
 <div class="panel">
     <div class="panel-body">
@@ -110,4 +112,7 @@
     var objetoImpuesto = $('#ObjetoImpuestoId').val();
     if (objetoImpuesto === "02") { $('#habilita-impuesto').show(); } else { $('#habilita-impuesto').hide(); }
     $("#objetoImpuestoDrop").selectpicker('val', $("#ObjetoImpuestoId").val());
+    $("#CImpuestoT").selectpicker('val', $("#ImpuestoTID").val());
+    $("#CImpuestoR").selectpicker('val', $("#ImpuestoRID").val());
+
 </script>

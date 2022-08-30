@@ -9,18 +9,21 @@ using API.Operaciones.ComplementoCartaPorte;
 using API.Operaciones.ComplementosPagos;
 using API.Operaciones.ComprobantesCfdi;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones;
+using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using Aplicacion.LogicaPrincipal.ComplementosPagos;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Utilerias.LogicaPrincipal;
 
 namespace APBox.Controllers.ComprobantesCfdi
 {
@@ -34,6 +37,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             private readonly ComprobanteManager _ComprobanteManager = new ComprobanteManager();
             private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
             private readonly CreationFile _creationFile = new CreationFile();
+            private readonly CargarConceptos _cargarConceptos = new CargarConceptos();
         #endregion
 
         // GET: ComprobanteCfdi
@@ -128,29 +132,76 @@ namespace APBox.Controllers.ComprobantesCfdi
             ModelState.Remove("Conceptos.ObjetoImpuesto");
 
             PopulaClientes(comprobanteCfdi.ReceptorId);
-            PopulaCfdiRelacionado(comprobanteCfdi.CfdiRelacionadoId);
+            
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaObjetoImpuesto();
             PopulaImpuestoSat();
             PopulaTiposDeComprobante();
             PopulaConceptos();
-
-            if (Request.Files.Count > 0)
-            {
-                var archivo = Request.Files[0];
-                if (archivo.ContentLength > 0)
-                {
-
-                    return View(comprobanteCfdi);
-                }
-            }
+            string archivo = null;
+            List<Conceptos> conceptosCSV = new List<Conceptos>();
 
             if (ModelState.IsValid)
             {
-                _acondicionarComprobante.CargaInicial(ref comprobanteCfdi);
                 try
                 {
+                if (Request.Files.Count > 0)
+                {
+                    if (Request.Files[0].ContentLength > 0)
+                    {
+                        archivo = SubeArchivo(0);
+                      
+                    }
+                }
+                }catch(Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                    return View(comprobanteCfdi);
+                }
+
+                try
+                {
+                    if(archivo != null)
+                    {
+                      conceptosCSV = _cargarConceptos.Importar(archivo,comprobanteCfdi.SucursalId);
+                        if (conceptosCSV.Count > 0)
+                        {
+                            
+                            comprobanteCfdi.Conceptoss = new List<Conceptos>();
+                            conceptosCSV.ForEach(c => comprobanteCfdi.Conceptoss.Add(c));
+                            decimal subtotal = 0;
+                            decimal total = 0;
+                            decimal totalTraslado = 0;
+                            decimal totalRetencion = 0;
+                            //calcula subtotal y total
+                            conceptosCSV.ForEach(c => subtotal += (decimal)c.Importe);
+                            conceptosCSV.ForEach(c => { if (c.Traslado != null) { totalTraslado += c.Traslado.Importe; }
+                                if (c.Retencion != null) { totalRetencion += c.Retencion.Importe; }
+                            });
+                            total = (subtotal + totalTraslado) - totalRetencion;
+                            
+                            comprobanteCfdi.Subtotal = subtotal;
+                            comprobanteCfdi.Total = total;
+                            // se actualizan cambios en el ModelState
+                            ModelState.SetModelValue("Subtotal", new ValueProviderResult(subtotal, string.Empty, CultureInfo.InvariantCulture));
+                            ModelState.SetModelValue("Total", new ValueProviderResult(total, string.Empty, CultureInfo.InvariantCulture));
+                            
+                            return View(comprobanteCfdi);
+                        }
+                    }
+                }catch(Exception ex)
+                {
+                    var errores = ex.Message.Split('|');
+                    foreach (var error in errores)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+            
+                try
+                {
+                    _acondicionarComprobante.CargaInicial(ref comprobanteCfdi);
                     var conceptos = comprobanteCfdi.Conceptoss;
                     conceptos.ForEach(p => { p.ComprobanteCfdi = null; p.ComplementoCP = null; });
                     comprobanteCfdi.Conceptoss = null;
@@ -199,7 +250,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ComprobanteCfdi CCfdi = _db.ComprobantesCfdi.Find(id);
             if(CCfdi == null) { return HttpNotFound(); }
             PopulaClientes(CCfdi.ReceptorId);
-            PopulaCfdiRelacionado(CCfdi.CfdiRelacionadoId);
+            
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaObjetoImpuesto();
@@ -207,7 +258,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaTiposDeComprobante();
             PopulaConceptos();
             CCfdi.FormaPagoId = CCfdi.FormaPago;
-            CCfdi.TipoRelacionId = CCfdi.TipoRelacion;
+            CCfdi.IdTipoRelacion = CCfdi.TipoRelacion;
             CCfdi.TipoComprobanteId = CCfdi.TipoDeComprobante;
              CCfdi.Conceptos = new Conceptos()
              {
@@ -244,16 +295,75 @@ namespace APBox.Controllers.ComprobantesCfdi
             ModelState.Remove("Conceptos.ObjetoImpuesto");
 
             PopulaClientes(comprobanteCfdi.ReceptorId);
-            PopulaCfdiRelacionado(comprobanteCfdi.CfdiRelacionadoId);
+           
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaObjetoImpuesto();
             PopulaImpuestoSat();
             PopulaTiposDeComprobante();
             PopulaConceptos();
+            string archivo = null;
+            List<Conceptos> conceptosCSV = new List<Conceptos>();
 
             if (ModelState.IsValid)
             {
+                try
+                {
+                    if (Request.Files.Count > 0)
+                    {
+                        if (Request.Files[0].ContentLength > 0)
+                        {
+                            archivo = SubeArchivo(0);
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                    return View(comprobanteCfdi);
+                }
+                try { 
+                if (archivo != null)
+                {
+                    conceptosCSV = _cargarConceptos.Importar(archivo, comprobanteCfdi.SucursalId);
+                    if (conceptosCSV.Count > 0)
+                    {
+                        if(comprobanteCfdi.Conceptoss.Count == 0)
+                            {
+                                comprobanteCfdi.Conceptoss = new List<Conceptos>();
+                            }
+                        
+                        conceptosCSV.ForEach(c => comprobanteCfdi.Conceptoss.Add(c));
+                        decimal subtotal = 0;
+                        decimal total = 0;
+                        decimal totalTraslado = 0;
+                        decimal totalRetencion = 0;
+                        //calcula subtotal y total
+                        conceptosCSV.ForEach(c => subtotal += (decimal)c.Importe);
+                        conceptosCSV.ForEach(c => {
+                            if (c.Traslado != null) { totalTraslado += c.Traslado.Importe; }
+                            if (c.Retencion != null) { totalRetencion += c.Retencion.Importe; }
+                        });
+                        total = (subtotal + totalTraslado) - totalRetencion;
+
+                        comprobanteCfdi.Subtotal += subtotal;
+                        comprobanteCfdi.Total += total;
+                        // se actualizan cambios en el ModelState
+                        ModelState.SetModelValue("Subtotal", new ValueProviderResult(comprobanteCfdi.Subtotal, string.Empty, CultureInfo.InvariantCulture));
+                        ModelState.SetModelValue("Total", new ValueProviderResult(comprobanteCfdi.Total, string.Empty, CultureInfo.InvariantCulture));
+
+                        return View(comprobanteCfdi);
+                    }
+                  }
+                }catch (Exception ex)
+                {
+                    var errores = ex.Message.Split('|');
+                    foreach (var error in errores)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
 
                 _acondicionarComprobante.CargaRelacion(comprobanteCfdi);
                 //_acondicionarComprobante.CargaValidacion(ref comprobanteCfdi);
@@ -376,6 +486,44 @@ namespace APBox.Controllers.ComprobantesCfdi
                 }
             }
             return View(comprobanteCfdi);
+        }
+
+        public ActionResult Exportar()
+        {
+            var pathCompleto = _cargarConceptos.Exportar();
+            byte[] filedata = System.IO.File.ReadAllBytes(pathCompleto);
+            string contentType = MimeMapping.GetMimeMapping(pathCompleto);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = Path.GetFileName(pathCompleto),
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            return File(filedata, contentType);
+        }
+
+        private String SubeArchivo(int indice)
+        {
+            if (Request.Files.Count > 0)
+            {
+                var archivo = Request.Files[indice];
+                if (archivo.ContentLength > 0)
+                {
+                    var operacionesStreams = new OperacionesStreams();
+                    var nombreArchivo = Path.GetFileName(archivo.FileName);
+
+                    var pathDestino = Path.Combine(Server.MapPath("~/Archivos/CargasMasivas/"), archivo.FileName);
+                    Stream fileStream = archivo.InputStream;
+                    var mStreamer = new MemoryStream();
+                    mStreamer.SetLength(fileStream.Length);
+                    fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
+                    mStreamer.Seek(0, SeekOrigin.Begin);
+                    operacionesStreams.StreamArchivo(mStreamer, pathDestino);
+                    return pathDestino;
+                }
+            }
+            throw new Exception("Favor de cargar por lo menos un archivo");
         }
 
         public ActionResult DescargarXml(int id)

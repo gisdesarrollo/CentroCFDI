@@ -51,7 +51,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     }
                     else
                     {
-                        if (concepto.Traslado.Importe > 0)
+                        if (concepto.Traslado.Importe >= 0 && concepto.Traslado.Base > 0)
                         {
                             comprobanteCfdi.TotalImpuestoTrasladado += decimal.Round(concepto.Traslado.Importe, 2);
                         }
@@ -121,7 +121,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     }
                     else
                     {
-                        if (concepto.Traslado.Importe > 0 && concepto.Traslado_Id == null)
+                        if (concepto.Traslado.Importe >= 0 && concepto.Traslado.Base > 0 && concepto.Traslado_Id == null)
                         {
                             comprobanteCfdi.TotalImpuestoTrasladado += concepto.Traslado.Importe;
                         }

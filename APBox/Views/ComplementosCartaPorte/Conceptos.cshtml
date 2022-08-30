@@ -71,7 +71,7 @@
             <div class="clearfix"></div>
             @if (Model.Traslado != null)
             {
-                if (Model.Traslado.Importe > 0)
+                if (Model.Traslado.Importe >= 0 && Model.Traslado.Base > 0)
                 {
                     <hr />
                     <h3 class="title-hero">
@@ -115,7 +115,7 @@
             <div class="clearfix"></div>
             @if (Model.Retencion != null)
             {
-                if (Model.Retencion.Importe > 0)
+                if (Model.Retencion.Importe >= 0 && Model.Retencion.Base > 0)
                 {
                     <hr />
                     <h3 class="title-hero">

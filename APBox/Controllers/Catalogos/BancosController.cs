@@ -19,6 +19,7 @@ namespace APBox.Controllers.Catalogos
         #endregion
 
         // GET: Bancos
+        
         public ActionResult Index()
         {
             var bancos = _db.Bancos.ToList();

@@ -211,9 +211,9 @@ public partial class CartaPorteUbicacion {
     
     private string numRegIdTribField;
     
-    private c_Pais residenciaFiscalField;
+    private string residenciaFiscalField;
     
-    private bool residenciaFiscalFieldSpecified;
+    //private bool residenciaFiscalFieldSpecified;
     
     private string numEstacionField;
     
@@ -227,9 +227,9 @@ public partial class CartaPorteUbicacion {
     
     private string fechaHoraSalidaLlegadaField;
     
-    private c_TipoEstacion tipoEstacionField;
+    private string tipoEstacionField;
     
-    private bool tipoEstacionFieldSpecified;
+    //private bool tipoEstacionFieldSpecified;
     
     private decimal distanciaRecorridaField;
     
@@ -313,7 +313,7 @@ public partial class CartaPorteUbicacion {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Pais ResidenciaFiscal {
+    public string ResidenciaFiscal {
         get {
             return this.residenciaFiscalField;
         }
@@ -323,7 +323,7 @@ public partial class CartaPorteUbicacion {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    /*[System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool ResidenciaFiscalSpecified {
         get {
             return this.residenciaFiscalFieldSpecified;
@@ -331,7 +331,7 @@ public partial class CartaPorteUbicacion {
         set {
             this.residenciaFiscalFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -401,7 +401,7 @@ public partial class CartaPorteUbicacion {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_TipoEstacion TipoEstacion {
+    public string TipoEstacion {
         get {
             return this.tipoEstacionField;
         }
@@ -411,7 +411,7 @@ public partial class CartaPorteUbicacion {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+   /* [System.Xml.Serialization.XmlIgnoreAttribute()]
     public bool TipoEstacionSpecified {
         get {
             return this.tipoEstacionFieldSpecified;
@@ -419,7 +419,7 @@ public partial class CartaPorteUbicacion {
         set {
             this.tipoEstacionFieldSpecified = value;
         }
-    }
+    }*/
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]

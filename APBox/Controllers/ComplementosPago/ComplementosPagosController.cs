@@ -44,6 +44,7 @@ namespace APBox.Controllers.ComplementosPago
         #endregion
 
         // GET: Facturas
+        
         public ActionResult Index()
         {
             PopulaEstatus();
@@ -164,7 +165,7 @@ namespace APBox.Controllers.ComplementosPago
 
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
-            PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+           
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaExportacion();
@@ -230,10 +231,11 @@ namespace APBox.Controllers.ComplementosPago
 
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
-            PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+            
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaExportacion();
+            complementoPago.IdTipoRelacion = complementoPago.TipoRelacion;
 
             return View(complementoPago);
         }
@@ -257,7 +259,7 @@ namespace APBox.Controllers.ComplementosPago
 
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
-            PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+            
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaExportacion();
@@ -286,6 +288,7 @@ namespace APBox.Controllers.ComplementosPago
         }
 
         // GET: ComplementosPago/Delete/5
+        [Authorize(Roles = "BORRADO")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -299,7 +302,7 @@ namespace APBox.Controllers.ComplementosPago
             }
             PopulaClientes(complementoPago.ReceptorId);
             PopulaBancos(ObtenerSucursal());
-            PopulaCfdiRelacionado(complementoPago.CfdiRelacionadoId);
+            
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaExportacion();

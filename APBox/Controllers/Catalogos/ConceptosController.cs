@@ -189,6 +189,9 @@ namespace APBox.Controllers.Catalogos
                 return HttpNotFound();
             }
             cat_conceptos.ObjetoImpuestoId = cat_conceptos.ObjetoImpuesto;
+            if(cat_conceptos.ImpuestoIdTras != null) { cat_conceptos.ImpuestoTID = (int)cat_conceptos.ImpuestoIdTras; }
+            if(cat_conceptos.ImpuestoIdRet != null) { cat_conceptos.ImpuestoRID = (int)cat_conceptos.ImpuestoIdRet; }
+            
             return View(cat_conceptos);
         }
         public ActionResult EditarConceptos(int Id, string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento,string ObjetoImpuesto, int? ImpuestoR, int? ImpuestoT)
@@ -216,19 +219,19 @@ namespace APBox.Controllers.Catalogos
                 Conceptos.ObjetoImpuesto = ObjetoImpuesto;
                 if (ImpT == 0)
                 {
-                    Conceptos.ImpuestoIdRet = null;
-                }
-                else
-                {
-                    Conceptos.ImpuestoIdRet = ImpuestoR;
-                }
-                if (ImpR == 0)
-                {
                     Conceptos.ImpuestoIdTras = null;
                 }
                 else
                 {
                     Conceptos.ImpuestoIdTras = ImpuestoT;
+                }
+                if (ImpR == 0)
+                {
+                    Conceptos.ImpuestoIdRet = null;
+                }
+                else
+                {
+                    Conceptos.ImpuestoIdRet = ImpuestoR;
                 }
 
 
@@ -274,19 +277,19 @@ namespace APBox.Controllers.Catalogos
         private void PopulaImpuestoT()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ImpuestoT = (popularDropDowns.PopulaImpuestoT());
+            ViewBag.ImpuestoT = popularDropDowns.PopulaImpuestoT(ObtenerSucursal());
         }
 
         private void PopulaImpuestoR()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ImpuestoR = (popularDropDowns.PopulaImpuestoR());
+            ViewBag.ImpuestoR = popularDropDowns.PopulaImpuestoR(ObtenerSucursal());
         }
 
         private void PopulaObjetoImpuesto()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.objetoImpuesto = (popularDropDowns.PopulaObjetoImpuesto());
+            ViewBag.objetoImpuesto = popularDropDowns.PopulaObjetoImpuesto();
         }
 
 

@@ -10,16 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-/*using System.Data.Entity.Core.Objects;*/
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
-/*using System.Reflection;*/
 using System.Text;
-/*using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using Utils;*/
+
 
 namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 {
@@ -191,6 +186,18 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
+
+            if (complementoCartaPorte.UUIDCfdiRelacionado != null)
+            {
+                objCfdi.agregarCfdiRelacionados(complementoCartaPorte.TipoRelacion);
+                objCfdi.agregarCfdiRelacionado(complementoCartaPorte.UUIDCfdiRelacionado);
+            }
+            if (objCfdi.MensajeError != "")
+            {
+                error = objCfdi.MensajeError;
+                throw new Exception(string.Join(",", error));
+            }
+
             objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
 
             /*objCfdi.agregarEmisor(

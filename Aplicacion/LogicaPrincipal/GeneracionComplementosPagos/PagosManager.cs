@@ -125,16 +125,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 );
 
             //Agrega DocRelacionado Cancelado
-            if (complementoPago.TipoRelacion != null && complementoPago.CfdiRelacionadoId != null)
+            if (complementoPago.TipoRelacion != null && complementoPago.UUIDCfdiRelacionado != null)
             {
                 objCfdi.agregarCfdiRelacionados(
                         complementoPago.TipoRelacion
                     );
                 //Obtenemos el contenido del XML seleccionado.
-                string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoPago.CfdiRelacionado.ArchivoFisicoXml);
-                string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
+                //string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoPago.CfdiRelacionado.ArchivoFisicoXml);
+                //string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
                 objCfdi.agregarCfdiRelacionado(
-                        UUID
+                        complementoPago.UUIDCfdiRelacionado
                     );
 
             }

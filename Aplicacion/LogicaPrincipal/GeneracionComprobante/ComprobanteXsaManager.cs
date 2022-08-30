@@ -152,9 +152,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             tw.WriteLine(data);
             
             //data 02A CfdiRelacionado
-            if(comprobanteCfdi.CfdiRelacionadoId != null)
+            if(comprobanteCfdi.UUIDCfdiRelacionado != null)
             {
-                data = "02A|" + comprobanteCfdi.TipoRelacionId + "|" + comprobanteCfdi.CfdiRelacionado.Uuid;
+                data = "02A|" + comprobanteCfdi.TipoRelacion + "|" + comprobanteCfdi.UUIDCfdiRelacionado;
                 tw.WriteLine(data);
                 data = "";
 

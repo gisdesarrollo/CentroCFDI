@@ -60,23 +60,15 @@
             var receptorSeleccionado = $(this).val();
             drowdop(receptorSeleccionado);
 
-            
-
-            //cfdisCancelados.append($('<option>', {
-            //    text: "Favor de hacer su selección",
-            //    value: null
-            //}));
-
-
         });
     });
 
     function drowdop(receptorSeleccionado) {
         var bancoSeleccionado = $('#Pago_BancoOrdenanteId');
-        var cfdisCancelados = $('#CfdiRelacionadoId');
+        //var cfdisCancelados = $('#CfdiRelacionadoId');
 
         bancoSeleccionado.empty();
-        cfdisCancelados.empty();
+        //cfdisCancelados.empty();
         //bancoSeleccionado.prop('disabled', '');
 
 
@@ -104,24 +96,6 @@
                     }
                 });
 
-
-                $.ajax({
-                    type: 'POST',
-                    url: ' @Url.Action("GetCfdisCancelados", "AjaxCatalogos")',
-                    data: JSON.stringify({ clienteId: receptorSeleccionado }),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data2) {
-                        $.each(data2, function (i, cfdi) {
-                            cfdisCancelados.append($('<option>', {
-                                value: cfdi.FacturaEmitida.Id,
-                                text: cfdi.FacturaEmitida.Desplegado
-                            }));
-                        });
-                        $('select').selectpicker('refresh');
-                        return false;
-                    }
-                });
             }
     }
     //add documento relacionado

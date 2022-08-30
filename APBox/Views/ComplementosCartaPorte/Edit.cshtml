@@ -38,6 +38,7 @@
             @Html.HiddenFor(model => model.TotalImpuestoTrasladado)
             @Html.HiddenFor(model => model.TotalImpuestoRetenidos)
             @Html.HiddenFor(model => model.ExportacionId)
+            @Html.HiddenFor(model => model.IdTipoRelacion)
             if (Model.Mercancias.AutoTransporte != null && Model.Mercancias.AutoTransporte_Id != null)
             {
                 @Html.HiddenFor(model => model.Mercancias.AutoTransporte_Id)
@@ -66,8 +67,9 @@
 
             <div class="form">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab1" data-toggle="tab">Comprobante</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Receptor</a></li>
+                    <li class="active"><a href="#tab0" data-toggle="tab">Comprobante</a></li>
+                    <li><a href="#tab1" data-toggle="tab">Receptor</a></li>
+                    <li><a href="#tab2" data-toggle="tab">CFDI Relacionado</a></li>
                     <li><a href="#tab3" data-toggle="tab">Conceptos</a></li>
                     <li><a href="#tab4" data-toggle="tab">Carta Porte</a></li>
                     <li><a href="#tab5" data-toggle="tab">Ubicaciones</a></li>
@@ -123,7 +125,7 @@
 
                 }
                 <div class="tab-content">
-                    <div class="tab-pane active" id="tab1">
+                    <div class="tab-pane active" id="tab0">
                         <div class="row">
                             <h3 class="title-hero">
                                 Información de la Sección de Comprobante
@@ -204,7 +206,7 @@
                     </div>
                     <div class="clearfix"></div>
                     @*<hr />*@
-                    <div class="tab-pane" id="tab2">
+                    <div class="tab-pane" id="tab1">
                         <h3 class="title-hero">
                             Sección Receptor
                         </h3>
@@ -228,7 +230,7 @@
 
                     <div class="clearfix"></div>
 
-                    <div class="row">
+                    <div class="row tab-pane" id="tab2">
                         <div class="form-group col-xs-12 col-sm-6 col-md-6">
                             <div class="checkbox">
                                 <input type="checkbox" class="cfdiRelacionado" />
@@ -246,14 +248,14 @@
 
                             <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                 @Html.LabelFor(model => model.TipoRelacion, new { @class = "control-label" })
-                                @Html.EnumDropDownListSpecialFor(model => model.TipoRelacion)
+                                @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                @Html.LabelFor(model => model.CfdiRelacionadoId, new { @class = "control-label" })
-                                @Html.DropDownList("CfdiRelacionadoId", null, "Favor de hacer su selección", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.CfdiRelacionadoId, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "control-label" })
+                                @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="clearfix"></div>
@@ -2689,6 +2691,9 @@
         });
     });
     $("#FormaPago").selectpicker('val', $("#IdFormaPago").val());
+    if ($("#IdTipoRelacion").val() != "") {
+        $("#TipoRelacion").selectpicker('val', $("#IdTipoRelacion").val());
+    }
 
     if ($('#tipoComprobante').val() === "T") {
         $('#UsoCfdiCP').selectpicker('val', 'S01');

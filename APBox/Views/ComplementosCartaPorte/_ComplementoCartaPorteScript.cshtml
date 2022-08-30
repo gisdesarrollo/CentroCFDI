@@ -1669,7 +1669,7 @@
             }
         }
         function cambioImpRet() {
-            $("#RBase").val("0.00");
+            $("#RBase").val("0");
             $("#Conceptos_Retencion_Impuesto").val("001").change();;
             $("#Conceptos_Retencion_TipoFactor").val("Tasa").change();;
             $("#RTasaOCuota").val("0.00");
@@ -1678,7 +1678,7 @@
 
         }
         function cambioImpTras() {
-            $("#TBase").val("0.00");
+            $("#TBase").val("0");
             $("#Conceptos_Traslado_Impuesto").val("001").change();
             $("#Conceptos_Traslado_TipoFactor").val("Tasa").change();;
             $("#TTasaOCuota").val("0.00");
@@ -1816,11 +1816,15 @@
     $(function () {
         $('#Conceptos_ValorUnitario').on("keyup", function () {
             calculo();
-            cambioimporte();
+            if ($("#tipoComprobante").val() == "I") {
+                cambioimporte();
+            }
         });
         $('#Conceptos_Cantidad').on("keyup", function () {
             calculo();
-            cambioimporte();
+            if ($("#tipoComprobante").val() == "I") {
+                cambioimporte();
+            }
         });
         function calculo() {
             var multi = 0;
@@ -1884,8 +1888,8 @@
                 $('#activaObjetoImpT').show();
                 $("#Conceptos_ObjetoImpuesto").val("01");
                 $('#objetoImpuestoText').text("01-No objeto de impuesto");
-                var receptorSeleccionado = $('#ReceptorId').val();
-                drowdop(receptorSeleccionado);
+                //var receptorSeleccionado = $('#ReceptorId').val();
+                //drowdop(receptorSeleccionado);
             }
             if ($(this).val() === "I") {
 
@@ -1991,39 +1995,6 @@
     });
 
     });
-
-    // rellena drowdop cfdirelacionado
-    $(function () {
-        $('#ReceptorId').on('change', function () {
-            var receptorSeleccionado = $(this).val();
-            drowdop(receptorSeleccionado);
-        });
-    });
-     function drowdop(receptorSeleccionado) {
-            var cfdisCancelados = $('#CfdiRelacionadoId');
-            cfdisCancelados.empty();
-
-
-            if (receptorSeleccionado.length > 0 && receptorSeleccionado !== 0) {
-                $.ajax({
-                    type: 'POST',
-                    url: ' @Url.Action("GetCfdisCanceladosCP", "AjaxCatalogos")',
-                    data: JSON.stringify({ clienteId: receptorSeleccionado }),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data2) {
-                        $.each(data2, function (i, cfdi) {
-                            cfdisCancelados.append($('<option>', {
-                                value: cfdi.FacturaEmitida.Id,
-                                text: cfdi.FacturaEmitida.Desplegado
-                            }));
-                        });
-                        $('select').selectpicker('refresh');
-                        return false;
-                    }
-                });
-            }
-        }
 
 </script>
 
