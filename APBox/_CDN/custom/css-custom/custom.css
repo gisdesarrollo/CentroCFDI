@@ -1,0 +1,44 @@
+/* Deja el scroll bar siempre abierto */
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
+/* Background y blurry al bg */
+.bg-image {
+    /* The image used */
+    background-image: url('../../custom/media/background/bg1.jpg') !important;
+    backdrop-filter: blur(5px) !important ;
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+/* Agregar flex a row para igualar altura */
+
+.flex,
+.flex>div[class*='col-'] {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex: 1 0 auto;
+}
+
+.panel {
+    -webkit-box-shadow: 0px 5px 9px -9px black;
+    -moz-box-shadow: 0px 5px 9px -9px black;
+    box-shadow: 0px 5px 9px -9px black;
+}
+
+
+/* Arregla el padding del Body cuando un modal abre */
+
+body {
+    padding-right: 0px !important;
+}

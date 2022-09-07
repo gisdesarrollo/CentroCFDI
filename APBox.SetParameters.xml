@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="App" />
+  <setParameter name="APBox-Web.config Connection String" value="server=sistemas.infodextra.com;userid=root;password=Infod3x!ra;database=apbox2;persistsecurityinfo=True" />
+</parameters>

@@ -162,6 +162,10 @@
     <Compile Include="Models\Control\ConfiguracionesModel.cs" />
     <Compile Include="Models\Control\HomeModel.cs" />
     <Compile Include="Models\Dto\ComplementoCartaPorteDto.cs" />
+    <Compile Include="Models\Dto\DataCancelacionRequestXsaDto.cs" />
+    <Compile Include="Models\Dto\DataCancelacionResponseXsaDto.cs" />
+    <Compile Include="Models\Dto\DataJsonXsaDto.cs" />
+    <Compile Include="Models\Dto\DataResponseXsaDto.cs" />
     <Compile Include="Models\Dto\ImpuestoDeserealizadoDto.cs" />
     <Compile Include="Models\Dto\ImpuestosRTDto.cs" />
     <Compile Include="Models\Dto\PartesTransporteDto.cs" />
