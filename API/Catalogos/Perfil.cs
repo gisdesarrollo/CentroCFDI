@@ -40,12 +40,13 @@ namespace API.Catalogos
         //Operaciones Catalogos
         public bool Consulta { get; set; }
 
-        [DisplayName("Inserción")]
+        [DisplayName("Crear")]
         public bool Insercion { get; set; }
 
-        [DisplayName("Edición")]
+        [DisplayName("Editar")]
         public bool Edicion { get; set; }
 
+        [DisplayName("Borrar")]
         public bool Borrado { get; set; }
 
         //Recepción de CFDi

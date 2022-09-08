@@ -1,305 +1,85 @@
 ﻿@model API.Catalogos.Perfil
 
-<div class="d-flex flex-row flex-column-fluid align-items-stretch">
-    <!--begin::Content-->
-    <div class="wrapper d-flex flex-column flex-row-fluid container-xxl" id="kt_content">
-        <!--begin::Form-->
-        <form id="kt_ecommerce_edit_order_form" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" data-kt-redirect="/metronic8/demo19/../demo19/apps/ecommerce/sales/listing.html">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-            <div class="d-flex flex-column flex-lg-row-fluid gap-7 gap-lg-10">
+    @Html.HiddenFor(model => model.GrupoId)
 
-                <div class="card card-flush py-4">
-
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h2>Permisos Generales</h2>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Card body-->
-                    <div class="card-body pt-0">
-                        <div class="d-flex flex-column gap-10">
-                            <!--begin::Input group-->
-                            <div>
-                                <!--begin::Label-->
-                                <!--begin::Selected products-->
-                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                    <!--begin::Empty message-->
-                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                    <!--end::Empty message-->
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="1">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Crear</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_98">
-                                        <div class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="2">
-                                            </div>
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Editar</a>
-
-                                                <!--end::SKU-->
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="3">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Borrar</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card-title">
-                                    <h2>Cátalogos</h2>
-                                </div>
-                                <label class="form-label">Accesos</label>
-                                <!--end::Label-->
-                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                    <!--begin::Empty message-->
-                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                    <!--end::Empty message-->
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="4">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Grupos</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_98">
-                                        <div class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="5">
-                                            </div>
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Perfiles</a>
-
-                                                <!--end::SKU-->
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="6">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Usuarios</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <label class="form-label">Empresa</label>
-                                <!--end::Label-->
-                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                    <!--begin::Empty message-->
-                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                    <!--end::Empty message-->
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="7">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Empresas</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_98">
-                                        <div class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="8">
-                                            </div>
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Socios Comerciales</a>
-
-                                                <!--end::SKU-->
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="9">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Bancos</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-                                <label class="form-label">CFDI</label>
-                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                    <!--begin::Empty message-->
-                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                    <!--end::Empty message-->
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="7">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Conceptos</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_98">
-                                        <div class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="8">
-                                            </div>
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Impuestos</a>
-
-                                                <!--end::SKU-->
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="card-title">
-                                    <h2>Emisión</h2>
-                                </div>
-                                <label class="form-label">Complementos CFDi</label>
-                                <!--end::Label-->
-                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                    <!--begin::Empty message-->
-                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                    <!--end::Empty message-->
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="4">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Complemento Pago</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col my-2" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_25">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="6">
-                                            </div>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Complemento Carta Porte</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            <div class="separator"></div>
-
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <a href="/metronic8/demo19/../demo19/apps/ecommerce/catalog/products.html" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
-
-                            <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
-                                <span class="indicator-label">Crear</span>
-                                <span class="indicator-progress">
-                                    Please wait...
-                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                </div>
-
+    <div class="card card-flush py-4 ">
+        <!--begin::Card header-->
+        <div class="card-header">
+            <div class="card-title">
+                <h2>Crear Perfil</h2>
             </div>
-            <!--end::Main column-->
-            <div></div>
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <!--begin::Input group-->
+            <h3 class="mb-5">Permisos generales</h3>
+            <div class="fv-row">
+                <!--begin::Input-->
+                <div class="form-check form-check-custom form-check-solid mb-2">
+                    @Html.EditorFor(model => model.Insercion, new { htmlAttributes = new { @class = "form-check-input" } })
+                    <label class="form-check-label">Crear</label>
+                </div>
+                <!--end::Input-->
+                <!--begin::Input-->
+                <div class="form-check form-check-custom form-check-solid mb-2">
+                    @Html.EditorFor(model => model.Edicion, new { htmlAttributes = new { @class = "form-check-input" } })
+                    <label class="form-check-label">Editar</label>
+                </div>
+                <!--end::Input-->
+                <!--begin::Input-->
+                <div class="form-check form-check-custom form-check-solid mb-2">
+                    @Html.EditorFor(model => model.Borrado, new { htmlAttributes = new { @class = "form-check-input" } })
+                    <label class="form-check-label">Borrar</label>
+                </div>
+                <!--end::Input-->
+            </div>
 
-        </form>
-        <!--end::Form-->
+            <div class="separator separator-dashed my-5"></div>
+
+            <!--begin::Input group-->
+            <h3 class="mb-5">Permisos generales</h3>
+            <div class="fv-row">
+                <!--begin::Input-->
+                <div class="form-check form-check-custom form-check-solid mb-2">
+                    @Html.EditorFor(model => model.Insercion, new { htmlAttributes = new { @class = "form-check-input" } })
+                    <label class="form-check-label">Crear</label>
+                </div>
+                <!--end::Input-->
+                <!--begin::Input-->
+                <div class="form-check form-check-custom form-check-solid mb-2">
+                    @Html.EditorFor(model => model.Edicion, new { htmlAttributes = new { @class = "form-check-input" } })
+                    <label class="form-check-label">Editar</label>
+                </div>
+                <!--end::Input-->
+                <!--begin::Input-->
+                <div class="form-check form-check-custom form-check-solid mb-2">
+                    @Html.EditorFor(model => model.Borrado, new { htmlAttributes = new { @class = "form-check-input" } })
+                    <label class="form-check-label">Borrar</label>
+                </div>
+                <!--end::Input-->
+            </div>
+
+
+
+            <div class="separator my-5"></div>
+            <div class="d-flex justify-content-end">
+                <!--begin::Button-->
+                <a href="@Url.Action("Index", "Perfiles")" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancelar</a>
+                <!--end::Button-->
+                <!--begin::Button-->
+                <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
+                    <span class="indicator-label">Guardar</span>
+                </button>
+                <!--end::Button-->
+            </div>
+        </div>
+        <!--end::Card Body-->
     </div>
-    <!--end::Content-->
-
-</div>
-
-<script>
-    var sistema = document.getElementById("sistema");
-    var home = document.getElementById("home");
-    var kt_content = document.getElementById("kt_content")
-
-
-    home.classList.remove('here');
-    sistema.classList.add('here');
-    kt_content.classList.add('wrapper d-flex flex-column flex-row-fluid container-xxl');
-
-</script>
-
+}
 
 
