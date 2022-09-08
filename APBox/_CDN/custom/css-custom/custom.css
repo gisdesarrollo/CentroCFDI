@@ -16,29 +16,3 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
 }
-
-
-/* Agregar flex a row para igualar altura */
-
-.flex,
-.flex>div[class*='col-'] {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex: 1 0 auto;
-}
-
-.panel {
-    -webkit-box-shadow: 0px 5px 9px -9px black;
-    -moz-box-shadow: 0px 5px 9px -9px black;
-    box-shadow: 0px 5px 9px -9px black;
-}
-
-
-/* Arregla el padding del Body cuando un modal abre */
-
-body {
-    padding-right: 0px !important;
-}
