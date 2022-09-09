@@ -23,6 +23,12 @@ namespace APBox.Controllers.Catalogos
         {
             var grupoId = ObtenerGrupo();
             var perfiles = _db.Perfiles.Where(p => p.GrupoId == grupoId).ToList();
+            
+            ViewBag.Controller = "Perfiles";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            ViewBag.Button = "Crear";
+                        
             return View(perfiles);
         }
 
@@ -49,6 +55,7 @@ namespace APBox.Controllers.Catalogos
                 Status = API.Enums.Status.Activo,
                 GrupoId = ObtenerGrupo()
             };
+
 
             return View(perfil);
         }

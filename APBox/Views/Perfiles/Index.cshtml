@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<API.Catalogos.Perfil>
 
-@{
-    ViewBag.Title = "Perfiles";
-}
-
 <div class="card card-flush">
     <div class="card-header align-items-center py-5 gap-2 gap-md-5">
         <div class="card-title">
@@ -94,7 +90,7 @@
                                     <div class="badge badge-light-success">Activo</div>
                                     break;
                                 case API.Enums.Status.Cancelado:
-                                    <div class="badge badge-light-danger" }>Cancelado</div>
+                                    <div class="badge badge-light-danger">Cancelado</div>
                                     break;
                                 default:
                                     break;

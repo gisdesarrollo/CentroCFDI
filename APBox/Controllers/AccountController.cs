@@ -43,6 +43,10 @@ namespace APBox.Controllers
             var model = new LoginViewModel();
 
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Controller = "Home";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Inicio";
+
             return View(model);
         }
 
@@ -96,6 +100,8 @@ namespace APBox.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+
+
             return View(model);
         }
 

@@ -6,6 +6,7 @@
 
     @Html.HiddenFor(model => model.GrupoId)
 
+    
     <div class="card card-flush py-4 ">
         <!--begin::Card header-->
         <div class="card-header">
@@ -18,6 +19,7 @@
         <div class="card-body pt-0">
             <!--begin::Input group-->
             <h3 class="mb-5">Permisos generales</h3>
+
             <div class="fv-row">
                 <!--begin::Input-->
                 <div class="form-check form-check-custom form-check-solid mb-2">
@@ -69,10 +71,10 @@
             <div class="separator my-5"></div>
             <div class="d-flex justify-content-end">
                 <!--begin::Button-->
-                <a href="@Url.Action("Index", "Perfiles")" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancelar</a>
+                <a href="@Url.Action("Index", "Perfiles")" class="btn btn-light me-5">Cancelar</a>
                 <!--end::Button-->
                 <!--begin::Button-->
-                <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
+                <button type="submit" id="submit" class="btn btn-primary">
                     <span class="indicator-label">Guardar</span>
                 </button>
                 <!--end::Button-->

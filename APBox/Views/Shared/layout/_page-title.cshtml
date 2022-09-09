@@ -1,13 +1,26 @@
-<!--begin::Page title-->
 <div class="page-title d-flex flex-column align-items-start me-3 gap-1">
-	<!--begin::Title-->
-	<h1 class="d-flex text-dark fw-bold m-0 fs-3">Dashboard 
-	<!--begin::Separator-->
-	<span class="h-20px border-gray-400 border-start mx-3"></span>
-	<!--end::Separator-->
-	<!--begin::Description-->
-	<small class="text-gray-500 fs-7 fw-semibold my-1">#XRS-45670</small>
-	<!--end::Description--></h1>
-	<!--end::Title-->
+    <!--begin::Title-->
+    <h1 class="d-flex text-dark fw-bold m-0 fs-3">
+            @ViewBag.Controller
+    </h1>
+    <!--end::Title-->
+    <!--begin::Breadcrumb-->
+    <ul class="breadcrumb breadcrumb-dot fw-semibold text-gray-600 fs-7">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-gray-600">
+            <a href="@Url.Action("Index", "Home")" class="text-gray-600 text-hover-primary">Home</a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-gray-600">
+            <a href="@Url.Action("Index", ViewBag.Controller)" class="text-gray-600 text-hover-primary">Home</a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-gray-600">
+            <a href="#" class="text-gray-600 text-hover-primary">@ViewBag.Action</a>
+        </li>
+        <!--end::Item-->
+    </ul>
+    <!--end::Breadcrumb-->
 </div>
-<!--end::Page title-->

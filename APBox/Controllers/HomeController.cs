@@ -15,6 +15,10 @@ namespace APBox.Controllers
                 var popularHome = new PopularHome(ObtenerSucursal());
                 popularHome.Popular(ref homeModel);
             }
+            ViewBag.Controller = "Home";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Inicio";
+
             return View(homeModel);
         }
 
