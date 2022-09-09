@@ -1,129 +1,158 @@
 ﻿@model API.Models.Control.HomeModel
-
 @{
     ViewBag.Title = "Inicio";
 }
 
 @using APBox.Context;
-
 @{
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
-
 }
+@if (Request.IsAuthenticated && sucursalId != 0)
+{
+    <div class="d-flex flex-row flex-column-fluid align-items-stretch">
 
-    @if (Request.IsAuthenticated && sucursalId != 0)
-    {
+        <div class="content flex-row-fluid" id="kt_content">
+            <div id="page-title">
+                <h2>APBox</h2>
+                <p>Centro de control e información de sus CFDi Generados y Complementos de Pago</p>
+            </div>
 
-        <div class="d-flex flex-row flex-column-fluid align-items-stretch">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <h3 class="title-hero">
+                                Accesos rápidos - Administración de Empresa
+                            </h3>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Index", "Sucursales")" class="tile-box tile-box-shortcut btn-primary">
+                                        <span class="fas fa-building fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Sucursales
+                                        </h3>
+                                    </a>
+                                </div>
 
-            <div class="content flex-row-fluid" id="kt_content">
-                <div id="page-title">
-                    <h2>APBox</h2>
-                    <p>Centro de control e información de sus CFDi Generados y Complementos de Pago</p>
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Index" ,"Usuarios")" class="tile-box tile-box-shortcut btn-primary">
+                                        <span class="fas fa-user fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Usuarios
+                                        </h3>
+                                    </a>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Index", "Clientes" )" class="tile-box tile-box-shortcut btn-primary">
+                                        <span class="fas fa-user-tie fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Clientes
+                                        </h3>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-body">
+                            <h3 class="title-hero">
+                                Accesos rápidos - Complemento de Recepción de Pagos
+                            </h3>
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Index", "ComplementosPagos")" class="tile-box tile-box-shortcut btn-info">
+                                        <span class="fas fa-building fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Pagos
+                                        </h3>
+                                    </a>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Cargar", "ComplementosPagos" )" class="tile-box tile-box-shortcut btn-info">
+                                        <span class="fas fa-th-list fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Layout
+                                        </h3>
+                                    </a>
+                                </div>
+
+
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Create", "ComplementosPagos")" class="tile-box tile-box-shortcut btn-info">
+                                        <span class="fas fa-file fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Manual
+                                        </h3>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <h3 class="title-hero">
+                                Accesos rápidos - Complemento de Carta Porte
+                            </h3>
+                            <div class="row">
+
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Index", "ComplementosCartaPorte")" class="tile-box tile-box-shortcut btn-info">
+                                        <span class="fas fa-building fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Cartas Porte
+                                        </h3>
+                                    </a>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-md-3">
+                                    <a href="@Url.Action("Create", "ComplementosCartaPorte")" class="tile-box tile-box-shortcut btn-info">
+                                        <span class="fas fa-file fa-3x mrg10A"></span>
+                                        <h3 class="title-hero">
+                                            Manual
+                                        </h3>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row">
-
-                    <div class="col-md-8">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <h3 class="title-hero">
-                                    Accesos rápidos - Administración de Empresa
-                                </h3>
-                                <div class="row">
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Index", "Sucursales")" class="tile-box tile-box-shortcut btn-primary">
-                                            <span class="fas fa-building fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Sucursales
-                                            </h3>
-                                        </a>
+                <div class="col-md-4">
+                    <div class="row mrg20B">
+                        <div class="col-md-6">
+                            <div class="panel-layout">
+                                <div class="panel-box">
+                                    <div class="panel-content bg-blue-alt">
+                                        <i class="font-size-35 fas fa-user-tie"></i>
                                     </div>
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Index" ,"Usuarios")" class="tile-box tile-box-shortcut btn-primary">
-                                            <span class="fas fa-user fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Usuarios
-                                            </h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Index", "Clientes" )" class="tile-box tile-box-shortcut btn-primary">
-                                            <span class="fas fa-user-tie fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Clientes
-                                            </h3>
-                                        </a>
+                                    <div class="panel-content pad15A bg-white">
+                                        <div class="center-vertical">
+                                            <b>0</b>
+                                            <p class="font-gray-dark">Clientes Registrados</p>
+                                        </div>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-
-                        <div class="panel">
-                            <div class="panel-body">
-                                <h3 class="title-hero">
-                                    Accesos rápidos - Complemento de Recepción de Pagos
-                                </h3>
-                                <div class="row">
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Index", "ComplementosPagos")" class="tile-box tile-box-shortcut btn-info">
-                                            <span class="fas fa-building fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Pagos
-                                            </h3>
-                                        </a>
+                        <div class="col-md-6">
+                            <div class="panel-layout">
+                                <div class="panel-box">
+                                    <div class="panel-content bg-blue-alt">
+                                        <i class="glyph-icon font-size-35 fa fa-file-alt"></i>
                                     </div>
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Cargar", "ComplementosPagos" )" class="tile-box tile-box-shortcut btn-info">
-                                            <span class="fas fa-th-list fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Layout
-                                            </h3>
-                                        </a>
-                                    </div>
-
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Create", "ComplementosPagos")" class="tile-box tile-box-shortcut btn-info">
-                                            <span class="fas fa-file fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Manual
-                                            </h3>
-                                        </a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel">
-                            <div class="panel-body">
-                                <h3 class="title-hero">
-                                    Accesos rápidos - Complemento de Carta Porte
-                                </h3>
-                                <div class="row">
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Index", "ComplementosCartaPorte")" class="tile-box tile-box-shortcut btn-info">
-                                            <span class="fas fa-building fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Cartas Porte
-                                            </h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="form-group col-xs-12 col-md-3">
-                                        <a href="@Url.Action("Create", "ComplementosCartaPorte")" class="tile-box tile-box-shortcut btn-info">
-                                            <span class="fas fa-file fa-3x mrg10A"></span>
-                                            <h3 class="title-hero">
-                                                Manual
-                                            </h3>
-                                        </a>
+                                    <div class="panel-content pad15A bg-white">
+                                        <div class="center-vertical">
+                                            <b>0</b>
+                                            <p class="font-gray-dark">CFDi del mes</p>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -131,60 +160,23 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="row mrg20B">
-                            <div class="col-md-6">
-                                <div class="panel-layout">
-                                    <div class="panel-box">
-                                        <div class="panel-content bg-blue-alt">
-                                            <i class="font-size-35 fas fa-user-tie"></i>
-                                        </div>
-                                        <div class="panel-content pad15A bg-white">
-                                            <div class="center-vertical">
-                                                <b>0</b>
-                                                <p class="font-gray-dark">Clientes Registrados</p>
-                                            </div>
-                                        </div>
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="panel-layout">
-                                    <div class="panel-box">
-                                        <div class="panel-content bg-blue-alt">
-                                            <i class="glyph-icon font-size-35 fa fa-file-alt"></i>
-                                        </div>
-                                        <div class="panel-content pad15A bg-white">
-                                            <div class="center-vertical">
-                                                <b>0</b>
-                                                <p class="font-gray-dark">CFDi del mes</p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="clearfix"></div>
-                        <div class="panel">
-                            <div class="panel-body">
-                                <h3 class="title-hero">
-                                    Estadisticas
-                                </h3>
-                                <div class="example-box-wrapper">
-                                    <div class="timeline-box timeline-box-left">
-                                        <div class="tl-row">
-                                            <div class="tl-item float-right">
-                                                <ul>
-                                                    <li>CFDIs Emitidos: @Model.CfdiEmitidos</li>
-                                                    <li>Clientes: @Model.Clientes</li>
-                                                    <li>Complementos Emitidos: @Model.ComplementosPagoEmitidos</li>
-                                                    <li>Complementos Pendientes: @Model.ComplementosPagoPendientes</li>
-                                                </ul>
-                                            </div>
+                    <div class="clearfix"></div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <h3 class="title-hero">
+                                Estadisticas
+                            </h3>
+                            <div class="example-box-wrapper">
+                                <div class="timeline-box timeline-box-left">
+                                    <div class="tl-row">
+                                        <div class="tl-item float-right">
+                                            <ul>
+                                                <li>CFDIs Emitidos: @Model.CfdiEmitidos</li>
+                                                <li>Clientes: @Model.Clientes</li>
+                                                <li>Complementos Emitidos: @Model.ComplementosPagoEmitidos</li>
+                                                <li>Complementos Pendientes: @Model.ComplementosPagoPendientes</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -192,13 +184,14 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>
 
+    </div>
 
-    }
+
+}
 
 
 <script>

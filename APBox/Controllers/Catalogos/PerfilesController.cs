@@ -25,8 +25,8 @@ namespace APBox.Controllers.Catalogos
             var perfiles = _db.Perfiles.Where(p => p.GrupoId == grupoId).ToList();
             
             ViewBag.Controller = "Perfiles";
-            ViewBag.Action = "Create";
-            ViewBag.ActionES = "Crear";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
                         
             return View(perfiles);
@@ -56,7 +56,10 @@ namespace APBox.Controllers.Catalogos
                 GrupoId = ObtenerGrupo()
             };
 
-
+            ViewBag.Controller = "Perfiles";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            
             return View(perfil);
         }
 

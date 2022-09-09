@@ -6,7 +6,7 @@
     <!--begin::Button-->
     @if (ViewBag.Button == "Crear")
     {
-        <a href="@Url.Action(ViewBag.Action, ViewBag.Controller)" class="btn btn-sm btn-info">Crear Nuevo</a>
+        <a href="@Url.Action("Create", ViewBag.Controller)" class="btn btn-sm btn-primary">Crear Nuevo</a>
 
     }
     else

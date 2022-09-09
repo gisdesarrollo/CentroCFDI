@@ -30,6 +30,12 @@ namespace APBox.Controllers.Catalogos
         {
             var grupoId = ObtenerGrupo();
             var usuarios = _db.Usuarios.Where(u => u.GrupoId == grupoId).ToList();
+            
+            ViewBag.Controller = "Usuarios";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            
             return View(usuarios);
         }
 
@@ -60,6 +66,10 @@ namespace APBox.Controllers.Catalogos
                 Sucursales = new List<UsuarioSucursal>(),
                 GrupoId = ObtenerGrupo()
             };
+            
+            ViewBag.Controller = "Usuarios";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
 
             return View(usuario);
         }

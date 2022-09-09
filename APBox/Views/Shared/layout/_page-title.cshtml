@@ -1,7 +1,10 @@
 <div class="page-title d-flex flex-column align-items-start me-3 gap-1">
     <!--begin::Title-->
     <h1 class="d-flex text-dark fw-bold m-0 fs-3">
+        @if (ViewBag.Controller != null)
+        {
             @ViewBag.Controller
+        }
     </h1>
     <!--end::Title-->
     <!--begin::Breadcrumb-->
@@ -13,12 +16,18 @@
         <!--end::Item-->
         <!--begin::Item-->
         <li class="breadcrumb-item text-gray-600">
-            <a href="@Url.Action("Index", ViewBag.Controller)" class="text-gray-600 text-hover-primary">Home</a>
+            @if (ViewBag.Controller != null)
+            {
+                <a href="@Url.Action("Index", ViewBag.Controller)" class="text-gray-600 text-hover-primary">@ViewBag.Controller</a>
+            }
         </li>
         <!--end::Item-->
         <!--begin::Item-->
         <li class="breadcrumb-item text-gray-600">
-            <a href="#" class="text-gray-600 text-hover-primary">@ViewBag.Action</a>
+            @if (ViewBag.Action != null)
+            {
+                <a href="#" class="text-gray-600 text-hover-primary">@ViewBag.Action</a>
+            }
         </li>
         <!--end::Item-->
     </ul>
