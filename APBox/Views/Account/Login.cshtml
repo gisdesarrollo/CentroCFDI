@@ -54,9 +54,7 @@
                 <!--begin::Aside-->
                 <div class="d-flex flex-center flex-lg-start flex-column">
                     <!--begin::Logo-->
-                    <a href="#" class="mb-7">
-                        <img height="400" src="~/_CDN/custom/media/logos/CentroCFDi/Logos/claro/logo_transparent.png" />
-                    </a>
+                    <img height="400" src="~/_CDN/custom/media/logos/CentroCFDi/Logos/claro/logo_transparent.png" />
                     <!--end::Logo-->
                     <!--begin::Title-->
                     <h2 class="text-white fw-normal m-0">
@@ -87,20 +85,20 @@
                             </div>
                             <!--begin::Heading-->
                             <!--begin::Separator-->
-                            <div class="separator separator-content my-14"></div>
+                            <div class="separator my-14"></div>
                             <!--end::Separator-->
                             <!--begin::Input group=-->
                             <div class="fv-row mb-8">
                                 <!--begin::Email-->
-                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control bg-transparent", @placeholder = "Usuario" })
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Usuario" })
                                 <!--end::Email-->
                             </div>
                             <!--end::Input group=-->
-                    <div class="fv-row mb-3">
-                        <!--begin::Password-->
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control bg-transparent", @placeholder = "Contraseña" })
-                        <!--end::Password-->
-                    </div>
+                            <div class="fv-row mb-3">
+                                <!--begin::Password-->
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Contraseña" })
+                                <!--end::Password-->
+                            </div>
                             <!--end::Input group=-->
                             <!--begin::Wrapper-->
                             <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">

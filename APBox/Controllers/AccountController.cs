@@ -130,6 +130,8 @@ namespace APBox.Controllers
 
                 var popularDropDowns = new PopularDropDowns(loginSucursal.GrupoId, true);
                 ViewBag.SucursalId = popularDropDowns.PopulaSucursalesUsuarios(null, usuarioId);
+
+                ViewBag.NoLayout = true;
                 return View(loginSucursal);
             }
             else

@@ -1,7 +1,13 @@
-﻿@if (Request.IsAuthenticated )
+﻿
+@if (Request.IsAuthenticated)
 {
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
- else
-{
+
+    if (ViewContext.Controller.ViewBag.NoLayout != null)
+    {
+
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }

@@ -9,11 +9,6 @@
     <!--begin::Menu item-->
     <div class="menu-item px-3">
         <div class="menu-content d-flex align-items-center px-3">
-            <!--begin::Avatar-->
-            <div class="symbol symbol-50px me-5">
-                <img alt="Logo" src="~/_CDN/custom/media/logos/CentroCFDi/Logos/oscuro/facebook_profile_image.png"/>
-            </div>
-            <!--end::Avatar-->
             <!--begin::Username-->
             <div class="d-flex flex-column">
                 <div class="fw-bold d-flex align-items-center fs-5">
@@ -21,7 +16,7 @@
                     <span class="badge badge-light-primary fw-bold fs-8 px-2 py-1 ms-2">Activo</span>
                 </div>
                 <p class="fw-semibold text-muted text-hover-primary fs-7">@usuario.Email</p>
-                <p href="#" class="fw-semibold text-muted text-hover-primary fs-7">@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno </p>
+                <p class="fw-semibold text-muted text-hover-primary fs-7">@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno </p>
             </div>
             <!--end::Username-->
         </div>
@@ -32,8 +27,15 @@
     <!--end::Menu separator-->
     <!--begin::Menu item-->
     <div class="menu-item px-5 my-1">
-        <a href="?page=account/settings" class="menu-link px-5">
-            <i class="fa fa-gears pe-5"></i>Configuración
+        <a href="@Url.Action("SeleccionarSucursal", "Account")" class="menu-link px-5">
+            <i class="fa fa-building pe-5"></i>Cambiar Organización
+        </a>
+    </div>
+    <!--end::Menu item-->
+    <!--begin::Menu item-->
+    <div class="menu-item px-5 my-1">
+        <a href="@Url.Action("Manage", "Account")" class="menu-link px-5">
+            <i class="fa fa-gears pe-5"></i>Cambiar Contraseña
         </a>
     </div>
     <!--end::Menu item-->
@@ -46,13 +48,13 @@
     {
         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {@Html.AntiForgeryToken()
-    <div class="menu-item px-5">
-        <a href="javascript:document.getElementById('logoutForm').submit()" title="Logout" class="menu-link px-5">
-            <i class="fa fa-sign-out pe-5"></i>Cerrar Sesion
-        </a>
-    </div>
-        }
+        <div class="menu-item px-5">
+            <a href="javascript:document.getElementById('logoutForm').submit()" title="Logout" class="menu-link px-5 bg-danger bg-opacity-75 bg-hover-danger text-white">
+                <i class="fa fa-sign-out pe-5 text-white"></i>Cerrar Sesion
+            </a>
+        </div>
     }
+}
     <!--end::Menu item-->
 </div>
 <!--end::User account menu-->

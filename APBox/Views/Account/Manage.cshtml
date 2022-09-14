@@ -1,15 +1,21 @@
-﻿@{
-    ViewBag.Title = "Manejar Cuenta";
-}
+﻿<div class="card card-flush py-4">
+    <!--begin::Card header-->
+    <div class="card-header">
+        <div class="card-title">
+            <h2>Cambia tu contraseña</h2>
+        </div>
+    </div>
+    <!--end::Card header-->
+    <!--begin::Card body-->
+    <div class="card-body pt-0">
 
-<h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div class="row">
-    <div class="col-md-12">
         @if (ViewBag.HasLocalPassword)
         {
             @Html.Partial("_ChangePasswordPartial")
         }
+
     </div>
 </div>
+
+
+

@@ -398,6 +398,8 @@
     <Content Include="Archivos\Muestra\ejemploCFDIv33.xml" />
     <Content Include="BouncyCastle.Crypto.dll" />
     <Content Include="Content\FileCfdiGenerados\prueba.txt" />
+    <Content Include="Content\FileTxt\INGRE-3-20220715145942874.txt" />
+    <Content Include="Content\FileTxt\INGRE-3-20220715150341675.txt" />
     <Content Include="Content\Images\Clientes\Aguas.jpg" />
     <Content Include="Content\Images\Clientes\Bisquets.jpg" />
     <Content Include="Content\Images\Clientes\Corpogas.png" />
@@ -420,9 +422,6 @@
     <Content Include="Content\PDFGenerados\prueba.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\_APBox\logo-admin.png" />
-    <Content Include="Content\_APBox\user_hombre.png" />
-    <Content Include="Content\_APBox\user_mujer.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="lib\CodeScales.Http.dll" />

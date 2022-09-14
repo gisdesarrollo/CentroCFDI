@@ -16,3 +16,11 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+body {
+    background-color: darkblue !important;
+}
+
+ul {
+    margin-bottom: 0px !important;
+}
