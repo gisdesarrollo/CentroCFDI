@@ -30,6 +30,11 @@ namespace APBox.Controllers.Catalogos
         {
             var grupoId = ObtenerGrupo();
             var sucursales = _db.Sucursales.Where(s => s.GrupoId == grupoId).ToList();
+
+            ViewBag.Controller = "Sucursales"; //referenciado al nombre del controlador
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
             return View(sucursales);
         }
 
@@ -65,6 +70,10 @@ namespace APBox.Controllers.Catalogos
             };
 
             PopulaForma();
+
+            ViewBag.Controller = "Sucursales"; //se referencía al nombre del controlador
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
             return View(sucursal);
         }
 

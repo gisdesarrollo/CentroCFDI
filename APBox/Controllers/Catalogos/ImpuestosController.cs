@@ -20,6 +20,12 @@ namespace APBox.Controllers.Catalogos
         {
             var sucursal = ObtenerSucursal();
             var cat_impuestos = _db.Cat_Impuestos.Where(s => s.SucursalId  == sucursal).ToList();
+
+            ViewBag.Controller = "Impuestos";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+
             return View(cat_impuestos);
         }
         private int ObtenerSucursal()
@@ -65,6 +71,12 @@ namespace APBox.Controllers.Catalogos
             PopulaTipoImpuesto();
             var sucursal = ObtenerSucursal();
             var cat_subImpuestoC = new Cat_SubImpuestoC();
+
+            ViewBag.Controller = "Impuestos";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+
+
             return View(cat_subImpuestoC);
         }
         public ActionResult AgregarImpuesto(String TipoImp, String Nombre, int Base, c_ImpuestoCP Impuesto,c_TipoFactor TipoFactor,Decimal TasaOCuota/*,Decimal Importe*/)

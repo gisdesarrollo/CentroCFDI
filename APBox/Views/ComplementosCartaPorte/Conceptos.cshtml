@@ -5,7 +5,7 @@
 @using (Html.BeginCollectionItem("Conceptoss"))
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
-
+    
     <div class="content-box mrg20L mrg20R">
         <h3 class="content-box-header bg-default">
             <i class="glyph-icon icon-money"></i>
@@ -15,6 +15,7 @@
                     <i class="glyph-icon icon-times font-red"></i>
                 </a>
             </div>
+            
         </h3>
         <div class="content-box-wrapper conceptos">
             @Html.HiddenFor(model => model.Id)
@@ -160,4 +161,3 @@
         </div>
     </div>
 }
-

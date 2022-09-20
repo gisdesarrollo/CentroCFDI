@@ -22,7 +22,16 @@ namespace APBox.Controllers.Catalogos
         // GET: Grupos
         public ActionResult Index()
         {
+
+
+            ViewBag.Controller = "Grupos"; //referenciado al nombre del controlador
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+
             return View(_db.Grupos.ToList());
+
+
         }
 
         // GET: Grupos/Details/5
@@ -46,16 +55,21 @@ namespace APBox.Controllers.Catalogos
             var grupo = new Grupo
             {
                 Status = Status.Activo,
+                
                 Llave = Guid.NewGuid(),
                 AutorizacionAutomaticaViajes = true,
                 ComplementosPagos = true,
                 GastosProveedores = true,
                 GastosViajes = true,
-                ObtencionFtp = true
+                ObtencionFtp = true,
             };
 
+            ViewBag.Controller = "Grupos"; //se referencía al nombre del controlador
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            
             return View(grupo);
-        }
+    }
 
         // POST: Grupos/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -139,5 +153,7 @@ namespace APBox.Controllers.Catalogos
             }
             base.Dispose(disposing);
         }
+
+       
     }
 }

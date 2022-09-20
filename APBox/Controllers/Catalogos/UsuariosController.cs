@@ -79,7 +79,7 @@ namespace APBox.Controllers.Catalogos
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario)
+        public ActionResult e(Usuario usuario)
         {
             PopulaForma(usuario.PerfilId);
             if (ModelState.IsValid)

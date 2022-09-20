@@ -27,6 +27,16 @@ namespace APBox.Controllers.Catalogos
         {
             var sucursalId = ObtenerSucursal();
             var clientes = _db.Clientes.Where(c => c.SucursalId == sucursalId).ToList();
+
+
+
+            ViewBag.Controller = "Clientes";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+
+
+
             return View(clientes);
         }
 
@@ -60,6 +70,9 @@ namespace APBox.Controllers.Catalogos
                 SucursalId = ObtenerSucursal()
             };
 
+            ViewBag.Controller = "Clientes";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
             return View(cliente);
         }
 

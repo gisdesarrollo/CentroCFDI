@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -23,6 +24,12 @@ namespace APBox.Controllers.Catalogos
         public ActionResult Index()
         {
             var bancos = _db.Bancos.ToList();
+          
+            ViewBag.Controller = "Bancos"; //referenciado al nombre del controlador
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+
             return View(bancos);
         }
 
@@ -48,6 +55,10 @@ namespace APBox.Controllers.Catalogos
             {
                 Status = Status.Activo
             };
+
+            ViewBag.Controller = "Bancos"; //se referencía al nombre del controlador
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
 
             return View(banco);
         }
@@ -134,5 +145,7 @@ namespace APBox.Controllers.Catalogos
             }
             base.Dispose(disposing);
         }
+
+       
     }
 }

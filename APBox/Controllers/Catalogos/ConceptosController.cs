@@ -20,6 +20,13 @@ namespace APBox.Controllers.Catalogos
         {
             var sucursal = ObtenerSucursal();
             var cat_Conceptos = _db.Cat_Conceptos.Where(s => s.SucursalId == sucursal).ToList();
+
+            ViewBag.Controller = "Conceptos";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+
+
             return View(cat_Conceptos);
         }
         //Agregar Conceptos
@@ -30,6 +37,12 @@ namespace APBox.Controllers.Catalogos
             PopulaObjetoImpuesto();
             var sucursal = ObtenerSucursal();
             var cat_Conceptos = new Cat_Conceptos();
+
+            ViewBag.Controller = "Conceptos";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+
+
             return View(cat_Conceptos);
         }
         public ActionResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento,string ObjetoImpuesto, int? ImpuestoR, int? ImpuestoT)
