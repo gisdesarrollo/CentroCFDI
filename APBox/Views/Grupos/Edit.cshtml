@@ -4,143 +4,186 @@
     ViewBag.Title = "Editar";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="title"><b>@ViewBag.Title</b></div>
-                    </div>
-                </div>
-                <div class="card-body">
+<div class="card card-flush py-4">
 
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-
-                        @Html.HiddenFor(model => model.Id)
-                    <div class="form">
-                        @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
-
-                        <div class="clearfix"></div>
-
-                        <div class="sub-title">
-                            <span class="fa fa-bars text-muted"></span> Información
-                        </div>
-
-                        <hr />
-
-
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            @Html.LabelFor(model => model.Llave, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Llave, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Llave, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                        <div class="sub-title">
-                            <span class="fa fa-bars text-muted"></span> Configuraciones
-                        </div>
-
-                        <hr />
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            @Html.LabelFor(model => model.ObtencionFtp, htmlAttributes: new { @class = "control-label" })
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.ObtencionFtp, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.ObtencionFtp, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            @Html.LabelFor(model => model.CargaPdf, htmlAttributes: new { @class = "control-label" })
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.CargaPdf, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.CargaPdf, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            @Html.LabelFor(model => model.AutorizacionAutomaticaViajes, htmlAttributes: new { @class = "control-label" })
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.AutorizacionAutomaticaViajes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.AutorizacionAutomaticaViajes, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            @Html.LabelFor(model => model.AutorizacionAutomaticaSolicitudes, htmlAttributes: new { @class = "control-label" })
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.AutorizacionAutomaticaSolicitudes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.AutorizacionAutomaticaSolicitudes, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            @Html.LabelFor(model => model.GastosViajes, htmlAttributes: new { @class = "control-label" })
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.GastosViajes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.GastosViajes, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            @Html.LabelFor(model => model.GastosProveedores, htmlAttributes: new { @class = "control-label" })
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.GastosProveedores, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.GastosProveedores, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            @Html.LabelFor(model => model.ComplementosPagos, htmlAttributes: new { @class = "control-label" })
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.ComplementosPagos, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.ComplementosPagos, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                        <div class="sub-title">
-                            <span class="fa fa-bars text-muted"></span> Notas
-                        </div>
-
-                        <hr />
-
-                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            @Html.LabelFor(model => model.Notas, htmlAttributes: new { @class = "control-label" })
-                            @Html.TextAreaFor(model => model.Notas, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Notas, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="clearfix"></div>
-                        <hr />
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-primary" })
-                            <button type="submit" class="btn btn-success">Guardar</button>
-                        </div>
-                    </div>
-                    }
-                </div>
-            </div>
+    <div class="card-header">
+        <div class="card-title">
+            <h2>Editar</h2>
         </div>
     </div>
+
+    <div class="card-body pt-0">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form">
+
+                <div class="row">
+                    <div class="pb-10">
+                        <!--begin::Information-->
+                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                            <!--begin::Icon-->
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                            <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                                    <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                    <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                            <!--end::Icon-->
+                            <!--begin::Description-->
+                            <div class="text-gray-700 fw-bold fs-5">
+                                Información
+
+                            </div>
+                            <!--end::Description-->
+                        </div>
+                        <!--end::Information-->
+                    </div>
+                </div>
+
+                <div class="row">
+                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        @Html.LabelFor(model => model.Llave, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Llave, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Llave, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
+                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control mb-2" })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+
+
+                <hr />
+
+                <div class="row">
+                    <div class="pb-10">
+                        <!--begin::Information-->
+                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                            <!--begin::Icon-->
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                            <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                                    <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                    <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                            <!--end::Icon-->
+                            <!--begin::Description-->
+                            <div class="text-gray-700 fw-bold fs-6">
+                                Configuraciones
+                            </div>
+                            <!--end::Description-->
+                        </div>
+                        <!--end::Information-->
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.ObtencionFtp, htmlAttributes: new { @class = "control-label" })
+                        <div class="form-check form-check-custom form-check-solid mb-2">
+                            @Html.EditorFor(model => model.ObtencionFtp, new { htmlAttributes = new { @class = "form-check-input", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.ObtencionFtp, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.CargaPdf, htmlAttributes: new { @class = "form-label" })
+                        <div class="form-check form-check-custom form-check-solid mb-2">
+                            @Html.EditorFor(model => model.CargaPdf, new { htmlAttributes = new { @class = "form-check-input", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.CargaPdf, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.AutorizacionAutomaticaViajes, htmlAttributes: new { @class = "form-label" })
+                        <div class="form-check form-check-custom form-check-solid mb-2">
+                            @Html.EditorFor(model => model.AutorizacionAutomaticaViajes, new { htmlAttributes = new { @class = "form-check-input", @readonly = "readonly"} })
+                            @Html.ValidationMessageFor(model => model.AutorizacionAutomaticaViajes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.AutorizacionAutomaticaSolicitudes, htmlAttributes: new { @class = "form-label" })
+                        <div class="form-check form-check-custom form-check-solid mb-2">
+                            @Html.EditorFor(model => model.AutorizacionAutomaticaSolicitudes, new { htmlAttributes = new { @class = "form-check-input", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.AutorizacionAutomaticaSolicitudes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.GastosViajes, htmlAttributes: new { @class = "form-label" })
+                        <div class="form-check form-check-custom form-check-solid mb-2">
+                            @Html.EditorFor(model => model.GastosViajes, new { htmlAttributes = new { @class = "form-check-input", @readonly = "readonly"} })
+                            @Html.ValidationMessageFor(model => model.GastosViajes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.GastosProveedores, htmlAttributes: new { @class = "form-label" })
+                        <div class="form-check form-check-custom form-check-solid mb-2">
+                            @Html.EditorFor(model => model.GastosProveedores, new { htmlAttributes = new { @class = "form-check-input", @readonly = "readonly"} })
+                            @Html.ValidationMessageFor(model => model.GastosProveedores, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        @Html.LabelFor(model => model.ComplementosPagos, htmlAttributes: new { @class = "form-label" })
+                        <div class="form-check form-check-custom form-check-solid mb-2">
+                            @Html.EditorFor(model => model.ComplementosPagos, new { htmlAttributes = new { @class = "form-check-input", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.ComplementosPagos, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <hr />
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    @Html.LabelFor(model => model.Notas, htmlAttributes: new { @class = "form-label" })
+                    <br />
+                    @Html.TextAreaFor(model => model.Notas, new { @class = "form-control", style = "" })
+                    @Html.ValidationMessageFor(model => model.Notas, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="clearfix"></div>
+                <hr />
+                <div class="d-flex justify-content-end">
+                    <div class="form-group">
+                        @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-light me-5" })
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
 </div>
+
+
 <script>
     var sistema = document.getElementById("sistema");
     sistema.classList.add('here');

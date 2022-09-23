@@ -55,7 +55,7 @@
         <div class="page d-flex flex-column flex-column-fluid">
             <!--layout-partial:layout/header/_base.html-->
             @Html.Partial("~/Views/Shared/layout/header/_base.cshtml")
-            
+
             <!--begin::Wrapper-->
             <div class="wrapper d-flex flex-column flex-row-fluid container-xxl" id="kt_wrapper">
 
@@ -66,7 +66,7 @@
                 <div class="d-flex flex-row flex-column-fluid align-items-stretch">
                     <!--begin::Content-->
                     <div class="content flex-row-fluid" id="kt_content">
-                            @RenderBody()
+                        @RenderBody()
                     </div>
                     <!--end::Content-->
                 </div>
@@ -97,6 +97,7 @@
 
     <link href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <script src="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+
     <script>
         "use strict";
 
@@ -189,11 +190,12 @@
         });
 
     </script>
-    
+
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used by this page)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
     <script src="~/_CDN/assets/js/custom/widgets.js"></script>
+    <script src="~/_CDN/custom/js-custom/scripts.js"></script>
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 </body>
