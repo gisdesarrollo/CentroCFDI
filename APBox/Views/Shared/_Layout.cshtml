@@ -19,7 +19,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="~/_CDN/custom/media/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="~/_CDN/custom/media/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="~/_CDN/custom/media/favicon/favicon-16x16.png">
-    <link rel="manifest" href="~/_CDN/custom/media/favicon/site.webmanifest">
     <link rel="mask-icon" href="~/_CDN/custom/media/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="shortcut icon" href="~/_CDN/custom/media/favicon/favicon.ico">
     <meta name="msapplication-TileColor" content="#2d89ef">
@@ -43,7 +42,7 @@
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body id="kt_body" class="page-loading-enabled toolbar-enabled bg-image">
+<body id="kt_body" class="page-loading-enabled page-loading toolbar-enabled bg-image">
     <!--layout-partial:partials/theme-mode/_init.html-->
     <!--layout-partial:partials/_loader.html-->
     @Html.Partial("~/Views/Shared/partials/_loader.cshtml")
@@ -55,7 +54,7 @@
         <div class="page d-flex flex-column flex-column-fluid">
             <!--layout-partial:layout/header/_base.html-->
             @Html.Partial("~/Views/Shared/layout/header/_base.cshtml")
-            
+
             <!--begin::Wrapper-->
             <div class="wrapper d-flex flex-column flex-row-fluid container-xxl" id="kt_wrapper">
 
@@ -66,7 +65,7 @@
                 <div class="d-flex flex-row flex-column-fluid align-items-stretch">
                     <!--begin::Content-->
                     <div class="content flex-row-fluid" id="kt_content">
-                            @RenderBody()
+                        @RenderBody()
                     </div>
                     <!--end::Content-->
                 </div>
@@ -94,107 +93,138 @@
     <script src="~/_CDN/assets/js/scripts.bundle.js"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used by this page)-->
-
-    <link href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-    <script src="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <script>
-        "use strict";
-
-        // Class definition
-        var KTDatatablesExample = function () {
-            // Shared variables
-            var table;
-            var datatable;
-
-            // Private functions
-            var initDatatable = function () {
-                // Set date data order
-                const tableRows = table.querySelectorAll('tbody tr');
-
-                // Init datatable --- more info on datatables: https://datatables.net/manual/
-                datatable = $(table).DataTable({
-                    "info": false,
-                    'order': [],
-                    'pageLength': 25,
-                });
-            }
-
-            // Hook export buttons
-            var exportButtons = () => {
-                const documentTitle = 'Customer Orders Report';
-                var buttons = new $.fn.dataTable.Buttons(table, {
-                    buttons: [
-                        {
-                            extend: 'copyHtml5',
-                            title: documentTitle
-                        },
-                        {
-                            extend: 'excelHtml5',
-                            title: documentTitle
-                        },
-                        {
-                            extend: 'csvHtml5',
-                            title: documentTitle
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            title: documentTitle
-                        }
-                    ]
-                }).container().appendTo($('#kt_datatable_example_buttons'));
-
-                // Hook dropdown menu click event to datatable export buttons
-                const exportButtons = document.querySelectorAll('#kt_datatable_example_export_menu [data-kt-export]');
-                exportButtons.forEach(exportButton => {
-                    exportButton.addEventListener('click', e => {
-                        e.preventDefault();
-
-                        // Get clicked export value
-                        const exportValue = e.target.getAttribute('data-kt-export');
-                        const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
-
-                        // Trigger click event on hidden datatable export buttons
-                        target.click();
-                    });
-                });
-            }
-
-            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
-            var handleSearchDatatable = () => {
-                const filterSearch = document.querySelector('[data-kt-filter="search"]');
-                filterSearch.addEventListener('keyup', function (e) {
-                    datatable.search(e.target.value).draw();
-                });
-            }
-
-            // Public methods
-            return {
-                init: function () {
-                    table = document.querySelector('#kt_datatable');
-
-                    if (!table) {
-                        return;
-                    }
-
-                    initDatatable();
-                    exportButtons();
-                    handleSearchDatatable();
-                }
-            };
-        }();
-
-        // On document ready
-        KTUtil.onDOMContentLoaded(function () {
-            KTDatatablesExample.init();
-        });
-
-    </script>
-    
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used by this page)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
     <script src="~/_CDN/assets/js/custom/widgets.js"></script>
     <!--end::Custom Javascript-->
+    <link rel="stylesheet" href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" type="text/css" />
+    <script src="/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--begin::Javascript Initialize-->
+    <script src="~/_CDN/custom/js-custom/triggers-init.js"></script>
+    <!--end::Javascript Initialize-->
+
+    <div id="triggeredScripts"></div>
+    <script>
+        $(document).ready(function () {
+            var element = document.getElementById('chart_clientes_por_mes');
+            var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
+            var borderColor = KTUtil.getCssVariableValue('--kt-gray-200');
+            var baseColor = KTUtil.getCssVariableValue('--kt-primary');
+            var secondaryColor = KTUtil.getCssVariableValue('--kt-gray-300');
+
+            if (!element) {
+                return;
+            }
+
+            var options = {
+                series: [{
+                    name: 'Net Profit',
+                    data: [44, 55, 57, 56, 61, 58]
+                }, {
+                    name: 'Revenue',
+                    data: [76, 85, 101, 98, 87, 105]
+                }],
+                chart: {
+                    fontFamily: 'inherit',
+                    type: 'bar',
+                    height: '350',
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: ['30%'],
+                        endingShape: 'rounded'
+                    },
+                },
+                legend: {
+                    show: false
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    axisBorder: {
+                        show: false,
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    labels: {
+                        style: {
+                            colors: labelColor,
+                            fontSize: '12px'
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: labelColor,
+                            fontSize: '12px'
+                        }
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                states: {
+                    normal: {
+                        filter: {
+                            type: 'none',
+                            value: 0
+                        }
+                    },
+                    hover: {
+                        filter: {
+                            type: 'none',
+                            value: 0
+                        }
+                    },
+                    active: {
+                        allowMultipleDataPointsSelection: false,
+                        filter: {
+                            type: 'none',
+                            value: 0
+                        }
+                    }
+                },
+                tooltip: {
+                    style: {
+                        fontSize: '12px'
+                    },
+                    y: {
+                        formatter: function (val) {
+                            return '$' + val + ' thousands'
+                        }
+                    }
+                },
+                colors: [baseColor, secondaryColor],
+                grid: {
+                    borderColor: borderColor,
+                    strokeDashArray: 4,
+                    yaxis: {
+                        lines: {
+                            show: true
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(element, options);
+            chart.render();
+        });
+    </script>
+
     <!--end::Javascript-->
 </body>
 <!--end::Body-->

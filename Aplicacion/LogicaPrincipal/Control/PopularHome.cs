@@ -1,6 +1,8 @@
 ﻿using API.Models.Control;
+using API.Models.Facturas;
 using Aplicacion.Context;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Aplicacion.LogicaPrincipal.Control
