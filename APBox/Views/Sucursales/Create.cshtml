@@ -26,16 +26,17 @@
     });
 </script>
 
-<div id="page-title">
-    <h2>@ViewBag.Title Sucursal</h2>
-</div>
 
-<div class="panel">
-    <div class="panel-body">
+<div class="card card-flush py-4">
+    <div class="card-header">
+        <div class="card-title">
+            <h2>Información</h2>
+        </div>
+    </div>
+    
+    <div class="card-body pt-0">
         <div class="row">
-            <h3 class="title-hero">
-                Información
-            </h3>
+           
             @using (Html.BeginForm("Create", "Sucursales", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                 @Html.AntiForgeryToken()
