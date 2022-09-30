@@ -81,7 +81,7 @@ namespace APBox.Controllers.Catalogos
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult create(Usuario usuario)
+        public ActionResult Create(Usuario usuario)
         {
             PopulaForma(usuario.PerfilId);
             if (ModelState.IsValid)
@@ -175,8 +175,8 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Usuarios/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Usuario usuario = _db.Usuarios.Find(id);

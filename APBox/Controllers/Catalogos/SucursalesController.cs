@@ -207,8 +207,8 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Sucursales/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Sucursal sucursal = _db.Sucursales.Find(id);

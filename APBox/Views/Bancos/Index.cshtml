@@ -105,7 +105,18 @@
                             @Html.DisplayFor(modelItem => item.Rfc)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Nacional)
+                            @switch (item.Status)
+                            {
+                                case API.Enums.Status.Activo:
+                                    <div class="badge badge-light-success">Activo</div>
+                                    break;
+                                case API.Enums.Status.Cancelado:
+                                    <div class="badge badge-light-danger">Cancelado</div>
+                                    break;
+                                default:
+                                    break;
+                            }
+                            
                         </td>
 
 
@@ -123,13 +134,13 @@
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el registro?');", @class = "menu-link px-3" })
+                                    @Html.ActionLink("Eliminar", "DeleteConfirmed", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el registro?');", @class = "menu-link px-3" })
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
-                                <div class="menu-item px-3">
+                                @*<div class="menu-item px-3">
                                     @Html.ActionLink("Reset Pwd", "Reseteo", new { id = item.Id }, new { @class = "menu-link px-3" })
-                                </div>
+                                </div>*@
                                 <!--end::Menu item-->
                             </div>
                             <!--end::Menu-->

@@ -90,7 +90,7 @@
                             @Html.DisplayFor(modelItem => item.NombreCompleto)
                         </td>
                         <td>
-                            @Html.DisplayNameFor(model => model.NombreUsuario)
+                            @Html.DisplayFor(modelItem => item.NombreUsuario)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Perfil.Nombre)
@@ -123,13 +123,13 @@
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el registro?');", @class = "menu-link px-3" })
+                                    @Html.ActionLink("Eliminar", "DeleteConfirmed", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el registro?');", @class = "menu-link px-3" })
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
-                                <div class="menu-item px-3">
+                                @*<div class="menu-item px-3">
                                     @Html.ActionLink("Reset Pwd", "Reseteo", new { id = item.Id }, new { @class = "menu-link px-3" })
-                                </div>
+                                </div>*@
                                 <!--end::Menu item-->
                             </div>
                             <!--end::Menu-->

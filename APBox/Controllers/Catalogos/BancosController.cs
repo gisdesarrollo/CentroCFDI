@@ -54,7 +54,8 @@ namespace APBox.Controllers.Catalogos
         {
             var banco = new Banco
             {
-                Status = Status.Activo
+                Status = Status.Activo,
+                NombreCorto = "1"
             };
 
             ViewBag.Controller = "Bancos"; //se referencía al nombre del controlador
@@ -133,8 +134,8 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Bancos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+       // [HttpPost, ActionName("Delete")]
+       // [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Banco banco = _db.Bancos.Find(id);

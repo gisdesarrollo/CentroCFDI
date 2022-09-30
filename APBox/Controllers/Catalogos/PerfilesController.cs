@@ -133,8 +133,8 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Perfiles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Perfil perfil = _db.Perfiles.Find(id);

@@ -163,8 +163,8 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Clientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Cliente cliente = _db.Clientes.Find(id);

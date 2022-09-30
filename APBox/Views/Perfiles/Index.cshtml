@@ -117,7 +117,7 @@
                                 <div class="menu-item px-3">
                                     @if (User.IsInRole("BORRADO"))
                                     {
-                                        @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el registro?');", @class = "menu-link px-3" })
+                                        @Html.ActionLink("Eliminar", "DeleteConfirmed", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el registro?');", @class = "menu-link px-3" })
                                     }
                                 </div>
                                 <!--end::Menu item-->
