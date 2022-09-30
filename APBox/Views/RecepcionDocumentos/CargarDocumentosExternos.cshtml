@@ -2,18 +2,17 @@
     ViewBag.Title = "Cargar Documentos Externos";
 }
 
-
-<div id="page-title">
-    <div class="row">
-        <div class="col-lg-12">
-            <h2>Cargar CFDi Externos</h2>
-            <p>Si te falta algun CFDi Emitido en el proceso configurado, carga aqui los CFDi que no estan en el sistema.</p>
-        </div>
+<div class="card card-flush py-4">
+    <!--begin::Card body-->
+    <div class="card-body">
+        <h2 class="card-title">Cargar CFDi Externos</h2>
+        <p class="card-text">Si te falta algun CFDi Emitido en el proceso configurado, carga aqui los CFDi que no estan en el sistema.</p>
     </div>
-</div>
+    <!--end::Card body-->
+    <!--begin::Card body-->
+   
+    <div class="card-body pt-0">
 
-<div class="panel">
-    <div class="panel-body">
         @using (Html.BeginForm("CargarDocumentosExternos", "RecepcionDocumentos", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -23,24 +22,21 @@
                 <div class="row">
                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label class="control-label" for="Grupos">Seleccionar solo XML</label>
-                        <input type="file" name="FileUpload" id="file" class="minusculas" accept=".xml" multiple/>
+                        <input type="file" name="FileUpload" id="file" class="minusculas" accept=".xml" multiple />
                     </div>
                 </div>
 
                 <div class="clearfix"></div>
-                <hr />
-                <div class="form-group pull-right">
-                    <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
-                        <span>Cargar</span>
-                        <i class="glyph-icon icon-arrow-right"></i>
+                <div class="separator my-5"></div>
+                <div class="d-flex justify-content-end">
+                    <!--begin::Button-->
+                    <button type="submit" class="btn btn-primary">
+                        <span class="indicator-label">Cargar</span>
                     </button>
+                    <!--end::Button-->
                 </div>
             </div>
         }
     </div>
 </div>
 
-<script>
-    var sistema = document.getElementById("cfdi");
-    sistema.classList.add('here');
-</script>

@@ -34,8 +34,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-
-
+            ViewBag.NameHere = "catalogo";
 
             return View(clientes);
         }
@@ -73,6 +72,8 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Clientes";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "catalogo";
+
             return View(cliente);
         }
 
@@ -114,7 +115,10 @@ namespace APBox.Controllers.Catalogos
             }
 
             PopulaForma();
-
+            ViewBag.Controller = "Clientes";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "catalogo";
             return View(cliente);
         }
 

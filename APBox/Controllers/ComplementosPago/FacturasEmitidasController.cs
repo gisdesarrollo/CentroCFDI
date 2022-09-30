@@ -44,7 +44,8 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
-           
+            ViewBag.NameHere = "cfdi";
+
             return View(facturasEmitidasModel);
         }
 
@@ -284,6 +285,10 @@ namespace APBox.Controllers.Catalogos
                 }
                 
             }
+            ViewBag.Controller = "FacturasEmitidas";
+            ViewBag.Action = "detallePago";
+            ViewBag.ActionES = "Detalle Pago";
+            ViewBag.NameHere = "reporte";
             return View(facturasEmitidasModel);
         }
 

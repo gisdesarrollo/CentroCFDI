@@ -35,7 +35,8 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            
+            ViewBag.NameHere = "sistema";
+
             return View(usuarios);
         }
 
@@ -70,6 +71,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Usuarios";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "sistema";
 
             return View(usuario);
         }
@@ -79,7 +81,7 @@ namespace APBox.Controllers.Catalogos
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult e(Usuario usuario)
+        public ActionResult create(Usuario usuario)
         {
             PopulaForma(usuario.PerfilId);
             if (ModelState.IsValid)
@@ -123,6 +125,10 @@ namespace APBox.Controllers.Catalogos
                 return HttpNotFound();
             }
             PopulaForma(usuario.PerfilId);
+            ViewBag.Controller = "Usuarios";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "sistema";
             return View(usuario);
         }
 

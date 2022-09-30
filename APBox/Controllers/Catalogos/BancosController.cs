@@ -29,6 +29,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
+            ViewBag.NameHere = "catalogo";
 
             return View(bancos);
         }
@@ -59,6 +60,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Bancos"; //se referencía al nombre del controlador
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "catalogo";
 
             return View(banco);
         }
@@ -92,6 +94,10 @@ namespace APBox.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            ViewBag.Controller = "Bancos"; //se referencía al nombre del controlador
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "catalogo";
             return View(banco);
         }
 

@@ -12,6 +12,10 @@ namespace APBox.Controllers.RecepcionDocumentos
         // GET: RecepcionDocumentos
         public ActionResult CargarDocumentosExternos()
         {
+            ViewBag.Controller = "RecepcionDocumentos";
+            ViewBag.Action = "CargarDocumentosExternos";
+            ViewBag.ActionES = "Carga Documentos Externos";
+            ViewBag.NameHere = "cfdi";
             return View();
         }
 
@@ -42,7 +46,7 @@ namespace APBox.Controllers.RecepcionDocumentos
 
                 }
             }
-
+            
             return View();
         }
 

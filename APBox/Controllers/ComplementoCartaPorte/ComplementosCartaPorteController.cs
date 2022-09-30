@@ -53,7 +53,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
             complementoCartaPorteModel.FechaFinal = fechaFinal;
              
              complementoCartaPorteModel.ComplementosCartaPorte = _acondicionarComplementosCartaPorte.Filtrar(fechaInicial, fechaFinal,null,null,false, ObtenerSucursal());
-
+            ViewBag.Controller = "ComplementosCartaPorte";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            ViewBag.NameHere = "emision";
             return View(complementoCartaPorteModel);
         }
 
@@ -225,6 +229,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     PartesTransporte = new PartesTransporte(){}
                 }
             };
+            ViewBag.Controller = "ComplementosCartaPorte";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "emision";
             return View(ComplementoCartaPorte);
         }
 
@@ -837,8 +845,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 Domicilio = new Domicilio() { },
                 PartesTransporte = new PartesTransporte() { }
             };
-            
 
+            ViewBag.Controller = "ComplementosCartaPorte";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "emision";
             return View(complementoCP);
         }
 

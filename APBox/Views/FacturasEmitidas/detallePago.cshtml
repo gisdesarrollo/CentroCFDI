@@ -3,98 +3,155 @@
     ViewBag.Title = "Reporte Facturas con Pago";
 }
 
-<div id="page-title">
-    <div class="row">
-        <div class="col-lg-9">
-            <h2>Reporte de Facturas con Pago</h2>
-            <!--<p>CFDi emitidos que se asignarán a los Complementos de Recepción de Pagos.</p>-->
-        </div>
+<div class="card card-flush py-4">
+    <!--begin::Card body-->
+    <div class="card-body">
+        <h2 class="card-title">Reporte de Facturas con Pago</h2>
     </div>
-</div>
+    <!--end::Card body-->
+    
+    <!--begin::Card body-->
 
-<div class="panel">
-    <div class="panel-body">
+    <div class="card-body pt-0">
 
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
         <div class="form">
-           
+
             @Html.HiddenFor(model => model.SucursalId)
 
             <div class="sub-title">
                 <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
             </div>
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <div class="input-group">
                     <span class="input-group-addon">Fecha Inicial</span>
-                    @Html.EditorFor(model => model.FechaInicial)
+                    @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
                     @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
-                    <span class="input-group-addon"></span>
-                </div>
-            </div>
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <div class="input-group">
+
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+
                     <span class="input-group-addon">Fecha Final</span>
-                    @Html.EditorFor(model => model.FechaFinal)
+                    @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
                     @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
-                    <span class="input-group-addon"></span>
+
+
                 </div>
             </div>
 
             <div class="clearfix"></div>
-            <hr />
+            <div class="separator my-5"></div>
             <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
                 <button type="submit" class="btn btn-success">Filtrar</button>
             </div>
             <br /><br />
+            <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+                <div class="card-title">
+                    <!--begin::Search-->
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+                        <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
+                    </div>
+                    <!--end::Search-->
+                    <!--begin::Export buttons-->
+                    <div id="kt_datatable_example_1_export" class="d-none"></div>
+                    <!--end::Export buttons-->
+                </div>
+                <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                    <!--begin::Export dropdown-->
+                    <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                        <i class="fa fa-file-export"></i>
+                        Exportar
+                    </button>
+                    <!--begin::Menu-->
+                    <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3" data-kt-export="copy">
+                                Copiar a portapapeles
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                Exportar a Excel
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                Exportar a CSV
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                Exportar a PDF
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+                    </div>
+                    <!--end::Menu-->
+                    <!--end::Export dropdown-->
+                    <!--begin::Hide default export buttons-->
+                    <div id="kt_datatable_example_buttons" class="d-none"></div>
+                    <!--end::Hide default export buttons-->
+                </div>
+            </div>
             <div class="container" style="width:102%">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="table-responsive">
-                            <table class="table table-condensed dataTable" data-descarga="true" data-columna="3" data-orden="desc">
+                            <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
                                 <thead>
-                                    <tr>
-                                        <th>
+                                    <!--begin::Table row-->
+                                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase">
+                                        <th class="min-w-100px">
                                             Receptor
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             UUID
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Serie
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Folio
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Fecha
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Moneda
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Subtotal
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Descuento
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Total Impuestos Trasladados
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Total Impuestos Retenidos
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Total
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Tipo Comprobante
                                         </th>
-                                        <th>
+                                        <th class="min-w-100px">
                                             Complemento de Pago
                                         </th>
                                     </tr>
@@ -103,45 +160,45 @@
                                 <tbody>
                                     @for (int x = 0; x < Model.FacturasEmitidas.Count; x++)
                                     {
-                                        <tr>
-                                            
+                                        <tr class="odd">
+
                                             <td>
                                                 @Model.FacturasEmitidas[x].Receptor.RazonSocial
                                                 @Html.HiddenFor(model => model.FacturasEmitidas[x].Id)
-                                                 
-                                               
+
+
                                             </td>
                                             <td>
                                                 @Model.FacturasEmitidas[x].Uuid
-                                                
+
                                             </td>
                                             <td>
                                                 @Model.FacturasEmitidas[x].Serie
-                                                
+
                                             </td>
                                             <td>
                                                 @Model.FacturasEmitidas[x].Folio
-                                                
+
                                             </td>
                                             <td>
                                                 @Model.FacturasEmitidas[x].Fecha
-                                                
+
                                             </td>
                                             <td class="text-center">
                                                 @Model.FacturasEmitidas[x].Moneda
-                                                
+
                                             </td>
                                             <td class="text-right">
                                                 @Html.Raw(Model.FacturasEmitidas[x].Subtotal.ToString("c"))
-                                                
+
                                             </td>
                                             <td class="text-right">
                                                 @Model.FacturasEmitidas[x].Descuento
-                                                
+
                                             </td>
                                             <td class="text-right">
                                                 @Model.FacturasEmitidas[x].TotalImpuestosTrasladados
-                                               
+
                                             </td>
                                             <td class="text-right">
                                                 @Model.FacturasEmitidas[x].TotalImpuestosRetenidos
@@ -155,7 +212,7 @@
                                             <td class="text-center">
                                                 @if (Model.FacturasEmitidas[x].FacturaEmitidaPagada)
                                                 {
-                                                    @Html.ActionLink(Model.FacturasEmitidas[x].SerieComplementoPago + "-" + Model.FacturasEmitidas[x].FolioComplementoPago, "Descargar", "ComplementosPagos", new { id = Model.FacturasEmitidas[x].FacturaComplementoPagoId }, new { @class = "font-size-12" })
+                                                    @Html.ActionLink(Model.FacturasEmitidas[x].SerieComplementoPago + "-" + Model.FacturasEmitidas[x].FolioComplementoPago, "DescargarXml", "ComplementosPagos", new { id = Model.FacturasEmitidas[x].FacturaComplementoPagoId }, new { @class = "font-size-12" })
                                                 }
                                                 else
                                                 {
@@ -172,12 +229,7 @@
             </div>
         </div>
 
-            }
-        </div>
+        }
+    </div>
 </div>
 
-<script>
-    var sistema = document.getElementById("reportes");
-
-    sistema.classList.add('here');
-</script>

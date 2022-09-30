@@ -18,6 +18,7 @@ namespace APBox.Controllers
             ViewBag.Controller = "Home";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Inicio";
+            ViewBag.NameHere = "Home";
 
             return View(homeModel);
         }

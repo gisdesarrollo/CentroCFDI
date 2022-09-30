@@ -29,7 +29,7 @@
                                                                         Descarga de Layout
                                                                     </h3>
                                                                     <p>Descarga el layout de los Trabajadores, si el switch prepopulado está prendido, descargará el layout lleno con los datos actuales.</p>
-                                                                    <hr />
+                                                                    <div class="separator my-5"></div>
 
                                                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                         @Html.LabelFor(model => model.Prepopulado, htmlAttributes: new { @class = "form-label" })
@@ -40,7 +40,7 @@
                                                                     </div>
 
                                                                     <div class="clearfix"></div>
-                                                                    <hr />
+                                                                    <div class="separator my-5"></div>
 
                                                                     <button class="btn btn-alt btn-hover btn-primary pull-right multiple" type="submit" value="Descargar" name="actionName">
                                                                         <span>Descargar</span>
@@ -57,14 +57,14 @@
                                                                         Carga de cambios
                                                                     </h3>
                                                                     <p>Sube el layout con tus cambios, solo se tomarán en cuenta los registros que hayas modificado para actualizar la base de trabajadores.</p>
-                                                                    <hr />
+                                                                    <div class="separator my-5"></div>
                                                                     <div class="form-group">
                                                                         <label class="control-label">Seleccionar Archivo</label>
                                                                         <input type="file" name="FileUpload" id="file" class="minusculas">
                                                                     </div>
                                                                     <br />
                                                                     <div class="clearfix"></div>
-                                                                    <hr />
+                                                                    <div class="separator my-5"></div>
 
                                                                     <button class="btn btn-alt btn-hover btn-success pull-right multiple" type="submit" name="actionName" value="Cargar">
                                                                         <span>Cargar</span>

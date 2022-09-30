@@ -26,7 +26,10 @@ namespace APBox.Controllers.Operaciones
                 Prepopulado = true,
                 SucursalId = ObtenerSucursal()
             };
-
+            ViewBag.Controller = "CargasMasivas";
+            ViewBag.Action = "RelacionClientesBancos";
+            ViewBag.ActionES = "Relacion Cliente Banco";
+            ViewBag.NameHere = "catalogo";
             return View(cargasMasivasModel);
         }
 
@@ -75,6 +78,10 @@ namespace APBox.Controllers.Operaciones
                 Prepopulado = true,
                 SucursalId = ObtenerSucursal()
             };
+            ViewBag.Controller = "CargasMasivas";
+            ViewBag.Action = "RelacionSucursalesBancoss";
+            ViewBag.ActionES = "Relacion Sucursal Banco";
+            ViewBag.NameHere = "catalogo";
 
             return View(cargasMasivasModel);
         }

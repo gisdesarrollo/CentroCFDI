@@ -108,6 +108,8 @@
     <script src="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 
     <script>
+           @(ViewBag.NameHere).classList.add('here');
+
         $(document).ready(function () {
             var element = document.getElementById('chart_clientes_por_mes');
             var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
@@ -231,7 +233,7 @@
     <!--begin::Custom Javascript(used by this page)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
     <script src="~/_CDN/assets/js/custom/widgets.js"></script>
-    <script src="~/_CDN/custom/js-custom/scripts.js"></script>
+    <!--<script src="~/_CDN/custom/js-custom/scripts.js"></script>-->
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 </body>

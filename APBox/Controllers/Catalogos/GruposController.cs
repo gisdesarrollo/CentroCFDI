@@ -28,6 +28,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
+            ViewBag.NameHere = "sistema";
 
             return View(_db.Grupos.ToList());
 
@@ -67,7 +68,8 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Grupos"; //se referencía al nombre del controlador
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            
+            ViewBag.NameHere = "sistema";
+
             return View(grupo);
     }
 
@@ -100,6 +102,10 @@ namespace APBox.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            ViewBag.Controller = "Grupos"; //se referencía al nombre del controlador
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "sistema";
             return View(grupo);
         }
 

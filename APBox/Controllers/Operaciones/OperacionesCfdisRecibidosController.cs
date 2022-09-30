@@ -43,9 +43,10 @@ namespace APBox.Controllers.Operaciones
             _operacionesCfdisRecibidos = new OperacionesCfdisRecibidos(sucursalId, fechaInicial, fechaFinal);
             var cfdis = _operacionesCfdisRecibidos.ObtenerFacturasRecibidas();
 
-            ViewBag.Controller = "FacturasRecibidas";
+            ViewBag.Controller = "OperacionesCfdisRecibidos";
             ViewBag.Action = "VerTodos";
-            ViewBag.ActionES = "Index";
+            ViewBag.ActionES = "Ver Todos";
+            ViewBag.NameHere = "cfdi";
 
             return View(cfdis);
         }
@@ -53,6 +54,10 @@ namespace APBox.Controllers.Operaciones
         public ActionResult ReporteIndividual(int facturaRecibidaId)
         {
             var facturaRecibida = _db.FacturasRecibidas.Find(facturaRecibidaId);
+            ViewBag.Controller = "OperacionesCfdisRecibidos";
+            ViewBag.Action = "ReporteIndividual";
+            ViewBag.ActionES = "Reporte Individual";
+            ViewBag.NameHere = "cfdi";
             return View(facturaRecibida);
         }
 

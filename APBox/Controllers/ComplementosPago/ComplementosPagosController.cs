@@ -61,6 +61,11 @@ namespace APBox.Controllers.ComplementosPago
 
 
             complementosPagosModel.ComplementosPago = _logicaFacadeFacturas.Filtrar(fechaInicial, fechaFinal,false, ObtenerSucursal());
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            ViewBag.NameHere = "emision";
             return View(complementosPagosModel);
         }
 
@@ -143,6 +148,10 @@ namespace APBox.Controllers.ComplementosPago
                 }
             };
 
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "emision";
             return View(complementoPago);
         }
 
@@ -237,6 +246,10 @@ namespace APBox.Controllers.ComplementosPago
             PopulaExportacion();
             complementoPago.IdTipoRelacion = complementoPago.TipoRelacion;
 
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "emision";
             return View(complementoPago);
         }
 

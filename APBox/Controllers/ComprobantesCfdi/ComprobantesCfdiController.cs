@@ -54,6 +54,11 @@ namespace APBox.Controllers.ComprobantesCfdi
             comprobanteCfdiModel.FechaFinal = fechaFinal;
 
             comprobanteCfdiModel.ComprobanteCfdi = _logicaFacadeFacturas.FiltrarComprobanteCFDI(fechaInicial, fechaFinal, false, null, ObtenerSucursal());
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            ViewBag.NameHere = "emision";
             return View(comprobanteCfdiModel);
         }
 
@@ -120,6 +125,10 @@ namespace APBox.Controllers.ComprobantesCfdi
 
                 }
             };
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "emision";
             return View(comprobante);
         }
 
@@ -280,9 +289,12 @@ namespace APBox.Controllers.ComprobantesCfdi
                  }
 
              };
-            
 
 
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "emision";
             return View(CCfdi);
         }
 

@@ -1,4 +1,2 @@
-﻿
-var sistema = document.getElementById("catalogo");
-sistema.classList.add('here');
-
+﻿//var sistema = document.getElementById("catalogo");
+//sistema.classList.add('here');

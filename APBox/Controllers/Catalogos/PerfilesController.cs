@@ -28,7 +28,8 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-                        
+            ViewBag.NameHere = "sistema";
+
             return View(perfiles);
         }
 
@@ -59,7 +60,8 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Perfiles";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            
+            ViewBag.NameHere = "sistema";
+
             return View(perfil);
         }
 
@@ -92,6 +94,10 @@ namespace APBox.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            ViewBag.Controller = "Perfiles";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "sistema";
             return View(perfil);
         }
 

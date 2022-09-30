@@ -4,110 +4,114 @@
 }
 @Html.Partial("_ComplementoConceptos")
 @Html.Partial("_Modal")
-<div id="page-title">
-    <div class="row">
-        <div class="col-lg-8 col-md-6">
-            <h2>Crear Concepto</h2>
-        </div>
-        <div class="col-lg-4 col-md-6">
-            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
-                <span class="fa fa-question-circle"></span>
-            </button>
+
+
+<div class="card card-flush">
+    <div id="page-title">
+        <div class="row">
+            <div class="col-lg-8 col-md-6">
+                <h2>Crear</h2>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
+                    <span class="fa fa-question-circle"></span>
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="panel">
-    <div class="panel-body">
-        <div class="form">
+    <div  class="card-body pt-0">
+        <div class="form row">
             <div class="clearfix"></div>
 
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ClavesProdServ, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ClavesProdServ, new { htmlAttributes = new { @class = "form-control", @id = "ClaveProdServ_IdConceptos" } })
+                @Html.LabelFor(model => model.ClavesProdServ, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ClavesProdServ, new { htmlAttributes = new { @class = "form-control md-2", @id = "ClaveProdServ_IdConceptos" } })
                 @Html.ValidationMessageFor(model => model.ClavesProdServ, "", new { @class = "text-danger" })
                 <div id="ClaveProdServcon" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.ClavesUnidad, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ClavesUnidad, new { htmlAttributes = new { @class = "form-control", @id = "ClavesUnidadConc" } })
+                @Html.LabelFor(model => model.ClavesUnidad, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ClavesUnidad, new { htmlAttributes = new { @class = "form-control md.2", @id = "ClavesUnidadConc" } })
                 @Html.ValidationMessageFor(model => model.ClavesUnidad, "", new { @class = "text-danger" })
                 <div id="ClaveUnidadConcepto" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control", @id = "Cantidad" } })
+                @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control md-2", @id = "Cantidad" } })
                 @Html.ValidationMessageFor(model => model.Cantidad, "", new { @class = "text-danger" })
                 <div id="CantidadConcepto" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.Unidad, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Unidad, new { htmlAttributes = new { @class = "form-control", @id = "UnidadConceptos", @readonly = "readonly" } })
+                @Html.LabelFor(model => model.Unidad, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Unidad, new { htmlAttributes = new { @class = "form-control md-2", @id = "UnidadConceptos", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.Unidad, "", new { @class = "text-danger" })
                 <div id="UnidadConceptosCon" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.NoIdentificacion, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.NoIdentificacion, new { htmlAttributes = new { @class = "form-control", @id = "NoIdentificacion" } })
+                @Html.LabelFor(model => model.NoIdentificacion, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.NoIdentificacion, new { htmlAttributes = new { @class = "form-control md-2", @id = "NoIdentificacion" } })
                 @Html.ValidationMessageFor(model => model.NoIdentificacion, "", new { @class = "text-danger" })
                 <div id="NoIdentificacionConcepto" style="color:red;"></div>
             </div>
             @*<div class="row">*@
             <div class="form-group col-xs-12 col-sm-6 col-md-6">
-                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", @id = "DescripcionConc" } })
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control md-2", @id = "DescripcionConc" } })
                 @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
             </div>
             @*</div>*@
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ValorUnitario, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ValorUnitario, new { htmlAttributes = new { @class = "form-control", @id = "ValorUnitario" } })
+                @Html.LabelFor(model => model.ValorUnitario, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ValorUnitario, new { htmlAttributes = new { @class = "form-control md-2", @id = "ValorUnitario" } })
                 @Html.ValidationMessageFor(model => model.ValorUnitario, "", new { @class = "text-danger" })
                 <div id="ValorUnitarioConceptos" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.Importe, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Importe, new { htmlAttributes = new { @class = "form-control", @id = "Importe", @readonly = "readonly" } })
+                @Html.LabelFor(model => model.Importe, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Importe, new { htmlAttributes = new { @class = "form-control md-2", @id = "Importe", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.Importe, "", new { @class = "text-danger" })
                 <div id="ImporteConceptos" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.Descuento, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Descuento, new { htmlAttributes = new { @class = "form-control", @id = "Descuento" } })
+                @Html.LabelFor(model => model.Descuento, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Descuento, new { htmlAttributes = new { @class = "form-control md-2", @id = "Descuento" } })
                 @Html.ValidationMessageFor(model => model.Descuento, "", new { @class = "text-danger" })
                 <div id="DescuentoConceptos" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control", @id = "objetoImpuestoDrop" })
+                @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select", @id = "objetoImpuestoDrop" })
                 @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
             </div>
             <div id="habilita-impuesto" hidden>
                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-control", @id = "CImpuestoT" })
+                    @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-control", @id = "CImpuestoR" })
+                    @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="clearfix"></div>
-            <hr />
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
-                    <span>Regresar</span>
-                    <i class="glyph-icon icon-arrow-left"></i>
+            <div class="separator my-5"></div>
+            <div class="d-flex justify-content-end">
+                <!--begin::Button-->
+                <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
+                <!--end::Button-->
+                <!--begin::Button-->
+
+                <button type="submit" id="crearConcepto" class="btn btn-alt btn-primary">
+                    <span class="indicator-label">Crear</span>
                 </button>
-                <button type="submit" id="crearConcepto" class="btn btn-alt btn-blue-alt" style="text-transform: uppercase;">
-                    <span>Crear</span>
-                </button>
+                <!--end::Button-->
             </div>
         </div>
     </div>

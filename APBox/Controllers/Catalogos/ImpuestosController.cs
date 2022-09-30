@@ -25,6 +25,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
+            ViewBag.NameHere = "catalogo";
 
             return View(cat_impuestos);
         }
@@ -75,7 +76,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Impuestos";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-
+            ViewBag.NameHere = "catalogo";
 
             return View(cat_subImpuestoC);
         }
@@ -118,7 +119,10 @@ namespace APBox.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
-
+            ViewBag.Controller = "Impuestos";
+            ViewBag.Action = "Editar";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "catalogo";
             return View(cat_SubImpuestoC);
         }
         public ActionResult EditarImpuesto(int Id, String Nombre, string TipoImp, int Base, c_ImpuestoCP Impuesto, c_TipoFactor TipoFactor, Decimal TasaOCuota/*, Decimal Importe*/)

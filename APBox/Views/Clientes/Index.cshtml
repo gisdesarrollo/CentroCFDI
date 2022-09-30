@@ -8,7 +8,7 @@
     <div class="card-header card-title d-flex align-items-center position-relative my-1">
         <h2>Puedes asignar los bancos y cambiar datos de la información del cliente</h2>
 
-        <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("RelacionSucursalesBancos", "CargasMasivas")';return false;">
+        <button type="submit" class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("RelacionClientesBancos", "CargasMasivas")';return false;">
             <span>Bancos por Layout</span>
             <i class="glyph-icon icon-arrow-right"></i>
         </button>
@@ -161,9 +161,3 @@
         </table>
     </div>
 </div>
-
-
-<script>
-    var sistema = document.getElementById("catalogo");
-    sistema.classList.add('here');
-</script>
