@@ -1,171 +1,240 @@
 ﻿@model API.Catalogos.Usuario
 
-@{
-    ViewBag.Title = "Editar";
-}
+@{ ViewBag.Title = "Editar"; }
 
 <script src="~/Content/Infodextra/Usuarios.js"></script>
 
-<div id="page-title">
-    <h2>Editar Usuario</h2>
-</div>
 
-<div class="panel">
-    <div class="panel-body">
-        <h3 class="title-hero">
-            Información
-        </h3>
+
+<div class="card card-flush py-4">
+    <div class="card-header">
+        <div class="card-title">
+            <h2>Editar</h2>
+        </div>
+    </div>
+    <!--begin::Card body-->
+    <div class="card-body pt-0">
+        <div class="row">
+            <div class="pb-10">
+                <!--begin::Information-->
+                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                    <!--begin::Icon-->
+                    <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                    <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                            <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                            <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    <!--end::Icon-->
+                    <!--begin::Description-->
+                    <div class="text-gray-700 fw-bold fs-5">
+                        Información
+
+                    </div>
+                    <!--end::Description-->
+                </div>
+                <!--end::Information-->
+            </div>
+        </div>
+
         <div class="row">
             @using (Html.BeginForm())
-                {
-                @Html.AntiForgeryToken()
+            {
+@Html.AntiForgeryToken()
 
                 @Html.HiddenFor(model => model.Id)
-                @Html.HiddenFor(model => model.GrupoId)
+                                @Html.HiddenFor(model => model.GrupoId)
 
-                <div class="form">
-                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+                                                <div class="form row">
+                                                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                        @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                        @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                        @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                        @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control minusculas" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control mb-2 minusculas" } })
+                                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.Rfc, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Rfc, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Rfc, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.Rfc, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.Rfc, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                        @Html.ValidationMessageFor(model => model.Rfc, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.PerfilId, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select mb-2" })
+                                                        @Html.ValidationMessageFor(model => model.PerfilId, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                        @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.TodasSucursales, htmlAttributes: new { @class = "control-label" })
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.TodasSucursales, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TodasSucursales, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.TodasSucursales, htmlAttributes: new { @class = "form-label" })
+                                                        <div class="form-check form-check-custom form-check-solid mb-2">
+                                                            @Html.EditorFor(model => model.TodasSucursales, new { htmlAttributes = new { @class = "form-check-input mb-2" } })
+                                                            @Html.ValidationMessageFor(model => model.TodasSucursales, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
-                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
+                                                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-select mb-2" })
+                                                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                                    </div>
 
-                    <div class="clearfix"></div>
+                                                    <div class="clearfix"></div>
 
-                    <hr />
+                                                    <div class="separator my-5"></div>
 
-                    <div class="col-lg-10 col-lg-offset-1">
-                        <div class="content-box">
-                            <h3 class="content-box-header bg-success">
-                                Sucursales
-                            </h3>
-                            <div class="content-box-wrapper">
+                                                    <div class="col-lg-10 col-lg-offset-1">
+                                                        <div class="content-box">
+                                                            <div class="row">
+                                                                <div class="pb-10">
+                                                                    <!--begin::Information-->
+                                                                    <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                                                        <!--begin::Icon-->
+                                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                                                                        <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
+                                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                                                                                <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                                                                <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->
+                                                                        <!--end::Icon-->
+                                                                        <!--begin::Description-->
+                                                                        <div class="text-gray-700 fw-bold fs-5">
+                                                                            Sucursales
 
-                                <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                    <label class="control-label">Sucursal</label>
-                                    @Html.DropDownList("SucursalId", null, "Favor de hacer su selección", new { @class = "form-control select2" })
-                                    @Html.ValidationMessageFor(model => model.Sucursal.Id, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                    <label class="control-label">Agregar</label> <br />
-                                    <button id="agregarSucursal" class="btn btn-round btn-primary">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
+                                                                        </div>
+                                                                        <!--end::Description-->
+                                                                    </div>
+                                                                    <!--end::Information-->
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-box-wrapper">
+                                                                <div class="row">
+                                                                    <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                                                        <label class="control-label">Sucursal</label>
+                                                                        @Html.DropDownList("SucursalId", null, "Favor de hacer su selección", new { @class = "form-select select2 mb-2" })
+                                                                        @Html.ValidationMessageFor(model => model.Sucursal.Id, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                    <div class="form-group col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                                        <label class="control-label">Agregar</label> <br />
+                                                                        <button id="agregarSucursal" class="btn btn-round btn-primary">
+                                                                            <i class="fa fa-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="clearfix"></div>
+                                                                <div class="content-box">
+                                                                    <div class="row">
+                                                                        <div class="pb-10">
+                                                                            <!--begin::Information-->
+                                                                            <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                                                                <!--begin::Icon-->
+                                                                                <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                                                                                <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
+                                                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                                                                                        <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                                                                        <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                                                                                    </svg>
+                                                                                </span>
+                                                                                <!--end::Svg Icon-->
+                                                                                <!--end::Icon-->
+                                                                                <!--begin::Description-->
+                                                                                <div class="text-gray-700 fw-bold fs-5">
+                                                                                    Sucursales asignadas
+
+                                                                                </div>
+                                                                                <!--end::Description-->
+                                                                            </div>
+                                                                            <!--end::Information-->
+                                                                        </div>
+                                                                    </div>
 
 
-                                <div class="clearfix"></div>
-
-                                <div class="content-box">
-                                    <h3 class="content-box-header bg-success">
-                                        Sucursales asignadas
-                                    </h3>
-                                    <div class="content-box-wrapper">
-                                        <div class="row no-margin-bottom center">
-                                            <div class="col-lg-10">
-                                                <label>Sucursal</label>
-                                            </div>
-                                            <div class="col-lg-1">
-                                                <label>Remover</label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row" id="sucursales">
-                                                @if (Model.Sucursales != null)
-                                                    {
-                                                    foreach (var detalle in Model.Sucursales)
-                                                        {
-                                                        @Html.Partial("~/Views/Usuarios/Sucursales.cshtml", detalle)
+                                                                    <div class="content-box-wrapper">
+                                                                        <div class="row no-margin-bottom center">
+                                                                            <div class="col-lg-10">
+                                                                                <label>Sucursal</label>
+                                                                            </div>
+                                                                            <div class="col-lg-1">
+                                                                                <label>Remover</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row" id="sucursales">
+                                                                                @if (Model.Sucursales != null)
+                                                                                {
+                                                                                    foreach (var detalle in Model.Sucursales)
+                                                                                    {
+                                                                @Html.Partial("~/Views/Usuarios/Sucursales.cshtml", detalle)}
                                                         }
-                                                    }
-                                            </div>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+                                                                </div>
 
-                            </div>
-                        </div>
-                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                    <div class="clearfix"></div>
+                                                    <div class="clearfix"></div>
 
-                    <hr />
+                                                    <div class="separator my-5"></div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                        <button class="btn btn-alt btn-default" onclick="location.href='@Url.Action("Index", "Usuarios")';return false;">
-                            <span>Regresar</span>
-                        </button>
-                        <button type="submit" class="btn btn-alt btn-blue-alt">
-                            <span>Guardar</span>
-                        </button>
-                    </div>
-                </div>
-                }
+                                                    <div class="d-flex justify-content-end">
+                                                        <!--begin::Button-->
+                                                        <a href="@Url.Action("Index", "Usuarios")" class="btn btn-light me-5">Cancelar</a>
+                                                        <!--end::Button-->
+                                                        <!--begin::Button-->
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <span class="indicator-label">Guardar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>}
         </div>
     </div>
 </div>

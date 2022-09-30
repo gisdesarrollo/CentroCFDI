@@ -8,100 +8,124 @@
 @Html.HiddenFor(model => model.ImpuestoTID)
 @Html.HiddenFor(model => model.ImpuestoRID)
 
-<div class="panel">
-    <div class="panel-body">
-        <h3 class="title-hero">
-            Información
-        </h3>
-        <div class="form">
+<div class="card card-flush py-4">
+    <!--begin::Card body-->
+    <div class="card-body pt-0">
+        <div class="row">
+            <div class="pb-10">
+                <!--begin::Information-->
+                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                    <!--begin::Icon-->
+                    <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                    <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                            <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                            <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    <!--end::Icon-->
+                    <!--begin::Description-->
+                    <div class="text-gray-700 fw-bold fs-5">
+                        Información
+
+                    </div>
+                    <!--end::Description-->
+                </div>
+                <!--end::Information-->
+            </div>
+        </div>
+        <div class="form row">
             <div class="clearfix"></div>
 
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ClavesProdServ, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ClavesProdServ, new { htmlAttributes = new { @class = "form-control", @id = "ClaveProdServ_IdConceptos" } })
+                @Html.LabelFor(model => model.ClavesProdServ, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ClavesProdServ, new { htmlAttributes = new { @class = "form-control md-2", @id = "ClaveProdServ_IdConceptos" } })
                 @Html.ValidationMessageFor(model => model.ClavesProdServ, "", new { @class = "text-danger" })
                 <div id="ClaveProdServcon" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.ClavesUnidad, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ClavesUnidad, new { htmlAttributes = new { @class = "form-control", @id = "ClavesUnidadConc" } })
+                @Html.LabelFor(model => model.ClavesUnidad, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ClavesUnidad, new { htmlAttributes = new { @class = "form-control md-2", @id = "ClavesUnidadConc" } })
                 @Html.ValidationMessageFor(model => model.ClavesUnidad, "", new { @class = "text-danger" })
                 <div id="ClaveUnidadConcepto" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control", @id = "Cantidad" } })
+                @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control md-2", @id = "Cantidad" } })
                 @Html.ValidationMessageFor(model => model.Cantidad, "", new { @class = "text-danger" })
                 <div id="CantidadConcepto" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.Unidad, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Unidad, new { htmlAttributes = new { @class = "form-control", @id = "UnidadConceptos" } })
+                @Html.LabelFor(model => model.Unidad, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Unidad, new { htmlAttributes = new { @class = "form-control md-2", @id = "UnidadConceptos" } })
                 @Html.ValidationMessageFor(model => model.Unidad, "", new { @class = "text-danger" })
                 <div id="UnidadConceptosCon" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 <br />
-                @Html.LabelFor(model => model.NoIdentificacion, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.NoIdentificacion, new { htmlAttributes = new { @class = "form-control", @id = "NoIdentificacion" } })
+                @Html.LabelFor(model => model.NoIdentificacion, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.NoIdentificacion, new { htmlAttributes = new { @class = "form-control md-2", @id = "NoIdentificacion" } })
                 @Html.ValidationMessageFor(model => model.NoIdentificacion, "", new { @class = "text-danger" })
                 <div id="NoIdentificacionConcepto" style="color:red;"></div>
             </div>
             @*<div class="row">*@
             <div class="form-group col-xs-12 col-sm-6 col-md-6">
-                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", @id = "DescripcionConc" } })
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control md-2", @id = "DescripcionConc" } })
                 @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
             </div>
             @*</div>*@
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ValorUnitario, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ValorUnitario, new { htmlAttributes = new { @class = "form-control", @id = "ValorUnitario" } })
+                @Html.LabelFor(model => model.ValorUnitario, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ValorUnitario, new { htmlAttributes = new { @class = "form-control md-2", @id = "ValorUnitario" } })
                 @Html.ValidationMessageFor(model => model.ValorUnitario, "", new { @class = "text-danger" })
                 <div id="ValorUnitarioConceptos" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.Importe, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Importe, new { htmlAttributes = new { @class = "form-control", @id = "Importe" } })
+                @Html.LabelFor(model => model.Importe, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Importe, new { htmlAttributes = new { @class = "form-control md-2", @id = "Importe" } })
                 @Html.ValidationMessageFor(model => model.Importe, "", new { @class = "text-danger" })
                 <div id="ImporteConceptos" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.Descuento, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Descuento, new { htmlAttributes = new { @class = "form-control", @id = "Descuento" } })
+                @Html.LabelFor(model => model.Descuento, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Descuento, new { htmlAttributes = new { @class = "form-control md-2", @id = "Descuento" } })
                 @Html.ValidationMessageFor(model => model.Descuento, "", new { @class = "text-danger" })
                 <div id="DescuentoConceptos" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control", @id = "objetoImpuestoDrop" })
+                @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select", @id = "objetoImpuestoDrop" })
                 @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
             </div>
 
             <div id="habilita-impuesto" hidden>
                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-control", @id = "CImpuestoT" })
+                    @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-control", @id = "CImpuestoR" })
+                    @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="clearfix"></div>
-            <hr />
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
-                    <span>Regresar</span>
-                    <i class="glyph-icon icon-arrow-left"></i>
-                </button>
-                <button type="submit" id="EditarConcepto" data-id="@Model.Id" class="btn btn-alt btn-blue-alt" style="text-transform: uppercase;">
-                    <span>GUARDAR</span>
+            <div class="separator my-5"></div>
+            <div class="d-flex justify-content-end">
+                <!--begin::Button-->
+                <a href="@Url.Action("Index", "Conceptos")" class="btn btn-light me-5">Cancelar</a>
+                <!--end::Button-->
+                <!--begin::Button-->
+                
+                <button type="submit" id="EditarConcepto" data-id="@Model.Id" class="btn btn-primary" >
+                    <span class="indicator-label">Guardar</span>
                 </button>
             </div>
         </div>

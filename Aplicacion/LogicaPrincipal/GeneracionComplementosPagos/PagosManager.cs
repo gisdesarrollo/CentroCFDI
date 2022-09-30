@@ -646,5 +646,28 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             }
             return result;
         }
+
+        public String GenerarZipFacturaRecibida(int facturaId)
+        {
+            try
+            {
+                var facturaRecibida = _db.FacturasRecibidas.Find(facturaId);
+                var pathXml = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.xml", facturaRecibida.Serie, facturaRecibida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+
+                if (File.Exists(pathXml))
+                {
+                    File.Delete(pathXml);
+                }
+
+                //guardar string en un archivo
+                System.IO.File.WriteAllText(pathXml, Encoding.UTF8.GetString(facturaRecibida.ArchivoFisicoXml));
+
+                return pathXml;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -6,18 +6,20 @@
     <!--begin::Button-->
     @if (User.IsInRole("INSERCION")) //SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
     {
-       if (ViewBag.Button == "Crear")
+        if (ViewBag.Button == "Crear")
         {
+           
+            
             <a href="@Url.Action("Create", ViewBag.Controller)" class="btn btn-sm btn-primary">Crear Nuevo</a>
-
+           
         }
         else
         {
 
-    } 
-    
-    
-   }<!--end::Button-->  
+        }
+
+
+    }<!--end::Button-->  
           
     </div>
 <!--end::Toolbar-->

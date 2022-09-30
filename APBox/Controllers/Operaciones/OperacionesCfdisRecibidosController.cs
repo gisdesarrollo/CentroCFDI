@@ -43,6 +43,10 @@ namespace APBox.Controllers.Operaciones
             _operacionesCfdisRecibidos = new OperacionesCfdisRecibidos(sucursalId, fechaInicial, fechaFinal);
             var cfdis = _operacionesCfdisRecibidos.ObtenerFacturasRecibidas();
 
+            ViewBag.Controller = "FacturasRecibidas";
+            ViewBag.Action = "VerTodos";
+            ViewBag.ActionES = "Index";
+
             return View(cfdis);
         }
 
@@ -319,16 +323,26 @@ namespace APBox.Controllers.Operaciones
 
         public ActionResult Descargar(int facturaRecibidaId)
         {
-            String archivoZip = null;
+            String archivoPath = null;
             try
             {
-                //archivoZip = _pagosManager.GenerarZipFacturaRecibida(facturaRecibidaId);
+                archivoPath = _pagosManager.GenerarZipFacturaRecibida(facturaRecibidaId);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return new FileStreamResult(new FileStream(archivoZip, FileMode.Open), "application/zip");
+
+            byte[] byteArchivo = System.IO.File.ReadAllBytes(archivoPath);
+            string contentType = MimeMapping.GetMimeMapping(archivoPath);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = Path.GetFileName(archivoPath),
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            return File(byteArchivo, contentType);
         }
 
         #endregion

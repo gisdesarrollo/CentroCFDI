@@ -40,6 +40,11 @@ namespace APBox.Controllers.Catalogos
             };
 
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+
+            ViewBag.Controller = "FacturasEmitidas";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+           
             return View(facturasEmitidasModel);
         }
 
