@@ -18,13 +18,14 @@
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function () {
-               
-                window.location.href = "Index"
-            })
-            .fail(function (jqxhr, textStatus, error) {
-                alert("Favor de llenar todos los datos para los detalles ");
+                success: function () {
+                    window.location.href = "Index"
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles ");
+                }
             });
+            
             return false;
         });
         $("#EditarImpuesto").on('click', function () {
@@ -44,13 +45,14 @@
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function () {
-                
-                window.location.href = '../Index'
-            })
-            .fail(function (jqxhr, textStatus, error) {
-                alert("Favor de llenar todos los datos para los detalles ");
+                success: function () {
+                    window.location.href = '../Index'
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles ");
+                }
             });
+            
             return false;
         });
         $("#EliminarImpuesto").on('click', function () {
@@ -60,17 +62,17 @@
                 url: ' @Url.Action("EliminarImpuesto", "Impuestos")',
                 data: JSON.stringify({
                     Id: $("#EliminarImpuesto").data("id")
-                 }),
+                }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function () {
-                
-                window.location.href = '../Index'
-               
-            })
-            .fail(function (jqxhr, textStatus, error) {
+                success: function () {
+                    window.location.href = '../Index'
+                },
+                error: function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles ");
+                }
             });
+            
             return false;
         });
     });

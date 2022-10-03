@@ -1,5 +1,6 @@
-﻿<script>
-    $(function () {
+﻿
+<script>
+    $(function(){
         $('#ValorUnitario').on("keyup", function () {
             calculo();
         });
@@ -14,7 +15,7 @@
             precio = cero($("#ValorUnitario").val());
             cantidad = cero($("#Cantidad").val());
             multi = cantidad * precio;
-            
+
             $("#Importe").val(multi);
         }
         function cero(valor) {
@@ -25,34 +26,35 @@
             }
         }
         $("#EliminarConcepto").on('click', function () {
-            
+
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("EliminarConcepto", "Conceptos")',
                 data: JSON.stringify({
                     Id: $("#EliminarConcepto").data("id")
-                 }),
+                }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function () {
-                window.location.href = "../Index"
-            })
-            .fail(function (jqxhr, textStatus, error) {
+                success: function () {
+                    window.location.href = "../Index"
+                },
+                error: function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles ");
-            });
+                }
+           });
             return false;
         });
         $("#crearConcepto").on('click', function () {
             var ImpRet = $("#CImpuestoR").val();
             var ImpTras = $("#CImpuestoT").val();
-            
+
             if (ImpRet == "") {
                 ImpRet = 0;
             }
             if (ImpTras == "") {
                 ImpTras = 0;
             }
-          
+
             if ($('#objetoImpuestoDrop').val() ==="") {
                 alert("Favor de llenar El Campo Objeto Impuesto REQUERIDO!");
             } else {
@@ -76,12 +78,14 @@
                     }),
                     dataType: 'html',
                     contentType: "application/json; charset=utf-8",
-                }).success(function () {
-                    window.location.href = "Index"
-                })
-                    .fail(function (jqxhr, textStatus, error) {
+                    success: function () {
+                        window.location.href = "Index"
+                    },
+                    error: function (jqxhr, textStatus, error) {
                         alert("Favor de llenar todos los datos para los detalles ");
-                    });
+                    }
+                });
+              
                 return false;
             }
         });
@@ -96,7 +100,7 @@
             if (ImpTras == "") {
                 ImpTras = 0;
             }
-            
+
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("EditarConceptos", "Conceptos")',
@@ -117,12 +121,14 @@
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function () {
-                window.location.href = "../Index"
-            })
-            .fail(function (jqxhr, textStatus, error) {
-                alert("Favor de llenar todos los datos para los detalles ");
+                success: function () {
+                    window.location.href = "../Index"
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles ");
+                }
             });
+            
             return false;
         });
         //Validaciones
@@ -163,39 +169,46 @@
         });
 
     });
-  
+
     function ValidaEntrada(input, div,t) {
-         $.ajax({
-                type: 'POST',
-                url: ' @Url.Action("Buscar", "Conceptos")',
-             data: JSON.stringify({
-                 valor: input,
-                 tipo: t
-         }),
-          dataType: 'html',
+        $.ajax({
+            type: 'POST',
+            url: ' @Url.Action("Buscar", "Conceptos")',
+            data: JSON.stringify({
+                valor: input,
+                tipo: t
+            }),
+            dataType: 'html',
             contentType: "application/json; charset=utf-8",
-         }).success(function (valor) {
-             console.log(valor);
-             if (valor == 0) {
-                 $(div).html("El dato ingresado no existe");
-             }
-             else {
-                 $(div).html("");
-             }
+            success: function (valor) {
 
-         })
-         .fail(function (jqxhr, textStatus, error) {
+                if (valor == 0) {
+                    $(div).html("El dato ingresado no existe");
+                }
+                else {
+                    $(div).html("");
+                }
 
-         });
+            },
+            error: function (jqxhr, textStatus, error) {
+
+            }
+        });
+ 
     }
-    //habilita campos impuestos en conceptos 
+    //habilita campos impuestos en conceptos
     $(function () {
         $('#objetoImpuestoDrop').change(function () {
             var objetoImpuesto = $(this).val();
-
+            
             if (objetoImpuesto === "02") {
-                $('#habilita-impuesto').show();
-            } else { $('#habilita-impuesto').hide(); }
+                $('.habilita-impuesto').show();
+               } else {
+                $('.habilita-impuesto').hide();
+            }
         });
+
+        
+
     });
 </script>

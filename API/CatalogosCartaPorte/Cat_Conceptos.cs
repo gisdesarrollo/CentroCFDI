@@ -16,7 +16,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [DisplayName("producto o servicio")]
+        [DisplayName("Producto o servicio")]
         public string ClavesProdServ { get; set; }
 
         [DisplayName("Clave de producto o servicio")]

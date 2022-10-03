@@ -3,12 +3,14 @@
     ViewBag.Title = "Editar";
 }
 @Html.Partial("_ComplementoConceptos")
+@Html.Partial("_Modal")
 
 @Html.HiddenFor(model => model.ObjetoImpuestoId)
 @Html.HiddenFor(model => model.ImpuestoTID)
 @Html.HiddenFor(model => model.ImpuestoRID)
 
 <div class="card card-flush py-4">
+
     <!--begin::Card body-->
     <div class="card-body pt-0">
         <div class="row">
@@ -36,6 +38,15 @@
                 <!--end::Information-->
             </div>
         </div>
+        <!--begin::Card header-->
+        <div class="card-header">
+            <div class="col-lg-4 col-md-6">
+                <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+                    <span class="fa fa-question-circle"></span>
+                </button>
+            </div>
+        </div>
+        <!--end::Card header-->
         <div class="form row">
             <div class="clearfix"></div>
 
@@ -94,28 +105,28 @@
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 @Html.LabelFor(model => model.Descuento, htmlAttributes: new { @class = "form-label" })
-                @Html.EditorFor(model => model.Descuento, new { htmlAttributes = new { @class = "form-control md-2", @id = "Descuento" } })
+                @Html.EditorFor(model => model.Descuento, new { htmlAttributes = new { @class = "form-control mb-2", @id = "Descuento" } })
                 @Html.ValidationMessageFor(model => model.Descuento, "", new { @class = "text-danger" })
                 <div id="DescuentoConceptos" style="color:red;"></div>
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
-                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select", @id = "objetoImpuestoDrop" })
+                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "objetoImpuestoDrop" })
                 @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
             </div>
 
-            <div id="habilita-impuesto" hidden>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+            
+                <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
                     @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "CImpuestoT" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
                     @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "CImpuestoR" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            
             <div class="clearfix"></div>
             <div class="separator my-5"></div>
             <div class="d-flex justify-content-end">
@@ -123,8 +134,8 @@
                 <a href="@Url.Action("Index", "Conceptos")" class="btn btn-light me-5">Cancelar</a>
                 <!--end::Button-->
                 <!--begin::Button-->
-                
-                <button type="submit" id="EditarConcepto" data-id="@Model.Id" class="btn btn-primary" >
+
+                <button type="submit" id="EditarConcepto" data-id="@Model.Id" class="btn btn-primary">
                     <span class="indicator-label">Guardar</span>
                 </button>
             </div>
@@ -133,10 +144,11 @@
     </div>
 </div>
 <script>
+
     var objetoImpuesto = $('#ObjetoImpuestoId').val();
-    if (objetoImpuesto === "02") { $('#habilita-impuesto').show(); } else { $('#habilita-impuesto').hide(); }
-    $("#objetoImpuestoDrop").selectpicker('val', $("#ObjetoImpuestoId").val());
-    $("#CImpuestoT").selectpicker('val', $("#ImpuestoTID").val());
-    $("#CImpuestoR").selectpicker('val', $("#ImpuestoRID").val());
+    if (objetoImpuesto === "02") { $('.habilita-impuesto').show(); } else { $('.habilita-impuesto').hide(); }
+    $("#objetoImpuestoDrop").val($("#ObjetoImpuestoId").val());
+    $("#CImpuestoT").val($("#ImpuestoTID").val());
+    $("#CImpuestoR").val($("#ImpuestoRID").val());
 
 </script>

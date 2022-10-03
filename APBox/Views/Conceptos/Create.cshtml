@@ -7,20 +7,20 @@
 
 
 <div class="card card-flush">
-    <div id="page-title">
-        <div class="row">
-            <div class="col-lg-8 col-md-6">
-                <h2>Crear</h2>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
-                    <span class="fa fa-question-circle"></span>
-                </button>
-            </div>
+    <!--begin::Card header-->
+    <div class="card-header">
+        <div class="card-title">
+            <h2>Nuevo</h2>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+                <span class="fa fa-question-circle"></span>
+            </button>
         </div>
     </div>
-
-    <div  class="card-body pt-0">
+    <!--end::Card header-->
+    
+    <div class="card-body pt-0">
         <div class="form row">
             <div class="clearfix"></div>
 
@@ -83,24 +83,26 @@
                 @Html.ValidationMessageFor(model => model.Descuento, "", new { @class = "text-danger" })
                 <div id="DescuentoConceptos" style="color:red;"></div>
             </div>
+
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
                 @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select", @id = "objetoImpuestoDrop" })
                 @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
             </div>
-            <div id="habilita-impuesto" hidden>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
-                    @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
-                    @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
-                </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
+                @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
+                @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
             </div>
-            <div class="clearfix"></div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
+                @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
+                @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
+            </div>
+
+
+
             <div class="separator my-5"></div>
             <div class="d-flex justify-content-end">
                 <!--begin::Button-->
