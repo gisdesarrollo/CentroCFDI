@@ -95,16 +95,22 @@
     <!--end::Modals-->
     <!--begin::Javascript-->
     <script>var hostUrl = "~/_CDN/assets/";</script>
+
     <!--begin::Global Javascript Bundle(used by all pages)-->
     <script src="~/_CDN/assets/plugins/global/plugins.bundle.js"></script>
     <script src="~/_CDN/assets/js/scripts.bundle.js"></script>
     <!--end::Global Javascript Bundle-->
+
     <!--begin::Vendors Javascript(used by this page)-->
+    <link rel="stylesheet" href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" type="text/css" />
+    <script src="/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
+
     <!--begin::Custom Javascript(used by this page)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
     <script src="~/_CDN/assets/js/custom/widgets.js"></script>
     <!--end::Custom Javascript-->
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" type="text/css" />
     <script src="/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--begin::Javascript Initialize-->
@@ -230,12 +236,15 @@
                     }
                 }
             };
+=======
 
-            var chart = new ApexCharts(element, options);
-            chart.render();
-        });
-    </script>
+    <!--begin::Javascript Initialize-->
+>>>>>>> Stashed changes
 
+    <!--begin::Script que agrega DataTables por condición-->
+    <script src="~/_CDN/custom/js-custom/triggers-init.js"></script>
+
+<<<<<<< Updated upstream
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used by this page)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
@@ -243,6 +252,12 @@
 
     <!--<script src="~/_CDN/custom/js-custom/scripts.js"></script>-->
     <!--end::Custom Javascript-->
+=======
+    <!--begin::Script para diversas funciones-->
+    <script src="~/_CDN/custom/js-custom/scripts.js"></script>
+
+    <!--end::Javascript Initialize-->
+>>>>>>> Stashed changes
     <!--end::Javascript-->
 </body>
 <!--end::Body-->

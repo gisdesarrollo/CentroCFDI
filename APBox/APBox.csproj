@@ -2634,6 +2634,7 @@
     <Content Include="_CDN\custom\css-custom\custom.css" />
     <Content Include="_CDN\custom\js-custom\dataTable-init.js" />
     <Content Include="_CDN\custom\js-custom\forms-init.js" />
+    <Content Include="_CDN\custom\js-custom\scripts.js" />
     <Content Include="_CDN\custom\js-custom\triggers-init.js" />
     <Content Include="_CDN\custom\media\avatars\user.png" />
     <Content Include="_CDN\custom\media\background\bg1.jpg" />
