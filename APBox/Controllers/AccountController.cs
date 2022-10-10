@@ -517,7 +517,11 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.Bancos, "BANCOS");
             AddRole(um, userId, perfil.Proveedores, "PROVEEDORES");
             AddRole(um, userId, perfil.Clientes, "CLIENTES");
-
+            AddRole(um, userId, perfil.Conceptos, "CONCEPTOS");
+            AddRole(um, userId, perfil.Impuestos, "IMPUESTOS");
+            AddRole(um, userId, perfil.ComplementoPago, "COMPLEMENTOSPAGOS");
+            AddRole(um, userId, perfil.ComplementoCartaPorte, "COMPLEMENTOCARTAPORTE");
+            AddRole(um, userId, perfil.Cfdi, "CFDI");
             //Operaciones Catalogos
             AddRole(um, userId, perfil.Consulta, "CONSULTA");
             AddRole(um, userId, perfil.Insercion, "INSERCION");
@@ -532,7 +536,7 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.FacturasEmitidas, "FACTURASEMITIDAS");
             AddRole(um, userId, perfil.GeneracionManual, "GENERACIONMANUAL");
             AddRole(um, userId, perfil.GeneracionLayout, "GENERACIONLAYOUT");
-
+            AddRole(um, userId, perfil.FacturasRecibidas, "FACTURASRECIBIDAS");
             //Portal de Usuarios
             AddRole(um, userId, perfil.PortalUsuarios, "PORTALUSUARIOS");
 
@@ -541,7 +545,8 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.ReporteEstadisticasPorUsuario, "REPORTEESTADISTICASPORUSUARIO");
             AddRole(um, userId, perfil.ReporteEstadisticasPorProveedor, "REPORTEESTADISTICASPORPROVEEDOR");
             AddRole(um, userId, perfil.ReporteEstadisticasComplementosPago, "REPORTECOMPLEMENTOSPAGO");
-
+            AddRole(um, userId, perfil.ReportesFacturasPago, "REPORTESFACTURASPAGO");
+            AddRole(um, userId, perfil.CargaCFDI, "CARGACFDI");
             return usuario.Id;
         }
 

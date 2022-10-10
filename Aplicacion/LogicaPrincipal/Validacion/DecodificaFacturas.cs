@@ -1,6 +1,7 @@
 ﻿using API.Catalogos;
 using API.Models.Dto;
 using API.Operaciones.Facturacion;
+using Aplicacion.Context;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,7 @@ namespace Aplicacion.LogicaPrincipal.Validacion
     public class DecodificaFacturas
     {
         private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\FacturaRelacionada.xml";
+        private readonly AplicacionContext _db = new AplicacionContext();
         public List<ImpuestoDeserealizadoDto> DecodificarFactura(FacturaEmitida facturaEmitida)
         {
             ImpuestosRTDto impuestoDto = new ImpuestosRTDto();
@@ -23,6 +25,7 @@ namespace Aplicacion.LogicaPrincipal.Validacion
             string CadenaXML = System.Text.Encoding.UTF8.GetString(facturaEmitida.ArchivoFisicoXml);
             // System.IO.File.WriteAllText(pathXml, CadenaXML);
             //var doc = XDocument.Parse(CadenaXML);
+           
             Comprobante oComprobante;
             XmlSerializer oSerializer = new XmlSerializer(typeof(Comprobante));
             
@@ -109,6 +112,113 @@ namespace Aplicacion.LogicaPrincipal.Validacion
             }
             return impuestoDtoList;
         }
+        public ComprobanteCFDI33 DeserealizarXML33(byte[] byteXml)
+        {
+            
+            ComprobanteCFDI33 oComprobante;
+            XmlSerializer oSerializer = new XmlSerializer(typeof(ComprobanteCFDI33));
+
+            //using (StreamReader reader = new StreamReader(new MemoryStream(xmlLocal), Encoding.UTF8))
+            using (StreamReader reader = new StreamReader(new MemoryStream(byteXml), Encoding.UTF8))
+            {
+                //aqui deserializamos
+                oComprobante = (ComprobanteCFDI33)oSerializer.Deserialize(reader);
+
+
+                //complementos
+                foreach (var oComplemento in oComprobante.Complemento)
+                {
+                    foreach (var oComplementoInterior in oComplemento.Any)
+                    {
+                        if (oComplementoInterior.Name.Contains("TimbreFiscalDigital"))
+                        {
+
+                            XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(TimbreFiscalDigital));
+                            using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                            {
+                                oComprobante.TimbreFiscalDigital =
+                                    (TimbreFiscalDigital)oSerializerComplemento.Deserialize(readerComplemento);
+                            }
+
+                        }
+                        if (oComplementoInterior.Name.Contains("CartaPorte"))
+                        {
+                            XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(CartaPorte));
+                            using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                            {
+                                oComprobante.CartaPorte =
+                                    (CartaPorte)oSerializerComplemento.Deserialize(readerComplemento);
+                            }
+                        }
+                        if (oComplementoInterior.Name.Contains("Pagos"))
+                        {
+                            XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(Pagos10));
+                            using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                            {
+                                oComprobante.Pagos =
+                                    (Pagos10)oSerializerComplemento.Deserialize(readerComplemento);
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            return oComprobante;
+        }
+
+        public ComprobanteCFDI DeserealizarXML40(byte[] byteXml)
+        {
+            
+            ComprobanteCFDI oComprobante;
+            XmlSerializer oSerializer = new XmlSerializer(typeof(ComprobanteCFDI));
+
+            using (StreamReader reader = new StreamReader(new MemoryStream(byteXml), Encoding.UTF8))
+            {
+                //aqui deserializamos
+                oComprobante = (ComprobanteCFDI)oSerializer.Deserialize(reader);
+
+
+                //complementos
+
+                foreach (var oComplementoInterior in oComprobante.Complemento.Any)
+                {
+                    if (oComplementoInterior.Name.Contains("TimbreFiscalDigital"))
+                    {
+
+                        XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(TimbreFiscalDigital));
+                        using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                        {
+                            oComprobante.TimbreFiscalDigital =
+                                (TimbreFiscalDigital)oSerializerComplemento.Deserialize(readerComplemento);
+                        }
+
+                    }
+                    if (oComplementoInterior.Name.Contains("CartaPorte"))
+                    {
+                        XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(CartaPorte));
+                        using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                        {
+                            oComprobante.CartaPorte =
+                                (CartaPorte)oSerializerComplemento.Deserialize(readerComplemento);
+                        }
+                    }
+                    if (oComplementoInterior.Name.Contains("Pagos"))
+                    {
+                        XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(Pagos));
+                        using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                        {
+                            oComprobante.Pagos =
+                                (Pagos)oSerializerComplemento.Deserialize(readerComplemento);
+                        }
+
+                    }
+
+                }
+
+            }
+            return oComprobante;
+        }
         public string LeerValorXML(string xml, string atributo, string nodo)
         {
             //Variables
@@ -133,6 +243,75 @@ namespace Aplicacion.LogicaPrincipal.Validacion
             valor = xml.Substring(inicio, fin - inicio);
             //Regreso de valores si encontro
             return valor;
+        }
+
+        public string TipoDocumentoCfdi33(byte[] byteXml)
+        {
+            string tipodocumento = null;
+            ComprobanteCFDI33 oComprobante;
+            XmlSerializer oSerializer = new XmlSerializer(typeof(ComprobanteCFDI33));
+
+            using (StreamReader reader = new StreamReader(new MemoryStream(byteXml), Encoding.UTF8))
+            {
+                //aqui deserializamos
+                oComprobante = (ComprobanteCFDI33)oSerializer.Deserialize(reader);
+
+                //buscamos si tiene complementos o no
+                
+                foreach (var oComplemento in oComprobante.Complemento)
+                {
+                    foreach (var oComplementoInterior in oComplemento.Any)
+                    {
+                        if (oComplementoInterior.Name.Contains("CartaPorte"))
+                        {
+                            tipodocumento = "CartaPorte33";
+                            break;
+                        }
+                        else if (oComplementoInterior.Name.Contains("Pagos"))
+                        {
+                            tipodocumento = "Pagos33";
+                            break;
+                        }
+                        else { tipodocumento = "Cfdi33"; }
+
+                    }
+                }
+            }
+            return tipodocumento;
+        }
+        public string TipoDocumentoCfdi40(byte[] byteXml)
+        {
+            string tipoDocumento = null;
+            ComprobanteCFDI oComprobante;
+            XmlSerializer oSerializer = new XmlSerializer(typeof(ComprobanteCFDI));
+
+            using (StreamReader reader = new StreamReader(new MemoryStream(byteXml), Encoding.UTF8))
+            {
+                //aqui deserializamos
+                oComprobante = (ComprobanteCFDI)oSerializer.Deserialize(reader);
+
+
+                //complementos
+
+                foreach (var oComplementoInterior in oComprobante.Complemento.Any)
+                {
+                    
+                    if (oComplementoInterior.Name.Contains("CartaPorte"))
+                    {
+                        tipoDocumento = "CartaPorte40";
+                        break;
+                    }
+                    else if (oComplementoInterior.Name.Contains("Pagos"))
+                    {
+                        tipoDocumento = "Pagos40";
+                        break;
+                    }
+                    else { tipoDocumento = "Cfdi40"; }
+
+                }
+
+            }
+            return tipoDocumento;
         }
         /*public void DecodificarFactura(ref FacturaRecibida facturaRecibida, String pathCompleto)
         {

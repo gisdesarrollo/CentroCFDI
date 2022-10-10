@@ -4,13 +4,16 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using APBox.Context;
 using API.Models.Facturas;
 using API.Operaciones.Facturacion;
+using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.Facturas;
 using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
+using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
 
 namespace APBox.Controllers.Catalogos
@@ -24,6 +27,8 @@ namespace APBox.Controllers.Catalogos
         private readonly APBoxContext _db = new APBoxContext();
         private readonly PagosManager _pagosManager = new PagosManager();
         private readonly OperacionesCfdisEmitidos _operacionesCfdisEmitidos = new OperacionesCfdisEmitidos();
+        private readonly DescargasManager _descargasManager =  new DescargasManager();
+        private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
 
         #endregion
 
@@ -34,7 +39,7 @@ namespace APBox.Controllers.Catalogos
 
             var facturasEmitidasModel = new FacturasEmitidasModel
             {
-                FechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                FechaInicial = DateTime.Now.AddDays(-6), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
@@ -56,6 +61,10 @@ namespace APBox.Controllers.Catalogos
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
+            ViewBag.Controller = "FacturasEmitidas";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.NameHere = "cfdi";
             return View(facturasEmitidasModel);
         }
 
@@ -182,10 +191,11 @@ namespace APBox.Controllers.Catalogos
             }
             return View(facturaEmitida);
         }
-
-        /*public ActionResult Descargar(int id)
+        public ActionResult DescargaXML(int id)
         {
-            var pathCompleto = _pagosManager.GenerarZipFacturaEmitida(id);
+            //get xml
+            var facturaEmtida = _db.FacturasEmitidas.Find(id);
+            var pathCompleto = _descargasManager.GeneraFilePathXml(facturaEmtida.ArchivoFisicoXml,facturaEmtida.Serie,facturaEmtida.Folio);
             byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
             string contentType = MimeMapping.GetMimeMapping(pathCompleto);
 
@@ -195,9 +205,105 @@ namespace APBox.Controllers.Catalogos
                 Inline = false,
             };
             Response.AppendHeader("Content-Disposition", cd.ToString());
+            //Elimino el archivo Temp
+            System.IO.File.Delete(pathCompleto);
             return File(archivoFisico, contentType);
-        }*/
+        }
 
+        public ActionResult DescargaPDF(int id)
+        {
+            //objetos version 4.0
+            ComprobanteCFDI oComprobante = new ComprobanteCFDI();
+            //objetos version 3.3
+            ComprobanteCFDI33 oComprobante33 = new ComprobanteCFDI33();
+            string tipoDocumento = null;
+            byte[] archivoFisico = new byte[255];
+            var facturaEmitida = _db.FacturasEmitidas.Find(id);
+            //busca version del CFDI del archivo
+            string CadenaXML = System.Text.Encoding.UTF8.GetString(facturaEmitida.ArchivoFisicoXml);
+            string versionCfdi = _decodifica.LeerValorXML(CadenaXML, "Version", "Comprobante");
+            if (versionCfdi == "3.3")
+            {
+                oComprobante33 = _decodifica.DeserealizarXML33(facturaEmitida.ArchivoFisicoXml);
+                 tipoDocumento = _decodifica.TipoDocumentoCfdi33(facturaEmitida.ArchivoFisicoXml);
+                archivoFisico = _descargasManager.GeneraPDF33(oComprobante33,tipoDocumento ,id,true);
+            }
+            else
+            {
+                oComprobante = _decodifica.DeserealizarXML40(facturaEmitida.ArchivoFisicoXml);
+                tipoDocumento = _decodifica.TipoDocumentoCfdi40(facturaEmitida.ArchivoFisicoXml);
+                archivoFisico = _descargasManager.GeneraPDF40(oComprobante,tipoDocumento ,id,true);
+            }
+
+            MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
+            string nameArchivo = facturaEmitida.Serie + "-" + facturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
+            Response.Buffer = true;
+            Response.Clear();
+            Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.End();
+
+
+            return new FileStreamResult(Response.OutputStream, "application/pdf");
+        }
+
+        public ActionResult Cancelar(int id)
+        {
+            PopulaMotivoCancelacion();
+            ViewBag.Error = null;
+            ViewBag.Success = null;
+            var facturaEmitida = _db.FacturasEmitidas.Find(id);
+            return PartialView("~/Views/FacturasEmitidas/_Cancelacion.cshtml", facturaEmitida);
+        }
+
+        [HttpPost]
+        public ActionResult Cancelar(FacturaEmitida facturaEmitida)
+        {
+            PopulaMotivoCancelacion();
+            string error = null;
+            var emitida = _db.FacturasEmitidas.Find(facturaEmitida.Id);
+            emitida.FolioSustitucion = facturaEmitida.FolioSustitucion;
+            emitida.MotivoCancelacion = facturaEmitida.MotivoCancelacion;
+            try
+            {
+                _operacionesCfdisEmitidos.Cancelar(emitida);
+
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+
+            }
+            if (error == null)
+            {
+                ViewBag.Success = "Proceso de cancelación finalizado con éxito.";
+                ViewBag.Error = null;
+            }
+            else
+            {
+                ViewBag.Error = error;
+                ViewBag.Success = null;
+            }
+            return PartialView("~/Views/FacturasEmitidas/_Cancelacion.cshtml", emitida);
+        }
+
+        public ActionResult DescargarAcuse(int id)
+        {
+            var facturaEmitida = _db.FacturasEmitidas.Find(id);
+            string xmlCancelacion = _descargasManager.DowloadAcuseCancelacion(facturaEmitida.EmisorId,facturaEmitida.ArchivoFisicoXml);
+            byte[] byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
+            MemoryStream ms = new MemoryStream(byteXml, 0, 0, true, true);
+            string nameArchivo = facturaEmitida.Serie + "-" + facturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");
+            Response.Buffer = true;
+            Response.Clear();
+            Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.End();
+
+            return new FileStreamResult(Response.OutputStream, "application/xml");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -338,7 +444,15 @@ namespace APBox.Controllers.Catalogos
             return resultados;
         }
 
-
+        private void PopulaMotivoCancelacion()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "01 - Comprobante Emitido con errores con relación", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "02 - Comprobante emitido con errores sin relacion", Value = "02" });
+            items.Add(new SelectListItem { Text = "03 - No se llevo a cabo la operación", Value = "03" });
+            items.Add(new SelectListItem { Text = "04 - Operación nominativa relacionada en una factura global", Value = "04" });
+            ViewBag.motivoCancelacion = items;
+        }
         public class search_doc_rel_fac_emi
         {
             public int FacturaEmitidaId { get; set; }

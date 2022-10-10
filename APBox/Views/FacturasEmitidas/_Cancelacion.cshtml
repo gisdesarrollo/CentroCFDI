@@ -1,0 +1,64 @@
+﻿@model API.Operaciones.Facturacion.FacturaEmitida
+
+
+<div class="modal fade" id="details-cancelar"  tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Opciones Cancelación</h5>
+
+            </div>
+            <div class="modal-body">
+                @if (ViewBag.Error != null)
+                {
+                    <span style="color: red;">@ViewBag.Error</span>
+                    <br /><br />
+                }
+                @if (ViewBag.Success != null)
+                {
+                    <span style="color: green;">@ViewBag.Success</span>
+                    <br /><br />
+                }
+                <form action="Cancelar" error-data="@ViewBag.Error" success-data="@ViewBag.Success">
+                    @Html.HiddenFor(model => model.Id)
+                    <div class=" form-group col-xs-12">
+                        <span class="form-inline">UUID: </span><span>@Model.Uuid</span>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        @Html.LabelFor(model => model.MotivoCancelacion, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(model => model.MotivoCancelacion, (IEnumerable<SelectListItem>)ViewBag.motivoCancelacion, "Favor de hacer su selección", new { @class = "form-select", required = "required" })
+                        @Html.ValidationMessageFor(model => model.MotivoCancelacion, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-xs-12 folio-sustitucion" style="display:none"  >
+                        @Html.LabelFor(model => model.FolioSustitucion, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.FolioSustitucion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FolioSustitucion, "", new { @class = "text-danger" })
+                    </div>
+                </form>
+            </div>
+            <br /><br />
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close-modal" data-backdrop="false">Close</button>
+                <button type="button" class="btn btn-primary" id="submit-cancelar" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#MotivoCancelacion").change(function () {
+        if ($(this).val() === "01") {
+            $('.folio-sustitucion').show();
+        } else {
+            $('.folio-sustitucion').hide();
+            $('#FolioSustitucion').val("");
+        }
+    });
+
+    var motivoCancelacion = $("#MotivoCancelacion").val();
+    if (motivoCancelacion === "01") {
+        $('.folio-sustitucion').show();
+    }
+    
+</script>

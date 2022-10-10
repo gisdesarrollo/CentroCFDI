@@ -983,7 +983,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 Total = (double)complementoCartaPorte.Total,
                 Uuid = objCfdi.UUID,
                 ArchivoFisicoXml = utf8.GetBytes(objCfdi.XmlTimbrado),
-                CodigoQR = objCfdi.GenerarQrCode()
+                CodigoQR = objCfdi.GenerarQrCode(),
+                Status = API.Enums.Status.Activo
             };
             
             if (complementoCartaPorte.FormaPago != null)

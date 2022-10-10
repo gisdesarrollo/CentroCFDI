@@ -3,168 +3,177 @@
 @{
     ViewBag.Title = "Complementos de Pago";
 }
-@using (Html.BeginForm())
+@if (User.IsInRole("COMPLEMENTOSPAGOS"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+{
+    using (Html.BeginForm())
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <div id="page-title">
-        <div class="row">
-            <div class="col-lg-6">
-                <h2>Complementos de Recepción de Pagos</h2>
-            </div>
-             <br />
-            <div class="clearfix"></div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control date" } })
-                @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control date" } })
-                @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-control" })
+        <div id="page-title">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>Complementos de Recepción de Pagos</h2>
+                </div>
+                <br />
+                <div class="clearfix"></div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control date" } })
+                    @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control date" } })
+                    @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-control" })
 
-            </div>
+                </div>
 
-            
-            <div class="col-lg-1">
-                <button class="btn btn-alt btn-primary float-left multiple" type="submit" value="Filtrar" name="actionName">
-                    <span></span> <i class="fas fa-search"></i>
-                </button>
-            </div>
 
-            <div class="col-lg-1">
-                <div class="btn-group pull-right float-right">
-                    <button type="button" class="btn btn-primary dropdown-toggle float-right" data-toggle="dropdown" aria-expanded="false">
-                        <span>Nuevo</span> <span class="caret"></span>
+                <div class="col-lg-1">
+                    <button class="btn btn-alt btn-primary float-left multiple" type="submit" value="Filtrar" name="actionName">
+                        <span></span> <i class="fas fa-search"></i>
                     </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a onclick="location.href='@Url.Action("Create", "ComplementosPagos")';return false;">Manual</a></li>
-                        <li><a onclick="location.href='@Url.Action("Cargar", "ComplementosPagos")';return false;">Layout</a></li>
-                    </ul>
+                </div>
+
+                <div class="col-lg-1">
+                    <div class="btn-group pull-right float-right">
+                        <button type="button" class="btn btn-primary dropdown-toggle float-right" data-toggle="dropdown" aria-expanded="false">
+                            <span>Nuevo</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a onclick="location.href='@Url.Action("Create", "ComplementosPagos")';return false;">Manual</a></li>
+                            <li><a onclick="location.href='@Url.Action("Cargar", "ComplementosPagos")';return false;">Layout</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="cancelar-view"></div>
+        <div class="panel">
+            <div class="panel-body">
+                <h3 class="title-hero">
+                    CFDi Generados con complemento de pagos
+                </h3>
+
+                <div class="clearfix"></div>
+                <div class="row">
+                    <table class="table table-condensed dataTable">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    Folio
+                                </th>
+                                <th>
+                                    Receptor
+                                </th>
+                                <th>
+                                    Fecha del Documento
+                                </th>
+                                @*<th>
+                                        Mes
+                                    </th>*@
+                                <th>
+                                    Estado
+                                </th>
+                                <th>
+                                    Opciones
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (int i = 0; i < Model.ComplementosPago.Count; i++)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @if (Model.ComplementosPago[i].FacturaEmitida != null)
+                                        {
+                                            @Html.DisplayFor(model => Model.ComplementosPago[i].FacturaEmitida.Folio);
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw("Pendinte")
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.RazonSocial)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => Model.ComplementosPago[i].FechaDocumento)
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(model => Model.ComplementosPago[i].Mes)
+                                        </td>*@
+                                    <td>
+                                        @if (Model.ComplementosPago[i].Generado == true)
+                                        {
+                                            if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
+                                            {
+                                                <p><span class="fa fa-clipboard-check font-green"></span> Generado</p>
+                                            }
+                                            else
+                                            {
+                                                <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-cog"></span> Opciones
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                @if (Model.ComplementosPago[i].Generado)
+                                                {
+                                                    if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
+                                                    {
+                                                        <li>@Html.ActionLink("Descargar XML", "DescargarXml", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                        <li>@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                        <li class="list-group-item dcancelar" data-id="@Model.ComplementosPago[i].Id">Cancelar</li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    if (User.IsInRole("EDICION"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+                                                    {
+                                                    <li>@Html.ActionLink("Editar Pagos", "Edit", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                    <li>@Html.ActionLink("Editar Doc Relacionados", "DocumentosRelacionados", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
+                                                    }
+                                                    <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-green" })</li>
+                                                    if (User.IsInRole("BORRADO"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+                                                    {
+                                                    <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-red" })</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
         </div>
-    </div>
-    <div id="cancelar-view"></div>
-    <div class="panel">
-        <div class="panel-body">
-            <h3 class="title-hero">
-                CFDi Generados con complemento de pagos
-            </h3>
-            
-            <div class="clearfix"></div>
-            <div class="row">
-                <table class="table table-condensed dataTable">
-
-                    <thead>
-                        <tr>
-                            <th>
-                                Folio
-                            </th>
-                            <th>
-                                Receptor
-                            </th>
-                            <th>
-                                Fecha del Documento
-                            </th>
-                            @*<th>
-                                Mes
-                            </th>*@
-                            <th>
-                                Estado
-                            </th>
-                            <th>
-                                Opciones
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @for (int i = 0; i < Model.ComplementosPago.Count; i++)
-                            {
-                            <tr>
-                               
-                                <td>
-                                    @if (Model.ComplementosPago[i].FacturaEmitida != null)
-                                        {
-                                        @Html.DisplayFor(model => Model.ComplementosPago[i].FacturaEmitida.Folio);
-                                        }
-                                    else
-                                        {
-                                        @Html.Raw("Pendinte")
-                                        }
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.RazonSocial)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => Model.ComplementosPago[i].FechaDocumento)
-                                </td>
-                                @*<td>
-                                    @Html.DisplayFor(model => Model.ComplementosPago[i].Mes)
-                                </td>*@
-                                <td>
-                                    @if (Model.ComplementosPago[i].Generado == true)
-                                        {
-                                        if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
-                                            {
-                                            <p><span class="fa fa-clipboard-check font-green"></span> Generado</p>
-                                            }
-                                        else
-                                            {
-                                            <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
-                                            }
-                                        }
-                                    else
-                                        {
-                                        <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
-                                        }
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="fa fa-cog"></span> Opciones
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            @if (Model.ComplementosPago[i].Generado)
-                                                {
-                                                if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)
-                                                    {
-                                                    <li>@Html.ActionLink("Descargar XML", "DescargarXml", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
-                                                     <li>@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
-                                                    <li class="list-group-item dcancelar" data-id="@Model.ComplementosPago[i].Id">Cancelar</li>
-                                                    }
-                                                else
-                                                    {
-                                                    <li>@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
-                                                    }
-
-                                                }
-                                            else
-                                                {
-                                                <li>@Html.ActionLink("Editar Pagos", "Edit", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
-                                                <li>@Html.ActionLink("Editar Doc Relacionados", "DocumentosRelacionados", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12" })</li>
-                                                <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-green" })</li>
-                                                <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosPago[i].Id }, new { @class = "font-size-12 font-red" })</li>
-                                                }
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
     }
-<script>
+}
+    <script>
      //activa modal cancelar pagos
     $(function () {
         var cancelarModal = $('#cancelar-view');
@@ -210,6 +219,6 @@
 
     });
 
-  
 
-</script>
+
+    </script>

@@ -3,8 +3,11 @@
 @{
     ViewBag.Title = "Index";
 }
+
+@if (User.IsInRole("CFDI"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+{
 @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
-@using (Html.BeginForm())
+using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
@@ -160,9 +163,15 @@
                                             }
                                             else
                                             {
+                                                if (User.IsInRole("EDICION"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+                                                {
                                                 <li>@Html.ActionLink("Editar Comprobante", "Edit", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12" })</li>
+                                                }
                                                 <li>@Html.ActionLink("Generar", "Generar", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12 font-green" })</li>
+                                                if (User.IsInRole("BORRADO"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+                                                {
                                                 <li>@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComprobanteCfdi[i].Id }, new { @class = "font-size-12 font-red", onclick = "return confirm('Are you sure you wish to delete this comprobante?');" })</li>
+                                                }
                                             }
                                         </ul>
                                     </div>
@@ -174,6 +183,7 @@
             </div>
         </div>
     </div>
+}
 }
 <script>
      //activa modal cancelar comrpobante CFDI

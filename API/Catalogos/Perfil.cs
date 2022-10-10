@@ -36,6 +36,14 @@ namespace API.Catalogos
         public bool Proveedores { get; set; }
 
         public bool Clientes { get; set; }
+ 
+        public bool Conceptos { get; set; }
+
+        public bool Impuestos { get; set; }
+
+        public bool ComplementoPago { get; set; }
+        public bool ComplementoCartaPorte { get; set; }
+        public bool Cfdi { get; set; }
 
         //Operaciones Catalogos
         public bool Consulta { get; set; }
@@ -61,6 +69,8 @@ namespace API.Catalogos
 
         [DisplayName("Validación Rápida")]
         public bool ValidacionRapida { get; set; }
+        public bool FacturasRecibidas { get; set; }
+       
 
         //Complementos de Pago
         [DisplayName("Facturas Emitidas")]
@@ -94,6 +104,10 @@ namespace API.Catalogos
 
         [DisplayName("Estadísitcas de Complementos de Pago")]
         public bool ReporteEstadisticasComplementosPago { get; set; }
+        public bool ReportesFacturasPago  { get; set; }
+
+        public bool CargaCFDI { get; set; }
+
 
         #region Grupo
 

@@ -6,18 +6,25 @@
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
     
-    <div class="content-box mrg20L mrg20R">
-        <h3 class="content-box-header bg-default">
-            <i class="glyph-icon icon-money"></i>
-            Conceptos
-            <div class="header-buttons-separator">
+    <div class="card shadow-sm mrg20L mrg20R">
+        <div class="card-header bg-default">
+            <h3 class="card-title">
+                Conceptos
+            </h3>
+            <div class="card-toolbar">
                 <a href="#" class="icon-separator" onclick="removeDetalleConceptos(this)">
-                    <i class="glyph-icon icon-times font-red"></i>
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="40" height="40" />
+                    </span>
+                    <!--end::Svg Icon-->
+                    
                 </a>
             </div>
             
-        </h3>
-        <div class="content-box-wrapper conceptos">
+
+        </div>
+        <div class="card-body conceptos">
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.Complemento_Id)
             @Html.HiddenFor(model => model.Traslado_Id)

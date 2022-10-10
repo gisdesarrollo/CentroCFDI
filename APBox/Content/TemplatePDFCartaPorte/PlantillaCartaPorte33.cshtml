@@ -240,295 +240,303 @@
         <div style="width:100%">
 
             <!-- Destinos -->
-            @foreach (var ubicacion in Model.CartaPorte.Ubicaciones)
+            @if (Model.CartaPorte != null)
             {
-            if (@ubicacion.TipoUbicacion == "Origen")
-            {
-            <table class="table-carta-porte" style="width:100%;">
-                <caption class="seccion">Origen</caption>
-                <thead>
-                    <tr>
-                        <th>Ubicación</th>
-                        <th>Remitente</th>
-                        <th>Fecha</th>
-                        <th>Calle</th>
-                        <th>Localidad</th>
-                        <th>Colonia</th>
-                        <th>CodigoPostal</th>
-                        <th>Municipio</th>
-                        <th>Estado</th>
-                        <th>Pais</th>
-                        <th>Referencia</th>
-                    </tr>
-                </thead>
-                <tbody>
+                foreach (var ubicacion in Model.CartaPorte.Ubicaciones)
+                {
+                    if (@ubicacion.TipoUbicacion == "Origen")
+                    {
+                        <table class="table-carta-porte" style="width:100%;">
+                            <caption class="seccion">Origen</caption>
+                            <thead>
+                                <tr>
+                                    <th>Ubicación</th>
+                                    <th>Remitente</th>
+                                    <th>Fecha</th>
+                                    <th>Calle</th>
+                                    <th>Localidad</th>
+                                    <th>Colonia</th>
+                                    <th>CodigoPostal</th>
+                                    <th>Municipio</th>
+                                    <th>Estado</th>
+                                    <th>Pais</th>
+                                    <th>Referencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                    <tr>
-                        <th>@ubicacion.TipoUbicacion</th>
-                        <td>@ubicacion.NombreRemitenteDestinatario</td>
-                        <td>@ubicacion.FechaHoraSalidaLlegada</td>
-                        <td>@ubicacion.Domicilio.Calle</td>
-                        <td>@ubicacion.Domicilio.Localidad</td>
-                        <td>@ubicacion.Domicilio.Colonia</td>
-                        <td>@ubicacion.Domicilio.CodigoPostal</td>
-                        <td>@ubicacion.Domicilio.Municipio</td>
-                        <td>@ubicacion.Domicilio.Estado</td>
-                        <td>@ubicacion.Domicilio.Pais</td>
-                        <td>@ubicacion.Domicilio.Referencia</td>
-                    </tr>
-                </tbody>
-            </table>
+                                <tr>
+                                    <th>@ubicacion.TipoUbicacion</th>
+                                    <td>@ubicacion.NombreRemitenteDestinatario</td>
+                                    <td>@ubicacion.FechaHoraSalidaLlegada</td>
+                                    <td>@ubicacion.Domicilio.Calle</td>
+                                    <td>@ubicacion.Domicilio.Localidad</td>
+                                    <td>@ubicacion.Domicilio.Colonia</td>
+                                    <td>@ubicacion.Domicilio.CodigoPostal</td>
+                                    <td>@ubicacion.Domicilio.Municipio</td>
+                                    <td>@ubicacion.Domicilio.Estado</td>
+                                    <td>@ubicacion.Domicilio.Pais</td>
+                                    <td>@ubicacion.Domicilio.Referencia</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                    if (@ubicacion.TipoUbicacion == "Destino")
+                    {
+                        <table class="table-carta-porte" style="width:100%;">
+                            <caption class="seccion">Destino</caption>
+                            <thead>
+                                <tr>
+                                    <th>Ubicación</th>
+                                    <th>Destinatario</th>
+                                    <th>Distancia recorrida</th>
+                                    <th>Fecha</th>
+                                    <th>Calle</th>
+                                    <th>Localidad</th>
+                                    <th>Colonia</th>
+                                    <th>CodigoPostal</th>
+                                    <th>Municipio</th>
+                                    <th>Estado</th>
+                                    <th>Pais</th>
+                                    <th>Referencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <th>@ubicacion.TipoUbicacion</th>
+                                    <td>@ubicacion.NombreRemitenteDestinatario</td>
+                                    <td>@ubicacion.DistanciaRecorrida</td>
+                                    <td>@ubicacion.FechaHoraSalidaLlegada</td>
+                                    <td>@ubicacion.Domicilio.Calle</td>
+                                    <td>@ubicacion.Domicilio.Localidad</td>
+                                    <td>@ubicacion.Domicilio.Colonia</td>
+                                    <td>@ubicacion.Domicilio.CodigoPostal</td>
+                                    <td>@ubicacion.Domicilio.Municipio</td>
+                                    <td>@ubicacion.Domicilio.Estado</td>
+                                    <td>@ubicacion.Domicilio.Pais</td>
+                                    <td>@ubicacion.Domicilio.Referencia</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                    <div class="salto"></div>
+                }
+
             }
-            if (@ubicacion.TipoUbicacion == "Destino")
-            {
-            <table class="table-carta-porte" style="width:100%;">
-                <caption class="seccion">Destino</caption>
-                <thead>
-                    <tr>
-                        <th>Ubicación</th>
-                        <th>Destinatario</th>
-                        <th>Distancia recorrida</th>
-                        <th>Fecha</th>
-                        <th>Calle</th>
-                        <th>Localidad</th>
-                        <th>Colonia</th>
-                        <th>CodigoPostal</th>
-                        <th>Municipio</th>
-                        <th>Estado</th>
-                        <th>Pais</th>
-                        <th>Referencia</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr>
-                        <th>@ubicacion.TipoUbicacion</th>
-                        <td>@ubicacion.NombreRemitenteDestinatario</td>
-                        <td>@ubicacion.DistanciaRecorrida</td>
-                        <td>@ubicacion.FechaHoraSalidaLlegada</td>
-                        <td>@ubicacion.Domicilio.Calle</td>
-                        <td>@ubicacion.Domicilio.Localidad</td>
-                        <td>@ubicacion.Domicilio.Colonia</td>
-                        <td>@ubicacion.Domicilio.CodigoPostal</td>
-                        <td>@ubicacion.Domicilio.Municipio</td>
-                        <td>@ubicacion.Domicilio.Estado</td>
-                        <td>@ubicacion.Domicilio.Pais</td>
-                        <td>@ubicacion.Domicilio.Referencia</td>
-                    </tr>
-                </tbody>
-            </table>
-            }
-            <div class="salto"></div>
-            }
-
-
             <!-- Mercancias -->
-            @foreach (var mercancia in Model.CartaPorte.Mercancias.Mercancia)
+            @if (Model.CartaPorte != null)
             {
-            <table class="table-carta-porte" style="width: 100%;">
-                <caption class="seccion">Mercancías</caption>
-                <thead>
-                    <tr>
-                        <th>Cantidad</th>
-                        <th>Clave</th>
-                        <th>Descripción</th>
-                        <th>Peso en kilogramos</th>
-                        <th>ValorMercancia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@mercancia.Cantidad</td>
-                        <td>@mercancia.ClaveUnidad</td>
-                        <td>@mercancia.Descripcion</td>
-                        <td>@mercancia.PesoEnKg</td>
-                        <td>@mercancia.ValorMercancia</td>
-                    </tr>
-                </tbody>
-            </table>
+                foreach (var mercancia in Model.CartaPorte.Mercancias.Mercancia)
+                {
+                    <table class="table-carta-porte" style="width: 100%;">
+                        <caption class="seccion">Mercancías</caption>
+                        <thead>
+                            <tr>
+                                <th>Cantidad</th>
+                                <th>Clave</th>
+                                <th>Descripción</th>
+                                <th>Peso en kilogramos</th>
+                                <th>ValorMercancia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@mercancia.Cantidad</td>
+                                <td>@mercancia.ClaveUnidad</td>
+                                <td>@mercancia.Descripcion</td>
+                                <td>@mercancia.PesoEnKg</td>
+                                <td>@mercancia.ValorMercancia</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <div class="salto"></div>
+                    <div class="salto"></div>
+                }
             }
-
             <!-- AutoTransporte Federal  -->
-            @if (Model.CartaPorte.Mercancias.Autotransporte != null)
+            @if (Model.CartaPorte != null)
             {
-            <table class="table-carta-porte" style="width: 100%;">
-                <caption class="seccion">Autotransporte</caption>
-                <thead>
-                    <tr>
-                        <th>PermSCT</th>
-                        <th>NumPermisoSCT</th>
-                        <th>NombreAseg</th>
-                        <th>NumPolizaSeguro</th>
-                        <th>ConfigVehicular</th>
-                        <th>PlacaVM</th>
-                        <th>AñoModeloVM</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.PermSCT</td>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.NumPermisoSCT</td>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil</td>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil</td>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular</td>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM</td>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM</td>
-                    </tr>
-                </tbody>
-            </table>
+                if (Model.CartaPorte.Mercancias.Autotransporte != null)
+                {
+                    <table class="table-carta-porte" style="width: 100%;">
+                        <caption class="seccion">Autotransporte</caption>
+                        <thead>
+                            <tr>
+                                <th>PermSCT</th>
+                                <th>NumPermisoSCT</th>
+                                <th>NombreAseg</th>
+                                <th>NumPolizaSeguro</th>
+                                <th>ConfigVehicular</th>
+                                <th>PlacaVM</th>
+                                <th>AñoModeloVM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.CartaPorte.Mercancias.Autotransporte.PermSCT</td>
+                                <td>@Model.CartaPorte.Mercancias.Autotransporte.NumPermisoSCT</td>
+                                <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil</td>
+                                <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil</td>
+                                <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular</td>
+                                <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM</td>
+                                <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <div class="salto"></div>
+                    <div class="salto"></div>
+                }
+                <!--Transporte Maritimo-->
+                if (Model.CartaPorte.Mercancias.TransporteMaritimo != null)
+                {
+                    <table class="table-carta-porte" style="width: 100%;">
+                        <caption class="seccion">Transporte Maritimo</caption>
+                        <thead>
+                            <tr>
+                                <th>PermSCT</th>
+                                <th>NumPermisoSCT</th>
+                                <th>NombreAseg</th>
+                                <th>NumPolizaSeguro</th>
+                                <th>TipoEmbarcacion</th>
+                                <th>Matricula</th>
+                                <th>AñoEmbarcacion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.PermSCT</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPermisoSCT</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NombreAseg</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPolizaSeguro</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.TipoEmbarcacion</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.Matricula</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.AnioEmbarcacion</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="salto"></div>
+                }
+                <!--Transporte Aereo-->
+                if (Model.CartaPorte.Mercancias.TransporteAereo != null)
+                {
+                    <table class="table-carta-porte" style="width: 100%;">
+                        <caption class="seccion">Transporte Aereo</caption>
+                        <thead>
+                            <tr>
+                                <th>PermSCT</th>
+                                <th>NumPermisoSCT</th>
+                                <th>MatriculaAeronave</th>
+                                <th>NombreAseg</th>
+                                <th>NumeroGuia</th>
+                                <th>LugarContrato</th>
+                                <th>CodigoTransportista</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.CartaPorte.Mercancias.TransporteAereo.PermSCT</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumPermisoSCT</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteAereo.MatriculaAeronave</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteAereo.NombreAseg</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumeroGuia</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteAereo.LugarContrato</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteAereo.CodigoTransportista</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="salto"></div>
+                }
+                <!--Transporte Ferroviario-->
+                if (Model.CartaPorte.Mercancias.TransporteFerroviario != null)
+                {
+                    <table class="table-carta-porte" style="width: 100%;">
+                        <caption class="seccion">Transporte Ferroviario</caption>
+                        <thead>
+                            <tr>
+                                <th>TipoDeServicio</th>
+                                <th>TipoDeTrafico</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeServicio</td>
+                                <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeTrafico</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="salto"></div>
+                }
+                <!-- Figura Transporte  -->
+                if (Model.CartaPorte.FiguraTransporte != null)
+                {
+                    foreach (var tipoFigura in Model.CartaPorte.FiguraTransporte)
+                    {
+                        <table class="table-carta-porte" style="width: 100%;">
+                            <caption class="seccion">Figura Transporte</caption>
+                            <thead>
+                                <tr>
+                                    <th>RFCFigura</th>
+
+                                    <th>
+                                        NombreFigura
+
+                                    </th>
+                                    <th>Calle</th>
+                                    <th>Localidad</th>
+                                    <th>Colonia</th>
+                                    <th>
+                                        Codigo
+                                        Postal
+                                    </th>
+                                    <th>Municipio</th>
+                                    <th>Estado</th>
+                                    <th>País</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@tipoFigura.RFCFigura</td>
+                                    <td>@tipoFigura.NombreFigura</td>
+                                    @if (@tipoFigura.Domicilio != null)
+                                    {
+                                        <td>@tipoFigura.Domicilio.Calle</td>
+                                        <td>
+                                            @tipoFigura.Domicilio.Localidad
+
+
+                                        </td>
+                                        <td>
+                                            @tipoFigura.Domicilio.Colonia
+
+
+                                        </td>
+                                        <td>
+                                            @tipoFigura.Domicilio.CodigoPostal
+
+                                        </td>
+                                        <td>@tipoFigura.Domicilio.Municipio</td>
+
+                                        <td>
+                                            @tipoFigura.Domicilio.Estado
+
+
+                                        </td>
+                                        <td>@tipoFigura.Domicilio.Pais</td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                }
             }
-            <!--Transporte Maritimo-->
-            @if (Model.CartaPorte.Mercancias.TransporteMaritimo != null)
-            {
-            <table class="table-carta-porte" style="width: 100%;">
-                <caption class="seccion">Transporte Maritimo</caption>
-                <thead>
-                    <tr>
-                        <th>PermSCT</th>
-                        <th>NumPermisoSCT</th>
-                        <th>NombreAseg</th>
-                        <th>NumPolizaSeguro</th>
-                        <th>TipoEmbarcacion</th>
-                        <th>Matricula</th>
-                        <th>AñoEmbarcacion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.PermSCT</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPermisoSCT</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NombreAseg</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPolizaSeguro</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.TipoEmbarcacion</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.Matricula</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.AnioEmbarcacion</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="salto"></div>
-            }
-            <!--Transporte Aereo-->
-            @if (Model.CartaPorte.Mercancias.TransporteAereo != null)
-            {
-            <table class="table-carta-porte" style="width: 100%;">
-                <caption class="seccion">Transporte Aereo</caption>
-                <thead>
-                    <tr>
-                        <th>PermSCT</th>
-                        <th>NumPermisoSCT</th>
-                        <th>MatriculaAeronave</th>
-                        <th>NombreAseg</th>
-                        <th>NumeroGuia</th>
-                        <th>LugarContrato</th>
-                        <th>CodigoTransportista</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.PermSCT</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumPermisoSCT</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.MatriculaAeronave</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.NombreAseg</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumeroGuia</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.LugarContrato</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteAereo.CodigoTransportista</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="salto"></div>
-            }
-            <!--Transporte Ferroviario-->
-            @if (Model.CartaPorte.Mercancias.TransporteFerroviario != null)
-            {
-            <table class="table-carta-porte" style="width: 100%;">
-                <caption class="seccion">Transporte Ferroviario</caption>
-                <thead>
-                    <tr>
-                        <th>TipoDeServicio</th>
-                        <th>TipoDeTrafico</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeServicio</td>
-                        <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeTrafico</td>
-
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="salto"></div>
-            }
-            <!-- Figura Transporte  -->
-            @if (Model.CartaPorte.FiguraTransporte != null)
-            {
-            foreach (var tipoFigura in Model.CartaPorte.FiguraTransporte)
-            {
-            <table class="table-carta-porte" style="width: 100%;">
-                <caption class="seccion">Figura Transporte</caption>
-                <thead>
-                    <tr>
-                        <th>RFCFigura</th>
-
-                        <th>
-                            NombreFigura
-
-                        </th>
-                        <th>Calle</th>
-                        <th>Localidad</th>
-                        <th>Colonia</th>
-                        <th>
-                            Codigo
-                            Postal
-                        </th>
-                        <th>Municipio</th>
-                        <th>Estado</th>
-                        <th>País</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@tipoFigura.RFCFigura</td>
-                        <td>@tipoFigura.NombreFigura</td>
-                        @if(@tipoFigura.Domicilio !=null){
-                        <td>@tipoFigura.Domicilio.Calle</td>
-                        <td>
-                            @tipoFigura.Domicilio.Localidad
-
-
-                        </td>
-                        <td>
-                            @tipoFigura.Domicilio.Colonia
-
-
-                        </td>
-                        <td>
-                            @tipoFigura.Domicilio.CodigoPostal
-
-                        </td>
-                        <td>@tipoFigura.Domicilio.Municipio</td>
-
-                        <td>
-                            @tipoFigura.Domicilio.Estado
-
-
-                        </td>
-                        <td>@tipoFigura.Domicilio.Pais</td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-            }
-            }
-        </div>
+            </div>
 
         <div class="salto"></div>
 

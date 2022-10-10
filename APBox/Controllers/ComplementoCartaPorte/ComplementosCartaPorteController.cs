@@ -1122,10 +1122,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ComprobanteCFDI33 oComprobante33 = new ComprobanteCFDI33();
             byte[] archivoFisico = new byte[255];
             var complementoCartaPorte = _db.ComplementoCartaPortes.Find(id);
-            //checar version del CFDI
-            //get byte xml local
-            //byte[] xmlLocal = System.IO.File.ReadAllBytes(@"D:\Descargas(C)\CP - 1413 - 20220829124852255.xml");
-            //string CadenaXML = System.Text.Encoding.UTF8.GetString(xmlLocal);
+            //busca version del CFDI del archivo
             string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
             string versionCfdi = _decodifica.LeerValorXML(CadenaXML, "Version", "Comprobante");
             if (versionCfdi == "3.3")

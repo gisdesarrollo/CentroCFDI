@@ -559,7 +559,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 Total =  0,//complementoPago.TotalesPagosImpuestos.MontoTotalPagos,
                 Uuid = facturaDto.UUID,
                 ArchivoFisicoXml = utf8.GetBytes(facturaDto.XmlTimbrado),
-                CodigoQR = facturaDto.GenerarQrCode()
+                CodigoQR = facturaDto.GenerarQrCode(),
+                Status = API.Enums.Status.Activo
             };
             if (complementoPago.Pagos[0].FormaPago != null)
             {
