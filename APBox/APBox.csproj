@@ -2549,17 +2549,6 @@
     <Content Include="_CDN\assets\media\svg\social-logos\instagram.svg" />
     <Content Include="_CDN\assets\media\svg\social-logos\twitter.svg" />
     <Content Include="_CDN\assets\media\svg\social-logos\youtube.svg" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\custom\apps\chat\chat.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\custom\intro.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\custom\utilities\modals\create-app.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\custom\utilities\modals\upgrade-plan.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\custom\utilities\modals\users-search.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\custom\widgets.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\scripts.bundle.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\js\widgets.bundle.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\plugins\custom\datatables\datatables.bundle.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\plugins\custom\fullcalendar\fullcalendar.bundle.js" />
-    <Content Include="_CDN\assets\metronic8\demo19\assets\plugins\global\plugins.bundle.js" />
     <Content Include="_CDN\assets\plugins\custom\ckeditor\ckeditor-balloon-block.bundle.js" />
     <Content Include="_CDN\assets\plugins\custom\ckeditor\ckeditor-balloon.bundle.js" />
     <Content Include="_CDN\assets\plugins\custom\ckeditor\ckeditor-classic.bundle.js" />
@@ -2813,6 +2802,7 @@
     <Content Include="Content\TemplatePDFPagos\PlantillaPagos.cshtml" />
     <Content Include="Content\TemplatePDFCartaPorte\PlantillaCartaPorte.cshtml" />
     <Content Include="Content\TemplatePDFPagos\PlantillaPagos33.cshtml" />
+    <Content Include="Content\TemplatePDFCartaPorte\PlantillaCartaPorte33.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
@@ -2991,6 +2981,7 @@
     <Content Include="Views\Shared\partials\_scrolltop.cshtml" />
     <Content Include="Views\Shared\_ViewStart.cshtml" />
     <Content Include="Views\FacturasEmitidas\detallePago.cshtml" />
+    <Content Include="Views\FacturasEmitidas\_Cancelacion.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

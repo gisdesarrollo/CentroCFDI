@@ -243,6 +243,7 @@
     <Compile Include="CFDI33Objetos\Cfdi33.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Operaciones\AcondicionarComprobanteCfdi.cs" />
     <Compile Include="LogicaPrincipal\CargasMasivas\CSV\CargarConceptos.cs" />
+    <Compile Include="LogicaPrincipal\Descargas\DescargasManager.cs" />
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteManager.cs" />
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteXsaManager.cs" />
     <Compile Include="ObjetoImpDocRel\Cfdi40Objetos.cs" />
