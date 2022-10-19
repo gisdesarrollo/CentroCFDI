@@ -5,24 +5,29 @@
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-<div class="row">
-    <div class="content-box mrg20L mrg20R">
-        <h3 class="content-box-header bg-default">
-            <i class="glyph-icon icon-money"></i>
-            Figura Transporte
-            <div class="header-buttons-separator">
-                <a href="#" class="icon-separator" onclick="removeDetalleFTransporte(this)">
-                    <i class="glyph-icon icon-times font-red"></i>
-                </a>
-            </div>
-        </h3>
-        <div class="content-box-wrapper FTransporte">
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">
+                Figura Transporte
+            </h3>
+                <div class="card-toolbar">
+                    <a href="#" class="icon-separator" onclick="removeDetalleFTransporte(this)">
+                        <!--begin::Svg Icon -->
+                        <span class="svg-icon svg-icon-3x">
+                            <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                        </span>
+                        <!--end::Svg Icon-->
+                    </a>
+                </div>
+        </div>
+        <div class="card-body row FTransporte">
             <h3 class="title-hero">
                 Figura Transporte : Tipos Figura
             </h3>
-            @Html.HiddenFor(model=>model.Id)
-            @Html.HiddenFor(model=>model.Complemento_Id)
-            @Html.HiddenFor(model=>model.Domicilio_Id)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Complemento_Id)
+            @Html.HiddenFor(model => model.Domicilio_Id)
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.FiguraTransporte)<br />
                 @Html.DisplayFor(model => model.FiguraTransporte)
@@ -61,8 +66,8 @@
                     <h3 class="title-hero">
                         Figura Transporte : Domicilio
                     </h3>
-                    @Html.HiddenFor(model=>model.Id)
-                    
+                    @Html.HiddenFor(model => model.Id)
+
                     <div class="form-group col-xs-12 col-sm-3">
                         @Html.LabelFor(model => model.Domicilio.Calle)<br />
                         @Html.DisplayFor(model => model.Domicilio.Calle)
@@ -126,8 +131,8 @@
                     <h3 class="title-hero">
                         Figura Transporte : Partes Transporte
                     </h3>
-                    @Html.HiddenFor(x=>x.PartesTransportes[i].Id)
-                    @Html.HiddenFor(x=>x.PartesTransportes[i].TiposFigura_Id)
+                    @Html.HiddenFor(x => x.PartesTransportes[i].Id)
+                    @Html.HiddenFor(x => x.PartesTransportes[i].TiposFigura_Id)
                     <div class="form-group col-xs-12 col-sm-3">
                         @Html.LabelFor(x => x.PartesTransportes[i].ParteTransporte)<br />
                         @Html.DisplayFor(x => x.PartesTransportes[i].ParteTransporte)
@@ -143,6 +148,6 @@
             <div class="clearfix"></div>
         </div>
     </div>
-</div>
+    <div class="clearfix"></div><br />
 }
 

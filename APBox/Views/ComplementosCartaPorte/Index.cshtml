@@ -166,17 +166,24 @@
                                         {
                                             if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
                                             {
-                                                <p><span class="fa fa-clipboard-check font-green"></span> Generado</p> }
+                                                <div class="badge badge-light-success">
+                                                    <p><span class="fa fa-clipboard-check font-green"></span> Generado</p>
+                                                </div>
+                                            }
                                             else
                                             {
-                                                <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
+                                                <div class="badge badge-light-danger">
+                                                    <p><span class="fa fa-calendar-times font-red"></span> Cancelado</p>
+                                                </div>
                                             }
                                         }
                                         else
                                         {
+                                        <div class="badge badge-light-info">
                                             <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                        </div>
                                         }
-                                    </td>
+                                        </td>
                                     <td class="text-end">
                                         <!--begin::Action=-->
                                         <a href="#" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -189,15 +196,15 @@
                                                 if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
                                                 {
                                                     <!--begin::Menu item-->
-                                                    <div class="menu-item px-3">@Html.ActionLink("Descargar XML", "Descargar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
-                                                    <div class="menu-item px-3">@Html.ActionLink("Descargar PDF", "DescargarPDF", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
+                                                    <div class="menu-item px-3">@Html.ActionLink("XML", "Descargar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
+                                                    <div class="menu-item px-3">@Html.ActionLink("PDF", "DescargarPDF", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                     <div class="menu-item px-3"><div class="menu-link px-3 dcancelar" data-id="@Model.ComplementosCartaPorte[i].Id">Cancelar</div></div>
                                                     <!--end::Menu item-->
                                                 }
                                                 else
                                                 {
                                                     <!--begin::Menu item-->
-                                                    <div class="menu-item px-3">@Html.ActionLink("Descargar Acuse", "DescargarAcuse", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
+                                                    <div class="menu-item px-3">@Html.ActionLink("Acuse", "DescargarAcuse", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                     <!--end::Menu item-->
                                                 }
 
@@ -207,12 +214,12 @@
                                                 <!--begin::Menu item-->
                                                 if (User.IsInRole("EDICION"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
                                                 {
-                                                <div class="menu-item px-3">@Html.ActionLink("Editar Carta Porte", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
+                                                <div class="menu-item px-3">@Html.ActionLink("Editar", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                 }
                                                 <div class="menu-item px-3">@Html.ActionLink("Timbrar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                 if (User.IsInRole("BORRADO"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
                                                 {
-                                                <div class="menu-item px-3">@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { onclick = "return confirm('Are you sure you wish to delete this complemento?');" })</div>
+                                                <div class="menu-item px-3">@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { onclick = "return confirm('Are you sure you wish to delete this complemento?');", @class = "menu-link px-3" })</div>
                                                 }
                                                 <!--end::Menu item-->
                                             }

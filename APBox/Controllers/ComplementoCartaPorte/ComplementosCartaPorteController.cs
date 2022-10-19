@@ -1000,7 +1000,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
         public ActionResult Generar(int? id)
         {
-            
+            ViewBag.Controller = "ComplementosCartaPorte";
+            ViewBag.Action = "Generar";
+            ViewBag.ActionES = "Generar";
+            ViewBag.NameHere = "emision";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

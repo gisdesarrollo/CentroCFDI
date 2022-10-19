@@ -1,0 +1,333 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.Domicilio
+
+@using (Html.BeginForm())
+
+{   
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownList("Paises", null, "Favor de hacer su selección", new { @class = "form-select ddlPaisesChangeF PaisesList", @data_control = "select2" })
+            @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
+            <div id="UPais" style="color:red;"></div>
+
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-4 dropdownEstadoF">
+            @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownList("ddlEstados", new List<SelectListItem>(), "Favor de hacer su selección",  new { @class = "form-select mb-2 ddlEstadosChangeF DEstadoList", @data_control = "select2", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+            <div id="UEstado" style="color:red;"></div>
+
+        </div>
+        <div class="form-group col-xs-12 col-sm-4 hiddenDiv inputEstadoF">
+            @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control mb-2 DEstado" } })
+            @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+
+        </div>
+        <div class="form-group col-xs-12 col-sm-4 dropdownMunicipioF">
+            @Html.LabelFor(model => model.Municipio, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownList("ddlMunicipios", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select", @data_control = "select2", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Municipio, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-4 hiddenDiv inputMunicipioF">
+            @Html.LabelFor(model => model.Municipio, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Municipio, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.Municipio, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-4 dropdownLocalidadF">
+            @Html.LabelFor(model => model.Localidad, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownList("ddlLocalidades", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select mb-2 localidadesVal", @data_control = "select2", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Localidad, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-4 hiddenDiv inputLocalidadF">
+            @Html.LabelFor(model => model.Localidad, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Localidad, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.Localidad, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(model => model.CodigoPostal, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.CodigoPostal, new { htmlAttributes = new { @class = "form-control mb-2 CodigosPostalesChangeF" } })
+            @Html.ValidationMessageFor(model => model.CodigoPostal, "", new { @class = "text-danger" })
+            <div id="UCodigoPostal" style="color:red;"></div>
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-4 dropdownColoniaF">
+            @Html.LabelFor(model => model.Colonia, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownList("ddlColonias", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Colonia, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-4 hiddenDiv inputColoniaF">
+            @Html.LabelFor(model => model.Colonia, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Colonia, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.Colonia, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(model => model.Calle, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Calle, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.Calle, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(model => model.NumeroExterior, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.NumeroExterior, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.NumeroExterior, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-4">
+            @Html.LabelFor(model => model.NumeroInterior, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.NumeroInterior, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.NumeroInterior, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-6">
+            @Html.LabelFor(model => model.Referencia, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Referencia, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.Referencia, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        //select load domicilio
+        $(".ddlPaisesChangeF").change(function () {
+            
+            var Paises = "#" + $(this).attr('id');
+            var Seccion = Paises.replace('Paises', '');
+
+            var ddlEstados = Seccion + "ddlEstados";
+
+            var ddlMunicipios = Seccion + "ddlMunicipios";
+            var ddlLocalidades = Seccion + "ddlLocalidades";
+            var ddlColonias = Seccion + "ddlColonias";
+            var tbEstados = Seccion + "Estado";
+            var tbMunicipios = Seccion + "Municipio";
+            var tbLocalidades = Seccion + "Localidad";
+            var tbColonias = Seccion + "Colonia";
+            //asigancion de la misma id inicial
+            var idPrincipal = $(this).attr('id');
+            var idInicial = idPrincipal.replace('Paises', '');
+            //add name id dropdow
+            $(".dropdownEstadoF").attr('id', idInicial + "dEstados");
+            $(".dropdownMunicipioF").attr('id', idInicial + "dMunicipios");
+            $(".dropdownLocalidadF").attr('id', idInicial + "dLocalidades");
+            $(".dropdownColoniaF").attr('id', idInicial + "dColonias");
+
+            //get id dropdown
+            var divDropdownEstados = "#" + $(".dropdownEstadoF").attr('id');
+            var divDropdownMunicipios = "#" + $(".dropdownMunicipioF").attr('id');
+            var divDropdownLocalidades = "#" + $(".dropdownLocalidadF").attr('id');
+            var divDropdownColonias = "#" + $(".dropdownColoniaF").attr('id');
+
+            //add name id input
+            $(".inputEstadoF").attr('id', idInicial + "iEstado");
+            $(".inputMunicipioF").attr('id', idInicial + "iMunicipio");
+            $(".inputLocalidadF").attr('id', idInicial + "iLocalidad");
+            $(".inputColoniaF").attr('id', idInicial + "iColonia");
+            //get id input
+            var divInputEstados = "#" + $(".inputEstadoF").attr('id');
+            var divInputMunicipios = "#" + $(".inputMunicipioF").attr('id');
+            var divInputLocalidades = "#" + $(".inputLocalidadF").attr('id');
+            var divInputColonias = "#" + $(".inputColoniaF").attr('id');
+
+            
+            if ($(Paises).val() == "MEX" || $(Paises).val() == "USA" || $(Paises).val() == "CAN") {
+
+                $.get("/ComplementosCartaPorte/FiltrarEstados", { PaisId: $(Paises).val() }, function (data) {
+                    LimpiartbCamposget($(tbEstados), $(divInputEstados));
+                    LimpiartbCamposget($(tbMunicipios), $(divInputMunicipios));
+                    LimpiartbCamposget($(tbLocalidades), $(divInputLocalidades));
+                    //LimpiartbCamposget($("#tbCodigosPostales"));
+                    LimpiartbCamposget($(tbColonias), $(divInputColonias));
+
+                    LimpiarddlCamposget($(ddlEstados), $(divDropdownEstados));
+                    LimpiarddlCamposget($(ddlMunicipios), $(divDropdownMunicipios));
+                    LimpiarddlCamposget($(ddlLocalidades), $(divDropdownLocalidades));
+                    //LimpiarddlCamposget($("#ddlCodigosPostales"));
+                    LimpiarddlCamposget($(ddlColonias), $(divDropdownColonias));
+
+
+                    $(ddlEstados).empty();
+                    $(ddlEstados).removeClass('hiddenDiv');
+
+
+                    $(ddlEstados).append("<option value> Seleccionar Estados de " + $(Paises + " option:selected").text() + "</option>")
+                    $.each(data, function (index, row) {
+                        $(ddlEstados).append("<option value='" + row.c_Estado + "'>" + row.NombreEstado + "</option>")
+                    });
+                    $(ddlEstados).removeAttr('disabled');
+                    //$(ddlEstados).selectpicker('refresh');
+                });
+            }
+            else {
+
+                LimpiarddlCampos($(ddlEstados), $(divDropdownEstados));
+                LimpiartbCampos($(tbEstados), $(divInputEstados));
+                LimpiarddlCampos($(ddlMunicipios), $(divDropdownMunicipios));
+                LimpiartbCampos($(tbMunicipios), $(divInputMunicipios));
+                LimpiarddlCampos($(ddlLocalidades), $(divDropdownLocalidades));
+                LimpiartbCampos($(tbLocalidades), $(divInputLocalidades));
+                LimpiarddlCampos($(ddlColonias), $(divDropdownColonias));
+                LimpiartbCampos($(tbColonias), $(divInputColonias));
+
+                //LimpiarddlCampos($("#ddlCodigosPostales"))
+                //LimpiartbCampos($("#tbCodigosPostales"));
+
+            }
+        });
+
+        $('.ddlEstadosChangeF').change(function () {
+            var ddlEstados = "#" + $(this).attr('id');
+            var Seccion = ddlEstados.replace('ddlEstados', '');
+            var Paises = Seccion + "Paises";
+            var ddlMunicipios = Seccion + "ddlMunicipios";
+            var ddlLocalidades = Seccion + "ddlLocalidades";
+            var ddlColonias = Seccion + "ddlColonias";
+            var tbEstados = Seccion + "Estado";
+            var tbMunicipios = Seccion + "Municipio";
+            var tbLocalidades = Seccion + "Localidad";
+            var tbColonias = Seccion + "Colonia";
+            var tbCodigosPostales = Seccion + "CodigoPostal";
+
+            //asigancion de la misma id inicial
+            var idPrincipal = $(this).attr('id');
+            var idInicial = idPrincipal.replace('ddlEstados', '');
+            //add name id dropdow
+            $(".dropdownMunicipioF").attr('id', idInicial + "dMunicipios");
+            $(".dropdownLocalidadF").attr('id', idInicial + "dLocalidades");
+            $(".dropdownColoniaF").attr('id', idInicial + "dColonias");
+
+            //get id dropdown
+            var divDropdownMunicipios = "#" + $(".dropdownMunicipioF").attr('id');
+            var divDropdownLocalidades = "#" + $(".dropdownLocalidadF").attr('id');
+            var divDropdownColonias = "#" + $(".dropdownColoniaF").attr('id');
+
+            //add name id input
+            $(".inputMunicipioF").attr('id', idInicial + "iMunicipio");
+            $(".inputLocalidadF").attr('id', idInicial + "iLocalidad");
+            $(".inputColoniaF").attr('id', idInicial + "iColonia");
+            //get id input
+            var divInputMunicipios = "#" + $(".inputMunicipioF").attr('id');
+            var divInputLocalidades = "#" + $(".inputLocalidadF").attr('id');
+            var divInputColonias = "#" + $(".inputColoniaF").attr('id');
+            
+            if ($(Paises).val() == "MEX") {
+                LimpiartbCamposget($(tbMunicipios), $(divInputMunicipios));
+                LimpiartbCamposget($(tbLocalidades), $(divInputLocalidades));
+                //LimpiartbCamposget($("#tbCodigosPostales"));
+                LimpiartbCamposget($(tbColonias), $(divInputColonias));
+
+                LimpiarddlCamposget($(ddlMunicipios), $(divDropdownMunicipios));
+                LimpiarddlCamposget($(ddlLocalidades), $(divDropdownLocalidades));
+                //LimpiarddlCamposget($("#ddlCodigosPostales"));
+                LimpiarddlCamposget($(ddlColonias), $(divDropdownColonias));
+                $.get("/ComplementosCartaPorte/FiltrarMunicipios", { EstadoId: $(ddlEstados).val() }, function (data) {
+                    $(ddlMunicipios).empty();
+                    //$("#ddlMunicipios").removeClass('hidden');
+
+                    //$("#ddlMunicipios").append("<option value> Seleccionar Municipio de " + $("#ddlEstado option:selected").text() + "</option>")
+                    $.each(data, function (index, row) {
+                        $(ddlMunicipios).append("<option value='" + row.c_Municipio + "'>" + row.Descripcion + "</option>")
+                    });
+                    $(ddlMunicipios).removeAttr('disabled');
+                    //$(ddlMunicipios).selectpicker('refresh');
+                });
+                $.get("/ComplementosCartaPorte/FiltrarLocalidades", { EstadoId: $(ddlEstados).val() }, function (data) {
+
+                    $(ddlLocalidades).empty();
+                    $.each(data, function (index, row) {
+                        $(ddlLocalidades).append("<option value='" + row.c_Localidad + "'>" + row.Descripcion + "</option>")
+                    });
+                    $(ddlLocalidades).removeAttr('disabled');
+                    //$(ddlLocalidades).selectpicker('refresh');
+                });
+            }
+            else {
+                LimpiarddlCampos($(ddlMunicipios), $(divDropdownMunicipios));
+                LimpiartbCampos($(tbMunicipios), $(divInputMunicipios));
+                LimpiarddlCampos($(ddlLocalidades), $(divDropdownLocalidades));
+                LimpiartbCampos($(tbLocalidades), $(divInputLocalidades));
+                //LimpiarddlCampos($("#ddlCodigosPostales"))
+                //LimpiartbCampos($(tbCodigosPostales));
+                LimpiarddlCampos($(ddlColonias), $(divDropdownColonias))
+                LimpiartbCampos($(tbColonias), $(divInputColonias));
+            }
+        });
+
+        $('.CodigosPostalesChangeF').keyup(function (e) {
+            let timeout = null;
+            clearTimeout(timeout);
+            var tbCodigosPostales = "#" + $(this).attr('id');
+            var Seccion = tbCodigosPostales.replace('CodigoPostal', '');
+            var Paises = Seccion + "Paises";
+            var ddlColonias = Seccion + "ddlColonias";
+
+            //asigancion de la misma id inicial
+            var idPrincipal = $(this).attr('id');
+            var idInicial = idPrincipal.replace('CodigoPostal', '');
+            //add name id dropdow
+            $(".dropdownColoniaF").attr('id', idInicial + "dColonias");
+
+            //get id dropdown
+            var divDropdownColonias = "#" + $(".dropdownColoniaF").attr('id');
+
+
+            // Make a new timeout set to go off in 1000ms (1 second)
+            timeout = setTimeout(function () {
+                if ($(Paises).val() == "MEX") {
+                    $.get("/ComplementosCartaPorte/FiltrarColonias", { CodigoPostalId: $(tbCodigosPostales).val() }, function (data) {
+                        $(ddlColonias).empty();
+                        $.each(data, function (index, row) {
+                            $(ddlColonias).append("<option value='" + row.c_Colonia + "'>" + row.Nombreasentamiento + "</option>")
+                        });
+                        $(ddlColonias).removeAttr('disabled');
+
+                        //$(ddlColonias).selectpicker('refresh');
+                    });
+                }
+                else {
+
+                }
+            }, 1000);
+
+        });
+
+        function LimpiartbCamposget(tb, divInput) {
+            tb.val('');
+            tb.addClass('hiddenDiv');
+            divInput.addClass('hiddenDiv');
+            //tb.selectpicker('refresh');
+        }
+
+        function LimpiarddlCamposget(ddl, divDropdown) {
+            ddl.empty();
+            ddl.attr('disabled', 'disabled');
+            ddl.removeClass('hiddenDiv');
+            ddl.parent().removeClass("hiddenDiv");
+            divDropdown.removeClass('hiddenDiv');
+
+            //ddl.parent().attr("disabled", "disabled");
+            // ddl.selectpicker('refresh');
+        }
+
+        function LimpiartbCampos(tb, divInput) {
+            tb.val('');
+            tb.removeClass('hiddenDiv');
+            nombre = tb.attr('name');
+            tb.attr('placeholder', 'Ingrese ' + nombre);
+            divInput.removeClass('hiddenDiv');
+            //tb.attr("placeholder", "Ingrese " + nombre + " del municipio de " + $("#ddlPaises option:selected").text());
+            //tb.selectpicker('refresh');
+        }
+
+        function LimpiarddlCampos(ddl, divDropdown) {
+            ddl.empty();
+            ddl.attr('disabled', 'disabled');
+            ddl.addClass('hiddenDiv');
+            divDropdown.addClass('hiddenDiv');
+            
+        }
+    });
+    
+</script>

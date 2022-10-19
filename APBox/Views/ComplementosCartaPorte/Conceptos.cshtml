@@ -5,9 +5,9 @@
 @using (Html.BeginCollectionItem("Conceptoss"))
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
-    
-    <div class="card shadow-sm mrg20L mrg20R">
-        <div class="card-header bg-default">
+
+    <div class="card shadow-sm">
+        <div class="card-header">
             <h3 class="card-title">
                 Conceptos
             </h3>
@@ -15,16 +15,16 @@
                 <a href="#" class="icon-separator" onclick="removeDetalleConceptos(this)">
                     <!--begin::Svg Icon -->
                     <span class="svg-icon svg-icon-3x">
-                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="40" height="40" />
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
                     </span>
                     <!--end::Svg Icon-->
-                    
+
                 </a>
             </div>
-            
+
 
         </div>
-        <div class="card-body conceptos">
+        <div class="card-body row conceptos">
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.Complemento_Id)
             @Html.HiddenFor(model => model.Traslado_Id)
@@ -111,13 +111,13 @@
                         @Html.LabelFor(model => model.Traslado.Importe)<br />
                         @Html.DisplayFor(model => model.Traslado.Importe)
                         @Html.HiddenFor(model => model.Traslado.Importe)
-                        <p id="tImporte" hidden>@Model.Traslado.Importe</p>
+                        <p id="tImporte" class="hiddenDiv">@Model.Traslado.Importe</p>
                     </div>
                     @*<div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.Traslado.TotalImpuestosTR)<br />
-                    @Html.DisplayFor(model => model.Traslado.TotalImpuestosTR)
-                    @Html.HiddenFor(model => model.Traslado.TotalImpuestosTR)
-                </div>*@
+                            @Html.LabelFor(model => model.Traslado.TotalImpuestosTR)<br />
+                            @Html.DisplayFor(model => model.Traslado.TotalImpuestosTR)
+                            @Html.HiddenFor(model => model.Traslado.TotalImpuestosTR)
+                        </div>*@
                 }
             }
             <div class="clearfix"></div>
@@ -155,16 +155,15 @@
                         @Html.LabelFor(model => model.Retencion.Importe)<br />
                         @Html.DisplayFor(model => model.Retencion.Importe)
                         @Html.HiddenFor(model => model.Retencion.Importe)
-                        <p id="rImporte" hidden>@Model.Retencion.Importe</p>
+                        <p id="rImporte" class="hiddenDiv">@Model.Retencion.Importe</p>
                     </div>
-                    @*<div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.Retencion.TotalImpuestosTR)<br />
-                    @Html.DisplayFor(model => model.Retencion.TotalImpuestosTR)
-                    @Html.HiddenFor(model => model.Retencion.TotalImpuestosTR)
-                </div>*@
+                    
                 }
             }
+
             <div class="clearfix"></div>
         </div>
     </div>
+    <div class="clearfix"></div>
+    <br />
 }

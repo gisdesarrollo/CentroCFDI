@@ -1,4 +1,4 @@
-/// <reference path="datatable-init.js" />
+/* <reference path="datatable-init.js" />*/
 $(document).ready(function () {
     if ($('table').hasClass("table")) {
         $.ajax({

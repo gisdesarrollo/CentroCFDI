@@ -1,0 +1,7 @@
+﻿.hiddenDiv{
+    display:none;
+}
+
+.visibleDiv {    
+    visibility: visible;
+}

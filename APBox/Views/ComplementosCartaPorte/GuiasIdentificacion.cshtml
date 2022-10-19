@@ -5,17 +5,23 @@
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-    <div class="content-box mrg20L mrg20R">
-        <h3 class="content-box-header bg-default">
-            <i class="glyph-icon icon-money"></i>
-            Guia Identificación
-            <div class="header-buttons-separator">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">
+                Guia Identificación
+            </h3>
+            <div class="card-toolbar">
                 <a href="#" class="icon-separator" onclick="removeDetalleGIdentificacion(this)">
-                    <i class="glyph-icon icon-times font-red"></i>
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                    </span>
+                    <!--end::Svg Icon-->
                 </a>
             </div>
-        </h3>
-        <div class="content-box-wrapper GIdentificacion">
+
+        </div>
+        <div class="card-body row GIdentificacion">
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.NumeroGuiaIdentificacion)<br />
                 <p id="NumGuiaIdentificacion">@Model.NumeroGuiaIdentificacion</p>
@@ -23,7 +29,7 @@
             </div>
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.DescripGuiaIdentificacion)<br />
-               <p id="DescripGuiaIdentificacion">@Model.DescripGuiaIdentificacion</p>
+                <p id="DescripGuiaIdentificacion">@Model.DescripGuiaIdentificacion</p>
                 @Html.HiddenFor(model => model.DescripGuiaIdentificacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
@@ -34,6 +40,7 @@
             <div class="clearfix"></div>
         </div>
     </div>
+    <div class="clearfix"></div><br />
 }
 
 

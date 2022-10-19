@@ -41,12 +41,14 @@
     <!--end::Custom Styles-->
     <!--begin::Jquery-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-   <!--end::Jquery-->
-    
+    <!--end::Jquery-->
     <!--begin:: datetimepicker-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">-->
     <!--end:: datetimepicker-->
-
+    
+    <!--begin::styles-->
+    <link href="~/_CDN/custom/css-custom/styles.css" rel="stylesheet" type="text/css"/>
+    <!--end::styles-->
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -101,17 +103,15 @@
     <script src="~/_CDN/assets/plugins/global/plugins.bundle.js"></script>
     <script src="~/_CDN/assets/js/scripts.bundle.js"></script>
     <!--end::Global Javascript Bundle-->
-
     <!--begin::Vendors Javascript(used by this page)-->
     <link rel="stylesheet" href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" type="text/css" />
     <script src="/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
-
     <!--begin::Custom Javascript(used by this page)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
     <script src="~/_CDN/assets/js/custom/widgets.js"></script>
     <!--end::Custom Javascript-->
-<<<<<<< Updated upstream
+    
     <link rel="stylesheet" href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" type="text/css" />
     <script src="/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--begin::Javascript Initialize-->
@@ -120,7 +120,7 @@
 
     <link href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <script src="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />*@
     <!--begin::popper-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <!--end::popper-->
@@ -128,9 +128,9 @@
     <script src="https://unpkg.com/@("@")popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
     <!--end:: Tootltip de Poppers-->
-
+    
     <script>
-           @(ViewBag.NameHere).classList.add('here');
+        @(ViewBag.NameHere).classList.add('here');
 
         $(document).ready(function () {
             var element = document.getElementById('chart_clientes_por_mes');
@@ -245,15 +245,33 @@
                     }
                 }
             };
-=======
 
+        });
+
+        ///activa calendario date
+        $(".date").flatpickr({
+            dateFormat: "d/m/Y"
+        });
+
+        //activa calendario datetime
+        $(".datetimepicker").flatpickr({
+            enableTime: true,
+            dateFormat: "d/m/Y H:i"
+        });
+        //activa calendario time
+        $(".time").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+        });
+
+    </script>
+    
     <!--begin::Javascript Initialize-->
->>>>>>> Stashed changes
-
+    
     <!--begin::Script que agrega DataTables por condición-->
-    <script src="~/_CDN/custom/js-custom/triggers-init.js"></script>
+    @*<script src="~/_CDN/custom/js-custom/triggers-init.js"></script>*@
 
-<<<<<<< Updated upstream
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used by this page)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
@@ -261,16 +279,18 @@
 
     <!--<script src="~/_CDN/custom/js-custom/scripts.js"></script>-->
     <!--end::Custom Javascript-->
-=======
     <!--begin::Script para diversas funciones-->
-    <script src="~/_CDN/custom/js-custom/scripts.js"></script>
+    <!--<script src="~/_CDN/custom/js-custom/scripts.js"></script>-->
 
     <!--end::Javascript Initialize-->
->>>>>>> Stashed changes
+    
     <!--end::Javascript-->
     <!--begin:: datetimepicker-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>-->
     <!--end::datetimepicker-->
+    <!--begin::calendartime-->
+        <scritp src="~/_CDN/assets/js/calendarTime.js"></scritp>
+    <!--end::calendarTime-->
 </body>
 <!--end::Body-->
 </html>

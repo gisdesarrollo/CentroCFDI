@@ -5,111 +5,116 @@
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-<div class="content-box mrg20L mrg20R">
-    <h3 class="content-box-header bg-default">
-        <i class="glyph-icon icon-money"></i>
-        Ubicacion
-        <div class="header-buttons-separator">
-            <a href="#" class="icon-separator" onclick="removeDetalleUbicacion(this)">
-                <i class="glyph-icon icon-times font-red"></i>
-            </a>
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">
+                Ubicacion
+            </h3>
+            <div class="card-toolbar">
+                <a href="#" class="icon-separator" onclick="removeDetalleUbicacion(this)">
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </div>
+
         </div>
-    </h3>
-  
-    <div class="content-box-wrapper ubicacion">
+        <div class="card-body row ubicacion">
 
-       
-        @Html.HiddenFor(model=>model.Id)
-        @Html.HiddenFor(model=>model.Complemento_Id)
-        @Html.HiddenFor(model=>model.Domicilio_Id)
-        <div class="clearfix"></div>
 
-        <div class="content-box-wrapper">
-            <div class="row">
-                @if (Model.TipoUbicacion == "Origen")
-                {
-                    <h3 class="title-hero">
-                        Ubicación Origen
-                    </h3>
-                }
-                else
-                {
-                    <h3 class="title-hero">
-                        Ubicación Destino
-                    </h3>
-                }
-                @Html.HiddenFor(model => model.TipoUbicacion)
-            <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.IDUbicacion)<br />
-                @*@Html.DisplayFor(model => model.IDUbicacion)*@
-                <p id="IdUbicacion">@Model.IDUbicacion</p>
-                @Html.HiddenFor(model => model.IDUbicacion)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Complemento_Id)
+            @Html.HiddenFor(model => model.Domicilio_Id)
+            <div class="clearfix"></div>
 
-            </div>
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.RfcRemitenteDestinatario)<br />
-                    @Html.DisplayFor(model => model.RfcRemitenteDestinatario)
-                    @Html.HiddenFor(model => model.RfcRemitenteDestinatario)
-                </div>
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.NombreRemitenteDestinatario)<br />
-                    @Html.DisplayFor(model => model.NombreRemitenteDestinatario)
-                    @Html.HiddenFor(model => model.NombreRemitenteDestinatario)
-                </div>
-                @if (Model.NumRegIdTrib != "" && Model.NumRegIdTrib != null)
-                {
+            <div class="content-box-wrapper">
+                <div class="row">
+                    @if (Model.TipoUbicacion == "Origen")
+                    {
+                        <h3 class="title-hero">
+                            Ubicación Origen
+                        </h3>
+                    }
+                    else
+                    {
+                        <h3 class="title-hero">
+                            Ubicación Destino
+                        </h3>
+                    }
+                    @Html.HiddenFor(model => model.TipoUbicacion)
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.NumRegIdTrib)<br />
-                        @Html.DisplayFor(model => model.NumRegIdTrib)
-                        @Html.HiddenFor(model => model.NumRegIdTrib)
+                        @Html.LabelFor(model => model.IDUbicacion)<br />
+                        @*@Html.DisplayFor(model => model.IDUbicacion)*@
+                        <p id="IdUbicacion">@Model.IDUbicacion</p>
+                        @Html.HiddenFor(model => model.IDUbicacion)
+
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.ResidenciaFiscal)<br />
-                        @Html.DisplayFor(model => model.ResidenciaFiscal)
-                        @Html.HiddenFor(model => model.ResidenciaFiscal)
+                        @Html.LabelFor(model => model.RfcRemitenteDestinatario)<br />
+                        @Html.DisplayFor(model => model.RfcRemitenteDestinatario)
+                        @Html.HiddenFor(model => model.RfcRemitenteDestinatario)
                     </div>
-                }
-                @if (Model.NombreEstacion != "")
-                {
-            <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.NombreEstacion)<br />
-                @Html.DisplayFor(model => model.NombreEstacion)
-                @Html.HiddenFor(model => model.NombreEstacion)
-                
-            </div>
-            <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.NumEstacion)<br />
-                @*@Html.DisplayFor(model => model.NumEstacion)*@
-                @Html.HiddenFor(model => model.NumEstacion)
-                @Html.DisplayFor(model => model.Estaciones_Id)
-                @Html.HiddenFor(model => model.Estaciones_Id)
-            </div>
-            <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.TipoEstaciones)<br />
-                @*@Html.DisplayFor(model => model.TipoEstaciones)*@
-                @Html.HiddenFor(model => model.TipoEstaciones)
-                @Html.DisplayFor(model => model.TipoEstacion_Id)
-                @Html.HiddenFor(model => model.TipoEstacion_Id)
-            </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.NavegacionTrafico)<br />
-                        @Html.DisplayFor(model => model.NavegacionTrafico)
-                        @Html.HiddenFor(model => model.NavegacionTrafico)
+                        @Html.LabelFor(model => model.NombreRemitenteDestinatario)<br />
+                        @Html.DisplayFor(model => model.NombreRemitenteDestinatario)
+                        @Html.HiddenFor(model => model.NombreRemitenteDestinatario)
                     </div>
-                }
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.FechaHoraSalidaLlegada)<br />
-                    @Html.DisplayFor(model => model.FechaHoraSalidaLlegada)
-                    @Html.HiddenFor(model => model.FechaHoraSalidaLlegada)
-                </div>
-                @if (Model.TipoUbicacion == "Destino")
-                {
+                    @if (Model.NumRegIdTrib != "" && Model.NumRegIdTrib != null)
+                    {
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.NumRegIdTrib)<br />
+                            @Html.DisplayFor(model => model.NumRegIdTrib)
+                            @Html.HiddenFor(model => model.NumRegIdTrib)
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.ResidenciaFiscal)<br />
+                            @Html.DisplayFor(model => model.ResidenciaFiscal)
+                            @Html.HiddenFor(model => model.ResidenciaFiscal)
+                        </div>
+                    }
+                    @if (Model.NombreEstacion != "")
+                    {
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.NombreEstacion)<br />
+                            @Html.DisplayFor(model => model.NombreEstacion)
+                            @Html.HiddenFor(model => model.NombreEstacion)
+
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.NumEstacion)<br />
+                            @*@Html.DisplayFor(model => model.NumEstacion)*@
+                            @Html.HiddenFor(model => model.NumEstacion)
+                            @Html.DisplayFor(model => model.Estaciones_Id)
+                            @Html.HiddenFor(model => model.Estaciones_Id)
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.TipoEstaciones)<br />
+                            @*@Html.DisplayFor(model => model.TipoEstaciones)*@
+                            @Html.HiddenFor(model => model.TipoEstaciones)
+                            @Html.DisplayFor(model => model.TipoEstacion_Id)
+                            @Html.HiddenFor(model => model.TipoEstacion_Id)
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.NavegacionTrafico)<br />
+                            @Html.DisplayFor(model => model.NavegacionTrafico)
+                            @Html.HiddenFor(model => model.NavegacionTrafico)
+                        </div>
+                    }
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.DistanciaRecorrida)<br />
-                        @Html.DisplayFor(model => model.DistanciaRecorrida)
-                        @Html.HiddenFor(model => model.DistanciaRecorrida)
+                        @Html.LabelFor(model => model.FechaHoraSalidaLlegada)<br />
+                        @Html.DisplayFor(model => model.FechaHoraSalidaLlegada)
+                        @Html.HiddenFor(model => model.FechaHoraSalidaLlegada)
                     </div>
-                }
+                    @if (Model.TipoUbicacion == "Destino")
+                    {
+                        <div class="form-group col-xs-12 col-sm-3">
+                            @Html.LabelFor(model => model.DistanciaRecorrida)<br />
+                            @Html.DisplayFor(model => model.DistanciaRecorrida)
+                            @Html.HiddenFor(model => model.DistanciaRecorrida)
+                        </div>
+                    }
                     <div class="clearfix"></div>
                     @if (Model.TipoUbicacion == "Origen")
                     {
@@ -179,10 +184,12 @@
                     <div class="clearfix"></div>
 
                 </div>
+            </div>
+            <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
+
     </div>
     <div class="clearfix"></div>
-
-</div>
+    <br />
 }

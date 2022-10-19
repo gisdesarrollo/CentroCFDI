@@ -2621,9 +2621,9 @@
     <Content Include="_CDN\assets\plugins\global\plugins.bundle.css" />
     <Content Include="_CDN\assets\plugins\global\plugins.bundle.js" />
     <Content Include="_CDN\custom\css-custom\custom.css" />
+    <Content Include="_CDN\custom\css-custom\styles.css" />
     <Content Include="_CDN\custom\js-custom\dataTable-init.js" />
     <Content Include="_CDN\custom\js-custom\forms-init.js" />
-    <Content Include="_CDN\custom\js-custom\scripts.js" />
     <Content Include="_CDN\custom\js-custom\triggers-init.js" />
     <Content Include="_CDN\custom\media\avatars\user.png" />
     <Content Include="_CDN\custom\media\background\bg1.jpg" />
@@ -2983,6 +2983,7 @@
     <Content Include="Views\Shared\_ViewStart.cshtml" />
     <Content Include="Views\FacturasEmitidas\detallePago.cshtml" />
     <Content Include="Views\FacturasEmitidas\_Cancelacion.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\FiguraTransporteDomicilio.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
