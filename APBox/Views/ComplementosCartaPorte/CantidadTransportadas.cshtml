@@ -6,12 +6,12 @@
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
     <div class="card shadow-sm">
-        <div class="card-header">
-            <h3 class="card-title">
+        <div class="card-header" style="background-color: #6D84C2;">
+            <h3 class="card-title text-white">
                 Cantidad Transportadas
             </h3>
             <div class="card-toolbar">
-                <a href="#" class="icon-separator" onclick="removeDetalleCTransportadas(this)">
+                <a href="#" class="icon-separator " onclick="removeDetalleCTransportadas(this)">
                     <!--begin::Svg Icon -->
                     <span class="svg-icon svg-icon-3x">
                         <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
@@ -22,22 +22,22 @@
         </div>
         <div class="card-body row CTransportadas">
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Cantidad)<br />
+                @Html.LabelFor(model => model.Cantidad , new { @class = "fw-bold" })<br />
                 <p id="Cantidad">@Model.Cantidad</p>
                 @Html.HiddenFor(model => model.Cantidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.CveTransporte_Id)<br />
+                @Html.LabelFor(model => model.CveTransporte_Id, new { @class = "fw-bold" })<br />
                 <p id="CveTransporte">@Model.CveTransporte_Id</p>
                 @Html.HiddenFor(model => model.CveTransporte_Id)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.IDOrigen)<br />
+                @Html.LabelFor(model => model.IDOrigen, new { @class = "fw-bold" })<br />
                 <p id="IDOrigen">@Model.IDOrigen</p>
                 @Html.HiddenFor(model => model.IDOrigen)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.IDDestino)<br />
+                @Html.LabelFor(model => model.IDDestino, new { @class = "fw-bold" })<br />
                 <p id="IDDestino">@Model.IDDestino</p>
                 @Html.HiddenFor(model => model.IDDestino)
             </div>

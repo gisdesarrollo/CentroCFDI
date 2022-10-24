@@ -5,22 +5,18 @@
 }
 
 @Html.Partial("_ComprobanteScripts")
-<div id="page-title">
-    <div class="row">
-        <div class="col-lg-9">
-            <h2>Crear Comprobante CFDI</h2>
-         </div>
-            <div class="col-lg-3">
-                <button class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Exportar", "ComprobantesCfdi")'">
-                    <span>Descargar Layout Vacío</span>
-                    <i class="glyph-icon icon-arrow-down"></i>
-                </button>
-            </div>
+
+<div class="card card-flush">
+    <div class="card-header">
+        <h2 class="card-title"></h2>
+        <div class="card-toolbar">
+            <button class="btn btn-alt btn-hover btn-primary float-right" onclick="location.href='@Url.Action("Exportar", "ComprobantesCfdi")'">
+                <span>Descargar Layout Vacío</span>
+                <i class="glyph-icon icon-arrow-down"></i>
+            </button>
         </div>
     </div>
-
-<div class="panel">
-    <div class="panel-body">
+    <div class="card-body pt-0">
 
         @using (Html.BeginForm("Create", "ComprobantesCfdi", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -39,98 +35,98 @@
                     Información del Cliente y CFDi
                 </h3>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    <label class="control-label" for="Version">Versión</label>
-                    @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    <label class="form-label" for="Version">Versión</label>
+                    @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
                     @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                 </div>
 
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    <label class="control-label" for="Version">Fecha Emisión</label>
-                    @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control date" } })
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    <label class="form-label" for="Version">Fecha Emisión</label>
+                    @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
                     @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownList("TipoDecomprobante", null, new { @class = "form-control", @id = "tipoComprobante" })
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownList("TipoDecomprobante", null, new { @class = "form-select mb-2", @id = "tipoComprobante" })
                     @Html.ValidationMessageFor(model => model.TipoDeComprobante, "Comprobante no puede ir vacío", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownListFor(model => model.FormaPago, (IEnumerable<SelectListItem>)ViewBag.FormaPAgo, "Favor de hacer su selección", new { @class = "form-control" })
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.FormaPago, (IEnumerable<SelectListItem>)ViewBag.FormaPAgo, "Favor de hacer su selección", new { @class = "form-select mb-2" })
                     @Html.ValidationMessageFor(model => model.FormaPago, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "control-label" })
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "form-label" })
                     @Html.EnumDropDownListSpecialFor(model => model.MetodoPago)
                     @Html.ValidationMessageFor(model => model.MetodoPago, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.TipoCambio, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    @Html.LabelFor(model => model.TipoCambio, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control mb-2" } })
                     @Html.ValidationMessageFor(model => model.TipoCambio, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                    @Html.LabelFor(model => model.CondicionesPago, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.CondicionesPago, new { htmlAttributes = new { @class = "form-control" } })
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    @Html.LabelFor(model => model.CondicionesPago, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.CondicionesPago, new { htmlAttributes = new { @class = "form-control mb-2" } })
                     @Html.ValidationMessageFor(model => model.CondicionesPago, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2" id="moneda">
-                    @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "control-label" })
-                    @Html.EnumDropDownListSpecialFor(model => model.Moneda)
+                <div class="form-group col-xs-12 col-sm-6 col-md-3" id="moneda">
+                    @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
+                    @Html.EnumDropDownListFor(model => model.Moneda,"Seleccionar" ,new { @class ="form-select mb-2", @data_control = "select2" })
                     @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
                 </div>
                 <div class="row">
                     <i class="col-xs-12">Al agregar los conceptos, estos valores se actualizaran en automático</i>
-                    <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                        @Html.LabelFor(model => model.Subtotal, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Subtotal, new { htmlAttributes = new { @class = "form-control", @id = "subtotal", @readonly = "readonly" } })
+                    <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                        @Html.LabelFor(model => model.Subtotal, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Subtotal, new { htmlAttributes = new { @class = "form-control mb-2", @id = "subtotal", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Subtotal, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                        @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control", @id = "total", @readonly = "readonly" } })
+                    <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                        @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control mb-2", @id = "total", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-md-6">
-                    @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-control" })
+                    @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2" , @data_control = "select2" })
                     @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
                 </div>
 
             </div>
 
             <div class="clearfix"></div>
-
+            <br />
             <div class="row">
                 <div class="form-group col-xs-12 col-sm-6 col-md-6">
                     <div class="checkbox">
-                        <input type="checkbox" class="cfdiRelacionado" />
-                        <label class="control-label">Relacionar CFDi Cancelado</label>
+                        <input type="checkbox" class="form-check-input cfdiRelacionado" />
+                        <label class="form-label">Relacionar CFDi Cancelado</label>
                     </div>
                 </div>
 
                 <div class="clearfix"></div>
 
-                <div class="cfdiRelacionadoSeccion" hidden>
+                <div class="cfdiRelacionadoSeccion hiddenDiv">
                     <h3 class="title-hero">
                         CFDI Relacionado
                     </h3>
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            @Html.LabelFor(model => model.TipoRelacion, new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                            @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
+                        </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        @Html.LabelFor(model => model.TipoRelacion, new { @class = "control-label" })
-                        @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "form-label" })
+                            @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                            @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-
-                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "control-label" })
-                        @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
-                    </div>
-
 
                     <div class="clearfix"></div>
 
@@ -145,178 +141,182 @@
                     Conceptos
                 </h3>
 
-                <div class="content-box">
-                    <h3 class="content-box-header bg-blue">
-                        <i class="glyph-icon icon-cog"></i>
-                        Agregar Concepto
-                        <div class="header-buttons-separator">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Agregar Concepto
+                        </h3>
+                        <div class="card-toolbar">
                             <a href="#" class="icon-separator" id="agregarDetalleConceptos">
-                                <i class="glyph-icon icon-plus"></i>
+                                <!--begin::Svg Icon -->
+                                <span class="svg-icon svg-icon-3x">
+                                    <img src="~/_CDN/assets/media/icons/duotune/general/gen041.svg" width="40" height="40" />
+                                </span>
+                                <!--end::Svg Icon-->
                             </a>
                         </div>
-                    </h3>
+                    </div>
                     <i class="col-xs-12">*Puedes prellenar los Conceptos seleccionandolos de esta lista y solo modificar el importe antes de agregar</i>
                     <i class="col-xs-12">*Puedes administrar ese catálogo de Conceptos desde el menú de Empresa -> Conceptos</i>
                     <i class="col-xs-12">*Puedes cargar un layout de conceptos, El layout lo puedes descargar desde este menú en la parte superior derecha</i>
-                    <div class="col-xs-12">
-                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                            <label class="control-label" for="Grupos">Cargar layout Conceptos</label>
+                    <br />
+                    <div class="row">
+                        <div class="form-group col-8">
+
+                            <label class="form-label" for="Grupos">Cargar layout Conceptos</label>
                             <input class="file-input" type="file" name="Archivo" typeof="Archivo" accept=".csv, .dat" />
-                            <br />
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
-                                    <span>Procesar</span>
-                                    <i class="glyph-icon icon-arrow-right"></i>
-                                </button>
+
+                        </div>
+                        <div class="form-group col-4">
+                            <button type="submit" class="btn btn-primary">
+                                <span>Procesar</span>
+                                <i class="glyph-icon icon-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr />
+                    <div class="card-body">
+                        
+                        <div class="row">
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.CatConcepto, htmlAttributes: new { @class = "form-label" })
+                                @Html.DropDownListFor(model => model.Conceptos.CatConcepto, (IEnumerable<SelectListItem>)ViewBag.Conceptos, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "CConcepto" })
+                                @Html.ValidationMessageFor(model => model.Conceptos.CatConcepto, "", new { @class = "text-danger" })
+
                             </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <hr />
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.ClavesProdServ, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.ClavesProdServ, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.ClavesProdServ, "", new { @class = "text-danger" })
+                                <div id="ClaveProdServConcepto" style="color:red;"></div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.ClavesUnidad, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.ClavesUnidad, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.ClavesUnidad, "", new { @class = "text-danger" })
+                                <div id="ClaveUnidadConcepto" style="color:red;"></div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.Unidad, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.Unidad, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.Unidad, "", new { @class = "text-danger" })
+                                <div id="ClaveUnidadConcepto" style="color:red;"></div>
+                            </div>
 
-                    <div class="form-group col-xs-12">
-                        @Html.LabelFor(model => model.Conceptos.CatConcepto, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownListFor(model => model.Conceptos.CatConcepto, (IEnumerable<SelectListItem>)ViewBag.Conceptos, "Favor de hacer su selección", new { @class = "form-control", @id = "CConcepto" })
-                        @Html.ValidationMessageFor(model => model.Conceptos.CatConcepto, "", new { @class = "text-danger" })
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                                @Html.LabelFor(model => model.Conceptos.Descripcion, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.Descripcion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.Descripcion, "", new { @class = "text-danger" })
+                            </div>
 
-                    </div>
-                    <div class="clearfix"></div>
-                    <hr />
-                    <div class="content-box-wrapper">
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Conceptos.ClavesProdServ, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.ClavesProdServ, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.ClavesProdServ, "", new { @class = "text-danger" })
-                            <div id="ClaveProdServConcepto" style="color:red;"></div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Conceptos.ClavesUnidad, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.ClavesUnidad, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.ClavesUnidad, "", new { @class = "text-danger" })
-                            <div id="ClaveUnidadConcepto" style="color:red;"></div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Conceptos.Unidad, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.Unidad, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.Unidad, "", new { @class = "text-danger" })
-                            <div id="ClaveUnidadConcepto" style="color:red;"></div>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-6">
-                            @Html.LabelFor(model => model.Conceptos.Descripcion, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.Descripcion, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Conceptos.NoIdentificacion, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.NoIdentificacion, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.NoIdentificacion, "", new { @class = "text-danger" })
-                            <div id="ClaveUnidadConcepto" style="color:red;"></div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Conceptos.Cantidad, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.Cantidad, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.Cantidad, "", new { @class = "text-danger" })
-                            <div id="ClaveUnidadConcepto" style="color:red;"></div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Conceptos.ValorUnitario, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.ValorUnitario, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.ValorUnitario, "", new { @class = "text-danger" })
-                            <div id="ClaveUnidadConcepto" style="color:red;"></div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.Conceptos.Importe, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Conceptos.Importe, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Conceptos.Importe, "", new { @class = "text-danger" })
-                            <div id="ClaveUnidadConcepto" style="color:red;"></div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-3" id="activaObjetoImpI">
-                            @Html.LabelFor(model => model.Conceptos.ObjetoImpuesto, new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Conceptos.ObjetoImpuesto, "", new { @class = "text-danger" })
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.NoIdentificacion, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.NoIdentificacion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.NoIdentificacion, "", new { @class = "text-danger" })
+                                <div id="ClaveUnidadConcepto" style="color:red;"></div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.Cantidad, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.Cantidad, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.Cantidad, "", new { @class = "text-danger" })
+                                <div id="ClaveUnidadConcepto" style="color:red;"></div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.ValorUnitario, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.ValorUnitario, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.ValorUnitario, "", new { @class = "text-danger" })
+                                <div id="ClaveUnidadConcepto" style="color:red;"></div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                                @Html.LabelFor(model => model.Conceptos.Importe, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Conceptos.Importe, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.Conceptos.Importe, "", new { @class = "text-danger" })
+                                <div id="ClaveUnidadConcepto" style="color:red;"></div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-3" id="activaObjetoImpI">
+                                @Html.LabelFor(model => model.Conceptos.ObjetoImpuesto, new { @class = "form-label" })
+                                @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                @Html.ValidationMessageFor(model => model.Conceptos.ObjetoImpuesto, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr />
-                        <div id="activaImpuestos" hidden>
+                        <div id="activaImpuestos" class="hiddenDiv">
                             <h3 class="title-hero">
                                 Traslado
                             </h3>
-
-                            @Html.HiddenFor(model => model.Conceptos.Traslado.TipoImpuesto)
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Traslado.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Traslado.BasePorcentaje, new { htmlAttributes = new { @class = "form-control", @id = "TBaseP" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Traslado.BasePorcentaje, "", new { @class = "text-danger" })
+                            <div class="row">
+                                @Html.HiddenFor(model => model.Conceptos.Traslado.TipoImpuesto)
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Traslado.BasePorcentaje, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Traslado.BasePorcentaje, new { htmlAttributes = new { @class = "form-control mb-2", @id = "TBaseP" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Traslado.BasePorcentaje, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Traslado.Base, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Traslado.Base, new { htmlAttributes = new { @class = "form-control mb-2", @id = "TBase" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Base, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Traslado.Impuesto, htmlAttributes: new { @class = "form-label" })
+                                    @Html.DropDownListFor(model => model.Conceptos.Traslado.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Impuesto, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Traslado.TipoFactor, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EnumDropDownListSpecialFor(model => model.Conceptos.Traslado.TipoFactor)
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Traslado.TipoFactor, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Traslado.TasaOCuota, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Traslado.TasaOCuota, new { htmlAttributes = new { @class = "form-control mb-2", @id = "TTasaOCuota" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Traslado.TasaOCuota, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Traslado.Importe, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Traslado.Importe, new { htmlAttributes = new { @class = "form-control mb-2", @id = "TImporte", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Importe, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Traslado.Base, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Traslado.Base, new { htmlAttributes = new { @class = "form-control", @id = "TBase" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Base, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Traslado.Impuesto, htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownListFor(model => model.Conceptos.Traslado.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Impuesto, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Traslado.TipoFactor, htmlAttributes: new { @class = "control-label" })
-                                @Html.EnumDropDownListSpecialFor(model => model.Conceptos.Traslado.TipoFactor)
-                                @Html.ValidationMessageFor(model => model.Conceptos.Traslado.TipoFactor, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Traslado.TasaOCuota, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Traslado.TasaOCuota, new { htmlAttributes = new { @class = "form-control", @id = "TTasaOCuota" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Traslado.TasaOCuota, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Traslado.Importe, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Traslado.Importe, new { htmlAttributes = new { @class = "form-control", @id = "TImporte", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Importe, "", new { @class = "text-danger" })
-                            </div>
-
                             <div class="clearfix"></div>
                             <hr />
-                            <br />
-                            <br />
                             <h3 class="title-hero">
                                 Retencion
                             </h3>
-                            @Html.HiddenFor(model => model.Conceptos.Retencion.TipoImpuesto)
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Retencion.BasePorcentaje, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Retencion.BasePorcentaje, new { htmlAttributes = new { @class = "form-control", @id = "RBaseP" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Retencion.BasePorcentaje, "", new { @class = "text-danger" })
+                            <div class="row">
+                                @Html.HiddenFor(model => model.Conceptos.Retencion.TipoImpuesto)
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Retencion.BasePorcentaje, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Retencion.BasePorcentaje, new { htmlAttributes = new { @class = "form-control mb-2", @id = "RBaseP" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Retencion.BasePorcentaje, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Retencion.Base, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Retencion.Base, new { htmlAttributes = new { @class = "form-control mb-2", @id = "RBase" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Base, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Retencion.Impuesto, htmlAttributes: new { @class = "form-label" })
+                                    @Html.DropDownListFor(model => model.Conceptos.Retencion.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Impuesto, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Retencion.TipoFactor, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EnumDropDownListSpecialFor(model => model.Conceptos.Retencion.TipoFactor)
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Retencion.TipoFactor, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Retencion.TasaOCuota, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Retencion.TasaOCuota, new { htmlAttributes = new { @class = "form-control mb-2", @id = "RTasaOCuota" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Retencion.TasaOCuota, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                                    @Html.LabelFor(model => model.Conceptos.Retencion.Importe, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Conceptos.Retencion.Importe, new { htmlAttributes = new { @class = "form-control mb-2", @id = "RImporte", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Importe, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Retencion.Base, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Retencion.Base, new { htmlAttributes = new { @class = "form-control", @id = "RBase" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Base, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Retencion.Impuesto, htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownListFor(model => model.Conceptos.Retencion.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Impuesto, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Retencion.TipoFactor, htmlAttributes: new { @class = "control-label" })
-                                @Html.EnumDropDownListSpecialFor(model => model.Conceptos.Retencion.TipoFactor)
-                                @Html.ValidationMessageFor(model => model.Conceptos.Retencion.TipoFactor, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Retencion.TasaOCuota, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Retencion.TasaOCuota, new { htmlAttributes = new { @class = "form-control", @id = "RTasaOCuota" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Retencion.TasaOCuota, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                                @Html.LabelFor(model => model.Conceptos.Retencion.Importe, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Conceptos.Retencion.Importe, new { htmlAttributes = new { @class = "form-control", @id = "RImporte", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Importe, "", new { @class = "text-danger" })
-                            </div>
-
                             <div class="clearfix"></div>
                         </div>
                         <div class="col-xs-12">
@@ -349,16 +349,15 @@
 
             <div class="clearfix"></div>
 
-            <hr />
+            <div class="separator my-5"></div>
 
-            <div class="form-group pull-right">
-                <button type="button" class="btn btn-alt btn-hover btn-default" onclick="location.href='@Url.Action("Index")';">
-                    <span>Regresar</span>
-                    <i class="glyph-icon icon-arrow-left"></i>
-                </button>
-                <button type="submit" class="btn btn-alt btn-hover btn-blue-alt">
-                    <span>Guardar</span>
-                    <i class="glyph-icon icon-arrow-right"></i>
+            <div class="d-flex justify-content-end">
+                <!--begin::Button-->
+                <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
+                <!--end::Button-->
+
+                <button type="submit" class="btn btn-primary">
+                    <span class="indicator-label">Guardar</span>
                 </button>
             </div>
 
@@ -377,20 +376,7 @@
         }
     });
     
-    //$("#total").val($("#Total").val());
-
-    //JavaScript
-    /*function getBase64(file) {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            console.log(reader.result);
-        };
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-
-        };
-    }*/
+    
 </script>
 
 

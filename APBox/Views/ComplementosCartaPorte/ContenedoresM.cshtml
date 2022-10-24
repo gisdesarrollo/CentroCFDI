@@ -6,8 +6,8 @@
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
 <div class="card shadow-sm">
-    <div class="card-header">
-        <h3 class="card-title">
+    <div class="card-header" style="background-color: #6D84C2;">
+        <h3 class="card-title text-white">
             Contenedor Maritimo
         </h3>
             <div class="card-toolbar">
@@ -24,17 +24,17 @@
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.TransporteMaritimo_Id)
         <div class="form-group col-xs-12 col-sm-3">
-            @Html.LabelFor(model => model.ContenedorMaritimo_Id)<br />
+            @Html.LabelFor(model => model.ContenedorMaritimo_Id, new { @class = "fw-bold" })<br />
             @Html.DisplayFor(model => model.ContenedorMaritimo_Id)
             @Html.HiddenFor(model => model.ContenedorMaritimo_Id)
         </div>
         <div class="form-group col-xs-12 col-sm-3">
-            @Html.LabelFor(model => model.MatriculaContenedor)<br />
+            @Html.LabelFor(model => model.MatriculaContenedor, new { @class = "fw-bold" })<br />
             @Html.DisplayFor(model => model.MatriculaContenedor)
             @Html.HiddenFor(model => model.MatriculaContenedor)
         </div>
         <div class="form-group col-xs-12 col-sm-3">
-            @Html.LabelFor(model => model.NumPrecinto)<br />
+            @Html.LabelFor(model => model.NumPrecinto, new { @class = "fw-bold" })<br />
             @Html.DisplayFor(model => model.NumPrecinto)
             @Html.HiddenFor(model => model.NumPrecinto)
         </div>

@@ -73,6 +73,11 @@ namespace APBox.Controllers.ComplementosPago
         public ActionResult Index(ComplementosPagosModel complementosPagosModel, string actionName)
         {
             PopulaEstatus();
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            ViewBag.NameHere = "emision";
             if (actionName == "Filtrar")
             {
                 DateTime fechaI = complementosPagosModel.FechaInicial;
@@ -279,6 +284,10 @@ namespace APBox.Controllers.ComplementosPago
 
             if (ModelState.IsValid)
             {
+                ViewBag.Controller = "ComplementosPagos";
+                ViewBag.Action = "Edit";
+                ViewBag.ActionES = "Editar";
+                ViewBag.NameHere = "emision";
                 _acondicionarComplementosPagos.Pagos(complementoPago);
 
                 complementoPago.Pagos = null;
@@ -353,6 +362,10 @@ namespace APBox.Controllers.ComplementosPago
 
         public ActionResult Cargar()
         {
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Cargar";
+            ViewBag.ActionES = "Cargar Layout";
+            ViewBag.NameHere = "emision";
             var cargasComplementosModel = new CargasComplementosModel
             {
                 GrupoId = ObtenerGrupo(),
@@ -367,6 +380,10 @@ namespace APBox.Controllers.ComplementosPago
         [HttpPost]
         public ActionResult Cargar(CargasComplementosModel cargasComplementosModel)
         {
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Cargar";
+            ViewBag.ActionES = "Cargar Layout";
+            ViewBag.NameHere = "emision";
             if (ModelState.IsValid)
             {
                 string archivo;
@@ -444,7 +461,10 @@ namespace APBox.Controllers.ComplementosPago
                 },
                 SucursalId = ObtenerSucursal()
             };
-
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "DocumentosRelacionados";
+            ViewBag.ActionES = "DocumentosRelacionados";
+            ViewBag.NameHere = "emision";
             return View(complementoPago);
         }
 
@@ -631,7 +651,7 @@ namespace APBox.Controllers.ComplementosPago
 
         public ActionResult Generar(int? id)
         {
-           
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -642,12 +662,21 @@ namespace APBox.Controllers.ComplementosPago
                 return HttpNotFound();
             }
             PopulaClientes(complementoPago.ReceptorId);
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Generar";
+            ViewBag.ActionES = "Generar";
+            ViewBag.NameHere = "emision";
             return View(complementoPago);
         }
 
         [HttpPost]
         public ActionResult Generar(ComplementoPago complementoPago)
         {
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Generar";
+            ViewBag.ActionES = "Generar";
+            ViewBag.NameHere = "emision";
+
             PopulaClientes(complementoPago.ReceptorId);
             string error = "";
             if (ModelState.IsValid)

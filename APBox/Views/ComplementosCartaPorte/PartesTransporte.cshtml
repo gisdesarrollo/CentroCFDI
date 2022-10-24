@@ -6,8 +6,8 @@
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
 <div class="card shadow-sm">
-    <div class="card-header">
-        <h3 class="card-title">
+    <div class="card-header" style="background-color: #6D84C2;">
+        <h3 class="card-title text-white">
             Partes Transporte
         </h3>
         <div class="card-toolbar">
@@ -22,7 +22,7 @@
     </div>
     <div class="card-body row PTransporte">
         <div class="form-group col-xs-12 col-sm-3">
-            @Html.LabelFor(model => model.ParteTransporte)<br />
+            @Html.LabelFor(model => model.ParteTransporte, new { @class = "fw-bold" })<br />
             <p id="ParteTransporte">@Model.ParteTransporte</p>
             @Html.HiddenFor(model => model.ParteTransporte)
         </div>

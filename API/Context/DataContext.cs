@@ -62,7 +62,7 @@ namespace API.Context
                         .WithMany()
                         .HasForeignKey(s => s.GrupoId)
                         .WillCascadeOnDelete(false);
-            
+
             //complemento carta porte delete on update
 
             modelBuilder.Entity<ComplementoPago>()
@@ -89,7 +89,7 @@ namespace API.Context
                         .HasForeignKey(s => s.SucursalId)
                         .WillCascadeOnDelete(false);
 
-          
+
         }
 
         #region Catalogos
@@ -131,6 +131,8 @@ namespace API.Context
         //Facturacion
         public DbSet<DocumentoExtranjero> DocumentosExtranjeros { get; set; }
         public DbSet<FacturaEmitida> FacturasEmitidas { get; set; }
+
+        public DbSet<FacturaEmitidaTemporal> FacturasEmitidasTemp {get; set; }
         public DbSet<FacturaRecibida> FacturasRecibidas { get; set; }
         public DbSet<Validacion> Validaciones { get; set; }
 

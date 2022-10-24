@@ -67,6 +67,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaTiposDeComprobante();
             PopulaTransporte();
             PopulaEstatus();
+            ViewBag.Controller = "ComplementosCartaPorte";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            ViewBag.NameHere = "emision";
             if (actionName == "Filtrar")
             {
                 DateTime fechaI = complementosCPorteModel.FechaInicial;

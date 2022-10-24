@@ -4,147 +4,151 @@
     {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-    <div class="content-box mrg20L mrg20R">
-        <h4 class="content-box-header bg-default">
-            <i class="glyph-icon fas fa-file"></i>
+<div class="card shadow-sm">
+    <div class="card-header" style="background-color: #6D84C2;" >
+        <h4 class="card-title text-white">
             <b>Doc Relacionado</b>
             <span>
                 - Serie / Folio: <b>@Model.Serie - @Model.Folio</b>
                 - UUID: <b>@Model.IdDocumento</b>
                 @* Método Pago: <b>@Model.MetodoPago</b>*@
             </span>
-
-            <div class="header-buttons-separator">
+            </h4>
+            <div class="card-toolbar">
                 <a href="#" class="icon-separator" onclick="removeDetalleDocRelacionado(this)">
-                    <i class="glyph-icon icon-times font-red"></i>
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                    </span>
+                    <!--end::Svg Icon-->
                 </a>
             </div>
-        </h4>
-        <div class="content-box-wrapper pago">
-            <div class="col-xs-12 col-sm-2">
-                <b>Moneda</b><br />
-                @Html.DisplayFor(model => model.Moneda)
-            </div>
-
-            <div class="col-xs-12 col-sm-2">
-                <b>Equivalencia</b><br />
-                @Html.DisplayFor(model => model.EquivalenciaDR)
-            </div>
-
-            <div class="col-xs-12 col-sm-2">
-                <b>Numero Parcialidad</b><br />
-                @Html.DisplayFor(model => model.NumeroParcialidad)
-            </div>
-
-            <div class="col-xs-12 col-sm-2">
-                <b>Imp Saldo Anterior</b><br />
-                @Model.ImporteSaldoAnterior.Value.ToString("c")
-            </div>
-
-            <div class="col-xs-12 col-sm-2">
-                <b>Imp Pagado</b><br />
-                @Model.ImportePagado.Value.ToString("c")
-            </div>
-
-            <div class="col-xs-12 col-sm-2">
-                <b>Imp Saldo Insoluto</b><br />
-                @Model.ImporteSaldoInsoluto.Value.ToString("c")
-            </div>
-            <div class="col-xs-12 col-sm-2">
-                <b>Objeto Impuesto</b><br />
-                @Model.ObjetoImpuestoId
-            </div>
-            @if (Model.Traslado != null)
-            {
-                if (Model.Traslado.Base > 0 && Model.Traslado.Importe > 0)
-                {
-                    <div class="clearfix"></div>
-                    <h3 class="title-hero">
-                        Traslado
-                    </h3>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Base</b><br />
-                        @Model.Traslado.Base.ToString("c")
-                        @Html.HiddenFor(model => model.Traslado.Base)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Impuesto</b><br />
-                        @Model.Traslado.Impuesto
-                        @Html.HiddenFor(model => model.Traslado.Impuesto)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Tipo Factor</b><br />
-                        @Model.Traslado.TipoFactor
-                        @Html.HiddenFor(model => model.Traslado.TipoFactor)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Tasa Couta</b><br />
-                        @Model.Traslado.TasaOCuota
-                        @Html.HiddenFor(model => model.Traslado.TasaOCuota)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Importe</b><br />
-                        @Model.Traslado.Importe.ToString("c")
-                        @Html.HiddenFor(model => model.Traslado.Importe)
-                    </div>
-                }
-            }
-            <div class="clearfix"></div>
-            @if (Model.Retencion != null)
-            {
-                if (Model.Retencion.Base > 0 && Model.Retencion.Importe > 0)
-                {
-                    <h3 class="title-hero">
-                        Retencion
-                    </h3>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Base</b><br />
-                        @Model.Retencion.Base.ToString("c")
-                        @Html.HiddenFor(model => model.Retencion.Base)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Impuesto</b><br />
-                        @Model.Retencion.Impuesto
-                        @Html.HiddenFor(model => model.Retencion.Impuesto)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Tipo Factor</b><br />
-                        @Model.Retencion.TipoFactor
-                        @Html.HiddenFor(model => model.Retencion.TipoFactor)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Tasa Cuota</b><br />
-                        @Model.Retencion.TasaOCuota
-                        @Html.HiddenFor(model => model.Retencion.TasaOCuota)
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                        <b>Importe</b><br />
-                        @Model.Retencion.Importe.ToString("c")
-                        @Html.HiddenFor(model => model.Retencion.Importe)
-                    </div>
-                    <div class="clearfix"></div>
-                }
-            }
-
-            @Html.HiddenFor(model => model.Id)
-            @Html.HiddenFor(model => model.FacturaEmitidaId)
-            @Html.HiddenFor(model => model.FacturaEmitida.Subtotal)
-            @Html.HiddenFor(model => model.FacturaEmitida.Total)
-            @Html.HiddenFor(model => model.ImportePagado)
-            @Html.HiddenFor(model => model.ImporteSaldoAnterior)
-            @Html.HiddenFor(model => model.ImporteSaldoInsoluto)
-            @Html.HiddenFor(model => model.Moneda)
-            @Html.HiddenFor(model => model.NumeroParcialidad)
-            @Html.HiddenFor(model => model.PagoId)
-            @Html.HiddenFor(model => model.EquivalenciaDR)
-            @Html.HiddenFor(model => model.Serie)
-            @Html.HiddenFor(model => model.Folio)
-            @Html.HiddenFor(model => model.IdDocumento)
-            @Html.HiddenFor(model => model.ObjetoImpuestoId)
-        </div>
+            
     </div>
-   
-    @*@Html.HiddenFor(model => model.MetodoPago)*@
+    <div class="card-body row pago">
+        <div class="col-xs-12 col-sm-2">
+            <b>Moneda</b><br />
+            @Html.DisplayFor(model => model.Moneda)
+        </div>
+
+        <div class="col-xs-12 col-sm-2">
+            <b>Equivalencia</b><br />
+            @Html.DisplayFor(model => model.EquivalenciaDR)
+        </div>
+
+        <div class="col-xs-12 col-sm-2">
+            <b>Numero Parcialidad</b><br />
+            @Html.DisplayFor(model => model.NumeroParcialidad)
+        </div>
+
+        <div class="col-xs-12 col-sm-2">
+            <b>Imp Saldo Anterior</b><br />
+            @Model.ImporteSaldoAnterior.Value.ToString("c")
+        </div>
+
+        <div class="col-xs-12 col-sm-2">
+            <b>Imp Pagado</b><br />
+            @Model.ImportePagado.Value.ToString("c")
+        </div>
+
+        <div class="col-xs-12 col-sm-2">
+            <b>Imp Saldo Insoluto</b><br />
+            @Model.ImporteSaldoInsoluto.Value.ToString("c")
+        </div>
+        <div class="col-xs-12 col-sm-2">
+            <b>Objeto Impuesto</b><br />
+            @Model.ObjetoImpuestoId
+        </div>
+        @if (Model.Traslado != null)
+        {
+            if (Model.Traslado.Base > 0 && Model.Traslado.Importe > 0)
+            {
+                <div class="clearfix"></div>
+                <h3 class="title-hero">
+                    Traslado
+                </h3>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Base</b><br />
+                    @Model.Traslado.Base.ToString("c")
+                    @Html.HiddenFor(model => model.Traslado.Base)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Impuesto</b><br />
+                    @Model.Traslado.Impuesto
+                    @Html.HiddenFor(model => model.Traslado.Impuesto)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Tipo Factor</b><br />
+                    @Model.Traslado.TipoFactor
+                    @Html.HiddenFor(model => model.Traslado.TipoFactor)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Tasa Couta</b><br />
+                    @Model.Traslado.TasaOCuota
+                    @Html.HiddenFor(model => model.Traslado.TasaOCuota)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Importe</b><br />
+                    @Model.Traslado.Importe.ToString("c")
+                    @Html.HiddenFor(model => model.Traslado.Importe)
+                </div>
+            }
+        }
+        <div class="clearfix"></div>
+        @if (Model.Retencion != null)
+        {
+            if (Model.Retencion.Base > 0 && Model.Retencion.Importe > 0)
+            {
+                <h3 class="title-hero">
+                    Retencion
+                </h3>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Base</b><br />
+                    @Model.Retencion.Base.ToString("c")
+                    @Html.HiddenFor(model => model.Retencion.Base)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Impuesto</b><br />
+                    @Model.Retencion.Impuesto
+                    @Html.HiddenFor(model => model.Retencion.Impuesto)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Tipo Factor</b><br />
+                    @Model.Retencion.TipoFactor
+                    @Html.HiddenFor(model => model.Retencion.TipoFactor)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Tasa Cuota</b><br />
+                    @Model.Retencion.TasaOCuota
+                    @Html.HiddenFor(model => model.Retencion.TasaOCuota)
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <b>Importe</b><br />
+                    @Model.Retencion.Importe.ToString("c")
+                    @Html.HiddenFor(model => model.Retencion.Importe)
+                </div>
+                <div class="clearfix"></div>
+            }
+        }
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.FacturaEmitidaId)
+        @Html.HiddenFor(model => model.FacturaEmitida.Subtotal)
+        @Html.HiddenFor(model => model.FacturaEmitida.Total)
+        @Html.HiddenFor(model => model.ImportePagado)
+        @Html.HiddenFor(model => model.ImporteSaldoAnterior)
+        @Html.HiddenFor(model => model.ImporteSaldoInsoluto)
+        @Html.HiddenFor(model => model.Moneda)
+        @Html.HiddenFor(model => model.NumeroParcialidad)
+        @Html.HiddenFor(model => model.PagoId)
+        @Html.HiddenFor(model => model.EquivalenciaDR)
+        @Html.HiddenFor(model => model.Serie)
+        @Html.HiddenFor(model => model.Folio)
+        @Html.HiddenFor(model => model.IdDocumento)
+        @Html.HiddenFor(model => model.ObjetoImpuestoId)
+    </div>
+</div>
+        <div class="clearfix"></div><br>
     
 
     }

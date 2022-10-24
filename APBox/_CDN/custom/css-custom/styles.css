@@ -5,3 +5,11 @@
 .visibleDiv {    
     visibility: visible;
 }
+
+.bolded {
+    font-weight: bold;
+}
+
+.colorHeader {
+    background-color: #6D84C2;
+}

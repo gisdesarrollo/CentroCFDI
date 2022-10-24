@@ -67,6 +67,12 @@ namespace APBox.Controllers.ComprobantesCfdi
         {
             PopulaEstatus();
             PopulaTiposDeComprobante();
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            ViewBag.NameHere = "emision";
+
             if (actionName == "Filtrar")
             {
                 DateTime fechaI = comprobanteCfdiModel.FechaInicial;
@@ -292,8 +298,8 @@ namespace APBox.Controllers.ComprobantesCfdi
 
 
             ViewBag.Controller = "ComprobantesCfdi";
-            ViewBag.Action = "Create";
-            ViewBag.ActionES = "Crear";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
             ViewBag.NameHere = "emision";
             return View(CCfdi);
         }
@@ -305,7 +311,10 @@ namespace APBox.Controllers.ComprobantesCfdi
         {
             ModelState.Remove("CfdiRelacionado.FacturaEmitidaId");
             ModelState.Remove("Conceptos.ObjetoImpuesto");
-
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "emision";
             PopulaClientes(comprobanteCfdi.ReceptorId);
            
             PopulaTipoRelacion();
@@ -431,7 +440,11 @@ namespace APBox.Controllers.ComprobantesCfdi
      
         public ActionResult Generar(int? id)
         {
-            if(id == null)
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Generar";
+            ViewBag.ActionES = "Generar";
+            ViewBag.NameHere = "emision";
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -449,6 +462,10 @@ namespace APBox.Controllers.ComprobantesCfdi
         {
             ModelState.Remove("CfdiRelacionado.FacturaEmitidaId");
             ModelState.Remove("Conceptos.ObjetoImpuesto");
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Generar";
+            ViewBag.ActionES = "Generar";
+            ViewBag.NameHere = "emision";
             PopulaClientes(comprobanteCfdi.ReceptorId);
             string error = "";
             if (ModelState.IsValid)

@@ -27,12 +27,13 @@
             data: JSON.stringify({ fechaPago: $('#Pago_FechaPago').val(), formaPago: $('#Pago_FormaPago').val(), moneda: $('#Pago_Moneda').val(), tipoCambio: $('#Pago_TipoCambio').val(), monto: $('#Pago_Monto').val(), numeroOperacion: $('#Pago_NumeroOperacion').val(), tipoCadenaPago: $('#Pago_TipoCadenaPago').val(), certificadoPago: $('#Pago_CertificadoPago').val(), cadenaPago: $('#Pago_CadenaPago').val(), selloPago: $('#Pago_SelloPago').val(), spei: null, bancoEmisorId: $('#Pago_BancoOrdenanteId').val(), bancoReceptorId: $('#Pago_BancoBeneficiarioId').val() }),
             dataType: 'html',
             contentType: "application/json; charset=utf-8",
-        }).success(function (partialView) {
-            $('#detalles').append(partialView);
-        })
-            .fail(function (jqxhr, textStatus, error) {
+            success: function (partialView) {
+                $('#detalles').append(partialView);
+            },
+            error: function (jqxhr, textStatus, error) {
                 alert("Favor de llenar todos los datos para los detalles");
-            });
+            }
+          });
         return false;
     });
 });
@@ -44,12 +45,13 @@ function agregarFactura() {
         data: JSON.stringify({ pagoId: $('#PagoId').val(), facturaEmitidaId: $('#FacturaEmitidaId').val(), numeroParcialidad: $('#Pago_DocumentoRelacionado_NumeroParcialidad').val(), moneda: $('#Pago_DocumentoRelacionado_Moneda').val(), tipoCambio: $('#Pago_DocumentoRelacionado_TipoCambio').val(), importeSaldoAnterior: $('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val(), importePagado: $('#Pago_DocumentoRelacionado_ImportePagado').val(), importeSaldoInsoluto: $('#Pago_DocumentoRelacionado_ImporteSaldoInsoluto').val() }),
         dataType: 'html',
         contentType: "application/json; charset=utf-8",
-    }).success(function (partialView) {
-        $('#documento' + $('#PagoId').val()).append(partialView);
-    })
-        .fail(function (jqxhr, textStatus, error) {
+        success: function (partialView) {
+            $('#documento' + $('#PagoId').val()).append(partialView);
+        },
+        error: function (jqxhr, textStatus, error) {
             alert("Favor de seleccionar una factura");
-        });
+        }
+       });
     return false;
 }
 
@@ -89,7 +91,7 @@ $(function () {
                             text: banco.Nombre
                         }));
                     });
-                    $('select').selectpicker('refresh');
+                    //$('select').selectpicker('refresh');
                     return false;
                 }
             });
@@ -108,7 +110,7 @@ $(function () {
                             text: cfdi.FacturaEmitida.Desplegado
                         }));
                     });
-                    $('select').selectpicker('refresh');
+                    //$('select').selectpicker('refresh');
                     return false;
                 }
             });

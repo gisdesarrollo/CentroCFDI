@@ -1,7 +1,7 @@
 ﻿<script>
 $(function () {
     $('#agregarDetalleConceptos').click(function () {
-        var contador = $(".conceptos").size() + 1;
+        var contador = $(".conceptos").length + 1;
         $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">: ' + contador + '</span >');
     });
     });
@@ -40,22 +40,23 @@ $(function () {
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function (partialView) {
-                $('#detallesConceptos').append(partialView);
-                incrementaDecrementaImportes();
-            })
-                .fail(function (jqxhr, textStatus, error) {
+                success: function (partialView) {
+                    $('#detallesConceptos').append(partialView);
+                    incrementaDecrementaImportes();
+                },
+                error: function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles ");
-                });
+                }
+              });
             return false;
         });
     });
 
     function removeDetalleConceptos(elem) {
-        var totalU = $(".conceptos").size();
+        var totalU = $(".conceptos").length;
         if (totalU > 0) {
 
-            var contador = $(".conceptos").size() - 1;
+            var contador = $(".conceptos").length - 1;
             $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">: ' + contador + '</span >');
         } else {
             $(".contadorConceptos").replaceWith('<span class="contadorConceptos font-blue">');
@@ -136,18 +137,20 @@ $(function () {
                  tipo: t
          }),
           dataType: 'html',
-            contentType: "application/json; charset=utf-8",
-         }).success(function (valor) {
-             console.log(valor);
-             if (valor == 0) {
-                 $(div).html("El dato ingresado no existe");
-             }
-             else {
-                 $(div).html("");
-             }
+             contentType: "application/json; charset=utf-8",
+             success: function (valor) {
+                 console.log(valor);
+                 if (valor == 0) {
+                     $(div).html("El dato ingresado no existe");
+                 }
+                 else {
+                     $(div).html("");
+                 }
 
-         })
-         .fail(function (jqxhr, textStatus, error) {
+             },
+             error: function (jqxhr, textStatus, error) {
+
+             }
 
          });
     }

@@ -1,6 +1,7 @@
 ﻿using API.Enums;
 using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementosPagos;
+using API.Operaciones.Facturacion;
 using API.Relaciones;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
@@ -71,11 +72,32 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var serie = registros[i][9];
                             var folio = registros[i][10];
 
-                            var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
+                            //var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
+                            var facturaEmitidaTemp = new FacturaEmitida();
+                            var facturaEmitida = _db.FacturasEmitidasTemp.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
+
                             if (facturaEmitida == null)
                             {
                                 errores.Add(String.Format("La factura {0} - {1} no fue encontrada para el registro {2}", serie, folio, i));
                                 continue;
+                            }
+                            else
+                            {
+                                var receptorTemp = _db.Clientes.FirstOrDefault(c => c.Id == facturaEmitida.ReceptorId);
+                                facturaEmitidaTemp = new FacturaEmitida()
+                                {
+                                    Id = facturaEmitida.Id,
+                                    EmisorId = facturaEmitida.EmisorId,
+                                    ReceptorId = facturaEmitida.ReceptorId,
+                                    Receptor = receptorTemp,
+                                    Fecha = facturaEmitida.Fecha,
+                                    Serie = facturaEmitida.Serie,
+                                    Folio = facturaEmitida.Folio,
+                                    Uuid = facturaEmitida.Uuid,
+                                    Total = facturaEmitida.Total,
+                                    MetodoPago = facturaEmitida.MetodoPago,
+                                    Moneda = facturaEmitida.Moneda
+                                };
                             }
 
                             //Se desorganizaron los numeros por que necesito el cliente para determinar el banco
@@ -129,7 +151,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var documentoRelacionado = new DocumentoRelacionado
                             {
                                 FacturaEmitidaId = facturaEmitida.Id,
-                                FacturaEmitida = facturaEmitida,
+                                FacturaEmitida = facturaEmitidaTemp,
                                 Folio = facturaEmitida.Folio,
                                 IdDocumento = facturaEmitida.Uuid,
                                 ImportePagado = importePagado,
@@ -251,8 +273,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     _db.ComplementosPago.Add(complementoPago);
                     try
                     {
-                       // _db.SaveChanges();
-
+                       
                         decimal totalRetencionesISR = 0;
                         decimal totalRetencionesIVA = 0;
                         decimal totalRetencionesIEPS = 0;
@@ -328,7 +349,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
 
                         //Totales Pagos Impuestos
-                        //TotalesPagosImpuestos totalPagosImpuesto = new TotalesPagosImpuestos();
+                       
                         complementoPago.TotalesPagosImpuestos = new TotalesPagosImpuestos()
                         {
                            TotalRetencionesIVA = Decimal.ToDouble(totalRetencionesIVA),
@@ -344,12 +365,8 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                            MontoTotalPagos = montoTPagos
                     };
                         
-                        //_db.TotalesPagosImpuestos.Add(totalPagosImpuesto);
                         _db.SaveChanges();
-                        //actualiza complemento agregando totales pagos impuestos
-                        //complementoPago.TotalesPagoImpuestoId = totalPagosImpuesto.Id;
-                        //_db.Entry(complementoPago).State = EntityState.Modified;
-                        //_db.SaveChanges();
+                       
                     }
                     catch (DbEntityValidationException dbEx)
                     {

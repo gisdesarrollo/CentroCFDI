@@ -23,23 +23,23 @@
 
                         <div class="clearfix"></div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control date" } })
+                            @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "form-label" })
+                            @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
                             @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control date" } })
+                            @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "form-label" })
+                            @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
                             @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                            @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.TipoDeComprobante, (IEnumerable<SelectListItem>)ViewBag.TipoDeComprobante, "Todas", new { @class = "form-control" })
+                            @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.TipoDeComprobante, (IEnumerable<SelectListItem>)ViewBag.TipoDeComprobante, "Todas", new { @class = "form-select mb-2" })
 
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-2">
                             @Html.LabelFor(model => model.ClaveTransporteId, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownListFor(model => model.ClaveTransporteId, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Todas", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.ClaveTransporteId, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Todas", new { @class = "form-select mb-2" })
 
                         </div>
                         <div class="form-group col-xs-12 col-sm-6 col-md-2">
@@ -216,7 +216,7 @@
                                                 {
                                                 <div class="menu-item px-3">@Html.ActionLink("Editar", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                 }
-                                                <div class="menu-item px-3">@Html.ActionLink("Timbrar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
+                                                <div class="menu-item px-3">@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                 if (User.IsInRole("BORRADO"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
                                                 {
                                                 <div class="menu-item px-3">@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { onclick = "return confirm('Are you sure you wish to delete this complemento?');", @class = "menu-link px-3" })</div>

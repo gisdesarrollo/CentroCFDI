@@ -5,65 +5,70 @@
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-    <div class="content-box mrg20L mrg20R">
-        <h3 class="content-box-header bg-default">
-            <i class="glyph-icon icon-money"></i>
-            Conceptos
-            <div class="header-buttons-separator">
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #6D84C2;">
+            <h3 class="card-title text-white">
+                Conceptos
+            </h3>
+            <div class="card-toolbar">
                 <a href="#" class="icon-separator" onclick="removeDetalleConceptos(this)">
-                    <i class="glyph-icon icon-times font-red"></i>
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                    </span>
+                    <!--end::Svg Icon-->
                 </a>
             </div>
-        </h3>
-        <div class="content-box-wrapper conceptos">
+        </div>
+        <div class="card-body row conceptos">
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.Comprobante_Id)
             @Html.HiddenFor(model => model.Traslado_Id)
             @Html.HiddenFor(model => model.Retencion_Id)
 
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ClavesProdServ)<br />
+                @Html.LabelFor(model => model.ClavesProdServ, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.ClavesProdServ)
                 @Html.HiddenFor(model => model.ClavesProdServ)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ClavesUnidad)<br />
+                @Html.LabelFor(model => model.ClavesUnidad, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.ClavesUnidad)
                 @Html.HiddenFor(model => model.ClavesUnidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Unidad)<br />
+                @Html.LabelFor(model => model.Unidad, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Unidad)
                 @Html.HiddenFor(model => model.Unidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Descripcion)<br />
+                @Html.LabelFor(model => model.Descripcion, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Descripcion)
                 @Html.HiddenFor(model => model.Descripcion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.NoIdentificacion)<br />
+                @Html.LabelFor(model => model.NoIdentificacion, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.NoIdentificacion)
                 @Html.HiddenFor(model => model.NoIdentificacion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Cantidad)<br />
+                @Html.LabelFor(model => model.Cantidad, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Cantidad)
                 @Html.HiddenFor(model => model.Cantidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ValorUnitario)<br />
+                @Html.LabelFor(model => model.ValorUnitario, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.ValorUnitario)
                 @Html.HiddenFor(model => model.ValorUnitario)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Importe)<br />
+                @Html.LabelFor(model => model.Importe, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Importe)
                 @Html.HiddenFor(model => model.Importe)
                 <p id="cImporte" hidden>@Model.Importe</p>
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ObjetoImpuestoId)<br />
+                @Html.LabelFor(model => model.ObjetoImpuestoId, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.ObjetoImpuestoId)
                 @Html.HiddenFor(model => model.ObjetoImpuestoId)
             </div>
@@ -78,33 +83,33 @@
                     </h3>
                     @Html.HiddenFor(model => model.Traslado.TipoImpuesto)
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Traslado.Base)<br />
+                        @Html.LabelFor(model => model.Traslado.Base, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Traslado.Base)
                         @Html.HiddenFor(model => model.Traslado.Base)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Traslado.Impuesto)<br />
+                        @Html.LabelFor(model => model.Traslado.Impuesto, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Traslado.Impuesto)
                         @Html.HiddenFor(model => model.Traslado.Impuesto)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Traslado.TipoFactor)<br />
+                        @Html.LabelFor(model => model.Traslado.TipoFactor, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Traslado.TipoFactor)
                         @Html.HiddenFor(model => model.Traslado.TipoFactor)
                     </div>
 
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Traslado.TasaOCuota)<br />
+                        @Html.LabelFor(model => model.Traslado.TasaOCuota, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Traslado.TasaOCuota)
                         @Html.HiddenFor(model => model.Traslado.TasaOCuota)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Traslado.Importe)<br />
+                        @Html.LabelFor(model => model.Traslado.Importe, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Traslado.Importe)
                         @Html.HiddenFor(model => model.Traslado.Importe)
-                        <p id="tImporte" hidden>@Model.Traslado.Importe</p>
+                        <p id="tImporte" class="hiddenDiv">@Model.Traslado.Importe</p>
                     </div>
-                    
+
                 }
             }
             <div class="clearfix"></div>
@@ -118,37 +123,38 @@
                     </h3>
                     @Html.HiddenFor(model => model.Retencion.TipoImpuesto)
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Retencion.Base)<br />
+                        @Html.LabelFor(model => model.Retencion.Base, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Retencion.Base)
                         @Html.HiddenFor(model => model.Retencion.Base)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Retencion.Impuesto)<br />
+                        @Html.LabelFor(model => model.Retencion.Impuesto, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Retencion.Impuesto)
                         @Html.HiddenFor(model => model.Retencion.Impuesto)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Retencion.TipoFactor)<br />
+                        @Html.LabelFor(model => model.Retencion.TipoFactor, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Retencion.TipoFactor)
                         @Html.HiddenFor(model => model.Retencion.TipoFactor)
                     </div>
 
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Retencion.TasaOCuota)<br />
+                        @Html.LabelFor(model => model.Retencion.TasaOCuota, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Retencion.TasaOCuota)
                         @Html.HiddenFor(model => model.Retencion.TasaOCuota)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.Retencion.Importe)<br />
+                        @Html.LabelFor(model => model.Retencion.Importe, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.Retencion.Importe)
                         @Html.HiddenFor(model => model.Retencion.Importe)
-                        <p id="rImporte" hidden>@Model.Retencion.Importe</p>
+                        <p id="rImporte" class="hiddenDiv" >@Model.Retencion.Importe</p>
                     </div>
-                    
+
                 }
             }
             <div class="clearfix"></div>
         </div>
     </div>
+    <div class="clearfix"></div><br />
 }
 

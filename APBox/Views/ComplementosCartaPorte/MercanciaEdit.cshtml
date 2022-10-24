@@ -6,8 +6,8 @@
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
     <div class="card shadow-sm">
-        <div class="card-header">
-            <h3 class="card-title">
+        <div class="card-header" style="background-color: #6D84C2;">
+            <h3 class="card-title text-white">
                 Mercancías
             </h3>
             <div class="card-toolbar">
@@ -28,43 +28,43 @@
             @Html.HiddenFor(model => model.Mercancias_Id)
             @Html.HiddenFor(model => model.DetalleMercanciaId)
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ClaveProdServCP)<br />
+                @Html.LabelFor(model => model.ClaveProdServCP, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.ClaveProdServCP)
                 @Html.HiddenFor(model => model.ClaveProdServCP)
             </div>
             @if (Model.ClaveProdSTCC != "")
             {
                 <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.ClaveProdSTCC)<br />
+                    @Html.LabelFor(model => model.ClaveProdSTCC, new { @class = "fw-bold" })<br />
                     @Html.DisplayFor(model => model.ClaveProdSTCC)
                     @Html.HiddenFor(model => model.ClaveProdSTCC)
                 </div>
             }
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Descripcion)<br />
+                @Html.LabelFor(model => model.Descripcion, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Descripcion)
                 @Html.HiddenFor(model => model.Descripcion)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Cantidad)<br />
+                @Html.LabelFor(model => model.Cantidad, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Cantidad)
                 @Html.HiddenFor(model => model.Cantidad)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ClavesUnidad)<br />
+                @Html.LabelFor(model => model.ClavesUnidad, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.ClavesUnidad)
                 @Html.HiddenFor(model => model.ClavesUnidad)
 
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Unidad)<br />
+                @Html.LabelFor(model => model.Unidad, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Unidad)
                 @Html.HiddenFor(model => model.Unidad)
             </div>
             @if (Model.Dimensiones != "")
             {
                 <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.Dimensiones)<br />
+                    @Html.LabelFor(model => model.Dimensiones, new { @class = "fw-bold" })<br />
                     @Html.DisplayFor(model => model.Dimensiones)
                     @Html.HiddenFor(model => model.Dimensiones)
                 </div>
@@ -80,42 +80,42 @@
                 if (Model.ClaveMaterialPeligroso != "")
                 {
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.ClaveMaterialPeligroso)<br />
+                        @Html.LabelFor(model => model.ClaveMaterialPeligroso, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.ClaveMaterialPeligroso)
                         @Html.HiddenFor(model => model.ClaveMaterialPeligroso)
                     </div>
 
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.DescripEmbalaje)<br />
+                        @Html.LabelFor(model => model.DescripEmbalaje, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.DescripEmbalaje)
                         @Html.HiddenFor(model => model.DescripEmbalaje)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.TipoEmbalaje_Id)<br />
+                        @Html.LabelFor(model => model.TipoEmbalaje_Id, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.TipoEmbalaje_Id)
                         @Html.HiddenFor(model => model.TipoEmbalaje_Id)
                     </div>
                 }
             }
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.PesoEnKg)<br />
+                @Html.LabelFor(model => model.PesoEnKg, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.PesoEnKg)
                 @Html.HiddenFor(model => model.PesoEnKg)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.ValorMercancia)<br />
+                @Html.LabelFor(model => model.ValorMercancia, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.ValorMercancia)
                 @Html.HiddenFor(model => model.ValorMercancia)
             </div>
             <div class="form-group col-xs-12 col-sm-3">
-                @Html.LabelFor(model => model.Moneda)<br />
+                @Html.LabelFor(model => model.Moneda, new { @class = "fw-bold" })<br />
                 @Html.DisplayFor(model => model.Moneda)
                 @Html.HiddenFor(model => model.Moneda)
             </div>
             @if (Model.FraccionArancelarias != "")
             {
                 <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.FraccionArancelarias)<br />
+                    @Html.LabelFor(model => model.FraccionArancelarias, new { @class = "fw-bold" })<br />
                     @Html.DisplayFor(model => model.FraccionArancelarias)
                     @Html.HiddenFor(model => model.FraccionArancelarias)
                 </div>
@@ -132,7 +132,7 @@
                     @Html.HiddenFor(x => x.Pedimentoss[i].Pedimento)
                     @Html.HiddenFor(x => x.Pedimentoss[i].Mercancia_Id)
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.Pedimentoss[i].Pedimento)<br />
+                        @Html.LabelFor(x => x.Pedimentoss[i].Pedimento, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(x => x.Pedimentoss[i].Pedimento)
                         @Html.HiddenFor(x => x.Pedimentoss[i].Pedimento)
                     </div>
@@ -150,17 +150,17 @@
                     @Html.HiddenFor(x => x.GuiasIdentificacionss[y].Id)
                     @Html.HiddenFor(x => x.GuiasIdentificacionss[y].Mercancia_Id)
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.GuiasIdentificacionss[y].NumeroGuiaIdentificacion)<br />
+                        @Html.LabelFor(x => x.GuiasIdentificacionss[y].NumeroGuiaIdentificacion, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(x => x.GuiasIdentificacionss[y].NumeroGuiaIdentificacion)
                         @Html.HiddenFor(x => x.GuiasIdentificacionss[y].NumeroGuiaIdentificacion)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.GuiasIdentificacionss[y].DescripGuiaIdentificacion)<br />
+                        @Html.LabelFor(x => x.GuiasIdentificacionss[y].DescripGuiaIdentificacion, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(x => x.GuiasIdentificacionss[y].DescripGuiaIdentificacion)
                         @Html.HiddenFor(x => x.GuiasIdentificacionss[y].DescripGuiaIdentificacion)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(x => x.GuiasIdentificacionss[y].PesoGuiaIdentificacion)<br />
+                        @Html.LabelFor(x => x.GuiasIdentificacionss[y].PesoGuiaIdentificacion, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(x => x.GuiasIdentificacionss[y].PesoGuiaIdentificacion)
                         @Html.HiddenFor(x => x.GuiasIdentificacionss[y].PesoGuiaIdentificacion)
                     </div>
@@ -178,22 +178,22 @@
                     @Html.HiddenFor(z => z.CantidadTransportadass[a].Id)
                     @Html.HiddenFor(z => z.CantidadTransportadass[a].Mercancia_Id)
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(z => z.CantidadTransportadass[a].Cantidad)<br />
+                        @Html.LabelFor(z => z.CantidadTransportadass[a].Cantidad, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(z => z.CantidadTransportadass[a].Cantidad)
                         @Html.HiddenFor(z => z.CantidadTransportadass[a].Cantidad)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(z => z.CantidadTransportadass[a].IDOrigen)<br />
+                        @Html.LabelFor(z => z.CantidadTransportadass[a].IDOrigen, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(z => z.CantidadTransportadass[a].IDOrigen)
                         @Html.HiddenFor(z => z.CantidadTransportadass[a].IDOrigen)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(z => z.CantidadTransportadass[a].IDDestino)<br />
+                        @Html.LabelFor(z => z.CantidadTransportadass[a].IDDestino, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(z => z.CantidadTransportadass[a].IDDestino)
                         @Html.HiddenFor(z => z.CantidadTransportadass[a].IDDestino)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(z => z.CantidadTransportadass[a].CveTransporte_Id)<br />
+                        @Html.LabelFor(z => z.CantidadTransportadass[a].CveTransporte_Id, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(z => z.CantidadTransportadass[a].CveTransporte_Id)
                         @Html.HiddenFor(z => z.CantidadTransportadass[a].CveTransporte_Id)
                     </div>
@@ -210,27 +210,27 @@
                     </h3>
 
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.DetalleMercancia.ClaveUnidadPeso_Id)<br />
+                        @Html.LabelFor(model => model.DetalleMercancia.ClaveUnidadPeso_Id, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.DetalleMercancia.ClaveUnidadPeso_Id)
                         @Html.HiddenFor(model => model.DetalleMercancia.ClaveUnidadPeso_Id)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.DetalleMercancia.PesoBruto)<br />
+                        @Html.LabelFor(model => model.DetalleMercancia.PesoBruto, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.DetalleMercancia.PesoBruto)
                         @Html.HiddenFor(model => model.DetalleMercancia.PesoBruto)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.DetalleMercancia.PesoNeto)<br />
+                        @Html.LabelFor(model => model.DetalleMercancia.PesoNeto, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.DetalleMercancia.PesoNeto)
                         @Html.HiddenFor(model => model.DetalleMercancia.PesoNeto)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.DetalleMercancia.PesoTara)<br />
+                        @Html.LabelFor(model => model.DetalleMercancia.PesoTara, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.DetalleMercancia.PesoTara)
                         @Html.HiddenFor(model => model.DetalleMercancia.PesoTara)
                     </div>
                     <div class="form-group col-xs-12 col-sm-3">
-                        @Html.LabelFor(model => model.DetalleMercancia.NumPiezas)<br />
+                        @Html.LabelFor(model => model.DetalleMercancia.NumPiezas, new { @class = "fw-bold" })<br />
                         @Html.DisplayFor(model => model.DetalleMercancia.NumPiezas)
                         @Html.HiddenFor(model => model.DetalleMercancia.NumPiezas)
                     </div>
