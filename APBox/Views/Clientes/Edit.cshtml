@@ -14,14 +14,15 @@
                 data: JSON.stringify({ bancoId: $('#BancoId').val(), nombre: $('#Banco_Nombre').val(), numeroCuenta: $('#Banco_NumeroCuenta').val() }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function (partialView) {
-                $('#bancos').append(partialView);
-                return false;
-            })
-                .fail(function (jqxhr, textStatus, error) {
+                success: function (partialView) {
+                    $('#bancos').append(partialView);
+                    return false;
+                },
+                error: function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles");
                     return false;
-                });
+                }
+            });
             return false;
         });
     });
@@ -161,9 +162,16 @@
 
                                                                         <div class="col-sm-10 col-sm-offset-1">
                                                                             <div class="panel panel-default">
-                                                                                <div class="panel-heading">
-                                                                                    Bancos
+                                                                                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                                                                    <h3 class="text-gray-700 fw-bold fs-5">
+                                                                                        Bancos
+                                                                                    </h3>
                                                                                 </div>
+                                                                                <div>
+                                                                                    <br />
+
+                                                                                </div>
+
                                                                                 <div class="panel-body">
                                                                                     <div class="row">
                                                                                         <div class="form-group col-lg-5">
@@ -191,25 +199,42 @@
 
                                                                                     <div class="clearfix"></div>
 
+                                                                                    <div>
+                                                                                        <br />
+
+                                                                                    </div>
+
                                                                                     <div class="col-xs-12">
                                                                                         <div class="panel panel-default">
-                                                                                            <div class="panel-heading">
-                                                                                                Bancos Asignados
+                                                                                            <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                                                                                <h3 class="text-gray-700 fw-bold fs-5">
+                                                                                                    Bancos Asignados
+                                                                                                </h3>
                                                                                             </div>
+
+                                                                                            <div>
+                                                                                                <br />
+                                                                                            </div>
+
                                                                                             <div class="panel-body">
                                                                                                 <div class="row">
                                                                                                     <div class="col-lg-5">
-                                                                                                        <b>Banco</b>
+                                                                                                        <b class="text-gray-700">Banco</b>
                                                                                                     </div>
                                                                                                     <div class="col-lg-3">
-                                                                                                        <b>Nombre</b>
+                                                                                                        <b class="text-gray-700">Nombre</b>
                                                                                                     </div>
                                                                                                     <div class="col-lg-3">
-                                                                                                        <b>Número de Cuenta</b>
+                                                                                                        <b class="text-gray-700">Número de Cuenta</b>
                                                                                                     </div>
-                                                                                                    <div class="col-lg-1">
+                                                                                                    
+
+                                                                                                        <div>
+                                                                                                            <br />
+                                                                                                        </div>
+
                                                                                                         <b></b>
-                                                                                                    </div>
+                                                                                                    
                                                                                                 </div>
                                                                                                 <div>
                                                                                                     <div id="bancos">
@@ -217,8 +242,8 @@
                                                                                                         {
                                                                                                             foreach (var banco in Model.Bancos)
                                                                                                             {
-                                                                                        @Html.Partial("~/Views/Clientes/Bancos.cshtml", banco)}
-                                                                                }
+                                                                                                                @Html.Partial("~/Views/Clientes/Bancos.cshtml", banco)}
+                                                                                                        }
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="clearfix"></div>

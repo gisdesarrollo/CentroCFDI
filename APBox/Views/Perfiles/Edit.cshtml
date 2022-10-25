@@ -33,7 +33,7 @@
                                 <div class="ms-5">
                                     <!--begin::Title-->
                                     <h2>
-                                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "" } })
+                                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
                                     </h2>
                                     <!--end::SKU-->
                                 </div>
@@ -55,15 +55,20 @@
                             </div>
 
 
-                            <div class="card-header">
-
-                                <div class="card-title">
-                                    <h2>Permisos Generales</h2>
-                                </div>
-                            </div>
+                         
                             <!--end::Card header-->
                             <!--begin::Card body-->
                             <div class="card-body pt-0">
+
+
+
+                                    <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                        <h3 class="text-gray-700 fw-bold fs-5">
+                                            Permisos Generales
+                                        </h3>
+                                    </div>
+                             
+
                                 <div class="d-flex flex-column gap-10">
                                     <!--begin::Input group-->
                                     <div>
@@ -102,8 +107,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="card-title">
-                                            <h2>Cátalogos</h2>
+                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                            <h3 class="text-gray-700 fw-bold fs-5">
+                                                Catalogos
+                                            </h3>
                                         </div>
                                         <label class="form-label">Accesos</label>
                                         <!--end::Label-->
@@ -208,9 +215,12 @@
 
                                         </div>
 
-                                        <div class="card-title">
-                                            <h2>Emisión</h2>
+                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                            <h3 class="text-gray-700 fw-bold fs-5">
+                                                Emision
+                                            </h3>
                                         </div>
+
 
                                         <!--end::Label-->
                                         <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
@@ -257,9 +267,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="card-title">
-                                            <h2>CFDI</h2>
+                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                            <h3 class="text-gray-700 fw-bold fs-5">
+                                                CFDI
+                                            </h3>
                                         </div>
+
                                         <!--end::Label-->
                                         <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
                                             <!--begin::Empty message-->
@@ -297,9 +310,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="card-title">
-                                            <h2>Reportes</h2>
+                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                            <h3 class="text-gray-700 fw-bold fs-5">
+                                                Reportes
+                                            </h3>
                                         </div>
+
                                         <!--end::Label-->
                                         <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
                                             <!--begin::Empty message-->
@@ -307,14 +323,14 @@
                                             <!--end::Empty message-->
                                             @*<div class="form-group col-sm-6 col-md-4">
 
-                <label class="form-label">Reporte Facturas Emitidas</label>
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.FacturasEmitidas, new { htmlAttributes = new { @class = "form-check-input" } })
-                        @Html.ValidationMessageFor(model => model.FacturasEmitidas, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div*@
+                        <label class="form-label">Reporte Facturas Emitidas</label>
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.FacturasEmitidas, new { htmlAttributes = new { @class = "form-check-input" } })
+                                @Html.ValidationMessageFor(model => model.FacturasEmitidas, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div*@
                                             <div class="form-group col-sm-6 col-md-4">
 
                                                 <label class="form-label">Reporte De Facturas Con Pago</label>
