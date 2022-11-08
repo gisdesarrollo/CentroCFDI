@@ -56,6 +56,11 @@ namespace Aplicacion.LogicaPrincipal.Correos
                 //throw new Exception(ex.Message);
 
             }
+            //se eliminan los files 
+            foreach (var file in emailDto.Archivos)
+            {
+                System.IO.File.Delete(file.Path);
+            }
         }
         
         public EmailDto ObjectCorreo(Cliente cliente, List<String> archivos)

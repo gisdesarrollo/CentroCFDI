@@ -577,6 +577,8 @@ namespace APBox.Controllers.ComprobantesCfdi
                 Inline = false,
             };
             Response.AppendHeader("Content-Disposition", cd.ToString());
+            //Elimino el archivo Temp
+            System.IO.File.Delete(pathCompleto);
             return File(archivoFisico, contentType);
         }
 
