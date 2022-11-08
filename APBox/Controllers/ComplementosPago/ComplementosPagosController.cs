@@ -312,32 +312,12 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementoPago);
         }
 
-        // GET: ComplementosPago/Delete/5
-        [Authorize(Roles = "BORRADO")]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ComplementoPago complementoPago = _db.ComplementosPago.Find(id);
-            if (complementoPago == null)
-            {
-                return HttpNotFound();
-            }
-            PopulaClientes(complementoPago.ReceptorId);
-            PopulaBancos(ObtenerSucursal());
-            
-            PopulaTipoRelacion();
-            PopulaFormaPago();
-            PopulaExportacion();
-
-            return View(complementoPago);
-        }
+        
 
         // POST: ComplementosPago/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        [Authorize(Roles = "BORRADO")]
         public ActionResult DeleteConfirmed(int id)
         {
             ComplementoPago complementoPago = _db.ComplementosPago.Find(id);
@@ -405,7 +385,7 @@ namespace APBox.Controllers.ComplementosPago
                     cargasComplementosModel.Detalles = _cargarComplementosPagos.Importar(archivo, ObtenerSucursal(), cargasComplementosModel.Mes, cargasComplementosModel.Previsualizacion);
                     if (cargasComplementosModel.Previsualizacion)
                     {
-                        ModelState.AddModelError("", "Comando realizado con éxito");
+                        //ModelState.AddModelError("", "Comando realizado con éxito");
                     }
                     else
                     {

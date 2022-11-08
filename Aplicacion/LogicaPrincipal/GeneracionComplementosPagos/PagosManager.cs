@@ -29,11 +29,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private readonly CreationFile _deserealizaXml = new CreationFile();
         private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagos.xml";
-        //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
-        //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         //private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
-        //private static string passwordKey = "12345678a";
+        private static string passwordKey = "12345678a";
         #endregion
 
         public void GenerarComplementoPago(int sucursalId, int complementoPagoId, string mailAlterno)
@@ -127,9 +127,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
 
             // Agrega el certificado prueba
-            //objCfdi.agregarCertificado(pathCer);
+            objCfdi.agregarCertificado(pathCer);
             // certificado de produccion
-            objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
+            //objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
 
             //Agrega Comprobante 4.0
             objCfdi.agregarComprobante40(
@@ -172,13 +172,13 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             }
             //Agrega Emisor Produccion
             var regimenFiscalEmisor = (int)complementoPago.Sucursal.RegimenFiscal;
-            objCfdi.agregarEmisor(
+            /*objCfdi.agregarEmisor(
                 complementoPago.Sucursal.Rfc,
                 complementoPago.Sucursal.RazonSocial,
                 regimenFiscalEmisor.ToString()
-                );
+                );*/
             //Emisor Prueba
-            //objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
+            objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
@@ -186,7 +186,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             }
             //Agrega Receptor Produccion
             var regimeFiscalReceptor = (int)complementoPago.Receptor.RegimenFiscal;
-            objCfdi.agregarReceptor(
+            /*objCfdi.agregarReceptor(
                 complementoPago.Receptor.Rfc,
                 complementoPago.Receptor.RazonSocial,
                 "", 
@@ -194,9 +194,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 c_UsoCfdiCP.CP01.ToString(), //UsoCFDI Fijo
                 complementoPago.Receptor.CodigoPostal,
                 regimeFiscalReceptor.ToString()
-                );
+                );*/
             //Receptor Prueba
-            //objCfdi.agregarReceptor("URE180429TM6", "UNIVERSIDAD ROBOTICA ESPAÑOLA", "", "", c_UsoCfdiCP.CP01.ToString(), "65000", "601");
+            objCfdi.agregarReceptor("URE180429TM6", "UNIVERSIDAD ROBOTICA ESPAÑOLA", "", "", c_UsoCfdiCP.CP01.ToString(), "65000", "601");
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
@@ -425,9 +425,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 throw new Exception(string.Join(",", error));
             }
             //Genera XML Prueba
-             //objCfdi.GeneraXML(pathKey, passwordKey);
+             objCfdi.GeneraXML(pathKey, passwordKey);
             //Genera XML produccion
-            objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
+            //objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
 
             string xml = objCfdi.Xml;
             //guardar string en un archivo
@@ -440,9 +440,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi, Sucursal sucursal)
         {
             //Credencial de Pruebas
-            //objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
             //Credencial de Produccion
-            objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+            //objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
 
             // Verifica Response
             if (objCfdi.MensajeError == "")
