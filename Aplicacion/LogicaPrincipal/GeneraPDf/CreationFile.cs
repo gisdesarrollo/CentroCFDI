@@ -409,5 +409,19 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
             imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
             return ms.ToArray();
         }
+
+        public string GetPathPDf(byte[] byteXml,string serie, string folio)
+        {
+            var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.xml", serie, folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            //guardar string en un archivo
+            System.IO.File.WriteAllText(path, Encoding.UTF8.GetString(byteXml));
+
+            return path;
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿@model API.Operaciones.ComprobantesCfdi.ComprobanteCfdi
 
 @{
-    string activaFolioSustitucionReturn = "hidden";
-    activaFolioSustitucionReturn = Model.FolioSustitucion != null ? "visible" : "hidden";
-    activaFolioSustitucionReturn = Model.MotivoCancelacion == "01" ? "visible" : "hidden";
+    string activaFolioSustitucionReturn = "hiddenDiv";
+    activaFolioSustitucionReturn = Model.FolioSustitucion != null ? "visibleDiv" : "hiddenDiv";
+    activaFolioSustitucionReturn = Model.MotivoCancelacion == "01" ? "visibleDiv" : "hiddenDiv";
 }
 <div class="modal fade" id="details-cancelar" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -35,7 +35,7 @@
                     @Html.DropDownListFor(model => model.MotivoCancelacion, (IEnumerable<SelectListItem>)ViewBag.motivoCancelacion, "Favor de hacer su selección", new { @class = "form-control", required = "required" })
                     @Html.ValidationMessageFor(model => model.MotivoCancelacion, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-xs-12 folio-sustitucion" @activaFolioSustitucionReturn>
+                <div class="form-group col-xs-12 folio-sustitucion @activaFolioSustitucionReturn" >
                     @Html.LabelFor(model => model.FolioSustitucion, htmlAttributes: new { @class = "control-label" })
                     @Html.EditorFor(model => model.FolioSustitucion, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.FolioSustitucion, "", new { @class = "text-danger" })
@@ -45,7 +45,7 @@
             <br /><br />
             <div class="clearfix"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal" data-backdrop="false">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close-modal" data-backdrop="false">Close</button>
                 <button type="button" class="btn btn-primary" id="submit-cancelar" data-dismiss="modal">Save changes</button>
             </div>
         </div>

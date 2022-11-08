@@ -4,19 +4,19 @@ using API.Enums.CartaPorteEnums;
 using API.Operaciones.ComplementosPagos;
 using API.Operaciones.Facturacion;
 using Aplicacion.Context;
-using DTOs.Correos;
-using DTOs.Facturacion.Facturacion;
-using Infodextra.LogicaPrincipal;
+using Aplicacion.LogicaPrincipal.Correos;
+using Aplicacion.LogicaPrincipal.Descargas;
+using Aplicacion.LogicaPrincipal.Email;
+using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using Utilerias.LogicaPrincipal;
+
 
 namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 {
@@ -25,38 +25,39 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         #region Variables
 
         private readonly AplicacionContext _db = new AplicacionContext();
+        private readonly DescargasManager _descarga = new DescargasManager();
+        private readonly CreationFile _deserealizaXml = new CreationFile();
+        private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagos.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
-        private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
-        private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
-        private static string passwordKey = "12345678a";
+        //private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        //private static string passwordKey = "12345678a";
         #endregion
 
-        public string GenerarComplementoPago(int sucursalId, int complementoPagoId, string mailAlterno)
+        public void GenerarComplementoPago(int sucursalId, int complementoPagoId, string mailAlterno)
         {
             
                 var sucursal = _db.Sucursales.Find(sucursalId);
                 var complementoPago = _db.ComplementosPago.Find(complementoPagoId);
-                string cfdi = null;
                 try
                 {
                     //llenado CFDI Complemento Pago
-                    cfdi = GeneraFactura(complementoPago, sucursalId);
+                    GeneraFactura(complementoPago, sucursalId);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(String.Format("Error al momento de generar el complemento: {0}", ex.Message));
 
                 }
-
-                return cfdi;
-            
+                
         }
 
-        public string GeneraFactura(ComplementoPago complementoPago, int sucursalId)
+        public void GeneraFactura(ComplementoPago complementoPago, int sucursalId)
         {
             var sucursal = _db.Sucursales.Find(sucursalId);
+            var cliente = _db.Clientes.Find(complementoPago.ReceptorId);
 
             // Crea instancia
             RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
@@ -90,9 +91,32 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 if (facturaEmitidaID > 0)
                 {
                     MarcarFacturado(complementoPago.Id, facturaEmitidaID);
+                    var utf8 = new UTF8Encoding();
+
+                    //envio email SMTP
+                    try
+                    {
+                        if (cliente.Email != null && cliente.Sucursal.Smtp != null && cliente.Sucursal.Puerto != null && cliente.Sucursal.PasswordCorreo != null)
+                        {
+                            //deserealiza XML
+                            ComprobanteCFDI xmlObject = _deserealizaXml.DeserealizarXmlPagos20(complementoPago.Id);
+                            var pathXml = _descarga.GeneraFilePathXml(utf8.GetBytes(objCfdi.Xml),objCfdi.Folio,objCfdi.Serie);
+                            byte[] bytePdf = _descarga.GeneraPDF40(xmlObject,"Pagos40", complementoPago.Id, false);
+                            var pathPdf = _deserealizaXml.GetPathPDf(bytePdf, xmlObject.Serie, xmlObject.Folio);
+
+                       
+                            EmailDto objetcCorreo = _enviosEmails.ObjectCorreo(cliente, new List<string> { pathXml, pathPdf });
+                            _enviosEmails.SendEmail(objetcCorreo);
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        //throw new Exception(String.Format("El comprobante se timbró de forma exitosa pero no fue posible mandarlo por correo electrónico, el motivo: {0}", ex.Message));
+                    }
                 }
             }
-            return xml;
+            
         }
 
         private RVCFDI33.GeneraCFDI LlenadoCfdi(ComplementoPago complementoPago, int sucursalId)
@@ -103,7 +127,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
 
             // Agrega el certificado prueba
-            objCfdi.agregarCertificado(pathCer);
+            //objCfdi.agregarCertificado(pathCer);
+            // certificado de produccion
+            objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
 
             //Agrega Comprobante 4.0
             objCfdi.agregarComprobante40(
@@ -144,22 +170,23 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-            //Agrega Emisor
+            //Agrega Emisor Produccion
             var regimenFiscalEmisor = (int)complementoPago.Sucursal.RegimenFiscal;
-            /*objCfdi.agregarEmisor(
+            objCfdi.agregarEmisor(
                 complementoPago.Sucursal.Rfc,
                 complementoPago.Sucursal.RazonSocial,
                 regimenFiscalEmisor.ToString()
-                );*/
-            objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
+                );
+            //Emisor Prueba
+            //objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-            //Agrega Receptor
+            //Agrega Receptor Produccion
             var regimeFiscalReceptor = (int)complementoPago.Receptor.RegimenFiscal;
-            /*objCfdi.agregarReceptor(
+            objCfdi.agregarReceptor(
                 complementoPago.Receptor.Rfc,
                 complementoPago.Receptor.RazonSocial,
                 "", 
@@ -167,8 +194,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 c_UsoCfdiCP.CP01.ToString(), //UsoCFDI Fijo
                 complementoPago.Receptor.CodigoPostal,
                 regimeFiscalReceptor.ToString()
-                );*/
-            objCfdi.agregarReceptor("URE180429TM6", "UNIVERSIDAD ROBOTICA ESPAÑOLA", "", "", c_UsoCfdiCP.CP01.ToString(), "65000", "601");
+                );
+            //Receptor Prueba
+            //objCfdi.agregarReceptor("URE180429TM6", "UNIVERSIDAD ROBOTICA ESPAÑOLA", "", "", c_UsoCfdiCP.CP01.ToString(), "65000", "601");
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
@@ -396,8 +424,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-            //Genera XML
-            objCfdi.GeneraXML(pathKey, passwordKey);
+            //Genera XML Prueba
+             //objCfdi.GeneraXML(pathKey, passwordKey);
+            //Genera XML produccion
+            objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
+
             string xml = objCfdi.Xml;
             //guardar string en un archivo
              //System.IO.File.WriteAllText(pathXml, xml);
@@ -408,7 +439,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi, Sucursal sucursal)
         {
-            objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            //Credencial de Pruebas
+            //objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            //Credencial de Produccion
+            objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+
             // Verifica Response
             if (objCfdi.MensajeError == "")
             {
@@ -419,7 +454,6 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             else
             {
                 var error = objCfdi.MensajeError;
-                error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
             return objCfdi;
@@ -439,23 +473,26 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 throw new Exception(String.Format("El CFDI seleccionado no está timbrado."));
 
             }
+            //Creamos el XML de Solicitud de Cancelación.
+            string folioSustitucion = (complementoPago.FolioSustitucion == null ? "" : complementoPago.FolioSustitucion);
 
             //Creamos el objeto de cancelación de la DLL.
             RVCFDI33.RVCancelacion.Cancelacion objCan = new RVCFDI33.RVCancelacion.Cancelacion();
             //Definimos la ruta en donde se guardará el XML de Solicitud de Cancelación en el disco duro.
             string ArchivoCancelacion = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCancelados//{0}-{1}-{2}.xml", complementoP.FacturaEmitida.Serie, complementoP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
-
+            /*begin::produccion*/
             //ruta temp cer y key produccion
             string cerRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.cer", complementoP.FacturaEmitida.Serie, complementoP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             string keyRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.key", complementoP.FacturaEmitida.Serie, complementoP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             System.IO.File.WriteAllBytes(cerRuta, sucursal.Cer);
             System.IO.File.WriteAllBytes(keyRuta, sucursal.Key);
-            //Creamos el XML de Solicitud de Cancelación.
-            string folioSustitucion = (complementoPago.FolioSustitucion == null ? "" : complementoPago.FolioSustitucion);
-
             objCan.crearXMLCancelacionArchivo(cerRuta, keyRuta, sucursal.PasswordKey, UUID, ArchivoCancelacion, complementoPago.MotivoCancelacion, folioSustitucion);
             System.IO.File.Delete(cerRuta);
             System.IO.File.Delete(keyRuta);
+            /*end::produccion*/
+            /*begin::pruebas*/
+            //objCan.crearXMLCancelacionArchivo(pathCer, pathKey, passwordKey, UUID, ArchivoCancelacion, complementoPago.MotivoCancelacion, folioSustitucion);
+            /*end::pruebas*/
             if (objCan.CodigoDeError != 0)
             {
                 throw new Exception(String.Format("Ocurrió un error al crear el XML de Solicitud de Cancelación: " + objCan.MensajeDeError));
@@ -497,7 +534,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             RVCFDI33.WSConsultasCFDReal.Service1 objConsulta = new RVCFDI33.WSConsultasCFDReal.Service1();
             RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct objCancel = new RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct();
             //credenciales prueba
-            // objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, "fgomez", "12121212", RFCEmisor);
+             //objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, "fgomez", "12121212", RFCEmisor);
             //credenciales a produccion
             objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, sucursal.Rfc, sucursal.Rfc, RFCEmisor);
             if (objCancel._ERROR == "")
@@ -544,6 +581,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private int GuardarComprobante(RVCFDI33.GeneraCFDI facturaDto, ComplementoPago complementoPago, int sucursalId)
         {
             var utf8 = new UTF8Encoding();
+            
             var facturaInternaEmitida = new FacturaEmitida
             {
                 ComplementosPago = new List<ComplementoPago>(),
@@ -588,6 +626,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             var complementoPago = _db.ComplementosPago.Find(complementoPagoId);
             complementoPago.Status = API.Enums.Status.Cancelado;
             _db.Entry(complementoPago).State = EntityState.Modified;
+            var facturaEmitida = _db.FacturasEmitidas.Find(complementoPago.FacturaEmitidaId);
+            facturaEmitida.Status = API.Enums.Status.Cancelado;
+            _db.Entry(facturaEmitida).State = EntityState.Modified;
             _db.SaveChanges();
         }
 

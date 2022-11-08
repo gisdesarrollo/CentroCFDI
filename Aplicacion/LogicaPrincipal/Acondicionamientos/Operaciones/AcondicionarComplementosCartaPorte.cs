@@ -102,7 +102,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     }
                     else
                     {
-                        if (concepto.Retencion.Importe >= 0 && concepto.Retencion.Base > 0)
+                        if (concepto.Retencion.Importe > 0)
                         {
                             complementoCP.TotalImpuestoRetenidos += decimal.Round(concepto.Retencion.Importe,2);
                         }
@@ -885,7 +885,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 complementoCP.Moneda = c_Moneda.XXX;
                 complementoCP.Subtotal = 0;
                 complementoCP.Total = 0;
-                complementoCP.UsoCfdiCP = c_UsoCfdiCP.P01;
+                complementoCP.UsoCfdiCP = c_UsoCfdiCP.S01;
                 complementoCP.FormaPago = null;
                 complementoCP.MetodoPago = null;
                 complementoCP.TipoCambio = null;

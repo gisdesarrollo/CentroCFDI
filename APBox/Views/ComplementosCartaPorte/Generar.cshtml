@@ -5,7 +5,6 @@
 }
 
 
-@Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
 <div class="card card-flush" id="areaImprimir">
      <!--begin::Card header-->
@@ -30,38 +29,38 @@
             @Html.HiddenFor(model => model.Sucursal.Rfc)
             @Html.HiddenFor(model => model.Sucursal.CodigoPostal)
             @Html.HiddenFor(model => model.Sucursal.Pais)
-            <div class="row">
-                <h2 class="title-hero">
-                    @Model.Sucursal.Nombre
-                </h2>
-                <h3 class="title-hero">
-                    Complemento de Carta Porte
-                </h3>
-
-                <table class="table">
-                    <tr>
-                        <td class="font-bold">Versión Complemento</td>
-                        <td class="font-bold">Fecha de Generación</td>
-                        <td class="font-bold" colspan="4">Receptor</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => model.Version)
-                            @Html.HiddenFor(model => model.Version)
-                        </td>
-                        <td>
-                            @*@Html.DisplayFor(model => model.FechaDocumento)
-                                @Html.HiddenFor(model => model.FechaDocumento)*@
-                            @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
-                            @Html.ValidationMessageFor(model => model.FechaDocumento, "",  new { @class = "text-danger" } )
-                        </td>
-                        <td colspan="4">
-                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección",  new { @class = "form-select" , @data_control = "select2" } )
-                            @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" } )
-                        </td>
-                    </tr>
-                </table>
-            </div>
+        <div class="row">
+            <h2 class="title-hero">
+                @Model.Sucursal.Nombre
+            </h2>
+            <h3 class="title-hero">
+                Complemento de Carta Porte
+            </h3>
+            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt", @style="color:red;" })
+            <table class="table">
+                <tr>
+                    <td class="font-bold">Versión Complemento</td>
+                    <td class="font-bold">Fecha de Generación</td>
+                    <td class="font-bold" colspan="4">Receptor</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.Version)
+                        @Html.HiddenFor(model => model.Version)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(model => model.FechaDocumento)
+                    @Html.HiddenFor(model => model.FechaDocumento)*@
+                        @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
+                        @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
+                    </td>
+                    <td colspan="4">
+                        @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select", @data_control = "select2" })
+                        @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+            </table>
+        </div>
             <div class="clearfix"></div>
 
             <div class="separator my-5"></div>

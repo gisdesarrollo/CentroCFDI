@@ -255,7 +255,7 @@ namespace Aplicacion.LogicaPrincipal.Descargas
             resultHtml = RazorEngine.Razor.Parse(sHtml, oComprobante);
 
             var pdf = Pdf.From(resultHtml).OfSize(PaperSize.A4).WithoutOutline().WithMargins(1.25.Centimeters()).Portrait().Comressed().Content();
-
+            
             return pdf;
         }
 

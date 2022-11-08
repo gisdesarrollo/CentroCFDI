@@ -104,6 +104,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             // Agrega el certificado prueba
             objCfdi.agregarCertificado(pathCer);
 
+            //Agrega Certificado de produccion
+           // objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
+
             //seleccionar folio por tipo Comprobante
             int Folio = 0;
             var Serie = "";
@@ -348,8 +351,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             }
 
 
-            //Genera XML
+            //Genera XML pruebas
             objCfdi.GeneraXML(pathKey, passwordKey);
+            //Genera XML produccion
+            //objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
             string xml = objCfdi.Xml;
             //guardar string en un archivo
             // System.IO.File.WriteAllText(pathXml, xml);
@@ -360,7 +365,12 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
 
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi, Sucursal sucursal)
         {
+            //Timbrado pruebas
             objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            //Timbrado produccion
+            //objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+
+
             // Verifica Response
             if (objCfdi.MensajeError == "")
             {
@@ -468,10 +478,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             string ArchivoCancelacion = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCancelados//{0}-{1}-{2}.xml", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
 
             //ruta temp cer y key produccion
-            string cerRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.cer", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+            /*string cerRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.cer", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             string keyRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.key", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             System.IO.File.WriteAllBytes(cerRuta, sucursal.Cer);
-            System.IO.File.WriteAllBytes(keyRuta, sucursal.Key);
+            System.IO.File.WriteAllBytes(keyRuta, sucursal.Key);*/
             //Creamos el XML de Solicitud de Cancelación.
             string folioSustitucion = (comprobanteCfdi.FolioSustitucion == null ? "" : comprobanteCfdi.FolioSustitucion);
             //cancelacion produccion
@@ -479,8 +489,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             //cancelacion pruebas
             objCan.crearXMLCancelacionArchivo(pathCer, pathKey, passwordKey, UUID, ArchivoCancelacion, comprobanteCfdi.MotivoCancelacion, folioSustitucion);
 
-            System.IO.File.Delete(cerRuta);
-            System.IO.File.Delete(keyRuta);
+            //System.IO.File.Delete(cerRuta);
+            //System.IO.File.Delete(keyRuta);
             if (objCan.CodigoDeError != 0)
             {
                 throw new Exception(String.Format("Ocurrió un error al crear el XML de Solicitud de Cancelación: " + objCan.MensajeDeError));
@@ -491,7 +501,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             System.IO.File.Delete(ArchivoCancelacion);
             //Ejecutamos el proceso de cancelación en el Ambiente de Producción.
             //objCan.enviarCancelacionArchivo(ArchivoCancelacion, sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
-            System.IO.File.Delete(ArchivoCancelacion);
+            //System.IO.File.Delete(ArchivoCancelacion);
             // Verifica el resultado
             if (objCan.MensajeDeError == "")
             {
@@ -509,6 +519,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             var comprobante = _db.ComprobantesCfdi.Find(comprobanteId);
             comprobante.Status = API.Enums.Status.Cancelado;
             _db.Entry(comprobante).State = EntityState.Modified;
+            var facturaEmitida = _db.FacturasEmitidas.Find(comprobante.FacturaEmitidaId);
+            facturaEmitida.Status = API.Enums.Status.Cancelado;
+            _db.Entry(facturaEmitida).State = EntityState.Modified;
             _db.SaveChanges();
         }
         public string DowloadAcuseCancelacion(ComprobanteCfdi comprobanteCfdi)

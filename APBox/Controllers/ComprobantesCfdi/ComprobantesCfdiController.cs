@@ -11,8 +11,10 @@ using API.Operaciones.ComprobantesCfdi;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones;
 using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using Aplicacion.LogicaPrincipal.ComplementosPagos;
+using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
+using Aplicacion.LogicaPrincipal.Validacion;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -38,6 +40,8 @@ namespace APBox.Controllers.ComprobantesCfdi
             private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
             private readonly CreationFile _creationFile = new CreationFile();
             private readonly CargarConceptos _cargarConceptos = new CargarConceptos();
+            private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
+            private readonly DescargasManager _descargasManager = new DescargasManager();
         #endregion
 
         // GET: ComprobanteCfdi
@@ -154,6 +158,10 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaImpuestoSat();
             PopulaTiposDeComprobante();
             PopulaConceptos();
+            ViewBag.Controller = "ComprobantesCfdi";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            ViewBag.NameHere = "emision";
             string archivo = null;
             List<Conceptos> conceptosCSV = new List<Conceptos>();
 
@@ -557,7 +565,9 @@ namespace APBox.Controllers.ComprobantesCfdi
 
         public ActionResult DescargarXml(int id)
         {
-            var pathCompleto = _ComprobanteManager.GenerarXml(id);
+            var comprobanteCfdi = _db.ComprobantesCfdi.Find(id);
+            var pathCompleto = _descargasManager.GeneraFilePathXml(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml, comprobanteCfdi.FacturaEmitida.Serie, comprobanteCfdi.FacturaEmitida.Folio);
+            //var pathCompleto = _ComprobanteManager.GenerarXml(id);
             byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
             string contentType = MimeMapping.GetMimeMapping(pathCompleto);
 
@@ -575,10 +585,14 @@ namespace APBox.Controllers.ComprobantesCfdi
             ComprobanteCFDI oComprobante = new ComprobanteCFDI();
             byte[] archivoFisico = new byte[1024];
             var comprobanteCfdi = _db.ComprobantesCfdi.Find(id);
+            string tipoDocumento = null;
             if (comprobanteCfdi.Sucursal.Trv)
             {
-                oComprobante = _creationFile.DeserealizarComprobanteXML(id);
-                archivoFisico = _creationFile.GeneraPDFComprobante(oComprobante, id);
+                oComprobante = _decodifica.DeserealizarXML40(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml);
+                tipoDocumento = _decodifica.TipoDocumentoCfdi40(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml);
+                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false);
+                //oComprobante = _creationFile.DeserealizarComprobanteXML(id);
+                //archivoFisico = _creationFile.GeneraPDFComprobante(oComprobante, id);
             }
             if (comprobanteCfdi.Sucursal.Txsa) 
             {

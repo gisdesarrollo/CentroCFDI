@@ -1589,19 +1589,20 @@
                  tipo: t
          }),
           dataType: 'html',
-            contentType: "application/json; charset=utf-8",
-         }).success(function (valor) {
+             contentType: "application/json; charset=utf-8",
+             success: function (valor) {
 
-             if (valor == 0) {
-                 $(div).html("El dato ingresado no existe");
+                 if (valor == 0) {
+                     $(div).html("El dato ingresado no existe");
+                 }
+                 else {
+                     $(div).html("");
+                 }
+
+             },
+             error: function (jqxhr, textStatus, error) {
+
              }
-             else {
-                 $(div).html("");
-             }
-
-         })
-         .fail(function (jqxhr, textStatus, error) {
-
          });
     }
 
@@ -1656,7 +1657,7 @@
 
                             if ($("#tipoComprobante").val() == "I") {
 
-                                $("#Conceptos_ObjetoImpuesto").selectpicker('val', row.ObjetoImpuesto);
+                                $("#Conceptos_ObjetoImpuesto").val(row.ObjetoImpuesto);
                                 if (row.ImpuestoIdTras != null) {
                                     var ImpuestoT = row.ImpuestoIdTras;
                                     agregarImpuestos(ImpuestoT);

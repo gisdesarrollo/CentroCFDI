@@ -13,14 +13,15 @@
                 data: JSON.stringify({ bancoId: $('#BancoId').val(), nombre: $('#Banco_Nombre').val(), numeroCuenta: $('#Banco_NumeroCuenta').val() }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
-            }).success(function (partialView) {
-                $('#bancos').append(partialView);
-                return false;
-            })
-                .fail(function (jqxhr, textStatus, error) {
+                success: function (partialView) {
+                    $('#bancos').append(partialView);
+                    return false;
+                },
+                error: function(jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles");
                     return false;
-                });
+                }
+             });
             return false;
         });
     });
@@ -429,7 +430,11 @@
             @Html.TextAreaFor(model => model.CuerpoCorreo, new { Class = "form-control mb-2" })
             @Html.ValidationMessageFor(model => model.CuerpoCorreo, "", new { @class = "text-danger" })
         </div>
-
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
+            @Html.LabelFor(model => model.UserCorreo, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.UserCorreo, new { htmlAttributes = new { @class = "form-control mb-2" } })
+            @Html.ValidationMessageFor(model => model.UserCorreo, "", new { @class = "text-danger" })
+        </div>
         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
             @Html.LabelFor(model => model.PasswordCorreo, htmlAttributes: new { @class = "form-label" })
             @Html.EditorFor(model => model.PasswordCorreo, new { htmlAttributes = new { @class = "form-control mb-2" } })

@@ -79,6 +79,9 @@ namespace API.Catalogos
         [DisplayName("Password de Correo")]
         public String PasswordCorreo { get; set; }
 
+        [DisplayName("Usuario del SMTP")]
+        public String UserCorreo { get; set; }
+
         [DisplayName("SMTP")]
         public String Smtp { get; set; }
 
