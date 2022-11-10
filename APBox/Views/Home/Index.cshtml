@@ -1,9 +1,12 @@
 ﻿@model API.Models.Control.HomeModel
-
+@using System.Text.Json;
 @using APBox.Context;
+@using System.Globalization;
 @{
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
 }
+
+
 @if (Request.IsAuthenticated && sucursalId != 0)
 {
 
@@ -24,8 +27,8 @@
                         </svg>
                     </span>
                     <!--end::Svg Icon-->
-                    <div class="text-gray-900 fw-bold fs-2 mb-2 mt-5">500M$</div>
-                    <div class="fw-semibold text-gray-400">SAP UI Progress</div>
+                    <div class="text-gray-900 fw-bold fs-2 mb-2 mt-5">@Model.Clientes</div>
+                    <div class="fw-semibold text-gray-400">Clientes Totales</div>
                 </div>
                 <!--end::Body-->
             </a>
@@ -45,8 +48,8 @@
                         </svg>
                     </span>
                     <!--end::Svg Icon-->
-                    <div class="text-gray-100 fw-bold fs-2 mb-2 mt-5">+3000</div>
-                    <div class="fw-semibold text-gray-100">New Customers</div>
+                    <div class="text-gray-100 fw-bold fs-2 mb-2 mt-5">@Model.CfdiEmitidos</div>
+                    <div class="fw-semibold text-gray-100">CFDI Generados del mes presente</div>
                 </div>
                 <!--end::Body-->
             </a>
@@ -65,8 +68,8 @@
                         </svg>
                     </span>
                     <!--end::Svg Icon-->
-                    <div class="text-white fw-bold fs-2 mb-2 mt-5">$50,000</div>
-                    <div class="fw-semibold text-white">Milestone Reached</div>
+                    <div class="text-white fw-bold fs-2 mb-2 mt-5">@Model.Total</div>
+                    <div class="fw-semibold text-white">CFDI Pendientes sin timbrar</div>
                 </div>
                 <!--end::Body-->
             </a>
@@ -85,8 +88,8 @@
                         </svg>
                     </span>
                     <!--end::Svg Icon-->
-                    <div class="text-white fw-bold fs-2 mb-2 mt-5">$50,000</div>
-                    <div class="fw-semibold text-white">Milestone Reached</div>
+                    <div class="text-white fw-bold fs-2 mb-2 mt-5">@Model.MontoCFDI</div>
+                    <div class="fw-semibold text-white">Monto de CFDI de Ingreso del Mes</div>
                 </div>
                 <!--end::Body-->
             </a>
@@ -102,8 +105,8 @@
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold fs-3 mb-1">Clientes por mes</span>
-                        <span class="text-muted fw-semibold fs-7">More than 1000 new records</span>
+                        <span class="card-label fw-bold fs-3 mb-1">Total de Ingresos de los Ultimos 6 meses</span>
+                        <span class="text-muted fw-semibold fs-7">Ingresos por cada Mes hasta la fecha</span>
                     </h3>
                 </div>
                 <!--end::Header-->
@@ -176,7 +179,7 @@
                                 </div>
 
                                 <div class="form-group col-xs-12 col-md-3">
-                                    <a href="@Url.Action("Index" ,"Usuarios")" class="tile-box tile-box-shortcut btn-primary">
+                                    <a href="@Url.Action("Index", "Usuarios")" class="tile-box tile-box-shortcut btn-primary">
                                         <span class="fas fa-user fa-3x mrg10A"></span>
                                         <h3 class="title-hero">
                                             Usuarios
@@ -185,7 +188,7 @@
                                 </div>
 
                                 <div class="form-group col-xs-12 col-md-3">
-                                    <a href="@Url.Action("Index", "Clientes" )" class="tile-box tile-box-shortcut btn-primary">
+                                    <a href="@Url.Action("Index", "Clientes")" class="tile-box tile-box-shortcut btn-primary">
                                         <span class="fas fa-user-tie fa-3x mrg10A"></span>
                                         <h3 class="title-hero">
                                             Clientes
@@ -214,7 +217,7 @@
                                 </div>
 
                                 <div class="form-group col-xs-12 col-md-3">
-                                    <a href="@Url.Action("Cargar", "ComplementosPagos" )" class="tile-box tile-box-shortcut btn-info">
+                                    <a href="@Url.Action("Cargar", "ComplementosPagos")" class="tile-box tile-box-shortcut btn-info">
                                         <span class="fas fa-th-list fa-3x mrg10A"></span>
                                         <h3 class="title-hero">
                                             Layout
@@ -275,7 +278,7 @@
                                     </div>
                                     <div class="panel-content pad15A bg-white">
                                         <div class="center-vertical">
-                                            <b>0</b>
+                                            <b>@Model.Clientes</b>
                                             <p class="font-gray-dark">Clientes Registrados</p>
                                         </div>
                                     </div>
@@ -291,7 +294,7 @@
                                     </div>
                                     <div class="panel-content pad15A bg-white">
                                         <div class="center-vertical">
-                                            <b>0</b>
+                                            <b>@Model.MontoCFDI</b>
                                             <p class="font-gray-dark">CFDi del mes</p>
                                         </div>
                                     </div>
@@ -313,13 +316,14 @@
                                     <div class="tl-row">
                                         <div class="tl-item float-right">
                                             <ul>
-                                                <li>CFDIs Emitidos: @Model.CfdiEmitidos</li>
+                                                <li>CFDIs Emitidos del Mes presente: @Model.CfdiEmitidos</li>
                                                 <li>Clientes: @Model.Clientes</li>
-                                                <li>Complementos Emitidos: @Model.ComplementosPagoEmitidos</li>
-                                                <li>Complementos Pendientes: @Model.ComplementosPagoPendientes</li>
+                                                <li>CFDIs Pendientes sin timbrar: @Model.Total</li>
+                                                <li>Monto de CFDI de Ingreso del Mes: @Model.MontoCFDI</li>
                                             </ul>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -330,14 +334,38 @@
 
         </div>
 
+
     </div>
 
 
 }
 
 
+
+
 <script>
-    $(document).ready(function () {
+  
+    $(document).ready(function() {
+        @*var totalesList = @Html.Raw(JsonSerializer.Serialize(Model.MontoCFDI).ToList());*@
+        var Mestotal1 = @Model.MontoCFDI;
+        var Mestotal2 = @Model.Mes2total;
+        var Mestotal3 = @Model.Mes3total;
+        var Mestotal4 = @Model.Mes4total;
+        var Mestotal5 = @Model.Mes5total;
+        var Mestotal6 = @Model.Mes6total;
+
+
+
+        var mes1 = '@Model.Mes1';
+        var mes2 = '@Model.Mes2';
+        var mes3 = '@Model.Mes3';
+        var mes4 = '@Model.Mes4';
+        var mes5 = '@Model.Mes5';
+        var mes6 = '@Model.Mes6';
+
+
+
+
         var element = document.getElementById('chart_clientes_por_mes');
         var labelColor = KTUtil.getCssVariableValue('--kt-gray-500');
         var borderColor = KTUtil.getCssVariableValue('--kt-gray-200');
@@ -350,12 +378,13 @@
 
         var options = {
             series: [{
-                name: 'Net Profit',
-                data: [44, 55, 57, 56, 61, 58]
+
+                name: 'Beneficio Neto',
+                data: [Mestotal1, Mestotal2, Mestotal3, Mestotal4, Mestotal5, Mestotal6]
             }, {
-                name: 'Revenue',
-                data: [76, 85, 101, 98, 87, 105]
-            }],
+                    name: 'Ingresos',
+                data: [Mestotal1, Mestotal2, Mestotal3, Mestotal4, Mestotal5, Mestotal6]
+                }],
             chart: {
                 fontFamily: 'inherit',
                 type: 'bar',
@@ -383,7 +412,7 @@
                 colors: ['transparent']
             },
             xaxis: {
-                categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                categories: [mes1, mes2, mes3, mes4, mes5, mes6],
                 axisBorder: {
                     show: false,
                 },
@@ -435,7 +464,7 @@
                 },
                 y: {
                     formatter: function (val) {
-                        return '$' + val + ' thousands'
+                        return '$' + val + ' Miles'
                     }
                 }
             },
@@ -454,4 +483,25 @@
         var chart = new ApexCharts(element, options);
         chart.render();
     });
+
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
