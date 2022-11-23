@@ -46,7 +46,10 @@ namespace APBox.Controllers.RecepcionDocumentos
 
                 }
             }
-            
+            ViewBag.Controller = "RecepcionDocumentos";
+            ViewBag.Action = "CargarDocumentosExternos";
+            ViewBag.ActionES = "Carga Documentos Externos";
+            ViewBag.NameHere = "cfdi";
             return View();
         }
 
@@ -77,8 +80,9 @@ namespace APBox.Controllers.RecepcionDocumentos
                             file.SaveAs(path);
                             paths.Add(path);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+
                         }
 
                     }

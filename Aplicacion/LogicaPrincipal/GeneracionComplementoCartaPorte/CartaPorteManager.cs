@@ -978,6 +978,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 TipoCambio = Convert.ToDouble(complementoCartaPorte.TipoCambio),
                 TipoComprobante = complementoCartaPorte.TipoDeComprobante,
                 Total = (double)complementoCartaPorte.Total,
+                TotalImpuestosTrasladados = (double)complementoCartaPorte.TotalImpuestoTrasladado,
+                TotalImpuestosRetenidos = (double)complementoCartaPorte.TotalImpuestoRetenidos,
                 Uuid = objCfdi.UUID,
                 ArchivoFisicoXml = utf8.GetBytes(objCfdi.XmlTimbrado),
                 CodigoQR = objCfdi.GenerarQrCode(),

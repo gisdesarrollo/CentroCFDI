@@ -27,30 +27,25 @@
             </div>
             <div class="row">
                 <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-
                     <span class="input-group-addon">Fecha Inicial</span>
                     @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
                     @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
-
-
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-
                     <span class="input-group-addon">Fecha Final</span>
                     @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
                     @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
-
-
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
                 </div>
             </div>
 
             <div class="clearfix"></div>
             <div class="separator my-5"></div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                <button type="submit" class="btn btn-success">Filtrar</button>
-            </div>
-            <br /><br />
+            
+            <br />
             <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                 <div class="card-title">
                     <!--begin::Search-->

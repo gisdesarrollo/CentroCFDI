@@ -68,19 +68,42 @@ namespace APBox.Controllers.Catalogos
             return View(facturasEmitidasModel);
         }
 
-        // GET: FacturasEmitidas/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult ReporteFacturasEmitidas()
         {
-            if (id == null)
+            var sucursalId = ObtenerSucursal();
+
+            var facturasEmitidasModel = new FacturasEmitidasModel
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            FacturaEmitida facturaEmitida = _db.FacturasEmitidas.Find(id);
-            if (facturaEmitida == null)
+                FechaInicial = DateTime.Now.AddDays(-6), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
+                FechaFinal = DateTime.Now,
+                SucursalId = ObtenerSucursal(),
+            };
+
+            _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+
+            ViewBag.Controller = "FacturasEmitidas";
+            ViewBag.Action = "ReporteFacturasEmitidas";
+            ViewBag.ActionES = "Reporte Facturas Emitidas";
+            ViewBag.NameHere = "reportes";
+
+            return View(facturasEmitidasModel);
+        }
+
+        [HttpPost]
+        public ActionResult ReporteFacturasEmitidas(FacturasEmitidasModel facturasEmitidasModel)
+        {
+
+            if (ModelState.IsValid)
             {
-                return HttpNotFound();
+                _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
-            return View(facturaEmitida);
+            
+            ViewBag.Controller = "FacturasEmitidas";
+            ViewBag.Action = "ReporteFacturasEmitidas";
+            ViewBag.ActionES = "Reporte Facturas Emitidas";
+            ViewBag.NameHere = "reportes";
+
+            return View(facturasEmitidasModel);
         }
 
         // GET: FacturasEmitidas/Create
@@ -362,7 +385,7 @@ namespace APBox.Controllers.Catalogos
 
         #endregion
 
-        public ActionResult detallePago() {
+        public ActionResult ReportePagos() {
             var sucursalId = ObtenerSucursal();
 
             var facturasEmitidasModel = new FacturasEmitidasModel
@@ -392,14 +415,14 @@ namespace APBox.Controllers.Catalogos
                 
             }
             ViewBag.Controller = "FacturasEmitidas";
-            ViewBag.Action = "detallePago";
-            ViewBag.ActionES = "Detalle Pago";
-            ViewBag.NameHere = "reporte";
+            ViewBag.Action = "ReportePagos";
+            ViewBag.ActionES = "Reporte Pago";
+            ViewBag.NameHere = "reportes";
             return View(facturasEmitidasModel);
         }
 
         [HttpPost]
-        public ActionResult detallePago(FacturasEmitidasModel facturasEmitidasModel)
+        public ActionResult ReportePagos(FacturasEmitidasModel facturasEmitidasModel)
         {
             bool isEmpty;
             if (!ModelState.IsValid)
@@ -425,7 +448,10 @@ namespace APBox.Controllers.Catalogos
                             }
                         }
                     }
-           
+            ViewBag.Controller = "FacturasEmitidas";
+            ViewBag.Action = "ReportePagos";
+            ViewBag.ActionES = "Reporte Pago";
+            ViewBag.NameHere = "reportes";
             return View(facturasEmitidasModel);
         }
 

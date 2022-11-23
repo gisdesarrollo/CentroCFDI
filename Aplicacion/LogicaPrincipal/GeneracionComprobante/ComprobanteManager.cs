@@ -403,6 +403,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 TipoCambio = Convert.ToDouble(comprobanteCfdi.TipoCambio),
                 TipoComprobante = comprobanteCfdi.TipoDeComprobante,
                 Total = Decimal.ToDouble(comprobanteCfdi.Total),
+                TotalImpuestosTrasladados = Decimal.ToDouble(comprobanteCfdi.TotalImpuestoTrasladado),
+                TotalImpuestosRetenidos = Decimal.ToDouble(comprobanteCfdi.TotalImpuestoRetenidos),
                 Uuid = facturaDto.UUID,
                 ArchivoFisicoXml = utf8.GetBytes(facturaDto.XmlTimbrado),
                 CodigoQR = facturaDto.GenerarQrCode(),
