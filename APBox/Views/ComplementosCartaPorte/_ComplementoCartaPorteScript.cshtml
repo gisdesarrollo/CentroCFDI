@@ -11,52 +11,54 @@
                 $('#ActivaCampoPartesTransporte').show(200);
             } else { $('#ActivaCampoPartesTransporte').hide(200); }
         });
-
-        ///obtiene ubicaciones y genera un dropdow en la vista detalle mercancia
-        $(".getMercancias").click(function () {
-            var ubicacionesLength = $('.ubicacion').length;
-
-            if (ubicacionesLength > 0) {
-                var listUbicacion = [];
-                var dataOrigen = $("#Mercancias_Mercancia_CantidadTransportada_IDOrigen");
-                var dataDestino = $("#Mercancias_Mercancia_CantidadTransportada_IDDestino");
-                var comparaCadena = "OR";
-                $(".ubicacion").each(function (index, element) {
-                    var IDClaveUbicacion = $(element).find('#IdUbicacion').text().trim();
-                    listUbicacion.push({ "text": IDClaveUbicacion, "value": IDClaveUbicacion });
-
-                });
-
-                 $.ajax({
-                type: 'POST',
-                url: ' @Url.Action("FiltrarUbicaciones", "ComplementosCartaPorte")',
-                data: JSON.stringify({
-                    ListUbicacionClave: listUbicacion
-                }),
-               // dataType: 'html',
-                     contentType: "application/json; charset=utf-8",
-                     success: function (data) {
-                         dataOrigen.empty();
-                         dataDestino.empty();
-                         $.each(data, function (index, row) {
-
-                             if (row.value.indexOf(comparaCadena) !== -1) {
-                                 dataOrigen.append("<option value='" + row.value + "'>" + row.text + "</option>")
-                             } else {
-                                 dataDestino.append("<option value='" + row.value + "'>" + row.text + "</option>")
-                             }
-                         });
-                             $(".getMercancias").tab('show');
-                     },
-                     error: function(jqxhr, textStatus, error) {
-                         alert("Error al generar dropdow ubicaciones");
-                     }
-                });
-            return false;
-
-            }
-        });
     });
+        ///obtiene ubicaciones y genera un dropdow en la vista detalle mercancia
+        function getMercancias() {
+            /*$(".getMercancias").click(function () {*/
+                var ubicacionesLength = $('.ubicacion').length;
+
+                if (ubicacionesLength > 0) {
+                    var listUbicacion = [];
+                    var dataOrigen = $("#Mercancias_Mercancia_CantidadTransportada_IDOrigen");
+                    var dataDestino = $("#Mercancias_Mercancia_CantidadTransportada_IDDestino");
+                    var comparaCadena = "OR";
+                    $(".ubicacion").each(function (index, element) {
+                        var IDClaveUbicacion = $(element).find('#IdUbicacion').text().trim();
+                        listUbicacion.push({ "text": IDClaveUbicacion, "value": IDClaveUbicacion });
+
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: ' @Url.Action("FiltrarUbicaciones", "ComplementosCartaPorte")',
+                        data: JSON.stringify({
+                            ListUbicacionClave: listUbicacion
+                        }),
+                        // dataType: 'html',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            dataOrigen.empty();
+                            dataDestino.empty();
+                            $.each(data, function (index, row) {
+
+                                if (row.value.indexOf(comparaCadena) !== -1) {
+                                    dataOrigen.append("<option value='" + row.value + "'>" + row.text + "</option>")
+                                } else {
+                                    dataDestino.append("<option value='" + row.value + "'>" + row.text + "</option>")
+                                }
+                            });
+                            //$(".getMercancias").tab('show');
+                        },
+                        error: function (jqxhr, textStatus, error) {
+                            alert("Error al generar dropdow ubicaciones");
+                        }
+                    });
+                    return false;
+
+                }
+            /*});*/
+        }
+    
 
     $(function () {
         $('#TranspInternac').change(function () {
@@ -111,6 +113,7 @@
 
 
         $('.addCTransportada').change(function () {
+            getMercancias();
             if ($('.addCTransportada').prop('checked')) {
                 $('.DivCantidadTransportada').show(200);
                 //$('.DivCantidadTransportada').css('display', 'inline');

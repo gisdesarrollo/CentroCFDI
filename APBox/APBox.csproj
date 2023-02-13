@@ -132,8 +132,8 @@
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -701,7 +701,6 @@
     <Content Include="_CDN\assets\media\avatars\300-8.jpg" />
     <Content Include="_CDN\assets\media\avatars\300-9.jpg" />
     <Content Include="_CDN\assets\media\avatars\blank.png" />
-    <Content Include="_CDN\assets\media\background.png" />
     <Content Include="_CDN\assets\media\books\1.png" />
     <Content Include="_CDN\assets\media\books\10.png" />
     <Content Include="_CDN\assets\media\books\11.png" />
@@ -1582,15 +1581,7 @@
     <Content Include="_CDN\assets\media\logos\favicon.ico" />
     <Content Include="_CDN\assets\media\logos\landing-dark.svg" />
     <Content Include="_CDN\assets\media\logos\landing.svg" />
-    <Content Include="_CDN\assets\media\logos\logo-1-dark.svg" />
-    <Content Include="_CDN\assets\media\logos\logo-1.svg" />
-    <Content Include="_CDN\assets\media\logos\logo-2.svg" />
-    <Content Include="_CDN\assets\media\logos\logo-3.svg" />
-    <Content Include="_CDN\assets\media\logos\logo-landing-dark.svg" />
-    <Content Include="_CDN\assets\media\logos\logo-landing.svg" />
-    <Content Include="_CDN\assets\media\logos\logo_Apbox.png" />
     <Content Include="_CDN\assets\media\logos\mail.svg" />
-    <Content Include="_CDN\assets\media\logos\user_hombre.png" />
     <Content Include="_CDN\assets\media\misc\auth-bg.png" />
     <Content Include="_CDN\assets\media\misc\auth-screens.png" />
     <Content Include="_CDN\assets\media\misc\bg-2.jpg" />
@@ -2485,7 +2476,6 @@
     <Content Include="_CDN\assets\media\svg\illustrations\easy\2.svg" />
     <Content Include="_CDN\assets\media\svg\illustrations\easy\3-dark.svg" />
     <Content Include="_CDN\assets\media\svg\illustrations\easy\3.svg" />
-    <Content Include="_CDN\assets\media\svg\illustrations\easy\4-dark.svg" />
     <Content Include="_CDN\assets\media\svg\illustrations\easy\4.svg" />
     <Content Include="_CDN\assets\media\svg\illustrations\easy\5.svg" />
     <Content Include="_CDN\assets\media\svg\illustrations\easy\6.svg" />
@@ -2620,7 +2610,9 @@
     <Content Include="_CDN\assets\plugins\global\fonts\line-awesome\la-solid-900.svg" />
     <Content Include="_CDN\assets\plugins\global\plugins.bundle.css" />
     <Content Include="_CDN\assets\plugins\global\plugins.bundle.js" />
-    <Content Include="_CDN\custom\css-custom\custom.css" />
+    <Content Include="_CDN\custom\css-custom\custom.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="_CDN\custom\css-custom\styles.css" />
     <Content Include="_CDN\custom\js-custom\dataTable-init.js" />
     <Content Include="_CDN\custom\js-custom\forms-init.js" />
@@ -2808,6 +2800,8 @@
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile3.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile4.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile5.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile2.pubxml" />
@@ -2815,6 +2809,9 @@
     <None Include="Properties\PublishProfiles\IISProfile4.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile5.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile6.pubxml" />
+    <None Include="Properties\PublishProfiles\IISProfile7.pubxml" />
+    <None Include="Properties\PublishProfiles\IISProfile8.pubxml" />
+    <None Include="Properties\PublishProfiles\IISProfile9.pubxml" />
     <None Include="Properties\PublishProfiles\Jeronimo.pubxml" />
     <Content Include="Views\SolicitudesAccesos\Solicitar.cshtml" />
     <Content Include="Views\SolicitudesAccesos\Index.cshtml" />
@@ -2980,10 +2977,12 @@
     <Content Include="Views\Shared\partials\_drawers.cshtml" />
     <Content Include="Views\Shared\partials\_loader.cshtml" />
     <Content Include="Views\Shared\partials\_scrolltop.cshtml" />
-    <Content Include="Views\Shared\_ViewStart.cshtml" />
-    <Content Include="Views\FacturasEmitidas\detallePago.cshtml" />
+    <Content Include="Views\FacturasEmitidas\ReportePagos.cshtml" />
     <Content Include="Views\FacturasEmitidas\_Cancelacion.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\FiguraTransporteDomicilio.cshtml" />
+    <Content Include="Views\FacturasEmitidas\ReporteFacturasEmitidas.cshtml" />
+    <Content Include="Views\ComplementosPagos\TrasladoDR.cshtml" />
+    <Content Include="Views\ComplementosPagos\RetencionDR.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

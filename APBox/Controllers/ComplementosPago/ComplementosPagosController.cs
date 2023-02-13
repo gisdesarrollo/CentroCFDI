@@ -26,6 +26,7 @@ using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
 using API.Enums.CartaPorteEnums;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.Descargas;
+using Aplicacion.LogicaPrincipal.Facturas;
 
 namespace APBox.Controllers.ComplementosPago
 {
@@ -44,6 +45,7 @@ namespace APBox.Controllers.ComplementosPago
         private readonly CreationFile _creationFile = new CreationFile();
         private readonly EnviosEmails _email = new EnviosEmails();
         private readonly DescargasManager _descargasManager = new DescargasManager();
+        private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
         #endregion
 
         // GET: Facturas
@@ -492,53 +494,113 @@ namespace APBox.Controllers.ComplementosPago
                         
                             DRelacionado.FacturaEmitida = null;
                             DRelacionado.Pago = null;
-                        /*if (pago.Id == null || pago.Id == 0)
-                        {*/
-                            if (DRelacionado.Traslado != null)
-                            {
-                                if (DRelacionado.Traslado.Base == 0)
+                        
+                        Decimal tipoCambioDR = 1;
+                        var pago = _db.Pagos.Find(DRelacionado.PagoId);
+                        if (DRelacionado.Traslados != null)
+                        {
+                            foreach (var traslado in DRelacionado.Traslados) {
+                                decimal baseDR = (decimal)traslado.Base;
+                                decimal ImporteDR = (decimal)traslado.Importe;
+
+
+                                if (pago.Moneda != DRelacionado.Moneda)
                                 {
-                                    DRelacionado.Traslado = null;
-                                }
-                                else
-                                {
-                                    if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TasaOCuota == (decimal)0.16 && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                    if (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() == "MXN")
                                     {
-                                        totalTrasladosBaseIVA16 += DRelacionado.Traslado.Base;
-                                        totalTrasladosImpuestoIVA16 += DRelacionado.Traslado.Importe;
+                                        tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                        decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
+                                        decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
+                                        baseDR = decimal.Round(baseDRFormt, 6);
+                                        ImporteDR = decimal.Round(ImporteDRFormt, 6);
                                     }
-                                    if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TasaOCuota == (decimal)0.08 && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                    else if (DRelacionado.Moneda.ToString() == "MXN" && pago.Moneda.ToString() == "USD")
                                     {
-                                        totalTrasladosBaseIVA8 += DRelacionado.Traslado.Base;
-                                        totalTrasladosImpuestoIVA8 += DRelacionado.Traslado.Importe;
-                                    }
-                                if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TasaOCuota == (decimal)0.0 && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
+                                        baseDR = (decimal)traslado.Base;
+                                        ImporteDR = (decimal)traslado.Importe;
+
+                                    }else if((DRelacionado.Moneda.ToString() !="MXN" && pago.Moneda.ToString() == "USD") || (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() != "MXN"))
+                                    {
+                                        tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                        decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
+                                        decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
+                                        
+                                        var tipoCambioPgo = (Decimal)pago.TipoCambio;
+                                        baseDR = (decimal)baseDRFormt * tipoCambioPgo;
+                                        ImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;
+                                    } 
+                                }else if (DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && DRelacionado.Moneda == pago.Moneda)
                                 {
-                                    totalTrasladosBaseIVA0 += DRelacionado.Traslado.Base;
-                                    totalTrasladosImpuestoIVA0 += DRelacionado.Traslado.Importe;
-                                }
-                                if (DRelacionado.Traslado.Impuesto == "002" && DRelacionado.Traslado.TipoFactor == c_TipoFactor.Exento)
-                                {
-                                    totalTrasladosBaseIVAExento += DRelacionado.Traslado.Base;
+                                    tipoCambioDR = (Decimal)pago.TipoCambio;
+                                    baseDR = (decimal)traslado.Base * tipoCambioDR;
+                                    ImporteDR = (decimal)traslado.Importe * tipoCambioDR;
                                 }
 
+                                if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.16 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                    {
+                                        totalTrasladosBaseIVA16 += baseDR;
+                                        totalTrasladosImpuestoIVA16 += ImporteDR;
+                                    }
+                                    if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.08 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                    {
+                                        totalTrasladosBaseIVA8 += baseDR;
+                                        totalTrasladosImpuestoIVA8 += ImporteDR;
+                                    }
+                                    if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.0 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                    {
+                                        totalTrasladosBaseIVA0 += baseDR;
+                                        totalTrasladosImpuestoIVA0 += ImporteDR;
+                                    }
+                                    if (traslado.Impuesto == "002" && traslado.TipoFactor == c_TipoFactor.Exento)
+                                    {
+                                        totalTrasladosBaseIVAExento += baseDR;
+                                    }
+                                
+                                }
+                            
                             }
-                            }
-                            else { DRelacionado.Traslado = null; }
-                            if (DRelacionado.Retencion != null)
+                            else { DRelacionado.Traslado = null; DRelacionado.Traslados = null; }
+                            if (DRelacionado.Retenciones != null)
                             {
-                                if (DRelacionado.Retencion.Base == 0)
+                                foreach(var retencion in DRelacionado.Retenciones) {
+                                decimal RImporteDR = (decimal)retencion.Importe;
+
+                                if (pago.Moneda != DRelacionado.Moneda)
                                 {
-                                    DRelacionado.Retencion = null;
+                                    if (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() == "MXN")
+                                    {
+                                        tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                        decimal ImporteDRFormt = (decimal)retencion.Importe * (decimal)tipoCambioDR;
+
+                                        RImporteDR = decimal.Round(ImporteDRFormt,6);
+                                    }
+                                    else if (DRelacionado.Moneda.ToString() == "MXN" && pago.Moneda.ToString() == "USD")
+                                    {
+                                        
+                                        RImporteDR = (decimal)retencion.Importe;
+
+                                    }
+                                    else if ((DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() == "USD") || (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() != "MXN"))
+                                    {
+                                        tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                        decimal ImporteDRFormt = (decimal)retencion.Importe * (decimal)tipoCambioDR;
+
+                                        var tipoCambioPgo = (Decimal)pago.TipoCambio;
+                                        RImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;
+                                    }
+
                                 }
-                                else
-                                {
-                                    if (DRelacionado.Retencion.Impuesto == "001") { totalRetencionesISR += DRelacionado.Retencion.Importe; }
-                                    if (DRelacionado.Retencion.Impuesto == "002") { totalRetencionesIVA += DRelacionado.Retencion.Importe; }
-                                    if (DRelacionado.Retencion.Impuesto == "003") { totalRetencionesIEPS += DRelacionado.Retencion.Importe; }
+                                else if (DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && DRelacionado.Moneda == pago.Moneda) {
+                                        tipoCambioDR = (Decimal)pago.TipoCambio;
+                                        RImporteDR = (decimal)retencion.Importe * tipoCambioDR;
+                                      }
+
+                                if (retencion.Impuesto == "001") { totalRetencionesISR += RImporteDR; }
+                                    if (retencion.Impuesto == "002") { totalRetencionesIVA += RImporteDR; }
+                                    if (retencion.Impuesto == "003") { totalRetencionesIEPS += RImporteDR; }
                                 }
                             }
-                            else { DRelacionado.Retencion = null; }
+                            else { DRelacionado.Retencion = null; DRelacionado.Retenciones = null; }
                         if (DRelacionado.Id == null || DRelacionado.Id == 0)
                         {
                             _db.DocumentosRelacionados.Add(DRelacionado);
@@ -551,7 +613,14 @@ namespace APBox.Controllers.ComplementosPago
                 {
                     foreach(var pg in complementoPago.Pagos)
                     {
-                        montoTPagos += pg.Monto;
+                        if (pg.Moneda.ToString() != "MXN")
+                        {
+                            montoTPagos += pg.TipoCambio * pg.Monto;
+                        }
+                        else
+                        {
+                            montoTPagos += pg.Monto;
+                        }
                     }
                 }
 
@@ -933,7 +1002,11 @@ namespace APBox.Controllers.ComplementosPago
         }
 
         #endregion
-
+        public double ConversionMXByUSD()
+        {
+            return 0;
+        }
+       
         public JsonResult GetDataFactura(int FacturaemitidaId)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -942,5 +1015,7 @@ namespace APBox.Controllers.ComplementosPago
             var impuestosDTO =  _decodifica.DecodificarFactura(data);
             return Json(impuestosDTO, JsonRequestBehavior.AllowGet);
         }
+
+        
     }
 }

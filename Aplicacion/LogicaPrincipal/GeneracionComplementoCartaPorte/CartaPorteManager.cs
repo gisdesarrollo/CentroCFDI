@@ -507,6 +507,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                    
                     foreach (var mercancia in mercancias)
                     {
+                        var moneda = "";
+                        //valida si existe un valorMercancia para agregar moneda
+                        if (mercancia.ValorMercancia == null) { moneda = ""; } else { moneda = mercancia.Moneda.ToString(); }
+                        
                         //valida clave al obtener si o no o vacio
                         var validaMPeligroso = _db.ClavesProdServCP.Where(c => c.c_ClaveUnidad == mercancia.ClaveProdServCP).FirstOrDefault();
                         string valorMaterialPeligroso="";
@@ -528,7 +532,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                             mercancia.DescripEmbalaje ?? "", //DescripEmbalaje
                             Convert.ToDouble(mercancia.PesoEnKg == 0 ? 0 : mercancia.PesoEnKg), //PesoEnKg
                             Convert.ToDouble(mercancia.ValorMercancia == null ? "-1" : mercancia.ValorMercancia), //ValorMercancia. -1 Para no agregar este atributo al XML
-                            mercancia.Moneda.ToString() ?? "", //Moneda
+                            moneda, //Moneda
                             mercancia.FraccionArancelarias ?? "", //FraccionArancelaria
                             mercancia.UUIDComecioExt ?? "" //UUIDComercioExt
                          );

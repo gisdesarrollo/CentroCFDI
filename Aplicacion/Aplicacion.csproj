@@ -52,9 +52,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Facturacion.dll</HintPath>
     </Reference>
-    <Reference Include="Gma.QrCodeNet.Encoding">
-      <HintPath>C:\Users\Alexander\Downloads\DemoRVCFD33 (2)\DemoRVCFD33\DemoRVCFD33\bin\Debug\Gma.QrCodeNet.Encoding.dll</HintPath>
-    </Reference>
     <Reference Include="Grpc.Core.Api, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d754f35622e28bad, processorArchitecture=MSIL">
       <HintPath>..\packages\Grpc.Core.Api.2.46.1\lib\net45\Grpc.Core.Api.dll</HintPath>
     </Reference>
@@ -104,8 +101,9 @@
     <Reference Include="MessagingToolkit.QRCode, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MessagingToolkit.QRCode.1.3.0\lib\MessagingToolkit.QRCode.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\DLL faltantes\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.5.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
@@ -243,7 +241,11 @@
     <Compile Include="CFDI33Objetos\Cfdi33.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Operaciones\AcondicionarComprobanteCfdi.cs" />
     <Compile Include="LogicaPrincipal\CargasMasivas\CSV\CargarConceptos.cs" />
+    <Compile Include="LogicaPrincipal\Correos\ArchivosAdjuntosDto.cs" />
+    <Compile Include="LogicaPrincipal\Correos\EmailDto.cs" />
+    <Compile Include="LogicaPrincipal\Correos\EnviosEmails.cs" />
     <Compile Include="LogicaPrincipal\Descargas\DescargasManager.cs" />
+    <Compile Include="LogicaPrincipal\Facturas\GetTipoCambioDocRel.cs" />
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteManager.cs" />
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteXsaManager.cs" />
     <Compile Include="ObjetoImpDocRel\Cfdi40Objetos.cs" />

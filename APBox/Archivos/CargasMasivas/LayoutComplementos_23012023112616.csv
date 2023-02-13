@@ -1,0 +1,3 @@
+*Fecha de Pago,*Forma de Pago,*Monto,*Moneda,*Tipo de cambio del dia del pago para moneda del pago,*EquivalenciaDR,*Numero de Operacion,Banco Ordenante,Banco Beneficiario,*Numero de Parcialidad,*Serie de la Factura,*Folio de la Factura,Importe Pagado,Importe Saldo Anterior,Importe Saldo Insoluto
+23/01/23,17,2000,MXN,20,1,,,,1,FAC,124900,40,40,0
+23/01/23,17,100,USD,20,1,,,,1,FAC,124900,60,60,0

@@ -168,6 +168,7 @@
     <Compile Include="Models\Dto\DataResponseXsaDto.cs" />
     <Compile Include="Models\Dto\ImpuestoDeserealizadoDto.cs" />
     <Compile Include="Models\Dto\ImpuestosRTDto.cs" />
+    <Compile Include="Models\Dto\PagosDto.cs" />
     <Compile Include="Models\Dto\PartesTransporteDto.cs" />
     <Compile Include="Models\Dto\UbicacionDropDowDto.cs" />
     <Compile Include="Models\Dto\UbicacionDto.cs" />

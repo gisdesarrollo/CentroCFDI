@@ -38,7 +38,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
                     var registros = new List<List<String>>();
                     var sucursal = _db.Sucursales.Find(sucursalId);
-
+                    var time = DateTime.Now;
                     while (csv.Read())
                     {
                         var registro = new List<String>();
@@ -56,52 +56,37 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     {
                         try
                         {
+                            
                             var fechaPago = Convert.ToDateTime(registros[i][0]);
+                            fechaPago = fechaPago.Date.AddHours(time.Hour).AddMinutes(time.Minute).AddSeconds(00);
                             var formaPago = registros[i][1];
                             var monto = Convert.ToDouble(registros[i][2]);
                             var moneda = ParseEnum<c_Moneda>(registros[i][3], i);
                             var tipoCambioPago = Convert.ToDouble(registros[i][4]);
-                            //var tipoCambioDocumentoRelacionado = Convert.ToDouble(registros[i][5]);
-                            var numeroOperacion = registros[i][5];
+                            var equivalenciaDR = Convert.ToDouble(registros[i][5]);
+                            var numeroOperacion = registros[i][6];
                             if (String.IsNullOrEmpty(numeroOperacion))
                             {
                                 numeroOperacion = null;
                             }
 
 
-                            var serie = registros[i][9];
-                            var folio = registros[i][10];
-
-                            //var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
-                            var facturaEmitidaTemp = new FacturaEmitida();
-                            var facturaEmitida = _db.FacturasEmitidasTemp.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
-
+                            var serie = registros[i][10];
+                            var folio = registros[i][11];
+                            //usar solo con facturasEmitidas
+                            var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
+                            //activar para FacturasEmitidasTemp
+                            //var facturaEmitida = _db.FacturasEmitidasTemp.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
+                            var facturaEmitidaCop = _db.FacturasEmitidas.Find(facturaEmitida.Id);
                             if (facturaEmitida == null)
                             {
                                 errores.Add(String.Format("La factura {0} - {1} no fue encontrada para el registro {2}", serie, folio, i));
                                 continue;
                             }
-                            else
-                            {
-                                var receptorTemp = _db.Clientes.FirstOrDefault(c => c.Id == facturaEmitida.ReceptorId);
-                                facturaEmitidaTemp = new FacturaEmitida()
-                                {
-                                    Id = facturaEmitida.Id,
-                                    EmisorId = facturaEmitida.EmisorId,
-                                    ReceptorId = facturaEmitida.ReceptorId,
-                                    Receptor = receptorTemp,
-                                    Fecha = facturaEmitida.Fecha,
-                                    Serie = facturaEmitida.Serie,
-                                    Folio = facturaEmitida.Folio,
-                                    Uuid = facturaEmitida.Uuid,
-                                    Total = facturaEmitida.Total,
-                                    MetodoPago = facturaEmitida.MetodoPago,
-                                    Moneda = facturaEmitida.Moneda
-                                };
-                            }
+                            
 
                             //Se desorganizaron los numeros por que necesito el cliente para determinar el banco
-                            var nombreBancoOrdenante = registros[i][6];
+                            var nombreBancoOrdenante = registros[i][7];
                             BancoCliente bancoOrdenante = null;
                             if (!String.IsNullOrEmpty(nombreBancoOrdenante))
                             {
@@ -113,7 +98,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 }
                             }
 
-                            var nombreBancoBeneficiario = registros[i][7];
+                            var nombreBancoBeneficiario = registros[i][8];
                             BancoSucursal bancoBeneficiario = null;
                             if (!String.IsNullOrEmpty(nombreBancoBeneficiario))
                             {
@@ -125,33 +110,21 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 }
                             }
 
-                            var numeroParcialidad = registros[i][8];
+                            var numeroParcialidad = registros[i][9];
                             
 
-                            var importePagado = String.IsNullOrEmpty(registros[i][11]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][11]);
-                            var importeSaldoAnterior = String.IsNullOrEmpty(registros[i][12]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][12]);
-                            var importeSaldoInsoluto = String.IsNullOrEmpty(registros[i][13]) ? 0.0 : Convert.ToDouble(registros[i][13]);
+                            var importePagado = String.IsNullOrEmpty(registros[i][12]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][12]);
+                            var importeSaldoAnterior = String.IsNullOrEmpty(registros[i][13]) ? facturaEmitida.Total : Convert.ToDouble(registros[i][13]);
+                            var importeSaldoInsoluto = String.IsNullOrEmpty(registros[i][14]) ? 0.0 : Convert.ToDouble(registros[i][14]);
 
                             #region Pagos
 
                             #region Documentos Relacionados
                             
-                            //Genera EquivalenciaDR
-                            if (facturaEmitida.Moneda == moneda)
-                            {
-                                equivalencia = 1;
-                            }
-                            else if (facturaEmitida.Moneda != moneda)
-                            {
-                                //CALCULA EQUIVALENCIA 
-                                equivalencia = (importePagado / monto);
-                                //PARSEO A 6 DECIMALES
-                                equivalencia = Math.Truncate(equivalencia * 1000000) / 1000000;
-                            }
                             var documentoRelacionado = new DocumentoRelacionado
                             {
                                 FacturaEmitidaId = facturaEmitida.Id,
-                                FacturaEmitida = facturaEmitidaTemp,
+                                FacturaEmitida = facturaEmitidaCop,
                                 Folio = facturaEmitida.Folio,
                                 IdDocumento = facturaEmitida.Uuid,
                                 ImportePagado = importePagado,
@@ -161,7 +134,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 Moneda = facturaEmitida.Moneda,
                                 NumeroParcialidad = Convert.ToInt32(String.IsNullOrEmpty(numeroParcialidad) ? "1" : numeroParcialidad),
                                 Serie = facturaEmitida.Serie,
-                                EquivalenciaDR = equivalencia,
+                                EquivalenciaDR = equivalenciaDR,
                                 ObjetoImpuestoId = "01"
                             };
 
@@ -219,12 +192,13 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
                     foreach (var pago in pagos)
                     {
+                        
                         var receptor = pago.DocumentosRelacionados.FirstOrDefault().FacturaEmitida.Receptor;
                         if(receptor == null)
                         {
                             errores.Add(String.Format("El pago {0} no tiene documentos relacionados", pago.Desplegado));
                         }
-
+                        
                         var complementoPago = complementosPago.FirstOrDefault(cp => cp.ReceptorId == receptor.Id);
                         if(complementoPago == null)
                         {
@@ -285,66 +259,21 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                         decimal totalTrasladosImpuestoIVA0 = 0;
                         decimal totalTrasladosBaseIVAExento = 0;
 
-                        foreach (var pago in complementoPago.Pagos)
-                            {
-                                foreach (var docRelacionado in pago.DocumentosRelacionados)
-                                {
-                                    
-                                    if (docRelacionado.Traslado != null)
-                                    {
-                                        if (docRelacionado.Traslado.Base == 0)
-                                        {
-                                            
-                                        }
-                                        else
-                                        {
-                                            if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TasaOCuota == (decimal)0.16 && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
-                                            {
-                                                totalTrasladosBaseIVA16 += docRelacionado.Traslado.Base;
-                                                totalTrasladosImpuestoIVA16 += docRelacionado.Traslado.Importe;
-                                            }
-                                            if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TasaOCuota == (decimal)0.08 && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
-                                            {
-                                                totalTrasladosBaseIVA8 += docRelacionado.Traslado.Base;
-                                                totalTrasladosImpuestoIVA8 += docRelacionado.Traslado.Importe;
-                                            }
-                                        if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TasaOCuota == (decimal)0.0 && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Tasa)
-                                        {
-                                            totalTrasladosBaseIVA0 += docRelacionado.Traslado.Base;
-                                            totalTrasladosImpuestoIVA0 += docRelacionado.Traslado.Importe;
-                                        }
-                                        if (docRelacionado.Traslado.Impuesto == "002" && docRelacionado.Traslado.TipoFactor == c_TipoFactor.Exento)
-                                        {
-                                            totalTrasladosBaseIVAExento += docRelacionado.Traslado.Base;
-                                        }
-
-                                    }
-                                    }
-                                    //else { docRelacionado.Traslado = null; }
-                                    if (docRelacionado.Retencion != null)
-                                    {
-                                        if (docRelacionado.Retencion.Base == 0)
-                                        {
-                                          //docRelacionado.Retencion = null;
-                                        }
-                                        else
-                                        {
-                                            if (docRelacionado.Retencion.Impuesto == "001") { totalRetencionesISR += docRelacionado.Retencion.Importe; }
-                                            if (docRelacionado.Retencion.Impuesto == "002") { totalRetencionesIVA += docRelacionado.Retencion.Importe; }
-                                            if (docRelacionado.Retencion.Impuesto == "003") { totalRetencionesIEPS += docRelacionado.Retencion.Importe; }
-                                        }
-                                    }
-                                    //else { docRelacionado.Retencion = null; }
-                                    
-                                }
-                            }
+                        
                         double montoTPagos = 0;
                         if (complementoPago.Pagos != null)
                         {
+                            
                             foreach (var pg in complementoPago.Pagos)
                             {
-                                montoTPagos += pg.Monto;
+                                if (pg.Moneda.ToString() != "MXN")
+                                {
+                                    montoTPagos += pg.TipoCambio * pg.Monto;
+                                }
+                                else { montoTPagos += pg.Monto; }
+                                
                             }
+
                         }
 
 
@@ -398,6 +327,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                 "*Monto",
                 "*Moneda",
                 "*Tipo de cambio del dia del pago para moneda del pago",
+                "*EquivalenciaDR",
                 "*Numero de Operacion",
                 "Banco Ordenante",
                 "Banco Beneficiario",

@@ -5,6 +5,7 @@ using System.Data.Entity.Migrations;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System;
+using Aplicacion.LogicaPrincipal.Facturas;
 
 namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 {
@@ -14,7 +15,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
         #region Variables
 
         private readonly AplicacionContext _db = new AplicacionContext();
-
+        private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
         #endregion
 
         public void CargaInicial(ref ComplementoPago complementoPago)
@@ -54,9 +55,15 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     pago.BancoOrdenante = null;
                     pago.BancoBeneficiario = null;
                     pago.ComplementoPago = null;
-                    //calcula el monto total por cada pago
-                    montoTotal += pago.Monto;
-                     
+                    //calcula el monto total por cada pago y por moneda
+                    if (pago.Moneda.ToString() != "MXN")
+                    {
+                        montoTotal += pago.TipoCambio * pago.Monto;
+                    }
+                    else
+                    {
+                        montoTotal += pago.Monto;
+                    }
                     _db.Pagos.AddOrUpdate(pago);
                     try
                     {
@@ -67,32 +74,96 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         {
                             foreach (var DR in pagos.DocumentosRelacionados)
                             {
+                                Decimal tipoCambioDR = 1;
+                                var pagoDR = _db.Pagos.Find(DR.PagoId);
+                                if (DR.Traslados != null)
+                                {
+                                    foreach (var traslado in DR.Traslados)
+                                    {
+                                        decimal baseDR = (decimal)traslado.Base;
+                                        decimal ImporteDR = (decimal)traslado.Importe;
+                                            
+                                        /****/
+                                        if (pagoDR.Moneda != DR.Moneda)
+                                        {
+                                            if (DR.Moneda.ToString() == "USD" && pagoDR.Moneda.ToString() == "MXN")
+                                            {
+                                                tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DR, pagoDR.TipoCambio, pagoDR.Monto);
+                                                decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
+                                                decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
+                                                baseDR = decimal.Round(baseDRFormt, 6);
+                                                ImporteDR = decimal.Round(ImporteDRFormt, 6);
+                                            }
+                                            else if (DR.Moneda.ToString() == "MXN" && pagoDR.Moneda.ToString() == "USD")
+                                            {
+                                                baseDR = (decimal)traslado.Base;
+                                                ImporteDR = (decimal)traslado.Importe;
 
-                                if (DR.Traslado != null)
-                                {
-                                                                        
-                                        if (DR.Traslado.Impuesto == "002" && DR.Traslado.TasaOCuota == (decimal)0.16)
-                                        {
-                                            totalTrasladosBaseIVA16 += DR.Traslado.Base;
-                                            totalTrasladosImpuestoIVA16 += DR.Traslado.Importe;
+                                            }
+                                            else if ((DR.Moneda.ToString() != "MXN" && pagoDR.Moneda.ToString() == "USD") || (DR.Moneda.ToString() == "USD" && pagoDR.Moneda.ToString() != "MXN"))
+                                            {
+                                                tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DR, pagoDR.TipoCambio, pagoDR.Monto);
+                                                decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
+                                                decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
+
+                                                var tipoCambioPgo = (Decimal)pagoDR.TipoCambio;
+                                                baseDR = (decimal)baseDRFormt * tipoCambioPgo;
+                                                ImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;
+                                            }
                                         }
-                                        if (DR.Traslado.Impuesto == "002" && DR.Traslado.TasaOCuota == (decimal)0.08)
+                                        else if (DR.Moneda.ToString() != "MXN" && pagoDR.Moneda.ToString() != "MXN" && DR.Moneda == pagoDR.Moneda)
                                         {
-                                            totalTrasladosBaseIVA8 += DR.Traslado.Base;
-                                            totalTrasladosImpuestoIVA8 += DR.Traslado.Importe;
+                                            tipoCambioDR = (Decimal)pagoDR.TipoCambio;
+                                            baseDR = (decimal)traslado.Base * tipoCambioDR;
+                                            ImporteDR = (decimal)traslado.Importe * tipoCambioDR;
                                         }
-                                    
+                                        /***/
+                                        if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.16)
+                                        {
+                                            totalTrasladosBaseIVA16 += baseDR;
+                                            totalTrasladosImpuestoIVA16 += ImporteDR;
+                                        }
+                                        if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.08)
+                                        {
+                                            totalTrasladosBaseIVA8 += baseDR;
+                                            totalTrasladosImpuestoIVA8 += ImporteDR;
+                                        }
+
+                                    }
                                 }
+                                    if (DR.Retenciones != null)
+                                    {
+                                        foreach (var retencion in DR.Retenciones)
+                                        {
+                                            decimal RImporteDR = (decimal)retencion.Importe;
+                                            if (pagoDR.Moneda != DR.Moneda)
+                                            {
+                                                if (DR.Moneda.ToString() == "USD" && pagoDR.Moneda.ToString() == "MXN")
+                                                {
+                                                    tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DR, pagoDR.TipoCambio, pagoDR.Monto);
+                                                    decimal ImporteDRFormt = (decimal)retencion.Importe * (decimal)tipoCambioDR;
+
+                                                    RImporteDR = decimal.Round(ImporteDRFormt, 6);
+                                                }
+                                                else if (DR.Moneda.ToString() == "MXN" && pagoDR.Moneda.ToString() == "USD")
+                                                {
+                                                    tipoCambioDR = (Decimal)pagoDR.TipoCambio;
+                                                    RImporteDR = (decimal)retencion.Importe / (decimal)tipoCambioDR;
+
+                                                }
+                                                
+                                        }else if (DR.Moneda.ToString() == "USD" && pagoDR.Moneda.ToString() == "USD")
+                                                {
+                                                    tipoCambioDR = (Decimal)pagoDR.TipoCambio;
+                                                    RImporteDR = (decimal)retencion.Importe * tipoCambioDR;
+                                                }
+
+                                            if (retencion.Impuesto == "001") { totalRetencionesISR += (decimal)retencion.Importe; }
+                                            if (retencion.Impuesto == "002") { totalRetencionesIVA += (decimal)retencion.Importe; }
+                                        }
+                                    }
                                 
-                                if (DR.Retencion != null)
-                                {
-                                    
-                                        if (DR.Retencion.Impuesto == "001") { totalRetencionesISR += DR.Retencion.Importe; }
-                                        if (DR.Retencion.Impuesto == "002") { totalRetencionesIVA += DR.Retencion.Importe; }
-                                    
-                                }
-                                
-                            }
+                           }
                         }
                     }
                     catch (System.Exception)
@@ -102,16 +173,23 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 if (montoTotal > 0)
                 {
                     TotalesPagosImpuestos totalPagoImpuesto = _db.TotalesPagosImpuestos.Find(complementoPago.TotalesPagoImpuestoId);
-                    totalPagoImpuesto.TotalRetencionesIVA = Decimal.ToDouble(totalRetencionesIVA);
-                    totalPagoImpuesto.TotalRetencionesISR = Decimal.ToDouble(totalRetencionesISR);
-                    totalPagoImpuesto.TotalTrasladosBaseIVA16 = Decimal.ToDouble(totalTrasladosBaseIVA16);
-                    totalPagoImpuesto.TotalTrasladosBaseIVA8 = Decimal.ToDouble(totalTrasladosBaseIVA8);
-                    totalPagoImpuesto.TotalTrasladosImpuestoIVA16 = Decimal.ToDouble(totalTrasladosImpuestoIVA16);
-                    totalPagoImpuesto.TotalTrasladosImpuestoIVA8 = Decimal.ToDouble(totalTrasladosImpuestoIVA8);
-                    totalPagoImpuesto.MontoTotalPagos = montoTotal;
-
-                    _db.Entry(totalPagoImpuesto).State = EntityState.Modified;
-                    _db.SaveChanges();
+                    if (totalPagoImpuesto == null)
+                    {
+                         totalPagoImpuesto = new TotalesPagosImpuestos();
+                    }
+                    
+                        totalPagoImpuesto.TotalRetencionesIVA = Decimal.ToDouble(totalRetencionesIVA);
+                        totalPagoImpuesto.TotalRetencionesISR = Decimal.ToDouble(totalRetencionesISR);
+                        totalPagoImpuesto.TotalTrasladosBaseIVA16 = Decimal.ToDouble(totalTrasladosBaseIVA16);
+                        totalPagoImpuesto.TotalTrasladosBaseIVA8 = Decimal.ToDouble(totalTrasladosBaseIVA8);
+                        totalPagoImpuesto.TotalTrasladosImpuestoIVA16 = Decimal.ToDouble(totalTrasladosImpuestoIVA16);
+                        totalPagoImpuesto.TotalTrasladosImpuestoIVA8 = Decimal.ToDouble(totalTrasladosImpuestoIVA8);
+                        totalPagoImpuesto.MontoTotalPagos = montoTotal;
+                    if (totalPagoImpuesto.Id > 0)
+                    {
+                        _db.Entry(totalPagoImpuesto).State = EntityState.Modified;
+                        _db.SaveChanges();
+                    }
                 }
             }
             else
@@ -152,5 +230,6 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 _db.SaveChanges();
             }
         }
+
     }
 }

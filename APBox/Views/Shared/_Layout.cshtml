@@ -37,7 +37,8 @@
     <link href="~/_CDN/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
     <!--begin::Custom Styles-->
-    <link href="~/_CDN/custom/css-custom/custom.css" rel="stylesheet" type="text/css" />
+    <!--Error de dropdow custom.css-->
+    <!--<link href="~/_CDN/custom/css-custom/custom.css" rel="stylesheet" type="text/css" />-->
     <!--end::Custom Styles-->
     <!--begin::Jquery-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -49,6 +50,33 @@
     <!--begin::styles-->
     <link rel="stylesheet" href="~/_CDN/custom/css-custom/styles.css"  type="text/css"/>
     <!--end::styles-->
+    <!--Styles:: custom.css-->
+    <style>
+        html {
+            /*overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;*/
+        }
+        .bg-image {
+            /* The image used */
+            background-image: url('/_CDN/custom/media/background/bg1.jpg') !important;
+            /*esto provoca error de dropdow*/
+            /*backdrop-filter: blur(5px) !important;*/
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        body {
+            background-color: darkblue !important;
+        }
+
+        ul {
+            margin-bottom: 0px !important;
+        }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -256,7 +284,7 @@
         //activa calendario datetime
         $(".datetimepicker").flatpickr({
             enableTime: true,
-            dateFormat: "d/m/Y H:i"
+            dateFormat: "d/m/Y H:i" //H:i
         });
         //activa calendario time
         $(".time").flatpickr({

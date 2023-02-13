@@ -6,10 +6,11 @@ using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using System;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using API.Models.Dto;
+
 using System.Linq;
 using API.Enums.CartaPorteEnums;
 using API.Enums;
+using API.Models.Dto;
 
 namespace APBox.Controllers.Ajax
 {
@@ -46,10 +47,8 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosPagos/Pagos.cshtml", pago);
         }
 
-        public PartialViewResult AgregarFacturaComplementoPago(int pagoId, int facturaEmitidaId, int numeroParcialidad, string moneda, 
-            double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto,Decimal baseTraslado,string impuestoTraslado,
-            string tipoFactorTraslado,Decimal tasaOCuotaTraslado,Decimal importeTraslado,Decimal baseRetencion,string impuestoRetencion, string tipoFactorRetencion,
-            Decimal tasaOCuotaRetencion, Decimal importeRetencion)
+        public PartialViewResult AgregarFacturaComplementoPago(int pagoId, int facturaEmitidaId, int numeroParcialidad, string moneda, Double equivalenciaDR,
+            double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto, List<TrasladoDR> traslados, List<RetencionDR> retenciones)
         {
             var facturaEmitida = _db.FacturasEmitidas.Find(facturaEmitidaId);
             Pago pago = _db.Pagos.Find(pagoId);
@@ -63,7 +62,7 @@ namespace APBox.Controllers.Ajax
                 ImporteSaldoInsoluto = importeSaldoInsoluto,
                 NumeroParcialidad = numeroParcialidad,
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), moneda, true),
-                //EquivalenciaDR = equivalencia,
+                EquivalenciaDR = equivalenciaDR,
                 PagoId = pagoId,
 
                 IdDocumento = facturaEmitida.Uuid,
@@ -71,39 +70,56 @@ namespace APBox.Controllers.Ajax
                 //MetodoPago = c_MetodoPago.PPD,
                 Serie = facturaEmitida.Serie,
                 ObjetoImpuestoId = objetoImpuesto,
-                Traslado = new TrasladoDR()
-                { 
-                    Base = baseTraslado,
-                    Impuesto = impuestoTraslado,
-                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor),tipoFactorTraslado,true),
-                    TasaOCuota = tasaOCuotaTraslado,
-                    Importe = importeTraslado
-                },
-                Retencion = new RetencionDR()
-                {
-                    Base = baseRetencion,
-                    Impuesto = impuestoRetencion,
-                    TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), tipoFactorRetencion, true),
-                    TasaOCuota = tasaOCuotaRetencion,
-                    Importe = importeRetencion
-                }
-            };
-           
-            double equivalencia = 1;
-            var Moneda =(c_Moneda)Enum.Parse(typeof(c_Moneda), moneda, true);
-            //calcula EquivalenciaDR
-            if (pago.Moneda == Moneda) { equivalencia = 1; documentoRelacionado.EquivalenciaDR = equivalencia; }
-            if (pago.Moneda != Moneda)
+            
+        };
+            if (traslados != null)
             {
-                equivalencia = ((double)(importePagado / pago.Monto));
-                //PARSEO A 6 DECIMALES
-                equivalencia = Math.Truncate(equivalencia * 1000000) / 1000000;
-                documentoRelacionado.EquivalenciaDR = equivalencia;
+                documentoRelacionado.Traslados = new List<TrasladoDR>();
+                foreach (var traslado in traslados)
+                {
+                    documentoRelacionado.Traslados.Add(traslado);
+                }
             }
+            if (retenciones != null)
+            {
+                documentoRelacionado.Retenciones = new List<RetencionDR>();
+                foreach (var retencion in retenciones)
+                {
+                    documentoRelacionado.Retenciones.Add(retencion);
+                }
+            }
+            
 
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
         }
 
+        public PartialViewResult AgregarDTraslado(Decimal Tbase, string Timpuesto, string TtipoFactor,Decimal TtasaOCuota , Decimal Timporte)
+        {
+            
+            var traslado = new TrasladoDR()
+            {
+                Base = (double)Math.Round(Tbase, 6),
+                Impuesto = Timpuesto,
+                TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TtipoFactor, true),
+                TasaOCuota = TtasaOCuota,
+                Importe = (double)Math.Round(Timporte, 6)
+            };
+            return PartialView("~/Views/ComplementosPagos/TrasladoDR.cshtml", traslado);
+        }
+
+        public PartialViewResult AgregarDRetencion(Decimal Rbase, string Rimpuesto, string RtipoFactor, Decimal RtasaOCuota, Decimal Rimporte)
+        {
+           
+            var retencion = new RetencionDR()
+            {
+                Base = (double)Math.Round(Rbase, 6),
+                Impuesto = Rimpuesto,
+                TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RtipoFactor, true),
+                TasaOCuota = RtasaOCuota,
+                Importe = (double)Math.Round(Rimporte, 6)
+            };
+            return PartialView("~/Views/ComplementosPagos/RetencionDR.cshtml", retencion);
+        }
         public PartialViewResult AgregarUbicacion(String TipoUbicacion,
             String TipoEstacion,
             String TipoEstacionId, 
@@ -646,7 +662,20 @@ namespace APBox.Controllers.Ajax
             return busqueda;
         }
 
-        
+        public JsonResult GetMontoPago(int PagoId)
+        {
+            var pago = _db.Pagos.Find(PagoId);
+            List<PagosDto> listPagos = new List<PagosDto>();
+            PagosDto pagoDto = new PagosDto();
+            if(pago != null)
+            {
+                pagoDto.Monto = pago.Monto;
+                pagoDto.TipoCambio = pago.TipoCambio;
+                listPagos.Add(pagoDto);
+            }
+            return Json(listPagos, JsonRequestBehavior.AllowGet);
+        }
+
         #region PopulaForma
 
         private int ObtenerSucursal()

@@ -2,6 +2,7 @@
 using API.Enums;
 using API.Operaciones.Facturacion;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,7 +25,7 @@ namespace API.Operaciones.ComplementosPagos
         public c_Moneda Moneda { get; set; }
 
         [DisplayName("Equivalencia")]
-        public double EquivalenciaDR { get; set; }
+        public Double EquivalenciaDR { get; set; }
 
        /* [DisplayName("Método de Pago")]
         public c_MetodoPago MetodoPago { get; set; }
@@ -63,14 +64,22 @@ namespace API.Operaciones.ComplementosPagos
         [ForeignKey("PagoId")]
         public virtual Pago Pago { get; set; }
 
+
         //relacion con traslados y retenciones CFDI40
-        public int? TrasladoDRId { get; set; }
+        [NotMapped]
+        public TrasladoDR Traslado { get; set; }
+        public virtual List<TrasladoDR> Traslados { get; set; }
+
+        [NotMapped]
+        public RetencionDR Retencion { get; set; }
+        public virtual List<RetencionDR> Retenciones { get; set; }
+        /*public int? TrasladoDRId { get; set; }
         [ForeignKey("TrasladoDRId")]
         public virtual TrasladoDR Traslado { get; set; }
 
         public int? RetencionDRId { get; set; }
         [ForeignKey("RetencionDRId")]
-        public virtual RetencionDR Retencion { get; set; }
+        public virtual RetencionDR Retencion { get; set; }*/
 
     }
 }

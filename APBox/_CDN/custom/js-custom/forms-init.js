@@ -107,7 +107,7 @@ $(document).ready(function() {
 
         $(function() {
             $('.date').datetimepicker();
-            console.log("entro");
+            
         })
     }
 

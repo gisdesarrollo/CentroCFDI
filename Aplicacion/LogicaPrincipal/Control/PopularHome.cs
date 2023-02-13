@@ -128,21 +128,21 @@ namespace Aplicacion.LogicaPrincipal.Control
             var sumaCFDi = homeModel.Total = ComplementoCartaPen + ComplementoPagoPen + ComplementoCfdiPen;
 
             //Monto de total  de ingreso del mes presente  correspondiente a Facturas Emitidas
-            homeModel.MontoCFDI = (int)_db.FacturasEmitidas.Where(fe => fe.TipoComprobante==API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial &&  fe.Fecha <= fechaFinal ).Select(fe => fe.Total).DefaultIfEmpty(0).Sum();
+            homeModel.MontoCFDI = (int)_db.FacturasEmitidas.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante==API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial &&  fe.Fecha <= fechaFinal ).Select(fe => fe.Total).DefaultIfEmpty(0).Sum();
 
 
             //Rango de fechas para obtener los ingresos por cada mes 
             
 
-            homeModel.Mes2total = (int)_db.FacturasEmitidas.Where(fe => fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial2 && fe.Fecha <= fechaFinal2).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
+            homeModel.Mes2total = (int)_db.FacturasEmitidas.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial2 && fe.Fecha <= fechaFinal2).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
 
-            homeModel.Mes3total = (int)_db.FacturasEmitidas.Where(fe => fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial3 && fe.Fecha <= fechaFinal3).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
+            homeModel.Mes3total = (int)_db.FacturasEmitidas.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial3 && fe.Fecha <= fechaFinal3).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
 
-            homeModel.Mes4total = (int)_db.FacturasEmitidas.Where(fe => fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial4 && fe.Fecha <= fechaFinal4).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
+            homeModel.Mes4total = (int)_db.FacturasEmitidas.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial4 && fe.Fecha <= fechaFinal4).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
 
-            homeModel.Mes5total = (int)_db.FacturasEmitidas.Where(fe => fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial5 && fe.Fecha <= fechaFinal5).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
+            homeModel.Mes5total = (int)_db.FacturasEmitidas.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial5 && fe.Fecha <= fechaFinal5).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
 
-            homeModel.Mes6total = (int)_db.FacturasEmitidas.Where(fe => fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial6 && fe.Fecha <= fechaFinal6).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
+            homeModel.Mes6total = (int)_db.FacturasEmitidas.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial6 && fe.Fecha <= fechaFinal6).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
 
 
 

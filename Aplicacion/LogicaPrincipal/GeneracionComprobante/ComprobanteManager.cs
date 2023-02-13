@@ -272,82 +272,173 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                     throw new Exception(string.Join(",", error));
                 }
                 //retenido
-                foreach (var impuesto in comprobanteCfdi.Conceptoss)
-                {
-
-                    if (impuesto.Retencion != null)
+                
+                    var RConcepto = comprobanteCfdi.Conceptoss.Where(c => c.Retencion_Id != null).ToList();
+                    var RTasaIsr08 = RConcepto.Where(t => t.Retencion.Impuesto == "001" && t.Retencion.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Retencion.TasaOCuota == (decimal)0.08).ToList();
+                    if (RTasaIsr08.Count > 0)
                     {
-                        if (impuesto.Retencion.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa)
-                        {
-                            sumaImporteR += impuesto.Retencion.Importe;
-                            impuestoR = impuesto.Retencion.Impuesto;
-                        }
-                        else
-                        {
-                            objCfdi.agregarRetencion
-                                (
-                                    impuesto.Retencion.Impuesto,
-                                    Convert.ToDouble(impuesto.Retencion.Importe)
-                                );
-                        }
-                        if (objCfdi.MensajeError != "")
-                        {
-                            error = objCfdi.MensajeError;
-                            throw new Exception(string.Join(",", error));
-                        }
-                    }
-
-                }
-
-                if (sumaImporteR > 0)
-                {
-                    objCfdi.agregarRetencion(
+                        sumaImporteR = 0;  RTasaIsr08.ForEach(tt => sumaImporteR += tt.Retencion.Importe);
+                        RTasaIsr08.ForEach(t => { impuestoR = t.Traslado.Impuesto;});
+                        objCfdi.agregarRetencion(
                                    impuestoR,
                                    Convert.ToDouble(sumaImporteR)
                                    );
+
+                    }
+                var RTasaIsr04 = RConcepto.Where(t => t.Retencion.Impuesto == "001" && t.Retencion.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Retencion.TasaOCuota == (decimal)0.04).ToList();
+                if (RTasaIsr04.Count > 0)
+                {
+                    sumaImporteR = 0; RTasaIsr04.ForEach(tt => sumaImporteR += tt.Retencion.Importe);
+                    RTasaIsr04.ForEach(t => { impuestoR = t.Traslado.Impuesto; });
+                    objCfdi.agregarRetencion(
+                               impuestoR,
+                               Convert.ToDouble(sumaImporteR)
+                               );
+
                 }
+                var RTasaIva08 = RConcepto.Where(t => t.Retencion.Impuesto == "002" && t.Retencion.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Retencion.TasaOCuota == (decimal)0.08).ToList();
+                if (RTasaIva08.Count > 0)
+                {
+                    sumaImporteR = 0; RTasaIva08.ForEach(tt => sumaImporteR += tt.Retencion.Importe);
+                    RTasaIva08.ForEach(t => { impuestoR = t.Traslado.Impuesto; });
+                    objCfdi.agregarRetencion(
+                               impuestoR,
+                               Convert.ToDouble(sumaImporteR)
+                               );
+
+                }
+
+                var RTasaIva04 = RConcepto.Where(t => t.Retencion.Impuesto == "002" && t.Retencion.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Retencion.TasaOCuota == (decimal)0.04).ToList();
+                if (RTasaIva04.Count > 0)
+                {
+                    sumaImporteR = 0; RTasaIva04.ForEach(tt => sumaImporteR += tt.Retencion.Importe);
+                    RTasaIva04.ForEach(t => { impuestoR = t.Traslado.Impuesto; });
+                    objCfdi.agregarRetencion(
+                               impuestoR,
+                               Convert.ToDouble(sumaImporteR)
+                               );
+
+                }
+
+
 
                 //traslado
-                foreach (var impuesto in comprobanteCfdi.Conceptoss)
+                //Impuesto Traslados
+                var TConcepto = comprobanteCfdi.Conceptoss.Where(c => c.Traslado_Id != null).ToList();
+                var TTasaIsr16 = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0.16).ToList();
+                if (TTasaIsr16.Count > 0)
                 {
-                    if (impuesto.Traslado != null)
-                    {
+                    sumaImporteT = 0;
+                    TTasaIsr16.ForEach(tt => sumaImporteT += tt.Traslado.Importe);
 
-                        if (impuesto.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa)
-                        {
-                            sumaImporteT += impuesto.Traslado.Importe;
-                            impuestoT = impuesto.Traslado.Impuesto;
-                            tipoFactorT = impuesto.Traslado.TipoFactor.ToString();
-                            tasaCuotaT = impuesto.Traslado.TasaOCuota;
-                            baseT = impuesto.Traslado.Base;
-                        }
-                        else
-                        {
-                            objCfdi.agregarTraslado(
-                               impuesto.Traslado.Impuesto,
-                               impuesto.Traslado.TipoFactor.ToString(),
-                               Convert.ToDouble(impuesto.Traslado.TasaOCuota),
-                               Convert.ToDouble(impuesto.Traslado.Importe),
-                               Convert.ToDouble(impuesto.Traslado.Base) //CFDI40
-                               );
-                        }
-                        if (objCfdi.MensajeError != "")
-                        {
-                            error = objCfdi.MensajeError;
-                            throw new Exception(string.Join(",", error));
-                        }
-                    }
-                }
-                if (sumaImporteT > 0)
-                {
+                    TTasaIsr16.ForEach(t => {
+                        impuestoT = t.Traslado.Impuesto; tasaCuotaT = t.Traslado.TasaOCuota;
+                        tipoFactorT = t.Traslado.TipoFactor.ToString(); baseT = t.Traslado.Base;
+                    });
                     objCfdi.agregarTraslado(
+                           impuestoT,
+                           tipoFactorT,
+                           Convert.ToDouble(tasaCuotaT),
+                           Convert.ToDouble(sumaImporteT),
+                           Convert.ToDouble(baseT) //CFDI40
+                           );
+
+                }
+                var TTasaIsr08 = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0.08).ToList();
+                if (TTasaIsr08.Count > 0)
+                {
+                    sumaImporteT = 0;
+                    TTasaIsr08.ForEach(tt => sumaImporteT += tt.Traslado.Importe);
+
+                    TTasaIsr08.ForEach(t => {
+                        impuestoT = t.Traslado.Impuesto; tasaCuotaT = t.Traslado.TasaOCuota;
+                        tipoFactorT = t.Traslado.TipoFactor.ToString(); baseT = t.Traslado.Base;
+                    });
+                    objCfdi.agregarTraslado(
+                           impuestoT,
+                           tipoFactorT,
+                           Convert.ToDouble(tasaCuotaT),
+                           Convert.ToDouble(sumaImporteT),
+                           Convert.ToDouble(baseT) //CFDI40
+                           );
+
+                }
+                var TTasaIsr0 = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0).ToList();
+                if (TTasaIsr0.Count > 0)
+                {
+                    sumaImporteT = 0;
+                    TTasaIsr0.ForEach(tt => sumaImporteT += tt.Traslado.Importe);
+
+                    TTasaIsr0.ForEach(t => {
+                        impuestoT = t.Traslado.Impuesto; tasaCuotaT = t.Traslado.TasaOCuota;
+                        tipoFactorT = t.Traslado.TipoFactor.ToString(); baseT = t.Traslado.Base;
+                    });
+                    objCfdi.agregarTraslado(
+                           impuestoT,
+                           tipoFactorT,
+                           Convert.ToDouble(tasaCuotaT),
+                           Convert.ToDouble(sumaImporteT),
+                           Convert.ToDouble(baseT) //CFDI40
+                           );
+
+                }
+                var TTasaIva16 = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0.16).ToList();
+                        if (TTasaIva16.Count > 0)
+                        {
+                            sumaImporteT = 0; 
+                            TTasaIva16.ForEach(tt => sumaImporteT += tt.Traslado.Importe);
+
+                            TTasaIva16.ForEach(t => { impuestoT = t.Traslado.Impuesto; tasaCuotaT = t.Traslado.TasaOCuota;
+                                tipoFactorT = t.Traslado.TipoFactor.ToString(); baseT = t.Traslado.Base;
+                            });
+                            objCfdi.agregarTraslado(
                                    impuestoT,
                                    tipoFactorT,
                                    Convert.ToDouble(tasaCuotaT),
                                    Convert.ToDouble(sumaImporteT),
                                    Convert.ToDouble(baseT) //CFDI40
                                    );
-                }
+
+                        }
+                        var TTasaIva08 = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0.08).ToList();
+                        if (TTasaIva08.Count > 0)
+                        {
+                            sumaImporteT = 0;
+                            TTasaIva08.ForEach(tt => sumaImporteT += tt.Traslado.Importe);
+
+                            TTasaIva08.ForEach(t => {
+                                impuestoT = t.Traslado.Impuesto; tasaCuotaT = t.Traslado.TasaOCuota;
+                                tipoFactorT = t.Traslado.TipoFactor.ToString(); baseT = t.Traslado.Base;
+                            });
+                            objCfdi.agregarTraslado(
+                                   impuestoT,
+                                   tipoFactorT,
+                                   Convert.ToDouble(tasaCuotaT),
+                                   Convert.ToDouble(sumaImporteT),
+                                   Convert.ToDouble(baseT) //CFDI40
+                                   );
+
+                        }
+                        var TTasaIva0 = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0).ToList();
+                        if (TTasaIva0.Count > 0)
+                        {
+                            sumaImporteT = 0;
+                            TTasaIva0.ForEach(tt => sumaImporteT += tt.Traslado.Importe);
+
+                            TTasaIva0.ForEach(t => {
+                                impuestoT = t.Traslado.Impuesto; tasaCuotaT = t.Traslado.TasaOCuota;
+                                tipoFactorT = t.Traslado.TipoFactor.ToString(); baseT = t.Traslado.Base;
+                            });
+                            objCfdi.agregarTraslado(
+                                   impuestoT,
+                                   tipoFactorT,
+                                   Convert.ToDouble(tasaCuotaT),
+                                   Convert.ToDouble(sumaImporteT),
+                                   Convert.ToDouble(baseT) //CFDI40
+                                   );
+
+                        }
+                       
             }
 
 
