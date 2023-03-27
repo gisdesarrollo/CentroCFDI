@@ -35,7 +35,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                 Uuid = _decodificar.DecodificarTimbre(comprobante40,null).UUID,
                 Version = comprobante40.Version,
                 ArchivoFisicoXml = xml,
-
+                Status = API.Enums.Status.Activo,
                 //TODO: Arreglar esta fecha decodificando el TFD
                 FechaTimbrado = DateTime.Now
             };
@@ -97,10 +97,10 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                 TipoCambio = Convert.ToDouble(comprobante33.TipoCambio),
                 TipoComprobante = comprobante33.TipoDeComprobante,
                 Total = Convert.ToDouble(comprobante33.Total),
-                Uuid = _decodificar.DecodificarTimbre(null,comprobante33).UUID,
+                Uuid = _decodificar.DecodificarTimbre(null, comprobante33).UUID,
                 Version = comprobante33.Version,
                 ArchivoFisicoXml = xml,
-
+                Status = API.Enums.Status.Activo,
                 //TODO: Arreglar esta fecha decodificando el TFD
                 FechaTimbrado = DateTime.Now
             };

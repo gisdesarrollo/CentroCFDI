@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_CantidadTransportada")]
+    [Table("cp_cantidadtransportada")]
     public class CantidadTransportada
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

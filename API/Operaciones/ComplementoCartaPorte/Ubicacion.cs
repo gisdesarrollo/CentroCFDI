@@ -12,7 +12,7 @@ using API.Models.Dto;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Ubicaciones")]
+    [Table("cp_ubicaciones")]
     public class Ubicacion : UbicacionDto
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

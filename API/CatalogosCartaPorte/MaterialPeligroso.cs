@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.CatalogosCartaPorte
 {
-    [Table("c_MaterialPeligroso")]
+    [Table("c_materialpeligroso")]
     public class MaterialPeligroso
     {
         [Key]

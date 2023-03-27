@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.CatalogosCartaPorte
 {
-    [Table("cp_SubImpuestoConcepto")]
+    [Table("cp_subimpuestoconcepto")]
     public  class SubImpuestoConcepto
     {
         //Traslado o Retencion

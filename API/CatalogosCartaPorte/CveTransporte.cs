@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.CatalogosCartaPorte
 {
-    [Table("c_CveTransporte")]
+    [Table("c_cvetransporte")]
     public class CveTransporte
     {
         [Key]

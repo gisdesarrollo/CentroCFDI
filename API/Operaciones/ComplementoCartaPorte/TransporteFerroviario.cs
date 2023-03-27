@@ -12,7 +12,7 @@ using API.Enums.CartaPorteEnums;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_TransporteFerroviario")]
+    [Table("cp_transporteferroviario")]
     public class TransporteFerroviario
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_AutoTransporte")]
+    [Table("cp_autotransporte")]
     public class AutoTransporte
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_UbicacionDestino")]
+    [Table("cp_ubicaciondestino")]
     public class UbicacionDestino: UbicacionDto
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

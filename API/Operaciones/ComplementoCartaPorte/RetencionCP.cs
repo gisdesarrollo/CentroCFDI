@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Retencion")]
+    [Table("cp_retencion")]
     public class RetencionCP : SubImpuestoC
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

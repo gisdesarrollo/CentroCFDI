@@ -12,7 +12,7 @@ using API.Enums;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Mercancia")]
+    [Table("cp_mercancia")]
     public class Mercancia
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

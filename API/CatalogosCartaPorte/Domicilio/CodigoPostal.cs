@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.CatalogosCartaPorte.Domicilio
 {
-    [Table("c_CodigoPostal")]
+    [Table("c_codigopostal")]
     public class CodigoPostal
     {
         [Key]

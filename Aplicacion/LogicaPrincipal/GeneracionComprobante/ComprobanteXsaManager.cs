@@ -30,10 +30,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
         //private static string pathCer = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"C:\Users\Alexander\Downloads\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         //private static string passwordKey = "12345678a";
-        private static string urlXsaPrueba = $"https://canal3.xsa.com.mx:9050";
-        private static string keySucursalPrueba = "75768055-eb92-4f98-8b3a-d8feb9a1c116";
-        private static string idSucursalprueba = "c11ab474b2ee5c72cd67d5bdc59ac6b1";
-        private static string idTipoCfdPrueba = "ae0a94a66a396f43012f79d1a738bbce";
+        //private static string urlXsaPrueba = $"https://canal3.xsa.com.mx:9050";
+        //private static string keySucursalPrueba = "75768055-eb92-4f98-8b3a-d8feb9a1c116";
+        //private static string idSucursalprueba = "c11ab474b2ee5c72cd67d5bdc59ac6b1";
+        //private static string idTipoCfdPrueba = "ae0a94a66a396f43012f79d1a738bbce";
 
 
         #endregion
@@ -161,14 +161,14 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             }
 
             //data 03 Receptor
-            /*data = "03|" + comprobanteCfdi.Receptor.Rfc +"|" + comprobanteCfdi.Receptor.Rfc + "|" + comprobanteCfdi.Receptor.RazonSocial
+            data = "03|" + comprobanteCfdi.Receptor.Rfc +"|" + comprobanteCfdi.Receptor.Rfc + "|" + comprobanteCfdi.Receptor.RazonSocial
                     +"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+comprobanteCfdi.Receptor.CodigoPostal +"|" +"|" 
-                    + "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+comprobanteCfdi.Receptor.RegimenFiscal.ToString();*/
+                    + "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+comprobanteCfdi.Receptor.RegimenFiscal.ToString();
 
             //receptorPrueba
-            data = "03|" + "IIN970122K30" + "|" + "IIN970122K30" + "|" + "ICA INFRAESTRUCTURA"
+            /*data = "03|" + "IIN970122K30" + "|" + "IIN970122K30" + "|" + "ICA INFRAESTRUCTURA"
                     + "|" + "|" + "|" + "|" + "|" + "|" + "|" + "|" + "|" + "|" + "03800" + "|" + "|"
-                    + "|" + "G01" + "|" + "601";
+                    + "|" + "G01" + "|" + "601";*/
             if (data != "")
             {
                 tw.WriteLine(data);
@@ -466,7 +466,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             //URL prueba
             //var urlXsa = urlXsaPrueba+ "/" + keySucursalPrueba + "/cfdis";
             //URL produccion
-            var urlXsa = $"https://" + sucursal.Servidor + ":9050/" + keySucursalPrueba + "/cfdis";
+            var urlXsa = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/cfdis";
             if(sucursal.TipoCfdXsa == null) { throw new Exception("Error: Tipo CFD XSA NULL"); }
             if(sucursal.IdSucursalXsa == null) { throw new Exception("Error: Id Sucursal XSA NULL"); }
             var request = (HttpWebRequest)WebRequest.Create(urlXsa);
@@ -482,15 +482,23 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             {
                 lineString += line +"\n";
             }
-
-            //llenamos el objeto 
+            //Objeto de produccion
             var dataJsonXsa = new DataJsonXsaDto()
+            {
+                idSucursal = sucursal.IdSucursalXsa,
+                idTipoCfd = sucursal.TipoCfdXsa,
+                nombre = nameFile,
+                archivoFuente = lineString
+            };
+
+            //llenamos el objeto prueba
+            /*var dataJsonXsa = new DataJsonXsaDto()
             {
                 idSucursal = idSucursalprueba,
                 idTipoCfd = idTipoCfdPrueba,
                 nombre = nameFile,
                 archivoFuente = lineString
-            };
+            };*/
 
             //serealizamos json
              string jsonString = System.Text.Json.JsonSerializer.Serialize(dataJsonXsa);
@@ -629,10 +637,26 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             _db.SaveChanges();
         }
 
-        public List<DataCancelacionResponseXsaDto> Cancelar(ComprobanteCfdi comprobanteCfdi)
+        public List<DataCancelacionResponseXsaDto> Cancelar(int Id,String folioSustitucionView,String motivoCancelacion,bool isFacturaEmitida)
         {
-            var comprobante = _db.ComprobantesCfdi.Find(comprobanteCfdi.Id);
-            var sucursal = _db.Sucursales.Find(comprobante.SucursalId);
+            var comprobante = new ComprobanteCfdi();
+            var facturaEmitida = new FacturaEmitida();
+            int sucursalId;
+            byte[] archivoXml;
+           
+            if (isFacturaEmitida)
+            {
+                facturaEmitida = _db.FacturasEmitidas.Find(Id);
+                sucursalId = facturaEmitida.EmisorId;
+                archivoXml = facturaEmitida.ArchivoFisicoXml;
+            }
+            else { comprobante = _db.ComprobantesCfdi.Find(Id);
+                   sucursalId = comprobante.SucursalId;
+                   archivoXml = comprobante.FacturaEmitida.ArchivoFisicoXml;
+                }
+            
+            
+            var sucursal = _db.Sucursales.Find(sucursalId);
 
             string responseBody = "";
             List<DataCancelacionResponseXsaDto> dataXsa = new List<DataCancelacionResponseXsaDto>();
@@ -642,7 +666,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             var urlCancelacion = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/cfdis/cancelar";
 
             //Obtenemos el contenido del XML seleccionado.
-            string CadenaXML = System.Text.Encoding.UTF8.GetString(comprobante.FacturaEmitida.ArchivoFisicoXml);
+            string CadenaXML = System.Text.Encoding.UTF8.GetString(archivoXml);
             string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
             if (UUID == "")
             {
@@ -651,7 +675,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             }
 
             //
-            string folioSustitucion = (comprobanteCfdi.FolioSustitucion == null ? "" : comprobanteCfdi.FolioSustitucion);
+            string folioSustitucion = (folioSustitucionView == null ? "" : folioSustitucionView);
 
             //conexion web service XSA
             var request = (HttpWebRequest)WebRequest.Create(urlCancelacion);
@@ -663,7 +687,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             //llenamos el objeto 
             var dataCancelacion = new DataCancelacionRequestXsaDto()
             {
-                motivo = comprobanteCfdi.MotivoCancelacion,
+                motivo = motivoCancelacion,
                 folioSustitucion = folioSustitucion,
                 uuid = new List<String> {
                    UUID
@@ -719,7 +743,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             dataXsa.ForEach(d => status = d.status);
             if (status == "201" || status == "202")
             {
-                MarcarNoFacturado(comprobante.Id);
+                MarcarNoFacturado(Id,isFacturaEmitida);
             }
             return dataXsa;
         }
@@ -750,30 +774,68 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             return valor;
         }
 
-        private void MarcarNoFacturado(int comprobanteId)
+        private void MarcarNoFacturado(int comprobanteId, bool isFacturaEmitida)
         {
-            var comprobante = _db.ComprobantesCfdi.Find(comprobanteId);
-            comprobante.Status = API.Enums.Status.Cancelado;
-            _db.Entry(comprobante).State = EntityState.Modified;
-            _db.SaveChanges();
+            var comprobante = new ComprobanteCfdi();
+            var facturaEmitida = new FacturaEmitida();
+            if (isFacturaEmitida)
+            {
+                facturaEmitida = _db.FacturasEmitidas.Find(comprobanteId);
+                facturaEmitida.Status = API.Enums.Status.Cancelado;
+                _db.Entry(facturaEmitida).State = EntityState.Modified;
+                _db.SaveChanges();
+            }
+            else
+            {
+                comprobante = _db.ComprobantesCfdi.Find(comprobanteId);
+                comprobante.Status = API.Enums.Status.Cancelado;
+                comprobante.FacturaEmitida.Status = API.Enums.Status.Cancelado;
+                _db.Entry(comprobante).State = EntityState.Modified;
+                _db.SaveChanges();
+            }
+            
         }
 
-        public byte[] DownloadPDFXsa(int comprobanteId)
+        public byte[] DownloadPDFXsa(int comprobanteId,bool isFacturaEmitida)
         {
             byte[] pdf = new byte[1024];
             string url = "";
             string destinationPath = null;
-
+            var facEmitidas = new FacturaEmitida();
+            var comprobanteCfdi = new ComprobanteCfdi();
+            int sucursalId;
+            string serie = null;
+            string folio = null;
+            string uuid = null;
             try
             {
-                var comprobanteCfdi = _db.ComprobantesCfdi.Find(comprobanteId);
-                var sucursal = _db.Sucursales.Find(comprobanteCfdi.SucursalId);
-                var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.zip", comprobanteCfdi.FacturaEmitida.Serie, comprobanteCfdi.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+                if (isFacturaEmitida)
+                {
+                    facEmitidas = _db.FacturasEmitidas.Find(comprobanteId);
+                    serie = facEmitidas.Serie;
+                    folio = facEmitidas.Folio;
+                    uuid = facEmitidas.Uuid;
+                    sucursalId = facEmitidas.EmisorId;
+                }
+                else
+                {
+                    comprobanteCfdi = _db.ComprobantesCfdi.Find(comprobanteId);
+                    serie = comprobanteCfdi.FacturaEmitida.Serie;
+                    folio = comprobanteCfdi.FacturaEmitida.Folio;
+                    uuid = comprobanteCfdi.FacturaEmitida.Uuid;
+                    sucursalId = comprobanteCfdi.SucursalId;
+                }
+                
+
+                var sucursal = _db.Sucursales.Find(sucursalId);
+                var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.zip", serie, folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
 
                 //url Xsa prueba
                 //url = $"https://canal3.xsa.com.mx:9050" + "/75768055-eb92-4f98-8b3a-d8feb9a1c116" + "/descargasCfdi?uuid=" + comprobanteCfdi.FacturaEmitida.Uuid + "&folio=" + comprobanteCfdi.FacturaEmitida.Folio + "&serie=" + comprobanteCfdi.FacturaEmitida.Serie + "&representacion=PDF";
                 //url produccion
-                url = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/descargasCfdi?uuid=" +comprobanteCfdi.FacturaEmitida.Uuid +"&folio="+comprobanteCfdi.FacturaEmitida.Folio+"&serie="+ comprobanteCfdi.FacturaEmitida.Serie+"&representacion=PDF";
+                //ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                url = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/descargasCfdi?uuid=" + uuid +"&folio="+ folio +"&serie="+ serie +"&representacion=PDF";
                 var request = (HttpWebRequest)WebRequest.Create(url);
                 request.ContentType = "application/zip";
                 request.Method = "GET";
@@ -827,21 +889,21 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             return pdf;
         }
 
-        public byte[] DowloadAcuseCancelacion(ComprobanteCfdi comprobanteCfdi)
+        public byte[] DowloadAcuseCancelacion(String serie,String folio,String uuid,int sucursalId)
         {
-            var sucursal = _db.Sucursales.Find(comprobanteCfdi.SucursalId);
+            var sucursal = _db.Sucursales.Find(sucursalId);
             
 
             byte[] xmlCancelacion = new byte[1024];
             string destinationPath = null;
             try
             {
-                var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.zip", comprobanteCfdi.FacturaEmitida.Serie, comprobanteCfdi.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+                var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.zip", serie, folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
 
                 //URL prueba
-                var urlCancelacion = urlXsaPrueba + "/" + keySucursalPrueba + "/descargasCfdi?uuid=" + comprobanteCfdi.FacturaEmitida.Uuid + "&folio=" + comprobanteCfdi.FacturaEmitida.Folio + "&serie=" + comprobanteCfdi.FacturaEmitida.Serie + "&representacion=ACUSE";
+                //var urlCancelacion = urlXsaPrueba + "/" + keySucursalPrueba + "/descargasCfdi?uuid=" + comprobanteCfdi.FacturaEmitida.Uuid + "&folio=" + comprobanteCfdi.FacturaEmitida.Folio + "&serie=" + comprobanteCfdi.FacturaEmitida.Serie + "&representacion=ACUSE";
                 //URL produccion
-                //var urlCancelacion = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/descargasCfdi?uuid=" +comprobanteCfdi.FacturaEmitida.Uuid +"&folio="+comprobanteCfdi.FacturaEmitida.Folio+"&serie="+ comprobanteCfdi.FacturaEmitida.Serie+"&representacion=ACUSE";
+                var urlCancelacion = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/descargasCfdi?uuid=" +uuid +"&folio="+folio+"&serie="+ serie+"&representacion=ACUSE";
                 var request = (HttpWebRequest)WebRequest.Create(urlCancelacion);
                 request.ContentType = "application/zip";
                 request.Method = "GET";

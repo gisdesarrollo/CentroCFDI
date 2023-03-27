@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Domicilio")]
+    [Table("cp_domicilio")]
     public class Domicilio
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

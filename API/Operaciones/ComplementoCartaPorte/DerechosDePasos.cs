@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_DerechosDePasos")]
+    [Table("cp_derechosdepasos")]
     public class DerechosDePasos
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

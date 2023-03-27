@@ -98,14 +98,6 @@ namespace Aplicacion.LogicaPrincipal.Control
             homeModel.Mes6 = mes6;
 
 
-
-            //var fechaIniant = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(0).AddDays(0);
-
-            // var fechaFiant = DateTime.Now;
-
-
-            //homeModel.CfdiEmitidos = _db.FacturasEmitidas.Count(fe => fe.EmisorId == _sucursalId && fe.Fecha >= fechaIniant && fe.Fecha <= fechaFiant);
-
             //Clientes Totales
             homeModel.Clientes = _db.Clientes.Count(c => c.SucursalId == _sucursalId);
 

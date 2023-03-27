@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_SubImpuestoC")]
+    [Table("cp_subimpuestoc")]
     public class SubImpuestoC
     {
         /*[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

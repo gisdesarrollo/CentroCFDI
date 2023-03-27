@@ -524,7 +524,7 @@ namespace APBox.Controllers.ComplementosPago
                                         tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
                                         decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
                                         decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
-                                        
+                                        /*Conversion a pesos MXN*/
                                         var tipoCambioPgo = (Decimal)pago.TipoCambio;
                                         baseDR = (decimal)baseDRFormt * tipoCambioPgo;
                                         ImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_GuiasIdentificacion")]
+    [Table("cp_guiasidentificacion")]
     public class GuiasIdentificacion
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

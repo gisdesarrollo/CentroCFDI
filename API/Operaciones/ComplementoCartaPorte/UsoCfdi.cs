@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("c_UsoCFDI")]
+    [Table("c_usocfdi")]
     public  class UsoCfdi
     {
         [Key]

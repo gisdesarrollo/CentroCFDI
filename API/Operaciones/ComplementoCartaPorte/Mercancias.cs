@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Mercancias")]
+    [Table("cp_mercancias")]
     public class Mercancias
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

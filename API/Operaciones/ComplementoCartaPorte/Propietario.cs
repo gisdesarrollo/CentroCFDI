@@ -11,7 +11,7 @@ using API.Enums;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Propietario")]
+    [Table("cp_propietario")]
     public class Propietario
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

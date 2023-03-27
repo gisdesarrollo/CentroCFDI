@@ -8,11 +8,13 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using APBox.Context;
+using API.Models.Dto;
 using API.Models.Facturas;
 using API.Operaciones.Facturacion;
 using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.Facturas;
 using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
+using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
 
@@ -29,7 +31,7 @@ namespace APBox.Controllers.Catalogos
         private readonly OperacionesCfdisEmitidos _operacionesCfdisEmitidos = new OperacionesCfdisEmitidos();
         private readonly DescargasManager _descargasManager =  new DescargasManager();
         private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
-
+        private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
         #endregion
 
         // GET: FacturasEmitidas
@@ -240,24 +242,49 @@ namespace APBox.Controllers.Catalogos
             //objetos version 3.3
             ComprobanteCFDI33 oComprobante33 = new ComprobanteCFDI33();
             string tipoDocumento = null;
+            bool isXsa = false;
             byte[] archivoFisico = new byte[255];
             var facturaEmitida = _db.FacturasEmitidas.Find(id);
-            //busca version del CFDI del archivo
-            string CadenaXML = System.Text.Encoding.UTF8.GetString(facturaEmitida.ArchivoFisicoXml);
-            string versionCfdi = _decodifica.LeerValorXML(CadenaXML, "Version", "Comprobante");
-            if (versionCfdi == "3.3")
+            //buscar si la factura se genero dentro del sistema
+            var cfdiNormal = _db.ComprobantesCfdi.Where(n => n.FacturaEmitidaId == id).FirstOrDefault();
+            var pago = _db.ComplementosPago.Where(p => p.FacturaEmitidaId == id).FirstOrDefault();
+            var cartaPorte = _db.ComplementoCartaPortes.Where(cp => cp.FacturaEmitidaId == id).FirstOrDefault();
+            if (cfdiNormal == null && pago == null && cartaPorte == null && facturaEmitida != null)
             {
-                oComprobante33 = _decodifica.DeserealizarXML33(facturaEmitida.ArchivoFisicoXml);
-                 tipoDocumento = _decodifica.TipoDocumentoCfdi33(facturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF33(oComprobante33,tipoDocumento ,id,true);
+                //dowload pdf in XSA
+                archivoFisico = _ComprobanteXsaManager.DownloadPDFXsa(id,true);
+
             }
             else
             {
-                oComprobante = _decodifica.DeserealizarXML40(facturaEmitida.ArchivoFisicoXml);
-                tipoDocumento = _decodifica.TipoDocumentoCfdi40(facturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF40(oComprobante,tipoDocumento ,id,true);
+                if (facturaEmitida.Emisor.Txsa)
+                {
+                    if(cfdiNormal != null)
+                    {
+                        //dowload pdf in XSA
+                        archivoFisico = _ComprobanteXsaManager.DownloadPDFXsa(id, false);
+                        isXsa = true;
+                    }
+                }
+                if (!isXsa)
+                {
+                    //busca version del CFDI del archivo
+                    string CadenaXML = System.Text.Encoding.UTF8.GetString(facturaEmitida.ArchivoFisicoXml);
+                    string versionCfdi = _decodifica.LeerValorXML(CadenaXML, "Version", "Comprobante");
+                    if (versionCfdi == "3.3")
+                    {
+                        oComprobante33 = _decodifica.DeserealizarXML33(facturaEmitida.ArchivoFisicoXml);
+                        tipoDocumento = _decodifica.TipoDocumentoCfdi33(facturaEmitida.ArchivoFisicoXml);
+                        archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, true);
+                    }
+                    else
+                    {
+                        oComprobante = _decodifica.DeserealizarXML40(facturaEmitida.ArchivoFisicoXml);
+                        tipoDocumento = _decodifica.TipoDocumentoCfdi40(facturaEmitida.ArchivoFisicoXml);
+                        archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, true);
+                    }
+                }
             }
-
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = facturaEmitida.Serie + "-" + facturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
@@ -285,13 +312,36 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaMotivoCancelacion();
             string error = null;
+            bool isXsa = false;
+            List<DataCancelacionResponseXsaDto> dataXsa = new List<DataCancelacionResponseXsaDto>();
             var emitida = _db.FacturasEmitidas.Find(facturaEmitida.Id);
             emitida.FolioSustitucion = facturaEmitida.FolioSustitucion;
             emitida.MotivoCancelacion = facturaEmitida.MotivoCancelacion;
+            var comprobante = _db.ComprobantesCfdi.Where(c => c.FacturaEmitidaId == facturaEmitida.Id).FirstOrDefault();
+            var pagos = _db.ComplementosPago.Where(p => p.FacturaEmitidaId == facturaEmitida.Id).FirstOrDefault();
+            var cartaPorte = _db.ComplementoCartaPortes.Where(cp => cp.FacturaEmitidaId == facturaEmitida.Id).FirstOrDefault();
+
             try
             {
-                _operacionesCfdisEmitidos.Cancelar(emitida);
-
+                if (comprobante == null && pagos == null && cartaPorte == null && emitida != null)
+                {
+                    dataXsa = _ComprobanteXsaManager.Cancelar(emitida.Id,emitida.FolioSustitucion,emitida.MotivoCancelacion,true);
+                }
+                else
+                {
+                    if (emitida.Emisor.Txsa)
+                    {
+                        if(comprobante!= null)
+                        {
+                            dataXsa = _ComprobanteXsaManager.Cancelar(facturaEmitida.Id,facturaEmitida.FolioSustitucion,facturaEmitida.MotivoCancelacion,false);
+                            isXsa = true;
+                        }
+                    }
+                    if (!isXsa)
+                    {
+                        _operacionesCfdisEmitidos.Cancelar(emitida);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -313,9 +363,36 @@ namespace APBox.Controllers.Catalogos
 
         public ActionResult DescargarAcuse(int id)
         {
+            string xmlCancelacion = null;
+            bool isXsa = false;
+            byte[] byteXml =  new byte[1024];
             var facturaEmitida = _db.FacturasEmitidas.Find(id);
-            string xmlCancelacion = _descargasManager.DowloadAcuseCancelacion(facturaEmitida.EmisorId,facturaEmitida.ArchivoFisicoXml);
-            byte[] byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
+            var comprobante = _db.ComprobantesCfdi.Where(c => c.FacturaEmitidaId == id).FirstOrDefault();
+            var pagos = _db.ComplementosPago.Where(p => p.FacturaEmitidaId == id).FirstOrDefault();
+            var cartaPorte = _db.ComplementoCartaPortes.Where(cp => cp.FacturaEmitidaId == id).FirstOrDefault();
+            if(comprobante == null && pagos == null && cartaPorte == null && facturaEmitida != null)
+            {
+                byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(facturaEmitida.Serie,facturaEmitida.Folio,facturaEmitida.Uuid,facturaEmitida.EmisorId);
+            }
+            else
+            {
+                if (facturaEmitida.Emisor.Txsa)
+                {
+                    if(comprobante != null)
+                    {
+                       byteXml =  _ComprobanteXsaManager.DowloadAcuseCancelacion(facturaEmitida.Serie, facturaEmitida.Folio, facturaEmitida.Uuid, facturaEmitida.EmisorId);
+                        isXsa = true;
+                    }
+                }
+                if (!isXsa)
+                {
+                    xmlCancelacion = _descargasManager.DowloadAcuseCancelacion(facturaEmitida.EmisorId, facturaEmitida.ArchivoFisicoXml);
+                }
+            }
+            if (xmlCancelacion != null)
+            {
+                byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
+            }
             MemoryStream ms = new MemoryStream(byteXml, 0, 0, true, true);
             string nameArchivo = facturaEmitida.Serie + "-" + facturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");

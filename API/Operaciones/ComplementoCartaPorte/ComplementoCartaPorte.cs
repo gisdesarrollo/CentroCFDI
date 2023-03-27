@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_ComplementoCartaPorte")]
+    [Table("cp_complementocartaporte")]
     public class ComplementoCartaPorte
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

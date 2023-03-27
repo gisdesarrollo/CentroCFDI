@@ -112,6 +112,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                 FechaDocumento = DateTime.Now,
                 Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
                 SucursalId = ObtenerSucursal(),
+                TipoCambio = "1",
                 Version = "4.0",
                 ExportacionId = "01",//No aplica,
                 Conceptos = new Conceptos()
@@ -598,7 +599,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             }
             if (comprobanteCfdi.Sucursal.Txsa) 
             {
-                archivoFisico =_ComprobanteXsaManager.DownloadPDFXsa(comprobanteCfdi.Id);   
+                archivoFisico =_ComprobanteXsaManager.DownloadPDFXsa(comprobanteCfdi.Id,false);   
             }            
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = comprobanteCfdi.FacturaEmitida.Serie + "-" + comprobanteCfdi.FacturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
@@ -637,7 +638,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                     _ComprobanteManager.Cancelar(comprobante); 
                 }
                 if (comprobante.Sucursal.Txsa) { 
-                    dataXsa = _ComprobanteXsaManager.Cancelar(comprobanteCfdi); 
+                    dataXsa = _ComprobanteXsaManager.Cancelar(comprobanteCfdi.Id,comprobanteCfdi.FolioSustitucion,comprobanteCfdi.MotivoCancelacion,false); 
                    
                 }
 
@@ -684,7 +685,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                 }
                 if(comprobante.Sucursal.Txsa)
                 {
-                    byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(comprobante);
+                    byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(comprobante.FacturaEmitida.Serie,comprobante.FacturaEmitida.Folio,comprobante.FacturaEmitida.Uuid,comprobante.FacturaEmitida.EmisorId);
                 }
            }
             catch (Exception ex){

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.CatalogosCartaPorte
 {
-    [Table("c_TipoDeServicio")]
+    [Table("c_tipodeservicio")]
     public class TipoDeServicio
     {
         [Key]

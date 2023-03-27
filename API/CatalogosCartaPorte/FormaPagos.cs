@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.CatalogosCartaPorte
 {
-    [Table("c_FormaPago")]
+    [Table("c_formapago")]
     public class FormaPagos
     {
         [Key]

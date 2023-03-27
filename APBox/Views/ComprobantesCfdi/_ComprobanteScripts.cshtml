@@ -360,7 +360,7 @@ $(function () {
                             $("#Descuento").val(row.Descuento);
 
 
-                            $("#Conceptos_ObjetoImpuesto").selectpicker('val', row.ObjetoImpuesto);
+                            $("#Conceptos_ObjetoImpuesto").val(row.ObjetoImpuesto);
                             if (row.ObjetoImpuesto === "02") { $("#activaImpuestos").show(); } else { $("#activaImpuestos").hide();}
                             if (row.ImpuestoIdTras != null) {
                                 var ImpuestoT = row.ImpuestoIdTras;

@@ -74,9 +74,9 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var serie = registros[i][10];
                             var folio = registros[i][11];
                             //usar solo con facturasEmitidas
-                            var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
+                            //var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
                             //activar para FacturasEmitidasTemp
-                            //var facturaEmitida = _db.FacturasEmitidasTemp.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
+                            var facturaEmitida = _db.FacturasEmitidasTemp.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
                             var facturaEmitidaCop = _db.FacturasEmitidas.Find(facturaEmitida.Id);
                             if (facturaEmitida == null)
                             {

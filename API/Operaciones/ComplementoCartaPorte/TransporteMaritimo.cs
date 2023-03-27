@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_TransporteMaritimo")]
+    [Table("cp_transportemaritimo")]
     public class TransporteMaritimo
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -21,11 +21,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
 
         private readonly AplicacionContext _db = new AplicacionContext();
         //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\comprobanteCFDI.xml";
-        private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
-        private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         //private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
-        private static string passwordKey = "12345678a";
+        //private static string passwordKey = "12345678a";
         #endregion
 
         public string GenerarComprobanteCfdi(int sucursalId, int comprobanteId)
@@ -102,10 +102,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
 
             // Agrega el certificado prueba
-            objCfdi.agregarCertificado(pathCer);
+            //objCfdi.agregarCertificado(pathCer);
 
             //Agrega Certificado de produccion
-           // objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
+            objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
 
             //seleccionar folio por tipo Comprobante
             int Folio = 0;
@@ -151,31 +151,33 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-            //Agrega Emisor
+            //Agrega Emisor produccion
             var regimenFiscalEmisor = (int)comprobanteCfdi.Sucursal.RegimenFiscal;
-            /*objCfdi.agregarEmisor(
+            objCfdi.agregarEmisor(
                 comprobanteCfdi.Sucursal.Rfc,
                 comprobanteCfdi.Sucursal.RazonSocial,
                 regimenFiscalEmisor.ToString()
-                );*/
-            objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
+                );
+            //Emisor pruebas
+            //objCfdi.agregarEmisor("XIA190128J61", "XENON INDUSTRIAL ARTICLES", "601");
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-            //Agrega Receptor
+            //Agrega Receptor produccion
             var regimeFiscalReceptor = (int)comprobanteCfdi.Receptor.RegimenFiscal;
-            /*objCfdi.agregarReceptor(
+            objCfdi.agregarReceptor(
                 comprobanteCfdi.Receptor.Rfc,
                 comprobanteCfdi.Receptor.RazonSocial,
                 "", 
-                "", 
-                comprobanteCfdi.UsoCfdi.ToString(), //UsoCFDI Fijo
+                "",
+                comprobanteCfdi.Receptor.UsoCfdi.ToString(), //UsoCFDI Fijo
                 comprobanteCfdi.Receptor.CodigoPostal,
                 regimeFiscalReceptor.ToString()
-                );*/
-            objCfdi.agregarReceptor("URE180429TM6", "UNIVERSIDAD ROBOTICA ESPAÑOLA", "", "", comprobanteCfdi.Receptor.UsoCfdi.ToString(), "65000", "601");
+                );
+            //Emisor pruebas
+            //objCfdi.agregarReceptor("URE180429TM6", "UNIVERSIDAD ROBOTICA ESPAÑOLA", "", "", comprobanteCfdi.Receptor.UsoCfdi.ToString(), "65000", "601");
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
@@ -443,9 +445,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
 
 
             //Genera XML pruebas
-            objCfdi.GeneraXML(pathKey, passwordKey);
+            //objCfdi.GeneraXML(pathKey, passwordKey);
             //Genera XML produccion
-            //objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
+            objCfdi.GenerarXMLBase64(System.Convert.ToBase64String(sucursal.Key), sucursal.PasswordKey);
             string xml = objCfdi.Xml;
             //guardar string en un archivo
             // System.IO.File.WriteAllText(pathXml, xml);
@@ -457,9 +459,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi, Sucursal sucursal)
         {
             //Timbrado pruebas
-            objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
+            //objCfdi.TimbrarCfdi("fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
             //Timbrado produccion
-            //objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+            objCfdi.TimbrarCfdi(sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
 
 
             // Verifica Response
@@ -571,30 +573,30 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             string ArchivoCancelacion = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCancelados//{0}-{1}-{2}.xml", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
 
             //ruta temp cer y key produccion
-            /*string cerRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.cer", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+            string cerRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.cer", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             string keyRuta = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//{0}-{1}-{2}.key", comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             System.IO.File.WriteAllBytes(cerRuta, sucursal.Cer);
-            System.IO.File.WriteAllBytes(keyRuta, sucursal.Key);*/
+            System.IO.File.WriteAllBytes(keyRuta, sucursal.Key);
             //Creamos el XML de Solicitud de Cancelación.
             string folioSustitucion = (comprobanteCfdi.FolioSustitucion == null ? "" : comprobanteCfdi.FolioSustitucion);
             //cancelacion produccion
-            //objCan.crearXMLCancelacionArchivo(cerRuta, keyRuta, sucursal.PasswordKey, UUID, ArchivoCancelacion, comprobanteCfdi.MotivoCancelacion, folioSustitucion);
+            objCan.crearXMLCancelacionArchivo(cerRuta, keyRuta, sucursal.PasswordKey, UUID, ArchivoCancelacion, comprobanteCfdi.MotivoCancelacion, folioSustitucion);
             //cancelacion pruebas
-            objCan.crearXMLCancelacionArchivo(pathCer, pathKey, passwordKey, UUID, ArchivoCancelacion, comprobanteCfdi.MotivoCancelacion, folioSustitucion);
+            //objCan.crearXMLCancelacionArchivo(pathCer, pathKey, passwordKey, UUID, ArchivoCancelacion, comprobanteCfdi.MotivoCancelacion, folioSustitucion);
 
-            //System.IO.File.Delete(cerRuta);
-            //System.IO.File.Delete(keyRuta);
+            System.IO.File.Delete(cerRuta);
+            System.IO.File.Delete(keyRuta);
             if (objCan.CodigoDeError != 0)
             {
                 throw new Exception(String.Format("Ocurrió un error al crear el XML de Solicitud de Cancelación: " + objCan.MensajeDeError));
             }
 
             //Ejecutamos el proceso de cancelación en el Ambiente de Pruebas.
-            objCan.enviarCancelacionArchivo(ArchivoCancelacion, "fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
-            System.IO.File.Delete(ArchivoCancelacion);
-            //Ejecutamos el proceso de cancelación en el Ambiente de Producción.
-            //objCan.enviarCancelacionArchivo(ArchivoCancelacion, sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+            //objCan.enviarCancelacionArchivo(ArchivoCancelacion, "fgomez", "12121212", "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", false);
             //System.IO.File.Delete(ArchivoCancelacion);
+            //Ejecutamos el proceso de cancelación en el Ambiente de Producción.
+            objCan.enviarCancelacionArchivo(ArchivoCancelacion, sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
+            System.IO.File.Delete(ArchivoCancelacion);
             // Verifica el resultado
             if (objCan.MensajeDeError == "")
             {
@@ -635,9 +637,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             RVCFDI33.WSConsultasCFDReal.Service1 objConsulta = new RVCFDI33.WSConsultasCFDReal.Service1();
             RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct objCancel = new RVCFDI33.WSConsultasCFDReal.acuse_cancel_struct();
             //credenciales prueba
-             objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, "fgomez", "12121212", RFCEmisor);
+             //objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, "fgomez", "12121212", RFCEmisor);
             //credenciales a produccion
-            //objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, sucursal.Rfc, sucursal.Rfc, RFCEmisor);
+            objCancel = objConsulta.Consultar_Acuse_cancelado_UUID(UUID, sucursal.Rfc, sucursal.Rfc, RFCEmisor);
             if (objCancel._ERROR == "")
             {
                 if (objCancel.xml != null && objCancel.xml != "")

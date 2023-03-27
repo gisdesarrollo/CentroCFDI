@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cat_SubImpuestoC")]
+    [Table("cat_subimpuestoc")]
     public class Cat_SubImpuestoC
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

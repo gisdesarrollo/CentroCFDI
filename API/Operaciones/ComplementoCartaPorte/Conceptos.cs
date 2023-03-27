@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {
-    [Table("cp_Conceptos")]
+    [Table("cp_conceptos")]
     public class Conceptos
     {
 
