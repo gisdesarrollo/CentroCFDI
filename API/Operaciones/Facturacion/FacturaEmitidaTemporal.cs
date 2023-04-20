@@ -1,11 +1,7 @@
 ﻿using API.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Operaciones.Facturacion
 {
@@ -32,5 +28,7 @@ namespace API.Operaciones.Facturacion
         public c_MetodoPago MetodoPago { get; set; }
 
         public c_Moneda Moneda { get; set; }
+
+        public c_TipoDeComprobante TipoComprobante { get; set; }
     }
 }

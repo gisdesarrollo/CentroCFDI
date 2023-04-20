@@ -30,7 +30,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private readonly CreationFile _deserealizaXml = new CreationFile();
         private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
-        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagos2040.xml";
+        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagos20BBC.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -534,7 +534,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
             string xml = objCfdi.Xml;
             //guardar string en un archivo
-             //System.IO.File.WriteAllText(pathXml, xml);
+            // System.IO.File.WriteAllText(pathXml, xml);
             //Timbrado
             objCfdi = Timbra(objCfdi, sucursal);
             return objCfdi;
@@ -606,7 +606,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             //System.IO.File.Delete(ArchivoCancelacion);
             //Ejecutamos el proceso de cancelación en el Ambiente de Producción.
             objCan.enviarCancelacionArchivo(ArchivoCancelacion, sucursal.Rfc, sucursal.Rfc, "http://generacfdi.com.mx/rvltimbrado/service1.asmx?WSDL", true);
-            System.IO.File.Delete(ArchivoCancelacion);
+            //System.IO.File.Delete(ArchivoCancelacion);
             // Verifica el resultado
             if (objCan.MensajeDeError == "")
             {

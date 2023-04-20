@@ -21,7 +21,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
     public class CartaPorteManager
     {
         private readonly AplicacionContext _db = new AplicacionContext();
-        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte.xml";
+        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porteCW.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -367,7 +367,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                             impuestoT = impuesto.Traslado.Impuesto;
                             tipoFactorT = impuesto.Traslado.TipoFactor.ToString();
                             tasaCuotaT = impuesto.Traslado.TasaOCuota;
-                            baseT = impuesto.Traslado.Base;
+                            baseT += impuesto.Traslado.Base;
                         }
                         else
                         {

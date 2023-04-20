@@ -51,7 +51,6 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
                     var pagos = new List<Pago>();
 
-                    //var facturasEmitidas = _db.FacturasEmitidas.Where(fe => fe.EmisorId == sucursalId).ToList();
                     for (int i = 1; i < registros.Count(); i++)
                     {
                         try
@@ -59,7 +58,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             
                             var fechaPago = Convert.ToDateTime(registros[i][0]);
                             fechaPago = fechaPago.Date.AddHours(time.Hour).AddMinutes(time.Minute).AddSeconds(00);
-                            var formaPago = registros[i][1];
+                            var formaPago = ConvertFormaPagoValid(registros[i][1]);
                             var monto = Convert.ToDouble(registros[i][2]);
                             var moneda = ParseEnum<c_Moneda>(registros[i][3], i);
                             var tipoCambioPago = Convert.ToDouble(registros[i][4]);
@@ -77,14 +76,13 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             //var facturaEmitida = _db.FacturasEmitidas.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
                             //activar para FacturasEmitidasTemp
                             var facturaEmitida = _db.FacturasEmitidasTemp.FirstOrDefault(fe => fe.EmisorId == sucursalId && fe.Serie == serie && fe.Folio == folio);
-                            var facturaEmitidaCop = _db.FacturasEmitidas.Find(facturaEmitida.Id);
                             if (facturaEmitida == null)
                             {
                                 errores.Add(String.Format("La factura {0} - {1} no fue encontrada para el registro {2}", serie, folio, i));
                                 continue;
                             }
+                            var facturaEmitidaCop = _db.FacturasEmitidas.Find(facturaEmitida.Id);
                             
-
                             //Se desorganizaron los numeros por que necesito el cliente para determinar el banco
                             var nombreBancoOrdenante = registros[i][7];
                             BancoCliente bancoOrdenante = null;
@@ -383,6 +381,47 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
             }
         }
 
+        private String ConvertFormaPagoValid(string formaPago)
+        {
+            String formaPagoValid = "03";
+
+            if (formaPago.Length < 2)
+            {
+                switch (formaPago)
+                {
+                    case "1":
+                        formaPagoValid = "01";
+                        break;
+                    case "2":
+                        formaPagoValid = "02";
+                        break;
+                    case "3":
+                        formaPagoValid = "03";
+                        break;
+                    case "4":
+                        formaPagoValid = "04";
+                        break;
+                    case "5":
+                        formaPagoValid = "05";
+                        break;
+                    case "6":
+                        formaPagoValid = "06";
+                        break;
+                    case "8":
+                        formaPagoValid = "08";
+                        break;
+                    default:
+                        formaPagoValid = "03";
+                        break;
+                }
+
+            }
+            else
+            {
+                formaPagoValid = formaPago;
+            }
+            return formaPagoValid;
+        }
         #endregion
     }
 }

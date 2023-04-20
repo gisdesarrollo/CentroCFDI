@@ -14,13 +14,10 @@
 
     <div class="container">
 
-
-
         <table>
 
             <tr>
 
-                @*<td><img src="@Model.Logo" style="height:100px; float:right; width:auto;" /></td>*@
                 <td>
                     <div style="width: 66%; float: left; display: flex;">
                         <img src="@Model.Logo" width="210" /><br />
@@ -368,14 +365,14 @@
 
         <p align="right">
             <b class="col-style title" align="justify"> SubTotal : </b>
-            <b class="col-style">$@Model.SubTotal.00 @Model.Moneda</b>
+            <b class="col-style">$@Model.SubTotal @Model.Moneda</b>
 
             <br>
 
             <br>
 
             <b class="col-style title" align="right">Descuento:</b>
-            <b class="col-style">$@Model.Descuento.00 @Model.Moneda </b>
+            <b class="col-style">$@Model.Descuento @Model.Moneda </b>
         </p>
 
 
@@ -386,7 +383,7 @@
 
 
             <b class="col-style title">Total de Impuestos Trasladados</b>
-            <b class="col-style"><b class="col-style">$@Model.Impuestos.TotalImpuestosTrasladados.00 @Model.Moneda</b></b>
+            <b class="col-style"><b class="col-style">$@Model.Impuestos.TotalImpuestosTrasladados @Model.Moneda</b></b>
 
 
             if (Model.Impuestos.TotalImpuestosRetenidos != null)
@@ -395,14 +392,14 @@
 
 
                 <b class="col-style title">Total de Impuestos Retenidos</b>
-                <b class="col-style">$@Model.Impuestos.TotalImpuestosRetenidos.00 @Model.Moneda</b>
+                <b class="col-style">$@Model.Impuestos.TotalImpuestosRetenidos @Model.Moneda</b>
 
             }
         }
 
         <p align="right">
             <b class="col-style title">Total:</b>
-            <b class="col-style">$@Model.Total.00 @Model.Moneda</b>
+            <b class="col-style">$@Model.Total @Model.Moneda</b>
         </p>
 
 

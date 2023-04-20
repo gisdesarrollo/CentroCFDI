@@ -93,9 +93,9 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
         }
 
-        public PartialViewResult AgregarDTraslado(Decimal Tbase, string Timpuesto, string TtipoFactor,Decimal TtasaOCuota , Decimal Timporte)
+        public PartialViewResult AgregarDTraslado(Decimal Tbase, string Timpuesto, string TtipoFactor, Decimal TtasaOCuota, Decimal Timporte)
         {
-            
+
             var traslado = new TrasladoDR()
             {
                 Base = (double)Math.Round(Tbase, 6),

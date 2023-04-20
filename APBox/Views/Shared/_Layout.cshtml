@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
 <head>
@@ -46,9 +47,8 @@
     <!--begin:: datetimepicker-->
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">-->
     <!--end:: datetimepicker-->
-    
     <!--begin::styles-->
-    <link rel="stylesheet" href="~/_CDN/custom/css-custom/styles.css"  type="text/css"/>
+    <link rel="stylesheet" href="~/_CDN/custom/css-custom/styles.css" type="text/css" />
     <!--end::styles-->
     <!--Styles:: custom.css-->
     <style>
@@ -56,6 +56,7 @@
             /*overflow: -moz-scrollbars-vertical;
             overflow-y: scroll;*/
         }
+
         .bg-image {
             /* The image used */
             background-image: url('/_CDN/custom/media/background/bg1.jpg') !important;
@@ -95,7 +96,7 @@
 
             <!--begin::Wrapper-->
             <div class="wrapper d-flex flex-column flex-row-fluid container-xxl" id="kt_wrapper">
-
+                
                 <!--layout-partial:layout/_toolbar.html-->
                 @Html.Partial("~/Views/Shared/layout/_toolbar.cshtml")
 
@@ -104,6 +105,7 @@
                     <!--begin::Content-->
                     <div class="content flex-row-fluid" id="kt_content">
                         @RenderBody()
+                        
                     </div>
                     <!--end::Content-->
                 </div>
@@ -139,7 +141,7 @@
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
     <script src="~/_CDN/assets/js/custom/widgets.js"></script>
     <!--end::Custom Javascript-->
-    
+
     <link rel="stylesheet" href="~/_CDN/assets/plugins/custom/datatables/datatables.bundle.css" type="text/css" />
     <script src="/_CDN/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--begin::Javascript Initialize-->
@@ -156,7 +158,7 @@
     <script src="https://unpkg.com/@("@")popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
     <!--end:: Tootltip de Poppers-->
-    
+
     <script>
         @(ViewBag.NameHere).classList.add('here');
 
@@ -293,10 +295,14 @@
             dateFormat: "H:i",
         });
 
+        //cierra sesion despues de un tiempo determinado
+        var timer = setTimeout(CerrarSession, 1200000); // 20 minutos
+        function CerrarSession() {
+            document.getElementById('logoutForm').submit()
+        }
     </script>
-    
+
     <!--begin::Javascript Initialize-->
-    
     <!--begin::Script que agrega DataTables por condición-->
     @*<script src="~/_CDN/custom/js-custom/triggers-init.js"></script>*@
 
@@ -309,15 +315,13 @@
     <!--end::Custom Javascript-->
     <!--begin::Script para diversas funciones-->
     <!--<script src="~/_CDN/custom/js-custom/scripts.js"></script>-->
-
     <!--end::Javascript Initialize-->
-    
     <!--end::Javascript-->
     <!--begin:: datetimepicker-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>-->
     <!--end::datetimepicker-->
     <!--begin::calendartime-->
-        <scritp src="~/_CDN/assets/js/calendarTime.js"></scritp>
+    <scritp src="~/_CDN/assets/js/calendarTime.js"></scritp>
     <!--end::calendarTime-->
 </body>
 <!--end::Body-->

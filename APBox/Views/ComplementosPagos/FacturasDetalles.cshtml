@@ -64,7 +64,7 @@
         {
             for (var i = 0; i < Model.Traslados.Count; i++)
             {
-                if (Model.Traslados[i].Base > 0 && Model.Traslados[i].Importe > 0)
+                if (Model.Traslados[i].Base > 0 && (Model.Traslados[i].Importe > 0 || Model.Traslados[i].Importe == 0))
                 {
                     <div class="clearfix"></div>
                     <h3 class="title-hero">

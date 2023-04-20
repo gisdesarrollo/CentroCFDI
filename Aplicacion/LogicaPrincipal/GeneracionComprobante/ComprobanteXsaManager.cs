@@ -141,10 +141,13 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             var metodoPago = comprobanteCfdi.MetodoPago == null ? "|" : comprobanteCfdi.MetodoPago.ToString() + "|";
             var formaPago = comprobanteCfdi.FormaPago == null ? "|" : comprobanteCfdi.FormaPago + "|";
             var condicionPago = comprobanteCfdi.CondicionesPago == null ? "|" : comprobanteCfdi.CondicionesPago + "|";
+            String totalImpuestoTrasladado = comprobanteCfdi.TotalImpuestoTrasladado == 0 ? "|" : comprobanteCfdi.TotalImpuestoTrasladado.ToString() + "|";
+            String totalImpuestoRetenido = comprobanteCfdi.TotalImpuestoRetenidos == 0 ? "|" : comprobanteCfdi.TotalImpuestoRetenidos.ToString() + "|";
+            String descuento = "0.00";
             //data 01 Comprobante
             data = "01|" + serie + folio + "|" + serie + "|" + folio + "|" + comprobanteCfdi.FechaDocumento.ToString("yyyy-MM-ddTHH:mm:ss")
-                    + "|" + comprobanteCfdi.Subtotal + "|" + comprobanteCfdi.Total + "|" + comprobanteCfdi.TotalImpuestoTrasladado
-                    + "|" + comprobanteCfdi.TotalImpuestoRetenidos + "|" + "0.00" + "|||" + comprobanteCfdi.Moneda.ToString()
+                    + "|" + comprobanteCfdi.Subtotal + "|" + comprobanteCfdi.Total + "|" + totalImpuestoTrasladado
+                    + totalImpuestoRetenido  +descuento+ "|||" + comprobanteCfdi.Moneda.ToString()
                     + "|" + comprobanteCfdi.TipoCambio + "|" + "|" + "|" + "|" + "|" + comprobanteCfdi.TipoDeComprobante.ToString()
                     + "|" + metodoPago + sucursal.CodigoPostal + "|"+"|" + formaPago + condicionPago + comprobanteCfdi.ExportacionId
                     + "|" + "|";
@@ -163,7 +166,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             //data 03 Receptor
             data = "03|" + comprobanteCfdi.Receptor.Rfc +"|" + comprobanteCfdi.Receptor.Rfc + "|" + comprobanteCfdi.Receptor.RazonSocial
                     +"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+comprobanteCfdi.Receptor.CodigoPostal +"|" +"|" 
-                    + "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+comprobanteCfdi.Receptor.RegimenFiscal.ToString();
+                    + "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+(int)comprobanteCfdi.Receptor.RegimenFiscal;
 
             //receptorPrueba
             /*data = "03|" + "IIN970122K30" + "|" + "IIN970122K30" + "|" + "ICA INFRAESTRUCTURA"
@@ -187,9 +190,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 foreach(var concepto in conceptos)
                 {
                     randomNumber = random.Next(0, 1000000).ToString("D6");
-                    data = "05|"+concepto.ClaveProdServCP+"|"+(concepto.NoIdentificacion == null ? "|":concepto.NoIdentificacion+"|")+concepto.Cantidad
+                    data = "05|"+concepto.ClavesProdServ + "|"+(concepto.NoIdentificacion == null ? "|":concepto.NoIdentificacion+"|")+concepto.Cantidad
                             +"|"+concepto.Descripcion+"|"+concepto.ValorUnitario+"|"+concepto.Importe+"|"+(concepto.Unidad == null ? "|" : concepto.Unidad+"|")
-                            +concepto.ClaveUnidad+"|"+"0|"+randomNumber +"|"+concepto.ObjetoImpuestoId;
+                            +concepto.ClavesUnidad + "|"+"0|"+randomNumber +"|"+concepto.ObjetoImpuestoId;
                     
                     tw.WriteLine(data);
                    
@@ -225,7 +228,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             }
             //data impuestos
             decimal sumImportT = 0;
+            decimal sumImportTBase = 0;
             decimal sumImportR = 0;
+            
             
             
             if (conceptos.Count > 0)
@@ -235,10 +240,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
 
                 //Tasa
                 var TTasaIsr16 = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0.16).ToList();
-                if(TTasaIsr16.Count > 0) { sumImportT = 0; DTraslado = ""; TTasaIsr16.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if(TTasaIsr16.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TTasaIsr16.ForEach(tt => { sumImportT += tt.Traslado.Importe;  sumImportTBase += tt.Traslado.Base; });
 
                     TTasaIsr16.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT+ "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT+ "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     
                     tw.WriteLine(DTraslado);
                     
@@ -247,10 +252,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 var TTasaIsr08 = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0.08).ToList();
                 if (TTasaIsr08.Count > 0)
                 {
-                    sumImportT = 0; DTraslado = ""; TTasaIsr08.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                    sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TTasaIsr08.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
 
                     TTasaIsr08.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
 
                     tw.WriteLine(DTraslado);
 
@@ -258,18 +263,18 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 var TTasaIsr0 = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0).ToList();
                 if (TTasaIsr0.Count > 0)
                 {
-                    sumImportT = 0; DTraslado = ""; TTasaIsr0.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                    sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TTasaIsr0.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
 
                     TTasaIsr0.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
 
                     tw.WriteLine(DTraslado);
 
                 }
                 var TTasaIva16 = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota==(decimal)0.16).ToList();
-               if(TTasaIva16.Count > 0) { sumImportT = 0; DTraslado = ""; TTasaIva16.ForEach(tt => sumImportT += tt.Traslado.Importe);
+               if(TTasaIva16.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TTasaIva16.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TTasaIva16.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
@@ -277,9 +282,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 var TTasaIva08 = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0.08).ToList();
                 if (TTasaIva08.Count > 0)
                 {
-                    sumImportT = 0; DTraslado = ""; TTasaIva08.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                    sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TTasaIva08.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TTasaIva08.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
 
                 }
@@ -287,64 +292,64 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 var TTasaIva0 = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa && t.Traslado.TasaOCuota == (decimal)0).ToList();
                 if (TTasaIva0.Count > 0)
                 {
-                    sumImportT = 0; DTraslado = ""; TTasaIva0.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                    sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TTasaIva0.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TTasaIva0.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
 
                 }
                 var TTasaIeps = TConcepto.Where(t => t.Traslado.Impuesto == "003" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Tasa).ToList();
-                if (TTasaIeps.Count > 0) { sumImportT = 0; DTraslado = ""; TTasaIeps.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if (TTasaIeps.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TTasaIeps.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TTasaIeps.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
                 //Cuota
                 var TCuotaIsr = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Cuota).ToList();
-                if (TCuotaIsr.Count > 0) { sumImportT = 0; DTraslado = ""; TCuotaIsr.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if (TCuotaIsr.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TCuotaIsr.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TCuotaIsr.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
 
                 var TCuotaIva = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Cuota).ToList();
-                if (TCuotaIva.Count > 0) { sumImportT = 0; DTraslado = ""; TCuotaIva.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if (TCuotaIva.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TCuotaIva.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TCuotaIva.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
 
                 var TCuotaIeps = TConcepto.Where(t => t.Traslado.Impuesto == "003" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Cuota).ToList();
-                if (TCuotaIeps.Count > 0) { sumImportT = 0; DTraslado = ""; TCuotaIeps.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if (TCuotaIeps.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TCuotaIeps.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TCuotaIeps.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
                 //Exento
                 var TExentoIsr = TConcepto.Where(t => t.Traslado.Impuesto == "001" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Exento).ToList();
-                if (TExentoIsr.Count > 0) { sumImportT = 0; DTraslado = ""; TExentoIsr.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if (TExentoIsr.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TExentoIsr.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TExentoIsr.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
 
                 var TExentoIva = TConcepto.Where(t => t.Traslado.Impuesto == "002" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Exento).ToList();
-                if (TExentoIva.Count > 0) { sumImportT = 0; DTraslado = ""; TExentoIva.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if (TExentoIva.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TExentoIva.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TExentoIva.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
 
                 var TExentoIeps = TConcepto.Where(t => t.Traslado.Impuesto == "003" && t.Traslado.TipoFactor == API.Enums.CartaPorteEnums.c_TipoFactor.Exento).ToList();
-                if (TExentoIeps.Count > 0) { sumImportT = 0; DTraslado = ""; TExentoIeps.ForEach(tt => sumImportT += tt.Traslado.Importe);
+                if (TExentoIeps.Count > 0) { sumImportT = 0; sumImportTBase = 0; DTraslado = ""; TExentoIeps.ForEach(tt => { sumImportT += tt.Traslado.Importe; sumImportTBase += tt.Traslado.Base; });
                     TExentoIeps.ForEach(t => DTraslado = "06|" + t.Traslado.Impuesto + "|" + t.Traslado.TasaOCuota.ToString("0.000000")
-                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + t.Traslado.Base);
+                                      + "|" + sumImportT + "|" + t.Traslado.TipoFactor + "|" + sumImportTBase);
                     tw.WriteLine(DTraslado);
                     
                 }
@@ -787,10 +792,15 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             }
             else
             {
+                //actualiza comprobantes CFDI
                 comprobante = _db.ComprobantesCfdi.Find(comprobanteId);
                 comprobante.Status = API.Enums.Status.Cancelado;
                 comprobante.FacturaEmitida.Status = API.Enums.Status.Cancelado;
                 _db.Entry(comprobante).State = EntityState.Modified;
+                //actualiza factura emitida
+                facturaEmitida = _db.FacturasEmitidas.Find(comprobante.FacturaEmitidaId);
+                facturaEmitida.Status = API.Enums.Status.Cancelado;
+                _db.Entry(facturaEmitida).State = EntityState.Modified;
                 _db.SaveChanges();
             }
             
@@ -834,10 +844,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 //url = $"https://canal3.xsa.com.mx:9050" + "/75768055-eb92-4f98-8b3a-d8feb9a1c116" + "/descargasCfdi?uuid=" + comprobanteCfdi.FacturaEmitida.Uuid + "&folio=" + comprobanteCfdi.FacturaEmitida.Folio + "&serie=" + comprobanteCfdi.FacturaEmitida.Serie + "&representacion=PDF";
                 //url produccion
                 //ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3; ;
                 url = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/descargasCfdi?uuid=" + uuid +"&folio="+ folio +"&serie="+ serie +"&representacion=PDF";
                 var request = (HttpWebRequest)WebRequest.Create(url);
                 request.ContentType = "application/zip";
+                
                 request.Method = "GET";
 
                 //get byte response

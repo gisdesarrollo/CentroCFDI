@@ -161,7 +161,9 @@
     <Compile Include="Models\ComplementosPagos\CargasComplementosModel.cs" />
     <Compile Include="Models\Control\ConfiguracionesModel.cs" />
     <Compile Include="Models\Control\HomeModel.cs" />
+    <Compile Include="Models\Dto\AddendaDto.cs" />
     <Compile Include="Models\Dto\ComplementoCartaPorteDto.cs" />
+    <Compile Include="Models\Dto\ConceptoAddendaDto.cs" />
     <Compile Include="Models\Dto\DataCancelacionRequestXsaDto.cs" />
     <Compile Include="Models\Dto\DataCancelacionResponseXsaDto.cs" />
     <Compile Include="Models\Dto\DataJsonXsaDto.cs" />

@@ -340,6 +340,7 @@
     <Compile Include="Controllers\ComprobantesCfdi\ComprobantesCfdiController.cs" />
     <Compile Include="Controllers\Control\ControlController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Operaciones\AddendaController.cs" />
     <Compile Include="Controllers\Operaciones\CargasMasivasController.cs" />
     <Compile Include="Controllers\Operaciones\DocumentosExtranjerosController.cs" />
     <Compile Include="Controllers\Operaciones\OperacionesCfdisRecibidosController.cs" />
@@ -2986,6 +2987,7 @@
     <Content Include="Views\FacturasEmitidas\ReporteFacturasEmitidas.cshtml" />
     <Content Include="Views\ComplementosPagos\TrasladoDR.cshtml" />
     <Content Include="Views\ComplementosPagos\RetencionDR.cshtml" />
+    <Content Include="Views\Addenda\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

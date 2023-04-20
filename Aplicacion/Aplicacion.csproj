@@ -291,6 +291,7 @@
     </Compile>
     <Compile Include="TimbreFiscalXsd\TimbreFiscalDigitalv11.cs" />
     <Compile Include="Utilidades\DescripcionesEnum.cs" />
+    <Compile Include="XsdComprasAddenda\AddendaFacturaCOMPRAS.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
