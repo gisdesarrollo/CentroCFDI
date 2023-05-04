@@ -1,0 +1,34 @@
+﻿
+<script>
+$(document).ready(function () {
+    $('#addendaForm').submit(function (event) {
+        event.preventDefault();
+        var formData = $('#addendaForm').serialize();
+        
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create", "Addenda")',
+            data: formData,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (data,status,xhr) {
+                var url = window.URL.createObjectURL(data);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = xhr.getResponseHeader('Content-Disposition').split('=')[1];
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                alert("ocurrio un error al generar la addendad..")
+            }
+        });
+    });
+
+});
+
+</script>

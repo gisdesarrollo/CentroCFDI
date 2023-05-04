@@ -2671,6 +2671,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Archivos\Addendas\" />
     <Folder Include="Archivos\ArchivosSucursales\Certificados\" />
     <Folder Include="Archivos\ArchivosSucursales\Logos\" />
     <Folder Include="Archivos\CargasMasivas\" />
@@ -2988,6 +2989,8 @@
     <Content Include="Views\ComplementosPagos\TrasladoDR.cshtml" />
     <Content Include="Views\ComplementosPagos\RetencionDR.cshtml" />
     <Content Include="Views\Addenda\Index.cshtml" />
+    <Content Include="Views\Addenda\Concepto.cshtml" />
+    <Content Include="Views\Addenda\_AddendaScripts.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

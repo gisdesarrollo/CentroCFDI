@@ -137,6 +137,8 @@
     <Compile Include="Catalogos\Usuario.cs" />
     <Compile Include="Context\DataContext.cs" />
     <Compile Include="Control\Configuracion.cs" />
+    <Compile Include="Enums\Addenda\IvaPCT.cs" />
+    <Compile Include="Enums\Addenda\ProveedorEKT.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_CartaPorteEntradaSalidaMerc.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_ImpuestoCP.cs" />
     <Compile Include="Enums\c_Pais.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Enums\c_RegimenFiscal.cs" />
     <Compile Include="Enums\c_TipoDeComprobante.cs" />
     <Compile Include="Enums\Meses.cs" />
+    <Compile Include="Enums\Addenda\MonedaAddenda.cs" />
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Enums\StatusFacturas.cs" />
     <Compile Include="Enums\TiposGastos.cs" />

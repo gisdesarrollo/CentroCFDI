@@ -240,6 +240,7 @@
     <Compile Include="CARTAPORTE20Xsd\CartaPorte20.cs" />
     <Compile Include="CFDI33Objetos\Cfdi33.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Operaciones\AcondicionarComprobanteCfdi.cs" />
+    <Compile Include="LogicaPrincipal\Addenda\ProcesaAddenda.cs" />
     <Compile Include="LogicaPrincipal\CargasMasivas\CSV\CargarConceptos.cs" />
     <Compile Include="LogicaPrincipal\Correos\ArchivosAdjuntosDto.cs" />
     <Compile Include="LogicaPrincipal\Correos\EmailDto.cs" />

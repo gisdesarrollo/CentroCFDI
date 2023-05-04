@@ -547,6 +547,9 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.ReporteEstadisticasComplementosPago, "REPORTECOMPLEMENTOSPAGO");
             AddRole(um, userId, perfil.ReportesFacturasPago, "REPORTESFACTURASPAGO");
             AddRole(um, userId, perfil.CargaCFDI, "CARGACFDI");
+            //Addenda
+            AddRole(um, userId, perfil.Addenda, "ADDENDA");
+
             return usuario.Id;
         }
 

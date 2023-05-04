@@ -2,93 +2,185 @@
 @model API.Models.Dto.AddendaDto
 
 @{
-    ViewBag.Title = "Facturas";
+    ViewBag.Title = "Addenda";
 }
 
-@Html.Partial("_ComplementosPagosScripts")
+@Html.Partial("_AddendaScripts")
 
 
 <div class="card card-flush">
     <!--begin::Card header-->
     <div class="card-header">
         <div class="card-title">
-            <h2>Genera Addenda</h2>
+            <h2>Carga el CFDI V4.0 en formato XML</h2>
         </div>
     </div>
+    @Html.HiddenFor(model => model.Procesado)
     <!--end::Card header-->
     <div class="card-body pt-0">
-         <div class="row">
-            @using (Html.BeginForm("Cargar", "ComplementosPagos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        <div class="row">
+            @using (Html.BeginForm("Index", "Addenda", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
 
                 @Html.ValidationSummary(true, "", new { @class = "label-blue-alt", @style = "color:red;" })
                 <div class="row">
-                
-                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <label class="control-label" for="Grupos">Seleccionar Layout</label>
-                    <input class="file-input" type="file" name="Archivo" typeof="Archivo" accept=".csv, .dat" />
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label class="control-label" for="Grupos">Cargar archivo XML</label>
+                        <input class="file-input" type="file" name="Archivo" typeof="Archivo" accept=".xml, .XML" />
+                    </div>
                 </div>
-            </div>
-                <div class="clearfix"></div>
-                <div class="separator my-5"></div>
+
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">
                         <span class="indicator-label">Procesar</span>
                     </button>
                 </div>
-            }
-         </div>
-          </br>
-        <div class="row">
-            @using (Html.BeginForm())
-            {
-               
-            <div class="form row">
-                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
-
-                <h3 class="title-hero">
-                    Datos Generales
-                </h3>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    @Html.LabelFor(model => model.EmisorRegInter)
-                    @Html.EditorFor(model => model.EmisorRegInter, new { htmlAttributes = new { @class = "form-control mb-2"} })
-                    @Html.ValidationMessageFor(model => model.EmisorRegInter, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    @Html.LabelFor(model => model.ReceptorREgInter, htmlAttributes: new { @class = "form-label" })
-                    @Html.EditorFor(model => model.ReceptorREgInter, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                    @Html.ValidationMessageFor(model => model.ReceptorREgInter, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
-                    @Html.EditorFor(model => model.Moneda, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                    @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    @Html.LabelFor(model => model.NumProveedor, htmlAttributes: new { @class = "form-label" })
-                    @Html.EditorFor(model => model.NumProveedor, new { htmlAttributes = new { @class = "form-control mb-2"} })
-                    @Html.ValidationMessageFor(model => model.NumProveedor, "", new { @class = "text-danger" })
-                </div>
-
                 <div class="clearfix"></div>
-
                 <div class="separator my-5"></div>
-
-                <div class="d-flex justify-content-end">
-                    <!--begin::Button-->
-                    <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
-                    <!--end::Button-->
-                    
-                    <button type="submit" class="btn btn-primary">
-                        <span class="indicator-label">Guardar</span>
-                    </button>
-                </div>
-
-            </div>}
-
+            }
         </div>
+        <br />
+        @if (Model.Procesado) { 
+        <div class="activa-form-addenda">
+            <form id="addendaForm">
+                @Html.HiddenFor(model => model.Procesado)
+                @Html.HiddenFor(model => model.Fecha)
+                @Html.HiddenFor(model => model.Iva)
+                @Html.HiddenFor(model => model.IvaPCT)
+                @Html.HiddenFor(model => model.Subtotal)
+                @Html.HiddenFor(model => model.Total)
+                @Html.HiddenFor(model => model.PathArchivo)
+                <!--hiddenDiv-->
+                <div class="card shadow-sm">
+                    <div class="card-body row">
+                        <h3 class="title-hero">
+                            Datos Generales
+                        </h3>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="content-box">
+                                    <div class="content-box-wrapper">
+                                        <div class="form row">
+                                            
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.EmisorRegInter, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.EmisorRegInter, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.EmisorRegInter, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.ReceptorREgInter, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.ReceptorREgInter, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.ReceptorREgInter, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EnumDropDownListFor(model => model.Moneda, new { @class = "form-select mb-2", @data_control = "select2" })
+                                                @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.NumProveedor, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.NumProveedor, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.NumProveedor, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.FolioOrdenCompra, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.FolioOrdenCompra, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.FolioOrdenCompra, "", new { @class = "text-danger" })
+                                            </div>
+                                            @*<div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.TipoProveedorEKT, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EnumDropDownListFor(model => model.TipoProveedorEKT, new { @class = "form-select mb-2", @data_control = "select2" } )
+                                                @Html.ValidationMessageFor(model => model.TipoProveedorEKT, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+                                            </div>*@
+                                            @*<div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.Produccion, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.Produccion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.Produccion, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.CentroCosto, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.CentroCosto, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.CentroCosto, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.RenglonNotaRecepcion, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RenglonNotaRecepcion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.RenglonNotaRecepcion, "", new { @class = "text-danger" })
+                                            </div>*@
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.FolioNotaRecepcion, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.FolioNotaRecepcion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.FolioNotaRecepcion, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="separator my-5"></div>
+                                            <div class="activa-list-concepto ">
+                                                <!--hiddenDiv-->
+                                                <div class="card shadow-sm">
+                                                    <div class="card-body row">
+                                                        <h3 class="title-hero">
+                                                            DATOS REQUERIDOS POR CADA CONCEPTO FACTURADO
+                                                        </h3>
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <div class="content-box">
+
+                                                                    <div class="content-box-wrapper">
+                                                                        <div>
+                                                                            <div class="row" id="detallesConcepto">
+                                                                                @if (Model.ConceptosAddenda != null)
+                                                                                {
+                                                                                    foreach (var concepto in Model.ConceptosAddenda)
+                                                                                    {
+                                                                                        @Html.Partial("~/Views/Addenda/Concepto.cshtml", concepto)}
+                                                                                }
+                                                                                <div class="separator my-5"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <br /><br />
+                                            <div class="d-flex justify-content-end">
+                                                <!--begin::Button-->
+                                                <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
+                                                <!--end::Button-->
+
+                                                <button type="submit" class="btn btn-primary">
+                                                    <span class="indicator-label">Crear Y Descargar Addenda</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+       }
     </div>
 </div>

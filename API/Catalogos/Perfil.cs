@@ -107,7 +107,7 @@ namespace API.Catalogos
         public bool ReportesFacturasPago  { get; set; }
 
         public bool CargaCFDI { get; set; }
-
+        public bool Addenda { get; set; }
 
         #region Grupo
 

@@ -1,4 +1,7 @@
 ﻿
+using API.Enums;
+using API.Enums.Addenda;
+using System;
 using System.Xml.Serialization;
 
 
@@ -154,15 +157,15 @@ public partial class FacturaInterfacturaEncabezado {
     
     private FacturaInterfacturaEncabezadoCuerpo[] cuerpoField;
     
-    private FacturaInterfacturaEncabezadoTipoProveedorEKT tipoProveedorEKTField;
+    private int tipoProveedorEKTField;
+    /*System.DateTime*/
+    private string fechaField;
     
-    private System.DateTime fechaField;
-    
-    private FacturaInterfacturaEncabezadoMonedaDoc monedaDocField;
+    private MonedaAddenda monedaDocField;
     
     private decimal subTotalField;
     
-    private FacturaInterfacturaEncabezadoIVAPCT iVAPCTField;
+    private int/*IvaPCT*/ iVAPCTField;
     
     private decimal ivaField;
     
@@ -173,7 +176,10 @@ public partial class FacturaInterfacturaEncabezado {
     private string folioOrdenCompraField;
     
     private string observacionesField;
-    
+
+    private string folioNotaRecepcionField;
+
+
     private System.Xml.XmlAttribute[] anyAttrField;
     
     /// <remarks/>
@@ -189,7 +195,7 @@ public partial class FacturaInterfacturaEncabezado {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public FacturaInterfacturaEncabezadoTipoProveedorEKT TipoProveedorEKT {
+    public int TipoProveedorEKT {
         get {
             return this.tipoProveedorEKTField;
         }
@@ -200,7 +206,8 @@ public partial class FacturaInterfacturaEncabezado {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public System.DateTime Fecha {
+    /*System.DateTime*/
+    public string Fecha {
         get {
             return this.fechaField;
         }
@@ -211,7 +218,7 @@ public partial class FacturaInterfacturaEncabezado {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public FacturaInterfacturaEncabezadoMonedaDoc MonedaDoc {
+    public MonedaAddenda MonedaDoc {
         get {
             return this.monedaDocField;
         }
@@ -233,7 +240,7 @@ public partial class FacturaInterfacturaEncabezado {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public FacturaInterfacturaEncabezadoIVAPCT IVAPCT {
+    public int/*FacturaInterfacturaEncabezadoIVAPCT*/ IVAPCT {
         get {
             return this.iVAPCTField;
         }
@@ -296,7 +303,20 @@ public partial class FacturaInterfacturaEncabezado {
             this.observacionesField = value;
         }
     }
-    
+
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string FolioNotaRecepcion
+    {
+        get
+        {
+            return this.folioNotaRecepcionField;
+        }
+        set
+        {
+            this.folioNotaRecepcionField = value;
+        }
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlAnyAttributeAttribute()]
     public System.Xml.XmlAttribute[] AnyAttr {
@@ -326,7 +346,14 @@ public partial class FacturaInterfacturaEncabezadoCuerpo {
     private decimal pUnitarioField;
     
     private decimal importeField;
-    
+
+    private string renglonNotaRecepcionField;
+
+    private string folioNotaRecepcionField;
+
+    private string folioOrdenCompraField;
+
+
     private System.Xml.XmlAttribute[] anyAttrField;
     
     /// <remarks/>
@@ -381,6 +408,45 @@ public partial class FacturaInterfacturaEncabezadoCuerpo {
         }
         set {
             this.importeField = value;
+        }
+    }
+
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string RenglonNotaRecepcion
+    {
+        get
+        {
+            return this.renglonNotaRecepcionField;
+        }
+        set
+        {
+            this.renglonNotaRecepcionField = value;
+        }
+    }
+
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string FolioNotaRecepcion
+    {
+        get
+        {
+            return this.folioNotaRecepcionField;
+        }
+        set
+        {
+            this.folioNotaRecepcionField = value;
+        }
+    }
+
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string FolioOrdenCompra
+    {
+        get
+        {
+            return this.folioOrdenCompraField;
+        }
+        set
+        {
+            this.folioOrdenCompraField = value;
         }
     }
     

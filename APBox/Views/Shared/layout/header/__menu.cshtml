@@ -491,22 +491,23 @@
 
         }
 
-        <!--begin:Addendas-->
-        <div id="addenda" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-            <!--begin:Menu link-->
-            <span class="menu-link py-3">
-                <span class="menu-title">Addenda</span>
-                <span class="menu-arrow d-lg-none"></span>
-            </span>
-            <!--end:Menu link-->
-            <!--begin:Menu sub-->
-            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
-                <!--begin:Menu item-->
-               @* @if (User.IsInRole("FACTURASEMITIDAS"))
-                {*@
+        @if (User.IsInRole("ADDENDA"))
+        {
+            <!--begin:Addendas-->
+            <div id="addenda" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                <!--begin:Menu link-->
+                <span class="menu-link py-3">
+                    <span class="menu-title">Addenda</span>
+                    <span class="menu-arrow d-lg-none"></span>
+                </span>
+                <!--end:Menu link-->
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
+                    <!--begin:Menu item-->
+
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link py-3" href="@Url.Action("Addenda", "Index")" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <a class="menu-link py-3" href="@Url.Action("Index", "Addenda")" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                             <span class="menu-icon">
                                 <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2022-09-15-053640/core/html/src/media/icons/duotune/files/fil001.svg-->
                                 <span class="svg-icon svg-icon-muted svg-icon-3">
@@ -521,15 +522,16 @@
                         </a>
                         <!--end:Menu link-->
                     </div>
-                @*}*@
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                
-           </div>
-            <!--end:Menu sub-->
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+
+                </div>
+                <!--end:Menu sub-->
+            </div>
+            <!--end::addenda-->
+        }
         </div>
-        <!--end::addenda-->
-    </div>
+        
     <!--end::Menu-->
 </div>
 <!--end::Menu wrapper-->
