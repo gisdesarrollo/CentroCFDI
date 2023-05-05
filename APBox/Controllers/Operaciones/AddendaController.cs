@@ -94,7 +94,7 @@ namespace APBox.Controllers.Operaciones
                 byte[] archivoBytes = System.IO.File.ReadAllBytes(addendaFile);
                 string nombreArchivo = System.IO.Path.GetFileName(addendaFile);
             //delete file xml
-            //System.IO.File.Delete(addendaFile);
+            System.IO.File.Delete(addendaFile);
             return File(archivoBytes, System.Net.Mime.MediaTypeNames.Application.Octet, nombreArchivo);
             
         }

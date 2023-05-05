@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Facturacion.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding">
+      <HintPath>..\..\..\APBOX-API2021\DLL faltantes\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="Grpc.Core.Api, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d754f35622e28bad, processorArchitecture=MSIL">
       <HintPath>..\packages\Grpc.Core.Api.2.46.1\lib\net45\Grpc.Core.Api.dll</HintPath>
     </Reference>

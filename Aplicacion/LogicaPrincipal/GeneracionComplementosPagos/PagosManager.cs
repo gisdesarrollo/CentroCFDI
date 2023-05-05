@@ -30,7 +30,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private readonly CreationFile _deserealizaXml = new CreationFile();
         private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
-        //private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagos20BBC.xml";
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagoBBCdulce.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -206,6 +206,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             }
             //Agrega Concepto
             objCfdi.agregarConcepto("84111506", "", 1, "ACT", "", "Pago", 0, 0, 0, "01");
+            //validar si el impuestoBase0 
+            double totalTrasladoImpuestoIva0 = -1;
+            if(complementoPago.TotalesPagosImpuestos.TotalTrasladosBaseIVA0 > 0)
+            { totalTrasladoImpuestoIva0 = 0; }
             //Agrega PagosTotales
             objCfdi.agregarPago20Totales(
                 complementoPago.TotalesPagosImpuestos.TotalRetencionesIVA == 0 ? -1 : complementoPago.TotalesPagosImpuestos.TotalRetencionesIVA,
@@ -216,7 +220,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 complementoPago.TotalesPagosImpuestos.TotalTrasladosBaseIVA8 == 0 ? -1 : complementoPago.TotalesPagosImpuestos.TotalTrasladosBaseIVA8,
                 complementoPago.TotalesPagosImpuestos.TotalTrasladosImpuestoIVA8 == 0 ? -1 : complementoPago.TotalesPagosImpuestos.TotalTrasladosImpuestoIVA8,
                 complementoPago.TotalesPagosImpuestos.TotalTrasladosBaseIVA0 == 0 ? -1 : complementoPago.TotalesPagosImpuestos.TotalTrasladosBaseIVA0,
-                complementoPago.TotalesPagosImpuestos.TotalTrasladosImpuestoIVA0 == 0 ? -1 : complementoPago.TotalesPagosImpuestos.TotalTrasladosImpuestoIVA0,
+                totalTrasladoImpuestoIva0,
                 complementoPago.TotalesPagosImpuestos.TotalTrasladosBaseIVAExento == 0 ? -1 : complementoPago.TotalesPagosImpuestos.TotalTrasladosBaseIVAExento,
                 complementoPago.TotalesPagosImpuestos.MontoTotalPagos == 0 ? -1 : complementoPago.TotalesPagosImpuestos.MontoTotalPagos);
             if (objCfdi.MensajeError != "")
@@ -417,6 +421,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 double tasaIVABaseT = 0;
                 var tasaIVATipoFactorT = "";
                 double tasaIVATasaOCuota = 0;
+                var tasaIVAImpuestoT0 = "";
+                double tasaIVAImporteT0 = 0;
+                double tasaIVABaseT0 = 0;
+                var tasaIVATipoFactorT0 = "";
+                double tasaIVATasaOCuota0 = 0;
                 var cuotaIEPSImpuestoT = "";
                 double cuotaIEPSImporteT = 0;
                 double cuotaIEPSBaseT = 0;
@@ -471,7 +480,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                                         TBaseDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base;/*(decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * tipoCambioDR;*/
                                     }
                                     if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "002" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Tasa &&
-                                         (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.0 || complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.16
+                                         (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.16
                                          || complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.08))
                                     {
                                         tasaIVABaseT += Convert.ToDouble(decimal.Round(TBaseDR, 6));
@@ -479,7 +488,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                                         tasaIVATasaOCuota = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
                                         tasaIVAImpuestoT = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
                                         tasaIVAImporteT += Convert.ToDouble(decimal.Round(TImporteDR, 6));
+                                    }else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "002" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Tasa &&
+                                         (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.0 ))
+                                    {
+                                        tasaIVABaseT0 += Convert.ToDouble(decimal.Round(TBaseDR, 6));
+                                        tasaIVATipoFactorT0 = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor.ToString();
+                                        tasaIVATasaOCuota0 = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
+                                        tasaIVAImpuestoT0 = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
+                                        tasaIVAImporteT0 += Convert.ToDouble(decimal.Round(TImporteDR, 6));
                                     }
+
                                     else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "003" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Tasa &&
                                          complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.265 || complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.3 ||
                                          complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.53 || complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.5 ||
@@ -512,6 +530,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
                 /*}*/
                 if (tasaIVAImporteT > 0) { objCfdi.agregarPago20TrasladoP(tasaIVABaseT, tasaIVAImpuestoT, tasaIVATipoFactorT, Convert.ToDouble(tasaIVATasaOCuota), tasaIVAImporteT); }
+                if (tasaIVAImporteT0 == 0 && tasaIVABaseT0 > 0) { objCfdi.agregarPago20TrasladoP(tasaIVABaseT0, tasaIVAImpuestoT0, tasaIVATipoFactorT0, Convert.ToDouble(tasaIVATasaOCuota0), tasaIVAImporteT0); }
                 if (cuotaIEPSImporteT > 0) { objCfdi.agregarPago20TrasladoP(cuotaIEPSBaseT, cuotaIEPSImpuestoT, cuotaIEPSTipoFactorT, Convert.ToDouble(cuotaIEPSTasaOCuota), cuotaIEPSImporteT); }
                 if (defaultImporteT > 0) { objCfdi.agregarPago20TrasladoP(defaultBaseT, defaultImpuestoT, defaultTipoFactorT, Convert.ToDouble(defaultTasaOCuotat), defaultImporteT); }
 
@@ -534,7 +553,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
             string xml = objCfdi.Xml;
             //guardar string en un archivo
-            // System.IO.File.WriteAllText(pathXml, xml);
+            //System.IO.File.WriteAllText(pathXml, xml);
             //Timbrado
             objCfdi = Timbra(objCfdi, sucursal);
             return objCfdi;
