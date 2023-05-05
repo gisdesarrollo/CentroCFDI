@@ -41,6 +41,8 @@ namespace API.Catalogos
 
         public bool Impuestos { get; set; }
 
+        public bool Mercancias { get; set; }
+
         public bool ComplementoPago { get; set; }
         public bool ComplementoCartaPorte { get; set; }
         public bool Cfdi { get; set; }
@@ -107,7 +109,12 @@ namespace API.Catalogos
         public bool ReportesFacturasPago  { get; set; }
 
         public bool CargaCFDI { get; set; }
+<<<<<<< Updated upstream
         public bool Addenda { get; set; }
+=======
+
+       
+>>>>>>> Stashed changes
 
         #region Grupo
 

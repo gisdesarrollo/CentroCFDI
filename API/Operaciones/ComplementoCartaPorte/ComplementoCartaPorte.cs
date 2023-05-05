@@ -90,6 +90,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         //[NotMapped]
         public virtual List<Ubicacion> Ubicaciones { get; set; }
         public int Mercancias_Id { get; set; }
+
         [ForeignKey("Mercancias_Id")]
         public virtual Mercancias Mercancias { get; set; }
 

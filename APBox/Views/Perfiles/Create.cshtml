@@ -248,8 +248,19 @@
                                         <label class="form-label">Impuestos</label>
                                         <div class="col-md-10">
                                             <div class="checkbox">
-                                                @Html.EditorFor(model => model.Conceptos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                @Html.ValidationMessageFor(model => model.Conceptos, "", new { @class = "text-danger" })
+                                                @Html.EditorFor(model => model.Impuestos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Impuestos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Mercancias</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Mercancias, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Mercancias, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
                                     </div>

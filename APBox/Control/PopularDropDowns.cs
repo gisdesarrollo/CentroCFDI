@@ -74,6 +74,12 @@ namespace APBox.Control
             _db.Configuration.ProxyCreationEnabled = false;
             return _db.Cat_Impuestos.Where(a => a.Id == IdImpuesto).ToList();
         }
+
+        public List<Cat_Mercancias> PopulaCatMercancias(int claveMercancia)
+        {
+            _db.Configuration.ProxyCreationEnabled = false;
+            return _db.Cat_Mercancias.Where(a => a.Id == claveMercancia).ToList();
+        }
         public List<Colonia> PopulaColonias(string seleccion)
         {
             return _db.Colonias.Where(a => a.c_CodigoPostal_Id == seleccion).ToList();
@@ -108,12 +114,23 @@ namespace APBox.Control
             //return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Traslado"), "Id", "TasaOCuota");
         }
 
+
+
         public SelectList PopulaImpuestoR(int sucursalId)
         {
             var DatosConcatenados = _db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Retencion" && a.SucursalId == sucursalId).ToDictionary(a => a.Id, a => (a.Nombre));
             return new SelectList(DatosConcatenados, "Key", "Value");
             //return new SelectList(_db.Cat_Impuestos.Where(a => a.TipoImpuesto == "Retencion"), "Id", "TasaOCuota");
         }
+
+        public SelectList PopulaMercancias(int sucursalId)
+        {
+            var DatosConcatenados = _db.Cat_Mercancias.Where(a => a.SucursalId == sucursalId).ToDictionary(a => a.Id, a => (a.ClaveProdServCP + "-" + a.Descripcion));
+            return new SelectList(DatosConcatenados, "Key", "Value");
+
+            // return new SelectList(_db.Cat_Conceptos.OrderByDescending(a => a.Id), "Id", "ClavesProdServ");
+        }
+
         public SelectList PopulaPaises()
         {
             var concat = _db.Paises.OrderBy(a => a.c_Pais).ToDictionary(a => a.c_Pais, a => a.c_Pais + " - " + a.Descripcion);
@@ -142,6 +159,11 @@ namespace APBox.Control
         {
             var concat = _db.ObjetoImpuesto.OrderBy(a => a.c_ObjetoImp).ToDictionary(a => a.c_ObjetoImp, a => a.c_ObjetoImp + "-" + a.Descripcion);
             return new SelectList(concat, "key", "Value");
+        }
+
+        public SelectList TipoEmbalaje_Id()
+        {
+            return new SelectList(_db.TipoEmbalajes.OrderBy(a => a.ClaveAsignacion), "ClaveAsignacion", "Descripcion");
         }
         public SelectList PopulaClaveUnidad()
         {
@@ -224,10 +246,10 @@ namespace APBox.Control
         {
             return new SelectList(_db.MaterialesPeligrosos.OrderBy(a => a.ClaveMaterialPeligroso), "ClaveMaterialPeligroso", "Descripcion");
         }
-        public SelectList TipoEmbalaje_Id()
-        {
-            return new SelectList(_db.TipoEmbalajes.OrderBy(a => a.ClaveAsignacion), "ClaveAsignacion", "Descripcion");
-        }
+        //public SelectList TipoEmbalaje_Id()
+        //{
+        //    return new SelectList(_db.TipoEmbalajes.OrderBy(a => a.Descripcion),"ClaveAsignacion", "Descripcion"); 
+        //}
 
         public SelectList PopulaFraccionArancelaria_Id()
         {

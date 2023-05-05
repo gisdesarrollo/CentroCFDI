@@ -1,0 +1,188 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.Cat_Mercancias
+
+@{
+    ViewBag.Title = "Create";
+}
+@Html.Partial("_ComplementoMercanciasScript")
+@Html.Partial("_Modal")
+
+
+
+    <div class="card card-flush">
+        <!--begin::Card header-->
+        <div class="card-header">
+            <div class="card-title">
+                <h2>Nuevo</h2>
+            </div>
+            @*<div class="col-lg-4 col-md-6">
+                    <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+                        <span class="fa fa-question-circle"></span>
+                    </button>
+                </div>*@
+        </div>
+        <!--end::Card header-->
+
+        <div class="card-body pt-0">
+            <div class="form row">
+                <div class="clearfix"></div>
+                @*@Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.Mercancias_Id)
+                    @Html.HiddenFor(model => model.DetalleMercanciaId)*@
+
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @Html.LabelFor(model => model.ClaveProdServCP, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ClaveProdServCP, new { htmlAttributes = new { @class = "form-control mb-2", @id = "ClaveProdServIDMer" } })
+                    @Html.ValidationMessageFor(model => model.ClaveProdServCP, "", new { @class = "text-danger" })
+                    <div id="ClaveProdServID" style="color:red;"></div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                    <br />
+                    @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control mb-2", @id = "DescripcionMer", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    <div id="Descripcion" style="color:red;"></div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    <br />
+                    @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control md-2", @id = "CantidadMer" } })
+                    @Html.ValidationMessageFor(model => model.Cantidad, "", new { @class = "text-danger" })
+                    <div id="Cantidad" style="color:red;"></div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    <br />
+                    @Html.LabelFor(model => model.ClavesUnidad, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ClavesUnidad, new { htmlAttributes = new { @class = "form-control mb-2", @id = "ClavesUnidadMer" } })
+                    @Html.ValidationMessageFor(model => model.ClavesUnidad, "", new { @class = "text-danger" })
+                    <div id="ClavesUnidad" style="color:red;"></div>
+                </div>
+
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    <br />
+                    @Html.LabelFor(model => model.Unidad, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Unidad, new { htmlAttributes = new { @class = "form-control md-2", @id = "UnidadMer" } })
+                    @Html.ValidationMessageFor(model => model.Unidad, "", new { @class = "text-danger" })
+                    <div id="Unidad" style="color:red;"></div>
+                </div>
+
+                @if (Model.Dimensiones != "")
+                {
+                    <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                        @Html.LabelFor(model => model.Dimensiones, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Dimensiones, new { htmlAttributes = new { @class = "form-control md-2", @id = "DimensionesMer" } })
+                        @Html.ValidationMessageFor(model => model.Dimensiones, "", new { @class = "text-danger" })
+                        <div id="Dimensiones" style="color:red;"></div>
+                    </div>
+                }
+
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.PesoEnKg, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.PesoEnKg, new { htmlAttributes = new { @class = "form-control md-2"} })
+                @Html.ValidationMessageFor(model => model.PesoEnKg, "", new { @class = "text-danger" })
+                
+
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                @Html.LabelFor(model => model.ValorMercancia, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ValorMercancia, new { htmlAttributes = new { @class = "form-control mb-2", @id = "ValorMercanciaMer" } })
+                @Html.ValidationMessageFor(model => model.ValorMercancia, "", new { @class = "text-danger" })
+                <div id="ValorMercancia" style="color:red;"></div>
+            </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-2" >
+                    @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
+                    @Html.EnumDropDownListSpecialFor(model => model.Moneda)
+                    @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                    @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, htmlAttributes: new { @class = "form-label" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, new { @class = "form-check-input" })
+                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+
+                @*<div class="ActivaCampoMatPeligroso">*@
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso hiddenDiv">
+                    @Html.LabelFor(model => model.ClaveMaterialPeligroso, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ClaveMaterialPeligroso, new { htmlAttributes = new { @class = "form-control mb-2", @id = "ClaveMatPeligrosoMer" } })
+                    @Html.ValidationMessageFor(model => model.ClaveMaterialPeligroso, "", new { @class = "text-danger" })
+                    <div id="ClaveMatPeligroso" style="color:red;"></div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso hiddenDiv">
+                    @Html.LabelFor(model => model.DescripEmbalaje, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.DescripEmbalaje, (IEnumerable<SelectListItem>) ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "DesEmbalajeMer" })
+                    @Html.ValidationMessageFor(model => model.DescripEmbalaje, "", new { @class = "text-danger" })
+                    <div id="ClaveMatPeligroso" style="color:red;"></div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso hiddenDiv">
+                    @Html.LabelFor(model => model.TipoEmbalaje_Id, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.TipoEmbalaje_Id, new { htmlAttributes = new { @class = "form-control mb-2", @id = "EmbalajeIdMer", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.TipoEmbalaje_Id, "", new { @class = "text-danger" })
+                </div>
+
+                @*</div>*@
+
+                @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
+                        @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select", @id = "objetoImpuestoDrop" })
+                        @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
+                        @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
+                        @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
+                        @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
+                        @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
+                    </div>*@
+
+
+
+                <div class="separator my-5"></div>
+                <div class="d-flex justify-content-end">
+                    <!--begin::Button-->
+                    <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
+                    <!--end::Button-->
+                    <!--begin::Button-->
+
+                    <button type="submit" id="crearMercancia" class="btn btn-alt btn-primary">
+                        <span class="indicator-label">Crear</span>
+                    </button>
+                    <!--end::Button-->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    @*<script>
+        $(function () {
+            $('#Mercancias_Mercancia_MaterialPeligrosos').change(function () {
+
+                if ($('#Mercancias_Mercancia_MaterialPeligrosos').prop('checked')) {
+                    $('.ActivaCampoMatPeligroso').show(200);
+                    $('#Mercancias_Mercancia_MaterialPeligrosos').val(true);
+                } else {
+                    $('.ActivaCampoMatPeligroso').hide(200);
+                    $('#Mercancias_Mercancia_MaterialPeligrosos').val(false);
+                }
+            });
+
+        });
+    </script>*@

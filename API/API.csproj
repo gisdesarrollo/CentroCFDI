@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="BUS\Mensaje.cs" />
     <Compile Include="CatalogosCartaPorte\Cat_Conceptos.cs" />
+    <Compile Include="CatalogosCartaPorte\Cat_Mercancias.cs" />
     <Compile Include="CatalogosCartaPorte\Cat_SubImpuestoC.cs" />
     <Compile Include="CatalogosCartaPorte\ClaveProdServ.cs" />
     <Compile Include="CatalogosCartaPorte\ClaveProdServCP.cs" />

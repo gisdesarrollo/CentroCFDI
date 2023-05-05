@@ -108,7 +108,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
             
             TipoEmbalaje_Id();
-           
+
+            PopulaMercancias();
+
             ClaveUnidadPeso_Id();
             SubTipoRem_Id();
             ConfigMaritima_Id();
@@ -301,7 +303,9 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaTiPermiso();
             PopulaEntradaSalidaMerc();
             PopulaConceptos();
-            
+            PopulaMercancias();
+
+
             PopulaImpuestoSat();
             PopulaFormaPago();
             PopulaExportacion();
@@ -1411,6 +1415,15 @@ namespace APBox.Controllers.ComplementosCartaPorte
             return Json(impuestos, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult DatosCatalogoMercancias(int IdMercancia)
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            var Mercancias = popularDropDowns.PopulaCatMercancias(IdMercancia);
+
+            //return new JsonResult { Data = categorias, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            return Json(Mercancias, JsonRequestBehavior.AllowGet);
+        }
+
 
         #region Popula Forma
 
@@ -1457,6 +1470,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.Conceptos = (popularDropDowns.PopulaConceptos(ObtenerSucursal()));
+        }
+
+        private void PopulaMercancias()
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+            ViewBag.Mercancias = (popularDropDowns.PopulaMercancias(ObtenerSucursal()));
         }
 
         /*private void PopulaImpuestoT()

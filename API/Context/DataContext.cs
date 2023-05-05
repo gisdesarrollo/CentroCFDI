@@ -163,6 +163,7 @@ namespace API.Context
         public DbSet<c_impuestoCFDI> ImpuestoCP { get; set; }
         public DbSet<FormaPagos> Cat_FormaPago { get; set; }
         public DbSet<Cat_Conceptos> Cat_Conceptos { get; set; }
+        public DbSet<Cat_Mercancias> Cat_Mercancias{ get; set; }
 
         public DbSet<ClaveProdServ> claveProdServ { get; set; }
         public DbSet<Cat_SubImpuestoC> Cat_Impuestos { get; set; }

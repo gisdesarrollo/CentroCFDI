@@ -1,6 +1,74 @@
-﻿<script>
+﻿   
+<script>
     $(function () {
+ 
 
+        ///SCRIPT MERCANCIAS PARA ACTIVAR DROPDOW Y RELLENAR LOS CAMPOS MERCANCIAS
+
+        $(function () {
+            $('#CMercancia').change(function () {
+                var MercanciasClaveProd = $("#CMercancia").val();
+                $("#ClaveProdServID").html("");
+                $("#ClaveUnidadConcepto").html("");
+                consultaMercancia(MercanciasClaveProd);
+            });
+
+            $("#confDelete").on('click', function () {
+                let text = "¿seguro que deseas eliminarlo?";
+                if (confirm(text) == false) {
+                    window.location.href = "../Index";
+                }
+            });
+
+            function consultaMercancia(Mercancias) {
+
+                if (Mercancias != "") {
+                    $.get("/ComplementosCartaPorte/DatosCatalogoMercancias", { IdMercancia: Mercancias }, function (data) {
+                        if (data.length > 0) {
+                            $.each(data, function (index, row) {
+                                $("#Mercancias_Mercancia_ClaveProdServCP").val(row.ClaveProdServCP);
+                                $("#Mercancias_Mercancia_Descripcion").val(row.Descripcion);
+                                $("#Mercancias_Mercancia_Cantidad").val(row.Cantidad);
+                                $("#Mercancias_Mercancia_ClavesUnidad").val(row.ClavesUnidad);
+                                $("#Mercancias_Mercancia_Unidad").val(row.Unidad);
+                                $("#Mercancias_Mercancia_Dimensiones").val(row.Dimensiones);
+                                $("#Mercancias_Mercancia_PesoEnKg").val(row.PesoEnKg);
+                                $("#Mercancias_Mercancia_ValorMercancia").val(row.ValorMercancia);
+                                $("#Mercancias_Mercancia_Moneda").val(row.Moneda);
+                                $("#Mercancias_Mercancia_ClaveMaterialPeligroso").val(row.ClaveMaterialPeligroso);
+                                $("#Mercancias_Mercancia_DescripEmbalaje option:contains('" + row.DescripEmbalaje + "')").prop('selected', true);
+                                $("#Mercancias_Mercancia_TipoEmbalaje_Id").val(row.TipoEmbalaje_Id);
+                              
+                                //alert(row.Moneda);
+                                //alert(row.DescripEmbalaje);
+                                //alert(row.TipoEmbalaje_Id);
+
+                                //Activa Campo Material peligroso siempre y cuando haya un valor en la claveMaterialPeligroso
+                                checkMaterialPeligroso($("#Mercancias_Mercancia_ClaveMaterialPeligroso").val());
+                                function checkMaterialPeligroso(claveMaterialPeligroso) {
+                                    var materialPeligrosoCheckbox = $("#Mercancias_Mercancia_MaterialPeligrosos");
+
+                                    if (claveMaterialPeligroso) {
+                                        materialPeligrosoCheckbox.prop("checked", true);
+                                        $(".ActivaCampoMatPeligroso").removeClass("hiddenDiv");
+                                    } else {
+                                        materialPeligrosoCheckbox.prop("checked", false);
+                                        $(".ActivaCampoMatPeligroso").addClass("hiddenDiv");
+                                    }
+                                }
+                              
+
+                            });
+
+                        }
+                    });
+                }
+
+
+            }
+
+
+        });
 
         //ACTIVA CAMPO PARTE TRANSPORTE
         $('#TipoFiguraTransporte').change(function () {
@@ -13,7 +81,7 @@
         });
     });
         ///obtiene ubicaciones y genera un dropdow en la vista detalle mercancia
-        function getMercancias() {
+        function getMercancias(){
             /*$(".getMercancias").click(function () {*/
                 var ubicacionesLength = $('.ubicacion').length;
 
@@ -58,7 +126,7 @@
                 }
             /*});*/
         }
-    
+
 
     $(function () {
         $('#TranspInternac').change(function () {
@@ -421,7 +489,7 @@
                 success: function (partialView) {
                     $('#detallesMercancias').append(partialView);
                     var totalMercancia = $(".mercanciaEdit").length;
-                    
+
                     $("#Mercancias_NumTotalMercancias").val(totalMercancia);
                 },
                 error: function (jqxhr, textStatus, error) {
@@ -443,7 +511,7 @@
         }
         $(elem).parent().parent().parent().remove();
         var totalMercancia = $(".mercanciaEdit").length;
-        
+
         $("#Mercancias_NumTotalMercancias").val(totalMercancia);
     }
 
@@ -1074,9 +1142,9 @@
     }
 
     function ValidaCampos(input, div) {
-        
+
         if (input === "" || input === null || input == undefined) {
-           
+
             $(div).html("Campo Obligatorio");
             $(div).show(200);
             return false;
@@ -1718,6 +1786,12 @@
         });
 
     });
+
+
+
+
+
+
     function cambioimporte() {
 
         $("#RBase").val(($("#RBaseP").val() * $("#Conceptos_Importe").val()) / 100);
@@ -2270,9 +2344,9 @@
             $(".contadorUbicaciones").replaceWith('<span class="contadorUbicaciones font-blue">: ' + contador + '</span >');
 
     });
-        
-            
-       
+
+
+
 
     $("#agregarDetalleUbicacion").on('click', function () {
         var TU = false;
@@ -2289,7 +2363,7 @@
             message = "#RfcRemitente"
             RR = Boolean(ValidaCampos(ORRFCRemitente, message));
         var FechaHoraSalida = $('#Ubicacion_FechaHoraSalidaLlegada').val();
-       
+
             message="#FechaHoraSalida"
         FHS = Boolean(ValidaCampos(FechaHoraSalida, message));
         var ORPais = $("#Ubicacion_Domicilio_Paises").val();
@@ -2626,7 +2700,7 @@
 
     });
 
-    
+
 </script>
 
 

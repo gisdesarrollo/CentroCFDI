@@ -112,6 +112,15 @@ namespace API.Operaciones.ComplementoCartaPorte
         [ForeignKey("Mercancias_Id")]
         public virtual Mercancias Mercancias { get; set; }
 
+
+        /*Para Establecer el catalogo que se va a utilizar*/
+
+        [NotMapped]
+        [DisplayName("Catalogo Mercancia")]
+        public string CatMercancia { get; set; }
+        //
+
+
         [NotMapped]
         public virtual CantidadTransportada CantidadTransportada { get; set; }
 

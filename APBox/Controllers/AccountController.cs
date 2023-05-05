@@ -519,6 +519,8 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.Clientes, "CLIENTES");
             AddRole(um, userId, perfil.Conceptos, "CONCEPTOS");
             AddRole(um, userId, perfil.Impuestos, "IMPUESTOS");
+            AddRole(um, userId, perfil.Mercancias, "MERCANCIAS");
+
             AddRole(um, userId, perfil.ComplementoPago, "COMPLEMENTOSPAGOS");
             AddRole(um, userId, perfil.ComplementoCartaPorte, "COMPLEMENTOCARTAPORTE");
             AddRole(um, userId, perfil.Cfdi, "CFDI");
@@ -547,9 +549,13 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.ReporteEstadisticasComplementosPago, "REPORTECOMPLEMENTOSPAGO");
             AddRole(um, userId, perfil.ReportesFacturasPago, "REPORTESFACTURASPAGO");
             AddRole(um, userId, perfil.CargaCFDI, "CARGACFDI");
+<<<<<<< Updated upstream
             //Addenda
             AddRole(um, userId, perfil.Addenda, "ADDENDA");
 
+=======
+            
+>>>>>>> Stashed changes
             return usuario.Id;
         }
 
