@@ -3355,16 +3355,16 @@
     <Content Include="Views\ComplementosPagos\TrasladoDR.cshtml" />
     <Content Include="Views\ComplementosPagos\RetencionDR.cshtml" />
     <Content Include="Views\Addenda\Index.cshtml" />
-<<<<<<< Updated upstream
+
     <Content Include="Views\Addenda\Concepto.cshtml" />
     <Content Include="Views\Addenda\_AddendaScripts.cshtml" />
-=======
+
     <Content Include="Views\Mercancias\Index.cshtml" />
     <Content Include="Views\Mercancias\Create.cshtml" />
     <Content Include="Views\Mercancias\_ComplementoMercanciasScript.cshtml" />
     <Content Include="Views\Mercancias\_Modal.cshtml" />
     <Content Include="Views\Mercancias\Editar.cshtml" />
->>>>>>> Stashed changes
+
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -109,12 +109,12 @@ namespace API.Catalogos
         public bool ReportesFacturasPago  { get; set; }
 
         public bool CargaCFDI { get; set; }
-<<<<<<< Updated upstream
+
         public bool Addenda { get; set; }
-=======
+
 
        
->>>>>>> Stashed changes
+
 
         #region Grupo
 

@@ -549,13 +549,10 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.ReporteEstadisticasComplementosPago, "REPORTECOMPLEMENTOSPAGO");
             AddRole(um, userId, perfil.ReportesFacturasPago, "REPORTESFACTURASPAGO");
             AddRole(um, userId, perfil.CargaCFDI, "CARGACFDI");
-<<<<<<< Updated upstream
             //Addenda
             AddRole(um, userId, perfil.Addenda, "ADDENDA");
 
-=======
             
->>>>>>> Stashed changes
             return usuario.Id;
         }
 
