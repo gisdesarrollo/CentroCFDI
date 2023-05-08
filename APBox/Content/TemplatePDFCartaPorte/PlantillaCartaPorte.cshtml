@@ -30,8 +30,15 @@
 
                     <h1 align="right" class="encabezado">Folio: <b class="title">@Model.Serie - @Model.Folio</b></h1>
                     <h1 align="right" class="encabezado">Folio Fiscal UUID: <b class="title">@Model.TimbreFiscalDigital.UUID.ToString().ToUpper()</b></h1>
-                    <h1 align="right" class="encabezado">Fecha de emisión: <b class="title">@Model.Fecha</b></h1>
-
+                    @if (Model.Emisor.Rfc == "CME090205NS5")
+                    {
+                        <h1 align="right" class="encabezado">Fecha de emisión: <b class="title">@DescripcionesEnum.fechaFormat(Model.Fecha)</b></h1>
+                        <h1 align="right" class="encabezado">Referencia: <b class="title">@Model.Referencia</b></h1>
+                    }
+                    else
+                    {
+                        <h1 align="right" class="encabezado">Fecha de emisión: <b class="title">@Model.Fecha</b></h1>
+                    }
 
                 </td>
             </tr>

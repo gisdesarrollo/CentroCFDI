@@ -89,10 +89,13 @@ public partial class ComprobanteCFDI {
 
     public string Logo;
 
+    private string referenciaField;
+
     public ComprobanteCFDI() {
         this.versionField = "4.0";
     }
     
+    public string Referencia { get { return this.referenciaField; } set { this.referenciaField = value; } }
     /// <remarks/>
     public ComprobanteInformacionGlobal InformacionGlobal {
         get {

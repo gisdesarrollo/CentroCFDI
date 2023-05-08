@@ -170,6 +170,19 @@ namespace Aplicacion.LogicaPrincipal.Descargas
                 sucursal = _db.Sucursales.Find(cartaPorte.SucursalId);
                 //asigna plantilla
                 plantilla = "TemplatePDFCartaPorte//PlantillaCartaPorte.cshtml";
+
+                //set referencia 
+                
+                if (cartaPorte.Sucursal.Rfc == "CME090205NS5") { 
+                    foreach (var ubicacion in oComprobante.CartaPorte.Ubicaciones)
+                    {
+                        if (ubicacion.TipoUbicacion == "Origen")
+                        {
+                            oComprobante.Referencia = ubicacion.Domicilio.Referencia;
+                            break;
+                        }
+                    }
+                }
             }
             else if (tipoDocumento == "Pagos40")
             {

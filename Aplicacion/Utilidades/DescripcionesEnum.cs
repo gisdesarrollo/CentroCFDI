@@ -254,5 +254,12 @@ namespace Aplicacion.Utilidades
       "novecientos "
         };
 
+        public static string fechaFormat(string fecha)
+        {
+            DateTime fechaConvertDate = Convert.ToDateTime(fecha);
+            string fechaFormat = fechaConvertDate.ToString("dd/MM/yyyy");
+            return fechaFormat;
+        }
+
     }
 }
