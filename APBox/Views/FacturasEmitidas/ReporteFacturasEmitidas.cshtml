@@ -91,16 +91,33 @@
                         <thead>
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase">
                                 <th class="min-w-100px">
-                                    RFC Receptor-Nombre
+                                    RFC
                                 </th>
+
                                 <th class="min-w-100px">
-                                    Serie-Folio-UUID
+                                    Receptor
                                 </th>
+
+                                <th class="min-w-100px">
+                                    Serie
+                                </th>
+
+                                <th class="min-w-100px">
+                                    Folio
+                                </th>
+
+                                <th class="min-w-100px">
+                                    UUID
+                                </th>
+
                                 <th class="min-w-100px">
                                     Fecha
                                 </th>
                                 <th class="min-w-100px">
-                                    Moneda-Tipo de Cambio
+                                    Moneda 
+                                </th>
+                                <th class="min-w-100px">
+                                    Tipo de Cambio
                                 </th>
                                 <th>
                                     UUID CfdiRelacionado
@@ -121,22 +138,37 @@
                                     Tipo Comprobante
                                 </th>
                                 @*<th>
-                                    Status
-                                </th>*@
+            Status
+        </th>*@
                             </tr>
                         </thead>
 
                         <tbody>
                             @foreach (var item in Model.FacturasEmitidas)
                             {
-                                var concaRfcNombre = item.Receptor.Rfc + "-" + item.Receptor.RazonSocial;
-                                var concaSerieFolioUuid = item.Serie + "-" + item.Folio + "-" + item.Uuid;
+                                //var concaRfcNombre = item.Receptor.Rfc + "-" + item.Receptor.RazonSocial;
+                                //var concaSerieFolioUuid = item.Serie + "-" + item.Folio + "-" + item.Uuid;
                             <tr class="odd">
                                 <td>
-                                    @Html.Raw(concaRfcNombre)
+                                    @item.Receptor.Rfc
                                 </td>
+
                                 <td>
-                                    @Html.Raw(concaSerieFolioUuid)
+                                   @item.Receptor.RazonSocial
+                                </td>
+                                @*<td>
+            @Html.Raw(concaSerieFolioUuid)
+        </td>*@
+                                <td>
+                                    @item.Serie
+                                </td>
+
+                                <td>
+                                    @item.Folio
+                                </td>
+
+                                <td>
+                                    @item.Uuid
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Fecha)
@@ -144,12 +176,16 @@
 
                                 <td>
 
-                                    @Html.Raw("Moneda: ") @Html.DisplayFor(modelItem => item.Moneda)  <br />
+                                    @Html.Raw("Moneda: ") @Html.DisplayFor(modelItem => item.Moneda)  
+                                    
+
+                                </td>
+
+                                <td>
                                     @if (item.Moneda == API.Enums.c_Moneda.USD)
                                     {
                                         @Html.Raw("Tipo Cambio: ") @Html.DisplayFor(modelItem => item.TipoCambio)
                                     }
-
                                 </td>
                                 <td>
                                     @{
@@ -238,7 +274,6 @@
                     break;
             }
         </td>*@
-
                             </tr>
                             }
                         </tbody>

@@ -54,9 +54,21 @@
                                 <th class="min-w-100px">
                                     RFC Receptor-Nombre
                                 </th>
+                                @*<th class="min-w-100px">
+            Serie-Folio-UUID
+        </th>*@
                                 <th class="min-w-100px">
-                                    Serie-Folio-UUID
+                                    Serie
                                 </th>
+
+                                <th class="min-w-100px">
+                                    Folio
+                                </th>
+
+                                <th class="min-w-100px">
+                                    UUID
+                                </th>
+
                                 <th class="min-w-100px">
                                     Fecha
                                 </th>
@@ -77,13 +89,24 @@
                             @foreach (var item in Model.FacturasEmitidas)
                             {
                                 var concaRfcNombre = item.Receptor.Rfc + "-" + item.Receptor.RazonSocial;
-                                var concaSerieFolioUuid = item.Serie + "-" + item.Folio + "-" + item.Uuid;
+                                //var concaSerieFolioUuid = item.Serie + "-" + item.Folio + "-" + item.Uuid;
                                 <tr class="odd">
                                     <td>
                                         @Html.Raw(concaRfcNombre)
                                     </td>
-                                    <td>
+                                    @*<td>
                                         @Html.Raw(concaSerieFolioUuid)
+                                    </td>*@
+                                    <td>
+                                        @item.Serie
+                                    </td>
+
+                                    <td>
+                                        @item.Folio
+                                    </td>
+
+                                    <td>
+                                        @item.Uuid
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Fecha)
