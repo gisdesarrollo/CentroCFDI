@@ -57,6 +57,19 @@ namespace API.Models.Facturas
         [DisplayName("Total de Impuestos Trasladados")]
         public Double TotalImpuestosTrasladados { get; set; }
 
+        //Impuestos Relacionados a Carta Porte
+
+        [NotMapped]
+        [DisplayName("Total de Impuestos Retenidos")]
+        public Double TotalImpRetenidos { get; set; }
+
+        [NotMapped]
+
+        [DisplayName("Total de Impuestos Trasladados")]
+        public Double TotalImpTrasladados { get; set; }
+
+        //-------------------------------------
+
         [XmlAttributeAttribute("total")]
         public Double Total { get; set; }
 

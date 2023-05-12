@@ -17,6 +17,7 @@ using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -29,7 +30,7 @@ namespace APBox.Controllers.Catalogos
         private readonly APBoxContext _db = new APBoxContext();
         private readonly PagosManager _pagosManager = new PagosManager();
         private readonly OperacionesCfdisEmitidos _operacionesCfdisEmitidos = new OperacionesCfdisEmitidos();
-        private readonly DescargasManager _descargasManager =  new DescargasManager();
+        private readonly DescargasManager _descargasManager = new DescargasManager();
         private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
         private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
         #endregion
@@ -46,7 +47,25 @@ namespace APBox.Controllers.Catalogos
                 SucursalId = ObtenerSucursal(),
             };
 
+            List<facturareferencia> listaFacturaReferencia = new List<facturareferencia>();
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+            bool isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+            if (isEmpty)
+            {
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                {
+                    facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                    if (queryFacturas != null && queryFacturas.FacturaEmitidaId !=0)
+                    {
+
+                        facturasEmitidas.Referencia = queryFacturas.Referencia;
+                        facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                        facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                    }
+
+                }
+
+            }
 
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "Index";
@@ -59,9 +78,29 @@ namespace APBox.Controllers.Catalogos
         [HttpPost]
         public ActionResult Index(FacturasEmitidasModel facturasEmitidasModel)
         {
+            bool isEmpty;
             if (ModelState.IsValid)
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+            }
+            else
+            {
+                _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+            }
+            isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+
+            if (isEmpty)
+            {
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                {
+                    facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                    if (queryFacturas != null && queryFacturas.FacturaEmitidaId != 0)
+                    {
+                        facturasEmitidas.Referencia = queryFacturas.Referencia;
+                        facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                        facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                    }
+                }
             }
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "Index";
@@ -99,7 +138,7 @@ namespace APBox.Controllers.Catalogos
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
-            
+
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReporteFacturasEmitidas";
             ViewBag.ActionES = "Reporte Facturas Emitidas";
@@ -220,7 +259,7 @@ namespace APBox.Controllers.Catalogos
         {
             //get xml
             var facturaEmtida = _db.FacturasEmitidas.Find(id);
-            var pathCompleto = _descargasManager.GeneraFilePathXml(facturaEmtida.ArchivoFisicoXml,facturaEmtida.Serie,facturaEmtida.Folio);
+            var pathCompleto = _descargasManager.GeneraFilePathXml(facturaEmtida.ArchivoFisicoXml, facturaEmtida.Serie, facturaEmtida.Folio);
             byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
             string contentType = MimeMapping.GetMimeMapping(pathCompleto);
 
@@ -252,14 +291,14 @@ namespace APBox.Controllers.Catalogos
             if (cfdiNormal == null && pago == null && cartaPorte == null && facturaEmitida != null)
             {
                 //dowload pdf in XSA
-                archivoFisico = _ComprobanteXsaManager.DownloadPDFXsa(id,true);
+                archivoFisico = _ComprobanteXsaManager.DownloadPDFXsa(id, true);
 
             }
             else
             {
                 if (facturaEmitida.Emisor.Txsa)
                 {
-                    if(cfdiNormal != null)
+                    if (cfdiNormal != null)
                     {
                         //dowload pdf in XSA
                         archivoFisico = _ComprobanteXsaManager.DownloadPDFXsa(id, false);
@@ -325,15 +364,15 @@ namespace APBox.Controllers.Catalogos
             {
                 if (comprobante == null && pagos == null && cartaPorte == null && emitida != null)
                 {
-                    dataXsa = _ComprobanteXsaManager.Cancelar(emitida.Id,emitida.FolioSustitucion,emitida.MotivoCancelacion,true);
+                    dataXsa = _ComprobanteXsaManager.Cancelar(emitida.Id, emitida.FolioSustitucion, emitida.MotivoCancelacion, true);
                 }
                 else
                 {
                     if (emitida.Emisor.Txsa)
                     {
-                        if(comprobante!= null)
+                        if (comprobante != null)
                         {
-                            dataXsa = _ComprobanteXsaManager.Cancelar(facturaEmitida.Id,facturaEmitida.FolioSustitucion,facturaEmitida.MotivoCancelacion,false);
+                            dataXsa = _ComprobanteXsaManager.Cancelar(facturaEmitida.Id, facturaEmitida.FolioSustitucion, facturaEmitida.MotivoCancelacion, false);
                             isXsa = true;
                         }
                     }
@@ -365,22 +404,22 @@ namespace APBox.Controllers.Catalogos
         {
             string xmlCancelacion = null;
             bool isXsa = false;
-            byte[] byteXml =  new byte[1024];
+            byte[] byteXml = new byte[1024];
             var facturaEmitida = _db.FacturasEmitidas.Find(id);
             var comprobante = _db.ComprobantesCfdi.Where(c => c.FacturaEmitidaId == id).FirstOrDefault();
             var pagos = _db.ComplementosPago.Where(p => p.FacturaEmitidaId == id).FirstOrDefault();
             var cartaPorte = _db.ComplementoCartaPortes.Where(cp => cp.FacturaEmitidaId == id).FirstOrDefault();
-            if(comprobante == null && pagos == null && cartaPorte == null && facturaEmitida != null)
+            if (comprobante == null && pagos == null && cartaPorte == null && facturaEmitida != null)
             {
-                byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(facturaEmitida.Serie,facturaEmitida.Folio,facturaEmitida.Uuid,facturaEmitida.EmisorId);
+                byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(facturaEmitida.Serie, facturaEmitida.Folio, facturaEmitida.Uuid, facturaEmitida.EmisorId);
             }
             else
             {
                 if (facturaEmitida.Emisor.Txsa)
                 {
-                    if(comprobante != null)
+                    if (comprobante != null)
                     {
-                       byteXml =  _ComprobanteXsaManager.DowloadAcuseCancelacion(facturaEmitida.Serie, facturaEmitida.Folio, facturaEmitida.Uuid, facturaEmitida.EmisorId);
+                        byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(facturaEmitida.Serie, facturaEmitida.Folio, facturaEmitida.Uuid, facturaEmitida.EmisorId);
                         isXsa = true;
                     }
                 }
@@ -471,7 +510,7 @@ namespace APBox.Controllers.Catalogos
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
-            
+
             List<search_doc_rel_fac_emi> listaComplementosPagos = new List<search_doc_rel_fac_emi>();
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             bool isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
@@ -487,9 +526,9 @@ namespace APBox.Controllers.Catalogos
                         facturasEmitidas.FacturaComplementoPagoId = queryFacturas.Id;
                         facturasEmitidas.FacturaEmitidaPagada = true;
                     }
-                    
+
                 }
-                
+
             }
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReportePagos";
@@ -510,21 +549,21 @@ namespace APBox.Controllers.Catalogos
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
-                    isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
-                    if (isEmpty)
+            isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+            if (isEmpty)
+            {
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                {
+                    search_doc_rel_fac_emi queryFacturas = queryFacturasPagadas(facturasEmitidas.Id);
+                    if (queryFacturas != null && queryFacturas.FacturaEmitidaId != 0)
                     {
-                        foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
-                        {
-                            search_doc_rel_fac_emi queryFacturas = queryFacturasPagadas(facturasEmitidas.Id);
-                            if (queryFacturas != null && queryFacturas.FacturaEmitidaId != 0)
-                            {
-                                facturasEmitidas.FolioComplementoPago = queryFacturas.Folio;
-                                facturasEmitidas.SerieComplementoPago = queryFacturas.Serie;
-                                facturasEmitidas.FacturaComplementoPagoId = queryFacturas.Id;
-                                facturasEmitidas.FacturaEmitidaPagada = true;
-                            }
-                        }
+                        facturasEmitidas.FolioComplementoPago = queryFacturas.Folio;
+                        facturasEmitidas.SerieComplementoPago = queryFacturas.Serie;
+                        facturasEmitidas.FacturaComplementoPagoId = queryFacturas.Id;
+                        facturasEmitidas.FacturaEmitidaPagada = true;
                     }
+                }
+            }
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReportePagos";
             ViewBag.ActionES = "Reporte Pago";
@@ -543,19 +582,10 @@ namespace APBox.Controllers.Catalogos
 
             var resultados = _db.Database.SqlQuery<search_doc_rel_fac_emi>(query,
                     new MySqlParameter { ParameterName = "@Id", MySqlDbType = MySqlDbType.String, Value = id }).FirstOrDefault();
-            
+
             return resultados;
         }
 
-        private void PopulaMotivoCancelacion()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "01 - Comprobante Emitido con errores con relación", Value = "01", Selected = true });
-            items.Add(new SelectListItem { Text = "02 - Comprobante emitido con errores sin relacion", Value = "02" });
-            items.Add(new SelectListItem { Text = "03 - No se llevo a cabo la operación", Value = "03" });
-            items.Add(new SelectListItem { Text = "04 - Operación nominativa relacionada en una factura global", Value = "04" });
-            ViewBag.motivoCancelacion = items;
-        }
         public class search_doc_rel_fac_emi
         {
             public int FacturaEmitidaId { get; set; }
@@ -567,6 +597,51 @@ namespace APBox.Controllers.Catalogos
             public int Id { get; set; }
 
         }
+
+
+
+
+        public facturareferencia facturaidferencia(int id)
+        {
+            var listReferencia = new facturareferencia();
+            const string query = @"select  d.Referencia,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos    from cp_Domicilio d " +
+                        "join  cp_Ubicaciones p  on(d.Id = p.Domicilio_Id) " +
+                        "join cp_ComplementoCartaPorte cm on(cm.Id = p.Complemento_Id) " +
+                        "join ori_facturasemitidas fe on (fe.Id= cm.FacturaEmitidaId) " +
+                        "where fe.Id in (@Id); ";
+
+            var consulta = _db.Database.SqlQuery<facturareferencia>(query,
+                    new MySqlParameter { ParameterName = "@Id", MySqlDbType = MySqlDbType.String, Value = id }).FirstOrDefault();
+
+            return consulta;
+
+        }
+
+        public class facturareferencia
+        {
+            public int FacturaEmitidaId { get; set; }
+
+            public string Referencia { get; set; }
+
+            public double TotalImpuestoTrasladado { get; set; }
+
+            public double TotalImpuestoRetenidos { get; set; }
+
+        }
+
+
+
+
+        private void PopulaMotivoCancelacion()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "01 - Comprobante Emitido con errores con relación", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "02 - Comprobante emitido con errores sin relacion", Value = "02" });
+            items.Add(new SelectListItem { Text = "03 - No se llevo a cabo la operación", Value = "03" });
+            items.Add(new SelectListItem { Text = "04 - Operación nominativa relacionada en una factura global", Value = "04" });
+            ViewBag.motivoCancelacion = items;
+        }
+      
     
 
     }

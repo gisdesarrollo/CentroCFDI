@@ -79,6 +79,21 @@
                                     Moneda-Tipo de Cambio
                                 </th>
                                 <th>
+                                    @{
+                                        var bd = new APBox.Context.APBoxContext();
+                                        var sucursal = bd.Sucursales.Find(Model.SucursalId);
+                                        if (sucursal.Id == 42)
+                                        {
+                                            <p>Referencia</p>
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    }
+                                </th>
+
+                                <th>
                                     Status
                                 </th>
                                 <th>Opciones</th>
@@ -95,8 +110,8 @@
                                         @Html.Raw(concaRfcNombre)
                                     </td>
                                     @*<td>
-                                        @Html.Raw(concaSerieFolioUuid)
-                                    </td>*@
+            @Html.Raw(concaSerieFolioUuid)
+        </td>*@
                                     <td>
                                         @item.Serie
                                     </td>
@@ -123,6 +138,23 @@
                                         }
 
                                     </td>
+
+                                    <td class="text-center">
+                                        @{
+                                            var db1 = new APBox.Context.APBoxContext();
+                                            var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
+                                            if (sucursal.Id == 42)
+                                            {
+                                                @item.Referencia
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        }
+
+                                    </td>
+
                                     <td>
                                         @switch (item.Status)
                                         {

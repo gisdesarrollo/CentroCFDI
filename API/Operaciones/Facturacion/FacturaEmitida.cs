@@ -1,6 +1,7 @@
 ﻿using API.Catalogos;
 using API.Enums;
 using API.Models.Facturas;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -34,6 +35,10 @@ namespace API.Operaciones.Facturacion
 
         [NotMapped]
         public int FacturaComplementoPagoId { get; set;}
+
+        //Reservado Para CRANE
+        [NotMapped]
+        public string Referencia { get; set; }
 
         public Status Status { get; set; }
 

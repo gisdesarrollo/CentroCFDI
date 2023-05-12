@@ -114,7 +114,7 @@
                                     Fecha
                                 </th>
                                 <th class="min-w-100px">
-                                    Moneda 
+                                    Moneda
                                 </th>
                                 <th class="min-w-100px">
                                     Tipo de Cambio
@@ -137,6 +137,22 @@
                                 <th>
                                     Tipo Comprobante
                                 </th>
+
+                                <th>
+                                    @{
+                                        var bd = new APBox.Context.APBoxContext();
+                                        var sucursal = bd.Sucursales.Find(Model.SucursalId);
+                                        if (sucursal.Id == 42)
+                                        {
+                                            <p>Referencia</p>
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    }
+                                </th>
+
                                 @*<th>
             Status
         </th>*@
@@ -154,7 +170,7 @@
                                 </td>
 
                                 <td>
-                                   @item.Receptor.RazonSocial
+                                    @item.Receptor.RazonSocial
                                 </td>
                                 @*<td>
             @Html.Raw(concaSerieFolioUuid)
@@ -176,8 +192,8 @@
 
                                 <td>
 
-                                    @Html.Raw("Moneda: ") @Html.DisplayFor(modelItem => item.Moneda)  
-                                    
+                                    @Html.Raw("Moneda: ") @Html.DisplayFor(modelItem => item.Moneda)
+
 
                                 </td>
 
@@ -261,6 +277,23 @@
                                 <td class="text-center">
                                     @item.TipoComprobante
                                 </td>
+
+                                <td class="text-center">
+                                    @{
+                                        var db1 = new APBox.Context.APBoxContext();
+                                        var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
+                                        if (sucursal.Id == 42)
+                                        {
+                                            @item.Referencia
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    }
+
+                                </td>
+
                                 @*<td>
             @switch (item.Status)
             {
