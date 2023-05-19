@@ -9,5 +9,8 @@ namespace API.Models.Facturas
         public int SucursalId { get; set; }
 
         public virtual List<FacturaEmitida> FacturasEmitidas { get; set; }
+
+        public virtual List<FacturaEmitidaTemporal> FacturaEmitidasTemporal { get; set; }
+
     }
 }

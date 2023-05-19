@@ -25,10 +25,22 @@ namespace API.Operaciones.Facturacion
 
         public Double Total { get; set; }
 
-        public c_MetodoPago MetodoPago { get; set; }
+        public c_MetodoPago? MetodoPago { get; set; }
 
         public c_Moneda Moneda { get; set; }
 
         public c_TipoDeComprobante TipoComprobante { get; set; }
+
+        [NotMapped]
+        public string Referencia { get; set; }
+
+        [NotMapped]
+        public Status Status { get; set; }
+
+        [NotMapped]
+        public string FolioSustitucion { get; set; }
+
+        [NotMapped]
+        public string MotivoCancelacion { get; set; }
     }
 }

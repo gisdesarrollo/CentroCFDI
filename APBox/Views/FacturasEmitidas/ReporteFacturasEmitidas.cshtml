@@ -60,110 +60,110 @@
             {
                 @Html.AntiForgeryToken()
 
-                <div class="form">
-                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+            <div class="form">
+                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-                    @Html.HiddenFor(model => model.SucursalId)
+                @Html.HiddenFor(model => model.SucursalId)
 
-                    <div class="sub-title">
-                        <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
+                </div>
+                <div class="row">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <span class="input-group-addon">Fecha Inicial</span>
+                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
                     </div>
-                    <div class="row">
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            <span class="input-group-addon">Fecha Inicial</span>
-                            @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                            @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            <span class="input-group-addon">Fecha Final</span>
-                            @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                            @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                            <button type="submit" class="btn btn-primary">Filtrar</button>
-                        </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <span class="input-group-addon">Fecha Final</span>
+                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
                     </div>
-                    <div class="clearfix"></div>
-                    <hr />
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <hr />
+                <!--begin::Search-->
 
-                    <div id="cancelar-view"></div>
-                    <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
-                        <thead>
-                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase">
-                                <th class="min-w-100px">
-                                    RFC
-                                </th>
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+                    <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
+                </div>
+                <!--end::Search-->
+                <div id="cancelar-view"></div>
+                <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
+                    <thead>
+                        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase">
+                            <th class="min-w-100px">
+                                Rfc
+                            </th>
+                            <th class="min-w-100px">
+                                Razon Social
+                            </th>
+                            <th class="min-w-100px">
+                                UUID
+                            </th>
+                            <th class="min-w-100px">
+                                Serie
+                            </th>
 
-                                <th class="min-w-100px">
-                                    Receptor
-                                </th>
+                            <th class="min-w-100px">
+                                Folio
+                            </th>
 
-                                <th class="min-w-100px">
-                                    Serie
-                                </th>
+                            <th class="min-w-100px">
+                                Fecha
+                            </th>
+                            <th class="min-w-100px">
+                                Moneda
+                            </th>
+                            <th class="min-w-100px">
+                                Tipo de Cambio
+                            </th>
+                            <th class="min-w-100px">
+                                Subtotal
+                            </th>
 
-                                <th class="min-w-100px">
-                                    Folio
-                                </th>
+                            <th class="min-w-100px">
+                                Descuento
+                            </th>
+                            <th>
+                                Total Impuestos Trasladados
+                            </th>
+                            <th>
+                                Total Impuestos Retenidos
+                            </th>
+                            <th class="min-w-100px">
+                                Total
+                            </th>
+                            <th>
+                                Tipo Comprobante
+                            </th>
 
-                                <th class="min-w-100px">
-                                    UUID
-                                </th>
-
-                                <th class="min-w-100px">
-                                    Fecha
-                                </th>
-                                <th class="min-w-100px">
-                                    Moneda
-                                </th>
-                                <th class="min-w-100px">
-                                    Tipo de Cambio
-                                </th>
-                                <th>
-                                    UUID CfdiRelacionado
-                                </th>
-                                <th>
-                                    Tipo Relación
-                                </th>
-                                <th class="min-w-100px">
-                                    Total
-                                </th>
-                                <th>
-                                    Total Impuestos Trasladados
-                                </th>
-                                <th>
-                                    Total Impuestos Retenidos
-                                </th>
-                                <th>
-                                    Tipo Comprobante
-                                </th>
-
-                                <th>
-                                    @{
-                                        var bd = new APBox.Context.APBoxContext();
-                                        var sucursal = bd.Sucursales.Find(Model.SucursalId);
-                                        if (sucursal.Id == 42)
-                                        {
-                                            <p>Referencia</p>
-                                        }
-                                        else
-                                        {
-
-                                        }
+                            <th>
+                                @{
+                                    var bd = new APBox.Context.APBoxContext();
+                                    var sucursal = bd.Sucursales.Find(Model.SucursalId);
+                                    if (sucursal.Id == 42)
+                                    {
+                                        <p>Referencia</p>
                                     }
-                                </th>
+                                    else
+                                    {
 
-                                @*<th>
-            Status
-        </th>*@
-                            </tr>
-                        </thead>
+                                    }
+                                }
+                            </th>
 
-                        <tbody>
-                            @foreach (var item in Model.FacturasEmitidas)
-                            {
-                                //var concaRfcNombre = item.Receptor.Rfc + "-" + item.Receptor.RazonSocial;
-                                //var concaSerieFolioUuid = item.Serie + "-" + item.Folio + "-" + item.Uuid;
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.FacturasEmitidas)
+                        {
+
                             <tr class="odd">
                                 <td>
                                     @item.Receptor.Rfc
@@ -172,9 +172,9 @@
                                 <td>
                                     @item.Receptor.RazonSocial
                                 </td>
-                                @*<td>
-            @Html.Raw(concaSerieFolioUuid)
-        </td>*@
+                                <td>
+                                    @item.Uuid
+                                </td>
                                 <td>
                                     @item.Serie
                                 </td>
@@ -183,96 +183,46 @@
                                     @item.Folio
                                 </td>
 
-                                <td>
-                                    @item.Uuid
-                                </td>
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Fecha)
                                 </td>
 
                                 <td>
-
-                                    @Html.Raw("Moneda: ") @Html.DisplayFor(modelItem => item.Moneda)
-
+                                    @Html.DisplayFor(modelItem => item.Moneda)
 
                                 </td>
 
                                 <td>
-                                    @if (item.Moneda == API.Enums.c_Moneda.USD)
-                                    {
-                                        @Html.Raw("Tipo Cambio: ") @Html.DisplayFor(modelItem => item.TipoCambio)
-                                    }
+                                    @item.TipoCambio.ToString()
+                                </td>
+                                @{
+                                    var db = new APBox.Context.APBoxContext();
+                                    var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+                                    var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+                                    var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+
+                                }
+
+                                <td>
+                                    @item.Subtotal
                                 </td>
                                 <td>
-                                    @{
-                                        var db = new APBox.Context.APBoxContext();
-                                        var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-                                        var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-                                        var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-                                        if (pagos != null)
-                                        {
-                                            @pagos.UUIDCfdiRelacionado
-                                        }
-                                        else if (cartaPorte != null)
-                                        {
-                                            @cartaPorte.UUIDCfdiRelacionado
-                                        }
-                                        else if (comprobanteCfdi != null)
-                                        {
-                                            @comprobanteCfdi.UUIDCfdiRelacionado
-                                        }
-                                    }
+                                    @item.Descuento
                                 </td>
-                                <td>
-                                    @{
-                                        if (pagos != null)
-                                        {
-                                            @pagos.TipoRelacion
-                                        }
-                                        else if (cartaPorte != null)
-                                        {
-                                            @cartaPorte.TipoRelacion
-                                        }
-                                        else if (comprobanteCfdi != null)
-                                        {
-                                            @comprobanteCfdi.TipoRelacion
-                                        }
-                                    }
+
+                                <td class="text-right">
+
+                                    @item.TotalImpuestosTrasladados
+
                                 </td>
                                 <td class="text-right">
-                                    @item.Total.ToString("C")
+
+                                    @item.TotalImpuestosRetenidos
+
                                 </td>
                                 <td class="text-right">
-                                    @{
-                                        if (pagos != null)
-                                        {
-                                            @Html.Raw("0")
-                                        }
-                                        else if (cartaPorte != null)
-                                        {
-                                            @cartaPorte.TotalImpuestoTrasladado.ToString("C")
-                                        }
-                                        else if (comprobanteCfdi != null)
-                                        {
-                                            @comprobanteCfdi.TotalImpuestoTrasladado.ToString("C")
-                                        }
-                                    }
-                                </td>
-                                <td class="text-right">
-                                    @{
-                                        if (pagos != null)
-                                        {
-                                            @Html.Raw("0")
-                                        }
-                                        else if (cartaPorte != null)
-                                        {
-                                            @cartaPorte.TotalImpuestoRetenidos.ToString("C")
-                                        }
-                                        else if (comprobanteCfdi != null)
-                                        {
-                                            @comprobanteCfdi.TotalImpuestoRetenidos.ToString("C")
-                                        }
-                                    }
+                                    @item.Total
                                 </td>
                                 <td class="text-center">
                                     @item.TipoComprobante
@@ -294,25 +244,12 @@
 
                                 </td>
 
-                                @*<td>
-            @switch (item.Status)
-            {
-                case API.Enums.Status.Activo:
-                    <div class="badge badge-light-success">Activo</div>
-                    break;
-                case API.Enums.Status.Cancelado:
-                    <div class="badge badge-light-danger">Cancelado</div>
-                    break;
-                default:
-                    break;
-            }
-        </td>*@
                             </tr>
-                            }
-                        </tbody>
-                    </table>
+                        }
+                    </tbody>
+                </table>
 
-                </div>
+            </div>
             }
         </div>
 

@@ -46,7 +46,21 @@
                     </div>
                     <div class="clearfix"></div>
                     <hr />
-                    
+                    <div class="card-header align-items-center py-25 gap-2 gap-md-5">
+
+                        <div class="card-title">
+                            <!--begin::Search-->
+
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+                                <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
+                            </div>
+                            <!--end::Search-->
+                            
+                        </div>
+                        
+                            
+                    </div>
                     <div id="cancelar-view"></div>
                     <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
                         <thead>
@@ -76,7 +90,7 @@
                                     Total
                                 </th>
                                 <th class="min-w-100px">
-                                    Moneda-Tipo de Cambio
+                                    Moneda
                                 </th>
                                 <th>
                                     @{
@@ -131,11 +145,8 @@
                                     </td>
                                     <td>
 
-                                        @Html.Raw("Moneda: ") @Html.DisplayFor(modelItem => item.Moneda)  <br />
-                                        @if (item.Moneda == API.Enums.c_Moneda.USD)
-                                        {
-                                            @Html.Raw("Tipo Cambio: ") @Html.DisplayFor(modelItem => item.TipoCambio)
-                                        }
+                                         @Html.DisplayFor(modelItem => item.Moneda)
+                                        
 
                                     </td>
 

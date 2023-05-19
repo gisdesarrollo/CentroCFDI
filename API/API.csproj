@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RESPALDO-PROYECTOS\CENTRO-CFDI\ApBox-master2023-05-08\ApBox-master\APBox\bin\API.dll</HintPath>
+    </Reference>
     <Reference Include="DTOs">
       <HintPath>..\Aplicacion\lib\DTOs.dll</HintPath>
     </Reference>
