@@ -375,12 +375,14 @@
             <b class="col-style">$@Model.SubTotal @Model.Moneda</b>
 
             <br>
+            @if (Model.Emisor.Rfc != "CME090205NS5")
+            {
+                <br>
 
-            <br>
-
-            <b class="col-style title" align="right">Descuento:</b>
-            <b class="col-style">$@Model.Descuento @Model.Moneda </b>
-        </p>
+                <b class="col-style title" align="right">Descuento:</b>
+                <b class="col-style">$@Model.Descuento @Model.Moneda </b>
+            }
+            </p>
 
 
 
@@ -388,19 +390,19 @@
         {
 
 
-
-            <b class="col-style title">Total de Impuestos Trasladados</b>
-            <b class="col-style"><b class="col-style">$@Model.Impuestos.TotalImpuestosTrasladados @Model.Moneda</b></b>
-
+    <p align="right">
+        <b class="col-style title">Total de Impuestos Trasladados</b>
+        <b class="col-style"><b class="col-style">$@Model.Impuestos.TotalImpuestosTrasladados @Model.Moneda</b></b>
+    </p>
 
             if (Model.Impuestos.TotalImpuestosRetenidos != null)
             {
 
 
-
+                <p align="right">
                 <b class="col-style title">Total de Impuestos Retenidos</b>
                 <b class="col-style">$@Model.Impuestos.TotalImpuestosRetenidos @Model.Moneda</b>
-
+                </p>
             }
         }
 

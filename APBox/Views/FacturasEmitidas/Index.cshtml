@@ -115,17 +115,24 @@
                         </thead>
 
                         <tbody>
-                            @foreach (var item in Model.FacturasEmitidas)
+                            @{
+                                var db = new APBox.Context.APBoxContext();
+                            }
+                            @foreach (var item in Model.FacturaEmitidasTemporal)
                             {
-                                var concaRfcNombre = item.Receptor.Rfc + "-" + item.Receptor.RazonSocial;
+                                var concaRfcNombre="";
+                                {
+                                    var receptor = db.Clientes.Find(item.ReceptorId);
+                                    concaRfcNombre = receptor.Rfc + "-" + receptor.RazonSocial;
+                                }
                                 //var concaSerieFolioUuid = item.Serie + "-" + item.Folio + "-" + item.Uuid;
                                 <tr class="odd">
                                     <td>
                                         @Html.Raw(concaRfcNombre)
                                     </td>
                                     @*<td>
-            @Html.Raw(concaSerieFolioUuid)
-        </td>*@
+                    @Html.Raw(concaSerieFolioUuid)
+                </td>*@
                                     <td>
                                         @item.Serie
                                     </td>
@@ -145,8 +152,8 @@
                                     </td>
                                     <td>
 
-                                         @Html.DisplayFor(modelItem => item.Moneda)
-                                        
+                                        @Html.DisplayFor(modelItem => item.Moneda)
+
 
                                     </td>
 
@@ -209,7 +216,7 @@
                                     </td>
 
                                 </tr>
-                                                    }
+                            }
                         </tbody>
                     </table>
 

@@ -15,7 +15,7 @@ namespace API.Operaciones.ComprobantesCfdi
     [Table("ori_comprobantecfdi")]
     public class ComprobanteCfdi
     {
-        [DisplayName("Folio")]
+        //[DisplayName("Folio")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 

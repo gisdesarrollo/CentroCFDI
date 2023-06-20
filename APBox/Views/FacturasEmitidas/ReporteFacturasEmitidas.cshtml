@@ -161,16 +161,22 @@
                     </thead>
 
                     <tbody>
-                        @foreach (var item in Model.FacturasEmitidas)
+                        @{
+                            var db = new APBox.Context.APBoxContext();
+                        }
+                        @foreach (var item in Model.FacturaEmitidasTemporal)
                         {
+                            {
+                                var receptor = db.Clientes.Find(item.ReceptorId);
+                                var facturaEmitida = db.FacturasEmitidas.Find(item.Id);
 
                             <tr class="odd">
                                 <td>
-                                    @item.Receptor.Rfc
+                                    @receptor.Rfc
                                 </td>
 
                                 <td>
-                                    @item.Receptor.RazonSocial
+                                    @receptor.RazonSocial
                                 </td>
                                 <td>
                                     @item.Uuid
@@ -194,31 +200,31 @@
                                 </td>
 
                                 <td>
-                                    @item.TipoCambio.ToString()
+                                    @facturaEmitida.TipoCambio.ToString()
                                 </td>
                                 @{
-                                    var db = new APBox.Context.APBoxContext();
-                                    var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-                                    var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-                                    var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+//var db = new APBox.Context.APBoxContext();
+//var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+//var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+//var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
 
                                 }
 
                                 <td>
-                                    @item.Subtotal
+                                    @facturaEmitida.Subtotal
                                 </td>
                                 <td>
-                                    @item.Descuento
+                                    @facturaEmitida.Descuento
                                 </td>
 
                                 <td class="text-right">
 
-                                    @item.TotalImpuestosTrasladados
+                                    @facturaEmitida.TotalImpuestosTrasladados
 
                                 </td>
                                 <td class="text-right">
 
-                                    @item.TotalImpuestosRetenidos
+                                    @facturaEmitida.TotalImpuestosRetenidos
 
                                 </td>
                                 <td class="text-right">
@@ -245,6 +251,7 @@
                                 </td>
 
                             </tr>
+                            }
                         }
                     </tbody>
                 </table>

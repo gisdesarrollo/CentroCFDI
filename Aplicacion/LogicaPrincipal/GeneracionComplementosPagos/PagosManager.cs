@@ -30,7 +30,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private readonly CreationFile _deserealizaXml = new CreationFile();
         private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagoBBCdulce.xml";
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagoHANSEN2.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -458,44 +458,44 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                                         if (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString() == "USD" && pago.Moneda.ToString() == "MXN")
                                         {
                                             tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(complementoPago.Pagos[x].DocumentosRelacionados[i], pago.TipoCambio, pago.Monto);
-                                            TImporteDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * (decimal)tipoCambioDR;
-                                            TBaseDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * (decimal)tipoCambioDR;
+                                            TImporteDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * tipoCambioDR,8);
+                                            TBaseDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * tipoCambioDR,8);
                                         }
                                         else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString() == "MXN" && pago.Moneda.ToString() == "USD")
                                         {
                                             tipoCambioDR = (decimal)pago.TipoCambio;
-                                            TImporteDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe / tipoCambioDR;
-                                            TBaseDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base / tipoCambioDR;
+                                            TImporteDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe / tipoCambioDR,6);
+                                            TBaseDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base / tipoCambioDR,6);
                                         } else if ((complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString() != "MXN" && pago.Moneda.ToString() == "USD") || (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString() == "USD" && pago.Moneda.ToString() != "MXN"))
                                         {
                                             tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(complementoPago.Pagos[x].DocumentosRelacionados[i], pago.TipoCambio, pago.Monto);
-                                            TImporteDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * (decimal)tipoCambioDR;
-                                            TBaseDR = ((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * (decimal)tipoCambioDR);
+                                            TImporteDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * (decimal)tipoCambioDR,6);
+                                            TBaseDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * (decimal)tipoCambioDR,6);
 
 
                                         }
                                     } else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda == pago.Moneda) {
                                         tipoCambioDR = (Decimal)pago.TipoCambio;
-                                        TImporteDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe; /*(decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * tipoCambioDR;*/
-                                        TBaseDR = (decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base;/*(decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * tipoCambioDR;*/
+                                        TImporteDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe,6); /*(decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * tipoCambioDR;*/
+                                        TBaseDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base,6);/*(decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * tipoCambioDR;*/
                                     }
                                     if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "002" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Tasa &&
                                          (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.16
                                          || complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.08))
                                     {
-                                        tasaIVABaseT += Convert.ToDouble(decimal.Round(TBaseDR, 6));
+                                        tasaIVABaseT += Convert.ToDouble(TBaseDR);
                                         tasaIVATipoFactorT = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor.ToString();
                                         tasaIVATasaOCuota = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
                                         tasaIVAImpuestoT = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
-                                        tasaIVAImporteT += Convert.ToDouble(decimal.Round(TImporteDR, 6));
+                                        tasaIVAImporteT += Convert.ToDouble(TImporteDR);
                                     }else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "002" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Tasa &&
                                          (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.0 ))
                                     {
-                                        tasaIVABaseT0 += Convert.ToDouble(decimal.Round(TBaseDR, 6));
+                                        tasaIVABaseT0 += Convert.ToDouble(TBaseDR);
                                         tasaIVATipoFactorT0 = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor.ToString();
                                         tasaIVATasaOCuota0 = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
                                         tasaIVAImpuestoT0 = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
-                                        tasaIVAImporteT0 += Convert.ToDouble(decimal.Round(TImporteDR, 6));
+                                        tasaIVAImporteT0 += Convert.ToDouble(TImporteDR);
                                     }
 
                                     else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "003" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Tasa &&
@@ -507,19 +507,19 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                                          complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.06 || complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.03 ||
                                          complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.0)
                                     {
-                                        cuotaIEPSBaseT += Convert.ToDouble(decimal.Round(TBaseDR, 6));
+                                        cuotaIEPSBaseT += Convert.ToDouble(TBaseDR);
                                         cuotaIEPSTipoFactorT = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor.ToString();
                                         cuotaIEPSTasaOCuota = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
                                         cuotaIEPSImpuestoT = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
-                                        cuotaIEPSImporteT += Convert.ToDouble(decimal.Round(TImporteDR, 6));
+                                        cuotaIEPSImporteT += Convert.ToDouble(TImporteDR);
                                     }
                                     else
                                     {
-                                        defaultBaseT += Convert.ToDouble(decimal.Round(TBaseDR, 6));
+                                        defaultBaseT += Convert.ToDouble(TBaseDR);
                                         defaultTipoFactorT = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor.ToString();
                                         defaultTasaOCuotat = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
                                         defaultImpuestoT = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
-                                        defaultImporteT += Convert.ToDouble(decimal.Round(TImporteDR, 6));
+                                        defaultImporteT += Convert.ToDouble(TImporteDR);
                                     }
                                 }
                             }
@@ -571,7 +571,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             {
                 var xmlTimbrado = objCfdi.XmlTimbrado;
                 //guardar string en un archivo
-                 //System.IO.File.WriteAllText(pathXml, xmlTimbrado);
+                // System.IO.File.WriteAllText(pathXml, xmlTimbrado);
             }
             else
             {

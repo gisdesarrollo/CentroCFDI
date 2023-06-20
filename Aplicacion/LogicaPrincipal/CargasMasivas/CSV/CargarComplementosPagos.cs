@@ -4,6 +4,8 @@ using API.Operaciones.ComplementosPagos;
 using API.Operaciones.Facturacion;
 using API.Relaciones;
 using Aplicacion.Context;
+using Aplicacion.LogicaPrincipal.ComplementosPagos;
+using Aplicacion.LogicaPrincipal.Facturas;
 using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using CsvHelper;
 using System;
@@ -22,7 +24,8 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly PagosManager _pagosManager = new PagosManager();
-
+        private readonly LogicaFacadeFacturas _logicaFacadeFacturas = new LogicaFacadeFacturas();
+        private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
         #endregion
 
         public List<ComplementoPago> Importar(string path, int sucursalId, Meses mes, bool previsualizacion)
@@ -116,7 +119,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var importeSaldoInsoluto = String.IsNullOrEmpty(registros[i][14]) ? 0.0 : Convert.ToDouble(registros[i][14]);
 
                             #region Pagos
-
+                            
                             #region Documentos Relacionados
                             
                             var documentoRelacionado = new DocumentoRelacionado
@@ -133,11 +136,12 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 NumeroParcialidad = Convert.ToInt32(String.IsNullOrEmpty(numeroParcialidad) ? "1" : numeroParcialidad),
                                 Serie = facturaEmitida.Serie,
                                 EquivalenciaDR = equivalenciaDR,
-                                ObjetoImpuestoId = "01"
+                                //ObjetoImpuestoId = "01"
                             };
 
                             #endregion
-
+                            SetImpuestosDocRelacionado(ref documentoRelacionado,sucursalId);
+                            
                             if (pagos.Any(p => p.NumeroOperacion == numeroOperacion && p.FechaPago == fechaPago && p.Monto == monto && p.DocumentosRelacionados.Any(dr => dr.FacturaEmitida.ReceptorId == documentoRelacionado.FacturaEmitida.ReceptorId)))
                             {
                                 pagos.First(p => p.NumeroOperacion == numeroOperacion && p.FechaPago == fechaPago && p.Monto == monto && p.DocumentosRelacionados.Any(dr => dr.FacturaEmitida.ReceptorId == documentoRelacionado.FacturaEmitida.ReceptorId)).DocumentosRelacionados.Add(documentoRelacionado);
@@ -242,6 +246,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
             {
                 foreach (var complementoPago in complementosPago)
                 {
+                    
                     _db.ComplementosPago.Add(complementoPago);
                     try
                     {
@@ -257,7 +262,133 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                         decimal totalTrasladosImpuestoIVA0 = 0;
                         decimal totalTrasladosBaseIVAExento = 0;
 
-                        
+                        #region Impuesto
+                        if (complementoPago.Pagos != null)
+                        {
+                            foreach(var pago in complementoPago.Pagos)
+                            {
+
+                                foreach (var DRelacionado in pago.DocumentosRelacionados)
+                                {
+
+                                    //DRelacionado.FacturaEmitida = null;
+                                    //DRelacionado.Pago = null;
+
+                                    Decimal tipoCambioDR = 1;
+                                    //var pago = _db.Pagos.Find(DRelacionado.PagoId);
+                                    if (DRelacionado.Traslados != null)
+                                    {
+                                        foreach (var traslado in DRelacionado.Traslados)
+                                        {
+                                            decimal baseDR = (decimal)traslado.Base;
+                                            decimal ImporteDR = (decimal)traslado.Importe;
+
+
+                                            if (pago.Moneda != DRelacionado.Moneda)
+                                            {
+                                                if (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() == "MXN")
+                                                {
+                                                    tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                                    decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
+                                                    decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
+                                                    baseDR = decimal.Round(baseDRFormt, 6);
+                                                    ImporteDR = decimal.Round(ImporteDRFormt, 6);
+                                                }
+                                                else if (DRelacionado.Moneda.ToString() == "MXN" && pago.Moneda.ToString() == "USD")
+                                                {
+                                                    baseDR = (decimal)traslado.Base;
+                                                    ImporteDR = (decimal)traslado.Importe;
+
+                                                }
+                                                else if ((DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() == "USD") || (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() != "MXN"))
+                                                {
+                                                    tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                                    decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
+                                                    decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
+                                                    /*Conversion a pesos MXN*/
+                                                    var tipoCambioPgo = (Decimal)pago.TipoCambio;
+                                                    baseDR = (decimal)baseDRFormt * tipoCambioPgo;
+                                                    ImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;
+                                                }
+                                            }
+                                            else if (DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && DRelacionado.Moneda == pago.Moneda)
+                                            {
+                                                tipoCambioDR = (Decimal)pago.TipoCambio;
+                                                baseDR = (decimal)traslado.Base * tipoCambioDR;
+                                                ImporteDR = (decimal)traslado.Importe * tipoCambioDR;
+                                            }
+
+                                            if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.16 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                            {
+                                                totalTrasladosBaseIVA16 += baseDR;
+                                                totalTrasladosImpuestoIVA16 += ImporteDR;
+                                            }
+                                            if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.08 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                            {
+                                                totalTrasladosBaseIVA8 += baseDR;
+                                                totalTrasladosImpuestoIVA8 += ImporteDR;
+                                            }
+                                            if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.0 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                            {
+                                                totalTrasladosBaseIVA0 += baseDR;
+                                                totalTrasladosImpuestoIVA0 += ImporteDR;
+                                            }
+                                            if (traslado.Impuesto == "002" && traslado.TipoFactor == c_TipoFactor.Exento)
+                                            {
+                                                totalTrasladosBaseIVAExento += baseDR;
+                                            }
+
+                                        }
+
+                                    }
+                                    else { DRelacionado.Traslado = null; DRelacionado.Traslados = null; }
+                                    if (DRelacionado.Retenciones != null)
+                                    {
+                                        foreach (var retencion in DRelacionado.Retenciones)
+                                        {
+                                            decimal RImporteDR = (decimal)retencion.Importe;
+
+                                            if (pago.Moneda != DRelacionado.Moneda)
+                                            {
+                                                if (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() == "MXN")
+                                                {
+                                                    tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                                    decimal ImporteDRFormt = (decimal)retencion.Importe * (decimal)tipoCambioDR;
+
+                                                    RImporteDR = decimal.Round(ImporteDRFormt, 6);
+                                                }
+                                                else if (DRelacionado.Moneda.ToString() == "MXN" && pago.Moneda.ToString() == "USD")
+                                                {
+
+                                                    RImporteDR = (decimal)retencion.Importe;
+
+                                                }
+                                                else if ((DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() == "USD") || (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() != "MXN"))
+                                                {
+                                                    tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                                    decimal ImporteDRFormt = (decimal)retencion.Importe * (decimal)tipoCambioDR;
+
+                                                    var tipoCambioPgo = (Decimal)pago.TipoCambio;
+                                                    RImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;
+                                                }
+
+                                            }
+                                            else if (DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && DRelacionado.Moneda == pago.Moneda)
+                                            {
+                                                tipoCambioDR = (Decimal)pago.TipoCambio;
+                                                RImporteDR = (decimal)retencion.Importe * tipoCambioDR;
+                                            }
+
+                                            if (retencion.Impuesto == "001") { totalRetencionesISR += RImporteDR; }
+                                            if (retencion.Impuesto == "002") { totalRetencionesIVA += RImporteDR; }
+                                            if (retencion.Impuesto == "003") { totalRetencionesIEPS += RImporteDR; }
+                                        }
+                                    }
+                                    else { DRelacionado.Retencion = null; DRelacionado.Retenciones = null; }
+                                }
+                            }
+                        }
+                    #endregion
                         double montoTPagos = 0;
                         if (complementoPago.Pagos != null)
                         {
@@ -293,7 +424,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     };
                         
                         _db.SaveChanges();
-                       
+
                     }
                     catch (DbEntityValidationException dbEx)
                     {
@@ -423,5 +554,56 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
             return formaPagoValid;
         }
         #endregion
+
+        private void SetImpuestosDocRelacionado(ref DocumentoRelacionado documentoRelacionado,int sucursalId )
+        {
+            
+            //busca los documentos relacionados que tengan objeto impuesto
+            documentoRelacionado.Traslados = new List<TrasladoDR>();
+            documentoRelacionado.Retenciones = new List<RetencionDR>();
+            var impuestosDto = _logicaFacadeFacturas.GetDataFactura(documentoRelacionado.FacturaEmitidaId, sucursalId);
+            if (impuestosDto.Count > 0)
+            {
+                documentoRelacionado.ObjetoImpuestoId = "02";
+                foreach (var impuesto in impuestosDto)
+                {
+                    if (impuesto.TipoImpuesto == "Traslado")
+                    {
+                        Decimal baseImpT = _logicaFacadeFacturas.BaseSobreIva(Convert.ToDecimal(documentoRelacionado.ImportePagado), impuesto.TasaOCuota);
+                        
+
+                        TrasladoDR traslado = new TrasladoDR()
+                        {
+                            Base = Convert.ToDouble(Decimal.Round((decimal)baseImpT,6)),
+                            Impuesto = impuesto.Impuesto,
+                            TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), impuesto.TipoFactor, true),
+                            TasaOCuota = impuesto.TasaOCuota,
+                            Importe = Convert.ToDouble(Decimal.Round((decimal)baseImpT * impuesto.TasaOCuota, 6))
+                        };
+                        documentoRelacionado.Traslados.Add(traslado);
+                    }
+                    if (impuesto.TipoImpuesto == "Retencion")
+                    {
+                        double baseImpR = Convert.ToDouble(_logicaFacadeFacturas.BaseSobreIva(Convert.ToDecimal(documentoRelacionado.ImportePagado), impuesto.TasaOCuota));
+                        RetencionDR retencion = new RetencionDR()
+                        {
+                            Base = Convert.ToDouble(Decimal.Round((decimal)baseImpR,6)),
+                            Impuesto = impuesto.Impuesto,
+                            TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), impuesto.TipoFactor, true),
+                            TasaOCuota = impuesto.TasaOCuota,
+                            Importe = Convert.ToDouble(Decimal.Round((decimal)baseImpR * impuesto.TasaOCuota, 6))
+                        };
+                        documentoRelacionado.Retenciones.Add(retencion);
+                    }
+                }
+            }
+            else
+            {
+                documentoRelacionado.ObjetoImpuestoId = "01";
+            }
+
+            
+        }
+        
     }
 }

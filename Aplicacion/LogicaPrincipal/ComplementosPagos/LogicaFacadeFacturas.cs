@@ -1,9 +1,11 @@
 ﻿using API.Enums;
+using API.Models.Dto;
 using API.Operaciones.ComplementosPagos;
 using API.Operaciones.ComprobantesCfdi;
 using API.Operaciones.Facturacion;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
+using Aplicacion.LogicaPrincipal.Validacion;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +22,7 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
         private readonly Validar _validar = new Validar();
         private readonly Guardar _guardar = new Guardar();
         private readonly Decodificar _decodificar = new Decodificar();
+        private readonly DecodificaFacturas _decodificaCfdi = new DecodificaFacturas();
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly OperacionesStreams _operacionesStreams = new OperacionesStreams();
 
@@ -148,6 +151,25 @@ namespace Aplicacion.LogicaPrincipal.ComplementosPagos
             File.Delete(pathXml);
 
             return factura;
+        }
+
+        public List<ImpuestoDeserealizadoDto> GetDataFactura(int FacturaemitidaId, int sucursalId)
+        {
+            FacturaEmitida data = _db.FacturasEmitidas.Where(a => a.Id == FacturaemitidaId && a.EmisorId == sucursalId).FirstOrDefault();
+            var impuestosDTO = _decodificaCfdi.DecodificarFactura(data);
+            return impuestosDTO;
+        }
+
+        public decimal BaseSobreIva(decimal ImportePagado, decimal iva)
+        {
+            
+            string ivaString = iva.ToString();
+            ivaString = "1" + ivaString.Substring(1);
+            decimal Iva = Convert.ToDecimal(ivaString);
+            decimal baseImpuesto = Decimal.Round(ImportePagado / Iva , 6);
+
+
+        return baseImpuesto;
         }
 
 

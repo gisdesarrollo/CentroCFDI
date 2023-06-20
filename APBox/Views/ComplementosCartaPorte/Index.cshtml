@@ -57,6 +57,13 @@
                 </div>
                 <div id="cancelar-view"></div>
                 <div class="clearfix"></div>
+                <!--begin::Search-->
+
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+                    <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
+                </div>
+                <!--end::Search-->
                 <div class="row">
                     <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
                         <thead>
@@ -179,11 +186,11 @@
                                         }
                                         else
                                         {
-                                        <div class="badge badge-light-info">
-                                            <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
-                                        </div>
+                                            <div class="badge badge-light-info">
+                                                <p><span class="fa fa-edit font-purple"></span> Pendiente</p>
+                                            </div>
                                         }
-                                        </td>
+                                    </td>
                                     <td class="text-end">
                                         <!--begin::Action=-->
                                         <a href="#" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -214,12 +221,12 @@
                                                 <!--begin::Menu item-->
                                                 if (User.IsInRole("EDICION"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
                                                 {
-                                                <div class="menu-item px-3">@Html.ActionLink("Editar", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
+                                                    <div class="menu-item px-3">@Html.ActionLink("Editar", "Edit", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                 }
                                                 <div class="menu-item px-3">@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                                 if (User.IsInRole("BORRADO"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
                                                 {
-                                                <div class="menu-item px-3">@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { onclick = "return confirm('¿Estás seguro de elminar el complemento?');", @class = "menu-link px-3" })</div>
+                                                    <div class="menu-item px-3">@Html.ActionLink("Eliminar", "Delete", new { id = Model.ComplementosCartaPorte[i].Id }, new { onclick = "return confirm('¿Estás seguro de elminar el complemento?');", @class = "menu-link px-3" })</div>
                                                 }
                                                 <!--end::Menu item-->
                                             }

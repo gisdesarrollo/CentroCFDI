@@ -8,6 +8,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using APBox.Context;
+using API.Enums;
 using API.Models.Dto;
 using API.Models.Facturas;
 using API.Operaciones.Facturacion;
@@ -49,18 +50,22 @@ namespace APBox.Controllers.Catalogos
 
             List<facturareferencia> listaFacturaReferencia = new List<facturareferencia>();
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
-            bool isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+            bool isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                 {
+                    //get status
+                    FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                    facturasEmitidas.Status = facturaEmitStatus.Status;
                     facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
                     if (queryFacturas != null)
                     {
 
                         facturasEmitidas.Referencia = queryFacturas.Referencia;
-                        facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                        facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        //facturasEmitidas.Status = queryFacturas.Status;
+                       // facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                       // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
                     }
 
                 }
@@ -87,18 +92,22 @@ namespace APBox.Controllers.Catalogos
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
-            isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+            isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
 
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                 {
+                    //get status
+                    FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                    facturasEmitidas.Status = facturaEmitStatus.Status;
                     facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
                     if (queryFacturas != null)
                     {
                         facturasEmitidas.Referencia = queryFacturas.Referencia;
-                        facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                        facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        //facturasEmitidas.Status = queryFacturas.Status;
+                        //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                        // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
                     }
                 }
             }
@@ -122,18 +131,18 @@ namespace APBox.Controllers.Catalogos
 
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
 
-            isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+            isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
 
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                 {
                     facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
                     if (queryFacturas != null)
                     {
                         facturasEmitidas.Referencia = queryFacturas.Referencia;
-                        facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                        facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                        //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
                     }
                 }
             }
@@ -149,10 +158,25 @@ namespace APBox.Controllers.Catalogos
         [HttpPost]
         public ActionResult ReporteFacturasEmitidas(FacturasEmitidasModel facturasEmitidasModel)
         {
-
+            bool isEmpty;
             if (ModelState.IsValid)
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+            }
+            isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
+
+            if (isEmpty)
+            {
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                {
+                    facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                    if (queryFacturas != null)
+                    {
+                        facturasEmitidas.Referencia = queryFacturas.Referencia;
+                        //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                        //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                    }
+                }
             }
 
             ViewBag.Controller = "FacturasEmitidas";
@@ -620,7 +644,7 @@ namespace APBox.Controllers.Catalogos
         public facturareferencia facturaidferencia(int id)
         {
             var listReferencia = new facturareferencia();
-            const string query = @"select  d.Referencia,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos  from cp_domicilio d " +
+            const string query = @"select  d.Referencia,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos , fe.Status  from cp_domicilio d " +
                         "join  cp_ubicaciones p  on(d.Id = p.Domicilio_Id) " +
                         "join cp_complementocartaporte cm on(cm.Id = p.Complemento_Id) " +
                         "join ori_facturasemitidas fe on (fe.Id= cm.FacturaEmitidaId) " +
@@ -642,6 +666,8 @@ namespace APBox.Controllers.Catalogos
             public double TotalImpuestoTrasladado { get; set; }
 
             public double TotalImpuestoRetenidos { get; set; }
+
+            public Status Status { get; set; }
 
         }
 

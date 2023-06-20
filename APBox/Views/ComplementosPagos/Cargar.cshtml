@@ -207,10 +207,7 @@
                                                             <b>Id Documento - UUID Factura</b><br />
                                                             @documentoRelacionado.IdDocumento
                                                         </td>
-                                                        @*<td>
-            <b>Método de Pago</b><br />
-            @documentoRelacionado.MetodoPago
-        </td>*@
+                                                        
                                                         <td>
                                                             <b>Moneda</b><br />
                                                             @documentoRelacionado.Moneda
@@ -233,15 +230,88 @@
                                                             <b>Importe Saldo Insoluto</b><br />
                                                             @documentoRelacionado.ImporteSaldoInsoluto.Value.ToString("c")
                                                         </td>
-                                                        @*<td>
-                                                            <b>Método de Pago</b><br />
-                                                            @documentoRelacionado.MetodoPago
-                                                        </td>*@
                                                         <td>
                                                             <b>Número de Parcialidad</b><br />
                                                             @documentoRelacionado.NumeroParcialidad
                                                         </td>
                                                     </tr>
+                                                    @if (documentoRelacionado.Traslados.Count > 0)
+                                                    {
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <b>Impuesto Doc Relacionado</b>
+                                                        </td>
+                                                    </tr>
+                                                    foreach (var traslado in documentoRelacionado.Traslados)
+                                                    {
+                                                       <tr>
+                                                        <td>
+                                                            <b>Traslado</b>
+                                                        </td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td>
+                                                            <b>Base</b><br />
+                                                            @traslado.Base
+                                                        </td>
+                                                        <td>
+                                                            <b>Impuesto</b><br />
+                                                            @traslado.Impuesto
+                                                        </td>
+                                                        <td>
+                                                            <b>Tipo Factor</b><br />
+                                                            @traslado.TipoFactor
+                                                        </td>
+                                                        <td>
+                                                            <b>Tasa O Cuota</b><br />
+                                                            @traslado.TasaOCuota
+                                                        </td>
+                                                        <td>
+                                                            <b>Importe</b><br />
+                                                            @traslado.Importe
+                                                        </td>
+                                                    </tr>
+                                                        }
+                                                    }
+
+                                                     @if (documentoRelacionado.Retenciones.Count > 0)
+                                                    {
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <b>Impuesto Doc Relacionado</b>
+                                                        </td>
+                                                    </tr>
+                                                    foreach (var retencion in documentoRelacionado.Retenciones)
+                                                    {
+                                                       <tr>
+                                                        <td>
+                                                            <b>Retencion</b>
+                                                        </td>
+                                                        </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Base</b><br />
+                                                            @retencion.Base
+                                                        </td>
+                                                        <td>
+                                                            <b>Impuesto</b><br />
+                                                            @retencion.Impuesto
+                                                        </td>
+                                                        <td>
+                                                            <b>Tipo Factor</b><br />
+                                                            @retencion.TipoFactor
+                                                        </td>
+                                                        <td>
+                                                            <b>Tasa O Cuota</b><br />
+                                                            @retencion.TasaOCuota
+                                                        </td>
+                                                        <td>
+                                                            <b>Importe</b><br />
+                                                            @retencion.Importe
+                                                        </td>
+                                                    </tr>
+                                                        }
+                                                    }
                                                 </table>
 
                                                 }

@@ -12,7 +12,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
         public Decimal GetTipoCambioDocRelacionadoUSD(DocumentoRelacionado documentoRelacionado, double TipoCambioPago, double MontoPago)
         {
             Decimal valor = ((Decimal)documentoRelacionado.ImportePagado / (Decimal)documentoRelacionado.EquivalenciaDR) / (Decimal)documentoRelacionado.ImportePagado;
-            Decimal valorFormat = decimal.Round(valor, 12);//7
+            //Decimal valorFormat = Decimal.Round(valor, 12);//7 , 12
             return valor;
         }
     }

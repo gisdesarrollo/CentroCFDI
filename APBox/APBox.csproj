@@ -207,9 +207,6 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PdfSharp.Charting.resources">
-      <HintPath>..\..\..\..\..\Descargas(C)\PdfSharp.Charting.resources.dll</HintPath>
-    </Reference>
     <Reference Include="RazorEngine, Version=3.8.2.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.8.2\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
@@ -229,12 +226,22 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.6.0.0\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RESPALDO-PROYECTOS\CENTRO-CFDI\ApBox-master2023-05-19\ApBox-master\Aplicacion\bin\Release\System.IO.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RESPALDO-PROYECTOS\CENTRO-CFDI\ApBox-master2023-05-19\ApBox-master\Aplicacion\bin\Release\System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
     <Reference Include="System.Management" />
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Aplicacion\bin\Release\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http, Version=4.1.0.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.1.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -247,7 +254,8 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RESPALDO-PROYECTOS\CENTRO-CFDI\ApBox-master2023-05-19\ApBox-master\APBox\bin\System.Runtime.Serialization.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -418,20 +426,15 @@
     <Content Include="bin\Antlr3.Runtime.dll" />
     <Content Include="bin\Antlr3.Runtime.pdb" />
     <Content Include="bin\APBox.dll" />
-    <Content Include="bin\APBox.dll.config" />
     <Content Include="bin\APBox.pdb" />
     <Content Include="bin\API.dll" />
-    <Content Include="bin\API.dll.config" />
     <Content Include="bin\API.pdb" />
     <Content Include="bin\Aplicacion.dll" />
-    <Content Include="bin\Aplicacion.dll.config" />
     <Content Include="bin\Aplicacion.pdb" />
     <Content Include="bin\Aplicacion.XmlSerializers.dll" />
-    <Content Include="bin\Archivos\Formatos\LayoutPagos.csv" />
     <Content Include="bin\BeginCollectionItem.dll" />
     <Content Include="bin\BouncyCastle.Crypto.dll" />
     <Content Include="bin\BusApBox.exe" />
-    <Content Include="bin\BusApBox.exe.config" />
     <Content Include="bin\BusApBox.pdb" />
     <Content Include="bin\CFDI.dll" />
     <Content Include="bin\CodeScales.Http.dll" />
@@ -454,7 +457,6 @@
     <Content Include="bin\Google.Protobuf.dll" />
     <Content Include="bin\Google.Protobuf.pdb" />
     <Content Include="bin\Google.Protobuf.xml" />
-    <Content Include="bin\Grpc.Core.Api.xml" />
     <Content Include="bin\ICSharpCode.SharpZipLib.dll" />
     <Content Include="bin\ICSharpCode.SharpZipLib.pdb" />
     <Content Include="bin\ICSharpCode.SharpZipLib.xml" />
@@ -533,132 +535,37 @@
     <Content Include="bin\MySql.Data.EntityFramework.dll" />
     <Content Include="bin\MySql.Data.EntityFramework.xml" />
     <Content Include="bin\MySql.Data.xml" />
-    <Content Include="bin\MySqlConnector.dll" />
-    <Content Include="bin\MySqlConnector.xml" />
-    <Content Include="bin\netstandard.dll" />
-    <Content Include="bin\Newtonsoft.Json.Bson.dll" />
-    <Content Include="bin\Newtonsoft.Json.Bson.pdb" />
-    <Content Include="bin\Newtonsoft.Json.Bson.xml" />
     <Content Include="bin\Newtonsoft.Json.dll" />
     <Content Include="bin\Newtonsoft.Json.pdb" />
     <Content Include="bin\Newtonsoft.Json.xml" />
     <Content Include="bin\OpenHtmlToPdf.dll" />
     <Content Include="bin\Owin.dll" />
-    <Content Include="bin\PdfSharp.Charting.xml" />
-    <Content Include="bin\PdfSharp.xml" />
     <Content Include="bin\RabbitMQ.Client.dll" />
     <Content Include="bin\RabbitMQ.Client.xml" />
     <Content Include="bin\RazorEngine.dll" />
     <Content Include="bin\RazorEngine.xml" />
     <Content Include="bin\RVCancelacion.dll" />
     <Content Include="bin\RVCFDI33.dll" />
-    <Content Include="bin\SendGrid.dll" />
-    <Content Include="bin\SendGrid.pdb" />
-    <Content Include="bin\SendGrid.xml" />
     <Content Include="bin\SendGridMail.dll" />
-    <Content Include="bin\System.AppContext.dll" />
     <Content Include="bin\System.Buffers.dll" />
     <Content Include="bin\System.Buffers.xml" />
-    <Content Include="bin\System.Collections.Concurrent.dll" />
-    <Content Include="bin\System.Collections.dll" />
-    <Content Include="bin\System.Collections.NonGeneric.dll" />
-    <Content Include="bin\System.Collections.Specialized.dll" />
-    <Content Include="bin\System.ComponentModel.dll" />
-    <Content Include="bin\System.ComponentModel.EventBasedAsync.dll" />
-    <Content Include="bin\System.ComponentModel.Primitives.dll" />
-    <Content Include="bin\System.ComponentModel.TypeConverter.dll" />
-    <Content Include="bin\System.Console.dll" />
-    <Content Include="bin\System.Data.Common.dll" />
-    <Content Include="bin\System.Diagnostics.Contracts.dll" />
-    <Content Include="bin\System.Diagnostics.Debug.dll" />
-    <Content Include="bin\System.Diagnostics.DiagnosticSource.dll" />
-    <Content Include="bin\System.Diagnostics.DiagnosticSource.xml" />
-    <Content Include="bin\System.Diagnostics.FileVersionInfo.dll" />
-    <Content Include="bin\System.Diagnostics.Process.dll" />
-    <Content Include="bin\System.Diagnostics.StackTrace.dll" />
-    <Content Include="bin\System.Diagnostics.TextWriterTraceListener.dll" />
-    <Content Include="bin\System.Diagnostics.Tools.dll" />
-    <Content Include="bin\System.Diagnostics.TraceSource.dll" />
-    <Content Include="bin\System.Diagnostics.Tracing.dll" />
-    <Content Include="bin\System.Drawing.Primitives.dll" />
-    <Content Include="bin\System.Dynamic.Runtime.dll" />
-    <Content Include="bin\System.Globalization.Calendars.dll" />
-    <Content Include="bin\System.Globalization.dll" />
-    <Content Include="bin\System.Globalization.Extensions.dll" />
     <Content Include="bin\System.IO.Compression.dll" />
     <Content Include="bin\System.IO.Compression.ZipFile.dll" />
-    <Content Include="bin\System.IO.dll" />
-    <Content Include="bin\System.IO.FileSystem.dll" />
-    <Content Include="bin\System.IO.FileSystem.DriveInfo.dll" />
-    <Content Include="bin\System.IO.FileSystem.Primitives.dll" />
-    <Content Include="bin\System.IO.FileSystem.Watcher.dll" />
-    <Content Include="bin\System.IO.IsolatedStorage.dll" />
-    <Content Include="bin\System.IO.MemoryMappedFiles.dll" />
-    <Content Include="bin\System.IO.Pipes.dll" />
-    <Content Include="bin\System.IO.UnmanagedMemoryStream.dll" />
-    <Content Include="bin\System.Linq.dll" />
-    <Content Include="bin\System.Linq.Expressions.dll" />
-    <Content Include="bin\System.Linq.Parallel.dll" />
-    <Content Include="bin\System.Linq.Queryable.dll" />
-    <Content Include="bin\System.Memory.dll" />
-    <Content Include="bin\System.Memory.xml" />
-    <Content Include="bin\System.Net.Http.dll" />
-    <Content Include="bin\System.Net.NameResolution.dll" />
-    <Content Include="bin\System.Net.NetworkInformation.dll" />
-    <Content Include="bin\System.Net.Ping.dll" />
-    <Content Include="bin\System.Net.Primitives.dll" />
-    <Content Include="bin\System.Net.Requests.dll" />
-    <Content Include="bin\System.Net.Security.dll" />
-    <Content Include="bin\System.Net.Sockets.dll" />
-    <Content Include="bin\System.Net.WebHeaderCollection.dll" />
-    <Content Include="bin\System.Net.WebSockets.Client.dll" />
-    <Content Include="bin\System.Net.WebSockets.dll" />
     <Content Include="bin\System.Numerics.Vectors.dll" />
     <Content Include="bin\System.Numerics.Vectors.xml" />
-    <Content Include="bin\System.ObjectModel.dll" />
-    <Content Include="bin\System.Reflection.dll" />
-    <Content Include="bin\System.Reflection.Extensions.dll" />
-    <Content Include="bin\System.Reflection.Primitives.dll" />
-    <Content Include="bin\System.Resources.Reader.dll" />
-    <Content Include="bin\System.Resources.ResourceManager.dll" />
-    <Content Include="bin\System.Resources.Writer.dll" />
     <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="bin\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="bin\System.Runtime.CompilerServices.VisualC.dll" />
-    <Content Include="bin\System.Runtime.dll" />
-    <Content Include="bin\System.Runtime.Extensions.dll" />
-    <Content Include="bin\System.Runtime.Handles.dll" />
-    <Content Include="bin\System.Runtime.InteropServices.dll" />
-    <Content Include="bin\System.Runtime.InteropServices.RuntimeInformation.dll" />
-    <Content Include="bin\System.Runtime.Numerics.dll" />
-    <Content Include="bin\System.Runtime.Serialization.Formatters.dll" />
-    <Content Include="bin\System.Runtime.Serialization.Json.dll" />
     <Content Include="bin\System.Runtime.Serialization.Primitives.dll" />
-    <Content Include="bin\System.Runtime.Serialization.Xml.dll" />
-    <Content Include="bin\System.Security.Claims.dll" />
     <Content Include="bin\System.Security.Cryptography.Algorithms.dll" />
-    <Content Include="bin\System.Security.Cryptography.Csp.dll" />
     <Content Include="bin\System.Security.Cryptography.Encoding.dll" />
     <Content Include="bin\System.Security.Cryptography.Primitives.dll" />
     <Content Include="bin\System.Security.Cryptography.X509Certificates.dll" />
-    <Content Include="bin\System.Security.Principal.dll" />
-    <Content Include="bin\System.Security.SecureString.dll" />
-    <Content Include="bin\System.Text.Encoding.dll" />
-    <Content Include="bin\System.Text.Encoding.Extensions.dll" />
     <Content Include="bin\System.Text.Encodings.Web.dll" />
     <Content Include="bin\System.Text.Encodings.Web.xml" />
     <Content Include="bin\System.Text.Json.dll" />
     <Content Include="bin\System.Text.Json.xml" />
-    <Content Include="bin\System.Text.RegularExpressions.dll" />
-    <Content Include="bin\System.Threading.dll" />
-    <Content Include="bin\System.Threading.Overlapped.dll" />
-    <Content Include="bin\System.Threading.Tasks.dll" />
     <Content Include="bin\System.Threading.Tasks.Extensions.dll" />
     <Content Include="bin\System.Threading.Tasks.Extensions.xml" />
-    <Content Include="bin\System.Threading.Tasks.Parallel.dll" />
-    <Content Include="bin\System.Threading.Thread.dll" />
-    <Content Include="bin\System.Threading.ThreadPool.dll" />
-    <Content Include="bin\System.Threading.Timer.dll" />
     <Content Include="bin\System.ValueTuple.dll" />
     <Content Include="bin\System.ValueTuple.xml" />
     <Content Include="bin\System.Web.dll" />
@@ -669,26 +576,19 @@
     <Content Include="bin\System.Web.Optimization.dll" />
     <Content Include="bin\System.Web.Optimization.xml" />
     <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Razor.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="bin\System.Web.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.Deployment.dll" />
     <Content Include="bin\System.Web.WebPages.Deployment.xml" />
     <Content Include="bin\System.Web.WebPages.dll" />
     <Content Include="bin\System.Web.WebPages.Razor.dll" />
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
-    <Content Include="bin\System.Xml.ReaderWriter.dll" />
-    <Content Include="bin\System.Xml.XDocument.dll" />
-    <Content Include="bin\System.Xml.XmlDocument.dll" />
-    <Content Include="bin\System.Xml.XmlSerializer.dll" />
-    <Content Include="bin\System.Xml.XPath.dll" />
-    <Content Include="bin\System.Xml.XPath.XDocument.dll" />
     <Content Include="bin\TimbradoRV.dll" />
     <Content Include="bin\Ubiety.Dns.Core.dll" />
     <Content Include="bin\Utilerias.dll" />
     <Content Include="bin\WebGrease.dll" />
     <Content Include="bin\Zstandard.Net.dll" />
+    <Content Include="bin\_CDN\custom\css-custom\custom.css" />
     <Content Include="BouncyCastle.Crypto.dll" />
     <Content Include="Content\FileCfdiGenerados\prueba.txt" />
     <Content Include="Content\FileTxt\INGRE-3-20220715145942874.txt" />
@@ -3090,6 +2990,11 @@
     <Content Include="Content\TemplatePDFCartaPorte\PlantillaCartaPorte.cshtml" />
     <Content Include="Content\TemplatePDFPagos\PlantillaPagos33.cshtml" />
     <Content Include="Content\TemplatePDFCartaPorte\PlantillaCartaPorte33.cshtml" />
+    <Content Include="bin\APBox.dll.config" />
+    <Content Include="bin\API.dll.config" />
+    <Content Include="bin\Aplicacion.dll.config" />
+    <Content Include="bin\Archivos\Formatos\LayoutPagos.csv" />
+    <Content Include="bin\BusApBox.exe.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />

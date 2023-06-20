@@ -26,16 +26,16 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             var sucursalId = facturasEmitidasModel.SucursalId;
             //facturasEmitidasModel.FacturasEmitidas = _db.FacturasEmitidas.Where(fe => fe.EmisorId == sucursalId && fe.Fecha >= fechaInicial && fe.Fecha < fechaFinal).ToList();
             facturasEmitidasModel.FacturaEmitidasTemporal = _db.FacturasEmitidasTemp.Where(fe => fe.EmisorId == sucursalId && fe.Fecha >= fechaInicial && fe.Fecha < fechaFinal).ToList();
-            facturasEmitidasModel.FacturasEmitidas = new System.Collections.Generic.List<FacturaEmitida>();
+            //facturasEmitidasModel.FacturasEmitidas = new System.Collections.Generic.List<FacturaEmitida>();
 
-            foreach(var facEmitidaTemp in facturasEmitidasModel.FacturaEmitidasTemporal)
+            /*foreach(var facEmitidaTemp in facturasEmitidasModel.FacturaEmitidasTemporal)
             {
                 FacturaEmitida facturaEmitida = _db.FacturasEmitidas.Find(facEmitidaTemp.Id);
                 if(facturaEmitida != null)
                 {
                     facturasEmitidasModel.FacturasEmitidas.Add(facturaEmitida);
                 }
-            }
+            }*/
         }
 
         public void Cancelar(FacturaEmitida facturaEmitida)

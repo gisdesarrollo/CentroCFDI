@@ -300,6 +300,10 @@
         function CerrarSession() {
             document.getElementById('logoutForm').submit()
         }
+        //click una vez boton submit Timbrar
+        $("form").submit(e => {
+            $('#Timbrar').attr('disabled', true);
+        })
     </script>
 
     <!--begin::Javascript Initialize-->
