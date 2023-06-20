@@ -26,8 +26,8 @@
             <div class="form row">
                 <div class="clearfix"></div>
                 @*@Html.HiddenFor(model => model.Id)
-                    @Html.HiddenFor(model => model.Mercancias_Id)
-                    @Html.HiddenFor(model => model.DetalleMercanciaId)*@
+        @Html.HiddenFor(model => model.Mercancias_Id)
+        @Html.HiddenFor(model => model.DetalleMercanciaId)*@
 
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-2">
@@ -81,25 +81,25 @@
                 }
 
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.PesoEnKg, htmlAttributes: new { @class = "form-label" })
-                @Html.EditorFor(model => model.PesoEnKg, new { htmlAttributes = new { @class = "form-control md-2"} })
-                @Html.ValidationMessageFor(model => model.PesoEnKg, "", new { @class = "text-danger" })
-                
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @Html.LabelFor(model => model.PesoEnKg, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.PesoEnKg, new { htmlAttributes = new { @class = "form-control md-2" } })
+                    @Html.ValidationMessageFor(model => model.PesoEnKg, "", new { @class = "text-danger" })
 
-            </div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.ValorMercancia, htmlAttributes: new { @class = "form-label" })
-                @Html.EditorFor(model => model.ValorMercancia, new { htmlAttributes = new { @class = "form-control mb-2", @id = "ValorMercanciaMer" } })
-                @Html.ValidationMessageFor(model => model.ValorMercancia, "", new { @class = "text-danger" })
-                <div id="ValorMercancia" style="color:red;"></div>
-            </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-2" >
-                    @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
-                    @Html.EnumDropDownListSpecialFor(model => model.Moneda)
-                    @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
 
                 </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-2">
+                    @Html.LabelFor(model => model.ValorMercancia, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ValorMercancia, new { htmlAttributes = new { @class = "form-control mb-2", @id = "ValorMercanciaMer" } })
+                    @Html.ValidationMessageFor(model => model.ValorMercancia, "", new { @class = "text-danger" })
+                    <div id="ValorMercancia" style="color:red;"></div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-3">
+                    @Html.LabelFor(model => model.Moneda, new { @class = "form-label" })
+                    @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
+                    @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
+                </div>
+
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                     @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, htmlAttributes: new { @class = "form-label" })
@@ -121,7 +121,7 @@
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso hiddenDiv">
                     @Html.LabelFor(model => model.DescripEmbalaje, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.DescripEmbalaje, (IEnumerable<SelectListItem>) ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "DesEmbalajeMer" })
+                    @Html.DropDownListFor(model => model.DescripEmbalaje, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "DesEmbalajeMer" })
                     @Html.ValidationMessageFor(model => model.DescripEmbalaje, "", new { @class = "text-danger" })
                     <div id="ClaveMatPeligroso" style="color:red;"></div>
                 </div>
@@ -134,21 +134,21 @@
                 @*</div>*@
 
                 @*<div class="form-group col-xs-12 col-sm-6 col-md-2">
-                        @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
-                        @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select", @id = "objetoImpuestoDrop" })
-                        @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
-                    </div>
+            @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select", @id = "objetoImpuestoDrop" })
+            @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
+        </div>
 
-                    <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
-                        @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
-                        @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
-                        @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
-                        @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
-                        @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
-                        @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
-                    </div>*@
+        <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
+            @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoT" })
+            @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
+            @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select", @id = "CImpuestoR" })
+            @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
+        </div>*@
 
 
 

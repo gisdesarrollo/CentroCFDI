@@ -98,12 +98,12 @@
                 @Html.ValidationMessageFor(model => model.ValorMercancia, "", new { @class = "text-danger" })
                 <div id="ValorMercancia" style="color:red;"></div>
             </div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-2">
-                @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
-                @Html.EnumDropDownListSpecialFor(model => model.Moneda)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.Moneda, new { @class = "form-label" })
+                @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
                 @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
-
             </div>
+
             <div class="form-group col-xs-12 col-sm-6 col-md-4">
                 @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, htmlAttributes: new { @class = "form-label" })
                 <div class="col-md-10">

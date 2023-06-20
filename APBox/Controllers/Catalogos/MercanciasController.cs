@@ -60,7 +60,7 @@ namespace APBox.Controllers.Catalogos
                     Dimensiones = Dimensiones,
                     PesoEnKg = PesoEnKg,
                     ValorMercancia = ValorMercancia,
-                    Moneda = (API.Enums.c_Moneda)Enum.Parse(typeof(API.Enums.c_Moneda), Moneda.ToString()),
+                    Moneda =c_Moneda.MXN,
                     ClaveMaterialPeligroso = ClaveMaterialPeligroso,
                     DescripEmbalaje = DescripEmbalaje,
                     TipoEmbalaje_Id = TipoEmbalaje_Id,

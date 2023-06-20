@@ -397,11 +397,12 @@
                                                 @Html.EditorFor(model => model.CondicionesPago, new { htmlAttributes = new { @class = "form-control mb-2" } })
                                                 @Html.ValidationMessageFor(model => model.CondicionesPago, "", new { @class = "text-danger" })
                                             </div>
-                                            <div class="form-group col-xs-12 col-sm-6 col-md-4" id="moneda">
-                                                @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
-                                                @Html.EnumDropDownListSpecialFor(model => model.Moneda)
+                                            <div class="form-group col-xs-12 col-sm-3">
+                                                @Html.LabelFor(model => model.Moneda, new { @class = "form-label" })
+                                                @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
                                                 @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
                                             </div>
+
                                         </div>
                                         <div class="row">
                                             <i class="col-xs-12">Al agregar los conceptos, estos valores se actualizaran en automático</i>
@@ -1076,7 +1077,7 @@
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, htmlAttributes: new { @class = "form-label" })
                                             <div class="col-md-10">
                                                 <div class="checkbox">
-                                                    @Html.CheckBoxFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, new { @class = "form-check-input"})
+                                                    @Html.CheckBoxFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, new { @class = "form-check-input" })
                                                     @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.MaterialPeligrosos, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -1114,11 +1115,12 @@
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.ValorMercancia, "", new { @class = "text-danger" })
                                         </div>
 
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4">
-                                            @Html.LabelFor(model => model.Mercancias.Mercancia.Moneda, htmlAttributes: new { @class = "form-label" })
-                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.Moneda, htmlAttributes: new { @class = "form-control" })
+                                        <div class="form-group col-xs-12 col-sm-3">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.Moneda, new { @class = "form-label" })
+                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "text-danger" })
                                         </div>
+
                                         @*<div @ActFracArancelaria id="activaFraccionArancelaria">*@
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 activaFraccionArancelaria hiddenDiv">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.FraccionArancelarias, htmlAttributes: new { @class = "form-label" })
