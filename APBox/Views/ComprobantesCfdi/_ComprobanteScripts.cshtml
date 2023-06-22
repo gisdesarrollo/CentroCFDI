@@ -70,7 +70,7 @@ $(function () {
         var sumaImporte = 0;
         var sumatImporte = 0;
         var sumarImporte = 0;
-        
+
             $(".conceptos").each(function (index, element) {
 
                 var cImporte = $(element).find('#cImporte').text().trim();
@@ -80,13 +80,13 @@ $(function () {
                 sumatImporte += Number(tImporte);
                 sumarImporte += Number(rImporte);
             });
-            
+
             $('#subtotal').val(parseFloat(sumaImporte));
             //calcula Total
 
             var total = (parseFloat(sumaImporte) + parseFloat(sumatImporte)) - parseFloat(sumarImporte);
             $('#total').val(total);
-        
+
     }
 
     $(function () {
@@ -241,7 +241,7 @@ $(function () {
             }
         });
 
-       
+
         function calculo() {
             var multi = 0;
             var cantidad = 0;
@@ -254,9 +254,9 @@ $(function () {
             $("#Conceptos_Importe").val(multi);
             //$("#subtotal").val(multi);
         }
-        
-            
-        
+
+
+
 
         function cero(valor) {
             if (valor == "" || valor == "undefined") {
@@ -306,7 +306,24 @@ $(function () {
             cfdisCancelados.empty();
 
             if (receptorSeleccionado.val().length > 0 && receptorSeleccionado.val() !== 0) {
-
+                //Valida rfc para cfdi Global
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("GetReceptorGlobal", "AjaxCatalogos")',
+                    data: JSON.stringify({ clienteId: receptorSeleccionado.val() }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data1) {
+                        if (data1 == 1) {
+                            $("#activa-informacion-global").show();
+                        } else {
+                            $("#activa-informacion-global").hide();
+                        }
+                        
+                        return false;
+                    }
+                });
+                //Cfdi Relacionado
                 $.ajax({
                     type: 'POST',
                     url: ' @Url.Action("GetCfdisCancelados", "AjaxCatalogos")',
@@ -477,5 +494,5 @@ $(function () {
     }
 
 
-    
+
 </script>

@@ -21,6 +21,17 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
         public void CargaInicial(ref ComprobanteCfdi comprobanteCfdi)
         {
             comprobanteCfdi.FacturaEmitida = null;
+            //Cfdi Global
+            var cliente = _db.Clientes.Find(comprobanteCfdi.ReceptorId);
+            if (cliente != null)
+            {
+                if (cliente.Rfc != "XAXX010101000" && cliente.RazonSocial != "PUBLICO EN GENERAL")
+                {
+                    comprobanteCfdi.Periodicidad = null;
+                    comprobanteCfdi.Meses = null;
+                    comprobanteCfdi.Ano = null;
+                }
+            }
             
             //carga conceptos
             if (comprobanteCfdi.Conceptoss != null)
@@ -61,29 +72,22 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 comprobanteCfdi.Conceptos = null;
 
             }
-            //calcula total impuestos
-            /*if (comprobanteCfdi.TotalImpuestoRetenidos > 0 && comprobanteCfdi.TotalImpuestoTrasladado > 0)
-            {
-                comprobanteCfdi.Total += (comprobanteCfdi.Subtotal + comprobanteCfdi.TotalImpuestoTrasladado) - comprobanteCfdi.TotalImpuestoRetenidos;
-            }
-            else if (comprobanteCfdi.TotalImpuestoTrasladado > 0)
-            {
-                comprobanteCfdi.Total += comprobanteCfdi.Subtotal + comprobanteCfdi.TotalImpuestoTrasladado;
-            }
-            else if (comprobanteCfdi.TotalImpuestoRetenidos > 0)
-            {
-                comprobanteCfdi.Total += comprobanteCfdi.Subtotal - comprobanteCfdi.TotalImpuestoRetenidos;
-            }
-            else
-            {
-                
-                    comprobanteCfdi.Total += comprobanteCfdi.Subtotal;
-                
-            }*/
+            
         }
 
         public void CargaRelacion(ComprobanteCfdi comprobanteCfdi)
         {
+            //Cfdi Global
+            var cliente = _db.Clientes.Find(comprobanteCfdi.ReceptorId);
+            if (cliente != null)
+            {
+                if (cliente.Rfc != "XAXX010101000" && cliente.RazonSocial != "PUBLICO EN GENERAL")
+                {
+                    comprobanteCfdi.Periodicidad = null;
+                    comprobanteCfdi.Meses = null;
+                    comprobanteCfdi.Ano = null;
+                }
+            }
             //carga conceptos
             if (comprobanteCfdi.Conceptoss != null)
             {

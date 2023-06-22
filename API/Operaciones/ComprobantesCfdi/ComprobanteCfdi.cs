@@ -119,6 +119,16 @@ namespace API.Operaciones.ComprobantesCfdi
 
         public virtual List<Conceptos> Conceptoss { get; set; }
 
+        //[NotMapped]
+        public String Periodicidad { get; set; }
+
+        //[NotMapped]
+        [DisplayName("Mes")]
+        public String Meses { get; set; }
+
+        //[NotMapped]
+        [DisplayName("Año")]
+        public String Ano { get; set; }
        
     }
 }

@@ -164,9 +164,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             }
 
             //data 03 Receptor
+            int regimenFiscalReceptor = (int)comprobanteCfdi.Receptor.RegimenFiscal;
+            if (comprobanteCfdi.Receptor.Rfc == "XAXX010101000" && comprobanteCfdi.Receptor.RazonSocial == "PUBLICO EN GENERAL")
+            {
+                if(comprobanteCfdi.Periodicidad == "05") { regimenFiscalReceptor = 621; }
+                else { regimenFiscalReceptor = 616; }
+            }
+            
             data = "03|" + comprobanteCfdi.Receptor.Rfc +"|" + comprobanteCfdi.Receptor.Rfc + "|" + comprobanteCfdi.Receptor.RazonSocial
                     +"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+comprobanteCfdi.Receptor.CodigoPostal +"|" +"|" 
-                    + "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+(int)comprobanteCfdi.Receptor.RegimenFiscal;
+                    + "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+regimenFiscalReceptor;
 
             //receptorPrueba
             /*data = "03|" + "IIN970122K30" + "|" + "IIN970122K30" + "|" + "ICA INFRAESTRUCTURA"
@@ -456,6 +463,16 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 }
 
 
+            }
+            //Nodo:Informacion Global
+            if (comprobanteCfdi.Receptor.Rfc == "XAXX010101000" && comprobanteCfdi.Receptor.RazonSocial == "PUBLICO EN GENERAL")
+            {
+                data = "08|" + comprobanteCfdi.Periodicidad + "|" + comprobanteCfdi.Meses + "|" + comprobanteCfdi.Ano;
+
+                if (data != "")
+                {
+                    tw.WriteLine(data);
+                }
             }
             tw.Close();
             //envio de datos para generar json

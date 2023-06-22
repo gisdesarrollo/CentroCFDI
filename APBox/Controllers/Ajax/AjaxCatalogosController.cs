@@ -178,6 +178,19 @@ namespace InventorAid.Controllers.Ajax
             return Json(cfdis, JsonRequestBehavior.AllowGet);
         }
 
+        public int GetReceptorGlobal(int clienteId)
+        {
+            var cliente = _db.Clientes.Find(clienteId);
+            int result = 0;
+            if (cliente.Rfc == "XAXX010101000" && cliente.RazonSocial == "PUBLICO EN GENERAL")
+            {
+                result = 1;
+            }
+            
+
+            return result;
+        }
+
         #endregion
     }
 }

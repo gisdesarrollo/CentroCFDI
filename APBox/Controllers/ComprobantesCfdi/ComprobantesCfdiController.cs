@@ -99,6 +99,8 @@ namespace APBox.Controllers.ComprobantesCfdi
         {
             PopulaClientes();
             PopulaCfdiRelacionado();
+            PopulaMeses();
+            PopulaPeriodicidad();
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaObjetoImpuesto();
@@ -159,6 +161,8 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaImpuestoSat();
             PopulaTiposDeComprobante();
             PopulaConceptos();
+            PopulaMeses();
+            PopulaPeriodicidad();
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
@@ -281,6 +285,8 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaImpuestoSat();
             PopulaTiposDeComprobante();
             PopulaConceptos();
+            PopulaMeses();
+            PopulaPeriodicidad();
             CCfdi.FormaPagoId = CCfdi.FormaPago;
             CCfdi.IdTipoRelacion = CCfdi.TipoRelacion;
             CCfdi.TipoComprobanteId = CCfdi.TipoDeComprobante;
@@ -332,6 +338,8 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaImpuestoSat();
             PopulaTiposDeComprobante();
             PopulaConceptos();
+            PopulaMeses();
+            PopulaPeriodicidad();
             string archivo = null;
             List<Conceptos> conceptosCSV = new List<Conceptos>();
 
@@ -396,7 +404,6 @@ namespace APBox.Controllers.ComprobantesCfdi
                 }
 
                 _acondicionarComprobante.CargaRelacion(comprobanteCfdi);
-                //_acondicionarComprobante.CargaValidacion(ref comprobanteCfdi);
                 try
                 {
                     comprobanteCfdi.FacturaEmitida = null;
@@ -784,6 +791,42 @@ namespace APBox.Controllers.ComprobantesCfdi
             items.Add(new SelectListItem { Text = "03 - No se llevo a cabo la operación", Value = "03" });
             items.Add(new SelectListItem { Text = "04 - Operación nominativa relacionada en una factura global", Value = "04" });
             ViewBag.motivoCancelacion = items;
+        }
+
+        private void PopulaPeriodicidad()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "01 - Diario", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "02 - Semanal", Value = "02" });
+            items.Add(new SelectListItem { Text = "03 - Quincenal", Value = "03" });
+            items.Add(new SelectListItem { Text = "04 - Mensual", Value = "04" });
+            items.Add(new SelectListItem { Text = "05 - Bimestral", Value = "05" });
+            ViewBag.cPeriodicidad = items;
+        }
+
+        private void PopulaMeses()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "01 - Enero", Value = "01", Selected = true });
+            items.Add(new SelectListItem { Text = "02 - Febrero", Value = "02" });
+            items.Add(new SelectListItem { Text = "03 - Marzo", Value = "03" });
+            items.Add(new SelectListItem { Text = "04 - Abril", Value = "04" });
+            items.Add(new SelectListItem { Text = "05 - Mayo", Value = "05" });
+            items.Add(new SelectListItem { Text = "06 - Junio", Value = "06" });
+            items.Add(new SelectListItem { Text = "07 - Julio", Value = "07" });
+            items.Add(new SelectListItem { Text = "08 - Agosto", Value = "08" });
+            items.Add(new SelectListItem { Text = "09 - Septiembre", Value = "09" });
+            items.Add(new SelectListItem { Text = "10 - Octubre", Value = "10" });
+            items.Add(new SelectListItem { Text = "11 - Noviembre", Value = "11" });
+            items.Add(new SelectListItem { Text = "12 - Diciembre", Value = "12" });
+            items.Add(new SelectListItem { Text = "13 - Enero-Febrero", Value = "13" });
+            items.Add(new SelectListItem { Text = "14 - Marzo-Abril", Value = "14" });
+            items.Add(new SelectListItem { Text = "15 - Mayo-Junio", Value = "15" });
+            items.Add(new SelectListItem { Text = "16 - Julio-Agosto", Value = "16" });
+            items.Add(new SelectListItem { Text = "17 - Septiembre-Octubre", Value = "17" });
+            items.Add(new SelectListItem { Text = "18 - Noviembre-Diciembre", Value = "18" });
+
+            ViewBag.cMeses = items;
         }
 
         private void PopulaConceptos()
