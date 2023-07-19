@@ -561,37 +561,37 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
             //busca los documentos relacionados que tengan objeto impuesto
             documentoRelacionado.Traslados = new List<TrasladoDR>();
             documentoRelacionado.Retenciones = new List<RetencionDR>();
+            
             var impuestosDto = _logicaFacadeFacturas.GetDataFactura(documentoRelacionado.FacturaEmitidaId, sucursalId);
             if (impuestosDto.Count > 0)
             {
                 documentoRelacionado.ObjetoImpuestoId = "02";
                 foreach (var impuesto in impuestosDto)
                 {
-                    if (impuesto.TipoImpuesto == "Traslado")
+                    if (impuesto.TipoImpuesto == "Traslado" && impuesto.Base > 0)
                     {
-                        Decimal baseImpT = _logicaFacadeFacturas.BaseSobreIva(Convert.ToDecimal(documentoRelacionado.ImportePagado), impuesto.TasaOCuota);
+                        //Decimal baseImpT = _logicaFacadeFacturas.BaseSobreIva(Convert.ToDecimal(documentoRelacionado.ImportePagado), impuesto.TasaOCuota);
                         
-
                         TrasladoDR traslado = new TrasladoDR()
                         {
-                            Base = Convert.ToDouble(Decimal.Round((decimal)baseImpT,6)),
+                            Base = Convert.ToDouble(Decimal.Round(impuesto.Base,2)),//Convert.ToDouble(Decimal.Round((decimal)baseImpT,2)),
                             Impuesto = impuesto.Impuesto,
                             TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), impuesto.TipoFactor, true),
                             TasaOCuota = impuesto.TasaOCuota,
-                            Importe = Convert.ToDouble(Decimal.Round((decimal)baseImpT * impuesto.TasaOCuota, 6))
+                            Importe = Convert.ToDouble(Decimal.Round(impuesto.Base * impuesto.TasaOCuota,2))//Convert.ToDouble(Decimal.Round((decimal)baseImpT * impuesto.TasaOCuota, 2))
                         };
                         documentoRelacionado.Traslados.Add(traslado);
                     }
-                    if (impuesto.TipoImpuesto == "Retencion")
+                    if (impuesto.TipoImpuesto == "Retencion" && impuesto.Base > 0)
                     {
-                        double baseImpR = Convert.ToDouble(_logicaFacadeFacturas.BaseSobreIva(Convert.ToDecimal(documentoRelacionado.ImportePagado), impuesto.TasaOCuota));
+                        double baseImpR = Convert.ToDouble(impuesto.Importe) / Convert.ToDouble(impuesto.TasaOCuota) ;
                         RetencionDR retencion = new RetencionDR()
                         {
-                            Base = Convert.ToDouble(Decimal.Round((decimal)baseImpR,6)),
+                            Base = baseImpR,//Convert.ToDouble(Decimal.Round((decimal)baseImpR,2)),
                             Impuesto = impuesto.Impuesto,
                             TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), impuesto.TipoFactor, true),
                             TasaOCuota = impuesto.TasaOCuota,
-                            Importe = Convert.ToDouble(Decimal.Round((decimal)baseImpR * impuesto.TasaOCuota, 6))
+                            Importe = Convert.ToDouble(Decimal.Round((decimal)baseImpR * impuesto.TasaOCuota, 2)) //Convert.ToDouble(Decimal.Round(impuesto.Importe, 2))
                         };
                         documentoRelacionado.Retenciones.Add(retencion);
                     }

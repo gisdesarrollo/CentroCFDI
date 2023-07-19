@@ -276,19 +276,20 @@
                         $(".DTraslado").parent().remove();
                         $(".DRetencion").parent().remove();
                         $.each(data, function (index, row) {
-                            if (row.TipoImpuesto == "Traslado") {
+                            
+                            if (row.TipoImpuesto == "Traslado" && parseFloat(row.Base)>0) {
                                 var baseT = parseFloat(ImporteSobreIva($('#Pago_DocumentoRelacionado_ImportePagado').val(), row.TasaOCuota));
-                                var importeT = baseT * parseFloat(row.TasaOCuota);
+                                var importeT = parseFloat(row.Base) * parseFloat(row.TasaOCuota);
 
                                 $.ajax({
                                     type: 'POST',
                                     url: ' @Url.Action("AgregarDTraslado", "AjaxOperaciones")',
                                     data: JSON.stringify({
-                                        Tbase: baseT,
+                                        Tbase: row.Base,//baseT,
                                         Timpuesto: row.Impuesto,
                                         TtipoFactor: row.TipoFactor,
                                         TtasaOCuota: row.TasaOCuota,
-                                        Timporte: importeT.toFixed(6)
+                                        Timporte: importeT.toFixed(2)
                                     }),
                                     dataType: 'html',
                                     contentType: "application/json; charset=utf-8",
@@ -304,9 +305,10 @@
 
                                 $('.validacion-traslado').show();
                             }
-                            if (row.TipoImpuesto == "Retencion") {
-                                var baseR = parseFloat(ImporteSobreIva($('#Pago_DocumentoRelacionado_ImportePagado').val(), row.TasaOCuota));
-                                var importeR = baseR * parseFloat(row.TasaOCuota);
+                            if (row.TipoImpuesto == "Retencion" && parseFloat(row.Base) > 0) {
+                                var baseR = parseFloat(row.Importe) / parseFloat(row.TasaOCuota);
+
+                                var importeR = parseFloat(baseR) * parseFloat(row.TasaOCuota);
 
                                 $.ajax({
                                     type: 'POST',
@@ -316,7 +318,7 @@
                                         Rimpuesto: row.Impuesto,
                                         RtipoFactor: row.TipoFactor,
                                         RtasaOCuota: row.TasaOCuota,
-                                        Rimporte: importeR.toFixed(6)
+                                        Rimporte: importeR.toFixed(2)
                                     }),
                                     dataType: 'html',
                                     contentType: "application/json; charset=utf-8",
@@ -443,7 +445,7 @@
                 }
 
                 Total = TBase * TTasaOCuota;
-                $('.TImporte').val(Total.toFixed(6));
+                $('.TImporte').val(Total.toFixed(2));
             } else {
                 $('.TImporte').val(0);
             }
@@ -462,7 +464,7 @@
                 }
 
                 Total = TBase * TTasaOCuota;
-                $('.RImporte').val(Total.toFixed(6));
+                $('.RImporte').val(Total.toFixed(2));
             } else {
                 $('.RImporte').val(0);
             }
@@ -500,7 +502,7 @@
 
         var TotalRet = (RBase * RTasaOCuota);
 
-        $('.RImporte').val(TotalRet.toFixed(6));
+        $('.RImporte').val(TotalRet.toFixed(2));
 
 
     }
@@ -517,6 +519,6 @@
         }
 
         var TotalTras = (TBase * TTasaOCuota);
-        $('.TImporte').val(TotalTras.toFixed(6));
+        $('.TImporte').val(TotalTras.toFixed(2));
     }
 </script>

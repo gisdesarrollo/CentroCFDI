@@ -499,7 +499,9 @@ namespace APBox.Controllers.ComplementosPago
                         var pago = _db.Pagos.Find(DRelacionado.PagoId);
                         if (DRelacionado.Traslados != null)
                         {
-                            foreach (var traslado in DRelacionado.Traslados) {
+                            foreach (var traslado in DRelacionado.Traslados)
+                            {
+                                if(traslado.Base > 0) { 
                                 decimal baseDR = (decimal)traslado.Base;
                                 decimal ImporteDR = (decimal)traslado.Importe;
 
@@ -519,7 +521,8 @@ namespace APBox.Controllers.ComplementosPago
                                         baseDR = (decimal)traslado.Base;
                                         ImporteDR = (decimal)traslado.Importe;
 
-                                    }else if((DRelacionado.Moneda.ToString() !="MXN" && pago.Moneda.ToString() == "USD") || (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() != "MXN"))
+                                    }
+                                    else if ((DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() == "USD") || (DRelacionado.Moneda.ToString() == "USD" && pago.Moneda.ToString() != "MXN"))
                                     {
                                         tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
                                         decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
@@ -528,8 +531,9 @@ namespace APBox.Controllers.ComplementosPago
                                         var tipoCambioPgo = (Decimal)pago.TipoCambio;
                                         baseDR = (decimal)baseDRFormt * tipoCambioPgo;
                                         ImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;
-                                    } 
-                                }else if (DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && DRelacionado.Moneda == pago.Moneda)
+                                    }
+                                }
+                                else if (DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && DRelacionado.Moneda == pago.Moneda)
                                 {
                                     tipoCambioDR = (Decimal)pago.TipoCambio;
                                     baseDR = (decimal)traslado.Base * tipoCambioDR;
@@ -537,26 +541,27 @@ namespace APBox.Controllers.ComplementosPago
                                 }
 
                                 if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.16 && traslado.TipoFactor == c_TipoFactor.Tasa)
-                                    {
-                                        totalTrasladosBaseIVA16 += baseDR;
-                                        totalTrasladosImpuestoIVA16 += ImporteDR;
-                                    }
-                                    if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.08 && traslado.TipoFactor == c_TipoFactor.Tasa)
-                                    {
-                                        totalTrasladosBaseIVA8 += baseDR;
-                                        totalTrasladosImpuestoIVA8 += ImporteDR;
-                                    }
-                                    if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.0 && traslado.TipoFactor == c_TipoFactor.Tasa)
-                                    {
-                                        totalTrasladosBaseIVA0 += baseDR;
-                                        totalTrasladosImpuestoIVA0 += ImporteDR;
-                                    }
-                                    if (traslado.Impuesto == "002" && traslado.TipoFactor == c_TipoFactor.Exento)
-                                    {
-                                        totalTrasladosBaseIVAExento += baseDR;
-                                    }
-                                
+                                {
+                                    totalTrasladosBaseIVA16 += baseDR;
+                                    totalTrasladosImpuestoIVA16 += ImporteDR;
                                 }
+                                if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.08 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                {
+                                    totalTrasladosBaseIVA8 += baseDR;
+                                    totalTrasladosImpuestoIVA8 += ImporteDR;
+                                }
+                                if (traslado.Impuesto == "002" && traslado.TasaOCuota == (decimal)0.0 && traslado.TipoFactor == c_TipoFactor.Tasa)
+                                {
+                                    totalTrasladosBaseIVA0 += baseDR;
+                                    totalTrasladosImpuestoIVA0 += ImporteDR;
+                                }
+                                if (traslado.Impuesto == "002" && traslado.TipoFactor == c_TipoFactor.Exento)
+                                {
+                                    totalTrasladosBaseIVAExento += baseDR;
+                                }
+                                }
+                               }
+
                             
                             }
                             else { DRelacionado.Traslado = null; DRelacionado.Traslados = null; }
@@ -598,6 +603,7 @@ namespace APBox.Controllers.ComplementosPago
                                 if (retencion.Impuesto == "001") { totalRetencionesISR += RImporteDR; }
                                     if (retencion.Impuesto == "002") { totalRetencionesIVA += RImporteDR; }
                                     if (retencion.Impuesto == "003") { totalRetencionesIEPS += RImporteDR; }
+
                                 }
                             }
                             else { DRelacionado.Retencion = null; DRelacionado.Retenciones = null; }

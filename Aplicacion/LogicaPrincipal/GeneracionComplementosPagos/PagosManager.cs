@@ -30,7 +30,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private readonly CreationFile _deserealizaXml = new CreationFile();
         private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\complementoPagoHANSEN2.xml";
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\PagoSenatorErrorImporteDR.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -187,12 +187,21 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 throw new Exception(string.Join(",", error));
             }
             //Agrega Receptor Produccion
+            String numRegIdTrib = "";
+            if(complementoPago.Receptor.Rfc == "XEXX010101000")
+            {
+                if(String.IsNullOrEmpty(complementoPago.Receptor.NumRegIdTrib))
+                {
+                    if (complementoPago.Receptor.Pais != API.Enums.c_Pais.MEX) {numRegIdTrib = "000000000";}
+                }else { numRegIdTrib = complementoPago.Receptor.NumRegIdTrib; }
+                
+            }
             var regimeFiscalReceptor = (int)complementoPago.Receptor.RegimenFiscal;
             objCfdi.agregarReceptor(
                 complementoPago.Receptor.Rfc,
                 complementoPago.Receptor.RazonSocial,
-                "", 
-                "", 
+                complementoPago.Receptor.Rfc == "XEXX010101000" ? complementoPago.Receptor.Pais.ToString():"",
+                numRegIdTrib, 
                 c_UsoCfdiCP.CP01.ToString(), //UsoCFDI Fijo
                 complementoPago.Receptor.CodigoPostal,
                 regimeFiscalReceptor.ToString()

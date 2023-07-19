@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,8 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String TipoImpuesto { get; set; }
 
         [DisplayName("Base %")]
-        public int BasePorcentaje { get; set; } 
+        public int BasePorcentaje { get; set; }
+
         
         public Decimal Base { get; set; }
 
@@ -30,6 +32,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Tasa o Cuota")]
         public  Decimal TasaOCuota { get; set; }
 
+        
         public Decimal Importe { get; set; }
 
         [NotMapped]

@@ -144,9 +144,9 @@
 
                             <th>
                                 @{
-                                    var bd = new APBox.Context.APBoxContext();
-                                    var sucursal = bd.Sucursales.Find(Model.SucursalId);
-                                    if (sucursal.Id == 42)
+                                    //var bd = new APBox.Context.APBoxContext();
+                                    //var sucursal = bd.Sucursales.Find(Model.SucursalId);
+                                    if (Model.SucursalId == 42)
                                     {
                                         <p>Referencia</p>
                                     }
@@ -236,9 +236,9 @@
 
                                 <td class="text-center">
                                     @{
-                                        var db1 = new APBox.Context.APBoxContext();
-                                        var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
-                                        if (sucursal.Id == 42)
+                                        //var db1 = new APBox.Context.APBoxContext();
+                                        //var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
+                                        if (Model.SucursalId == 42)
                                         {
                                             @item.Referencia
                                         }

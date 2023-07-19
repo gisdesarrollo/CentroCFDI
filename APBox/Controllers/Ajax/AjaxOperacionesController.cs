@@ -98,11 +98,11 @@ namespace APBox.Controllers.Ajax
 
             var traslado = new TrasladoDR()
             {
-                Base = (double)Math.Round(Tbase, 6),
+                Base = (double)Math.Round(Tbase, 2),//6
                 Impuesto = Timpuesto,
                 TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TtipoFactor, true),
                 TasaOCuota = TtasaOCuota,
-                Importe = (double)Math.Round(Timporte, 6)
+                Importe = (double)Math.Round(Timporte, 2)//6
             };
             return PartialView("~/Views/ComplementosPagos/TrasladoDR.cshtml", traslado);
         }
@@ -112,11 +112,11 @@ namespace APBox.Controllers.Ajax
            
             var retencion = new RetencionDR()
             {
-                Base = (double)Math.Round(Rbase, 6),
+                Base = (double)Math.Round(Rbase, 2), //6
                 Impuesto = Rimpuesto,
                 TipoFactor = (c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), RtipoFactor, true),
                 TasaOCuota = RtasaOCuota,
-                Importe = (double)Math.Round(Rimporte, 6)
+                Importe = (double)Math.Round(Rimporte, 2)//6
             };
             return PartialView("~/Views/ComplementosPagos/RetencionDR.cshtml", retencion);
         }

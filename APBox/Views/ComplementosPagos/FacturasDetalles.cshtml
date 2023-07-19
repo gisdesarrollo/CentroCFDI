@@ -74,7 +74,7 @@
                     @Html.HiddenFor(x => x.Traslados[i].DocRelacionadoId)
                     <div class="col-xs-12 col-sm-2">
                         <b>Base</b><br />
-                        $ @Model.Traslados[i].Base.ToString("0.000000")
+                        $ @Model.Traslados[i].Base.ToString("0.00")
                         @Html.HiddenFor(x => Model.Traslados[i].Base)
                     </div>
                     <div class="col-xs-12 col-sm-2">
@@ -94,7 +94,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-2">
                         <b>Importe</b><br />
-                        $ @Model.Traslados[i].Importe.ToString("0.000000")
+                        $ @Model.Traslados[i].Importe.ToString("0.00")
                         @Html.HiddenFor(x => x.Traslados[i].Importe)
                     </div>
                 }
@@ -114,7 +114,7 @@
                     @Html.HiddenFor(x => x.Retenciones[r].DocRelacionadoId)
                     <div class="col-xs-12 col-sm-2">
                         <b>Base</b><br />
-                        $ @Model.Retenciones[r].Base.ToString("0.000000")
+                        $ @Model.Retenciones[r].Base.ToString("0.00")
                         @Html.HiddenFor(model => model.Retenciones[r].Base)
                     </div>
                     <div class="col-xs-12 col-sm-2">
@@ -134,7 +134,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-2">
                         <b>Importe</b><br />
-                        $ @Model.Retenciones[r].Importe.ToString("0.000000")
+                        $ @Model.Retenciones[r].Importe.ToString("0.00")
                         @Html.HiddenFor(model => model.Retenciones[r].Importe)
                     </div>
                     <div class="clearfix"></div>

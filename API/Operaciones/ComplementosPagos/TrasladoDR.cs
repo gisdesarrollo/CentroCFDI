@@ -16,8 +16,8 @@ namespace API.Operaciones.ComplementosPagos
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:0.000000}", ApplyFormatInEditMode = true)]
+        //{0:0.000000}
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public Double Base { get; set; }
 
         public string Impuesto { get; set; }
@@ -26,10 +26,10 @@ namespace API.Operaciones.ComplementosPagos
         public c_TipoFactor TipoFactor { get; set; }
 
         [DisplayName("Tasa o Cuota")]
-        [DisplayFormat(DataFormatString = "{0:0.000000}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public Decimal TasaOCuota { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:0.000000}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public Double Importe { get; set; }
 
         [DisplayName("DocRelacionado")]

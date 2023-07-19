@@ -15,5 +15,7 @@ namespace API.Models.Reportes
         [Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaFinal { get; set; }
+
+        
     }
 }

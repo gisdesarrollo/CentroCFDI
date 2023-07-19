@@ -53,21 +53,33 @@ namespace APBox.Controllers.Catalogos
             bool isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                if (facturasEmitidasModel.SucursalId == 42)
                 {
-                    //get status
-                    FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
-                    facturasEmitidas.Status = facturaEmitStatus.Status;
-                    facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
-                    if (queryFacturas != null)
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                     {
+                        //get status
+                        FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                        facturasEmitidas.Status = facturaEmitStatus.Status;
+                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                        if (queryFacturas != null)
+                        {
 
-                        facturasEmitidas.Referencia = queryFacturas.Referencia;
-                        //facturasEmitidas.Status = queryFacturas.Status;
-                       // facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                       // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            //facturasEmitidas.Status = queryFacturas.Status;
+                            // facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                            // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        }
+
                     }
-
+                }
+                else
+                {
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                    {
+                        //get status
+                        FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                        facturasEmitidas.Status = facturaEmitStatus.Status;
+                    }
                 }
 
             }
@@ -88,26 +100,38 @@ namespace APBox.Controllers.Catalogos
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
-            else
+            /*else
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
-            }
+            }*/
             isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
 
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                if (facturasEmitidasModel.SucursalId == 42)
                 {
-                    //get status
-                    FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
-                    facturasEmitidas.Status = facturaEmitStatus.Status;
-                    facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
-                    if (queryFacturas != null)
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                     {
-                        facturasEmitidas.Referencia = queryFacturas.Referencia;
-                        //facturasEmitidas.Status = queryFacturas.Status;
-                        //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                        // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        //get status
+                        FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                        facturasEmitidas.Status = facturaEmitStatus.Status;
+                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                        if (queryFacturas != null)
+                        {
+                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            //facturasEmitidas.Status = queryFacturas.Status;
+                            //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                            // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                    {
+                        //get status
+                        FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                        facturasEmitidas.Status = facturaEmitStatus.Status;
                     }
                 }
             }
@@ -135,14 +159,17 @@ namespace APBox.Controllers.Catalogos
 
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                if (facturasEmitidasModel.SucursalId == 42)
                 {
-                    facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
-                    if (queryFacturas != null)
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                     {
-                        facturasEmitidas.Referencia = queryFacturas.Referencia;
-                        //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                        //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                        if (queryFacturas != null)
+                        {
+                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                            //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        }
                     }
                 }
             }
@@ -167,14 +194,17 @@ namespace APBox.Controllers.Catalogos
 
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                if (facturasEmitidasModel.SucursalId == 42)
                 {
-                    facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
-                    if (queryFacturas != null)
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                     {
-                        facturasEmitidas.Referencia = queryFacturas.Referencia;
-                        //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                        //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                        if (queryFacturas != null)
+                        {
+                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                            //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        }
                     }
                 }
             }

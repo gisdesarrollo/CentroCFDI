@@ -159,9 +159,7 @@
 
                                     <td class="text-center">
                                         @{
-                                            var db1 = new APBox.Context.APBoxContext();
-                                            var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
-                                            if (sucursal.Id == 42)
+                                            if (Model.SucursalId == 42)
                                             {
                                                 @item.Referencia
                                             }
@@ -174,17 +172,19 @@
                                     </td>
 
                                     <td>
-                                        @switch (item.Status)
-                                        {
-                                            case API.Enums.Status.Activo:
-                                                <div class="badge badge-light-success">Activo</div>
-                                                break;
-                                            case API.Enums.Status.Cancelado:
-                                                <div class="badge badge-light-danger">Cancelado</div>
-                                                break;
-                                            default:
-                                                break;
-                                        }
+                                        
+                                            @switch (item.Status)
+                                            {
+                                                case API.Enums.Status.Activo:
+                                                    <div class="badge badge-light-success">Activo</div>
+                                                    break;
+                                                case API.Enums.Status.Cancelado:
+                                                    <div class="badge badge-light-danger">Cancelado</div>
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        
                                     </td>
                                     <td class="text-end">
                                         <div class="btn-group">

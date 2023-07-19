@@ -440,12 +440,10 @@
     <Content Include="bin\CodeScales.Http.dll" />
     <Content Include="bin\Content\PDFGenerados\prueba.txt" />
     <Content Include="bin\CsvHelper.dll" />
-    <Content Include="bin\CsvHelper.xml" />
     <Content Include="bin\DTOs.dll" />
     <Content Include="bin\EntityFramework.dll" />
     <Content Include="bin\EntityFramework.SqlServer.dll" />
     <Content Include="bin\EntityFramework.SqlServer.xml" />
-    <Content Include="bin\EntityFramework.xml" />
     <Content Include="bin\es\System.Web.Helpers.resources.dll" />
     <Content Include="bin\es\System.Web.Mvc.resources.dll" />
     <Content Include="bin\es\System.Web.Razor.resources.dll" />
@@ -551,6 +549,7 @@
     <Content Include="bin\System.Buffers.xml" />
     <Content Include="bin\System.IO.Compression.dll" />
     <Content Include="bin\System.IO.Compression.ZipFile.dll" />
+    <Content Include="bin\System.Memory.dll" />
     <Content Include="bin\System.Numerics.Vectors.dll" />
     <Content Include="bin\System.Numerics.Vectors.xml" />
     <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
@@ -561,9 +560,7 @@
     <Content Include="bin\System.Security.Cryptography.Primitives.dll" />
     <Content Include="bin\System.Security.Cryptography.X509Certificates.dll" />
     <Content Include="bin\System.Text.Encodings.Web.dll" />
-    <Content Include="bin\System.Text.Encodings.Web.xml" />
     <Content Include="bin\System.Text.Json.dll" />
-    <Content Include="bin\System.Text.Json.xml" />
     <Content Include="bin\System.Threading.Tasks.Extensions.dll" />
     <Content Include="bin\System.Threading.Tasks.Extensions.xml" />
     <Content Include="bin\System.ValueTuple.dll" />

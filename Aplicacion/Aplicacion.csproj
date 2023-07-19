@@ -159,7 +159,7 @@
     </Reference>
     <Reference Include="RVCFDI33, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RVCFDI33.dll</HintPath>
+      <HintPath>..\..\..\DLL\RVCFDI33.dll</HintPath>
     </Reference>
     <Reference Include="SendGrid, Version=9.11.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
       <HintPath>..\packages\Sendgrid.9.11.0\lib\net452\SendGrid.dll</HintPath>
