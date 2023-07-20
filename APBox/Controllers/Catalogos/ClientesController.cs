@@ -87,17 +87,21 @@ namespace APBox.Controllers.Catalogos
             ModelState.Remove("Banco.Id");
             ModelState.Remove("Banco.Nombre");
             ModelState.Remove("Banco.NumeroCuenta");
-
+            PopulaForma();
             if (ModelState.IsValid)
             {
                 _acondicionarClientes.CargaInicial(ref cliente);
-
+                var receptor = _db.Clientes.Where(c=> c.Rfc == cliente.Rfc && c.RazonSocial == cliente.RazonSocial && c.SucursalId == cliente.SucursalId).FirstOrDefault();
+                if(receptor != null)
+                {
+                    ModelState.AddModelError("", "Error RFC o Razon Social Ya Se Encuentra Registrado!!");
+                    return View(cliente);
+                }
                 _db.Clientes.Add(cliente);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            PopulaForma();
             return View(cliente);
         }
 
