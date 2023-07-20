@@ -6,6 +6,44 @@
 @Html.Partial("_ComplementoCartaPorteScript")
 @Html.Partial("_Modal")
 
+
+@* Implementacion Carga Xml *@
+@using (Html.BeginForm("ObtenerDatosXML", "ComplementosCartaPorte", FormMethod.Post, new { enctype = "multipart/form-data", id = "myForm" }))
+{
+    <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_3">
+            Cargar Xml Externo
+        </button>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="kt_modal_3">
+        <div class="modal-dialog">
+            <div class="modal-content position-absolute">
+                <div class="modal-header">
+                    <h5 class="modal-title">CARGA XML</h5>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-2x"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <i class="col-xs-12">*Puedes precargar un Xml externo de Carta Porte  y rellenar los campos automáticamente a excepción del apartado del Receptor y Conceptos</i><br />
+                </div>
+
+                <div class="modal-footer">
+                    <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="Archivo" accept=".xml, .XML" />
+
+                    <button id="cargarXmlButton" type="submit" class="btn btn-primary">Cargar XML</button>
+
+
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -68,7 +106,7 @@
     <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid gap-10" id="kt_stepper_example_vertical" data-kt-stepper="true">
         <!--begin::Aside-->
         <div class="card d-flex justify-content-center justify-content-xl-start flex-row-auto w-100 w-xl-300px w-xxl-400px">
-            
+
             <!--begin::Wrapper-->
             <div class="card-body px-6 px-lg-10 px-xxl-15 py-20">
                 <!--begin::Nav-->
@@ -335,7 +373,7 @@
         <div class="card d-flex flex-row-fluid flex-center">
             <!--begin::Form-->
             <div class="form card-body py-20 w-100 mw-xl-1000px px-9 fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate" id="kt_create_account_form">
-                
+
                 <!--begin::Wrapper-->
                 <div class="w-100">
                     <!--begin::Heading-->
@@ -2339,7 +2377,7 @@
         </div>
     </div>
     <!--end::Stepper-->
-    
+
 }
 <script>
     function removeDetalleUbicacion(elem) {

@@ -2701,6 +2701,603 @@
     });
 
 
+
+
+    // Carga XML- Agregar Detalles
+    $(document).ready(function agregar() {
+        @* function agregarDetallesConceptos(
+            ClaveProdServID,
+            NumIdentificacion,
+            Cantidad,
+            ClaveUnidadID,
+            Unidad,
+            Descripcion,
+            ValorUnitario,
+            Importe,
+            ObjetoImpuesto
+        ) {
+            console.log('ClaveProdServID:', ClaveProdServID);
+            console.log('ClaveUnidadID:', ClaveUnidadID);
+            console.log('NumIdentificacion:', NumIdentificacion);
+            console.log('Cantidad:', Cantidad);
+            console.log('Unidad:', Unidad);
+            console.log('Descripcion:', Descripcion);
+            console.log('ValorUnitario:', ValorUnitario);
+            console.log('Importe:', Importe);
+            console.log('ObjetoImpuesto:', ObjetoImpuesto);
+            // Realiza la llamada AJAX para agregar conceptos
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AgregarConceptos", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    ClaveProdServID: ClaveProdServID,
+                    ClaveUnidadID: ClaveUnidadID,
+                    Unidad: Unidad,
+                    Descripcion: Descripcion,
+                    NumIdentificacion: NumIdentificacion,
+                    Cantidad: Cantidad,
+                    ValorUnitario: ValorUnitario,
+                    Importe: Importe,
+                    ObjetoImpuesto: ObjetoImpuesto,
+                }),
+                dataType: 'html',
+                contentType: 'application/json; charset=utf-8',
+                success: function (partialView) {
+                    $('#detallesConceptos').append(partialView);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert('Favor de llenar todos los datos para los detalles');
+                },
+            });
+        } *@
+  // Función para agregar los Impuestos Trasladados de los conceptos
+  //function agregarImpuestosTConceptos(TBase, TImpuesto, TTipoFactor, TTasaOCuota, TImporte) {
+  //  console.log('TBase:', TBase);
+  //  console.log('TImpuesto:', TImpuesto);
+  //  console.log('TTipoFactor:', TTipoFactor);
+  //  console.log('TTasaOCuota:', TTasaOCuota);
+  //  console.log('TImporte:', TImporte);
+
+    @*//Valida si hay datos de Impuesto para agregar detalles de manera automatica
+    if (TBase !== '' && TImpuesto !== '') {
+            $('#agregarDetalleConceptos').trigger('click');
+        }
+        // Realiza la llamada AJAX para agregar conceptos.Impuestos.Traslados
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AgregarConceptos", "AjaxOperaciones")',
+            data: JSON.stringify({
+                TBase: TBase,
+                TImpuesto: TImpuesto.toString(),
+                TTipoFactor: TTipoFactor,
+                TTasaOCuota: TTasaOCuota,
+                TImporte: TImporte,
+            }),
+            dataType: 'html',
+            contentType: 'application/json; charset=utf-8',
+            success: function (partialView) {
+                $('#detallesConceptos').append(partialView);
+            },
+            error: function (jqxhr, textStatus, error) {
+                alert('Favor de llenar todos los datos para los detalles');
+            },
+        });
+    } *@
+
+
+    // Manejar el evento submit del botón "Cargar XML"
+    $('#myForm').submit(function (event) {
+
+        event.preventDefault();
+        var fileInput = $('input[type="file"]')[0];
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('Archivo', file);
+
+        $.ajax({
+            url: '/ComplementosCartaPorte/ObtenerDatosXML',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                //Seccion Comprobante
+                // Rellenar los campos de la vista con los valores obtenidos del XML
+                $('#FechaDocumento').val(new Date(response.Fecha).toLocaleDateString());
+                var fechaCompleta = response.Fecha; // Fecha y hora completa
+                var fecha = new Date(fechaCompleta); // Convierte a objeto de fecha
+                var horas = fecha.getHours(); // Obtener la hora
+                var minutos = fecha.getMinutes(); // Obtener los minutos
+                $('#Hora').val(horas + ':' + minutos); // Mostrar hora y minutos separados por ":" en el elemento con el id "hora"
+
+                // Convierte el valor del enum a una cadena legible para TipoComprobante
+                var tipoComprobanteText = '';
+                switch (response.TipoDeComprobante) {
+                    case 0:
+                        tipoComprobanteText = 'I';
+                        break;
+                    case 1:
+                        tipoComprobanteText = 'E';
+                        break;
+                    case 2:
+                        tipoComprobanteText = 'T';
+                        break;
+                    case 3:
+                        tipoComprobanteText = 'N';
+                        break;
+                    case 4:
+                        tipoComprobanteText = 'P';
+                        break;
+                    // Agrega más casos según los valores de tu enum
+                    default:
+                        tipoComprobanteText = 'Valor desconocido';
+                        break;
+                }
+                $('#tipoComprobante').val(tipoComprobanteText);
+                $('#FormaPago').val(response.FormaPago).toString();
+                $('#FormaPago').trigger('change');//Selecciona el valor en el buscador
+
+                // Convierte el valor del enum a una cadena legible para MetodoPago
+                var MetodoPagoText = '';
+                switch (response.MetodoPago) {
+                    case 0:
+                        MetodoPagoText = 'PUE';
+                        break;
+                    case 1:
+                        MetodoPagoText = 'PPD';
+                        break;
+
+                    // Agrega más casos según los valores de tu enum
+                    default:
+                        MetodoPagoText = 'Valor desconocido';
+                        break;
+                }
+
+                $('#MetodoPago').val(MetodoPagoText);
+                $('#tipocambio').val(response.TipoCambio);
+                $('#CondicionesPago').val(response.CondicionesDePago);
+                $('#Moneda').val(response.Moneda);
+                // Activar la selección con Select2
+                $('#Moneda').trigger('change');
+                $('#subtotal').val(response.SubTotal);
+                $('#total').val(response.Total);
+
+                //Seccion Ubicacion
+                //$('#claveTransporteId').val();
+
+
+                $('#TranspInternac').val(response.CartaPorte.TranspInternac);
+                $('#TotalDistRecorridas').val(response.CartaPorte.TotalDistRec);
+
+                //Seccion Mercancias
+                //$('#pesoBrutoTotalD').val(response.CartaPorte.Mercancias.PesoBrutoTotal); -Dejo que se calcule solo por que duplica el valor
+                $('#Mercancias_ClaveUnidadPeso_Id').val(response.CartaPorte.Mercancias.UnidadPeso);
+                $('#Mercancias_NumTotalMercancias').val(response.CartaPorte.Mercancias.NumTotalMercancias);
+
+                //Mercancia - Autotransporte
+                $('#Mercancias_AutoTransporte_TipoPermiso_Id').val(response.CartaPorte.Mercancias.Autotransporte.PermSCT);
+
+                //Validacion si hay valor en la seccion de Auto Transporte
+                var permisoValue = $('#Mercancias_AutoTransporte_TipoPermiso_Id').val();
+
+                // Verificar si el valor de permisoValue no está vacío o nulo
+                if (permisoValue) {
+
+                    // Si tiene un valor, asignar "01" al elemento con id "claveTransporteId"
+                    $('#claveTransporteId').val("01");
+
+                    // Mostrar la vista que estaba oculta
+                    $('#DivAutotransporte').css('display', 'block');
+                }
+
+                $('#Mercancias_AutoTransporte_NumPermisoSCT').val(response.CartaPorte.Mercancias.Autotransporte.NumPermisoSCT);
+
+                $('#Mercancias_AutoTransporte_IdentificacionVehicular_ConfigAutotransporte_Id').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular)
+                $('#Mercancias_AutoTransporte_IdentificacionVehicular_PlacaVM').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM)
+                $('#Mercancias_AutoTransporte_IdentificacionVehicular_AnioModeloVM').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM)
+
+                //Mercancia - Seguros
+                $('#Mercancias_AutoTransporte_Seguros_AseguraRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil);
+                $('#Mercancias_AutoTransporte_Seguros_PolizaRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil);
+                $('#Mercancias_AutoTransporte_Seguros_PrimaSeguro').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PrimaSeguro);
+
+
+                //// Sección Conceptos
+                //$.each(response.Conceptos, function (index, concepto) {
+                //    // Asignar los valores a campos específicos en la vista
+                //    $('#Conceptos_ClavesProdServ').val(concepto.ClaveProdServ);
+                //    $('#Conceptos_ClavesUnidad').val(concepto.ClaveUnidad);
+                //    $('#Conceptos_Unidad').val(concepto.Unidad);
+                //    $('#Conceptos_Descripcion').val(concepto.Descripcion);
+                //    $('#Conceptos_NoIdentificacion').val(concepto.NoIdentificacion);
+                //    $('#Conceptos_Cantidad').val(concepto.Cantidad);
+                //    $('#Conceptos_ValorUnitario').val(concepto.ValorUnitario);
+                //    $('#Conceptos_Importe').val(concepto.Importe);
+
+                //    var objetoIm = '';
+                //    switch (concepto.ObjetoImp) {
+                //        case 0:
+                //            objetoIm = '01';
+                //            break;
+                //        case 1:
+                //            objetoIm = '02';
+                //            break;
+
+                //        case 2:
+                //            objetoIm = '03'
+                //            break;
+                //        // Agrega más casos según los valores de tu enum
+                //        default:
+                //            objetoIm = 'Valor desconocido';
+                //            break;
+                //    }
+                //    $('#Conceptos_ObjetoImpuesto').val(objetoIm);
+
+                //  // Llamar a la función para agregar los detalles de conceptos con los valores actuales
+                //  agregarDetallesConceptos(
+                //    concepto.ClaveProdServ,
+                //    concepto.NoIdentificacion,
+                //    concepto.Cantidad,
+                //    concepto.ClaveUnidad,
+                //    concepto.Unidad,
+                //    concepto.Descripcion,
+                //    concepto.ValorUnitario,
+                //    concepto.Importe,
+                //    objetoIm
+                //  );
+
+                //    // Llamar a la función para agregar los impuestos trasladados de los conceptos
+                //    $.each(concepto.Impuestos.Traslados, function (index, traslado) {
+                //        $('#TBase').val(traslado.Base);
+                //        $('#Conceptos_Traslado_Impuesto').val(traslado.Impuesto);
+                //       // Convierte el valor del enum a una cadena legible para Traslado - Tipo Factor
+
+                //        var TTipoFactortext = '';
+                //        switch (traslado.TipoFactor) {
+
+                //            case 0:
+                //                TTipoFactortext = 'Tasa';
+                //                break;
+                //            case 1:
+                //                TTipoFactortext = 'Cuota';
+                //                break;
+
+                //            case 2:
+                //                TTipoFactortext = 'Excento';
+                //                break;
+
+                //            // Agrega más casos según los valores de tu enum
+                //            default:
+                //                TTipoFactortext = 'Valor desconocido';
+                //                break;
+                //        }
+                //        $('#Conceptos_Traslado_TipoFactor').val(TTipoFactortext);
+                //        $('#TTasaOCuota').val(traslado.TasaOCuota);
+                //        $('#TImporte').val(traslado.Importe);
+
+                //    agregarImpuestosTConceptos(
+                //      traslado.Base,
+                //      traslado.Impuesto,
+                //      TTipoFactortext,
+                //      traslado.TasaOCuota,
+                //      traslado.Importe
+                //    );
+                //    });
+
+
+                //    // Llamar a la función para agregar los impuestos retenidos de los conceptos
+                //    $.each(concepto.Impuestos.Retenciones, function (index, retencion) {
+                //        $('#RBase').val(retencion.Base);
+                //        $('#Conceptos_Retencion_Impuesto').val(retencion.Impuesto);
+                //        // Convierte el valor del enum a una cadena legible para Traslado - Tipo Factor
+
+                //        var RTipoFactortext = '';
+                //        switch (retencion.TipoFactor) {
+
+                //            case 0:
+                //                RTipoFactortext = 'Tasa';
+                //                break;
+                //            case 1:
+                //                RTipoFactortext = 'Cuota';
+                //                break;
+
+                //            case 2:
+                //                RTipoFactortext = 'Excento';
+                //                break;
+
+                //            // Agrega más casos según los valores de tu enum
+                //            default:
+                //                RTipoFactortext = 'Valor desconocido';
+                //                break;
+                //        }
+                //        $('#Conceptos_Retencion_TipoFactor').val(RTipoFactortext);
+                //        $('#RTasaOCuota').val(retencion.TasaOCuota);
+                //        $('#RImporte').val(retencion.Importe);
+
+                //        agregarImpuestosRConceptos(
+                //            retencion.Base,
+                //            retencion.Impuesto,
+                //            RTipoFactortext,
+                //            retencion.TasaOCuota,
+                //            retencion.Importe
+                //        );
+                //    });
+
+
+
+
+
+                //});
+
+
+                // Llamar a la función para agregar Complemento Carta Porte
+                $.each(response.CartaPorte.Ubicaciones, function (index, carta) {
+                    /*var tipoUbicacion = carta.TipoUbicacion;*/
+                    //var idUbicacion = carta.IDUbicacion;
+                    //var rfcRemitenteDestinatario = carta.RFCRemitenteDestinatario;
+
+                    // Asignar los valores a los campos HTML
+                    //$('#TipoUbicacionRD').val(carta.TipoUbicacion);
+                    //$('#Ubicacion_IDUbicacion').val(carta.IDUbicacion);
+                    //$('#Ubicacion_RfcRemitenteDestinatario').val(carta.RFCRemitenteDestinatario);
+                    //$('#Ubicacion_NombreRemitenteDestinatario').val(carta.NombreRemitenteDestinatario);
+                    //$('#Ubicacion_FechaHoraSalidaLlegada').val(carta.FechaHoraSalidaLlegada);
+
+                    ////Seccion Domicilio
+                    //$('#Ubicacion_Domicilio_Calle').val(carta.Domicilio.Calle);
+                    //$('#Ubicacion_Domicilio_NumeroExterior').val(carta.Domicilio.NumeroExterior);
+
+                    //$('#Ubicacion_Domicilio_Referencia').val(carta.Domicilio.Referencia);
+
+                    //$('#Ubicacion_Domicilio_Paises').val(carta.Domicilio.Pais);
+                    //$('#Ubicacion_Domicilio_Paises').trigger('change');
+
+
+                    //$('#Ubicacion_UbicacionE').val(carta.Domicilio.Estado);
+                    //$('#Ubicacion_UbicacionE').trigger('change');
+
+                    //$('#Ubicacion_UbicacionD').val(carta.Domicilio.Municipio);
+                    //$('#Ubicacion_UbicacionD').trigger('change');
+
+
+
+                    //$('#Ubicacion_Domicilio_Localidad').val(carta.Domicilio.Localidad);
+                    //$('#Ubicacion_Domicilio_CodigoPostal').val(carta.Domicilio.CodigoPostal)
+                    //$('#Ubicacion_Domicilio_Colonia').val(carta.Domicilio.Colonia);
+
+                    //// Imprimir los valores en consola
+                    //console.log("Tipo de Ubicación:", tipoUbicacion);
+                    //console.log("ID de Ubicación:", idUbicacion);
+                    //console.log("RFC Remitente/Destinatario:", rfcRemitenteDestinatario);
+
+                    $.each(response.CartaPorte.Mercancias.Mercancia, function (index, mer) {
+                        // Asignar los valores a los campos HTML
+                        //$('#Mercancias_Mercancia_ClaveProdServCP').val(mer.BienesTransp);
+                        //$('#Mercancias_Mercancia_Descripcion').val(mer.Descripcion);
+                        //$('#Mercancias_Mercancia_Cantidad').val(mer.Cantidad);
+                        //$('#Mercancias_Mercancia_ClavesUnidad').val(mer.ClaveUnidad);
+                        //$('#Mercancias_Mercancia_PesoEnKg').val(mer.PesoEnKg);
+                        //$('#agregarDetalleMercancia').trigger('click');
+
+                        $.each(response.CartaPorte.Ubicaciones, function (index, carta) {
+                            $('#TipoUbicacionRD').val(carta.TipoUbicacion);
+                            $('#Ubicacion_IDUbicacion').val(carta.IDUbicacion);
+                            $('#Ubicacion_RfcRemitenteDestinatario').val(carta.RFCRemitenteDestinatario);
+                            $('#Ubicacion_NombreRemitenteDestinatario').val(carta.NombreRemitenteDestinatario);
+                            $('#Ubicacion_FechaHoraSalidaLlegada').val(carta.FechaHoraSalidaLlegada);
+                            $('#DistanciaRO').val(carta.DistanciaRecorrida);
+
+
+                            //Seccion Domicilio
+                            $('#Ubicacion_Domicilio_Calle').val(carta.Domicilio.Calle);
+                            $('#Ubicacion_Domicilio_NumeroExterior').val(carta.Domicilio.NumeroExterior);
+                            $('#Ubicacion_Domicilio_NumeroInterior').val(carta.Domicilio.NumeroExterior);
+                            $('#Ubicacion_Domicilio_Referencia').val(carta.Domicilio.Referencia);
+                            $('#Ubicacion_Domicilio_Paises').val(carta.Domicilio.Pais);
+                            $('#Ubicacion_Domicilio_Paises').trigger('change');
+                            $('#Ubicacion_Domicilio_ddlEstados option:selected').val(carta.Domicilio.Estado);
+                            $('#Ubicacion_Domicilio_ddlEstados option:selected').trigger('change');
+                            $('#Ubicacion_Domicilio_Municipio').val(carta.Domicilio.Municipio);
+                            $('#Ubicacion_Domicilio_Municipio').trigger('change');
+                            $('#Ubicacion_Domicilio_Localidad').val(carta.Domicilio.Localidad);
+                            $('#Ubicacion_Domicilio_CodigoPostal').val(carta.Domicilio.CodigoPostal)
+                            $('#Ubicacion_Domicilio_Colonia').val(carta.Domicilio.Colonia);
+
+                            //Agregar a Detalles
+                            $('#agregarDetalleUbicacion').trigger('click')
+                        });
+
+                        $.each(response.CartaPorte.Mercancias.Mercancia, function (index, mer) {
+                            $('#Mercancias_Mercancia_ClaveProdServCP').val(mer.BienesTransp);
+                            $('#Mercancias_Mercancia_Descripcion').val(mer.Descripcion);
+                            $('#Mercancias_Mercancia_Cantidad').val(mer.Cantidad);
+                            $('#Mercancias_Mercancia_ClavesUnidad').val(mer.ClaveUnidad);
+                            $('#Mercancias_Mercancia_PesoEnKg').val(mer.PesoEnKg);
+                            $('#agregarDetalleMercancia').trigger('click');
+
+
+                        });
+
+                        $.each(response.CartaPorte.Mercancias.Autotransporte.Remolques, function (index, remolque) {
+                            var SubTipoRem = '';
+                            switch (remolque.SubTipoRem) {
+
+                                case 0: SubTipoRem = 'CTR001'; break;
+                                case 1: SubTipoRem = 'CTR002'; break;
+                                case 2: SubTipoRem = 'CTR003'; break;
+                                case 3: SubTipoRem = 'CTR004'; break;
+                                case 4: SubTipoRem = 'CTR005'; break;
+                                case 5: SubTipoRem = 'CTR006'; break;
+                                case 6: SubTipoRem = 'CTR007'; break;
+                                case 7: SubTipoRem = 'CTR008'; break;
+                                case 8: SubTipoRem = 'CTR009'; break;
+                                case 9: SubTipoRem = 'CTR0010'; break;
+                                case 10: SubTipoRem = 'CTR0011'; break;
+                                case 11: SubTipoRem = 'CTR0012'; break;
+                                case 12: SubTipoRem = 'CTR0013'; break;
+                                case 13: SubTipoRem = 'CTR0014'; break;
+                                case 14: SubTipoRem = 'CTR0015'; break;
+                                case 15: SubTipoRem = 'CTR00516'; break;
+                                case 16: SubTipoRem = 'CTR0017'; break;
+                                case 17: SubTipoRem = 'CTR0018'; break;
+                                case 18: SubTipoRem = 'CTR0019'; break;
+                                case 19: SubTipoRem = 'CTR0020'; break;
+                                case 20: SubTipoRem = 'CTR0021'; break;
+                                case 21: SubTipoRem = 'CTR0022'; break;
+                                case 22: SubTipoRem = 'CTR0023'; break;
+                                case 23: SubTipoRem = 'CTR0024'; break;
+                                case 24: SubTipoRem = 'CTR0025'; break;
+                                case 25: SubTipoRem = 'CTR0026'; break;
+                                case 26: SubTipoRem = 'CTR0027'; break;
+                                case 27: SubTipoRem = 'CTR0028'; break;
+                                case 28: SubTipoRem = 'CTR0029'; break;
+                                case 29: SubTipoRem = 'CTR0030'; break;
+                                case 30: SubTipoRem = 'CTR0031'; break;
+                                case 31: SubTipoRem = 'CTR0032'; break;
+                                // Agrega más casos según los valores del enum
+                                default:
+                                    SubTipoRem = 'Valor desconocido';
+                                    break;
+                            }
+
+                            // Asignar los valores a los campos 
+                            $('#Mercancias_AutoTransporte_Remolque_SubTipoRem_Id').val(SubTipoRem);
+                            $('#Mercancias_AutoTransporte_Remolque_Placa').val(remolque.Placa);
+                            $('#agregarDetalleRemolqueAuTransp').trigger('click');
+
+                        });
+
+                        $.each(response.CartaPorte.FiguraTransporte, function (index, figura) {
+                            //// Asignar los valores a los campos HTML
+                            //$('#TipoFiguraTransporte').val(figura.TipoFigura);
+                            //$('#TiposFigura_RFCFigura').val(figura.RFCFigura);
+                            //$('#TiposFigura_NumLicencia').val(figura.NumLicencia);
+                            //$('#TiposFigura_NombreFigura').val(figura.NombreFigura);
+
+                            //$('#agregarDetalleFTransporte').trigger('click');
+
+
+                            $.each(response.CartaPorte.FiguraTransporte, function (index, figura) {
+                                $('#TipoFiguraTransporte').val(figura.TipoFigura);
+                                $('#TiposFigura_RFCFigura').val(figura.RFCFigura);
+                                $('#TiposFigura_NumLicencia').val(figura.NumLicencia);
+                                $('#TiposFigura_NombreFigura').val(figura.NombreFigura);
+
+                                $('#agregarDetalleFTransporte').trigger('click');
+
+
+                                //Cerramos el Modal al Cargar Todos los Datos
+                                $('#kt_modal_3').modal('hide');
+
+
+                                //Bloqueamos el boton despues de cargar el Xml
+                                //El usuario se vera forzado a recarlasr la pagina
+
+                                // Obtener el botón por su ID
+                                const cargarXmlButton = document.getElementById('cargarXmlButton');
+
+                                // Función que se ejecuta cuando el usuario selecciona un archivo
+                                function handleFileSelect(event) {
+                                    // Deshabilitar el botón después de seleccionar un archivo
+                                    cargarXmlButton.disabled = true;
+                                }
+
+                                // Asociar el evento change al input de tipo file
+                                const fileInput = document.querySelector('input[type="file"]');
+                                fileInput.addEventListener('change', handleFileSelect);
+                            });
+                            agregarcomplementofigura(
+                                figura.TipoFigura,
+                                figura.RFCFigura,
+                                figura.NumLicencia,
+                                figura.NombreFigura
+
+                            );
+                        });
+                        $.each(response.CartaPorte.Mercancias.Autotransporte.Remolques, function (index, remolque) {
+
+                            //var SubTipoRem = '';
+                            //switch (remolque.SubTipoRem) {
+                            //    case 0: SubTipoRem = 'CTR001'; break;
+                            //    case 1: SubTipoRem = 'CTR002'; break;
+                            //    case 2: SubTipoRem = 'CTR003'; break;
+                            //    case 3: SubTipoRem = 'CTR004'; break;
+                            //    case 4: SubTipoRem = 'CTR005'; break;
+                            //    case 5: SubTipoRem = 'CTR006'; break;
+                            //    case 6: SubTipoRem = 'CTR007'; break;
+                            //    case 7: SubTipoRem = 'CTR008'; break;
+                            //    case 8: SubTipoRem = 'CTR009'; break;
+                            //    case 9: SubTipoRem = 'CTR0010'; break;
+                            //    case 10: SubTipoRem = 'CTR0011'; break;
+                            //    case 11: SubTipoRem = 'CTR0012'; break;
+                            //    case 12: SubTipoRem = 'CTR0013'; break;
+                            //    case 13: SubTipoRem = 'CTR0014'; break;
+                            //    case 14: SubTipoRem = 'CTR0015'; break;
+                            //    case 15: SubTipoRem = 'CTR00516'; break;
+                            //    case 16: SubTipoRem = 'CTR0017'; break;
+                            //    case 17: SubTipoRem = 'CTR0018'; break;
+                            //    case 18: SubTipoRem = 'CTR0019'; break;
+                            //    case 19: SubTipoRem = 'CTR0020'; break;
+                            //    case 20: SubTipoRem = 'CTR0021'; break;
+                            //    case 21: SubTipoRem = 'CTR0022'; break;
+                            //    case 22: SubTipoRem = 'CTR0023'; break;
+                            //    case 23: SubTipoRem = 'CTR0024'; break;
+                            //    case 24: SubTipoRem = 'CTR0025'; break;
+                            //    case 25: SubTipoRem = 'CTR0026'; break;
+                            //    case 26: SubTipoRem = 'CTR0027'; break;
+                            //    case 27: SubTipoRem = 'CTR0028'; break;
+                            //    case 28: SubTipoRem = 'CTR0029'; break;
+                            //    case 29: SubTipoRem = 'CTR0030'; break;
+                            //    case 30: SubTipoRem = 'CTR0031'; break;
+                            //    case 31: SubTipoRem = 'CTR0032'; break;
+                            //    // Agrega más casos según los valores de tu enum
+                            //    default:
+                            //        SubTipoRem = 'Valor desconocido';
+                            //        break;
+                            //}
+
+                            //// Asignar los valores a los campos HTML
+                            //$('#Mercancias_AutoTransporte_Remolque_SubTipoRem_Id').val(SubTipoRem);
+                            //$('#Mercancias_AutoTransporte_Remolque_Placa').val(remolque.Placa);
+                            //$('#agregarDetalleRemolqueAuTransp').trigger('click');
+                            agregarcomplementoRemolque(
+                                remolque.Placa,
+                                SubTipoRem
+                            );
+                        });
+
+                        agregarcomplementoMercancia(
+                            mer.BienesTransp,
+                            mer.Descripcion,
+                            mer.Cantidad,
+                            mer.ClaveUnidad,
+                            mer.PesoEnKg
+                        );
+                    });
+
+                    agregarcomplementoCarta(
+                        carta.TipoUbicacion,
+                        carta.IDUbicacion,
+                        carta.RFCRemitenteDestinatario,
+                        carta.NombreRemitenteDestinatario,
+                        carta.FechaHoraSalidaLlegada,
+                        //Domicilio
+                        carta.Domicilio.Calle,
+                    );
+
+                });
+
+
+            },
+            error: function (jqxhr, textStatus, error) {
+                alert('Ocurrió un error al cargar el archivo XML');
+            },
+        });
+    });
+});
+
+
+
 </script>
 
 

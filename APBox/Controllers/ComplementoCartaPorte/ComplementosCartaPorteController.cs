@@ -37,6 +37,59 @@ namespace APBox.Controllers.ComplementosCartaPorte
         private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
         private readonly DescargasManager _descargasManager = new DescargasManager();
 
+
+
+        //Metodo Carga-CartaPorte Xml
+        [HttpPost]
+        public ActionResult ObtenerDatosXML(HttpPostedFileBase Archivo)
+        {
+            //string archivo;
+            //ComprobanteCFDI comprobante = new ComprobanteCFDI();
+            ComprobanteCFDI comprobante2;
+            try
+            {
+                //archivo = SubeArchivo2(Archivo);
+                // Convertir el archivo a un arreglo de bytes
+                byte[] bytesArchivo;
+                using (var memoryStream = new MemoryStream())
+                {
+                    Archivo.InputStream.CopyTo(memoryStream);
+                    bytesArchivo = memoryStream.ToArray();
+                }
+
+                // Deserializa el objeto ComprobanteCFDI usando los bytes del archivo
+                comprobante2 = _decodifica.DeserealizarXML40(bytesArchivo);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.ToString()));
+                return Json(null); // Devolver respuesta JSON vacía en caso de error
+            }
+
+            try
+            {
+                //comprobante = _cartaPorteManager.DecodificaXML(archivo);
+                return Json(comprobante2);//Retornamos los valores a la vista hacia el Boton Carga Xml
+
+                //foreach (var l in comprobante2.CartaPorte.Ubicaciones)
+                //{
+                //    l.DistanciaRecorrida
+                //}
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("No se pudo deserializar el archivo XML: {0}", ex.ToString()));
+                // Devolver respuesta JSON vacía en caso de error
+                return Json(null);
+            }
+        }
+
+
+
+
+
+
+
         public ActionResult Index()
         {
             PopulaTiposDeComprobante();
