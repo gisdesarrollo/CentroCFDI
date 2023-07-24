@@ -939,13 +939,13 @@
                                             <div id="FechaHoraSalida" style="color:red;"></div>
                                         </div>
                                         @*<div class="activaTipoEstacion">*@
-                                        <div class=" form-group col-xs-12 col-sm-4 activaTipoEstacion">
+                                        <div class=" form-group col-xs-12 col-sm-4 activaTipoEstacion" id="TipoEs">
                                             @Html.LabelFor(model => model.Ubicacion.TipoEstacion_Id, htmlAttributes: new { @class = "form-label" })
                                             @Html.DropDownList("TipoEstacion", null, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "UTipoEstacion" })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.TipoEstacion_Id, "", new { @class = "text-danger" })
                                         </div>
                                         @*</div>*@
-                                        <div class="form-group col-xs-12 col-sm-4 hiddenDiv activaDR" @*@hidden*@>
+                                        <div class="form-group col-xs-12 col-sm-4 hiddenDiv activaDR"  @*@hidden*@>
                                             @Html.LabelFor(model => model.Ubicacion.DistanciaRecorrida, htmlAttributes: new { @class = "form-label" })
                                             @Html.EditorFor(model => model.Ubicacion.DistanciaRecorrida, new { htmlAttributes = new { @class = "form-control mb-2", @id = "DistanciaRO" } })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.DistanciaRecorrida, "", new { @class = "text-danger" })
