@@ -2854,7 +2854,7 @@
                     $('#Mercancias_AutoTransporte_Seguros_AseguraRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil);
                     $('#Mercancias_AutoTransporte_Seguros_PolizaRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil);
                     $('#Mercancias_AutoTransporte_Seguros_PrimaSeguro').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PrimaSeguro);
-
+                    
                     // Llamar a la función para agregar Complemento Carta Porte
                     $.each(response.CartaPorte.Ubicaciones, function (index, carta) {
 
@@ -2903,39 +2903,8 @@
                                 //Agregar a Detalles
                                 $('#agregarDetalleUbicacion').trigger('click')
 
+                                $('#TipoUbicacionRD').val("Origen");
 
-                                //Definimos ubicaciones en Destino
-                                const elemento = $('.title-hero.destinoTitulo:contains("Ubicación: Destino")');
-
-                                // Verificar si el elemento fue encontrado antes de continuar
-                                if (elemento.length) {
-                                   
-                                    elemento.show();
-                                }
-
-                                const elemento2 = $('.title-hero.origenTitulo:contains("Ubicación: Origen")');
-
-                                if (elemento.length) {
-                                  
-                                    elemento2.hide();
-                                }
-
-                                const elemento3 = $('.title-hero.origenDomicilio:contains("Ubicación Origen : Domicilio")');
-
-                                if (elemento.length) {
-
-                                    elemento3.hide();
-                                }
-
-
-                                const elemento4 = $('.title-hero.destinoDomicilio:contains("Ubicación Destino : Domicilio")');
-
-                                if (elemento.length) {
-
-                                    elemento4.show();
-                                   
-                                }
-                                
                             });
 
                             $.each(response.CartaPorte.Mercancias.Mercancia, function (index, mer) {
