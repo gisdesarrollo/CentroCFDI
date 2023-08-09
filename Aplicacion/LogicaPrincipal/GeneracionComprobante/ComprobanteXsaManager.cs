@@ -141,8 +141,22 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             var metodoPago = comprobanteCfdi.MetodoPago == null ? "|" : comprobanteCfdi.MetodoPago.ToString() + "|";
             var formaPago = comprobanteCfdi.FormaPago == null ? "|" : comprobanteCfdi.FormaPago + "|";
             var condicionPago = comprobanteCfdi.CondicionesPago == null ? "|" : comprobanteCfdi.CondicionesPago + "|";
-            String totalImpuestoTrasladado = comprobanteCfdi.TotalImpuestoTrasladado == 0 ? "|" : comprobanteCfdi.TotalImpuestoTrasladado.ToString() + "|";
-            String totalImpuestoRetenido = comprobanteCfdi.TotalImpuestoRetenidos == 0 ? "|" : comprobanteCfdi.TotalImpuestoRetenidos.ToString() + "|";
+            var conceptImpuesto0 = _db.Conceptos.Where(c => c.Comprobante_Id == comprobanteCfdi.Id).ToList();
+            String totalImpuestoTrasladado = "|";
+            String totalImpuestoRetenido="|";
+            foreach (var concepto in conceptImpuesto0)
+            {
+                if (concepto.Traslado != null)
+                {
+                    if (concepto.Traslado.Base > 0 && concepto.Traslado.Importe >= 0) { totalImpuestoTrasladado = comprobanteCfdi.TotalImpuestoTrasladado.ToString() + "|"; }
+                }
+                if(concepto.Retencion != null)
+                {
+                    if (concepto.Retencion.Base > 0 && concepto.Retencion.Importe > 0) { totalImpuestoRetenido = comprobanteCfdi.TotalImpuestoRetenidos.ToString() + "|"; }
+                }
+            }
+            //String totalImpuestoTrasladado = comprobanteCfdi.TotalImpuestoTrasladado == 0 ? "|" : comprobanteCfdi.TotalImpuestoTrasladado.ToString() + "|";
+            //String totalImpuestoRetenido = comprobanteCfdi.TotalImpuestoRetenidos == 0 ? "|" : comprobanteCfdi.TotalImpuestoRetenidos.ToString() + "|";
             String descuento = "0.00";
             //data 01 Comprobante
             data = "01|" + serie + folio + "|" + serie + "|" + folio + "|" + comprobanteCfdi.FechaDocumento.ToString("yyyy-MM-ddTHH:mm:ss")
@@ -165,6 +179,18 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
 
             //data 03 Receptor
             int regimenFiscalReceptor = (int)comprobanteCfdi.Receptor.RegimenFiscal;
+            String numRegIdTrib = "";
+            String pais = "";
+            if (comprobanteCfdi.Receptor.Rfc == "XEXX010101000")
+            {
+                pais = comprobanteCfdi.Receptor.Pais.ToString();
+                if (String.IsNullOrEmpty(comprobanteCfdi.Receptor.NumRegIdTrib))
+                {
+                    if (comprobanteCfdi.Receptor.Pais != API.Enums.c_Pais.MEX) { numRegIdTrib = "000000000"; }
+                }
+                else { numRegIdTrib = comprobanteCfdi.Receptor.NumRegIdTrib; }
+
+            }
             if (comprobanteCfdi.Receptor.Rfc == "XAXX010101000" && comprobanteCfdi.Receptor.RazonSocial == "PUBLICO EN GENERAL")
             {
                 if(comprobanteCfdi.Periodicidad == "05") { regimenFiscalReceptor = 621; }
@@ -172,8 +198,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
             }
             
             data = "03|" + comprobanteCfdi.Receptor.Rfc +"|" + comprobanteCfdi.Receptor.Rfc + "|" + comprobanteCfdi.Receptor.RazonSocial
-                    +"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+comprobanteCfdi.Receptor.CodigoPostal +"|" +"|" 
-                    + "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+regimenFiscalReceptor;
+                    +"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+"|"+comprobanteCfdi.Receptor.CodigoPostal +"|"+pais+"|"
+                    +numRegIdTrib+ "|"+ comprobanteCfdi.Receptor.UsoCfdi.ToString() + "|"+regimenFiscalReceptor;
 
             //receptorPrueba
             /*data = "03|" + "IIN970122K30" + "|" + "IIN970122K30" + "|" + "ICA INFRAESTRUCTURA"
