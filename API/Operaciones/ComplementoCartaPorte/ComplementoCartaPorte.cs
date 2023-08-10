@@ -133,6 +133,9 @@ namespace API.Operaciones.ComplementoCartaPorte
         [NotMapped]
         public Boolean ValidaMaterialPeligroso { get; set; }
 
+        [DisplayName("Referencia")]
+        public String ReferenciaAddenda { get; set; }
+
         #region Campos CFDI
 
         [DisplayName("Sucursal")]

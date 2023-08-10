@@ -205,6 +205,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 TipoCambio = "1",
                 ExportacionId = "01", //no aplica
                 hidden = false,
+                ReferenciaAddenda = null,//Referencia Addenda
                 Conceptos = new Conceptos()
                 {
                     Traslado = new TrasladoCP()
@@ -1253,26 +1254,68 @@ namespace APBox.Controllers.ComplementosCartaPorte
             return View(complementoCartaPorte);
         }
 
-        
+
+
+        //public ActionResult Descargar(int id)
+        //{
+        //    var complementoCP = _db.ComplementoCartaPortes.Find(id);
+        //    var pathCompleto = _descargasManager.GeneraFilePathXml(complementoCP.FacturaEmitida.ArchivoFisicoXml, complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio);
+        //    //var pathCompleto = _cartaPorteManager.GenerarZipComplementoCartaPorte(id);
+        //    byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
+        //    string contentType = MimeMapping.GetMimeMapping(pathCompleto);
+
+        //    var cd = new System.Net.Mime.ContentDisposition
+        //    {
+        //        FileName = Path.GetFileName(pathCompleto),
+        //        Inline = false,
+        //    };
+        //    Response.AppendHeader("Content-Disposition", cd.ToString());
+        //    //Elimino el archivo Temp
+        //    System.IO.File.Delete(pathCompleto);
+        //    return File(archivoFisico, contentType);
+        //}
+
+
+
 
         public ActionResult Descargar(int id)
         {
             var complementoCP = _db.ComplementoCartaPortes.Find(id);
             var pathCompleto = _descargasManager.GeneraFilePathXml(complementoCP.FacturaEmitida.ArchivoFisicoXml, complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio);
-            //var pathCompleto = _cartaPorteManager.GenerarZipComplementoCartaPorte(id);
-            byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
-            string contentType = MimeMapping.GetMimeMapping(pathCompleto);
+
+            // Leer el contenido del archivo XML existente
+            string xmlContent = System.IO.File.ReadAllText(pathCompleto);
+
+            // Crear el nodo Addenda con el valor de referencia
+            string referenciaAddenda = complementoCP.ReferenciaAddenda;
+            string addendaNode = $"<cfdi:Addenda><referencia>{referenciaAddenda}</referencia></cfdi:Addenda>";
+
+            // Agregar el nodo Addenda al final del archivo XML
+            xmlContent = xmlContent.Replace("</cfdi:Comprobante>", $"{addendaNode}</cfdi:Comprobante>");
+
+            // Guardar el contenido modificado en un nuevo archivo temporal
+            string newFilePath = Path.Combine(Path.GetDirectoryName(pathCompleto), "temp_modified.xml");
+            System.IO.File.WriteAllText(newFilePath, xmlContent);
+
+            byte[] archivoFisico = System.IO.File.ReadAllBytes(newFilePath);
+            string contentType = MimeMapping.GetMimeMapping(newFilePath);
 
             var cd = new System.Net.Mime.ContentDisposition
             {
-                FileName = Path.GetFileName(pathCompleto),
+                FileName = Path.GetFileName(newFilePath),
                 Inline = false,
             };
             Response.AppendHeader("Content-Disposition", cd.ToString());
-            //Elimino el archivo Temp
-            System.IO.File.Delete(pathCompleto);
+
+            // Eliminar el archivo temporal
+            System.IO.File.Delete(newFilePath);
+
             return File(archivoFisico, contentType);
         }
+
+
+
+
 
         public ActionResult DescargarPDF(int id)
         {

@@ -445,6 +445,25 @@
                                             @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                                         </div>
 
+                                        <hr />
+
+                                        <h3 class="title-hero">
+                                            Addenda
+                                        </h3>
+
+
+
+                                        <div class="row">
+                                            <i class="col-xs-12">*Puedes agregar los detalles correspondientes</i>
+                                            <br />
+
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-12">
+                                                @Html.LabelFor(model => model.ReferenciaAddenda, htmlAttributes: new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.ReferenciaAddenda, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.ReferenciaAddenda, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <!--end::comprobante-->
