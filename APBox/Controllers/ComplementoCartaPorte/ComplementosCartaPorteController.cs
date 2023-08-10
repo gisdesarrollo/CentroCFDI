@@ -1294,10 +1294,12 @@ namespace APBox.Controllers.ComplementosCartaPorte
             xmlContent = xmlContent.Replace("</cfdi:Comprobante>", $"{addendaNode}</cfdi:Comprobante>");
 
             // Guardar el contenido modificado en un nuevo archivo temporal
-            string newFilePath = Path.Combine(Path.GetDirectoryName(pathCompleto), "temp_modified.xml");
+            string newFilePath = Path.Combine(Path.GetDirectoryName(pathCompleto), String.Format("{0} - {1} - {2}.xml", complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff")));
             System.IO.File.WriteAllText(newFilePath, xmlContent);
 
             byte[] archivoFisico = System.IO.File.ReadAllBytes(newFilePath);
+            //se elimina el archivo anterior generado sin addenda
+            System.IO.File.Delete(pathCompleto);
             string contentType = MimeMapping.GetMimeMapping(newFilePath);
 
             var cd = new System.Net.Mime.ContentDisposition
