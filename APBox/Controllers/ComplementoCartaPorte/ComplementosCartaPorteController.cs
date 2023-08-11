@@ -1281,38 +1281,63 @@ namespace APBox.Controllers.ComplementosCartaPorte
         public ActionResult Descargar(int id)
         {
             var complementoCP = _db.ComplementoCartaPortes.Find(id);
-            var pathCompleto = _descargasManager.GeneraFilePathXml(complementoCP.FacturaEmitida.ArchivoFisicoXml, complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio);
 
-            // Leer el contenido del archivo XML existente
-            string xmlContent = System.IO.File.ReadAllText(pathCompleto);
-
-            // Crear el nodo Addenda con el valor de referencia
-            string referenciaAddenda = complementoCP.ReferenciaAddenda;
-            string addendaNode = $"<cfdi:Addenda><referencia>{referenciaAddenda}</referencia></cfdi:Addenda>";
-
-            // Agregar el nodo Addenda al final del archivo XML
-            xmlContent = xmlContent.Replace("</cfdi:Comprobante>", $"{addendaNode}</cfdi:Comprobante>");
-
-            // Guardar el contenido modificado en un nuevo archivo temporal
-            string newFilePath = Path.Combine(Path.GetDirectoryName(pathCompleto), String.Format("{0} - {1} - {2}.xml", complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff")));
-            System.IO.File.WriteAllText(newFilePath, xmlContent);
-
-            byte[] archivoFisico = System.IO.File.ReadAllBytes(newFilePath);
-            //se elimina el archivo anterior generado sin addenda
-            System.IO.File.Delete(pathCompleto);
-            string contentType = MimeMapping.GetMimeMapping(newFilePath);
-
-            var cd = new System.Net.Mime.ContentDisposition
+            //Se verifica si el Objeto Referencia contiene algun valor para mapear Addenda
+            if (!string.IsNullOrWhiteSpace(complementoCP.ReferenciaAddenda))
             {
-                FileName = Path.GetFileName(newFilePath),
-                Inline = false,
-            };
-            Response.AppendHeader("Content-Disposition", cd.ToString());
+                var pathCompleto = _descargasManager.GeneraFilePathXml(complementoCP.FacturaEmitida.ArchivoFisicoXml, complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio);
 
-            // Eliminar el archivo temporal
-            System.IO.File.Delete(newFilePath);
+                // Leer el contenido del archivo XML existente
+                string xmlContent = System.IO.File.ReadAllText(pathCompleto);
 
-            return File(archivoFisico, contentType);
+                // Crear el nodo Addenda con el valor de referencia
+                string referenciaAddenda = complementoCP.ReferenciaAddenda;
+
+                string addendaNode = $"<cfdi:Addenda><referencia>{referenciaAddenda}</referencia></cfdi:Addenda>";
+
+                // Agregar el nodo Addenda al final del archivo XML
+                xmlContent = xmlContent.Replace("</cfdi:Comprobante>", $"{addendaNode}</cfdi:Comprobante>");
+
+                // Guardar el contenido modificado en un nuevo archivo temporal
+                string newFilePath = Path.Combine(Path.GetDirectoryName(pathCompleto), String.Format("{0} - {1} - {2}.xml", complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff")));
+                System.IO.File.WriteAllText(newFilePath, xmlContent);
+
+                byte[] archivoFisico = System.IO.File.ReadAllBytes(newFilePath);
+                //se elimina el archivo anterior generado sin addenda
+                System.IO.File.Delete(pathCompleto);
+                string contentType = MimeMapping.GetMimeMapping(newFilePath);
+
+                var cd = new System.Net.Mime.ContentDisposition
+                {
+                    FileName = Path.GetFileName(newFilePath),
+                    Inline = false,
+                };
+                Response.AppendHeader("Content-Disposition", cd.ToString());
+
+                // Eliminar el archivo temporal
+                System.IO.File.Delete(newFilePath);
+
+                return File(archivoFisico, contentType);
+            }
+            else //Si no hay valor de Referencia se continua con el proceso Normal de descarga
+            {
+                var pathCompleto = _descargasManager.GeneraFilePathXml(complementoCP.FacturaEmitida.ArchivoFisicoXml, complementoCP.FacturaEmitida.Serie, complementoCP.FacturaEmitida.Folio);
+                //var pathCompleto = _cartaPorteManager.GenerarZipComplementoCartaPorte(id);
+                byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
+                string contentType = MimeMapping.GetMimeMapping(pathCompleto);
+
+                var cd = new System.Net.Mime.ContentDisposition
+                {
+                    FileName = Path.GetFileName(pathCompleto),
+                    Inline = false,
+                };
+                Response.AppendHeader("Content-Disposition", cd.ToString());
+                //Elimino el archivo Temp
+                System.IO.File.Delete(pathCompleto);
+                return File(archivoFisico, contentType);
+
+
+            }
         }
 
 
