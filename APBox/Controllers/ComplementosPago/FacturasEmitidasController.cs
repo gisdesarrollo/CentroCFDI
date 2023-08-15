@@ -18,7 +18,7 @@ using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
-
+using MySqlConnector;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -64,7 +64,7 @@ namespace APBox.Controllers.Catalogos
                         if (queryFacturas != null)
                         {
 
-                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
                             //facturasEmitidas.Status = queryFacturas.Status;
                             // facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
                             // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
@@ -118,7 +118,7 @@ namespace APBox.Controllers.Catalogos
                         facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
                         if (queryFacturas != null)
                         {
-                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
                             //facturasEmitidas.Status = queryFacturas.Status;
                             //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
                             // facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
@@ -166,7 +166,7 @@ namespace APBox.Controllers.Catalogos
                         facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
                         if (queryFacturas != null)
                         {
-                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
                             //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
                             //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
                         }
@@ -201,7 +201,7 @@ namespace APBox.Controllers.Catalogos
                         facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
                         if (queryFacturas != null)
                         {
-                            facturasEmitidas.Referencia = queryFacturas.Referencia;
+                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
                             //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
                             //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
                         }
@@ -674,12 +674,11 @@ namespace APBox.Controllers.Catalogos
         public facturareferencia facturaidferencia(int id)
         {
             var listReferencia = new facturareferencia();
-            const string query = @"select  d.Referencia,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos , fe.Status  from cp_domicilio d " +
-                        "join  cp_ubicaciones p  on(d.Id = p.Domicilio_Id) " +
-                        "join cp_complementocartaporte cm on(cm.Id = p.Complemento_Id) " +
+            const string query = @"select  cm.ReferenciaAddenda,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos , fe.Status   " +
+                        "join cp_complementocartaporte cm" +
                         "join ori_facturasemitidas fe on (fe.Id= cm.FacturaEmitidaId) " +
                         "where fe.Id in (@Id); ";
-
+           
             var consulta = _db.Database.SqlQuery<facturareferencia>(query,
                     new MySqlParameter { ParameterName = "@Id", MySqlDbType = MySqlDbType.String, Value = id }).FirstOrDefault();
 
@@ -691,7 +690,7 @@ namespace APBox.Controllers.Catalogos
         {
             public int FacturaEmitidaId { get; set; }
 
-            public string Referencia { get; set; }
+            public string ReferenciaAddenda { get; set; }
 
             public double TotalImpuestoTrasladado { get; set; }
 

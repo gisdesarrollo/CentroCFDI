@@ -92,7 +92,7 @@
                                 <th class="min-w-100px">
                                     Moneda
                                 </th>
-                                <th>
+                                @*<th>
                                     @{
                                         var bd = new APBox.Context.APBoxContext();
                                         var sucursal = bd.Sucursales.Find(Model.SucursalId);
@@ -105,7 +105,7 @@
 
                                         }
                                     }
-                                </th>
+                                </th>*@
 
                                 <th>
                                     Status
@@ -157,7 +157,7 @@
 
                                     </td>
 
-                                    <td class="text-center">
+                                    @*<td class="text-center">
                                         @{
                                             if (Model.SucursalId == 42)
                                             {
@@ -169,7 +169,7 @@
                                             }
                                         }
 
-                                    </td>
+                                    </td>*@
 
                                     <td>
                                         
