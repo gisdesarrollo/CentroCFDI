@@ -481,8 +481,14 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                                             TImporteDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * (decimal)tipoCambioDR,6);
                                             TBaseDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * (decimal)tipoCambioDR,6);
 
-
                                         }
+                                        else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString() == "EUR" && pago.Moneda.ToString() == "MXN")
+                                        {
+                                            tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(complementoPago.Pagos[x].DocumentosRelacionados[i], pago.TipoCambio, pago.Monto);
+                                            TImporteDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * tipoCambioDR, 8);
+                                            TBaseDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base * tipoCambioDR, 8);
+                                        }
+
                                     } else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && complementoPago.Pagos[x].DocumentosRelacionados[i].Moneda == pago.Moneda) {
                                         tipoCambioDR = (Decimal)pago.TipoCambio;
                                         TImporteDR = decimal.Round((decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe,6); /*(decimal)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe * tipoCambioDR;*/

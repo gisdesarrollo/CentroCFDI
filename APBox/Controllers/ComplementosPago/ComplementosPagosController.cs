@@ -532,6 +532,14 @@ namespace APBox.Controllers.ComplementosPago
                                         baseDR = (decimal)baseDRFormt * tipoCambioPgo;
                                         ImporteDR = (decimal)ImporteDRFormt * tipoCambioPgo;
                                     }
+                                    else if (DRelacionado.Moneda.ToString() == "EUR" && pago.Moneda.ToString() == "MXN")
+                                    {
+                                            tipoCambioDR = _conversionTipoCambio.GetTipoCambioDocRelacionadoUSD(DRelacionado, pago.TipoCambio, pago.Monto);
+                                            decimal baseDRFormt = ((decimal)traslado.Base * (decimal)tipoCambioDR);
+                                            decimal ImporteDRFormt = (decimal)traslado.Importe * (decimal)tipoCambioDR;
+                                            baseDR = decimal.Round(baseDRFormt, 6);
+                                            ImporteDR = decimal.Round(ImporteDRFormt, 6);
+                                     }
                                 }
                                 else if (DRelacionado.Moneda.ToString() != "MXN" && pago.Moneda.ToString() != "MXN" && DRelacionado.Moneda == pago.Moneda)
                                 {

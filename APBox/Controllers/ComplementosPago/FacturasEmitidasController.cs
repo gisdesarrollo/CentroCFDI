@@ -18,7 +18,7 @@ using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
-using MySqlConnector;
+
 
 namespace APBox.Controllers.Catalogos
 {
@@ -674,8 +674,7 @@ namespace APBox.Controllers.Catalogos
         public facturareferencia facturaidferencia(int id)
         {
             var listReferencia = new facturareferencia();
-            const string query = @"select  cm.ReferenciaAddenda,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos , fe.Status   " +
-                        "join cp_complementocartaporte cm" +
+            const string query = @"select  cm.ReferenciaAddenda,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos , fe.Status from cp_complementocartaporte cm  " +
                         "join ori_facturasemitidas fe on (fe.Id= cm.FacturaEmitidaId) " +
                         "where fe.Id in (@Id); ";
            
