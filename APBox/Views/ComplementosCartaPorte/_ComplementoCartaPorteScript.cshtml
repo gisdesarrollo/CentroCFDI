@@ -2867,9 +2867,15 @@
                                 $('#Ubicacion_IDUbicacion').val(carta.IDUbicacion);
                                 $('#Ubicacion_RfcRemitenteDestinatario').val(carta.RFCRemitenteDestinatario);
                                 $('#Ubicacion_NombreRemitenteDestinatario').val(carta.NombreRemitenteDestinatario);
-                                $('#Ubicacion_FechaHoraSalidaLlegada').val(carta.FechaHoraSalidaLlegada);
-                                $('#DistanciaRO').val(carta.DistanciaRecorrida);
 
+                               
+                                     //Si es de tipo Extranjero
+                                    $('#Ubicacion_NumRegIdTrib').val(carta.NumRegIdTrib);
+                                    $('#Ubicacion_ResidenciaFiscal').val(carta.ResidenciaFiscal);
+
+                                    $('#Ubicacion_FechaHoraSalidaLlegada').val(carta.FechaHoraSalidaLlegada);
+                                    $('#DistanciaRO').val(carta.DistanciaRecorrida);
+                                
 
                                 //Seccion Domicilio
                                 $('#Ubicacion_Domicilio_Calle').val(carta.Domicilio.Calle);
