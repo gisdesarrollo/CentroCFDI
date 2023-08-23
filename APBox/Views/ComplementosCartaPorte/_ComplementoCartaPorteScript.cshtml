@@ -2864,7 +2864,30 @@
 
                             $.each(response.CartaPorte.Ubicaciones, function (index, carta) {
                                 $('#TipoUbicacionRD').val(carta.TipoUbicacion);
-                                $('#Ubicacion_IDUbicacion').val(carta.IDUbicacion);
+
+
+                              //Validacion para ubicacion cuando viene vacio, se le asigna una nueva IDUbicacion
+
+                               var IDubi = carta.IDUbicacion;
+
+                                if (IDubi) {
+
+                                    $('#Ubicacion_IDUbicacion').val(carta.IDUbicacion);
+
+                                } else {
+
+                                    var clave = "";
+                                    var randomClave = Math.floor(100000 + Math.random() * 900000);
+                                    if ($('#TipoUbicacionRD').val() === "Origen") {
+                                        clave = "OR" + randomClave;
+                                    } else {
+                                        clave = "DE" + randomClave;
+                                    }
+                                    var IDubi = $('#Ubicacion_IDUbicacion').val(clave);
+
+                                   
+                                }
+                                
                                 $('#Ubicacion_RfcRemitenteDestinatario').val(carta.RFCRemitenteDestinatario);
                                 $('#Ubicacion_NombreRemitenteDestinatario').val(carta.NombreRemitenteDestinatario);
 
