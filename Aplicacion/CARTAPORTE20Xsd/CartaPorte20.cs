@@ -27535,7 +27535,7 @@ public partial class CartaPorteMercanciasMercancia {
     
     private bool valorMercanciaFieldSpecified;
     
-    private c_Moneda monedaField;
+    private string monedaField;
     
     private bool monedaFieldSpecified;
     
@@ -27777,7 +27777,7 @@ public partial class CartaPorteMercanciasMercancia {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Moneda Moneda {
+    public string Moneda {
         get {
             return this.monedaField;
         }
@@ -131707,9 +131707,9 @@ public partial class CartaPorteTiposFigura {
     
     private string numRegIdTribFiguraField;
     
-    private c_Pais residenciaFiscalFiguraField;
+    private string residenciaFiscalFiguraField;
     
-    private bool residenciaFiscalFiguraFieldSpecified;
+    //private bool residenciaFiscalFiguraFieldSpecified;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("PartesTransporte")]
@@ -131789,7 +131789,7 @@ public partial class CartaPorteTiposFigura {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public c_Pais ResidenciaFiscalFigura {
+    public string ResidenciaFiscalFigura {
         get {
             return this.residenciaFiscalFiguraField;
         }
@@ -131798,16 +131798,7 @@ public partial class CartaPorteTiposFigura {
         }
     }
     
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool ResidenciaFiscalFiguraSpecified {
-        get {
-            return this.residenciaFiscalFiguraFieldSpecified;
-        }
-        set {
-            this.residenciaFiscalFiguraFieldSpecified = value;
-        }
-    }
+    
 }
 
 /// <remarks/>

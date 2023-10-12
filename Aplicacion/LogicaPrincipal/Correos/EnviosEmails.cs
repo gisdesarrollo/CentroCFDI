@@ -1,8 +1,10 @@
 ﻿using API.Catalogos;
+using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Email;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
@@ -11,14 +13,16 @@ namespace Aplicacion.LogicaPrincipal.Correos
 {
     public class EnviosEmails
     {
+        private readonly AplicacionContext _db = new AplicacionContext();
         //private readonly string server = "mail.gisconsultoria.com";
         //private readonly int port = 26;
         //private readonly string user = "facturas.xsa@gisconsultoria.com";
         //private readonly string pass = "Gisconsul+01";
         //private readonly string from = " facturas.xsa@gisconsultoria.com";
 
-        public void SendEmail(EmailDto emailDto)
+        public void SendEmail(EmailDto emailDto, int complementoPagoId)
         {
+            var complementoPago = _db.ComplementosPago.Find(complementoPagoId);
             MailMessage message = new MailMessage();
             message.From = new MailAddress(emailDto.EmailEmisor);
             //emailDto.EmailsReceptores = new List<string> { "alexander.garcia@gisconsultoria.com", "eduardo.ayala@gisconsultoria.com" };
@@ -29,19 +33,35 @@ namespace Aplicacion.LogicaPrincipal.Correos
             }
             message.Subject = emailDto.EncabezadoCorreo;
             message.Body = emailDto.CuerpoCorreo;
+           
+
             //archivos adjuntos
-            foreach (var file in emailDto.Archivos)
-            {
-                var attachment = new Attachment(file.Path)
+            var archivoZip = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.zip", complementoPago.FacturaEmitida.Serie, complementoPago.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+            // Crear un archivo ZIP
+                using (FileStream fs = new FileStream(archivoZip, FileMode.Create))
+                using (ZipArchive zip = new ZipArchive(fs, ZipArchiveMode.Create))
                 {
-                    Name = file.NombreArchivo
-                };
-                message.Attachments.Add(attachment);
-            }
+                    foreach (var file in emailDto.Archivos)
+                    {
+                        // Agregar archivo a ZIP
+                        zip.CreateEntryFromFile(file.Path, file.NombreArchivo);
+                    }
+                    
+                }
+                
+            
+
+            var attachment = new Attachment(archivoZip)
+            {
+                Name = Path.GetFileName(archivoZip)
+            };
+            //add attachments
+            message.Attachments.Add(attachment);
             //se incializa conexion al servidor smtp
             SmtpClient client = new SmtpClient(emailDto.Servidor, (int)emailDto.Puerto);
             //uso de credenciales de authenticación
-            client.UseDefaultCredentials = true;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(emailDto.User, emailDto.Contrasena);
             client.EnableSsl = false;
 
@@ -51,16 +71,17 @@ namespace Aplicacion.LogicaPrincipal.Correos
                 message.Dispose();
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
                 //throw new Exception(ex.Message);
-
             }
             //se eliminan los files 
             foreach (var file in emailDto.Archivos)
             {
                 System.IO.File.Delete(file.Path);
             }
+            //se elimina el zip
+            System.IO.File.Delete(archivoZip);
         }
         
         public EmailDto ObjectCorreo(Cliente cliente, List<String> archivos)

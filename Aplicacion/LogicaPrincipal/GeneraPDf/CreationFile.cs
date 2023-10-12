@@ -419,7 +419,7 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
                 File.Delete(path);
             }
             //guardar string en un archivo
-            System.IO.File.WriteAllText(path, Encoding.UTF8.GetString(byteXml));
+            System.IO.File.WriteAllBytes(path, byteXml);
 
             return path;
         }

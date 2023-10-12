@@ -389,9 +389,16 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
                 _db.Conceptos.RemoveRange(pagosAnteriores);
                 _db.SaveChanges();
-
+                complementoCP.TotalImpuestoTrasladado = 0;
+                complementoCP.TotalImpuestoRetenidos = 0;
+                complementoCP.Subtotal = 0;
+                
                 foreach (var concepto in complementoCP.Conceptoss.Except(pagosAnteriores))
                 {
+                    if (complementoCP.TipoDeComprobante == c_TipoDeComprobante.I)
+                    {
+                        complementoCP.Subtotal += (decimal)concepto.Importe;
+                    }
                     concepto.Complemento_Id = complementoCP.Id;
                     concepto.ComplementoCP = null;
                     concepto.ComprobanteCfdi = null;
@@ -402,7 +409,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     }
                     else
                     {
-                        if (concepto.Traslado.Importe > 0 && concepto.Traslado_Id == null)
+                        if (concepto.Traslado.Importe > 0)
                         {
                             complementoCP.TotalImpuestoTrasladado += concepto.Traslado.Importe;
                         }
@@ -415,7 +422,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     }
                     else
                     {
-                        if (concepto.Retencion.Importe > 0 && concepto.Retencion_Id == null)
+                        if (concepto.Retencion.Importe > 0)
                         {
                             complementoCP.TotalImpuestoRetenidos += concepto.Retencion.Importe;
                         }

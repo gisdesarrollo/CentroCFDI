@@ -552,6 +552,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
              string jsonString = System.Text.Json.JsonSerializer.Serialize(dataJsonXsa);
 
             File.Delete(path);
+            
+            
             //enviaamos request
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {

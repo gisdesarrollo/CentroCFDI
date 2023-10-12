@@ -27,6 +27,7 @@ using API.Enums.CartaPorteEnums;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.Facturas;
+using Aplicacion.LogicaPrincipal.Email;
 
 namespace APBox.Controllers.ComplementosPago
 {
@@ -46,6 +47,7 @@ namespace APBox.Controllers.ComplementosPago
         private readonly EnviosEmails _email = new EnviosEmails();
         private readonly DescargasManager _descargasManager = new DescargasManager();
         private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
+       
         #endregion
 
         // GET: Facturas
@@ -745,8 +747,7 @@ namespace APBox.Controllers.ComplementosPago
                     complementoPagoDb.FechaDocumento = fechaTime;
                     _db.Entry(complementoPagoDb).State = EntityState.Modified;
                     _db.SaveChanges();
-                   
-
+                    
                     _pagosManager.GenerarComplementoPago(sucursalId, complementoPago.Id, "");
                     return RedirectToAction("Index");
                 }

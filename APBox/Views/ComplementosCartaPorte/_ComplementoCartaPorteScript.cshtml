@@ -1156,6 +1156,17 @@
 
     }
 
+    function ValidaCamposVaciosUbicacionDomicilio(input, div) {
+
+        if (input === "" || input === null || input == undefined) {
+
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     //DETALLE MERCANCIA PEDIMENTOS
     $(function () {
     $('#agregarDetallePedimentos').click(function () {
@@ -2233,6 +2244,7 @@
                 $.get("/ComplementosCartaPorte/FiltrarLocalidades", { EstadoId: $(ddlEstados).val() }, function (data) {
 
                     $(ddlLocalidades).empty();
+                    $(ddlLocalidades).append("<option value> Ninguno</option>")
                     $.each(data, function (index, row) {
                         $(ddlLocalidades).append("<option value='" + row.c_Localidad + "'>" + row.Descripcion + "</option>")
                     });
@@ -2394,7 +2406,7 @@
         var DELocalidad = $('#Ubicacion_Domicilio_ddlLocalidades option:selected').val();
         var DELocalidadText = $('#Ubicacion_Domicilio_ddlLocalidades option:selected').text();
         message = ""
-        var ddlL = Boolean(ValidaCampos(DELocalidad, message));
+        var ddlL = Boolean(ValidaCamposVaciosUbicacionDomicilio(DELocalidad, message));
         if (!ddlL) {
             DELocalidad = $('#Ubicacion_Domicilio_Localidad').val();
             DELocalidadText = DELocalidad;

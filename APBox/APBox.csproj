@@ -587,7 +587,6 @@
     <Content Include="bin\Zstandard.Net.dll" />
     <Content Include="bin\_CDN\custom\css-custom\custom.css" />
     <Content Include="BouncyCastle.Crypto.dll" />
-    <Content Include="Content\FileCfdiGenerados\prueba.txt" />
     <Content Include="Content\Images\Clientes\Aguas.jpg" />
     <Content Include="Content\Images\Clientes\Bisquets.jpg" />
     <Content Include="Content\Images\Clientes\Corpogas.png" />
@@ -2866,6 +2865,7 @@
     <Folder Include="Archivos\PDFs Facturas Emitidas\" />
     <Folder Include="Archivos\RecibosExternos\" />
     <Folder Include="Content\FileCancelados\" />
+    <Folder Include="Content\FileCfdiGenerados\" />
     <Folder Include="Content\FileTxt\" />
     <Folder Include="Content\Temp\" />
   </ItemGroup>

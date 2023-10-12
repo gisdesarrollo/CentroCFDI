@@ -108,7 +108,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
 
                             EmailDto objetcCorreo = _enviosEmails.ObjectCorreo(cliente, new List<string> { pathXml, pathPdf });
-                            _enviosEmails.SendEmail(objetcCorreo);
+                            _enviosEmails.SendEmail(objetcCorreo,complementoPago.Id);
                         }
 
                     }
