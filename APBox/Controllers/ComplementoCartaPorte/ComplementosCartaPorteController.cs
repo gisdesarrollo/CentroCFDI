@@ -1360,14 +1360,14 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 //archivoFisico = _creationFile.GeneraPDF33CartaPorte(oComprobante33, id);
                 oComprobante33 = _decodifica.DeserealizarXML33(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
                 tipoDocumento = _decodifica.TipoDocumentoCfdi33(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, false);
+                archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, false,false);
             }
             else {
                 //oComprobante = _creationFile.DeserealizarXml(id);
                 //archivoFisico = _creationFile.GeneraPDF(oComprobante, id);
                 oComprobante = _decodifica.DeserealizarXML40(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
                 tipoDocumento = _decodifica.TipoDocumentoCfdi40(complementoCartaPorte.FacturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false);
+                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false,false);
             }
             
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);

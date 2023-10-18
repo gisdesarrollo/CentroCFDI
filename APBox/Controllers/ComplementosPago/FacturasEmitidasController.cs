@@ -384,13 +384,13 @@ namespace APBox.Controllers.Catalogos
                     {
                         oComprobante33 = _decodifica.DeserealizarXML33(facturaEmitida.ArchivoFisicoXml);
                         tipoDocumento = _decodifica.TipoDocumentoCfdi33(facturaEmitida.ArchivoFisicoXml);
-                        archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, true);
+                        archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, true,false);
                     }
                     else
                     {
                         oComprobante = _decodifica.DeserealizarXML40(facturaEmitida.ArchivoFisicoXml);
                         tipoDocumento = _decodifica.TipoDocumentoCfdi40(facturaEmitida.ArchivoFisicoXml);
-                        archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, true);
+                        archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, true,false);
                     }
                 }
             }

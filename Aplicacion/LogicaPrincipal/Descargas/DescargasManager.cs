@@ -42,7 +42,7 @@ namespace Aplicacion.LogicaPrincipal.Descargas
             }
         }
 
-        public byte[] GeneraPDF33(ComprobanteCFDI33 oComprobante, string tipoDocumento, int id, bool isFacturaEmitida)
+        public byte[] GeneraPDF33(ComprobanteCFDI33 oComprobante, string tipoDocumento, int id, bool isFacturaEmitida, bool isFacturaRecibida)
         {
             var sucursal = new Sucursal();
             string base64QR = null;
@@ -94,13 +94,26 @@ namespace Aplicacion.LogicaPrincipal.Descargas
                 }
                 else
                 {
-                    comprobante = _db.ComprobantesCfdi.Find(id);
-                    if(comprobante != null)
+                    if (!isFacturaRecibida)
                     {
-                        //get sucursal
-                        sucursal = _db.Sucursales.Find(comprobante.SucursalId);
+                        comprobante = _db.ComprobantesCfdi.Find(id);
+                        if (comprobante != null)
+                        {
+                            //get sucursal
+                            sucursal = _db.Sucursales.Find(comprobante.SucursalId);
 
+                        }
                     }
+                    else
+                    {
+                        var facturaRecibida = _db.FacturasRecibidas.Find(id);
+                        if (facturaRecibida != null)
+                        {
+                            sucursal = _db.Sucursales.Find(facturaRecibida.EmisorId);
+
+                        }
+                    }
+                    
                 }
 
                 
@@ -146,7 +159,7 @@ namespace Aplicacion.LogicaPrincipal.Descargas
             return pdf;
         }
 
-        public byte[] GeneraPDF40(ComprobanteCFDI oComprobante, string tipoDocumento, int id, bool isFacturaEmitida)
+        public byte[] GeneraPDF40(ComprobanteCFDI oComprobante, string tipoDocumento, int id, bool isFacturaEmitida, bool isFacturaRecibida)
         {
             var sucursal = new Sucursal();
             string base64QR = null;
@@ -173,20 +186,11 @@ namespace Aplicacion.LogicaPrincipal.Descargas
 
                 //set referencia 
 
-                /*if (cartaPorte.Sucursal.Rfc == "CME090205NS5") {*/
                 if (cartaPorte.ReferenciaAddenda != null)
                 {
                     oComprobante.Referencia = cartaPorte.ReferenciaAddenda;
-                    /*foreach (var ubicacion in oComprobante.CartaPorte.Ubicaciones)
-                    {
-                        if (ubicacion.TipoUbicacion == "Origen")
-                        {
-                            oComprobante.Referencia = ubicacion.Domicilio.Referencia;
-                            break;
-                        }
-                    }*/
+     
                 }
-                /*}*/
             }
             else if (tipoDocumento == "Pagos40")
             {
@@ -213,26 +217,48 @@ namespace Aplicacion.LogicaPrincipal.Descargas
                      comprobante = _db.ComprobantesCfdi.Where( c=> c.FacturaEmitidaId == id).FirstOrDefault();
                 }
                 else {
-                    comprobante = _db.ComprobantesCfdi.Find(id);
+                    if (!isFacturaRecibida)
+                    {
+                        comprobante = _db.ComprobantesCfdi.Find(id);
+                    }
                 }
-                
-                if(comprobante != null)
+
+                if (!isFacturaRecibida)
                 {
-                    //get QR
-                    base64QR = System.Convert.ToBase64String(comprobante.FacturaEmitida.CodigoQR);
-                    //get sucursal
-                    sucursal = _db.Sucursales.Find(comprobante.SucursalId);
-                    
+                    if (comprobante != null)
+                    {
+                        //get QR
+                        base64QR = System.Convert.ToBase64String(comprobante.FacturaEmitida.CodigoQR);
+                        //get sucursal
+                        sucursal = _db.Sucursales.Find(comprobante.SucursalId);
+
+                    }
+                    else
+                    {
+                        var cfdi = _db.FacturasEmitidas.Find(id);
+                        if (cfdi != null)
+                        {
+                            //get sucursal
+                            sucursal = _db.Sucursales.Find(cfdi.EmisorId);
+                            //Genera QR para CFDI Externos
+                            oComprobante.CodigoQR = GeneraQR(oComprobante.Emisor.Rfc, oComprobante.Receptor.Rfc, oComprobante.Total, oComprobante.TimbreFiscalDigital.UUID);
+                        }
+
+                    }
                 }
                 else
                 {
-                    var cfdi = _db.FacturasEmitidas.Find(id);
-                    //get sucursal
-                    sucursal = _db.Sucursales.Find(cfdi.EmisorId);
-                    //Genera QR para CFDI Externos
-                    oComprobante.CodigoQR = GeneraQR(oComprobante.Emisor.Rfc,oComprobante.Receptor.Rfc,oComprobante.Total,oComprobante.TimbreFiscalDigital.UUID);
-                    
+
+                    var facturaRecibida = _db.FacturasRecibidas.Find(id);
+                    if (facturaRecibida != null)
+                    {
+                        sucursal = _db.Sucursales.Find(facturaRecibida.EmisorId);
+                        //Genera QR para CFDI Externos
+                        oComprobante.CodigoQR = GeneraQR(oComprobante.Emisor.Rfc, oComprobante.Receptor.Rfc, oComprobante.Total, oComprobante.TimbreFiscalDigital.UUID);
+
+                    }
                 }
+
                 //asigna plantilla
                 plantilla = "TemplatePDFCartaPorte//PlantillaCartaPorte.cshtml";
 

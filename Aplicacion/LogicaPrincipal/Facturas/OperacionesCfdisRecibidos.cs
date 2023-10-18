@@ -1,4 +1,5 @@
 ﻿using API.Enums;
+using API.Models.Facturas;
 using API.Operaciones.Facturacion;
 using Aplicacion.Context;
 using System;
@@ -22,7 +23,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
 
         #region Constructor
 
-        public OperacionesCfdisRecibidos(int sucursalId)
+        /*public OperacionesCfdisRecibidos(int sucursalId)
         {
             _sucursalId = sucursalId;
         }
@@ -32,20 +33,17 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             _sucursalId = sucursalId;
             _fechaInicial = fechaInicial;
             _fechaFinal = fechaFinal;
-        }
+        }*/
 
         #endregion
 
-        public List<FacturaRecibida> ObtenerFacturasRecibidas(TiposGastos? tipoGasto = null)
+        public void ObtenerFacturasRecibidas(ref FacturasRecibidasModel facturasRecibidasModel)
         {
-            var facturasRecibidas = _db.FacturasRecibidas.Where(fr => fr.ReceptorId == _sucursalId).ToList();
+            var fechaInicial = facturasRecibidasModel.FechaInicial;
+            var fechaFinal = facturasRecibidasModel.FechaFinal.AddDays(1); //SE AGREGA UN DIA A LA FECHA FINAL
+            var sucursalId = facturasRecibidasModel.SucursalId;
+            facturasRecibidasModel.FacturasRecibidas = _db.FacturasRecibidas.Where(fr => fr.ReceptorId == sucursalId && fr.Fecha >= fechaInicial && fr.Fecha < fechaFinal).ToList();
 
-            if(tipoGasto != null)
-            {
-                facturasRecibidas = facturasRecibidas.Where(fr => fr.TipoGasto == tipoGasto).ToList();
-            }
-
-            return facturasRecibidas;
         }
 
         public void Autorizar(bool autorizar, int facturaRecibidaId, int usuarioId, String notasAutorizacion)

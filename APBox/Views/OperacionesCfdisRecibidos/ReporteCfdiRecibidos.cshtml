@@ -1,0 +1,152 @@
+﻿@model API.Models.Facturas.FacturasRecibidasModel
+
+@{
+    ViewBag.Title = "Reporte Facturas Emitidas";
+}
+
+
+
+<div class="card card-flush">
+    <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+
+        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+            <!--begin::Export dropdown-->
+            <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                <i class="fa fa-file-export"></i>
+                Exportar
+            </button>
+            <!--begin::Menu-->
+            <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                <!--begin::Menu item-->
+                <div class="menu-item px-3">
+                    <a href="#" class="menu-link px-3" data-kt-export="copy">
+                        Copiar a portapapeles
+                    </a>
+                </div>
+                <!--end::Menu item-->
+                <!--begin::Menu item-->
+                <div class="menu-item px-3">
+                    <a href="#" class="menu-link px-3" data-kt-export="excel">
+                        Exportar a Excel
+                    </a>
+                </div>
+                <!--end::Menu item-->
+                <!--begin::Menu item-->
+                <div class="menu-item px-3">
+                    <a href="#" class="menu-link px-3" data-kt-export="csv">
+                        Exportar a CSV
+                    </a>
+                </div>
+                <!--end::Menu item-->
+                <!--begin::Menu item-->
+                <div class="menu-item px-3">
+                    <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                        Exportar a PDF
+                    </a>
+                </div>
+                <!--end::Menu item-->
+            </div>
+            <!--end::Menu-->
+            <!--end::Export dropdown-->
+            <!--begin::Hide default export buttons-->
+            <div id="kt_datatable_example_buttons" class="d-none"></div>
+            <!--end::Hide default export buttons-->
+        </div>
+    </div>
+    <div class="card-header card-title d-flex align-items-center position-relative my-1">
+        <h2>Lista general de CFDi recibidos</h2>
+    </div>
+
+    <div class="card-body pt-0">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form">
+                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+                @Html.HiddenFor(model => model.SucursalId)
+
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
+                </div>
+                <div class="row">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <span class="input-group-addon">Fecha Inicial</span>
+                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <span class="input-group-addon">Fecha Final</span>
+                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <hr />
+                <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+                    <div class="card-title">
+                        <!--begin::Search-->
+                        <div class="d-flex align-items-center position-relative my-1">
+                            <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+                            <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
+                        </div>
+                        <!--end::Search-->
+                    </div>
+
+                </div>
+                <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
+                    <thead>
+                        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase">
+                            <th class="min-w-100px">RFC</th>
+                            <th class="min-w-100px">Razon Social</th>
+                            <th class="min-w-100px">UUID</th>
+                            <th class="min-w-100px">Serie</th>
+                            <th class="min-w-100px">Folio</th>
+                            <th class="min-w-100px">Fecha</th>
+                            <th class="min-w-100px">Moneda</th>
+                            <th class="min-w-100px">Tipo de Cambio</th>
+                            <th class="min-w-100px">Subtotal</th>
+                            <th class="min-w-100px">Descuento</th>
+                            <th class="min-w-100px">Total de Impuestos Trasladados</th>
+                            <th class="min-w-100px">Total Impuestos Retenidos</th>
+                            <th class="min-w-100px">Total</th>
+                            <th class="min-w-100px">Tipo Comprobante</th>
+                            
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var factura in Model.FacturasRecibidas)
+                        {
+                        <tr class="odd">
+                            <td>@factura.Receptor.Rfc</td>
+                            <td>@factura.Receptor.RazonSocial</td>
+                            <td>@factura.Uuid</td>
+                            <td>@factura.Serie</td>
+                            <td>@factura.Folio</td>
+                            <td>@factura.Fecha</td>
+                            <td>@factura.Moneda</td>
+                            <td>@factura.TipoCambio.ToString()</td>
+                            <td>@factura.Subtotal.ToString("c")</td>
+                            <td>@factura.Descuento</td>
+                            <td>@factura.TotalImpuestosTrasladados</td>
+                            <td>@factura.TotalImpuestosRetenidos</td>
+                            <td class="text-right">@factura.Total.ToString("c")</td>
+                            <td>@factura.TipoComprobante</td>
+                            
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="clearfix"></div>
+
+            </div>
+        }
+    </div>
+</div>
+
+

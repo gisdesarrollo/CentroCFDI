@@ -103,7 +103,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                             //deserealiza XML
                             ComprobanteCFDI xmlObject = _deserealizaXml.DeserealizarXmlPagos20(complementoPago.Id);
                             var pathXml = _descarga.GeneraFilePathXml(utf8.GetBytes(objCfdi.Xml), objCfdi.Folio, objCfdi.Serie);
-                            byte[] bytePdf = _descarga.GeneraPDF40(xmlObject, "Pagos40", complementoPago.Id, false);
+                            byte[] bytePdf = _descarga.GeneraPDF40(xmlObject, "Pagos40", complementoPago.Id, false,false);
                             var pathPdf = _deserealizaXml.GetPathPDf(bytePdf, xmlObject.Serie, xmlObject.Folio);
 
 

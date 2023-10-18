@@ -861,14 +861,14 @@ namespace APBox.Controllers.ComplementosPago
                 //archivoFisico = _creationFile.GeneraPDFPagos33(oComprobante33, id);
                 oComprobante33 = _decodifica.DeserealizarXML33(complementoPago.FacturaEmitida.ArchivoFisicoXml);
                 tipoDocumento = _decodifica.TipoDocumentoCfdi33(complementoPago.FacturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, false);
+                archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, false,false);
 
             } else {
                 //oComprobante = _creationFile.DeserealizarXmlPagos20(id);
                 //archivoFisico = _creationFile.GeneraPDFPagos(oComprobante, id);
                 oComprobante = _decodifica.DeserealizarXML40(complementoPago.FacturaEmitida.ArchivoFisicoXml);
                 tipoDocumento = _decodifica.TipoDocumentoCfdi40(complementoPago.FacturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false);
+                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false,false);
             }
             
             

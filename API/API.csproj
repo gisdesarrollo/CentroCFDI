@@ -184,6 +184,7 @@
     <Compile Include="Models\Dto\UbicacionDto.cs" />
     <Compile Include="Models\Facturas\Factura.cs" />
     <Compile Include="Models\Facturas\FacturasEmitidasModel.cs" />
+    <Compile Include="Models\Facturas\FacturasRecibidasModel.cs" />
     <Compile Include="Models\Operaciones\ComplementosCartaPorteModel.cs" />
     <Compile Include="Models\Operaciones\ComplementosPagosModel.cs" />
     <Compile Include="Models\Operaciones\ComprobanteCfdiModel.cs" />

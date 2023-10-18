@@ -600,7 +600,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             {
                 oComprobante = _decodifica.DeserealizarXML40(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml);
                 tipoDocumento = _decodifica.TipoDocumentoCfdi40(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false);
+                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false,false);
                 //oComprobante = _creationFile.DeserealizarComprobanteXML(id);
                 //archivoFisico = _creationFile.GeneraPDFComprobante(oComprobante, id);
             }

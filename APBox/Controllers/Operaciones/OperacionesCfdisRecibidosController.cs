@@ -2,7 +2,9 @@
 using APBox.Control;
 using API.Enums;
 using API.Models.Cargas;
+using API.Models.Facturas;
 using API.Operaciones.Facturacion;
+using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.Facturas;
 using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.Validacion;
@@ -22,14 +24,15 @@ namespace APBox.Controllers.Operaciones
         #region Variables
 
         private readonly APBoxContext _db = new APBoxContext();
-        private OperacionesCfdisRecibidos _operacionesCfdisRecibidos;
+        private readonly OperacionesCfdisRecibidos _operacionesCfdisRecibidos = new OperacionesCfdisRecibidos();
         private readonly PagosManager _pagosManager = new PagosManager();
         private readonly OperacionesStreams _operacionesStreams = new OperacionesStreams();
 
         private readonly GuardaFacturas _guardaFacturas = new GuardaFacturas();
-        private readonly DecodificaFacturas _decodificaFacturas = new DecodificaFacturas();
+        private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
         private readonly ValidacionesFacturas _validacionesFacturas = new ValidacionesFacturas();
-
+        private readonly DescargasManager _descargasManager = new DescargasManager();
+       
         #endregion
 
         #region Vistas
@@ -37,20 +40,142 @@ namespace APBox.Controllers.Operaciones
         public ActionResult VerTodos()
         {
             var sucursalId = ObtenerSucursal();
+
+            var facturasRecibidasModel = new FacturasRecibidasModel
+            {
+                FacturasRecibidas = new System.Collections.Generic.List<FacturaRecibida>(),
+                FechaInicial = DateTime.Now.AddDays(-6), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
+                FechaFinal = DateTime.Now,
+                SucursalId = ObtenerSucursal(),
+            };
+            /*var sucursalId = ObtenerSucursal();
             var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var fechaFinal = DateTime.Now.Date;
-
-            _operacionesCfdisRecibidos = new OperacionesCfdisRecibidos(sucursalId, fechaInicial, fechaFinal);
-            var cfdis = _operacionesCfdisRecibidos.ObtenerFacturasRecibidas();
+            */
+            // _operacionesCfdisRecibidos = new OperacionesCfdisRecibidos(sucursalId, fechaInicial, fechaFinal);
+            _operacionesCfdisRecibidos.ObtenerFacturasRecibidas(ref facturasRecibidasModel);
 
             ViewBag.Controller = "OperacionesCfdisRecibidos";
             ViewBag.Action = "VerTodos";
             ViewBag.ActionES = "Ver Todos";
             ViewBag.NameHere = "cfdi";
 
-            return View(cfdis);
+            return View(facturasRecibidasModel);
         }
 
+        [HttpPost]
+        public ActionResult VerTodos(FacturasRecibidasModel facturaRecibidaModel)
+        {
+            //var sucursalId = ObtenerSucursal();
+            //var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            //var fechaFinal = DateTime.Now.Date;
+
+            //_operacionesCfdisRecibidos = new OperacionesCfdisRecibidos(sucursalId, fechaInicial, fechaFinal);
+            if (ModelState.IsValid)
+            {
+                _operacionesCfdisRecibidos.ObtenerFacturasRecibidas(ref facturaRecibidaModel);
+            }
+            ViewBag.Controller = "OperacionesCfdisRecibidos";
+            ViewBag.Action = "VerTodos";
+            ViewBag.ActionES = "Ver Todos";
+            ViewBag.NameHere = "cfdi";
+
+            return View(facturaRecibidaModel);
+        }
+
+        public ActionResult DescargaPDF(int facturaRecibidaId)
+        {
+            //objetos version 4.0
+            ComprobanteCFDI oComprobante = new ComprobanteCFDI();
+            //objetos version 3.3
+            ComprobanteCFDI33 oComprobante33 = new ComprobanteCFDI33();
+            string tipoDocumento = null;
+            byte[] archivoFisico = new byte[255];
+            var facturaEmitida = _db.FacturasRecibidas.Find(facturaRecibidaId);
+            
+                
+                    //busca version del CFDI del archivo
+                    string CadenaXML = System.Text.Encoding.UTF8.GetString(facturaEmitida.ArchivoFisicoXml);
+                    string versionCfdi = _decodifica.LeerValorXML(CadenaXML, "Version", "Comprobante");
+                    if (versionCfdi == "3.3")
+                    {
+                        oComprobante33 = _decodifica.DeserealizarXML33(facturaEmitida.ArchivoFisicoXml);
+                        tipoDocumento = _decodifica.TipoDocumentoCfdi33(facturaEmitida.ArchivoFisicoXml);
+                        archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, facturaRecibidaId, false,true);
+                    }
+                    else
+                    {
+                        oComprobante = _decodifica.DeserealizarXML40(facturaEmitida.ArchivoFisicoXml);
+                        tipoDocumento = _decodifica.TipoDocumentoCfdi40(facturaEmitida.ArchivoFisicoXml);
+                        archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, facturaRecibidaId, false,true);
+                    }
+                
+            
+            MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
+            string nameArchivo = facturaEmitida.Serie + "-" + facturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
+            Response.Buffer = true;
+            Response.Clear();
+            Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.End();
+
+
+            return new FileStreamResult(Response.OutputStream, "application/pdf");
+        }
+
+        public ActionResult DescargaXML(int facturaRecibidaId)
+        {
+            //get xml
+            var facturaEmtida = _db.FacturasRecibidas.Find(facturaRecibidaId);
+            var pathCompleto = _descargasManager.GeneraFilePathXml(facturaEmtida.ArchivoFisicoXml, facturaEmtida.Serie, facturaEmtida.Folio);
+            byte[] archivoFisico = System.IO.File.ReadAllBytes(pathCompleto);
+            string contentType = MimeMapping.GetMimeMapping(pathCompleto);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = Path.GetFileName(pathCompleto),
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            //Elimino el archivo Temp
+            System.IO.File.Delete(pathCompleto);
+            return File(archivoFisico, contentType);
+        }
+
+        public ActionResult ReporteCfdiRecibidos()
+        {
+            var sucursalId = ObtenerSucursal();
+
+            var facturasRecibidasModel = new FacturasRecibidasModel
+            {
+                FacturasRecibidas = new System.Collections.Generic.List<FacturaRecibida>(),
+                FechaInicial = DateTime.Now.AddDays(-6), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
+                FechaFinal = DateTime.Now,
+                SucursalId = ObtenerSucursal(),
+            };
+            _operacionesCfdisRecibidos.ObtenerFacturasRecibidas(ref facturasRecibidasModel);
+
+            ViewBag.Controller = "OperacionesCfdisRecibidos";
+            ViewBag.Action = "ReporteCfdiRecibidos";
+            ViewBag.ActionES = "Reporte Cfdi Recibidos";
+            ViewBag.NameHere = "reportes";
+            return View(facturasRecibidasModel);
+        }
+
+        [HttpPost]
+        public ActionResult ReporteCfdiRecibidos(FacturasRecibidasModel facturaRecibidaModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _operacionesCfdisRecibidos.ObtenerFacturasRecibidas(ref facturaRecibidaModel);
+            }
+            ViewBag.Controller = "OperacionesCfdisRecibidos";
+            ViewBag.Action = "ReporteCfdiRecibidos";
+            ViewBag.ActionES = "Reporte Cfdi Recibidos";
+            ViewBag.NameHere = "reportes";
+            return View(facturaRecibidaModel);
+        }
         public ActionResult ReporteIndividual(int facturaRecibidaId)
         {
             var facturaRecibida = _db.FacturasRecibidas.Find(facturaRecibidaId);
@@ -61,7 +186,7 @@ namespace APBox.Controllers.Operaciones
             return View(facturaRecibida);
         }
 
-        public ActionResult VerGastosPersonal()
+        /*public ActionResult VerGastosPersonal()
         {
             var sucursalId = ObtenerSucursal();
             var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
@@ -71,9 +196,9 @@ namespace APBox.Controllers.Operaciones
             var cfdis = _operacionesCfdisRecibidos.ObtenerFacturasRecibidas(TiposGastos.Personal);
 
             return View(cfdis);
-        }
+        }*/
 
-        public ActionResult VerGastosProveedores()
+        /*public ActionResult VerGastosProveedores()
         {
             var sucursalId = ObtenerSucursal();
             var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
@@ -83,7 +208,7 @@ namespace APBox.Controllers.Operaciones
             var cfdis = _operacionesCfdisRecibidos.ObtenerFacturasRecibidas(TiposGastos.Proveedores);
 
             return View(cfdis);
-        }
+        }*/
 
         #endregion
 
@@ -292,12 +417,12 @@ namespace APBox.Controllers.Operaciones
 
         #region Operaciones
 
-        public ActionResult Aprobar(int facturaRecibidaId)
+        /*public ActionResult Aprobar(int facturaRecibidaId)
         {
             _operacionesCfdisRecibidos = new OperacionesCfdisRecibidos(ObtenerSucursal());
             _operacionesCfdisRecibidos.Autorizar(true, facturaRecibidaId, ObtenerUsuario(), null);
             return RedirectToAction("VerTodos");
-        }
+        }*/
 
         public ActionResult Rechazar(int facturaRecibidaId)
         {
@@ -310,7 +435,7 @@ namespace APBox.Controllers.Operaciones
         }
 
         [HttpPost]
-        public ActionResult Rechazar(FacturaRecibida facturaRecibida)
+        /*public ActionResult Rechazar(FacturaRecibida facturaRecibida)
         {
             if (ModelState.IsValid)
             {
@@ -324,7 +449,7 @@ namespace APBox.Controllers.Operaciones
             }
 
             return View(facturaRecibida);
-        }
+        }*/
 
         public ActionResult Descargar(int facturaRecibidaId)
         {

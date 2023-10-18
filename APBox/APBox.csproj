@@ -3191,6 +3191,7 @@
     <Content Include="Views\Mercancias\_ComplementoMercanciasScript.cshtml" />
     <Content Include="Views\Mercancias\_Modal.cshtml" />
     <Content Include="Views\Mercancias\Editar.cshtml" />
+    <Content Include="Views\OperacionesCfdisRecibidos\ReporteCfdiRecibidos.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
