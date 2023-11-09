@@ -167,15 +167,25 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                     + "|" + "|";
             
             tw.WriteLine(data);
-            
+
             //data 02A CfdiRelacionado
-            if(comprobanteCfdi.UUIDCfdiRelacionado != null)
+            if (comprobanteCfdi.CfdiRelacionados != null)
+            {
+                foreach (var cfdiRelacionado in comprobanteCfdi.CfdiRelacionados)
+                {
+                    data = "02A|" + cfdiRelacionado.TipoRelacion + "|" + cfdiRelacionado.UUIDCfdiRelacionado;
+                    tw.WriteLine(data);
+                    data = "";
+                }
+
+            }
+            /*if (comprobanteCfdi.UUIDCfdiRelacionado != null)
             {
                 data = "02A|" + comprobanteCfdi.TipoRelacion + "|" + comprobanteCfdi.UUIDCfdiRelacionado;
                 tw.WriteLine(data);
                 data = "";
 
-            }
+            }*/
 
             //data 03 Receptor
             int regimenFiscalReceptor = (int)comprobanteCfdi.Receptor.RegimenFiscal;

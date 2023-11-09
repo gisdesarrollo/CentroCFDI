@@ -234,8 +234,7 @@ namespace APBox.Controllers.ComplementosPago
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ComplementoPago complementoPago = _db.ComplementosPago.Find(id);
-            
-
+           
             if (complementoPago == null)
             {
                 return HttpNotFound();
@@ -256,7 +255,7 @@ namespace APBox.Controllers.ComplementosPago
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaExportacion();
-            complementoPago.IdTipoRelacion = complementoPago.TipoRelacion;
+            complementoPago.IdTipoRelacion = complementoPago.CfdiRelacionados.Count().ToString();
 
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Edit";
@@ -298,6 +297,7 @@ namespace APBox.Controllers.ComplementosPago
                 _acondicionarComplementosPagos.Pagos(complementoPago);
 
                 complementoPago.Pagos = null;
+                complementoPago.CfdiRelacionados = null;
                 _db.Entry(complementoPago).State = EntityState.Modified;
                 _db.SaveChanges();
                 return RedirectToAction("Index");

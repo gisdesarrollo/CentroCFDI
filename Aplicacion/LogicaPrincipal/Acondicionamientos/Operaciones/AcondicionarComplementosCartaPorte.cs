@@ -380,6 +380,39 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
         public void cargaRelaciones(ComplementoCartaPorte complementoCP)
         {
+            //carga CfdiRelacionados
+            if(complementoCP.CfdiRelacionados != null)
+            {
+                var idsBorrar = complementoCP.CfdiRelacionados.Select(e => e.Id);
+                var CRelacionesAnteriores = _db.CfdiRelacionado.Where(es => es.ComplementoCartaPorteId == complementoCP.Id && !idsBorrar.Contains(es.Id)).ToList();
+                _db.CfdiRelacionado.RemoveRange(CRelacionesAnteriores);
+                _db.SaveChanges();
+
+                foreach (var CRelacionado in complementoCP.CfdiRelacionados.Except(CRelacionesAnteriores))
+                {
+                    CRelacionado.ComplementoCartaPorteId = complementoCP.Id;
+                    CRelacionado.ComplementoCartaPorte = null;
+                    CRelacionado.ComplementoPago = null;
+                    CRelacionado.ComplementoPagoId = null;
+                    CRelacionado.ComprobanteCfdi = null;
+                    CRelacionado.ComprobanteId = null;
+                    _db.CfdiRelacionado.AddOrUpdate(CRelacionado);
+                    try
+                    {
+                        _db.SaveChanges();
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+                }
+            }
+            else
+            {
+                var CRelacionadosAnteriores = _db.CfdiRelacionado.Where(es => es.ComplementoCartaPorteId == complementoCP.Id).ToList();
+
+                _db.CfdiRelacionado.RemoveRange(CRelacionadosAnteriores);
+                _db.SaveChanges();
+            }
 
             //carga conceptos
             if (complementoCP.Conceptoss != null)

@@ -15,4 +15,12 @@ namespace API.Models.Dto
         public String archivoFuente { get; set; }
 
     }
+
+    public class DataApiXSA
+    {
+        public String idTipoCfd { get; set; }
+        public String idSucursal { get; set; }
+        public String nombre { get; set; }
+        public String archivoFuente { get; set; }
+    }
 }

@@ -1,11 +1,13 @@
 ﻿using API.Catalogos;
 using API.Enums;
 using API.Enums.CartaPorteEnums;
+using API.Models.Dto;
 using API.Operaciones.ComplementoCartaPorte;
 using API.Operaciones.ComplementosPagos;
 using API.Operaciones.Facturacion;
 using API.RelacionesCartaPorte;
 using Aplicacion.Context;
+using Aplicacion.LogicaPrincipal.GeneracionXSA;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,7 +23,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
     public class CartaPorteManager
     {
         private readonly AplicacionContext _db = new AplicacionContext();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porteCWError.xml";
+        private readonly XsaManager _xsaManager = new XsaManager();
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porteCRANE.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -36,7 +39,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             try
             {
                 //llenado CFDI y complemento Carta Porte
-                cfdi = GeneraFactura(complementoCartaPorte, sucursalId);
+                cfdi = GeneraFacturaWithXsa(complementoCartaPorte, sucursalId);
             }
             catch (Exception ex){
                 throw new Exception(String.Format("Error al momento de generar el complemento: {0}", ex.Message));
@@ -44,6 +47,15 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
 
             return cfdi;
+        }
+        public string GeneraFacturaWithXsa(ComplementoCartaPorte complementoCartaPorte, int sucursalId)
+        {
+            
+            // Crea instancia
+            RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
+
+            objCfdi = LlenadoCfdi(complementoCartaPorte, sucursalId);
+            return objCfdi.MensajeError;
         }
 
         public string GeneraFactura(ComplementoCartaPorte complementoCartaPorte, int sucursalId)
@@ -186,12 +198,24 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-
-            if (complementoCartaPorte.UUIDCfdiRelacionado != null)
+           
+            if (complementoCartaPorte.CfdiRelacionados != null)
+            {
+                foreach (var cfdiRelacionado in complementoCartaPorte.CfdiRelacionados)
+                {
+                    objCfdi.agregarCfdiRelacionados(
+                        cfdiRelacionado.TipoRelacion
+                    );
+                    objCfdi.agregarCfdiRelacionado(
+                            cfdiRelacionado.UUIDCfdiRelacionado
+                        );
+                }
+            }
+            /*if (complementoCartaPorte.UUIDCfdiRelacionado != null)
             {
                 objCfdi.agregarCfdiRelacionados(complementoCartaPorte.TipoRelacion);
                 objCfdi.agregarCfdiRelacionado(complementoCartaPorte.UUIDCfdiRelacionado);
-            }
+            }*/
             if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
@@ -952,9 +976,53 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
             //guardar string en un archivo
             //System.IO.File.WriteAllText(pathXml, xml);
-             objCfdi = Timbra(objCfdi,sucursal);
-               
+            //objCfdi = Timbra(objCfdi,sucursal);
+            //timbrado por XSA Tralix
+             
+            ComprobanteDto comprobanteDto = new ComprobanteDto() {
+                SucursalId = sucursal.Id,
+                RfcSucursal = sucursal.Rfc,
+                ReceptorId = complementoCartaPorte.ReceptorId,
+                RfcReceptor = complementoCartaPorte.Receptor.Rfc,
+                FechaDocumento = complementoCartaPorte.FechaDocumento,
+                Moneda = (c_Moneda)complementoCartaPorte.Moneda,
+                Subtotal = (double)complementoCartaPorte.Subtotal,
+                TipoCambio = Convert.ToDouble(complementoCartaPorte.TipoCambio),
+                TipoComprobante = complementoCartaPorte.TipoDeComprobante,
+                Total = Decimal.ToDouble(complementoCartaPorte.Total),
+                FormaPago = complementoCartaPorte.FormaPago,
+                Referencia = complementoCartaPorte.ReferenciaAddenda,
+                TotalImpuestoTrasladado = (double)complementoCartaPorte.TotalImpuestoTrasladado,
+                TotalImpuestoRetenidos = (double)complementoCartaPorte.TotalImpuestoRetenidos
+           
+            };
+            if (complementoCartaPorte.MetodoPago != null) { comprobanteDto.MetodoPago = (c_MetodoPago)Enum.ToObject(typeof(c_MetodoPago), complementoCartaPorte.MetodoPago); }
+            else { comprobanteDto.MetodoPago = null; }
 
+            int facturaEmitidaId = _xsaManager.GenerarCFDI(xml, sucursal, sucursal.FolioCartaPorte, sucursal.SerieCartaPorte, comprobanteDto,pathXml);
+            if(facturaEmitidaId > 0)
+            {
+                try
+                {
+                    //Incrementar Folio de Sucursal
+                    sucursal.FolioCartaPorte += 1;
+                    _db.Entry(sucursal).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    MarcarFacturado(complementoCartaPorte.Id, facturaEmitidaId);
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    var errores = new List<String>();
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            errores.Add(String.Format("Propiedad: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage));
+                        }
+                    }
+                    throw new Exception(string.Join(",", errores.ToArray()));
+                }
+            }
             return objCfdi;
         }
 
@@ -981,7 +1049,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 Uuid = objCfdi.UUID,
                 ArchivoFisicoXml = utf8.GetBytes(objCfdi.XmlTimbrado),
                 CodigoQR = objCfdi.GenerarQrCode(),
-                Status = API.Enums.Status.Activo
+                Status = API.Enums.Status.Activo,
+                ReferenciaAddenda = complementoCartaPorte.ReferenciaAddenda
             };
             
             if (complementoCartaPorte.FormaPago != null)

@@ -1,0 +1,44 @@
+﻿@model API.Operaciones.RelacionesCfdi.CfdiRelacionado
+
+
+@using (Html.BeginCollectionItem("CfdiRelacionados"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #6D84C2;">
+            <h3 class="card-title text-white">
+                Cfdi Relacionados
+            </h3>
+            <div class="card-toolbar">
+                <a href="#" class="icon-separator" onclick="removeDetalleCRelacionado(this)">
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </div>
+
+        </div>
+        <div class="card-body row CRelacionado">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ComplementoCartaPorteId)
+            @Html.HiddenFor(model => model.ComplementoPagoId)
+            @Html.HiddenFor(model => model.ComprobanteId)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.TipoRelacion, new { @class = "fw-bold" })<br />
+                @Html.DisplayFor(model => model.TipoRelacion)
+                @Html.HiddenFor(model => model.TipoRelacion)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "fw-bold" })<br />
+                @Html.DisplayFor(model => model.UUIDCfdiRelacionado)
+                @Html.HiddenFor(model => model.UUIDCfdiRelacionado)
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+}

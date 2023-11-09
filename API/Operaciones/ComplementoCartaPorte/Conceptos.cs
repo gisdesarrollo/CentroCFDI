@@ -1,12 +1,9 @@
 ﻿using API.CatalogosCartaPorte;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using API.Operaciones.ComprobantesCfdi;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using API.Operaciones.ComplementoCartaPorte;
 
 namespace API.Operaciones.ComplementoCartaPorte
 {

@@ -11,6 +11,7 @@ using System.Linq;
 using API.Enums.CartaPorteEnums;
 using API.Enums;
 using API.Models.Dto;
+using API.Operaciones.RelacionesCfdi;
 
 namespace APBox.Controllers.Ajax
 {
@@ -93,6 +94,15 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
         }
 
+        public PartialViewResult AgregarCfdiRelacionado(String TipoRelacion , String UUID)
+        {
+            var cfdiRelacionado = new CfdiRelacionado()
+            {
+                TipoRelacion = TipoRelacion,
+                UUIDCfdiRelacionado = UUID
+            };
+            return PartialView("~/Views/CfdiRelacionados/CfdiRelacionado.cshtml", cfdiRelacionado);
+        }
         public PartialViewResult AgregarDTraslado(Decimal Tbase, string Timpuesto, string TtipoFactor, Decimal TtasaOCuota, Decimal Timporte)
         {
 
@@ -193,8 +203,6 @@ namespace APBox.Controllers.Ajax
 
             return PartialView("~/Views/ComplementosCartaPorte/Ubicacion.cshtml", Ubicacion);
         }
-
-        
 
         public PartialViewResult AgregarMercancia(String ClaveProdServID, string ClaveProdSTCCID,string Descripcion,
             int Cantidad,string Unidad,string ClaveUnidadID,string Dimensiones,bool MaterialPeligorosoSN, 

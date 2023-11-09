@@ -87,6 +87,9 @@ namespace API.Models.Facturas
         [DisplayName("Folio Fiscal")]
         public String Uuid { get; set; }
 
+        [DisplayName("Referencia")]
+        public String ReferenciaAddenda { get; set; }
+
         #region Archivos
         public String NombreArchivoXml { get; set; }
 

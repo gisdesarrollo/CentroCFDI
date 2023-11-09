@@ -123,7 +123,7 @@
             var TipoFactorTraslado = $(element).find('#TipoFactorTraslado').text().trim();
             var TasaOCuotaTraslado = $(element).find('#TasaOCuotaTraslado').text().trim();
             var ImporteTraslado = $(element).find('.ImporteTraslado').val();
-            
+
             jsonTraslados.push({
                 "Base": BaseTraslado, "Impuesto": ImpuestoTraslado, "TipoFactor": TipoFactorTraslado, "TasaOCuota": TasaOCuotaTraslado, "Importe": ImporteTraslado
             });
@@ -262,11 +262,11 @@
     }
     //calcula el porcentaje de total a pagar
     $(function () {
-       
+
         //retorno los impuestos de una factura externa Relacionada
         $('#FacturaEmitidaId').on("change", function () {
             var factEmitidaId = $('#FacturaEmitidaId').val();
-            if (factEmitidaId !== "") { 
+            if (factEmitidaId !== "") {
             if ($('#Pago_DocumentoRelacionado_ImportePagado').val() > 0) {
                 $.get("/ComplementosPagos/GetDataFactura", { FacturaEmitidaId: factEmitidaId }, function (data) {
                     if (data.length > 0) {
@@ -276,7 +276,7 @@
                         $(".DTraslado").parent().remove();
                         $(".DRetencion").parent().remove();
                         $.each(data, function (index, row) {
-                            
+
                             if (row.TipoImpuesto == "Traslado" && parseFloat(row.Base)>0) {
                                 var baseT = parseFloat(ImporteSobreIva($('#Pago_DocumentoRelacionado_ImportePagado').val(), row.TasaOCuota));
                                 var importeT = parseFloat(row.Base) * parseFloat(row.TasaOCuota);
@@ -390,7 +390,7 @@
         ivaString = "1" + ivaString.toString().substring(1);
         var Iva = parseFloat(ivaString);
         var base = ImportPagado / Iva
-        
+
         return base.toFixed(6);
     }
 
@@ -521,4 +521,51 @@
         var TotalTras = (TBase * TTasaOCuota);
         $('.TImporte').val(TotalTras.toFixed(2));
     }
+
+    /****************************/
+    //DETALLE CFDI RELACIONADO
+
+    $(function () {
+        $('#agregarDetalleCRelacionado').click(function () {
+            contadorCRelacionado = $(".CRelacionado").length + 1;
+        $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contadorCRelacionado + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleCRelacionado").on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarCfdiRelacionado", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoRelacion: $('#CfdiRelacionado_TipoRelacion').val(),
+                    UUID: $('#CfdiRelacionado_UUIDCfdiRelacionado').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+                success: function (partialView) {
+                    $('#detallesCRelacionado').append(partialView);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                }
+              });
+            return false;
+        });
+    });
+
+    function removeDetalleCRelacionado(elem) {
+        var totalU = $(".CRelacionado").length;
+        if (totalU > 0) {
+            var contador = $(".CRelacionado").length - 1;
+            contadorCRelacionado = contador;
+            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    /***************************/
 </script>

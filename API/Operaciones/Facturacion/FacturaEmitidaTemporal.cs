@@ -31,6 +31,8 @@ namespace API.Operaciones.Facturacion
 
         public c_TipoDeComprobante TipoComprobante { get; set; }
 
+        public String ReferenciaAddenda { get; set; }
+
         [NotMapped]
         public string Referencia { get; set; }
 

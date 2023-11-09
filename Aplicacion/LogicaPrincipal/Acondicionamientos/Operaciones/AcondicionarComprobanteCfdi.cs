@@ -88,6 +88,39 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     comprobanteCfdi.Ano = null;
                 }
             }
+
+            //Cfdi Relacionado
+            if(comprobanteCfdi.CfdiRelacionados != null)
+            {
+                var idsBorrar = comprobanteCfdi.CfdiRelacionados.Select(e => e.Id);
+                var cfdiRelacionadosAnteriores = _db.CfdiRelacionado.Where(es => es.ComprobanteId == comprobanteCfdi.Id && !idsBorrar.Contains(es.Id)).ToList();
+                _db.CfdiRelacionado.RemoveRange(cfdiRelacionadosAnteriores);
+                _db.SaveChanges();
+
+                foreach (var CRelacionado in comprobanteCfdi.CfdiRelacionados.Except(cfdiRelacionadosAnteriores))
+                {
+                    CRelacionado.ComplementoCartaPorteId = null;
+                    CRelacionado.ComplementoCartaPorte = null;
+                    CRelacionado.ComplementoPago = null;
+                    CRelacionado.ComplementoPagoId = null;
+                    CRelacionado.ComprobanteCfdi = null;
+                    CRelacionado.ComprobanteId = comprobanteCfdi.Id;
+                    _db.CfdiRelacionado.AddOrUpdate(CRelacionado);
+                    try
+                    {
+                        _db.SaveChanges();
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+                }
+            }
+            else {
+                var CRelacionadoAnteriores = _db.CfdiRelacionado.Where(es => es.ComprobanteId == comprobanteCfdi.Id).ToList();
+
+                _db.CfdiRelacionado.RemoveRange(CRelacionadoAnteriores);
+                _db.SaveChanges();
+            }
             //carga conceptos
             if (comprobanteCfdi.Conceptoss != null)
             {

@@ -22,6 +22,7 @@ using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
 using System.Text;
 using Aplicacion.LogicaPrincipal.Validacion;
 using Aplicacion.LogicaPrincipal.Descargas;
+using API.Operaciones.RelacionesCfdi;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -83,11 +84,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 return Json(null);
             }
         }
-
-
-
-
-
 
 
         public ActionResult Index()
@@ -413,7 +409,14 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 complementoCartaPorte.Total = 0;
                 _acondicionarComplementosCartaPorte.CargaInicial(ref complementoCartaPorte);
 
-
+                //copia Cfdi Relacionado
+                complementoCartaPorte.CfdiRelacionado = null;
+                var cfdiRelacionados = new List<CfdiRelacionado>();
+                if (complementoCartaPorte.CfdiRelacionados != null)
+                {
+                    cfdiRelacionados = complementoCartaPorte.CfdiRelacionados;
+                    cfdiRelacionados.ForEach(c => { c.ComplementoCartaPorte = null; c.ComplementoPago = null; c.ComprobanteCfdi = null; });
+                }
                 //copia conceptos
                 var conceptos = complementoCartaPorte.Conceptoss;
                 conceptos.ForEach(c => { c.ComplementoCP = null; c.ComprobanteCfdi = null; });
@@ -521,6 +524,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                         arraysDataTiposFigura[x].PartesTransportes = complementoCartaPorte.FiguraTransporte[x].PartesTransportes;
                     }
                 }
+                    complementoCartaPorte.CfdiRelacionados = null;
                     complementoCartaPorte.Conceptoss = null;
                     complementoCartaPorte.Ubicaciones = null;
                     complementoCartaPorte.FiguraTransporte = null;
@@ -542,6 +546,21 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     _db.ComplementoCartaPortes.Add(complementoCartaPorte);
                     _db.SaveChanges();
                     //guarda data y relacion
+                    //Cfdi Relacionado
+                    if(cfdiRelacionados.Count > 0)
+                    {
+                        foreach (var cfdiRelacionado in cfdiRelacionados)
+                        {
+                            cfdiRelacionado.ComplementoCartaPorte = null;
+                            cfdiRelacionado.ComplementoCartaPorteId = complementoCartaPorte.Id;
+                            cfdiRelacionado.ComplementoPago = null;
+                            cfdiRelacionado.ComplementoPagoId = null;
+                            cfdiRelacionado.ComprobanteCfdi = null;
+                            cfdiRelacionado.ComprobanteId = null;
+                            _db.CfdiRelacionado.Add(cfdiRelacionado);
+                        }
+                        _db.SaveChanges();
+                    }
                     //conceptos
                     foreach (var concepto in conceptos)
                     {
@@ -855,7 +874,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var cliente = _db.Clientes.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
             complementoCP.IDCliente = cliente.Id;
             complementoCP.IdFormaPago = complementoCP.FormaPago;
-            complementoCP.IdTipoRelacion = complementoCP.TipoRelacion;
+            complementoCP.IdTipoRelacion = complementoCP.CfdiRelacionados.Count().ToString();
             complementoCP.Conceptos = new Conceptos()
             {
                 Traslado = new TrasladoCP()
@@ -1071,6 +1090,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
               
                 _acondicionarComplementosCartaPorte.cargaRelaciones(complementoCP);
                 _acondicionarComplementosCartaPorte.cargaValidaciones(ref complementoCP);
+                complementoCP.CfdiRelacionados = null;
                 complementoCP.Conceptoss = null;
                 complementoCP.Ubicaciones = null;
                 complementoCP.Mercancias.Mercanciass = null;

@@ -1,7 +1,7 @@
 ﻿   
 <script>
     $(function () {
- 
+
 
         ///SCRIPT MERCANCIAS PARA ACTIVAR DROPDOW Y RELLENAR LOS CAMPOS MERCANCIAS
 
@@ -38,7 +38,7 @@
                                 $("#Mercancias_Mercancia_ClaveMaterialPeligroso").val(row.ClaveMaterialPeligroso);
                                 $("#Mercancias_Mercancia_DescripEmbalaje option:contains('" + row.DescripEmbalaje + "')").prop('selected', true);
                                 $("#Mercancias_Mercancia_TipoEmbalaje_Id").val(row.TipoEmbalaje_Id);
-                              
+
                                 //alert(row.Moneda);
                                 //alert(row.DescripEmbalaje);
                                 //alert(row.TipoEmbalaje_Id);
@@ -56,7 +56,7 @@
                                         $(".ActivaCampoMatPeligroso").addClass("hiddenDiv");
                                     }
                                 }
-                              
+
 
                             });
 
@@ -680,7 +680,52 @@
         $(elem).parent().parent().parent().remove();
     }
 
+    /****************************/
+    //DETALLE CFDI RELACIONADO
 
+    $(function () {
+        $('#agregarDetalleCRelacionado').click(function () {
+            contadorCRelacionado = $(".CRelacionado").length + 1;
+        $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contadorCRelacionado + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleCRelacionado").on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarCfdiRelacionado", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoRelacion: $('#CfdiRelacionado_TipoRelacion').val(),
+                    UUID: $('#CfdiRelacionado_UUIDCfdiRelacionado').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+                success: function (partialView) {
+                    $('#detallesCRelacionado').append(partialView);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                }
+              });
+            return false;
+        });
+    });
+
+    function removeDetalleCRelacionado(elem) {
+        var totalU = $(".CRelacionado").length;
+        if (totalU > 0) {
+            var contador = $(".CRelacionado").length - 1;
+            contadorCRelacionado = contador;
+            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    /***************************/
     //DETALLE TRANSPORTE MARITIMO CONTENEDOR
     $(function () {
         $('#agregarDetalleTMContenedor').click(function () {
@@ -2866,7 +2911,7 @@
                     $('#Mercancias_AutoTransporte_Seguros_AseguraRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil);
                     $('#Mercancias_AutoTransporte_Seguros_PolizaRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil);
                     $('#Mercancias_AutoTransporte_Seguros_PrimaSeguro').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PrimaSeguro);
-                    
+
                     // Llamar a la función para agregar Complemento Carta Porte
                     $.each(response.CartaPorte.Ubicaciones, function (index, carta) {
 
@@ -2897,20 +2942,20 @@
                                     }
                                     var IDubi = $('#Ubicacion_IDUbicacion').val(clave);
 
-                                   
+
                                 }
-                                
+
                                 $('#Ubicacion_RfcRemitenteDestinatario').val(carta.RFCRemitenteDestinatario);
                                 $('#Ubicacion_NombreRemitenteDestinatario').val(carta.NombreRemitenteDestinatario);
 
-                               
+
                                      //Si es de tipo Extranjero
                                     $('#Ubicacion_NumRegIdTrib').val(carta.NumRegIdTrib);
                                     $('#Ubicacion_ResidenciaFiscal').val(carta.ResidenciaFiscal);
 
                                     $('#Ubicacion_FechaHoraSalidaLlegada').val(carta.FechaHoraSalidaLlegada);
                                     $('#DistanciaRO').val(carta.DistanciaRecorrida);
-                                
+
 
                                 //Seccion Domicilio
                                 $('#Ubicacion_Domicilio_Calle').val(carta.Domicilio.Calle);
@@ -3002,7 +3047,7 @@
                                         break;
                                 }
 
-                                // Asignar los valores a los campos 
+                                // Asignar los valores a los campos
                                 $('#Mercancias_AutoTransporte_Remolque_SubTipoRem_Id').val(SubTipoRem);
                                 $('#Mercancias_AutoTransporte_Remolque_Placa').val(remolque.Placa);
                                 $('#agregarDetalleRemolqueAuTransp').trigger('click');
@@ -3025,7 +3070,7 @@
 
 
 
-                                  
+
 
 
 

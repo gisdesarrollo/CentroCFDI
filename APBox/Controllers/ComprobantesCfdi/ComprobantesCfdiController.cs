@@ -288,7 +288,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaMeses();
             PopulaPeriodicidad();
             CCfdi.FormaPagoId = CCfdi.FormaPago;
-            CCfdi.IdTipoRelacion = CCfdi.TipoRelacion;
+            CCfdi.IdTipoRelacion = CCfdi.CfdiRelacionados.Count().ToString();
             CCfdi.TipoComprobanteId = CCfdi.TipoDeComprobante;
              CCfdi.Conceptos = new Conceptos()
              {
@@ -408,6 +408,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                 {
                     comprobanteCfdi.FacturaEmitida = null;
                     comprobanteCfdi.Conceptoss = null;
+                    comprobanteCfdi.CfdiRelacionados = null;
                     comprobanteCfdi.Status = Status.Activo;
                     _db.Entry(comprobanteCfdi).State = EntityState.Modified;
                     _db.SaveChanges();

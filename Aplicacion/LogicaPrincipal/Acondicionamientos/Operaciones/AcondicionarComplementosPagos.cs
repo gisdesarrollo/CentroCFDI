@@ -35,6 +35,39 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
 
         public void Pagos(ComplementoPago complementoPago)
         {
+            if(complementoPago.CfdiRelacionados != null)
+            {
+                var idsBorrar = complementoPago.CfdiRelacionados.Select(e => e.Id);
+                var CRelacionadosAnteriores = _db.CfdiRelacionado.Where(es => es.ComplementoPagoId == complementoPago.Id && !idsBorrar.Contains(es.Id)).ToList();
+
+                _db.CfdiRelacionado.RemoveRange(CRelacionadosAnteriores);
+                _db.SaveChanges();
+
+                foreach (var CRelacionado in complementoPago.CfdiRelacionados.Except(CRelacionadosAnteriores))
+                {
+                    CRelacionado.ComplementoCartaPorteId = null;
+                    CRelacionado.ComplementoCartaPorte = null;
+                    CRelacionado.ComplementoPago = null;
+                    CRelacionado.ComplementoPagoId = complementoPago.Id;
+                    CRelacionado.ComprobanteCfdi = null;
+                    CRelacionado.ComprobanteId = null;
+                    _db.CfdiRelacionado.AddOrUpdate(CRelacionado);
+                    try
+                    {
+                        _db.SaveChanges();
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+                }
+            }
+            else
+            {
+                var CRelacionesAnteriores = _db.CfdiRelacionado.Where(es => es.ComplementoPagoId == complementoPago.Id).ToList();
+
+                _db.CfdiRelacionado.RemoveRange(CRelacionesAnteriores);
+                _db.SaveChanges();
+            }
             if (complementoPago.Pagos != null)
             {
                 var idsBorrar = complementoPago.Pagos.Select(e => e.Id);

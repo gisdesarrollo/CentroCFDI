@@ -319,7 +319,7 @@ $(function () {
                         } else {
                             $("#activa-informacion-global").hide();
                         }
-                        
+
                         return false;
                     }
                 });
@@ -493,6 +493,52 @@ $(function () {
             $("#TTotal").val("0");
     }
 
+    /****************************/
+    //DETALLE CFDI RELACIONADO
+
+    $(function () {
+        $('#agregarDetalleCRelacionado').click(function () {
+            contadorCRelacionado = $(".CRelacionado").length + 1;
+        $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contadorCRelacionado + '</span >');
+    });
+    });
+
+    $(function () {
+    $("#agregarDetalleCRelacionado").on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarCfdiRelacionado", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoRelacion: $('#CfdiRelacionado_TipoRelacion').val(),
+                    UUID: $('#CfdiRelacionado_UUIDCfdiRelacionado').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+                success: function (partialView) {
+                    $('#detallesCRelacionado').append(partialView);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                }
+              });
+            return false;
+        });
+    });
+
+    function removeDetalleCRelacionado(elem) {
+        var totalU = $(".CRelacionado").length;
+        if (totalU > 0) {
+            var contador = $(".CRelacionado").length - 1;
+            contadorCRelacionado = contador;
+            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
+
+    /***************************/
 
 
 </script>

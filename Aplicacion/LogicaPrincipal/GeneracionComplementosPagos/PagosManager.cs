@@ -1,6 +1,7 @@
 ﻿using API.Catalogos;
 using API.Enums;
 using API.Enums.CartaPorteEnums;
+using API.Models.Dto;
 using API.Operaciones.ComplementosPagos;
 using API.Operaciones.Facturacion;
 using Aplicacion.Context;
@@ -8,6 +9,7 @@ using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.Email;
 using Aplicacion.LogicaPrincipal.Facturas;
+using Aplicacion.LogicaPrincipal.GeneracionXSA;
 using Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private readonly CreationFile _deserealizaXml = new CreationFile();
         private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\PagoSenatorErrorImporteDR.xml";
+        private readonly XsaManager _xsaManager = new XsaManager();
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\PagoHANSEN.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -46,13 +49,22 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             try
             {
                 //llenado CFDI Complemento Pago
-                GeneraFactura(complementoPago, sucursalId);
+                GeneraFacturaXsa(complementoPago, sucursalId);
             }
             catch (Exception ex)
             {
                 throw new Exception(String.Format("Error al momento de generar el complemento: {0}", ex.Message));
 
             }
+
+        }
+
+        public void GeneraFacturaXsa(ComplementoPago complementoPago, int sucursalId)
+        {
+           
+            // Crea instancia
+            RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
+            objCfdi = LlenadoCfdi(complementoPago, sucursalId);
 
         }
 
@@ -153,19 +165,28 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 );
 
             //Agrega DocRelacionado Cancelado
-            if (complementoPago.TipoRelacion != null && complementoPago.UUIDCfdiRelacionado != null)
+            if(complementoPago.CfdiRelacionados != null)
+            {
+                foreach(var cfdiRelacionado in complementoPago.CfdiRelacionados)
+                {
+                    objCfdi.agregarCfdiRelacionados(
+                        cfdiRelacionado.TipoRelacion
+                    );
+                    objCfdi.agregarCfdiRelacionado(
+                            cfdiRelacionado.UUIDCfdiRelacionado
+                        );
+                }
+            }
+            /*if (complementoPago.TipoRelacion != null && complementoPago.UUIDCfdiRelacionado != null)
             {
                 objCfdi.agregarCfdiRelacionados(
                         complementoPago.TipoRelacion
                     );
-                //Obtenemos el contenido del XML seleccionado.
-                //string CadenaXML = System.Text.Encoding.UTF8.GetString(complementoPago.CfdiRelacionado.ArchivoFisicoXml);
-                //string UUID = LeerValorXML(CadenaXML, "UUID", "TimbreFiscalDigital");
                 objCfdi.agregarCfdiRelacionado(
                         complementoPago.UUIDCfdiRelacionado
                     );
 
-            }
+            }*/
 
             if (objCfdi.MensajeError != "")
             {
@@ -203,7 +224,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 complementoPago.Receptor.Rfc == "XEXX010101000" ? complementoPago.Receptor.Pais.ToString():"",
                 numRegIdTrib, 
                 c_UsoCfdiCP.CP01.ToString(), //UsoCFDI Fijo
-                complementoPago.Receptor.CodigoPostal,
+                complementoPago.Receptor.Rfc == "XEXX010101000" ? sucursal.CodigoPostal : complementoPago.Receptor.CodigoPostal,
                 regimeFiscalReceptor.ToString()
                 );
             //Receptor Prueba
@@ -316,14 +337,23 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
                             if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados != null)
                             {
+                                decimal TasaOCuota = 0;
+                                double Importe = 0;
                                 for (var t = 0; t < complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados.Count; t++)
                                 {
+                                    TasaOCuota = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
+                                    Importe = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe;
+                                    if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Exento)
+                                    {
+                                        TasaOCuota = -1;
+                                        Importe = -1;
+                                    }
                                     objCfdi.agregarPago20TrasladoDoctoRelacionado(
                                         Convert.ToDouble(complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Base),
                                         complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto,
                                         complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor.ToString(),
-                                        Convert.ToDouble(complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota),
-                                        Convert.ToDouble(complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Importe)
+                                        Convert.ToDouble(TasaOCuota),
+                                        Convert.ToDouble(Importe)
                                         );
                                 }
                             }
@@ -445,8 +475,14 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 double defaultBaseT = 0;
                 var defaultTipoFactorT = "";
                 double defaultTasaOCuotat = 0;
-                /*for (int x = 0; x < complementoPago.Pagos.Count; x++)
-                {*/
+                double exentoIVABaseT0 = 0;
+                var exentoIVAImpuestoT0 = "";
+                double exentoIVAImporteT0 = 0;
+                var exentoIVATipoFactorT0 = "";
+                double exentoIVATasaOCuota0 = 0; 
+                
+                    /*for (int x = 0; x < complementoPago.Pagos.Count; x++)
+                    {*/
                     if (complementoPago.Pagos[x].DocumentosRelacionados != null)
                     {
 
@@ -511,6 +547,14 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                                         tasaIVATasaOCuota0 = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
                                         tasaIVAImpuestoT0 = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
                                         tasaIVAImporteT0 += Convert.ToDouble(TImporteDR);
+                                    }else if(complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "002" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Exento &&
+                                        (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota == (decimal)0.0))
+                                    {
+                                        exentoIVABaseT0 += Convert.ToDouble(TBaseDR);
+                                        exentoIVATipoFactorT0 = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor.ToString();
+                                        exentoIVATasaOCuota0 = (double)complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TasaOCuota;
+                                        exentoIVAImpuestoT0 = complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto;
+                                        exentoIVAImporteT0 += Convert.ToDouble(TImporteDR);
                                     }
 
                                     else if (complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].Impuesto == "003" && complementoPago.Pagos[x].DocumentosRelacionados[i].Traslados[t].TipoFactor == c_TipoFactor.Tasa &&
@@ -548,7 +592,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 if (tasaIVAImporteT0 == 0 && tasaIVABaseT0 > 0) { objCfdi.agregarPago20TrasladoP(tasaIVABaseT0, tasaIVAImpuestoT0, tasaIVATipoFactorT0, Convert.ToDouble(tasaIVATasaOCuota0), tasaIVAImporteT0); }
                 if (cuotaIEPSImporteT > 0) { objCfdi.agregarPago20TrasladoP(cuotaIEPSBaseT, cuotaIEPSImpuestoT, cuotaIEPSTipoFactorT, Convert.ToDouble(cuotaIEPSTasaOCuota), cuotaIEPSImporteT); }
                 if (defaultImporteT > 0) { objCfdi.agregarPago20TrasladoP(defaultBaseT, defaultImpuestoT, defaultTipoFactorT, Convert.ToDouble(defaultTasaOCuotat), defaultImporteT); }
-
+                if(exentoIVATipoFactorT0 == c_TipoFactor.Exento.ToString()) { objCfdi.agregarPago20TrasladoP(exentoIVABaseT0, exentoIVAImpuestoT0, exentoIVATipoFactorT0, -1, -1); }
                 if (objCfdi.MensajeError != "")
                 {
                     error = objCfdi.MensajeError;
@@ -570,7 +614,69 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             //guardar string en un archivo
             //System.IO.File.WriteAllText(pathXml, xml);
             //Timbrado
-            objCfdi = Timbra(objCfdi, sucursal);
+            //objCfdi = Timbra(objCfdi, sucursal);
+            //Timbrado XSA
+            ComprobanteDto comprobanteDto = new ComprobanteDto()
+            {
+                SucursalId = sucursal.Id,
+                RfcSucursal = sucursal.Rfc,
+                ReceptorId = complementoPago.ReceptorId,
+                RfcReceptor = complementoPago.Receptor.Rfc,
+                FechaDocumento = complementoPago.FechaDocumento,
+                Moneda = c_Moneda.XXX,
+                Subtotal = 0,
+                TipoCambio = complementoPago.Pagos[0].TipoCambio,
+                TipoComprobante = c_TipoDeComprobante.P,
+                Total = 0,
+                FormaPago = complementoPago.Pagos[0].FormaPago,
+                MetodoPago = null
+            };
+            int facturaEmitidaId = _xsaManager.GenerarCFDI(xml, sucursal, sucursal.Folio, sucursal.Serie, comprobanteDto,pathXml);
+            if (facturaEmitidaId > 0)
+            {
+                try
+                {
+                    //Incrementar Folio de Sucursal
+                    sucursal.Folio += 1;
+                    _db.Entry(sucursal).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    MarcarFacturado(complementoPago.Id, facturaEmitidaId);
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    var errores = new List<String>();
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            errores.Add(String.Format("Propiedad: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage));
+                        }
+                    }
+                    throw new Exception(string.Join(",", errores.ToArray()));
+                }
+                var cliente = _db.Clientes.Find(complementoPago.ReceptorId);
+                var utf8 = new UTF8Encoding();
+                //envio email SMTP
+                try
+                {
+                    if (cliente.Email != null && cliente.Sucursal.Smtp != null && cliente.Sucursal.Puerto != null && cliente.Sucursal.PasswordCorreo != null)
+                    {
+                        var facturaEmitida = _db.FacturasEmitidas.Find(facturaEmitidaId);
+                        //deserealiza XML
+                        ComprobanteCFDI xmlObject = _deserealizaXml.DeserealizarXmlPagos20(complementoPago.Id);
+                        var pathXml = _descarga.GeneraFilePathXml(facturaEmitida.ArchivoFisicoXml, facturaEmitida.Folio, facturaEmitida.Serie);
+                        byte[] bytePdf = _descarga.GeneraPDF40(xmlObject, "Pagos40", complementoPago.Id, false, false);
+                        var pathPdf = _deserealizaXml.GetPathPDf(bytePdf, facturaEmitida.Serie, facturaEmitida.Folio);
+
+
+                        EmailDto objetcCorreo = _enviosEmails.ObjectCorreo(cliente, new List<string> { pathXml, pathPdf });
+                        _enviosEmails.SendEmail(objetcCorreo, complementoPago.Id);
+                    }
+
+                }
+                catch (Exception)
+                {}
+            }
             return objCfdi;
         }
 

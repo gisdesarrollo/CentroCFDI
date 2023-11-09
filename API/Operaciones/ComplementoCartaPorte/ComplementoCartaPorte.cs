@@ -3,6 +3,7 @@ using API.CatalogosCartaPorte;
 using API.Enums;
 using API.Enums.CartaPorteEnums;
 using API.Operaciones.Facturacion;
+using API.Operaciones.RelacionesCfdi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +28,7 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [NotMapped]
         public string IdFormaPago { get; set; }
-        
+
         [DisplayName("Método de Pago")]
         public c_MetodoPago? MetodoPago { get; set; }
 
@@ -62,7 +63,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public Conceptos Conceptos { get; set; }
 
         //[NotMapped]
-        public  virtual List<Conceptos> Conceptoss { get; set; }
+        public virtual List<Conceptos> Conceptoss { get; set; }
 
         [DisplayName("Tipo Transporte")]
         [Required(ErrorMessage = "Campo Obligatorio")]
@@ -142,7 +143,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public int SucursalId { get; set; }
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
-        
+
         [NotMapped]
         public int IDCliente { get; set; }
 
@@ -208,10 +209,11 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DisplayName("UUID De CFDI Relacionado")]
         public String UUIDCfdiRelacionado { get; set; }
-        //public int? CfdiRelacionadoId { get; set; }
-        //[ForeignKey("CfdiRelacionadoId")]
-        //public virtual FacturaEmitida CfdiRelacionado { get; set; }
-
+        
+        [NotMapped]
+        public CfdiRelacionado CfdiRelacionado { get; set; }
+        
+        public virtual List<CfdiRelacionado> CfdiRelacionados { get; set; }
         #endregion
 
 

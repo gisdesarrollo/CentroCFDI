@@ -1,6 +1,7 @@
 ﻿using API.Catalogos;
 using API.Enums;
 using API.Operaciones.Facturacion;
+using API.Operaciones.RelacionesCfdi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -79,9 +80,11 @@ namespace API.Operaciones.ComplementosPagos
 
         [DisplayName("UUID De CFDI Relacionado")]
         public string UUIDCfdiRelacionado { get; set; }
-        //public int? CfdiRelacionadoId { get; set; }
-        //[ForeignKey("CfdiRelacionadoId")]
-        //public virtual FacturaEmitida CfdiRelacionado { get; set; }
+        
+        [NotMapped]
+        public CfdiRelacionado CfdiRelacionado { get; set; }
+
+        public virtual List<CfdiRelacionado> CfdiRelacionados { get; set; }
 
         public int? TotalesPagoImpuestoId { get; set; }
         [ForeignKey("TotalesPagoImpuestoId")]

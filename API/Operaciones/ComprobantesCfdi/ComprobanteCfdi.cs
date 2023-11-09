@@ -3,6 +3,7 @@ using API.CatalogosCartaPorte;
 using API.Enums;
 using API.Operaciones.ComplementoCartaPorte;
 using API.Operaciones.Facturacion;
+using API.Operaciones.RelacionesCfdi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -107,10 +108,9 @@ namespace API.Operaciones.ComprobantesCfdi
 
         [DisplayName("UUID De CFDI Relacionado")]
         public String UUIDCfdiRelacionado { get; set; }
-
-        //public int? CfdiRelacionadoId { get; set; }
-        //[ForeignKey("CfdiRelacionadoId")]
-        //public virtual FacturaEmitida CfdiRelacionado { get; set; }
+        [NotMapped]
+        public CfdiRelacionado CfdiRelacionado { get; set; }
+        public virtual List<CfdiRelacionado> CfdiRelacionados { get; set; }
 
         #endregion
 

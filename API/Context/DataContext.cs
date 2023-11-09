@@ -12,7 +12,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using API.CatalogosCartaPorte.Domicilio;
 using API.Operaciones.ComprobantesCfdi;
-
+using API.Operaciones.RelacionesCfdi;
 
 namespace API.Context
 {
@@ -128,6 +128,7 @@ namespace API.Context
 
         public DbSet<TotalesPagosImpuestos> TotalesPagosImpuestos { get; set; }
 
+        public DbSet<CfdiRelacionado> CfdiRelacionado { get; set; }
         //Facturacion
         public DbSet<DocumentoExtranjero> DocumentosExtranjeros { get; set; }
         public DbSet<FacturaEmitida> FacturasEmitidas { get; set; }
