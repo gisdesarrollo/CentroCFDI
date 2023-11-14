@@ -629,6 +629,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 TipoComprobante = c_TipoDeComprobante.P,
                 Total = 0,
                 FormaPago = complementoPago.Pagos[0].FormaPago,
+                //Agrego Nuevo Elemento
+                Referencia = complementoPago.ReferenciaAddenda,
                 MetodoPago = null
             };
             int facturaEmitidaId = _xsaManager.GenerarCFDI(xml, sucursal, sucursal.Folio, sucursal.Serie, comprobanteDto,pathXml);
@@ -679,6 +681,12 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             }
             return objCfdi;
         }
+
+
+        //Guardamos 
+
+
+
 
         private RVCFDI33.GeneraCFDI Timbra(RVCFDI33.GeneraCFDI objCfdi, Sucursal sucursal)
         {
@@ -841,7 +849,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 Uuid = facturaDto.UUID,
                 ArchivoFisicoXml = utf8.GetBytes(facturaDto.XmlTimbrado),
                 CodigoQR = facturaDto.GenerarQrCode(),
-                Status = API.Enums.Status.Activo
+                Status = API.Enums.Status.Activo,
+                ReferenciaAddenda = complementoPago.ReferenciaAddenda
+
             };
             if (complementoPago.Pagos[0].FormaPago != null)
             {

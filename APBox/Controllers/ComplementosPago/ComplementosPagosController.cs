@@ -150,6 +150,7 @@ namespace APBox.Controllers.ComplementosPago
                 Sucursal = sucursalC,
                 Version = "2.0",
                 ExportacionId = "01",//No aplica
+                ReferenciaAddenda = null,//Referencia Addenda
                 Pago = new Pago
                 {
                     FechaPago = DateTime.Now,
@@ -829,6 +830,45 @@ namespace APBox.Controllers.ComplementosPago
         public ActionResult DescargarXml(int id)
         {
             var complementoPago = _db.ComplementosPago.Find(id);
+
+            if (!string.IsNullOrWhiteSpace(complementoPago.ReferenciaAddenda))
+            {
+                var pathCompleto = _descargasManager.GeneraFilePathXml(complementoPago.FacturaEmitida.ArchivoFisicoXml, complementoPago.FacturaEmitida.Serie, complementoPago.FacturaEmitida.Folio);
+
+                // Leer el contenido del archivo XML existente
+                string xmlContent = System.IO.File.ReadAllText(pathCompleto);
+
+                // Crear el nodo Addenda con el valor de referencia
+                string referenciaAddenda = complementoPago.ReferenciaAddenda;
+
+                string addendaNode = $"<cfdi:Addenda><referencia>{referenciaAddenda}</referencia></cfdi:Addenda>";
+
+                // Agregar el nodo Addenda al final del archivo XML
+                xmlContent = xmlContent.Replace("</cfdi:Comprobante>", $"{addendaNode}</cfdi:Comprobante>");
+
+                // Guardar el contenido modificado en un nuevo archivo temporal
+                string newFilePath = Path.Combine(Path.GetDirectoryName(pathCompleto), String.Format("{0} - {1} - {2}.xml", complementoPago.FacturaEmitida.Serie, complementoPago.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff")));
+                System.IO.File.WriteAllText(newFilePath, xmlContent);
+
+                byte[] archivoFisico = System.IO.File.ReadAllBytes(newFilePath);
+                //se elimina el archivo anterior generado sin addenda
+                System.IO.File.Delete(pathCompleto);
+                string contentType = MimeMapping.GetMimeMapping(newFilePath);
+
+                var cd = new System.Net.Mime.ContentDisposition
+                {
+                    FileName = Path.GetFileName(newFilePath),
+                    Inline = false,
+                };
+                Response.AppendHeader("Content-Disposition", cd.ToString());
+
+                // Eliminar el archivo temporal
+                System.IO.File.Delete(newFilePath);
+
+                return File(archivoFisico, contentType);
+            }
+
+            else { 
             var pathCompleto = _descargasManager.GeneraFilePathXml(complementoPago.FacturaEmitida.ArchivoFisicoXml, complementoPago.FacturaEmitida.Serie, complementoPago.FacturaEmitida.Folio);
 
             //var pathCompleto = _pagosManager.GenerarXml(id);
@@ -844,6 +884,7 @@ namespace APBox.Controllers.ComplementosPago
             //Elimino el archivo Temp
             System.IO.File.Delete(pathCompleto);
             return File(archivoFisico, contentType);
+            }
         }
         public ActionResult DescargarPDF(int id)
         {

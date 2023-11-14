@@ -49,6 +49,10 @@ namespace API.Operaciones.ComplementosPagos
 
         public Status Status { get; set; }
 
+
+        [DisplayName("Referencia")]
+        public String ReferenciaAddenda { get; set; }
+
         [NotMapped]
         public List<DocumentoRelacionado> DocumentosRelacionados { get; set; }
 

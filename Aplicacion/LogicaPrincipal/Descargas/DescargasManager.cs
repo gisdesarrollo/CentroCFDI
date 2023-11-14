@@ -210,6 +210,14 @@ namespace Aplicacion.LogicaPrincipal.Descargas
                 
                 //asigna plantilla
                 plantilla = "TemplatePDFPagos//PlantillaPagos.cshtml";
+
+                //set referencia 
+
+                if (pagos.ReferenciaAddenda != null)
+                {
+                    oComprobante.Referencia = pagos.ReferenciaAddenda;
+
+                }
             }
             else if (tipoDocumento == "Cfdi40")
             {

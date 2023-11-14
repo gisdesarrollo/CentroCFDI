@@ -138,6 +138,27 @@
                 </div>
 
             </div>
+
+            <hr />
+
+            <h3 class="title-hero">
+                Addenda
+            </h3>
+
+            <div class="row">
+                <i class="col-xs-12">*Puedes agregar los detalles correspondientes</i>
+                <br />
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-12">
+                    @Html.LabelFor(model => model.ReferenciaAddenda, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ReferenciaAddenda, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.ValidationMessageFor(model => model.ReferenciaAddenda, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+
             <div class="clearfix"></div><br />
             <div class="row">
                 <h3 class="title-hero">
@@ -175,7 +196,7 @@
 
                         <div class="form-group col-xs-12 col-sm-3">
                             @Html.LabelFor(model => model.Pago.Moneda, new { @class = "form-label" })
-                            @Html.EnumDropDownListFor(model => model.Pago.Moneda,"",  new { @class = "form-select mb-2", @data_control = "select2" } )
+                            @Html.EnumDropDownListFor(model => model.Pago.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
                             @Html.ValidationMessageFor(model => model.Pago.Moneda, "", new { @class = "text-danger" })
                         </div>
 
@@ -228,7 +249,7 @@
 
                         <div class="clearfix"></div>
 
-                        <div class="col-xs-12">
+                        <div class="col-xs-2">
                             <div class="content-box">
                                 <h3 class="content-box-header bg-default">
                                     <i class="glyph-icon icon-inbox"></i>
@@ -244,8 +265,8 @@
                                             {
                                                 foreach (var pago in Model.Pagos)
                                                 {
-                            @Html.Partial("~/Views/ComplementosPagos/Pagos.cshtml", pago)}
-                    }
+                                                    @Html.Partial("~/Views/ComplementosPagos/Pagos.cshtml", pago)}
+                                            }
                                         </div>
                                     </div>
                                 </div>
