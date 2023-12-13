@@ -350,7 +350,7 @@
     <Compile Include="Controllers\Ajax\AjaxOperacionesController.cs" />
     <Compile Include="Controllers\Catalogos\BancosController.cs" />
     <Compile Include="Controllers\Catalogos\CentrosCostosController.cs" />
-    <Compile Include="Controllers\Catalogos\ClientesController.cs" />
+    <Compile Include="Controllers\Catalogos\SociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\ConceptosController.cs" />
     <Compile Include="Controllers\Catalogos\DepartamentosController.cs" />
     <Compile Include="Controllers\Catalogos\GruposController.cs" />
@@ -3021,11 +3021,11 @@
     <Content Include="Views\Perfiles\Details.cshtml" />
     <Content Include="Views\Perfiles\Edit.cshtml" />
     <Content Include="Views\Perfiles\Index.cshtml" />
-    <Content Include="Views\Clientes\Create.cshtml" />
-    <Content Include="Views\Clientes\Delete.cshtml" />
-    <Content Include="Views\Clientes\Details.cshtml" />
-    <Content Include="Views\Clientes\Edit.cshtml" />
-    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\SociosComerciales\Create.cshtml" />
+    <Content Include="Views\SociosComerciales\Delete.cshtml" />
+    <Content Include="Views\SociosComerciales\Details.cshtml" />
+    <Content Include="Views\SociosComerciales\Edit.cshtml" />
+    <Content Include="Views\SociosComerciales\Index.cshtml" />
     <Content Include="Views\Grupos\Create.cshtml" />
     <Content Include="Views\Grupos\Delete.cshtml" />
     <Content Include="Views\Grupos\Details.cshtml" />
@@ -3061,7 +3061,7 @@
     <Content Include="Views\ComplementosPagos\Cargar.cshtml" />
     <Content Include="Views\ValidacionesRapidas\Validar.cshtml" />
     <Content Include="Views\PortalProveedores\Validaciones.cshtml" />
-    <Content Include="Views\Clientes\Bancos.cshtml" />
+    <Content Include="Views\SociosComerciales\Bancos.cshtml" />
     <Content Include="Views\Sucursales\Bancos.cshtml" />
     <Content Include="Views\FacturasEmitidas\Delete.cshtml" />
     <Content Include="Views\FacturasEmitidas\Details.cshtml" />

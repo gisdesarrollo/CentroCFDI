@@ -515,7 +515,9 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.Perfiles, "PERFILES");
             AddRole(um, userId, perfil.Usuarios, "USUARIOS");
             AddRole(um, userId, perfil.Bancos, "BANCOS");
-            AddRole(um, userId, perfil.Proveedores, "PROVEEDORES");
+           
+           
+
             AddRole(um, userId, perfil.Clientes, "CLIENTES");
             AddRole(um, userId, perfil.Conceptos, "CONCEPTOS");
             AddRole(um, userId, perfil.Impuestos, "IMPUESTOS");
@@ -552,7 +554,8 @@ namespace APBox.Controllers
             //Addenda
             AddRole(um, userId, perfil.Addenda, "ADDENDA");
 
-            
+            AddRole(um, userId, perfil.Proveedor, "PROVEEDOR");
+            AddRole(um, userId, perfil.Recepcion, "RECEPCION");
             return usuario.Id;
         }
 

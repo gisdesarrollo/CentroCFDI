@@ -11,7 +11,7 @@ using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 namespace APBox.Controllers.Catalogos
 {
     [APBox.Control.SessionExpire]
-    public class ClientesController : Controller
+    public class SociosComercialesController : Controller
     {
         
         #region Variables
@@ -29,8 +29,7 @@ namespace APBox.Controllers.Catalogos
             var clientes = _db.Clientes.Where(c => c.SucursalId == sucursalId).ToList();
 
 
-
-            ViewBag.Controller = "Clientes";
+            ViewBag.Controller = "SociosComerciales";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
@@ -69,7 +68,7 @@ namespace APBox.Controllers.Catalogos
                 SucursalId = ObtenerSucursal()
             };
 
-            ViewBag.Controller = "Clientes";
+            ViewBag.Controller = "SociosComerciales";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
             ViewBag.NameHere = "catalogo";
@@ -119,7 +118,7 @@ namespace APBox.Controllers.Catalogos
             }
 
             PopulaForma();
-            ViewBag.Controller = "Clientes";
+            ViewBag.Controller = "SociosComerciales";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
             ViewBag.NameHere = "catalogo";

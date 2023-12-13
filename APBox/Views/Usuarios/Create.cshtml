@@ -7,138 +7,195 @@
     @Html.HiddenFor(model => model.GrupoId)
 
 
-<div class="card card-flush py-4">
-    <!--begin::Card header-->
-    <div class="card-header">
-        <div class="card-title">
-            <h2>Nuevo</h2>
+    <div class="card card-flush py-4">
+        <!--begin::Card header-->
+        <div class="card-header">
+            <div class="card-title">
+                <h2>Nuevo</h2>
+            </div>
         </div>
-    </div>
-    <!--end::Card header-->
-    <!--begin::Card body-->
-    <div class="card-body pt-0">
-        <div class="row">
-            <div class="pb-10">
-                <!--begin::Information-->
-                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                    <!--begin::Icon-->
-                    <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
-                    <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
-                            <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
-                            <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                    <!--end::Icon-->
-                    <!--begin::Description-->
-                    <div class="text-gray-700 fw-bold fs-6">
-                        Todos los nuevos usuarios creados tienen como contraseña incial:
-                        <code>A12345</code>.
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <div class="row">
+                <div class="pb-10">
+                    <!--begin::Information-->
+                    <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                        <!--begin::Icon-->
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+                        <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
+                                <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
+                                <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                        <!--end::Icon-->
+                        <!--begin::Description-->
+                        <div class="text-gray-700 fw-bold fs-6">
+                            Todos los nuevos usuarios creados tienen como contraseña incial:
+                            <code>A12345</code>.
+                        </div>
+                        <!--end::Description-->
                     </div>
-                    <!--end::Description-->
+                    <!--end::Information-->
                 </div>
-                <!--end::Information-->
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "form-label" })
-                @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
-            </div>
+            <div class="row">
+                <!--Se quitaron los campos de RFC y Clave-->
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label required" })
-                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-            </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label required" })
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                </div>
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "form-label required" })
-                @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
-            </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "form-label required" })
+                    @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
+                </div>
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "form-label required" })
-                @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "form-label" })
-                @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control minusculas" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.Rfc, htmlAttributes: new { @class = "form-label" })
-                @Html.EditorFor(model => model.Rfc, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                @Html.ValidationMessageFor(model => model.Rfc, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "form-label required" })
-                @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select mb-2" })
-                @Html.ValidationMessageFor(model => model.PerfilId, "", new { @class = "text-danger" })
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "form-label required" })
-                @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control minusculas" } })
-                @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "form-label required" })
+                    @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
+                </div>
             </div>
 
 
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
-                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-select mb-2" })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            <div class="row">
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control minusculas" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div id="perfilid" class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "form-label required" })
+                    @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select mb-2" })
+                    @Html.ValidationMessageFor(model => model.PerfilId, "", new { @class = "text-danger" })
+                </div>
             </div>
 
-        </div>
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "form-label required" })
+                    @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control minusculas" } })
+                    @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                </div>
 
-        <div class="separator separator-dashed my-5"></div>
-        
-        <div class="fv-row">
-            <!--begin::Label-->
-            <label class="form-label">Acceso</label>
-            <!--end::Label-->
-            <!--begin::Input-->
-            <div class="form-check form-check-custom form-check-solid mb-2">
-                <input class="form-check-input" type="checkbox" value="">
-                <label class="form-check-label">Todas las sucursales</label>
+
+
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
+                    @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-select mb-2" })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
             </div>
-            <!--end::Input-->
-        </div>
 
-        <div class="separator my-5"></div>
-        <div class="d-flex justify-content-end">
-            <!--begin::Button-->
-            <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
-            <!--end::Button-->
-            <!--begin::Button-->
-            <button type="submit" id="submit" class="btn btn-primary">
-                <span class="indicator-label">Guardar</span>
-            </button>
-            <!--end::Button-->
+            <div class="separator separator-dashed my-5"></div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
+                <div class="form-check">
+                    @{
+                        bool isChecked = Model.esProveedor ?? false;
+                    }
+                    <input type="hidden" name="esProveedor" value="false" />
+                    <input class="form-check-input" type="checkbox" id="chkProveedor" name="esProveedor" @(isChecked ? "checked" : "") />
+                    <label class="form-check-label" for="chkProveedor">
+                        Proveedor
+                    </label>
+                </div>
+            </div>
+            <br />
+            <div id="divSocioComercial" class="form-group col-xs-12 col-sm-6 col-md-4" style="display: none;">
+                @Html.LabelFor(model => model.SocioComercialID, htmlAttributes: new { @class = "form-label" })
+                <div class="col-md-10">
+                    <div class="select">
+                        @Html.DropDownListFor(model => model.SocioComercialID, ViewBag.SociosComerciales as SelectList, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                        @Html.ValidationMessageFor(model => model.SocioComercialID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator separator-dashed my-5"></div>
+
+
+            <div class="fv-row">
+                <!--begin::Label-->
+                <label class="form-label">Acceso</label>
+                <!--end::Label-->
+                <!--begin::Input-->
+                <div class="form-check form-check-custom form-check-solid mb-2">
+                    <input class="form-check-input" type="checkbox" value="">
+                    <label class="form-check-label">Todas las sucursales</label>
+                </div>
+                <!--end::Input-->
+            </div>
+
+            <div class="separator my-5"></div>
+            <div class="d-flex justify-content-end">
+                <!--begin::Button-->
+                <a href="@Url.Action("Index","Usuarios")" class="btn btn-light me-5">Cancelar</a>
+                <!--end::Button-->
+                <!--begin::Button-->
+                <button type="submit" id="submit" class="btn btn-primary">
+                    <span class="indicator-label">Guardar</span>
+                </button>
+                <!--end::Button-->
+            </div>
         </div>
     </div>
-</div>
 }
 
 
 <script src="~/Content/Infodextra/Usuarios.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+      /*
+       * Kevin Enrique 
+       * Descripción: Chek Box de Proveedores, selecion de perfil automatico  y envio de datos booleanos.
+       */
+    $(document).ready(function () {
+        
+
+        $('#chkProveedor').change(function () {
+            if ($(this).is(':checked')) {
+                $('#divSocioComercial').show();
+                $('#perfilid').hide();
+            } else {
+                $('#divSocioComercial').hide();
+               
+               
+            }
+        });
+
+        $('#chkProveedor').trigger('change');
+    });
+
+
+    document.getElementById('chkProveedor').addEventListener('change', function () {
+        if (this.checked) {
+            
+            document.querySelector('input[name="esProveedor"]').value = "true";
+        } else {
+          
+            document.querySelector('input[name="esProveedor"]').value = "false";
+        }
+    });
+
+   
+</script>
+

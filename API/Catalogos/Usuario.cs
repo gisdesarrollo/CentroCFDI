@@ -45,9 +45,10 @@ namespace API.Catalogos
         public String Rfc { get; set; }
 
         //General
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        //[Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Perfil")]
         public int PerfilId { get; set; }
+
         [ForeignKey("PerfilId")]
         public virtual Perfil Perfil { get; set; }
         
@@ -62,10 +63,24 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Grupo")]
         public int GrupoId { get; set; }
+
         [ForeignKey("GrupoId")]
         public virtual Grupo Grupo { get; set; }
 
         #endregion
+
+        #region SociosComercialesId
+        [DisplayName("SocioComercial")]
+        public int? SocioComercialID { get; set; }
+        [ForeignKey("SocioComercialID")]
+        public virtual Cliente SocioComercial { get; set; }
+        #endregion
+
+        #region Proveedor
+        [DisplayName ("Proveedor")]
+        public bool? esProveedor { get; set; }
+        #endregion
+
 
         #region Sucursales
 

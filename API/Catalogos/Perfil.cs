@@ -91,6 +91,7 @@ namespace API.Catalogos
         [DisplayName("Portal de Proveedores")]
         public bool PortalProveedores { get; set; }
 
+
         //Reportes
         [DisplayName("Documentos")]
         public bool ReporteDocumentos { get; set; }
@@ -112,8 +113,13 @@ namespace API.Catalogos
 
         public bool Addenda { get; set; }
 
+        [DisplayName("Recepcion")]
+        public bool Recepcion { get; set; }
 
-       
+
+        [DisplayName("Proveedor")]
+        public bool Proveedor { get; set; }
+
 
 
         #region Grupo

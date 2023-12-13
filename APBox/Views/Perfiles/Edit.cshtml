@@ -364,11 +364,49 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                            <h3 class="text-gray-700 fw-bold fs-5">
+                                                Recepción
+                                            </h3>
+                                        </div>
+                                        <!--end::Label-->
+                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                            <!--begin::Empty message-->
+                                            <span class="w-100 text-muted d-none"></span>
+                                            <div class="form-group col-sm-6 col-md-4">
+
+                                                <label class="form-label">Portal Proveedores</label>
+                                                <div class="col-md-10">
+                                                    <div class="checkbox">
+                                                        @Html.EditorFor(model => model.Proveedor, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                        @Html.ValidationMessageFor(model => model.Proveedor, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-sm-6 col-md-4">
+
+                                                <label class="form-label">Recepcion CFDi</label>
+                                                <div class="col-md-10">
+                                                    <div class="checkbox">
+                                                        @Html.EditorFor(model => model.Recepcion, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                        @Html.ValidationMessageFor(model => model.Recepcion, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        </div>
+
+
+
+
+                                        <div class="separator"></div>
+
                                     </div>
-
-                                    <div class="separator"></div>
-
-                                </div>
 
                                 <div class="d-flex justify-content-end">
                                     <a href="@Url.Action("Index", "Perfiles")" class="btn btn-light me-5">Cancelar</a>
