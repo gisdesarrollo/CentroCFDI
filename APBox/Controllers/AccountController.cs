@@ -497,12 +497,12 @@ namespace APBox.Controllers
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             ClearUserRoles(um, userId);
 
-            if (tipoUsuario == TiposUsuarios.Proveedor)
+            /*if (tipoUsuario == TiposUsuarios.Proveedor)
             {
                 var proveedor = _db.Proveedores.First(u => u.Rfc == nombreUsuario && u.Status == Status.Activo);
                 AddRole(um, userId, true, "PORTALPROVEEDORES");
                 return proveedor.Id;
-            }
+            }*/
 
             var usuario = _db.Usuarios.First(u => u.NombreUsuario == nombreUsuario && u.Status == Status.Activo);
             var perfil = usuario.Perfil;

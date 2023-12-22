@@ -109,7 +109,7 @@
                 @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
                 <div class="form-check">
                     @{
-                        bool isChecked = Model.esProveedor ?? false;
+                        bool isChecked = Model.esProveedor ? true: false;
                     }
                     <input type="hidden" name="esProveedor" value="false" />
                     <input class="form-check-input" type="checkbox" id="chkProveedor" name="esProveedor" @(isChecked ? "checked" : "") />

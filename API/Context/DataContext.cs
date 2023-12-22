@@ -141,6 +141,17 @@ namespace API.Context
         public DbSet<PagoProveedor> PagosProveedores { get; set; }
         public DbSet<SolicitudAcceso> SolicitudesAccesos { get; set; }
 
+        //Documentos Recibidos
+        public DbSet<DocumentosRecibidosDR> DocumentoRecibidoDr { get; set; }
+        public DbSet<RecibidosComprobanteDR> RecibidoComprobanteDr { get; set; }
+        public DbSet<AdjuntosDR> AdjuntoDr { get; set; }
+        public DbSet<PagosDR> PagoDr { get; set; }
+        public DbSet<RecibidosXMLDR> RecibidoXmlDr { get; set; }
+        public DbSet<RecibidosPDFDR> RecibidoPdfDr { get; set; }
+        public DbSet<SolicitudesDR> SolicitudDr { get; set; }
+        public DbSet<ValidacionesDR> ValidacionDr { get; set; }
+
+
         #endregion
 
         #region Relaciones

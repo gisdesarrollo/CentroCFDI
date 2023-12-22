@@ -47,6 +47,7 @@
 
                 @Html.HiddenFor(model => model.Id)
                                 @Html.HiddenFor(model => model.GrupoId)
+                                @Html.HiddenFor(model => model.esProveedor)
 
             <div class="form row">
                 @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
@@ -123,7 +124,7 @@
                     @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
                     <div class="form-check">
                         @{
-                            bool isChecked = Model.esProveedor ?? false;
+                            bool isChecked = Model.esProveedor ? true:false;
                         }
                         <input type="hidden" name="esProveedor" value="false" />
                         <input class="form-check-input" type="checkbox" id="chkProveedor" name="esProveedor" @(isChecked ? "checked" : "") />
@@ -268,8 +269,8 @@
      * Kevin Enrique
      * Descripción: Chek Box de Proveedores, selecion de perfil automatico  y envio de datos booleanos.
      */
-    $(document).ready(function () {
 
+    $(document).ready(function () {
 
         $('#chkProveedor').change(function () {
             if ($(this).is(':checked')) {

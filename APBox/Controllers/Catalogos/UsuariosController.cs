@@ -109,7 +109,14 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                
+                if (esProveedor == true)
+                {
+                    //Asignacion de valor si es Proveedor
+                    usuario.esProveedor = esProveedor;
+                    usuario.PerfilId = 32;
+                    // Envío de correo electrónico de bienvenida
+                    //EnviarCorreoBienvenida(usuario);
+                }
                 // Envío de correo electrónico de bienvenida
                 EnviarCorreoBienvenida(usuario);
                 _db.Usuarios.Add(usuario);
@@ -141,7 +148,7 @@ namespace APBox.Controllers.Catalogos
 
                 //Asignacion de valor si es Proveedor
                 usuario.esProveedor = esProveedor;
-                usuario.PerfilId = 25;
+                usuario.PerfilId = 32;
                 
 
                 // Envío de correo electrónico de bienvenida
@@ -260,10 +267,10 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                if(esProveedor == true) { 
+                if(esProveedor) { 
                 //Asignacion de valor si es Proveedor
                 usuario.esProveedor = esProveedor;
-                usuario.PerfilId = 25;
+                usuario.PerfilId = 32;
                     // Envío de correo electrónico de bienvenida
                     EnviarCorreoBienvenida(usuario);
                 }
@@ -273,8 +280,8 @@ namespace APBox.Controllers.Catalogos
                 return RedirectToAction("Index");
             }
 
-            else 
-            {
+            else if(esProveedor)
+            { 
     
                 var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno && e.Id != usuario.Id);
 
@@ -284,16 +291,12 @@ namespace APBox.Controllers.Catalogos
                     ModelState.AddModelError("", "Ese usuario ya existe");
                     return View(usuario);
 
-
                 }
 
                 //Asignacion de valor si es Proveedor
                 usuario.esProveedor = true;
-                usuario.PerfilId = 25;
+                usuario.PerfilId = 32;
                 
-                
-
-
                 _acondicionarUsuarios.Sucursales(usuario);
                 _db.Entry(usuario).State = EntityState.Modified;
                 _db.SaveChanges();

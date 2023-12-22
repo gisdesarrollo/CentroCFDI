@@ -1,0 +1,31 @@
+﻿<script>
+$(document).ready(function () {
+    $('#documentoRecibidoForm').submit(function (event) {
+        event.preventDefault();
+        var formData = $('#documentoRecibidoForm').serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create", "DocumentosRecibidos")',
+            data: formData,
+            success: function (data) {
+                if (data.success) {
+                    window.location.href = data.redirectTo;
+                }
+                if (data.error) {
+                    window.location.href = data.redirectTo;
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                alert("ocurrio un error al guardar el documento recibido..")
+                if (xhr.error) {
+                    window.location.href = xhr.redirectTo;
+                }
+            }
+        });
+    });
+
+});
+
+</script>

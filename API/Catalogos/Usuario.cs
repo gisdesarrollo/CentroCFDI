@@ -78,7 +78,7 @@ namespace API.Catalogos
 
         #region Proveedor
         [DisplayName ("Proveedor")]
-        public bool? esProveedor { get; set; }
+        public bool esProveedor { get; set; }
         #endregion
 
 

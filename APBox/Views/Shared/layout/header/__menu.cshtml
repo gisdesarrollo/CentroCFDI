@@ -389,8 +389,8 @@
 
         @if (User.IsInRole("PROVEEDOR") || User.IsInRole("RECEPCION"))
         {
-            <!--begin:Addendas-->
-            <div id="addenda" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+            <!--begin:Proveedor-->
+            <div id="proveedor" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                 <!--begin:Menu link-->
                 <span class="menu-link py-3">
                     <span class="menu-title">Recepcion</span>
@@ -403,7 +403,7 @@
 
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link py-3" href="#" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                        <a class="menu-link py-3" href="@Url.Action("Index", "DocumentosRecibidos")" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                             <span class="menu-icon">
                                 <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2022-09-15-053640/core/html/src/media/icons/duotune/files/fil001.svg-->
                                 <span class="svg-icon svg-icon-muted svg-icon-3">
@@ -443,7 +443,7 @@
                 </div>
                 <!--end:Menu sub-->
             </div>
-            <!--end::addenda-->
+            <!--end::proveedor-->
         }
 
         @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("FACTURASRECIBIDAS") || User.IsInRole("CARGACFDI"))
