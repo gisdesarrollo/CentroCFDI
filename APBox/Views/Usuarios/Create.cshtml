@@ -42,6 +42,11 @@
                     <!--end::Information-->
                 </div>
             </div>
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+            }
             <div class="row">
                 <!--Se quitaron los campos de RFC y Clave-->
 
@@ -75,7 +80,7 @@
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label required" })
                     @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control minusculas" } })
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
@@ -109,7 +114,7 @@
                 @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
                 <div class="form-check">
                     @{
-                        bool isChecked = Model.esProveedor ? true: false;
+                        bool isChecked = Model.esProveedor ? true : false;
                     }
                     <input type="hidden" name="esProveedor" value="false" />
                     <input class="form-check-input" type="checkbox" id="chkProveedor" name="esProveedor" @(isChecked ? "checked" : "") />
@@ -155,6 +160,7 @@
                 </button>
                 <!--end::Button-->
             </div>
+
         </div>
     </div>
 }
@@ -177,7 +183,7 @@
                 $('#perfilid').hide();
             } else {
                 $('#divSocioComercial').hide();
-               
+                $('#perfilid').show();
                
             }
         });

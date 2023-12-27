@@ -39,6 +39,7 @@ namespace API.Catalogos
         public String Celular { get; set; }
 
         [DisplayName("E-Mail")]
+        [Required(ErrorMessage = "Campo Obligatorio")]
         public String Email { get; set; }
 
         [DisplayName("RFC")]
@@ -47,7 +48,7 @@ namespace API.Catalogos
         //General
         //[Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Perfil")]
-        public int PerfilId { get; set; }
+        public int ? PerfilId { get; set; }
 
         [ForeignKey("PerfilId")]
         public virtual Perfil Perfil { get; set; }

@@ -86,14 +86,13 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaClientes(usuario.SocioComercialID);
             PopulaForma(usuario.PerfilId);
-
             if (ModelState.IsValid)
             {
-                var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno);
+                var entidadExistente = _db.Usuarios.FirstOrDefault(e =>  e.NombreUsuario == usuario.NombreUsuario);
                 if (entidadExistente != null)
                 {
-                    ModelState.AddModelError("", "Ese usuario ya existe");
-                    return View(usuario);
+                   ViewBag.ErrorMessage = "Ese usuario ya existe";
+                   return View(usuario);
                 }
 
                 _acondicionarUsuarios.CargaInicial(ref usuario);
@@ -109,7 +108,7 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                if (esProveedor == true)
+                if (usuario.esProveedor == true)
                 {
                     //Asignacion de valor si es Proveedor
                     usuario.esProveedor = esProveedor;
@@ -124,40 +123,40 @@ namespace APBox.Controllers.Catalogos
                 return RedirectToAction("Index");
             }
             //Verificamos que el usuario es un Proveedor
-            else if(usuario.esProveedor == true)
-            {
-                var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno);
-                if (entidadExistente != null)
-                {
-                    ModelState.AddModelError("", "Ese usuario ya existe");
-                    return View(usuario);
-                }
+            //else if(usuario.esProveedor == true)
+            //{
+            //    var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno);
+            //    if (entidadExistente != null)
+            //    {
+            //        ModelState.AddModelError("", "Ese usuario ya existe");
+            //        return View(usuario);
+            //    }
 
-                _acondicionarUsuarios.CargaInicial(ref usuario);
+            //    _acondicionarUsuarios.CargaInicial(ref usuario);
 
-                try
-                {
-                    _operacionesUsuarios.Crear(usuario.NombreUsuario);
+            //    try
+            //    {
+            //        _operacionesUsuarios.Crear(usuario.NombreUsuario);
 
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", ex.Message);
-                    return View(usuario);
-                }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ModelState.AddModelError("", ex.Message);
+            //        return View(usuario);
+            //    }
 
-                //Asignacion de valor si es Proveedor
-                usuario.esProveedor = esProveedor;
-                usuario.PerfilId = 32;
+            //    //Asignacion de valor si es Proveedor
+            //    usuario.esProveedor = esProveedor;
+            //    usuario.PerfilId = 25;
                 
 
-                // Envío de correo electrónico de bienvenida
-                EnviarCorreoBienvenida(usuario);
-                _db.Usuarios.Add(usuario);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+            //    // Envío de correo electrónico de bienvenida
+            //    EnviarCorreoBienvenida(usuario);
+            //    _db.Usuarios.Add(usuario);
+            //    _db.SaveChanges();
+            //    return RedirectToAction("Index");
 
-            }
+            //}
             return View(usuario);
         }
 
@@ -267,12 +266,10 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                if(esProveedor) { 
+                if(usuario.esProveedor) { 
                 //Asignacion de valor si es Proveedor
                 usuario.esProveedor = esProveedor;
                 usuario.PerfilId = 32;
-                    // Envío de correo electrónico de bienvenida
-                    EnviarCorreoBienvenida(usuario);
                 }
                 _acondicionarUsuarios.Sucursales(usuario);
                 _db.Entry(usuario).State = EntityState.Modified;
@@ -280,29 +277,29 @@ namespace APBox.Controllers.Catalogos
                 return RedirectToAction("Index");
             }
 
-            else if(esProveedor)
-            { 
+            //else if(esProveedor)
+            //{ 
     
-                var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno && e.Id != usuario.Id);
+            //    var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno && e.Id != usuario.Id);
 
 
-                if (entidadExistente != null)
-                {
-                    ModelState.AddModelError("", "Ese usuario ya existe");
-                    return View(usuario);
+            //    if (entidadExistente != null)
+            //    {
+            //        ModelState.AddModelError("", "Ese usuario ya existe");
+            //        return View(usuario);
 
-                }
+            //    }
 
-                //Asignacion de valor si es Proveedor
-                usuario.esProveedor = true;
-                usuario.PerfilId = 32;
+            //    //Asignacion de valor si es Proveedor
+            //    usuario.esProveedor = true;
+            //    usuario.PerfilId = 25;
                 
-                _acondicionarUsuarios.Sucursales(usuario);
-                _db.Entry(usuario).State = EntityState.Modified;
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+            //    _acondicionarUsuarios.Sucursales(usuario);
+            //    _db.Entry(usuario).State = EntityState.Modified;
+            //    _db.SaveChanges();
+            //    return RedirectToAction("Index");
 
-            }
+            //}
 
 
             return View(usuario);
