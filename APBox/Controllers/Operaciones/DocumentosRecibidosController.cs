@@ -32,24 +32,15 @@ namespace APBox.Controllers.Operaciones
         //Metodo de Obtención de  Parametros por empresa
         public ConfiguracionesDR ConfiguracionEmpresa()
         {
-            var sucursalId = _db.Sucursales.Find(ObtenerSucursal())?.Id;
-            var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId);
+            var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
+            var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
 
             if (configuracion == null)
             {
                 return null;
             }
 
-            ConfiguracionesDR configuracionDR= new ConfiguracionesDR
-            {
-                Sucursal_Id = configuracion.Sucursal_Id,
-                aprobacionGastosObligatoria = configuracion.aprobacionGastosObligatoria,
-                validacionDocumentosObligatoria = configuracion.validacionDocumentosObligatoria,
-                numeroSolicitudGastos = configuracion.numeroSolicitudGastos,
-                diasPosterioresGastos = configuracion.diasPosterioresGastos,
-                recibirFacturasMesCorriente = configuracion.recibirFacturasMesCorriente
-            };
-            return configuracionDR;
+            return configuracion;
         }
 
         public ActionResult Index()
@@ -224,12 +215,14 @@ namespace APBox.Controllers.Operaciones
                 {
                     throw new Exception("Error Validación : El socio comercial no esta registrado en la BD");
                 }
-
+                var configuracionEmpresa = ConfiguracionEmpresa();
                 //Parametro configuracion (Documentos Obligatorios)
-                var configuracion = ConfiguracionEmpresa().validacionDocumentosObligatoria;
-                //var idsucursal = ConfiguracionEmpresa().Sucursal_Id;
-
-                if (configuracion == true)
+                if (configuracionEmpresa == null)
+                {
+                    throw new Exception("Error Configuracion : No se a configuraro la validación de la empresa");
+                }
+                
+                if (configuracionEmpresa.validacionDocumentosObligatoria)
                 {
                     //autenticacion
                     responseAutenticacion = _procesaDocumentoRecibido.GetToken();
@@ -241,7 +234,7 @@ namespace APBox.Controllers.Operaciones
                         if (responseValidacion == null) { throw new Exception("Error response validación CFDI : null"); }
                         if (responseValidacion.status == "success")
                         {
-                            documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                            documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                             documentoRecibidoDr.Procesado = true;
                             //Para iterar la lista sobre la validacion estructura
                             List<Detail> detail1 = responseValidacion.detail;
@@ -288,15 +281,13 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.CfdiRecibidos_Folio = cfdi.Folio;
                 documentoRecibidoDr.Moneda_Id = cfdi.Moneda;
 
-
-
                 //Implemento validacion para recibir facturas dentro del mes en curso
                  DateTime fechaActual = DateTime.Now;
 
-                 var refacmescorriente = ConfiguracionEmpresa().recibirFacturasMesCorriente;
-                 var fechco= documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
+                 var facturaMesCorriente = ConfiguracionEmpresa().recibirFacturasMesCorriente;
+                 documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
 
-                if (refacmescorriente) {
+                if (facturaMesCorriente) {
 
                     //Primer dia del Mes Actual
                     DateTime primerDiaMesActual = new DateTime(fechaActual.Year, fechaActual.Month, 1);
@@ -304,13 +295,12 @@ namespace APBox.Controllers.Operaciones
                     //Ultimo dia del Mes Actual
                     DateTime ultimoDiaMesActual = primerDiaMesActual.AddMonths(1).AddDays(-1);
 
-                    if (fechco < primerDiaMesActual || fechco > ultimoDiaMesActual) {
+                    if (documentoRecibidoDr.FechaComprobante < primerDiaMesActual || documentoRecibidoDr.FechaComprobante > ultimoDiaMesActual) {
                         throw new InvalidOperationException("La factura o el comprobante no corresponde al mes actual. Por favor, cargue una factura del mes actual.");
                     }
                     
                 }
 
-                documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
                 documentoRecibidoDr.CfdiRecibidos_UUID = timbreFiscalDigital.UUID;
                 documentoRecibidoDr.FechaEntrega = DateTime.Now;
                 documentoRecibidoDr.TipoDocumentoRecibido = c_TipoDocumentoRecibido.CFDI;
