@@ -253,6 +253,7 @@
     <Compile Include="Operaciones\Facturacion\FacturaRecibida.cs" />
     <Compile Include="Operaciones\Facturacion\Validacion.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\AdjuntosDR.cs" />
+    <Compile Include="Operaciones\OperacionesProveedores\ConfiguracionesDR.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\DepartamentosDR.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\DocumentosRecibidosDR.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\PagoProveedor.cs" />

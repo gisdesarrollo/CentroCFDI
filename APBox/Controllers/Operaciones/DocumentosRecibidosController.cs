@@ -26,6 +26,32 @@ namespace APBox.Controllers.Operaciones
         private readonly ProcesaDocumentoRecibido _procesaDocumentoRecibido = new ProcesaDocumentoRecibido();
         private readonly Decodificar _decodifica = new Decodificar();
         // GET: DocumentosRecibidos
+
+
+
+        //Metodo de Obtención de  Parametros por empresa
+        public ConfiguracionesDR ConfiguracionEmpresa()
+        {
+            var sucursalId = _db.Sucursales.Find(ObtenerSucursal())?.Id;
+            var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId);
+
+            if (configuracion == null)
+            {
+                return null;
+            }
+
+            ConfiguracionesDR configuracionDR= new ConfiguracionesDR
+            {
+                Sucursal_Id = configuracion.Sucursal_Id,
+                aprobacionGastosObligatoria = configuracion.aprobacionGastosObligatoria,
+                validacionDocumentosObligatoria = configuracion.validacionDocumentosObligatoria,
+                numeroSolicitudGastos = configuracion.numeroSolicitudGastos,
+                diasPosterioresGastos = configuracion.diasPosterioresGastos,
+                recibirFacturasMesCorriente = configuracion.recibirFacturasMesCorriente
+            };
+            return configuracionDR;
+        }
+
         public ActionResult Index()
         {
             ViewBag.Controller = "DocumentosRecibidos";
@@ -60,6 +86,7 @@ namespace APBox.Controllers.Operaciones
                 }
             return View(documentosRecibidosModel);
         }
+
         [HttpPost]
         public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
         {
@@ -70,6 +97,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.NameHere = "proveedor";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            
             if (usuario.esProveedor)
             {
                 ViewBag.isProveedor = "Proveedor";
@@ -156,25 +184,25 @@ namespace APBox.Controllers.Operaciones
             {
                 //Deserealiza XML
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
-                var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi,null);
+                var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
                 var sucursal = _db.Sucursales.Find(ObtenerSucursal());
                 var socioComercial = new Cliente();
-                
+
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
                 if (usuario.esProveedor)
                 {
                     socioComercial = _db.Clientes.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
-                    var existUUID = _db.DocumentoRecibidoDr.Where(dr =>dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
+                    var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
                     if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
 
                     }
-                    if(sucursal.Rfc != cfdi.Receptor.Rfc)
+                    if (sucursal.Rfc != cfdi.Receptor.Rfc)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
                     }
-                    if(existUUID != null)
+                    if (existUUID != null)
                     {
                         throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
                     }
@@ -191,58 +219,97 @@ namespace APBox.Controllers.Operaciones
                     }
 
                 }
+
                 if (socioComercial == null)
                 {
                     throw new Exception("Error Validación : El socio comercial no esta registrado en la BD");
                 }
-                //autenticacion
-                responseAutenticacion = _procesaDocumentoRecibido.GetToken();
-                if (responseAutenticacion.data.token != null)
+
+                //Parametro configuracion (Documentos Obligatorios)
+                var configuracion = ConfiguracionEmpresa().validacionDocumentosObligatoria;
+                //var idsucursal = ConfiguracionEmpresa().Sucursal_Id;
+
+                if (configuracion == true)
                 {
-                    //Valida CFDI
-                    responseValidacion = _procesaDocumentoRecibido.ValidaCfdi(responseAutenticacion.data.token,archivo.PathDestinoXml);
-                    if (responseValidacion == null) { throw new Exception("Error response validación CFDI : null"); }
-                    if (responseValidacion.status == "success")
+                    //autenticacion
+                    responseAutenticacion = _procesaDocumentoRecibido.GetToken();
+
+                    if (responseAutenticacion.data.token != null)
                     {
-                        documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
-                        documentoRecibidoDr.Procesado = true;
-                        //Para iterar la lista sobre la validacion estructura
-                        List<Detail> detail1 = responseValidacion.detail;
-                        StringBuilder sb = new StringBuilder();
-                        var count = detail1.Count();
-                        var limite = 0;
-                        foreach (var detalle in detail1)
+                        //Valida CFDI
+                        responseValidacion = _procesaDocumentoRecibido.ValidaCfdi(responseAutenticacion.data.token, archivo.PathDestinoXml);
+                        if (responseValidacion == null) { throw new Exception("Error response validación CFDI : null"); }
+                        if (responseValidacion.status == "success")
                         {
-                            limite++;
-                            var limiteDetail = 0;
-                            foreach (var nodedetalle in detalle.detail)
+                            documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                            documentoRecibidoDr.Procesado = true;
+                            //Para iterar la lista sobre la validacion estructura
+                            List<Detail> detail1 = responseValidacion.detail;
+                            StringBuilder sb = new StringBuilder();
+                            var count = detail1.Count();
+                            var limite = 0;
+                            foreach (var detalle in detail1)
                             {
-                                limiteDetail++;
-                                sb.AppendLine(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail);
-                                //add validaciones
-                                if (limite < count)
+                                limite++;
+                                var limiteDetail = 0;
+                                foreach (var nodedetalle in detalle.detail)
                                 {
-                                    documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail + "\r\n");
+                                    limiteDetail++;
+                                    sb.AppendLine(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail);
+                                    //add validaciones
+                                    if (limite < count)
+                                    {
+                                        documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail + "\r\n");
+                                    }
+                                    else { documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail); }
+
                                 }
-                                else { documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail); }
-                                
+
                             }
-                            
+                            documentoRecibidoDr.Validaciones.Detalle = sb.ToString();
+                            documentoRecibidoDr.Validaciones_Detalle = sb.ToString();
+                            documentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
                         }
-                        documentoRecibidoDr.Validaciones.Detalle = sb.ToString();
-                        documentoRecibidoDr.Validaciones_Detalle = sb.ToString();
-                        documentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
                     }
                 }
+                else
+                {
+                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                    documentoRecibidoDr.Procesado = true;
+                    documentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
+                }
 
-                //addd socio comercial
+
+                //add socio comercial
                 documentoRecibidoDr.SocioComercial_Id = socioComercial.Id;
                 //add usuario
                 documentoRecibidoDr.Usuario_Id = usuario.Id;
                 documentoRecibidoDr.CfdiRecibidos_Serie = cfdi.Serie;
                 documentoRecibidoDr.CfdiRecibidos_Folio = cfdi.Folio;
                 documentoRecibidoDr.Moneda_Id = cfdi.Moneda;
-                
+
+
+
+                //Implemento validacion para recibir facturas dentro del mes en curso
+                 DateTime fechaActual = DateTime.Now;
+
+                 var refacmescorriente = ConfiguracionEmpresa().recibirFacturasMesCorriente;
+                 var fechco= documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
+
+                if (refacmescorriente) {
+
+                    //Primer dia del Mes Actual
+                    DateTime primerDiaMesActual = new DateTime(fechaActual.Year, fechaActual.Month, 1);
+
+                    //Ultimo dia del Mes Actual
+                    DateTime ultimoDiaMesActual = primerDiaMesActual.AddMonths(1).AddDays(-1);
+
+                    if (fechco < primerDiaMesActual || fechco > ultimoDiaMesActual) {
+                        throw new InvalidOperationException("La factura o el comprobante no corresponde al mes actual. Por favor, cargue una factura del mes actual.");
+                    }
+                    
+                }
+
                 documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
                 documentoRecibidoDr.CfdiRecibidos_UUID = timbreFiscalDigital.UUID;
                 documentoRecibidoDr.FechaEntrega = DateTime.Now;
@@ -276,8 +343,9 @@ namespace APBox.Controllers.Operaciones
 
             return View(documentoRecibidoDr);
         }
-        // GET: DocumentosRecibidos/Details/5
-        public ActionResult Details(int id)
+
+            // GET: DocumentosRecibidos/Details/5
+            public ActionResult Details(int id)
         {
             return View();
         }

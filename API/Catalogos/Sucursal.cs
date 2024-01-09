@@ -179,5 +179,7 @@ namespace API.Catalogos
         //[NotMapped]
         [DisplayName("XSA Tralix")]
         public bool Txsa { get; set; }
+
+
     }
 }
