@@ -23,20 +23,15 @@ namespace API.Operaciones.OperacionesProveedores
         [ForeignKey("Sucursal_Id")]
         public virtual Sucursal Sucursal { get; set; }
 
-        [DisplayName("Nombre de Usuario")]
-        public bool aprobacionGastosObligatoria { get; set; }
+        public bool AprobacionGastosObligatoria { get; set; }
 
-        [DisplayName("Nombre de Usuario")]
-        public bool validacionDocumentosObligatoria { get; set; }
+        public bool ValidacionDocumentosObligatoria { get; set; }
 
-        [DisplayName("Nombre de Usuario")]
-        public int numeroSolicitudGastos { get; set; }
+        public int NumeroSolicitudGastos { get; set; }
 
-        [DisplayName("Nombre de Usuario")]
-        public int diasPosterioresGastos { get; set; }
+        public int DiasPosterioresGastos { get; set; }
 
-        [DisplayName("Nombre de Usuario")]
-        public bool recibirFacturasMesCorriente { get; set; }
+        public bool RecibirFacturasMesCorriente { get; set; }
 
 
 

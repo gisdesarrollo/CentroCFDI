@@ -222,7 +222,7 @@ namespace APBox.Controllers.Operaciones
                     throw new Exception("Error Configuracion : No se a configuraro la validación de la empresa");
                 }
                 
-                if (configuracionEmpresa.validacionDocumentosObligatoria)
+                if (configuracionEmpresa.ValidacionDocumentosObligatoria)
                 {
                     //autenticacion
                     responseAutenticacion = _procesaDocumentoRecibido.GetToken();
@@ -284,7 +284,7 @@ namespace APBox.Controllers.Operaciones
                 //Implemento validacion para recibir facturas dentro del mes en curso
                  DateTime fechaActual = DateTime.Now;
 
-                 var facturaMesCorriente = ConfiguracionEmpresa().recibirFacturasMesCorriente;
+                 var facturaMesCorriente = ConfiguracionEmpresa().RecibirFacturasMesCorriente;
                  documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
 
                 if (facturaMesCorriente) {
