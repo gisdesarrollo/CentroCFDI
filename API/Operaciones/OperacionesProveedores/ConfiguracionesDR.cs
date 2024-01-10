@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace API.Operaciones.OperacionesProveedores
 {
 
-    [Table("configuraciones")]
+    [Table("Configuraciones")]
     public  class ConfiguracionesDR
     {
 
