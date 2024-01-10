@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using API.Enums;
+using API.Operaciones.OperacionesProveedores;
 using API.Relaciones;
 
 namespace API.Catalogos
@@ -92,6 +93,12 @@ namespace API.Catalogos
         public virtual UsuarioSucursal Sucursal { get; set; }
         public virtual List<UsuarioSucursal> Sucursales { get; set; }
 
+        #endregion
+
+        #region Departamento
+        public int? Departamento_Id { get; set; }
+        [ForeignKey("Departamento_Id")]
+        public virtual DepartamentosDR DepartamentoDr { get; set; }
         #endregion
 
     }

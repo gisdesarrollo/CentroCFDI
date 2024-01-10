@@ -34,9 +34,6 @@ namespace API.Operaciones.OperacionesProveedores
         [ForeignKey("Proyecto_Id")]
         public virtual ProyectoDR ProyectoDr { get; set; }
 
-        public int? Departamento_Id { get; set; }
-        [ForeignKey("Departamento_Id")]
-        public virtual DepartamentosDR DepartamentoDr { get; set; }
-
+        
     }
 }

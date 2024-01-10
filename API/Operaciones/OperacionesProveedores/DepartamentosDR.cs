@@ -1,5 +1,7 @@
-﻿using System;
+﻿using API.Catalogos;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -16,5 +18,9 @@ namespace API.Operaciones.OperacionesProveedores
         public String Nombre { get; set; }
 
         public String Clave { get; set; }
+
+        public int Sucursal_Id { get; set; }
+        [ForeignKey("Sucursal_Id")]
+        public virtual Sucursal Sucursal { get; set; }
     }
 }
