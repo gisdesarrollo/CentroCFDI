@@ -102,6 +102,8 @@ namespace API.Operaciones.OperacionesProveedores
         public virtual DepartamentosDR DepartamentoDr { get; set; }
 
         public String MotivoRechazo { get; set; }
+
+        public String OrdenDeCompra { get; set; }
         //NotMapped
         [DisplayName("Archivo")]
         [NotMapped]
