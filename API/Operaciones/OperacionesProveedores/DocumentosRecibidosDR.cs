@@ -96,6 +96,12 @@ namespace API.Operaciones.OperacionesProveedores
         [ForeignKey("Pagos_Id")]
         public virtual PagosDR Pagos { get; set; }
         
+        public int? Aprobador_Id { get; set; }
+        public int? Departamento_Id { get; set; }
+        [ForeignKey("Departamento_Id")]
+        public virtual DepartamentosDR DepartamentoDr { get; set; }
+
+        public String MotivoRechazo { get; set; }
         //NotMapped
         [DisplayName("Archivo")]
         [NotMapped]
