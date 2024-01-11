@@ -266,7 +266,6 @@
     <Compile Include="ObjetoImpDocRel\Cfdi40Objetos.cs" />
     <Compile Include="CFDI40Xsd\Cfdi40.cs" />
     <Compile Include="Context\AplicacionContext.cs" />
-    <Compile Include="LogicaAlterna\ObtenerConfiguraciones.cs" />
     <Compile Include="LogicaAlterna\ManejoArchivos.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Catalogos\AcondicionarClientes.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Catalogos\AcondicionarProveedores.cs" />

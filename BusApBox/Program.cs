@@ -21,7 +21,7 @@ namespace BusApBox
             ManejoArchivos _manejoArchivos = new ManejoArchivos();
             OperacionesStreams _operacionesStreams = new OperacionesStreams();
             SolicitudArchivosXsa _solicitudArchivosXsa = new SolicitudArchivosXsa();
-            ObtenerConfiguraciones _obtenerConfiguraciones = new ObtenerConfiguraciones();
+            
             //var pathArchivosSftp = Properties.Settings.Default.PathSftp;
             //var path = Path.Combine(Server.MapPath("~/Archivos/RecibosExternos/"), fileName);
             //var pathArchivosExternos = Properties.Settings.Default.PathArchivos;

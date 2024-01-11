@@ -367,7 +367,6 @@
     <Compile Include="Controllers\ComplementosPago\ComplementosPagosController.cs" />
     <Compile Include="Controllers\ComplementosPago\FacturasEmitidasController.cs" />
     <Compile Include="Controllers\ComprobantesCfdi\ComprobantesCfdiController.cs" />
-    <Compile Include="Controllers\Control\ControlController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Operaciones\AddendaController.cs" />
     <Compile Include="Controllers\Operaciones\CargasMasivasController.cs" />
@@ -2872,6 +2871,7 @@
     <Folder Include="Content\FileCfdiGenerados\" />
     <Folder Include="Content\FileTxt\" />
     <Folder Include="Content\Temp\" />
+    <Folder Include="Controllers\Control\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

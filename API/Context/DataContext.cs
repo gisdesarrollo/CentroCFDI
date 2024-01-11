@@ -108,7 +108,6 @@ namespace API.Context
 
         #region Control
 
-        public DbSet<Configuracion> Configuraciones { get; set; }
         public DbSet<ConfiguracionesDR> config { get; set; }
 
         #endregion
