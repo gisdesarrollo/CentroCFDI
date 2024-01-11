@@ -98,7 +98,7 @@ namespace API.Catalogos
         #region Departamento
         public int? Departamento_Id { get; set; }
         [ForeignKey("Departamento_Id")]
-        public virtual DepartamentosDR DepartamentoDr { get; set; }
+        public virtual Departamento Departamento { get; set; }
         #endregion
 
     }

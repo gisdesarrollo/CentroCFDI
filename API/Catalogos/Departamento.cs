@@ -16,7 +16,7 @@ namespace API.Catalogos
         
         public String Nombre { get; set; }
 
-        public Status Status { get; set; }
+        public String Clave { get; set; }
 
         #region Sucursal
 
