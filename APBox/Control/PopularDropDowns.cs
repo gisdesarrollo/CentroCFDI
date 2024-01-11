@@ -346,7 +346,7 @@ namespace APBox.Control
 
         public SelectList PopulaDepartamentos(int? seleccion)
         {
-            return new SelectList(_db.Departamentos.Where(a => a.Status == Status.Activo && a.SucursalId == _entidadId).OrderBy(a => a.Nombre), "Id", "Nombre", seleccion);
+            return new SelectList(_db.Departamentos.Where(a => a.SucursalId == _entidadId).OrderBy(a => a.Nombre), "Id", "Nombre", seleccion);
         }
 
         public SelectList PopulaFacturasEmitidas(bool soloPpd, int clienteId, int? seleccion)
