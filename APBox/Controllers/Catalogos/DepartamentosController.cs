@@ -46,7 +46,7 @@ namespace APBox.Controllers.Catalogos
         {
             var departamento = new Departamento
             {
-                Status = API.Enums.Status.Activo,
+                
                 SucursalId = ObtenerSucursal()
             };
 

@@ -62,6 +62,7 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaForma();
             PopulaClientes();
+            PopulaDepartamento();
             var usuario = new Usuario
             {
                 Status = API.Enums.Status.Activo,
@@ -86,6 +87,7 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaClientes(usuario.SocioComercialID);
             PopulaForma(usuario.PerfilId);
+            PopulaDepartamento(usuario.Departamento_Id);
             if (ModelState.IsValid)
             {
                 var entidadExistente = _db.Usuarios.FirstOrDefault(e =>  e.NombreUsuario == usuario.NombreUsuario);
@@ -318,6 +320,15 @@ namespace APBox.Controllers.Catalogos
 
             ViewBag.SocioComercialID = popularDropDowns.PopulaClientes(receptorId);
         }
+
+        //DropDown Departamentos
+        private void PopulaDepartamento(int? DepartamentoId = null)
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
+
+            ViewBag.Departamento_Id = popularDropDowns.PopulaDepartamentos(DepartamentoId);
+        }
+
 
         #endregion
     }
