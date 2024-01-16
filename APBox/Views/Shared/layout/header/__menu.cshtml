@@ -90,6 +90,21 @@
                                     <!--end:Menu link-->
                                 </div>
                             }
+                            @if (User.IsInRole("DEPARTAMENTOS"))
+                            {
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link py-3" href="@Url.Action("Index","Departamentos")">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">Departamentos</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                            }
                         </div>
                         <!--end:Menu sub-->
                     </div>

@@ -115,6 +115,8 @@ namespace APBox.Controllers.Catalogos
                     //Asignacion de valor si es Proveedor
                     usuario.esProveedor = esProveedor;
                     usuario.PerfilId = 32;
+                    usuario.Departamento = null;
+                    usuario.Departamento_Id = null;
                     // Envío de correo electrónico de bienvenida
                     //EnviarCorreoBienvenida(usuario);
                 }

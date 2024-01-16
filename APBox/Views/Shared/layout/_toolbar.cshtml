@@ -78,21 +78,31 @@
                         </div>
                         <!--end::Menu item-->
                     }
-                    @if (ViewBag.isProveedor != "Proveedor") { 
-                    <!--begin::Menu item-->
-                    <div class="menu-item px-3">
-                        <a href="@Url.Action("CargaCfdi", "DocumentosRecibidos")" class="menu-link px-3">
-                            Carga Documento Extranjero
-                        </a>
-                    </div>
-                    <!--end::Menu item-->
+                    @if (ViewBag.isProveedor != "Proveedor")
+                    {
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="@Url.Action("CargaCfdi", "DocumentosRecibidos")" class="menu-link px-3">
+                                Carga Documento Extranjero
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
                     }
                 </div>
                 <!--end::Menu-->
             </div>
             <!--end::Dropdown wrapper-->
         }
+        else if (ViewBag.Button == "Departamentos")
+        {
+            <button type="button" class="btn btn-primary rotate" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" data-kt-menu-offset="30px, 30px" onclick="location.href='@Url.Action("Create", "Departamentos")';return false;">
+                Nuevo
+                <span class="svg-icon svg-icon-3 rotate-180 ms-3 me-0"></span>
+            </button>
+        }
         else { }
+
+
 
 
     }<!--end::Button-->
