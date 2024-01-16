@@ -108,7 +108,7 @@
                 </div>
 
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div id="departamentoid" class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
                     @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "form-label required" })
                     @Html.DropDownListFor(model => model.Departamento_Id, ViewBag.Departamentos as SelectList, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
                     @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
@@ -189,9 +189,11 @@
             if ($(this).is(':checked')) {
                 $('#divSocioComercial').show();
                 $('#perfilid').hide();
+                $('#departamentoid').hide();
             } else {
                 $('#divSocioComercial').hide();
                 $('#perfilid').show();
+                $('#departamentoid').show();
                
             }
         });

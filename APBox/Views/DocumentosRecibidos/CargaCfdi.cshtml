@@ -16,13 +16,14 @@
         </div>
     </div>
     @Html.HiddenFor(model => model.Procesado)
+    
     <!--end::Card header-->
-    <div class="card-body pt-0">
-        <div class="row">
-            @using (Html.BeginForm("CargaCfdi", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
+<div class="card-body pt-0">
+    <div class="row">
+        @using (Html.BeginForm("CargaCfdi", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
 
-                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt", @style = "color:red;" })
+            @Html.ValidationSummary(true, "", new { @class = "label-blue-alt", @style = "color:red;" })
             <div class="row">
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -36,144 +37,208 @@
                 </div>
             </div>
 
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">
-                        <span class="indicator-label">Procesar</span>
-                    </button>
-                </div>
-                <div class="clearfix"></div>
-                <div class="separator my-5"></div>
-            }
-        </div>
-        <br />
-        @if (Model.Procesado)
-        {
-    <div class="activa-form-addenda">
-        <!--begin::Alert-->
-        <div class="alert alert-primary d-flex align-items-center p-5">
-            <!--begin::Icon-->
-            <i class="ki-duotone ki-shield-tick fs-2hx text-success me-4"><span class="path1"></span><span class="path2"></span></i>
-            <!--end::Icon-->
-            <!--begin::Wrapper-->
-            <div class="d-flex flex-column">
-                <!--begin::Title-->
-                <h4 class="mb-1 text-dark">OK</h4>
-                <!--end::Title-->
-                @if (Model.DetalleArrays != null)
-                {
-                    foreach (var detalle in Model.DetalleArrays)
-                    {
-                    <!--begin::Content-->
-                    <span>@detalle</span>
-                    <!--end::Content-->
-                    }
-                }
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">
+                    <span class="indicator-label">Procesar</span>
+                </button>
             </div>
-            <!--end::Wrapper-->
-        </div>
-        <!--end::Alert-->
+            <div class="clearfix"></div>
+            <div class="separator my-5"></div>
+        }
+    </div>
+    <br />
 
-        <form id="documentoRecibidoForm">
-            @Html.HiddenFor(model => model.Procesado)
-            @Html.HiddenFor(model => model.PathArchivoXml)
-            @Html.HiddenFor(model => model.PathArchivoPdf)
-            @Html.HiddenFor(model => model.SocioComercial_Id)
-            @Html.HiddenFor(model => model.Validaciones.Detalle)
-            @Html.HiddenFor(model => model.Validaciones.Fecha)
-            @Html.HiddenFor(model => model.Validaciones_Detalle)
-            @Html.HiddenFor(model => model.Usuario_Id)
-            <!--hiddenDiv-->
-            <div class="card shadow-sm">
-                <div class="card-body row">
-                    <h3 class="title-hero">
-                        Datos Generales
-                    </h3>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="content-box">
-                                <div class="content-box-wrapper">
-                                    <div class="form row">
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.CfdiRecibidos_Serie, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.CfdiRecibidos_Serie, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.CfdiRecibidos_Serie, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.CfdiRecibidos_Serie)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.CfdiRecibidos_Folio, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.CfdiRecibidos_Folio, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.CfdiRecibidos_Folio, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.CfdiRecibidos_Folio)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.Moneda_Id, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.Moneda_Id, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.Moneda_Id, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.Moneda_Id)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.CfdiRecibidos_UUID, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.CfdiRecibidos_UUID, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.CfdiRecibidos_UUID, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.CfdiRecibidos_UUID)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.EstadoComercial, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.EstadoComercial, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.EstadoComercial, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.EstadoComercial)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.FechaComprobante, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.FechaComprobante)
-                                            @Html.ValidationMessageFor(model => model.FechaComprobante, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.FechaComprobante)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.FechaEntrega, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.FechaEntrega, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.FechaEntrega, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.FechaEntrega)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.TipoDocumentoRecibido, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.TipoDocumentoRecibido, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.TipoDocumentoRecibido, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.TipoDocumentoRecibido)
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                            @Html.LabelFor(model => model.Monto, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DisplayFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.Monto, "", new { @class = "text-danger" })
-                                            @Html.HiddenFor(model => model.Monto)
-                                        </div>
+  
+    @if (Model.Procesado)
+    {
+        <div class="activa-form-addenda">
+            <!--begin::Alert-->
+            <div class="alert alert-primary d-flex align-items-center p-5">
+                <!--begin::Icon-->
+                <i class="ki-duotone ki-shield-tick fs-2hx text-success me-4"><span class="path1"></span><span class="path2"></span></i>
+                <!--end::Icon-->
+                <!--begin::Wrapper-->
+                <div class="d-flex flex-column">
+                    <!--begin::Title-->
+                    <h4 class="mb-1 text-dark">OK</h4>
+                    <!--end::Title-->
+                    @if (Model.DetalleArrays != null)
+                    {
+                        foreach (var detalle in Model.DetalleArrays)
+                        {
+                            <!--begin::Content-->
+                            <span>@detalle</span>
+                            <!--end::Content-->
+                        }
+                    }
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Alert-->
 
-                                        <div class="clearfix"></div>
-                                        <div class="separator my-5"></div>
+            <form id="documentoRecibidoForm">
+                @Html.HiddenFor(model => model.Procesado)
+                @Html.HiddenFor(model => model.PathArchivoXml)
+                @Html.HiddenFor(model => model.PathArchivoPdf)
+                @Html.HiddenFor(model => model.SocioComercial_Id)
+                @Html.HiddenFor(model => model.Validaciones.Detalle)
+                @Html.HiddenFor(model => model.Validaciones.Fecha)
+                @Html.HiddenFor(model => model.Validaciones_Detalle)
+                @Html.HiddenFor(model => model.Usuario_Id)
+                <!--hiddenDiv-->
+                <div class="card shadow-sm">
+                    <div class="card-body row">
+                        <h3 class="title-hero">
+                            Datos Generales
+                        </h3>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="content-box">
+                                    <div class="content-box-wrapper">
+                                        <div class="form row">
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.CfdiRecibidos_Serie, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.CfdiRecibidos_Serie, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.CfdiRecibidos_Serie, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.CfdiRecibidos_Serie)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.CfdiRecibidos_Folio, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.CfdiRecibidos_Folio, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.CfdiRecibidos_Folio, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.CfdiRecibidos_Folio)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.Moneda_Id, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.Moneda_Id, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.Moneda_Id, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.Moneda_Id)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.CfdiRecibidos_UUID, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.CfdiRecibidos_UUID, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.CfdiRecibidos_UUID, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.CfdiRecibidos_UUID)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.EstadoComercial, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.EstadoComercial, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.EstadoComercial, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.EstadoComercial)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.FechaComprobante, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.FechaComprobante)
+                                                @Html.ValidationMessageFor(model => model.FechaComprobante, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.FechaComprobante)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.FechaEntrega, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.FechaEntrega, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.FechaEntrega, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.FechaEntrega)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.TipoDocumentoRecibido, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.TipoDocumentoRecibido, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.TipoDocumentoRecibido, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.TipoDocumentoRecibido)
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                @Html.LabelFor(model => model.Monto, htmlAttributes: new { @class = "form-label" })
+                                                @Html.DisplayFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                @Html.ValidationMessageFor(model => model.Monto, "", new { @class = "text-danger" })
+                                                @Html.HiddenFor(model => model.Monto)
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="separator my-5"></div>
+
+                                            <!--EMAIL-->
+                                            <h4 class="title-hero">
+                                                Validación Email Solicitante
+                                            </h4>
 
 
-                                        <div class="clearfix"></div>
-                                        <br /><br />
-                                        <div class="d-flex justify-content-end">
-                                            <!--begin::Button-->
-                                            <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
-                                            <!--end::Button-->
+                                            @using (Html.BeginForm("ValidadorEmail", "DocumentosRecibidos", FormMethod.Post, new { id = "validarEmailForm" }))
+                                            {
+                                                <br />
+                                                <div class="form-group row">
+                                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                        @Html.EditorFor(model => model.VerificarEmail, new { htmlAttributes = new { @class = "form-control form-control-solid", placeholder = "ingresa@emailsolicitante.com", id = "verificarEmail" } })
+                                                        @Html.ValidationMessageFor(model => model.VerificarEmail, "", new { @class = "text-danger" })
+                                                    </div>
 
-                                            <button type="submit" class="btn btn-primary">
-                                                <span class="indicator-label">Guardar</span>
-                                            </button>
+                                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                                        <button type="button" onclick="validarEmail()" class="btn btn-secondary">Validar Email</button>
+                                                    </div>
+                                                </div>
+
+                                            }
+
+
+                                            <!-- Modal validacion email-->
+                                            <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="resultadoModalLabel">Resultado de Validación Email</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body" id="resultadoModalBody"></div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#resultadoModal" style="display: none;" id="mostrarModalBtn"></button>
+
+                                            <!-- cierre -->
+                                            <div class="clearfix"></div>
+                                            <br /><br />
+                                            <div class="d-flex justify-content-end">
+                                                <!--begin::Button-->
+                                                <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
+                                                <!--end::Button-->
+
+                                                <button type="submit" class="btn btn-primary">
+                                                    <span class="indicator-label">Guardar</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
-            <div class="clearfix"></div>
-        }
-    </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    }
+
 </div>
+</div>
+
+<script>
+   function validarEmail() {
+    var email = $("#verificarEmail").val();
+
+    $.ajax({
+        type: "POST",
+        url: "@Url.Action("ValidadorEmail", "DocumentosRecibidos")",
+        data: { VerificarEmail: email },
+        success: function (result) {
+            $("#resultadoModalBody").html(result.message);
+
+            $("#mostrarModalBtn").click();
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+</script>

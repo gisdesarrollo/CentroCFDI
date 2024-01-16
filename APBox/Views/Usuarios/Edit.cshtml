@@ -114,6 +114,12 @@
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
 
+                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "form-label required" })
+                    @Html.DropDownListFor(model => model.Departamento_Id, ViewBag.Departamentos as SelectList, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                    @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
+                </div>
+
                 <div class="clearfix"></div>
 
 
@@ -124,7 +130,7 @@
                     @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
                     <div class="form-check">
                         @{
-                            bool isChecked = Model.esProveedor ? true:false;
+                            bool isChecked = Model.esProveedor ? true : false;
                         }
                         <input type="hidden" name="esProveedor" value="false" />
                         <input class="form-check-input" type="checkbox" id="chkProveedor" name="esProveedor" @(isChecked ? "checked" : "") />

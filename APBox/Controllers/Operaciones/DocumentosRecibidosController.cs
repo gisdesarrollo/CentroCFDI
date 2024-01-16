@@ -35,6 +35,7 @@ namespace APBox.Controllers.Operaciones
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
             var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
 
+           
             if (configuracion == null)
             {
                 return null;
@@ -43,7 +44,49 @@ namespace APBox.Controllers.Operaciones
             return configuracion;
         }
 
-        public ActionResult Index()
+        //Metodo de Validacion E-Mail para usuarios solicitantes
+        [HttpPost]
+        public ActionResult ValidadorEmail(DocumentosRecibidosDR documentoRecibidoDr)
+        {
+            string email = documentoRecibidoDr.VerificarEmail;
+            var grupid= ObtenerGrupo();
+            var usuarioExistente = _db.Usuarios.Where(c => c.Email == email && c.GrupoId == grupid).FirstOrDefault();
+
+            if (usuarioExistente != null)
+            {   
+                var nombrecliente = usuarioExistente.NombreCompleto;
+                var departamento = _db.Departamentos.FirstOrDefault(e => e.Id == usuarioExistente.Departamento_Id);
+
+                // Guardar datos en TempData para asignarlo a otro metodo
+                TempData["AprobadorId"] = usuarioExistente.Id;
+                TempData["DepartamentoId"] = usuarioExistente.Departamento_Id;
+
+                if (departamento != null)
+                {
+                    
+                    string mensaje = $"<strong>Nombre del Aprobador</strong> : {usuarioExistente.NombreCompleto} <strong>Departamento</strong> : {departamento.Nombre}";
+                    return Json(new { success = true, message = mensaje });
+                }
+
+                else
+                {
+                   
+                    string mensaje = $"<strong>Nombre del Usuario</strong> : {usuarioExistente.NombreCompleto}";
+                    return Json(new { success = true, message = mensaje });
+
+                }
+               
+            }
+            else
+            {
+                return Json(new { success = false, message = "El Email no existe, favor de verificar" });
+            }
+
+        }
+
+
+
+            public ActionResult Index()
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Index";
@@ -358,83 +401,97 @@ namespace APBox.Controllers.Operaciones
             return View();
         }
 
+
         // POST: DocumentosRecibidos/Create
         [HttpPost]
         public ActionResult Create(DocumentosRecibidosDR documentoRecibidoDr)
         {
+           
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            ComprobanteCFDI cfdi = new ComprobanteCFDI();
-            ViewBag.NameHere = "proveedor";
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
-            try
-            {
+                ComprobanteCFDI cfdi = new ComprobanteCFDI();
+                ViewBag.NameHere = "proveedor";
+                if (usuario.esProveedor)
+                {
+                    ViewBag.isProveedor = "Proveedor";
+                }
+                else
+                {
+                    ViewBag.isProveedor = "Usuario";
+                }
+                try
+                {
 
+                // Obtener los datos guardados en TempData
+                var aprobadorId = TempData["AprobadorId"] as int?;
+                var departamentoId = TempData["DepartamentoId"] as int?;
+
+                if (aprobadorId != null && departamentoId != null)
+                {
+                    documentoRecibidoDr.Aprobador_Id = aprobadorId.Value;
+                    documentoRecibidoDr.Departamento_Id = departamentoId.Value;
+                }
+
+                //
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
-                var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault();
-                
-                var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
+                    var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault();
 
-                documentoRecibidoDr.RecibidosXml = new RecibidosXMLDR();
-                documentoRecibidoDr.RecibidosPdf = new RecibidosPDFDR(); 
-                //insert files
-                byte[] xmlFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoXml);
-                documentoRecibidoDr.RecibidosXml.Archivo = xmlFile;
-                if(documentoRecibidoDr.PathArchivoPdf != null)
-                {
-                    byte[] pdfFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoPdf);
-                    documentoRecibidoDr.RecibidosPdf.Archivo = pdfFile;
+                    var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
+
+                    documentoRecibidoDr.RecibidosXml = new RecibidosXMLDR();
+                    documentoRecibidoDr.RecibidosPdf = new RecibidosPDFDR();
+                    //insert files
+                    byte[] xmlFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoXml);
+                    documentoRecibidoDr.RecibidosXml.Archivo = xmlFile;
+                    if (documentoRecibidoDr.PathArchivoPdf != null)
+                    {
+                        byte[] pdfFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoPdf);
+                        documentoRecibidoDr.RecibidosPdf.Archivo = pdfFile;
+                    }
+                    else { documentoRecibidoDr.RecibidosPdf = null; documentoRecibidoDr.CfdiRecibidos_PDF_Id = null; }
+                    //table validaciones
+                    if (documentoRecibidoDr.Validaciones == null)
+                    {
+                        documentoRecibidoDr.Validaciones = null; documentoRecibidoDr.Validaciones_Id = null;
+                    }
+                    // table recibidosComprobante
+                    documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
+                    {
+                        Sucursal_Id = sucursal.Id,
+                        SocioComercial_Id = (int)documentoRecibidoDr.SocioComercial_Id,
+                        Fecha = documentoRecibidoDr.FechaComprobante,
+                        Serie = cfdi.Serie,
+                        Folio = cfdi.Folio,
+                        TipoComprobante = cfdi.TipoDeComprobante,
+                        Version = cfdi.Version,
+                        FormaPago = cfdi.FormaPago,
+                        Moneda = cfdi.Moneda,
+                        TipoCambio = (double)cfdi.TipoCambio,
+                        LugarExpedicion = cfdi.LugarExpedicion,
+                        MetodoPago = cfdi.MetodoPago,
+                        Descuento = (double)cfdi.Descuento,
+                        Subtotal = (double)cfdi.SubTotal,
+                        Total = (double)cfdi.Total,
+                        TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
+                        TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
+                    };
+                    documentoRecibidoDr.CfdiRecibidos_Id = null;
+                    // table solicitudes
+                    documentoRecibidoDr.Solicitudes = null;
+                    documentoRecibidoDr.Solicitud_Id = null;
+                    documentoRecibidoDr.Pagos = null;
+                    documentoRecibidoDr.Pagos_Id = null;
+                    _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
+                    _db.SaveChanges();
+                    return Json(new { success = true, redirectTo = Url.Action("Index", "DocumentosRecibidos") });
                 }
-                else { documentoRecibidoDr.RecibidosPdf = null; documentoRecibidoDr.CfdiRecibidos_PDF_Id = null; }
-                //table validaciones
-                if (documentoRecibidoDr.Validaciones == null)
+                catch (Exception ex)
                 {
-                    documentoRecibidoDr.Validaciones = null; documentoRecibidoDr.Validaciones_Id = null;
+                    ModelState.AddModelError("", ex.Message);
                 }
-                // table recibidosComprobante
-                documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
-                {
-                    Sucursal_Id = sucursal.Id,
-                    SocioComercial_Id = (int)documentoRecibidoDr.SocioComercial_Id,
-                    Fecha = documentoRecibidoDr.FechaComprobante,
-                    Serie = cfdi.Serie,
-                    Folio = cfdi.Folio,
-                    TipoComprobante = cfdi.TipoDeComprobante,
-                    Version = cfdi.Version,
-                    FormaPago = cfdi.FormaPago,
-                    Moneda = cfdi.Moneda,
-                    TipoCambio = (double)cfdi.TipoCambio,
-                    LugarExpedicion = cfdi.LugarExpedicion,
-                    MetodoPago = cfdi.MetodoPago,
-                    Descuento = (double)cfdi.Descuento,
-                    Subtotal = (double)cfdi.SubTotal,
-                    Total = (double)cfdi.Total,
-                    TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
-                    TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
-                };
-                documentoRecibidoDr.CfdiRecibidos_Id = null;
-                // table solicitudes
-                documentoRecibidoDr.Solicitudes = null;
-                documentoRecibidoDr.Solicitud_Id = null;
-                documentoRecibidoDr.Pagos = null;
-                documentoRecibidoDr.Pagos_Id = null;
-                _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
-                _db.SaveChanges();
-                return Json(new { success = true, redirectTo = Url.Action("Index", "DocumentosRecibidos") });
-            }
-            catch(Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-            }
+            
             return Json(new { error = true, redirectTo = Url.Action("CargaCfdi", "DocumentosRecibidos") });
-           
+            
         }
 
         // GET: DocumentosRecibidos/Edit/5

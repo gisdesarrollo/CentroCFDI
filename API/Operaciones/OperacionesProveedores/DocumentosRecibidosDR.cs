@@ -116,5 +116,10 @@ namespace API.Operaciones.OperacionesProveedores
         [NotMapped]
         public bool Procesado { get; set; }
 
+        [NotMapped]
+        
+        //[Required(ErrorMessage = "Campo Obligatorio")]
+        public string VerificarEmail { get; set; }
+
     }
 }
