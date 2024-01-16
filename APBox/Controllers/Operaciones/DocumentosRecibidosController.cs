@@ -20,6 +20,7 @@ using Utilerias.LogicaPrincipal;
 
 namespace APBox.Controllers.Operaciones
 {
+    [APBox.Control.SessionExpire]
     public class DocumentosRecibidosController : Controller
     {
         private readonly APBoxContext _db = new APBoxContext();
