@@ -11,7 +11,9 @@ using SW.Services.Authentication;
 using SW.Services.Validate;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -87,7 +89,7 @@ namespace APBox.Controllers.Operaciones
 
 
 
-            public ActionResult Index()
+        public ActionResult Index()
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Index";
@@ -114,10 +116,13 @@ namespace APBox.Controllers.Operaciones
                 if (usuario.esProveedor)
                 {
                     documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
+                    documentosRecibidosModel.isProveedor = true;
                 }
                 else
                 {
                     documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
+                    documentosRecibidosModel.DocumentosRecibidosAsignados = _procesaDocumentoRecibido.FiltrarAsignado(fechaInicial, fechaFinal, usuario.Id, null);
+                    documentosRecibidosModel.isProveedor = false;
                 }
             return View(documentosRecibidosModel);
         }
@@ -149,10 +154,13 @@ namespace APBox.Controllers.Operaciones
                 if (usuario.esProveedor)
                 {
                     documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
+                    documentosRecibidosModel.isProveedor = true;
                 }
                 else
                 {
                     documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
+                    documentosRecibidosModel.DocumentosRecibidosAsignados = _procesaDocumentoRecibido.FiltrarAsignado(fechaInicial, fechaFinal, usuario.Id, null);
+                    documentosRecibidosModel.isProveedor = false;
                 }
             
             return View(documentosRecibidosModel);
@@ -224,23 +232,23 @@ namespace APBox.Controllers.Operaciones
                 var socioComercial = new Cliente();
 
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
+                var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
+                if (existUUID != null)
+                {
+                    throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
+                }
                 if (usuario.esProveedor)
                 {
                     socioComercial = _db.Clientes.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
-                    var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
                     if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
-
                     }
                     if (sucursal.Rfc != cfdi.Receptor.Rfc)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
                     }
-                    if (existUUID != null)
-                    {
-                        throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
-                    }
+                    
                 }
                 else
                 {
@@ -328,7 +336,7 @@ namespace APBox.Controllers.Operaciones
                 //Implemento validacion para recibir facturas dentro del mes en curso
                  DateTime fechaActual = DateTime.Now;
 
-                 var facturaMesCorriente = ConfiguracionEmpresa().RecibirFacturasMesCorriente;
+                 var facturaMesCorriente = configuracionEmpresa.RecibirFacturasMesCorriente;
                  documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
 
                 if (facturaMesCorriente) {
@@ -467,6 +475,7 @@ namespace APBox.Controllers.Operaciones
                         Version = cfdi.Version,
                         FormaPago = cfdi.FormaPago,
                         Moneda = cfdi.Moneda,
+                        Uuid = documentoRecibidoDr.CfdiRecibidos_UUID,
                         TipoCambio = (double)cfdi.TipoCambio,
                         LugarExpedicion = cfdi.LugarExpedicion,
                         MetodoPago = cfdi.MetodoPago,
@@ -480,8 +489,12 @@ namespace APBox.Controllers.Operaciones
                     // table solicitudes
                     documentoRecibidoDr.Solicitudes = null;
                     documentoRecibidoDr.Solicitud_Id = null;
-                    documentoRecibidoDr.Pagos = null;
-                    documentoRecibidoDr.Pagos_Id = null;
+                    documentoRecibidoDr.Pagos = new PagosDR() 
+                    {
+                        EstadoPago = c_EstadoPago.Pendiente,
+                        FechaPago = documentoRecibidoDr.FechaEntrega,
+                    };
+                    
                     _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
                     _db.SaveChanges();
                     return Json(new { success = true, redirectTo = Url.Action("Index", "DocumentosRecibidos") });
@@ -498,7 +511,51 @@ namespace APBox.Controllers.Operaciones
         // GET: DocumentosRecibidos/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Action = "Edit";
+            ViewBag.NameHere = "proveedor";
+            
+            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            if (usuario.esProveedor)
+            {
+                documentoRecibido.isProveedor = true;
+                ViewBag.isProveedor = "Proveedor";
+            }
+            else
+            {
+                documentoRecibido.isProveedor = false;
+                ViewBag.isProveedor = "Usuario";
+            }
+
+            return View(documentoRecibido);
+        }
+
+        public ActionResult ValidaDocumentoRecibido(int id)
+        {
+            PopulaEstadoComercial();
+            ViewBag.Estatus = null;
+            ViewBag.Success = null;
+            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            return PartialView("~/Views/DocumentosRecibidos/_EstatusRecibidos.cshtml", documentoRecibido);
+        }
+        [HttpPost]
+        public ActionResult ValidaDocumentoRecibido(DocumentosRecibidosDR documentoRecibidoModal)
+        {
+            PopulaEstadoComercial();
+            var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoModal.Id);
+            if(documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
+            {
+                documentoRecibido.MotivoRechazo = documentoRecibidoModal.MotivoRechazo;
+            }
+            documentoRecibido.Solicitudes = null;
+            documentoRecibido.Solicitud_Id = null;
+            documentoRecibido.EstadoComercial = documentoRecibidoModal.EstadoComercial;
+            _db.Entry(documentoRecibido).State = EntityState.Modified;
+            _db.SaveChanges();
+            ViewBag.Estatus = "ok";
+            ViewBag.Success = "¡¡Estatus documento recibido actualizado con exito!!";
+            return PartialView("~/Views/DocumentosRecibidos/_EstatusRecibidos.cshtml", documentoRecibido);
         }
 
         // POST: DocumentosRecibidos/Edit/5
@@ -580,6 +637,80 @@ namespace APBox.Controllers.Operaciones
             throw new Exception("Favor de cargar por lo menos un archivo");
         }
 
+        public ActionResult DescargaXml(int id)
+        {
+            byte[] archivoFisico = new byte[255];
+            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            archivoFisico = documentoRecibido.RecibidosXml.Archivo;
+
+
+            MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
+            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");
+            Response.Buffer = true;
+            Response.Clear();
+            Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.End();
+
+
+            return new FileStreamResult(Response.OutputStream, "application/xml");
+        }
+
+        public ActionResult DescargaPdf(int id)
+        {
+            byte[] archivoFisico = new byte[255];
+            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            archivoFisico = documentoRecibido.RecibidosPdf.Archivo;
+            
+
+            MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
+            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
+            Response.Buffer = true;
+            Response.Clear();
+            Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+            Response.OutputStream.Flush();
+            Response.End();
+
+
+            return new FileStreamResult(Response.OutputStream, "application/pdf");
+        }
+
+        public ActionResult DescargaAdjunto(int id)
+        {
+            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            byte[] archivoFisicoXml = documentoRecibido.RecibidosXml.Archivo;
+            byte[] archivoFisicoPdf = documentoRecibido.RecibidosPdf.Archivo;
+            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+            var memoryStream = new MemoryStream();
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    AddFileToZip(archive, archivoFisicoXml, nameArchivo +".xml");
+                    AddFileToZip(archive, archivoFisicoPdf, nameArchivo +".pdf");
+                }
+
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            var fileStreamResult = new FileStreamResult(memoryStream, "application/zip")
+            {
+               FileDownloadName = "adjuntos.zip" 
+            };
+
+            return fileStreamResult;
+            
+
+        }
+
+        private void AddFileToZip(ZipArchive archive, byte[] fileBytes, string entryName)
+        {
+            var entry = archive.CreateEntry(entryName);
+            using (var entryStream = entry.Open())
+            {
+                entryStream.Write(fileBytes, 0, fileBytes.Length);
+            }
+        }
         public static string FechaFormat(string fecha)
         {
             DateTime fechaConvertDate = Convert.ToDateTime(fecha);
@@ -599,6 +730,15 @@ namespace APBox.Controllers.Operaciones
         private int ObtenerUsuario()
         {
             return Convert.ToInt32(Session["UsuarioId"]);
+        }
+
+        private void PopulaEstadoComercial()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "En Revision", Value = "0", Selected = true });
+            items.Add(new SelectListItem { Text = "Aprobado", Value = "1" });
+            items.Add(new SelectListItem { Text = "Rechazado", Value = "2" });
+            ViewBag.estadoComercial = items;
         }
         protected override void Dispose(bool disposing)
         {

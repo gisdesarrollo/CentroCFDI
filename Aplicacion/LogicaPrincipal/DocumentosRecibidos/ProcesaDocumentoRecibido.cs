@@ -32,7 +32,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             var documentoRecibido = new List<DocumentosRecibidosDR>();
             if (socioComercialId != null)
             {
-                documentoRecibido = _db.DocumentoRecibidoDr.Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId && dr.SocioComercial_Id == socioComercialId).ToList();
+                documentoRecibido = _db.DocumentoRecibidoDr.Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal  && dr.SocioComercial_Id == socioComercialId).ToList();
 
             }
             else
@@ -43,6 +43,16 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             return documentoRecibido;
         }
 
+        public List<DocumentosRecibidosDR> FiltrarAsignado(DateTime fechaInicial, DateTime fechaFinal, int usuarioId, int? socioComercialId)
+        {
+            var usuario = _db.Usuarios.Find(usuarioId);
+            var documentoRecibidoAsignado = new List<DocumentosRecibidosDR>();
+            if (socioComercialId == null)
+            {
+                documentoRecibidoAsignado = _db.DocumentoRecibidoDr.Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Departamento_Id == usuario.Departamento_Id && dr.Aprobador_Id == usuarioId).ToList();
+            }
+            return documentoRecibidoAsignado;
+        }
         public ComprobanteCFDI DecodificaXML(String pathXml)
         {
             ComprobanteCFDI comprobante40 = new ComprobanteCFDI();

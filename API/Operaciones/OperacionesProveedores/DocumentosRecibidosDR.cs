@@ -95,7 +95,7 @@ namespace API.Operaciones.OperacionesProveedores
         public int? Pagos_Id { get; set; }
         [ForeignKey("Pagos_Id")]
         public virtual PagosDR Pagos { get; set; }
-        
+
         public int? Aprobador_Id { get; set; }
         public int? Departamento_Id { get; set; }
         [ForeignKey("Departamento_Id")]
@@ -108,7 +108,7 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("Archivo")]
         [NotMapped]
         public HttpPostedFileBase Archivo { get; set; }
-        
+
         [NotMapped]
         public String PathArchivoXml { get; set; }
         [NotMapped]
@@ -117,9 +117,11 @@ namespace API.Operaciones.OperacionesProveedores
         public bool Procesado { get; set; }
 
         [NotMapped]
-        
-        //[Required(ErrorMessage = "Campo Obligatorio")]
+
         public string VerificarEmail { get; set; }
+
+        [NotMapped]
+        public bool isProveedor {get;set;}
 
     }
 }
