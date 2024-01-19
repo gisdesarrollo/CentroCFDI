@@ -186,6 +186,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                   
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        <br />
+                                        @Html.LabelFor(model => model.Departamentos, htmlAttributes: new { @class = "form-label" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Departamentos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Departamentos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <label class="form-label">Empresa</label>
@@ -449,19 +460,7 @@
                                     </div>
 
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
                             </div>
-
                             <div class="separator"></div>
 
                         </div>
