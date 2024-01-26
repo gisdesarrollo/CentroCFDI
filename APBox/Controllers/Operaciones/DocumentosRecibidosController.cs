@@ -4,6 +4,7 @@ using API.Enums;
 using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
 using API.Operaciones.OperacionesProveedores;
+using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
 using Aplicacion.LogicaPrincipal.Facturas;
 using Newtonsoft.Json;
@@ -28,6 +29,7 @@ namespace APBox.Controllers.Operaciones
         private readonly APBoxContext _db = new APBoxContext();
         private readonly ProcesaDocumentoRecibido _procesaDocumentoRecibido = new ProcesaDocumentoRecibido();
         private readonly Decodificar _decodifica = new Decodificar();
+        private readonly EnviosEmails _envioEmail = new EnviosEmails();
         // GET: DocumentosRecibidos
 
 
@@ -109,7 +111,8 @@ namespace APBox.Controllers.Operaciones
              
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            var fechaHoy = DateTime.Now.AddDays(-6);
+            var fechaInicial = new DateTime(fechaHoy.Year, fechaHoy.Month, fechaHoy.Day, 0, 0, 0);
             var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
@@ -555,6 +558,12 @@ namespace APBox.Controllers.Operaciones
             _db.SaveChanges();
             ViewBag.Estatus = "ok";
             ViewBag.Success = "¡¡Estatus documento recibido actualizado con exito!!";
+
+            //envio email rechazo
+            if(documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
+            {
+                _envioEmail.SendEmailNotifications(null,documentoRecibido, true,(int)ObtenerSucursal());
+            }
             return PartialView("~/Views/DocumentosRecibidos/_EstatusRecibidos.cshtml", documentoRecibido);
         }
 
