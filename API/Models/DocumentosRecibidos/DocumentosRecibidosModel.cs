@@ -16,5 +16,10 @@ namespace API.Models.DocumentosRecibidos
 
         public virtual List<DocumentosRecibidosDR> DocumentosRecibidos { get; set; }
 
+        
+        public virtual List<DocumentosRecibidosDR> DocumentosRecibidosAsignados { get; set; }
+
+        public bool isProveedor { get; set; }
+
     }
 }

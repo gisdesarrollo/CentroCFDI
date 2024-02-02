@@ -79,14 +79,6 @@ namespace API.Catalogos
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
-
-        [DisplayName("Grupo")]
-        public int? GrupoId { get; set; }
-
-
-        [ForeignKey("GrupoId")]
-        public virtual Grupo Grupo { get; set; }
-
         #endregion
     }
 }
