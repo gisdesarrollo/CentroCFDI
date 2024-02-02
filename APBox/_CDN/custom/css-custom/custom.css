@@ -4,24 +4,6 @@ html {
     overflow-y: scroll;
 }
 
-/* Background y blurry al bg */
-.bg-image {
-    /* The image used */
-    background-image: url('../../custom/media/background/bg1.jpg') !important;
-    /*esto provoca error de dropdow*/
-    /*backdrop-filter: blur(5px) !important;*/
-    /* Full height */
-    height: 100%;
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-body {
-    background-color: darkblue !important;
-}
-
 ul {
     margin-bottom: 0px !important;
 }

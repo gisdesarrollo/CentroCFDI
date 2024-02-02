@@ -9,9 +9,276 @@
 
 @if (Request.IsAuthenticated && sucursalId != 0)
 {
+    <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+        <!--begin::Col-->
+        <div class="col-xxl-4">
+            <!--begin::Engage widget 1-->
+            <div class="card h-md-100" dir="ltr">
+                <!--begin::Body-->
+                <div class="card-body d-flex flex-column flex-center">
+                    <!--begin::Heading-->
+                    <div class="mb-2">
+                        <!--begin::Title-->
+                        <h1 class="fw-semibold text-gray-800 text-center lh-lg">
+                            Bienvenido a 
+                            <br>
+                            <span class="fw-bolder">CentroCFDi</span>
+                        </h1>
+                        <!--end::Title-->
+                        <!--begin::Illustration-->
+                        <div class="py-10 text-center">
+                            <img src="~/_CDN/assets/media/svg/illustrations/easy/8.svg" class="theme-light-show w-200px" alt="">
+                        </div>
+                        <!--end::Illustration-->
+                    </div>
+                    <!--end::Heading-->
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::Engage widget 1-->
+        </div>
+        <!--end::Col-->
+    </div>
+
+
+    <div class="row g-5 g-xl-10 mb-5 mb-xl-10 hidden">
+        <!--begin::Col-->
+        <div class="col-xl-3 col-lg-4">
+            <!--begin::Card widget 3-->
+            <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #009fc0; background-image: url('~_/CDN/assets/media/svg/shapes/wave-bg-red.svg')">
+                <!--begin::Header-->
+                <div class="card-header pt-5 mb-3">
+                    <!--begin::Icon-->
+                    <div class="d-flex flex-center rounded-circle h-80px w-80px" style="border: 1px dashed rgba(255, 255, 255, 0.4); background-color: #009fc0">
+                        <i class="ki-duotone ki-people text-white fs-2qx lh-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                            <span class="path4"></span>
+                            <span class="path5"></span>
+                        </i>
+                    </div>
+                    <!--end::Icon-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Card body-->
+                <div class="card-body d-flex align-items-end mb-3">
+                    <!--begin::Info-->
+                    <div class="d-flex align-items-center">
+                        <span class="fs-4hx text-white fw-bold me-6">@Model.CfdiEmitidos</span>
+                        <div class="fw-bold fs-6 text-white">
+                            <span class="d-block">CFDi</span>
+                            <span class="">Emitidos en el mes</span>
+                        </div>
+                    </div>
+                    <!--end::Info-->
+                </div>
+                <!--end::Card body-->
+                <!--begin::Card footer-->
+                <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
+                    <!--begin::Progress-->
+                    <div class="fw-bold text-white py-2">
+                        <span class="fs-1 d-block">@Model.Total</span>
+                        <span class="opacity-50">CFDi pendienes sin timbrar</span>
+                    </div>
+                    <!--end::Progress-->
+                </div>
+                <!--end::Card footer-->
+            </div>
+            <!--end::Card widget 3-->
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-3 col-lg-4">
+            <!--begin::Card widget 3-->
+            <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
+                <!--begin::Header-->
+                <div class="card-header pt-5 mb-3">
+                    <!--begin::Icon-->
+                    <div class="d-flex flex-center rounded-circle h-80px w-80px" style="border: 1px dashed rgba(255, 255, 255, 0.4);background-color: #7239EA">
+                        <i class="ki-duotone ki-folder-down text-white fs-2qx lh-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Icon-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Card body-->
+                <div class="card-body d-flex align-items-end mb-3">
+                    <!--begin::Info-->
+                    <div class="d-flex align-items-center">
+                        <span class="fs-4hx text-white fw-bold me-6">12</span>
+                        <div class="fw-bold fs-6 text-white">
+                            <span class="d-block">CFDI Recibidos</span>
+                            <span class="">Por revisar</span>
+                        </div>
+                    </div>
+                    <!--end::Info-->
+                </div>
+                <!--end::Card body-->
+                <!--begin::Card footer-->
+                <div class="card-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
+                    <!--begin::Progress-->
+                    <div class="fw-bold text-white py-2">
+                        <span class="fs-1 d-block">35</span>
+                        <span class="opacity-50">Recibidos por Departamento</span>
+                    </div>
+                    <!--end::Progress-->
+                </div>
+                <!--end::Card footer-->
+            </div>
+            <!--end::Card widget 3-->
+        </div>
+        <!--end::Col-->
+        <!--begin::Col-->
+        <div class="col-xl-6 col-lg-4">
+            <!--begin::Chart widget 36-->
+            <div class="row gy-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-sm-6 mb-xl-10">
+                    <!--begin::Card widget 2-->
+                    <div class="card h-lg-100">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <!--begin::Icon-->
+                            <div class="m-0">
+                                <i class="ki-duotone ki-compass fs-2hx text-gray-600">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </div>
+                            <!--end::Icon-->
+                            <!--begin::Section-->
+                            <div class="d-flex flex-column my-7">
+                                <!--begin::Number-->
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">327</span>
+                                <!--end::Number-->
+                                <!--begin::Follower-->
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6 text-gray-500">Projects</span>
+                                </div>
+                                <!--end::Follower-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card widget 2-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-sm-6 mb-xl-10">
+                    <!--begin::Card widget 2-->
+                    <div class="card h-lg-100">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <!--begin::Icon-->
+                            <div class="m-0">
+                                <i class="ki-duotone ki-chart-simple fs-2hx text-gray-600">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                </i>
+                            </div>
+                            <!--end::Icon-->
+                            <!--begin::Section-->
+                            <div class="d-flex flex-column my-7">
+                                <!--begin::Number-->
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">27,5M</span>
+                                <!--end::Number-->
+                                <!--begin::Follower-->
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6 text-gray-500">Stock Qty</span>
+                                </div>
+                                <!--end::Follower-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card widget 2-->
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Chart widget 36-->
+            <!--begin::Chart widget 36-->
+            <div class="row gy-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-sm-6 mb-xl-10">
+                    <!--begin::Card widget 2-->
+                    <div class="card h-lg-100">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <!--begin::Icon-->
+                            <div class="m-0">
+                                <i class="ki-duotone ki-compass fs-2hx text-gray-600">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </div>
+                            <!--end::Icon-->
+                            <!--begin::Section-->
+                            <div class="d-flex flex-column my-7">
+                                <!--begin::Number-->
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">327</span>
+                                <!--end::Number-->
+                                <!--begin::Follower-->
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6 text-gray-500">Projects</span>
+                                </div>
+                                <!--end::Follower-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card widget 2-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-sm-6 mb-xl-10">
+                    <!--begin::Card widget 2-->
+                    <div class="card h-lg-100">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <!--begin::Icon-->
+                            <div class="m-0">
+                                <i class="ki-duotone ki-chart-simple fs-2hx text-gray-600">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                </i>
+                            </div>
+                            <!--end::Icon-->
+                            <!--begin::Section-->
+                            <div class="d-flex flex-column my-7">
+                                <!--begin::Number-->
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">27,5M</span>
+                                <!--end::Number-->
+                                <!--begin::Follower-->
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6 text-gray-500">Stock Qty</span>
+                                </div>
+                                <!--end::Follower-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card widget 2-->
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Chart widget 36-->
+        </div>
+        <!--end::Col-->
+    </div>
 
     <!--begin::Row-->
-    <div class="row g-5 g-xl-8">
+    <div class="row g-5 g-xl-8 hidden">
         <div class="col-xl-3">
             <!--begin::Statistics Widget 5-->
             <a href="#" class="card bg-body hoverable card-xl-stretch mb-xl-8">
@@ -98,7 +365,7 @@
     </div>
 
     <!--begin::Row-->
-    <div class="row g-5 g-xl-8">
+    <div class="row g-5 g-xl-8  hidden">
         <div class="col-xl-6">
             <!--begin::Charts Widget 3-->
             <div class="card card-xl-stretch mb-xl-8">
@@ -120,11 +387,11 @@
             </div>
             <!--end::Charts Widget 3-->
         </div>
-        
+
     </div>
     <!--end::Row-->
 
-  
+
 
 }
 
@@ -132,7 +399,7 @@
 
 
 <script>
-  
+
     $(document).ready(function() {
         var Mestotal1 = @Model.MontoCFDI;
         var Mestotal2 = @Model.Mes2total;
