@@ -1,5 +1,4 @@
 ﻿<script>
-$(document).ready(function() {
     $('#documentoRecibidoForm').submit(function(event) {
         event.preventDefault();
         var formData = $('#documentoRecibidoForm').serialize();
@@ -10,10 +9,12 @@ $(document).ready(function() {
             data: formData,
             success: function(data) {
                 if (data.success) {
-                    window.location.href = data.redirectTo;
+                    alert("Documento recibido guardado correctamente..");
+                    //window.location.href = '@Url.Action("ValidadorEmail", "DocumentosRecibidos")';
                 }
                 if (data.error) {
-                    window.location.href = data.redirectTo;
+                    alert(data.message);
+                    //window.location.href = '@Url.Action("ValidadorEmail", "DocumentosRecibidos")';
                 }
             },
             error: function(xhr, status, error) {
@@ -26,27 +27,111 @@ $(document).ready(function() {
         });
     });
 
-    function validarEmail() {
-        var email = $("#emailSolicitante").val();
 
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("ValidadorEmail", "DocumentosRecibidos")",
-            data: {
-                emailSolicitante: email
-            },
-            success: function(result) {
-                if (data.error) {
-                    alert(result.message);
+function validarEmail() {
+    // Lógica de tu función existente
+
+    // Ahora, agrega la lógica AJAX para validar el email
+    var email = $('#emailSolicitante').val();
+
+    $.ajax({
+            url: '@Url.Action("ValidadorEmail", "DocumentosRecibidos")',
+            type: 'POST',
+            dataType: 'json',
+            data: { VerificarEmail: email },
+            success: function (data) {
+                if (data.success) {
+                    // La validación fue exitosa
+                    //alert('Email válido');
+
+                    // Accede a los valores de ViewBag en la respuesta JSON
+                    var usuarioSolicitanteNombre = data.UsuarioSolicitanteNombre;
+                    var usuarioSolicitanteDepartamento = data.UsuarioSolicitanteDepartamento;
+                    var usuarioSolicitanteEmail = data.UsuarioSolicitanteEmail;
+
+                    // Utiliza estos valores como desees, por ejemplo, ponlos en dos div
+                    $('#nombreDiv').text(usuarioSolicitanteNombre);
+                    $('#emailDiv').text(usuarioSolicitanteEmail);
+                    $('#departamentoDiv').text(usuarioSolicitanteDepartamento);
+                    $('#cuadroUsuarioSolicitante').show();
+
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toastr-bottom-center",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "500",
+                        "hideDuration": "500",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr.info("", "Email encontrado correctamente");
+
+                } else {
+                    // La validación falló
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toastr-bottom-center",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "500",
+                        "hideDuration": "500",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr.error("", "Email no fue encontrado, favor de verificar");
                 }
             },
             error: function (xhr, status, error) {
-                
+                // Manejar el error de la solicitud y mostrar el mensaje de error
                 console.error(xhr.responseText);
+                var jsonResponse = JSON.parse(xhr.responseText);
+                //alert("Error: " + jsonResponse.message);
             }
         });
-    };
+    }
 
-});
+    /////Validación de form
+    const form = document.getElementById('form');
+    var validator = FormValidation.formValidation(
+        form,
+        {
+            fields: {
+                'VerificarEmail': {
+                    validators: {
+                        emailAddress: {
+                            message: 'The value is not a valid email address'
+                        },
+                        notEmpty: {
+                            message: 'Email address is required'
+                        }
+                    }
+                },
+            },
+
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap: new FormValidation.plugins.Bootstrap5({
+                    rowSelector: '.fv-row',
+                    eleInvalidClass: '',
+                    eleValidClass: ''
+                })
+            }
+        }
+    );
 
 </script>
