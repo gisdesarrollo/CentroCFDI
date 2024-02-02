@@ -3,7 +3,6 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     @Html.HiddenFor(model => model.GrupoId)
 
 
@@ -11,34 +10,97 @@
         <!--begin::Card header-->
         <div class="card-header">
             <div class="card-title">
-                <h2>Nuevo</h2>
+                <h2>Nuevo Usuario</h2>
             </div>
         </div>
         <!--end::Card header-->
         <!--begin::Card body-->
         <div class="card-body pt-0">
-            <div class="row">
+            <div class="fv-row">
+                <div class="pb-10">
+                    <!--begin::Step 1-->
+                    <div class="current" data-kt-stepper-element="content">
+                        <!--begin::Wrapper-->
+                        <div class="w-100">
+                            <!--begin::Input group-->
+                            <div class="fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+                                <!--begin::Row-->
+                                <div class="row">
+                                    <!--begin::Col-->
+                                    <div class="col-lg-6">
+                                        <!--begin::Option-->
+                                        <input type="radio" class="btn-check" name="account_type" value="personal" checked="checked" id="trabajador">
+                                        <label class="btn btn-outline btn-outline-dashed btn-active-light-primary p-7 d-flex align-items-center" for="kt_create_account_form_account_type_personal">
+                                            <i class="ki-duotone ki-badge fs-3x me-5"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                            <!--begin::Info-->
+                                            <span class="d-block fw-semibold text-start">
+                                                <span class="text-gray-900 fw-bold d-block fs-4 mb-2">
+                                                    Usuario Interno
+                                                </span>
+                                                <span class="text-muted fw-semibold fs-6">Administradores, trabajadores y personal que necesite acceso a la plataforma.</span>
+                                            </span>
+                                            <!--end::Info-->
+                                        </label>
+                                        <!--end::Option-->
+                                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-6">
+                                        <!--begin::Option-->
+                                        <input type="radio" class="btn-check" name="account_type" value="corporate" id="proveedor">
+                                        <label class="btn btn-outline btn-outline-dashed btn-active-light-primary p-7 d-flex align-items-center" for="kt_create_account_form_account_type_corporate">
+                                            <i class="ki-duotone ki-shop fs-3x me-5">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                            <!--begin::Info-->
+                                            <span class="d-block fw-semibold text-start">
+                                                <span class="text-gray-900 fw-bold d-block fs-4 mb-2">Socio Comercial</span>
+                                                <span class="text-muted fw-semibold fs-6">Usuario que necesite interactuar con la entrega de CFDi, expediente o pagos</span>
+                                            </span>
+                                            <!--end::Info-->
+                                        </label>
+                                        <!--end::Option-->
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Input group-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Step 1-->
+                </div>
+            </div>
+
+            <div class="fv-row row">
                 <div class="pb-10">
                     <!--begin::Information-->
-                    <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                    <!--begin::Alert-->
+                    <div class="alert alert-dismissible bg-light-primary border border-primary d-flex flex-column flex-sm-row p-5 mb-10">
                         <!--begin::Icon-->
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
-                        <span class="svg-icon svg-icon-3x svg-icon-primary me-5">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"></rect>
-                                <rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"></rect>
-                                <rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"></rect>
-                            </svg>
-                        </span>
-                        <!--end::Svg Icon-->
+                        <i class="ki-duotone ki-key fs-2hx text-primary me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
                         <!--end::Icon-->
-                        <!--begin::Description-->
-                        <div class="text-gray-700 fw-bold fs-6">
-                            Todos los nuevos usuarios creados tienen como contraseña incial:
-                            <code>A12345</code>.
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h5 class="mb-1">Contraseña inicial</h5>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>La contraseña creada para todos los usuarios será <span class="badge badge-primary badge-lg">A12345</span> ellos podrán cambiarla después de entrar al sistema.</span>
+                            <!--end::Content-->
                         </div>
-                        <!--end::Description-->
+                        <!--end::Wrapper-->
                     </div>
+                    <!--end::Alert-->
                     <!--end::Information-->
                 </div>
             </div>
@@ -47,76 +109,74 @@
             {
                 <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
             }
-            <div class="row">
-                <!--Se quitaron los campos de RFC y Clave-->
+            <div class="fv-row mb-7 row">
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="form-group col-3">
+                    @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "form-label required" })
+                    @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-3">
                     @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label required" })
-                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="form-group col-3">
                     @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "form-label required" })
-                    @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="form-group col-3">
                     @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "form-label required" })
-                    @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
                 </div>
             </div>
 
+            <div class="fv-row mb-7 row">
 
-
-            <div class="row">
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="form-group col-3">
                     @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "form-label" })
-                    @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                    @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="form-group col-3">
                     @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label required" })
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control minusculas" } })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
 
-                <div id="perfilid" class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "form-label required" })
-                    @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select mb-2" })
-                    @Html.ValidationMessageFor(model => model.PerfilId, "", new { @class = "text-danger" })
+                <div class="form-group col-3">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
+                    @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="row">
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "form-label required" })
-                    @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control minusculas" } })
-                    @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Nuevo Usuario</h2>
+                </div>
+            </div>
+            <div class="fv-row mb-7 row">
+                <div class="form-group col-3">
+                    @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "form-label required" })
+                    @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PerfilId, "", new { @class = "text-danger" })
                 </div>
 
-
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
-                    @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-select mb-2" })
-                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                </div>
-
-
-                <div id="departamentoid" class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div id="departamentoid" class="form-group col-3">
                     @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "form-label required" })
-                    @Html.DropDownListFor(model => model.Departamento_Id, ViewBag.Departamentos as SelectList, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                    @Html.DropDownListFor(model => model.Departamento_Id, ViewBag.Departamentos as SelectList, "Favor de hacer su selección", new { @class = "form-control", @data_control = "select2" })
                     @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
                 </div>
 
             </div>
-
-            <div class="separator separator-dashed my-5"></div>
 
             <div class="form-group col-xs-12 col-sm-6 col-md-4">
                 @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
@@ -131,19 +191,16 @@
                     </label>
                 </div>
             </div>
-            <br />
+
             <div id="divSocioComercial" class="form-group col-xs-12 col-sm-6 col-md-4" style="display: none;">
                 @Html.LabelFor(model => model.SocioComercialID, htmlAttributes: new { @class = "form-label" })
                 <div class="col-md-10">
                     <div class="select">
-                        @Html.DropDownListFor(model => model.SocioComercialID, ViewBag.SociosComerciales as SelectList, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                        @Html.DropDownListFor(model => model.SocioComercialID, ViewBag.SociosComerciales as SelectList, "Favor de hacer su selección", new { @class = "form-control", @data_control = "select2" })
                         @Html.ValidationMessageFor(model => model.SocioComercialID, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
-
-            <div class="separator separator-dashed my-5"></div>
-
 
             <div class="fv-row">
                 <!--begin::Label-->
@@ -157,7 +214,7 @@
                 <!--end::Input-->
             </div>
 
-            <div class="separator my-5"></div>
+            <div class="separator mb-6"></div>
             <div class="d-flex justify-content-end">
                 <!--begin::Button-->
                 <a href="@Url.Action("Index","Usuarios")" class="btn btn-light me-5">Cancelar</a>
@@ -168,23 +225,29 @@
                 </button>
                 <!--end::Button-->
             </div>
-
         </div>
+    </div>
+
+    <div class="card card-flush py-4">
+        <!--begin::Card header-->
+        <div class="card-header">
+            <div class="card-title">
+                <h2>Info Usuarios</h2>
+            </div>
+        </div>
+        <!--end::Card header-->
     </div>
 }
 
 
-<script src="~/Content/Infodextra/Usuarios.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
-      /*
-       * Kevin Enrique 
-       * Descripción: Chek Box de Proveedores, selecion de perfil automatico  y envio de datos booleanos.
-       */
+    /*
+     * Kevin Enrique
+     * Descripción: Chek Box de Proveedores, selecion de perfil automatico  y envio de datos booleanos.
+     */
     $(document).ready(function () {
-        
-
         $('#chkProveedor').change(function () {
             if ($(this).is(':checked')) {
                 $('#divSocioComercial').show();
@@ -194,24 +257,22 @@
                 $('#divSocioComercial').hide();
                 $('#perfilid').show();
                 $('#departamentoid').show();
-               
             }
         });
-
         $('#chkProveedor').trigger('change');
     });
 
 
     document.getElementById('chkProveedor').addEventListener('change', function () {
         if (this.checked) {
-            
+
             document.querySelector('input[name="esProveedor"]').value = "true";
         } else {
-          
+
             document.querySelector('input[name="esProveedor"]').value = "false";
         }
     });
 
-   
+
 </script>
 

@@ -1,6 +1,6 @@
 ﻿<script>
-$(document).ready(function () {
-    $('#documentoRecibidoForm').submit(function (event) {
+$(document).ready(function() {
+    $('#documentoRecibidoForm').submit(function(event) {
         event.preventDefault();
         var formData = $('#documentoRecibidoForm').serialize();
 
@@ -8,7 +8,7 @@ $(document).ready(function () {
             type: 'POST',
             url: '@Url.Action("Create", "DocumentosRecibidos")',
             data: formData,
-            success: function (data) {
+            success: function(data) {
                 if (data.success) {
                     window.location.href = data.redirectTo;
                 }
@@ -16,7 +16,7 @@ $(document).ready(function () {
                     window.location.href = data.redirectTo;
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.log(xhr.responseText);
                 alert("ocurrio un error al guardar el documento recibido..")
                 if (xhr.error) {
@@ -25,6 +25,27 @@ $(document).ready(function () {
             }
         });
     });
+
+    function validarEmail() {
+        var email = $("#emailSolicitante").val();
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ValidadorEmail", "DocumentosRecibidos")",
+            data: {
+                emailSolicitante: email
+            },
+            success: function(result) {
+                if (data.error) {
+                    alert(result.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                
+                console.error(xhr.responseText);
+            }
+        });
+    };
 
 });
 

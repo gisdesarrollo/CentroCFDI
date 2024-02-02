@@ -1,35 +1,38 @@
-<div class="page-title d-flex flex-column align-items-start me-3 gap-1">
+<!--begin::Page title-->
+<div class="page-title d-flex flex-column me-3">
     <!--begin::Title-->
-    <h1 class="d-flex text-dark fw-bold m-0 fs-3">
-        @if (ViewBag.Controller != null)
+    <h1 class="d-flex text-white fw-bold my-1 fs-3">
+        @if (ViewBag.NameHere != null)
         {
-            @ViewBag.Controller
+            @ViewBag.NameHere
         }
     </h1>
     <!--end::Title-->
     <!--begin::Breadcrumb-->
-    <ul class="breadcrumb breadcrumb-dot fw-semibold text-gray-600 fs-7">
+    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
         <!--begin::Item-->
-        <li class="breadcrumb-item text-gray-600">
-            <a href="@Url.Action("Index", "Home")" class="text-gray-600 text-hover-primary">Home</a>
-        </li>
-        <!--end::Item-->
-        <!--begin::Item-->
-        <li class="breadcrumb-item text-gray-600">
+        <li class="breadcrumb-item text-white opacity-75">
             @if (ViewBag.Controller != null)
             {
-                <a href="@Url.Action("Index", ViewBag.Controller)" class="text-gray-600 text-hover-primary">@ViewBag.Controller</a>
+                @ViewBag.Controller
             }
+
         </li>
         <!--end::Item-->
         <!--begin::Item-->
-        <li class="breadcrumb-item text-gray-600">
-            @if (ViewBag.Action != null)
+        <li class="breadcrumb-item">
+            <span class="bullet bg-white opacity-75 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-white opacity-75">
+            @if (ViewBag.ActionES != null)
             {
-                <a href="#" class="text-gray-600 text-hover-primary">@ViewBag.Action</a>
+                @ViewBag.ActionES
             }
         </li>
         <!--end::Item-->
     </ul>
     <!--end::Breadcrumb-->
 </div>
+<!--end::Page title-->

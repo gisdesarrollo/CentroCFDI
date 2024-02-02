@@ -618,13 +618,6 @@
     <Content Include="Views\Shared\layout\header\_base.cshtml" />
     <Content Include="Views\Shared\layout\header\__menu.cshtml" />
     <Content Include="Views\Shared\layout\header\__topbar.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__dashboards.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-account.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-authentication.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-general.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-utilities.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-widgets.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages.cshtml" />
     <Content Include="Views\Shared\layout\_footer.cshtml" />
     <Content Include="Views\Shared\layout\_page-title.cshtml" />
     <Content Include="Views\Shared\layout\_toolbar.cshtml" />
@@ -2854,7 +2847,6 @@
     <Content Include="_CDN\custom\media\logos\CentroCFDi\Logos\oscuro\twitter_header_photo_2.png" />
     <Content Include="_CDN\custom\media\logos\CentroCFDi\Logos\oscuro\twitter_profile_image.png" />
     <Content Include="_CDN\custom\media\logos\CentroCFDi\Logos\oscuro\youtube_profile_image.png" />
-    <Content Include="_CDN\custom\media\logos\logo_Apbox.png" />
     <Content Include="_CDN\FechaActual.js" />
     <Content Include="_CDN\Helpers.html" />
   </ItemGroup>
@@ -2872,6 +2864,7 @@
     <Folder Include="Content\FileTxt\" />
     <Folder Include="Content\Temp\" />
     <Folder Include="Controllers\Control\" />
+    <Folder Include="Views\Recepcion\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -3200,6 +3193,9 @@
     <Content Include="Views\DocumentosRecibidos\Index.cshtml" />
     <Content Include="Views\DocumentosRecibidos\CargaCfdi.cshtml" />
     <Content Include="Views\DocumentosRecibidos\_DocumentoRecibidoScripts.cshtml" />
+    <Content Include="Views\Shared\layout\partials\header\_menu\__pages_catalogos.cshtml" />
+    <Content Include="Views\Shared\layout\partials\header\_menu\__pages_consultas.cshtml" />
+    <Content Include="Views\Shared\layout\partials\header\_menu\__pages_operaciones.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

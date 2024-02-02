@@ -4,13 +4,15 @@
 }
 
 
-
-<div class="card card-flush">
-    <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-        <div class="card-header card-title d-flex align-items-center position-relative my-1">
-            <h2>Lista general de Documentos recibidos</h2>
+<div class="card card-flush shadow-sm py-4">
+    <!--begin::Card header-->
+    <div class="card-header">
+        <!--begin::Search-->
+        <div class="d-flex align-items-center position-relative my-1">
+            <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+            <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
         </div>
-
+        <!--end::Search-->
         <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
             <!--begin::Export dropdown-->
             <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -53,66 +55,30 @@
             <!--begin::Hide default export buttons-->
             <div id="kt_datatable_example_buttons" class="d-none"></div>
             <!--end::Hide default export buttons-->
+
         </div>
     </div>
-    
+    <!--end::Card header-->
+    <!--begin::Card body-->
     <div class="card-body pt-0">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+        <div class="d-flex flex-column gap-10">
+            <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase">
+                        <th class="min-w-100px">UUID</th>
+                        <th class="min-w-100px">Serie</th>
+                        <th class="min-w-100px">Folio</th>
+                        <th class="min-w-100px">Fecha Comprobante</th>
+                        <th class="min-w-100px">Fecha Entrega</th>
+                        <th class="min-w-100px">Monto</th>
+                        <th class="min-w-100px">Moneda</th>
+                        <th class="min-w-100px">Estado Comercial</th>
+                    </tr>
+                </thead>
 
-            <div class="form">
-                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
-                @Html.HiddenFor(model => model.SucursalId)
-
-                <div class="sub-title">
-                    <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
-                </div>
-                <div class="row">
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        <span class="input-group-addon">Fecha Inicial</span>
-                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                        @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        <span class="input-group-addon">Fecha Final</span>
-                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                        @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                        <button type="submit" class="btn btn-primary">Filtrar</button>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <hr />
-                <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                    <div class="card-title">
-                        <!--begin::Search-->
-                        <div class="d-flex align-items-center position-relative my-1">
-                            <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
-                            <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
-                        </div>
-                        <!--end::Search-->
-                    </div>
-
-                </div>
-                <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
-                    <thead>
-                        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase">
-                            <th class="min-w-100px">UUID</th>
-                            <th class="min-w-100px">Serie</th>
-                            <th class="min-w-100px">Folio</th>
-                            <th class="min-w-100px">Fecha Comprobante</th>
-                            <th class="min-w-100px">Fecha Entrega</th>
-                            <th class="min-w-100px">Monto</th>
-                            <th class="min-w-100px">Moneda</th>
-                            <th class="min-w-100px">Estado Comercial</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var dr in Model.DocumentosRecibidos)
-                        {
+                <tbody>
+                    @foreach (var dr in Model.DocumentosRecibidos)
+                    {
                         <tr class="odd">
                             <td>@dr.CfdiRecibidos_UUID</td>
                             <td>@dr.CfdiRecibidos_Serie</td>
@@ -136,18 +102,78 @@
                                     default:
                                         break;
                                 }
-                               
+
                             </td>
                         </tr>
-                        }
-                    </tbody>
-                </table>
-
-                <div class="clearfix"></div>
-
-            </div>
-        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
+    <!--end::Card header-->
 </div>
 
+
+<div class="hiddenDiv">
+    <div class="d-flex align-items-center py-3 py-md-1" id="tools">
+        <!--begin::Wrapper-->
+        <div class="me-4">
+            <!--begin::Menu-->
+            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                <i class="ki-duotone ki-filter fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
+                Filtros
+            </a>
+            <!--begin::Menu 1-->
+            <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true" id="kt_menu_65a6fdf2ec643">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+                    @Html.HiddenFor(model => model.SucursalId)
+                    <!--begin::Header-->
+                    <div class="px-7 py-5">
+                        <div class="fs-5 text-gray-900 fw-bold">Opciones</div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Menu separator-->
+                    <div class="separator border-gray-200"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::Form-->
+                    <div class="px-7 py-5">
+                        <!--begin::Input group-->
+                        <div class="mb-10">
+                            <!--begin::Label-->
+                            <label class="form-label fw-semibold">Periodo:</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <div class="mb-3">
+                                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
+                            </div>
+                            <div class="mb-3">
+                                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Form-->
+                }
+            </div>
+            <!--end::Menu 1-->
+            <!--end::Menu-->
+        </div>
+        <!--end::Wrapper-->
+        <!--begin::Button-->
+        <a href="@Url.Action("CargaCfdi","DocumentosRecibidos")" data-bs-theme="light" class="btn btn-secondary">
+            Nuevo
+        </a>
+        <!--end::Button-->
+
+    </div>
+</div>
 
