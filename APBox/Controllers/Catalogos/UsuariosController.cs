@@ -10,7 +10,6 @@ using API.Relaciones;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 using APBox.Control;
 using System.Net.Mail;
-using Aplicacion.LogicaPrincipal.Correos;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -24,7 +23,6 @@ namespace APBox.Controllers.Catalogos
         private readonly APBoxContext _db = new APBoxContext();
         private readonly OperacionesUsuarios _operacionesUsuarios = new OperacionesUsuarios();
         private readonly AcondicionarUsuarios _acondicionarUsuarios = new AcondicionarUsuarios();
-        private readonly EnviosEmails _envioEmail = new EnviosEmails();
 
         #endregion
 
@@ -117,8 +115,6 @@ namespace APBox.Controllers.Catalogos
                     //Asignacion de valor si es Proveedor
                     usuario.esProveedor = esProveedor;
                     usuario.PerfilId = 32;
-                    usuario.Departamento = null;
-                    usuario.Departamento_Id = null;
                     // Envío de correo electrónico de bienvenida
                     //EnviarCorreoBienvenida(usuario);
                 }
@@ -139,7 +135,58 @@ namespace APBox.Controllers.Catalogos
         */
         private void EnviarCorreoBienvenida(Usuario usuario)
         {
-            _envioEmail.SendEmailNotifications(usuario, null, false, ObtenerSucursal());
+            
+            string destinatario = usuario.Email;
+            string asunto = "Bienvenido a CentroCFDi";
+            string cuerpoCorreo = null;
+
+            if (usuario.esProveedor == false) { 
+            cuerpoCorreo = $"¡Hola {usuario.Nombre}!\n\n" +
+                "Te damos la bienvenida a nuestra plataforma. Estamos emocionados de tenerte con nosotros.\n\n" +
+                "Detalles de tu cuenta:\n" +
+                $"- Usuario: {usuario.NombreUsuario}\n" +
+                "- Contraseña: A12345 \n\n" +
+                "Por favor, accede a tu cuenta con el siguiente enlace: http://www.centrocfdi.com\n\n" +
+              
+                "Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte en soporte@gisconsultoria.com\n\n" +
+                "Como miembro de nuestro equipo, tendrás acceso a recursos y herramientas que facilitarán tu trabajo diario. Estamos comprometidos a proporcionar un entorno en el que puedas crecer y tener éxito. Si tienes alguna pregunta sobre cómo aprovechar al máximo nuestra plataforma como trabajador, no dudes en ponerte en contacto con nuestro equipo de recursos humanos.\n\n" +
+                "¡Bienvenido a nuestro equipo!\n\n" +
+                "Saludos cordiales,\n" +
+                "Equipo de [GIS Consultoria]\n" +
+                "Centro CFDI.";
+            }
+            else
+            {
+                 cuerpoCorreo = $"¡Hola {usuario.Nombre}!\n\n" +
+                "Te damos la bienvenida a nuestra plataforma. Estamos emocionados de tenerte con nosotros.\n\n" +
+                "Detalles de tu cuenta:\n" +
+                $"- Usuario: {usuario.NombreUsuario}\n" +
+                "- Contraseña: A12345 \n\n" +
+                "Por favor, accede a tu cuenta con el siguiente enlace: http://www.centrocfdi.com\n\n" +
+
+                "Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte en soporte@gisconsultoria.com\n\n" +
+                "Como proveedor, tu participación es fundamental para el éxito de nuestra plataforma. Esperamos que encuentres todas las herramientas necesarias para gestionar tus servicios de manera efectiva. Si tienes alguna pregunta específica sobre cómo utilizar la plataforma como proveedor, no dudes en ponerte en contacto con nuestro equipo de soporte dedicado a proveedores.\n\n" +
+                "¡Gracias por unirte a nuestra red!\n\n" +
+                "Saludos cordiales,\n" +
+                "Equipo de [GIS Consultoria]\n" +
+                "Centro CFDI.";
+
+            }
+
+            using (SmtpClient smtpClient = new SmtpClient("mail.gisconsultoria.com", 26))
+            {
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("facturas.xsa@gisconsultoria.com", "Gisconsul+01");
+                smtpClient.EnableSsl = false;
+
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress("facturas.xsa@gisconsultoria.com");
+                mail.To.Add(destinatario);
+                mail.Subject = asunto;
+                mail.Body = cuerpoCorreo;
+
+                smtpClient.Send(mail);
+            }
         }
 
 
@@ -148,7 +195,6 @@ namespace APBox.Controllers.Catalogos
         public ActionResult Edit(int? id)
         {
             PopulaClientes();
-            PopulaDepartamento();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -176,7 +222,7 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaClientes(usuario.SocioComercialID);
             PopulaForma(usuario.PerfilId);
-            PopulaDepartamento(usuario.Departamento_Id);
+
 
             var proveedorExistente = _db.Usuarios.FirstOrDefault(e => e.esProveedor == usuario.esProveedor &&  e.Id != usuario.Id);
             if (ModelState.IsValid)

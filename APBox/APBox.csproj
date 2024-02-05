@@ -353,6 +353,7 @@
     <Compile Include="Controllers\Ajax\AjaxOperacionesController.cs" />
     <Compile Include="Controllers\Catalogos\BancosController.cs" />
     <Compile Include="Controllers\Catalogos\CentrosCostosController.cs" />
+    <Compile Include="Controllers\Operaciones\AutoregistroController.cs" />
     <Compile Include="Controllers\Catalogos\SociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\ConceptosController.cs" />
     <Compile Include="Controllers\Catalogos\DepartamentosController.cs" />
@@ -618,13 +619,6 @@
     <Content Include="Views\Shared\layout\header\_base.cshtml" />
     <Content Include="Views\Shared\layout\header\__menu.cshtml" />
     <Content Include="Views\Shared\layout\header\__topbar.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__dashboards.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-account.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-authentication.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-general.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-utilities.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages-widgets.cshtml" />
-    <Content Include="Views\Shared\layout\partials\header\_menu\__pages.cshtml" />
     <Content Include="Views\Shared\layout\_footer.cshtml" />
     <Content Include="Views\Shared\layout\_page-title.cshtml" />
     <Content Include="Views\Shared\layout\_toolbar.cshtml" />
@@ -778,7 +772,6 @@
     <Content Include="_CDN\assets\js\custom\authentication\reset-password\reset-password.js" />
     <Content Include="_CDN\assets\js\custom\authentication\sign-in\general.js" />
     <Content Include="_CDN\assets\js\custom\authentication\sign-in\i18n.js" />
-    <Content Include="_CDN\assets\js\custom\authentication\sign-in\two-steps.js" />
     <Content Include="_CDN\assets\js\custom\authentication\sign-up\coming-soon.js" />
     <Content Include="_CDN\assets\js\custom\authentication\sign-up\free-trial.js" />
     <Content Include="_CDN\assets\js\custom\authentication\sign-up\general.js" />
@@ -788,13 +781,11 @@
     <Content Include="_CDN\assets\js\custom\pages\general\pos.js" />
     <Content Include="_CDN\assets\js\custom\pages\pricing\general.js" />
     <Content Include="_CDN\assets\js\custom\pages\social\feeds.js" />
-    <Content Include="_CDN\assets\js\custom\pages\user-profile\followers.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\bidding.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\create-account.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\create-api-key.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\create-app.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\create-campaign.js" />
-    <Content Include="_CDN\assets\js\custom\utilities\modals\create-project.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\create-project\budget.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\create-project\complete.js" />
     <Content Include="_CDN\assets\js\custom\utilities\modals\create-project\files.js" />
@@ -2854,7 +2845,6 @@
     <Content Include="_CDN\custom\media\logos\CentroCFDi\Logos\oscuro\twitter_header_photo_2.png" />
     <Content Include="_CDN\custom\media\logos\CentroCFDi\Logos\oscuro\twitter_profile_image.png" />
     <Content Include="_CDN\custom\media\logos\CentroCFDi\Logos\oscuro\youtube_profile_image.png" />
-    <Content Include="_CDN\custom\media\logos\logo_Apbox.png" />
     <Content Include="_CDN\FechaActual.js" />
     <Content Include="_CDN\Helpers.html" />
   </ItemGroup>
@@ -2872,6 +2862,8 @@
     <Folder Include="Content\FileTxt\" />
     <Folder Include="Content\Temp\" />
     <Folder Include="Controllers\Control\" />
+    <Folder Include="Views\Recepcion\" />
+    <Folder Include="_CDN\assets\js\custom\pages\user-profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -3200,8 +3192,14 @@
     <Content Include="Views\DocumentosRecibidos\Index.cshtml" />
     <Content Include="Views\DocumentosRecibidos\CargaCfdi.cshtml" />
     <Content Include="Views\DocumentosRecibidos\_DocumentoRecibidoScripts.cshtml" />
+    <Content Include="Views\Shared\layout\partials\header\_menu\__pages_catalogos.cshtml" />
+    <Content Include="Views\Shared\layout\partials\header\_menu\__pages_consultas.cshtml" />
+    <Content Include="Views\Shared\layout\partials\header\_menu\__pages_operaciones.cshtml" />
     <Content Include="Views\DocumentosRecibidos\Edit.cshtml" />
-    <Content Include="Views\DocumentosRecibidos\_EstatusRecibidos.cshtml" />
+    <Content Include="Views\Autoregistro\Create.cshtml" />
+    <Content Include="Views\Autoregistro\CreateUsuario.cshtml" />
+    <Content Include="Views\Autoregistro\Error.cshtml" />
+    <Content Include="Views\Autoregistro\Completado.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

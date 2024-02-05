@@ -1,0 +1,115 @@
+﻿@model API.Catalogos.Usuario
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("CreateUsuario", "Autoregistro", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.GrupoId)
+    @Html.HiddenFor(model => model.PerfilId)
+    @Html.HiddenFor(model => model.Status, new { @value = API.Enums.Status.Activo })
+
+
+    <!--begin::Row-->
+    <div class="row g-5 g-xl-8">
+        <div class="col-12">
+            <!--begin::List Widget 2-->
+            <div class="card card-stretch card-flush mb-xl-8">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title fw-bold text-gray-900">Nuevo acceso</h3>
+                </div>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-primary d-flex flex-column flex-sm-row p-5 mb-10">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-some-files fs-2hx text-primary me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h4 class="fw-semibold fs-6">Info</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>Captura tus datos personales para crear acceso al sistema, al terminar se te enviará un correo con instrucciones.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                    <!--begin::Item-->
+                    <div class="d-flex mb-7 row">
+                        <div class="mb-10 row">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control minusculas" } })
+                                @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="mb-10 row">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="mb-10 row">
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control minusculas" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--end::Item-->
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::List Widget 2-->
+        </div>
+
+    </div>
+
+    <!--end::Row-->
+    <!--begin::Row-->
+    <div class="d-flex justify-content-end">
+
+        <!--begin::Button-->
+        <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
+            <span class="indicator-label">
+                Finalizar
+            </span>
+        </button>
+        <!--end::Button-->
+    </div>
+    <!--end::Row-->
+}

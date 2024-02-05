@@ -21,24 +21,32 @@ namespace APBox.Controllers.Catalogos
         // GET: Departamentos
         public ActionResult Index()
         {
-            ViewBag.Controller = "Departamentos";
-            ViewBag.Action = "Index";
-            ViewBag.Button = "Departamentos";
-            ViewBag.NameHere = "sistema";
             var sucursalId = ObtenerSucursal();
             var departamentos = _db.Departamentos.Where(d => d.SucursalId == sucursalId).ToList();
             return View(departamentos);
         }
 
+        // GET: Departamentos/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Departamento departamento = _db.Departamentos.Find(id);
+            if (departamento == null)
+            {
+                return HttpNotFound();
+            }
+            return View(departamento);
+        }
 
         // GET: Departamentos/Create
         public ActionResult Create()
         {
-            ViewBag.Controller = "Departamentos";
-            ViewBag.Action = "Create";
-            ViewBag.NameHere = "sistema";
             var departamento = new Departamento
             {
+                
                 SucursalId = ObtenerSucursal()
             };
 
@@ -65,9 +73,6 @@ namespace APBox.Controllers.Catalogos
         // GET: Departamentos/Edit/5
         public ActionResult Edit(int? id)
         {
-            ViewBag.Controller = "Departamentos";
-            ViewBag.Action = "Edit";
-            ViewBag.NameHere = "sistema";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -96,9 +101,24 @@ namespace APBox.Controllers.Catalogos
             return View(departamento);
         }
 
-        
+        // GET: Departamentos/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Departamento departamento = _db.Departamentos.Find(id);
+            if (departamento == null)
+            {
+                return HttpNotFound();
+            }
+            return View(departamento);
+        }
+
         // POST: Departamentos/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Departamento departamento = _db.Departamentos.Find(id);

@@ -16,27 +16,39 @@ $(document).ready(function () {
             },
         });
     };
-    function validarYcargarScript() {
-        // Verificar si existe un elemento con la clase '.date'
-        if ($('.fecha').length > 0) {
-            // Crear un elemento script
-            var script = document.createElement('script');
+    //function validarYcargarScript() {
+    //    // Verificar si existe un elemento con la clase '.date'
+    //    if ($('.fecha').length > 0) {
+    //        // Crear un elemento script
+    //        var script = document.createElement('script');
 
-            // Configurar el atributo src con la URL del script que deseas cargar
-            script.src = 'https://unpkg.com/flatpickr/dist/l10n/es.js';
+    //        // Configurar el atributo src con la URL del script que deseas cargar
+    //        script.src = 'https://unpkg.com/flatpickr/dist/l10n/es.js';
 
-            // Adjuntar el elemento script al final del cuerpo del documento
-            document.body.appendChild(script);
-        }
-    }
-    $(document).ready(function () {
-        validarYcargarScript();
-        $(".fecha").flatpickr({
-            dateFormat: "d/m/Y",
-            locale: "es"
-        });
-    });
+    //        // Adjuntar el elemento script al final del cuerpo del documento
+    //        document.body.appendChild(script);
+    //    }
+    //}
+    //$(document).ready(function () {
+    //    validarYcargarScript();
+    //    $(".fecha").flatpickr({
+    //        dateFormat: "d/m/Y",
+    //        locale: "es"
+    //    });
+    //});
 });
+
+$(".fecha").flatpickr({
+    dateFormat: "d/m/Y",
+    locale: "es"
+});
+
+
+//Funcion para agregar el plugin de select2 a todos los select
+$('select').attr('data-control', 'select2');
+$('select').addClass('form-select');
+$('select').select2();
+
 
 // Función para insertar el contenido en el div con id "botones"
 function insertarContenido() {

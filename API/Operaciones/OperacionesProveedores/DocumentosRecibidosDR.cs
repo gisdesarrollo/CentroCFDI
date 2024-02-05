@@ -121,7 +121,7 @@ namespace API.Operaciones.OperacionesProveedores
         public string VerificarEmail { get; set; }
 
         [NotMapped]
-        public bool isProveedor {get;set;}
+        public bool isProveedor { get; set; }
 
     }
 }

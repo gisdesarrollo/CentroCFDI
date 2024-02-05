@@ -34,23 +34,23 @@ namespace Aplicacion.LogicaPrincipal.Correos
             }
             message.Subject = emailDto.EncabezadoCorreo;
             message.Body = emailDto.CuerpoCorreo;
-           
+
 
             //archivos adjuntos
             var archivoZip = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.zip", complementoPago.FacturaEmitida.Serie, complementoPago.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             // Crear un archivo ZIP
-                using (FileStream fs = new FileStream(archivoZip, FileMode.Create))
-                using (ZipArchive zip = new ZipArchive(fs, ZipArchiveMode.Create))
+            using (FileStream fs = new FileStream(archivoZip, FileMode.Create))
+            using (ZipArchive zip = new ZipArchive(fs, ZipArchiveMode.Create))
+            {
+                foreach (var file in emailDto.Archivos)
                 {
-                    foreach (var file in emailDto.Archivos)
-                    {
-                        // Agregar archivo a ZIP
-                        zip.CreateEntryFromFile(file.Path, file.NombreArchivo);
-                    }
-                    
+                    // Agregar archivo a ZIP
+                    zip.CreateEntryFromFile(file.Path, file.NombreArchivo);
                 }
-                
-            
+
+            }
+
+
 
             var attachment = new Attachment(archivoZip)
             {
@@ -84,7 +84,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
             //se elimina el zip
             System.IO.File.Delete(archivoZip);
         }
-        
+
         public EmailDto ObjectCorreo(Cliente cliente, List<String> archivos)
         {
             var envioEmailDto = new EmailDto
@@ -126,10 +126,10 @@ namespace Aplicacion.LogicaPrincipal.Correos
                 envioEmailDto.Archivos = archivosAdjuntosDto;
             }
             return envioEmailDto;
-           
+
         }
 
-        public void SendEmailNotifications(Usuario usuario,DocumentosRecibidosDR documentoRecibido, bool rechazo,int sucursalId)
+        public void SendEmailNotifications(Usuario usuario, DocumentosRecibidosDR documentoRecibido, bool rechazo, int sucursalId)
         {
             string destinatario = null;
             string asunto;

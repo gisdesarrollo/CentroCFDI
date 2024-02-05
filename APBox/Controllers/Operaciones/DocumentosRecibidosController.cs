@@ -7,6 +7,7 @@ using API.Operaciones.OperacionesProveedores;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
 using Aplicacion.LogicaPrincipal.Facturas;
+using Google.Protobuf.WellKnownTypes;
 using Newtonsoft.Json;
 using SW.Services.Authentication;
 using SW.Services.Validate;
@@ -23,183 +24,52 @@ using Utilerias.LogicaPrincipal;
 
 namespace APBox.Controllers.Operaciones
 {
-    [APBox.Control.SessionExpire]
     public class DocumentosRecibidosController : Controller
     {
         private readonly APBoxContext _db = new APBoxContext();
         private readonly ProcesaDocumentoRecibido _procesaDocumentoRecibido = new ProcesaDocumentoRecibido();
         private readonly Decodificar _decodifica = new Decodificar();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
-        // GET: DocumentosRecibidos
 
-
-
-        //Metodo de Obtención de  Parametros por empresa
-        public ConfiguracionesDR ConfiguracionEmpresa()
-        {
-            var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
-            var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
-
-           
-            if (configuracion == null)
-            {
-                return null;
-            }
-
-            return configuracion;
-        }
+        #region Consultas
 
         //Metodo de Validacion E-Mail para usuarios solicitantes
         [HttpPost]
         public ActionResult ValidadorEmail(DocumentosRecibidosDR documentoRecibidoDr)
         {
             string email = documentoRecibidoDr.VerificarEmail;
-            var grupid= ObtenerGrupo();
-            var usuarioExistente = _db.Usuarios.Where(c => c.Email == email && c.GrupoId == grupid).FirstOrDefault();
+            var grupoid = ObtenerGrupo();
+            var usuarioSolicitante = _db.Usuarios.Where(c => c.Email == email && c.GrupoId == grupoid).FirstOrDefault();
 
-            if (usuarioExistente != null)
-            {   
-                var nombrecliente = usuarioExistente.NombreCompleto;
-                var departamento = _db.Departamentos.FirstOrDefault(e => e.Id == usuarioExistente.Departamento_Id);
-
-                // Guardar datos en TempData para asignarlo a otro metodo
-                TempData["AprobadorId"] = usuarioExistente.Id;
-                TempData["DepartamentoId"] = usuarioExistente.Departamento_Id;
-
-                if (departamento != null)
-                {
-                    
-                    string mensaje = $"<strong>Nombre del Aprobador</strong> : {usuarioExistente.NombreCompleto} <strong>Departamento</strong> : {departamento.Nombre}";
-                    return Json(new { success = true, message = mensaje });
-                }
-
-                else
-                {
-                   
-                    string mensaje = $"<strong>Nombre del Usuario</strong> : {usuarioExistente.NombreCompleto}";
-                    return Json(new { success = true, message = mensaje });
-
-                }
-               
+            if (usuarioSolicitante == null)
+            {
+                return Json(new { success = false, message = "El Email no fue encontrado, favor de verificar" });
             }
             else
             {
-                return Json(new { success = false, message = "El Email no existe, favor de verificar" });
-            }
+                var usuarioSolicitanteNombre = usuarioSolicitante.NombreCompleto;
+                var usuarioSolicitanteDepartamento = usuarioSolicitante.Departamento.Nombre;
 
+                TempData["AprobadorId"] = usuarioSolicitante.Id;
+                TempData["DepartamentoId"] = usuarioSolicitante.Departamento.Id;
+
+                return Json(new
+                {
+                    success = true,
+                    UsuarioSolicitanteEmail = email,
+                    UsuarioSolicitanteNombre = usuarioSolicitanteNombre,
+                    UsuarioSolicitanteDepartamento = usuarioSolicitanteDepartamento
+                });
+            }
         }
 
 
-
-        public ActionResult Index()
-        {
-            ViewBag.Controller = "DocumentosRecibidos";
-            ViewBag.Action = "Index";
-            ViewBag.ActionES = "Index";
-            ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "proveedor";
-            //get usaurio
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
-             
-
-            var documentosRecibidosModel = new DocumentosRecibidosModel();
-            var fechaHoy = DateTime.Now.AddDays(-6);
-            var fechaInicial = new DateTime(fechaHoy.Year, fechaHoy.Month, fechaHoy.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-            documentosRecibidosModel.FechaInicial = fechaInicial;
-            documentosRecibidosModel.FechaFinal = fechaFinal;
-                if (usuario.esProveedor)
-                {
-                    documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
-                    documentosRecibidosModel.isProveedor = true;
-                }
-                else
-                {
-                    documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
-                    documentosRecibidosModel.DocumentosRecibidosAsignados = _procesaDocumentoRecibido.FiltrarAsignado(fechaInicial, fechaFinal, usuario.Id, null);
-                    documentosRecibidosModel.isProveedor = false;
-                }
-            return View(documentosRecibidosModel);
-        }
-
-        [HttpPost]
-        public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
-        {
-            ViewBag.Controller = "DocumentosRecibidos";
-            ViewBag.Action = "Index";
-            ViewBag.ActionES = "Index";
-            ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "proveedor";
-            //get usaurio
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
-            DateTime fechaI = documentosRecibidosModel.FechaInicial;
-            DateTime fechaF = documentosRecibidosModel.FechaFinal;
-            
-            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-                if (usuario.esProveedor)
-                {
-                    documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
-                    documentosRecibidosModel.isProveedor = true;
-                }
-                else
-                {
-                    documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
-                    documentosRecibidosModel.DocumentosRecibidosAsignados = _procesaDocumentoRecibido.FiltrarAsignado(fechaInicial, fechaFinal, usuario.Id, null);
-                    documentosRecibidosModel.isProveedor = false;
-                }
-            
-            return View(documentosRecibidosModel);
-        }
-
-        public ActionResult CargaCfdi()
-        {
-            ViewBag.Controller = "DocumentosRecibidos";
-            ViewBag.Action = "CargaCfdi";
-            ViewBag.NameHere = "proveedor";
-            //ViewBag.ActionES = "CargaCfdi";
-
-            //get usaurio
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
-            DocumentosRecibidosDR documentoRecibidoDr = new DocumentosRecibidosDR()
-            {
-                Validaciones = new ValidacionesDR()
-            };
-            
-            documentoRecibidoDr.Procesado = false;
-            return View(documentoRecibidoDr);
-        }
         [HttpPost]
         public ActionResult CargaCfdi(DocumentosRecibidosDR documentoRecibidoDr)
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
-            ViewBag.NameHere = "proveedor";
+            ViewBag.NameHere = "Documentos Recibidos";
             //ViewBag.ActionES = "Index";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
@@ -212,7 +82,7 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.isProveedor = "Usuario";
             }
             PathArchivosDto archivo;
-            ValidateXmlResponse responseValidacion =  new ValidateXmlResponse();
+            ValidateXmlResponse responseValidacion = new ValidateXmlResponse();
             AuthResponse responseAutenticacion = new AuthResponse();
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
             documentoRecibidoDr.DetalleArrays = new List<String>();
@@ -235,23 +105,23 @@ namespace APBox.Controllers.Operaciones
                 var socioComercial = new Cliente();
 
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
-                var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
-                if (existUUID != null)
-                {
-                    throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
-                }
                 if (usuario.esProveedor)
                 {
                     socioComercial = _db.Clientes.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
+                    var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
                     if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
+
                     }
                     if (sucursal.Rfc != cfdi.Receptor.Rfc)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
                     }
-                    
+                    if (existUUID != null)
+                    {
+                        throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
+                    }
                 }
                 else
                 {
@@ -270,13 +140,14 @@ namespace APBox.Controllers.Operaciones
                 {
                     throw new Exception("Error Validación : El socio comercial no esta registrado en la BD");
                 }
+
                 var configuracionEmpresa = ConfiguracionEmpresa();
                 //Parametro configuracion (Documentos Obligatorios)
                 if (configuracionEmpresa == null)
                 {
                     throw new Exception("Error Configuracion : No se a configuraro la validación de la empresa");
                 }
-                
+
                 if (configuracionEmpresa.ValidacionDocumentosObligatoria)
                 {
                     //autenticacion
@@ -296,6 +167,7 @@ namespace APBox.Controllers.Operaciones
                             StringBuilder sb = new StringBuilder();
                             var count = detail1.Count();
                             var limite = 0;
+
                             foreach (var detalle in detail1)
                             {
                                 limite++;
@@ -303,13 +175,13 @@ namespace APBox.Controllers.Operaciones
                                 foreach (var nodedetalle in detalle.detail)
                                 {
                                     limiteDetail++;
-                                    sb.AppendLine(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail);
+                                    sb.AppendLine(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail);
                                     //add validaciones
                                     if (limite < count)
                                     {
-                                        documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail + "\r\n");
+                                        documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail + "\r\n");
                                     }
-                                    else { documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ": " + nodedetalle.message + " - " + nodedetalle.messageDetail); }
+                                    else { documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail); }
 
                                 }
 
@@ -335,14 +207,24 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.CfdiRecibidos_Serie = cfdi.Serie;
                 documentoRecibidoDr.CfdiRecibidos_Folio = cfdi.Folio;
                 documentoRecibidoDr.Moneda_Id = cfdi.Moneda;
+                ViewBag.MetodoPago = cfdi.MetodoPago;
+                ViewBag.FormaPago = cfdi.FormaPago;
+                ViewBag.TipoComprobante = cfdi.TipoDeComprobante.ToString();
+                ViewBag.TipoCambio = cfdi.TipoCambio;
+                ViewBag.Moneda = cfdi.Moneda;
+                ViewBag.UsoCFDI = cfdi.Receptor.UsoCFDI;
+                ViewBag.Usuario = usuario.NombreCompleto;
+                ViewBag.Emisor = cfdi.Emisor.Nombre;
+                ViewBag.Receptor = cfdi.Receptor.Nombre;
 
                 //Implemento validacion para recibir facturas dentro del mes en curso
-                 DateTime fechaActual = DateTime.Now;
+                DateTime fechaActual = DateTime.Now;
 
-                 var facturaMesCorriente = configuracionEmpresa.RecibirFacturasMesCorriente;
-                 documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
+                var facturaMesCorriente = ConfiguracionEmpresa().RecibirFacturasMesCorriente;
+                documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
 
-                if (facturaMesCorriente) {
+                if (facturaMesCorriente)
+                {
 
                     //Primer dia del Mes Actual
                     DateTime primerDiaMesActual = new DateTime(fechaActual.Year, fechaActual.Month, 1);
@@ -350,10 +232,11 @@ namespace APBox.Controllers.Operaciones
                     //Ultimo dia del Mes Actual
                     DateTime ultimoDiaMesActual = primerDiaMesActual.AddMonths(1).AddDays(-1);
 
-                    if (documentoRecibidoDr.FechaComprobante < primerDiaMesActual || documentoRecibidoDr.FechaComprobante > ultimoDiaMesActual) {
+                    if (documentoRecibidoDr.FechaComprobante < primerDiaMesActual || documentoRecibidoDr.FechaComprobante > ultimoDiaMesActual)
+                    {
                         throw new InvalidOperationException("La factura o el comprobante no corresponde al mes actual. Por favor, cargue una factura del mes actual.");
                     }
-                    
+
                 }
 
                 documentoRecibidoDr.CfdiRecibidos_UUID = timbreFiscalDigital.UUID;
@@ -361,10 +244,10 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.TipoDocumentoRecibido = c_TipoDocumentoRecibido.CFDI;
                 documentoRecibidoDr.Monto = cfdi.Total;
                 //add data validacion correcta
-                
+
                 documentoRecibidoDr.PathArchivoXml = archivo.PathDestinoXml;
                 documentoRecibidoDr.PathArchivoPdf = archivo.PathDestinoPdf;
-                
+
             }
             catch (Exception ex)
             {
@@ -378,7 +261,7 @@ namespace APBox.Controllers.Operaciones
                 {
                     System.IO.File.Delete(archivo.PathDestinoXml);
                 }
-                if(archivo.PathDestinoPdf != null)
+                if (archivo.PathDestinoPdf != null)
                 {
                     System.IO.File.Delete(archivo.PathDestinoPdf);
                 }
@@ -389,17 +272,116 @@ namespace APBox.Controllers.Operaciones
             return View(documentoRecibidoDr);
         }
 
-            // GET: DocumentosRecibidos/Details/5
-            public ActionResult Details(int id)
+
+        #endregion
+
+        public ActionResult Index()
+        {
+            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Índice";
+            ViewBag.Button = "CargaDocumentoRecibido";
+            ViewBag.NameHere = "Documentos Recibidos";
+            //get usaurio
+
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            if (usuario.esProveedor)
+            {
+                ViewBag.isProveedor = "Proveedor";
+            }
+            else
+            {
+                ViewBag.isProveedor = "Usuario";
+            }
+
+
+            var documentosRecibidosModel = new DocumentosRecibidosModel();
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            documentosRecibidosModel.FechaInicial = fechaInicial;
+            documentosRecibidosModel.FechaFinal = fechaFinal;
+            if (usuario.esProveedor)
+            {
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
+            }
+            else
+            {
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
+            }
+            return View(documentosRecibidosModel);
+        }
+
+        [HttpPost]
+        public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
+        {
+            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "CargaDocumentoRecibido";
+            ViewBag.NameHere = "Documentos Recibidos";
+            //get usaurio
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            if (usuario.esProveedor)
+            {
+                ViewBag.isProveedor = "Proveedor";
+            }
+            else
+            {
+                ViewBag.isProveedor = "Usuario";
+            }
+            DateTime fechaI = documentosRecibidosModel.FechaInicial;
+            DateTime fechaF = documentosRecibidosModel.FechaFinal;
+
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            if (usuario.esProveedor)
+            {
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
+            }
+            else
+            {
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
+            }
+
+            return View(documentosRecibidosModel);
+        }
+
+        public ActionResult CargaCfdi()
+        {
+            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Action = "CargaCfdi";
+            ViewBag.NameHere = "Carga de CFDI";
+            ViewBag.ActionES = "CargaCfdi";
+
+            //get usaurio
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            if (usuario.esProveedor)
+            {
+                ViewBag.isProveedor = "Proveedor";
+            }
+            else
+            {
+                ViewBag.isProveedor = "Usuario";
+            }
+            DocumentosRecibidosDR documentoRecibidoDr = new DocumentosRecibidosDR()
+            {
+                Validaciones = new ValidacionesDR()
+            };
+
+            documentoRecibidoDr.Procesado = false;
+
+            return View(documentoRecibidoDr);
+        }
+          // GET: DocumentosRecibidos/Details/5
+        public ActionResult Details(int id)
         {
             return View();
         }
 
-
         // GET: DocumentosRecibidos/Create
         public ActionResult Create()
         {
-            ViewBag.NameHere = "proveedor";
+            ViewBag.NameHere = "Crear";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
@@ -413,26 +395,24 @@ namespace APBox.Controllers.Operaciones
             return View();
         }
 
-
         // POST: DocumentosRecibidos/Create
         [HttpPost]
         public ActionResult Create(DocumentosRecibidosDR documentoRecibidoDr)
         {
-           
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-                ComprobanteCFDI cfdi = new ComprobanteCFDI();
-                ViewBag.NameHere = "proveedor";
-                if (usuario.esProveedor)
-                {
-                    ViewBag.isProveedor = "Proveedor";
-                }
-                else
-                {
-                    ViewBag.isProveedor = "Usuario";
-                }
-                try
-                {
+            ComprobanteCFDI cfdi = new ComprobanteCFDI();
+            ViewBag.NameHere = "proveedor";
+            if (usuario.esProveedor)
+            {
+                ViewBag.isProveedor = "Proveedor";
+            }
+            else
+            {
+                ViewBag.isProveedor = "Usuario";
+            }
+            try
+            {
 
                 // Obtener los datos guardados en TempData
                 var aprobadorId = TempData["AprobadorId"] as int?;
@@ -446,69 +426,64 @@ namespace APBox.Controllers.Operaciones
 
                 //
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
-                    var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault();
+                var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault();
 
-                    var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
+                var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
 
-                    documentoRecibidoDr.RecibidosXml = new RecibidosXMLDR();
-                    documentoRecibidoDr.RecibidosPdf = new RecibidosPDFDR();
-                    //insert files
-                    byte[] xmlFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoXml);
-                    documentoRecibidoDr.RecibidosXml.Archivo = xmlFile;
-                    if (documentoRecibidoDr.PathArchivoPdf != null)
-                    {
-                        byte[] pdfFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoPdf);
-                        documentoRecibidoDr.RecibidosPdf.Archivo = pdfFile;
-                    }
-                    else { documentoRecibidoDr.RecibidosPdf = null; documentoRecibidoDr.CfdiRecibidos_PDF_Id = null; }
-                    //table validaciones
-                    if (documentoRecibidoDr.Validaciones == null)
-                    {
-                        documentoRecibidoDr.Validaciones = null; documentoRecibidoDr.Validaciones_Id = null;
-                    }
-                    // table recibidosComprobante
-                    documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
-                    {
-                        Sucursal_Id = sucursal.Id,
-                        SocioComercial_Id = (int)documentoRecibidoDr.SocioComercial_Id,
-                        Fecha = documentoRecibidoDr.FechaComprobante,
-                        Serie = cfdi.Serie,
-                        Folio = cfdi.Folio,
-                        TipoComprobante = cfdi.TipoDeComprobante,
-                        Version = cfdi.Version,
-                        FormaPago = cfdi.FormaPago,
-                        Moneda = cfdi.Moneda,
-                        Uuid = documentoRecibidoDr.CfdiRecibidos_UUID,
-                        TipoCambio = (double)cfdi.TipoCambio,
-                        LugarExpedicion = cfdi.LugarExpedicion,
-                        MetodoPago = cfdi.MetodoPago,
-                        Descuento = (double)cfdi.Descuento,
-                        Subtotal = (double)cfdi.SubTotal,
-                        Total = (double)cfdi.Total,
-                        TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
-                        TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
-                    };
-                    documentoRecibidoDr.CfdiRecibidos_Id = null;
-                    // table solicitudes
-                    documentoRecibidoDr.Solicitudes = null;
-                    documentoRecibidoDr.Solicitud_Id = null;
-                    documentoRecibidoDr.Pagos = new PagosDR() 
-                    {
-                        EstadoPago = c_EstadoPago.Pendiente,
-                        FechaPago = documentoRecibidoDr.FechaEntrega,
-                    };
-                    
-                    _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
-                    _db.SaveChanges();
-                    return Json(new { success = true, redirectTo = Url.Action("Index", "DocumentosRecibidos") });
-                }
-                catch (Exception ex)
+                documentoRecibidoDr.RecibidosXml = new RecibidosXMLDR();
+                documentoRecibidoDr.RecibidosPdf = new RecibidosPDFDR();
+                //insert files
+                byte[] xmlFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoXml);
+                documentoRecibidoDr.RecibidosXml.Archivo = xmlFile;
+                if (documentoRecibidoDr.PathArchivoPdf != null)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    byte[] pdfFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoPdf);
+                    documentoRecibidoDr.RecibidosPdf.Archivo = pdfFile;
                 }
-            
+                else { documentoRecibidoDr.RecibidosPdf = null; documentoRecibidoDr.CfdiRecibidos_PDF_Id = null; }
+                //table validaciones
+                if (documentoRecibidoDr.Validaciones == null)
+                {
+                    documentoRecibidoDr.Validaciones = null; documentoRecibidoDr.Validaciones_Id = null;
+                }
+                // table recibidosComprobante
+                documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
+                {
+                    Sucursal_Id = sucursal.Id,
+                    SocioComercial_Id = (int)documentoRecibidoDr.SocioComercial_Id,
+                    Fecha = documentoRecibidoDr.FechaComprobante,
+                    Serie = cfdi.Serie,
+                    Folio = cfdi.Folio,
+                    TipoComprobante = cfdi.TipoDeComprobante,
+                    Version = cfdi.Version,
+                    FormaPago = cfdi.FormaPago,
+                    Moneda = cfdi.Moneda,
+                    TipoCambio = (double)cfdi.TipoCambio,
+                    LugarExpedicion = cfdi.LugarExpedicion,
+                    MetodoPago = cfdi.MetodoPago,
+                    Descuento = (double)cfdi.Descuento,
+                    Subtotal = (double)cfdi.SubTotal,
+                    Total = (double)cfdi.Total,
+                    TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
+                    TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
+                };
+                documentoRecibidoDr.CfdiRecibidos_Id = null;
+                // table solicitudes
+                documentoRecibidoDr.Solicitudes = null;
+                documentoRecibidoDr.Solicitud_Id = null;
+                documentoRecibidoDr.Pagos = null;
+                documentoRecibidoDr.Pagos_Id = null;
+                _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
+                _db.SaveChanges();
+                return Json(new { success = true, redirectTo = Url.Action("Index", "DocumentosRecibidos") });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
             return Json(new { error = true, redirectTo = Url.Action("CargaCfdi", "DocumentosRecibidos") });
-            
+
         }
 
         // GET: DocumentosRecibidos/Edit/5
@@ -517,7 +492,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
             ViewBag.NameHere = "proveedor";
-            
+
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
@@ -547,7 +522,7 @@ namespace APBox.Controllers.Operaciones
         {
             PopulaEstadoComercial();
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoModal.Id);
-            if(documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
+            if (documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
             {
                 documentoRecibido.MotivoRechazo = documentoRecibidoModal.MotivoRechazo;
             }
@@ -560,9 +535,9 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Success = "¡¡Estatus documento recibido actualizado con exito!!";
 
             //envio email rechazo
-            if(documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
+            if (documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
             {
-                _envioEmail.SendEmailNotifications(null,documentoRecibido, true,(int)ObtenerSucursal());
+                _envioEmail.SendEmailNotifications(null, documentoRecibido, true, (int)ObtenerSucursal());
             }
             return PartialView("~/Views/DocumentosRecibidos/_EstatusRecibidos.cshtml", documentoRecibido);
         }
@@ -605,16 +580,105 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
+        #region Validaciones
+
+        public ActionResult AprobarEstadoComercial(int id)
+        {
+            // Obtener el documento recibido con el ID proporcionado 
+            // y asignarlo a la variable tuObjeto
+            var tuObjeto = _db.DocumentoRecibidoDr.Find(id);
+
+            // Verificar si el objeto no es nulo
+            if (tuObjeto != null)
+            {
+                // Cambiar la propiedad EstadoComercial a aprobado
+                tuObjeto.EstadoComercial = c_EstadoComercial.Aprobado;
+
+                // Guardar los cambios 
+                _db.SaveChanges();
+
+                // Redirigir al método Index
+                return RedirectToAction("Index");
+            }
+
+            // Manejar el caso en que el objeto no se encuentre
+            return HttpNotFound();
+        }
+
+        public ActionResult RechazarEstadoComercial(int id)
+        {
+            // Obtener el documento recibido con el ID proporcionado 
+            // y asignarlo a la variable tuObjeto
+            var tuObjeto = _db.DocumentoRecibidoDr.Find(id);
+
+            // Verificar si el objeto no es nulo
+            if (tuObjeto != null)
+            {
+                // Cambiar la propiedad EstadoComercial a aprobado
+                tuObjeto.EstadoComercial = c_EstadoComercial.Rechazado;
+
+                // Guardar los cambios 
+                _db.SaveChanges();
+
+                // Redirigir al método Index
+                return RedirectToAction("Index");
+            }
+
+            // Manejar el caso en que el objeto no se encuentre
+            return HttpNotFound();
+        }
+
+        public static string FechaFormat(string fecha)
+        {
+            DateTime fechaConvertDate = Convert.ToDateTime(fecha);
+            string fechaFormat = fechaConvertDate.ToString("dd/MM/yyyy");
+            return fechaFormat;
+        }
+        public ConfiguracionesDR ConfiguracionEmpresa()
+        {
+            var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
+            var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
+
+
+            if (configuracion == null)
+            {
+                return null;
+            }
+
+            return configuracion;
+        }
+        private void PopulaEstadoComercial()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "En Revision", Value = "0", Selected = true });
+            items.Add(new SelectListItem { Text = "Aprobado", Value = "1" });
+            items.Add(new SelectListItem { Text = "Rechazado", Value = "2" });
+            ViewBag.estadoComercial = items;
+        }
+        private int ObtenerGrupo()
+        {
+
+            return Convert.ToInt32(Session["GrupoId"]);
+        }
+        private int ObtenerSucursal()
+        {
+            return Convert.ToInt32(Session["SucursalId"]);
+        }
+        private int ObtenerUsuario()
+        {
+            return Convert.ToInt32(Session["UsuarioId"]);
+        }
         private PathArchivosDto SubeArchivo()
         {
             PathArchivosDto pathArchivos = new PathArchivosDto();
             if (Request.Files.Count > 0)
             {
                 var operacionesStreams = new OperacionesStreams();
-                for (var r = 0; r< Request.Files.Count;r ++) {
+                for (var r = 0; r < Request.Files.Count; r++)
+                {
                     var archivo = Request.Files[r];
                     var extencion = Path.GetExtension(archivo.FileName);
-                    if(extencion == ".xml" || extencion == ".XML")
+                    if (extencion == ".xml" || extencion == ".XML")
                     {
                         var pathDestinoXml = Path.Combine(Server.MapPath("~/Archivos/DocumentosProveedores/"), archivo.FileName);
                         Stream fileStream = archivo.InputStream;
@@ -626,7 +690,7 @@ namespace APBox.Controllers.Operaciones
 
                         pathArchivos.PathDestinoXml = pathDestinoXml;
                     }
-                    if(extencion == ".pdf" || extencion == ".PDF")
+                    if (extencion == ".pdf" || extencion == ".PDF")
                     {
                         var pathDestinoPdf = Path.Combine(Server.MapPath("~/Archivos/DocumentosProveedores/"), archivo.FileName);
                         Stream fileStream = archivo.InputStream;
@@ -638,14 +702,13 @@ namespace APBox.Controllers.Operaciones
 
                         pathArchivos.PathDestinoPdf = pathDestinoPdf;
                     }
-                    
+
                 }
-                
+
                 return pathArchivos;
             }
             throw new Exception("Favor de cargar por lo menos un archivo");
         }
-
         public ActionResult DescargaXml(int id)
         {
             byte[] archivoFisico = new byte[255];
@@ -665,13 +728,12 @@ namespace APBox.Controllers.Operaciones
 
             return new FileStreamResult(Response.OutputStream, "application/xml");
         }
-
         public ActionResult DescargaPdf(int id)
         {
             byte[] archivoFisico = new byte[255];
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             archivoFisico = documentoRecibido.RecibidosPdf.Archivo;
-            
+
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
@@ -685,7 +747,6 @@ namespace APBox.Controllers.Operaciones
 
             return new FileStreamResult(Response.OutputStream, "application/pdf");
         }
-
         public ActionResult DescargaAdjunto(int id)
         {
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
@@ -695,23 +756,22 @@ namespace APBox.Controllers.Operaciones
 
             var memoryStream = new MemoryStream();
             using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                {
-                    AddFileToZip(archive, archivoFisicoXml, nameArchivo +".xml");
-                    AddFileToZip(archive, archivoFisicoPdf, nameArchivo +".pdf");
-                }
+            {
+                AddFileToZip(archive, archivoFisicoXml, nameArchivo + ".xml");
+                AddFileToZip(archive, archivoFisicoPdf, nameArchivo + ".pdf");
+            }
 
             memoryStream.Seek(0, SeekOrigin.Begin);
 
             var fileStreamResult = new FileStreamResult(memoryStream, "application/zip")
             {
-               FileDownloadName = "adjuntos.zip" 
+                FileDownloadName = "adjuntos.zip"
             };
 
             return fileStreamResult;
-            
+
 
         }
-
         private void AddFileToZip(ZipArchive archive, byte[] fileBytes, string entryName)
         {
             var entry = archive.CreateEntry(entryName);
@@ -720,35 +780,7 @@ namespace APBox.Controllers.Operaciones
                 entryStream.Write(fileBytes, 0, fileBytes.Length);
             }
         }
-        public static string FechaFormat(string fecha)
-        {
-            DateTime fechaConvertDate = Convert.ToDateTime(fecha);
-            string fechaFormat = fechaConvertDate.ToString("dd/MM/yyyy");
-            return fechaFormat;
-        }
-        private int ObtenerGrupo()
-        {
-
-            return Convert.ToInt32(Session["GrupoId"]);
-        }
-        private int ObtenerSucursal()
-        {
-            return Convert.ToInt32(Session["SucursalId"]);
-        }
-
-        private int ObtenerUsuario()
-        {
-            return Convert.ToInt32(Session["UsuarioId"]);
-        }
-
-        private void PopulaEstadoComercial()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "En Revision", Value = "0", Selected = true });
-            items.Add(new SelectListItem { Text = "Aprobado", Value = "1" });
-            items.Add(new SelectListItem { Text = "Rechazado", Value = "2" });
-            ViewBag.estadoComercial = items;
-        }
+        #endregion
         protected override void Dispose(bool disposing)
         {
             if (disposing)

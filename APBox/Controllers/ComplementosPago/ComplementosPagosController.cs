@@ -72,7 +72,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "Complementos de Recepción de Pagos";
             return View(complementosPagosModel);
         }
 
@@ -168,9 +168,6 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementoPago);
         }
 
-        // POST: ComplementosPago/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ComplementoPago complementoPago)
@@ -227,7 +224,6 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementoPago);
         }
 
-        // GET: ComplementosPago/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -265,9 +261,6 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementoPago);
         }
 
-        // POST: ComplementosPago/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ComplementoPago complementoPago)
@@ -317,11 +310,6 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementoPago);
         }
 
-        
-
-        // POST: ComplementosPago/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         [Authorize(Roles = "BORRADO")]
         public ActionResult DeleteConfirmed(int id)
         {

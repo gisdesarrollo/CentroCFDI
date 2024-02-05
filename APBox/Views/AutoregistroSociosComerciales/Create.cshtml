@@ -1,0 +1,180 @@
+﻿@model API.Catalogos.Cliente
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Autoregistro", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.FechaAlta)
+    @Html.HiddenFor(model => model.SucursalId)
+    @Html.HiddenFor(model => model.NumRegIdTrib)
+    @Html.HiddenFor(model => model.Status, new { @value = API.Enums.Status.Activo })
+
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt", @style = "color:red;" })
+
+    <!--begin::Row-->
+    <div class="row g-5 g-xl-8">
+        <div class="col-12">
+            <!--begin::List Widget 2-->
+            <div class="card card-stretch card-flush mb-xl-8">
+                <!--begin::Header-->
+                <div class="card-header border-0">
+                    <h3 class="card-title fw-bold text-gray-900">Nuevo registro para Socio Comercial de @ViewBag.Grupo</h3>
+                </div>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body pt-2">
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-primary d-flex flex-column flex-sm-row p-5 mb-10">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-some-files fs-2hx text-primary me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h4 class="fw-semibold fs-6">Info</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>Captura los datos de tu organización, y llena los campos con la información fiscal.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                    <!--begin::Item-->
+                    <div class="d-flex align-items-center mb-7 row">
+                        <div class="mb-10 row fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Rfc, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.Rfc, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                @Html.ValidationMessageFor(model => model.Rfc, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.CodigoPostal, htmlAttributes: new { @class = "form-label required" })
+                                @Html.EditorFor(model => model.CodigoPostal, new { htmlAttributes = new { @class = "form-control mb-2", placeholder = "Código Postal" } })
+                                @Html.ValidationMessageFor(model => model.CodigoPostal, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="mb-10 row fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Pais, htmlAttributes: new { @class = "form-label" })
+                                @Html.EnumDropDownListSpecialFor(model => model.Pais)
+                                @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.UsoCfdi, htmlAttributes: new { @class = "form-label" })
+                                @Html.EnumDropDownListSpecialFor(model => model.UsoCfdi)
+                                @Html.ValidationMessageFor(model => model.UsoCfdi, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.RegimenFiscal, htmlAttributes: new { @class = "form-label" })
+                                @Html.EnumDropDownListSpecialFor(model => model.RegimenFiscal)
+                                @Html.ValidationMessageFor(model => model.RegimenFiscal, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+
+                        <div class="mb-10 row fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Telefono1, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Telefono1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Telefono1, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Telefono2, htmlAttributes: new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Telefono2, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Telefono2, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="mb-10 row fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "form-label" })
+                                @Html.TextAreaFor(model => model.Observaciones, new { @class = "form-control", style = "" })
+                                @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--end::Item-->
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::List Widget 2-->
+        </div>
+
+    </div>
+
+    <!--end::Row-->
+    <!--begin::Row-->
+    <div class="d-flex justify-content-end">
+
+        <!--begin::Button-->
+        <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
+            <span class="indicator-label">
+                Siguiente
+            </span>
+        </button>
+        <!--end::Button-->
+    </div>
+    <!--end::Row-->
+
+}
+
+<script>
+    $(function () {
+        $(".espacio").on('keyup', function () {
+            var key = $(this).attr("id");
+            var text = $("#" + key).val();
+            let exp = new RegExp('^ *');
+            if (text.match(exp) != null && text.match(exp) != "") {
+                $("#" + key).val(text.replace(exp, ""));
+            }
+
+        });
+    });
+
+    $(function () {
+        $("#agregarBanco").on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: '/AjaxCatalogos/BancosClientes',
+                data: JSON.stringify({ bancoId: $('#BancoId').val(), nombre: $('#Banco_Nombre').val(), numeroCuenta: $('#Banco_NumeroCuenta').val() }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+                success: function (partialView) {
+                    $('#bancos').append(partialView);
+                    return false;
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                    return false;
+                }
+            });
+            return false;
+        });
+    });
+</script>
