@@ -38,17 +38,26 @@ $(document).ready(function () {
     //});
 });
 
+//arranca el plugin de flatpickr en cada input con clase .fecha
 $(".fecha").flatpickr({
     dateFormat: "d/m/Y",
-    locale: "es"
 });
 
+//Agrega la clase de bootstrap a todos los form elements
+$('input:not(:file):not(:button), select, textarea').addClass('form-control');
 
 //Funcion para agregar el plugin de select2 a todos los select
 $('select').attr('data-control', 'select2');
 $('select').addClass('form-select');
 $('select').select2();
 
+//Deshabilita el boton de submit al momento de hacer clic 
+$(function (setup) {
+    $("form").on("submit", function () {
+        $(this).find(":submit").prop("disabled", true);
+        $(this).find(".multiple").prop("disabled", false);
+    });
+});
 
 // Función para insertar el contenido en el div con id "botones"
 function insertarContenido() {
@@ -58,8 +67,13 @@ function insertarContenido() {
     // Obtener el elemento con id "botones"
     var botonesDiv = document.getElementById('toolbar');
 
-    // Insertar el contenido dentro del div con id "botones"
-    botonesDiv.appendChild(contenidoDiv);
+
+    // validar que los dos elementos existan
+    if (contenidoDiv !== null) {
+        // Insertar el contenido dentro del div con id "botones"
+        botonesDiv.appendChild(contenidoDiv);
+    }
+
 }
 
 // Llamar a la función cuando se carga la página

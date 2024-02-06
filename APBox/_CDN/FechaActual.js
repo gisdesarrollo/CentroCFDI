@@ -12,5 +12,4 @@ $(document).ready(function() {
 	 $('#FechaDocumento').val(fecha);
 	 console.log(fecha); 
   }());
-
 });

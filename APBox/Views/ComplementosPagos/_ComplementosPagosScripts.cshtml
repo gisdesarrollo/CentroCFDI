@@ -1,11 +1,24 @@
-﻿
-<script>
-    $(function () {
+﻿<script>
+    window.onload = function () {
         $("#agregarDetalle").on('click', function () {
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarPago", "AjaxOperaciones")',
-                data: JSON.stringify({ fechaPago: $('#Pago_FechaPago').val(), formaPago: $('#Pago_FormaPago').val(), moneda: $('#Pago_Moneda').val(), tipoCambio: $('#Pago_TipoCambio').val(), monto: $('#Pago_Monto').val(), numeroOperacion: $('#Pago_NumeroOperacion').val(), tipoCadenaPago: $('#Pago_TipoCadenaPago').val(), certificadoPago: $('#Pago_CertificadoPago').val(), cadenaPago: $('#Pago_CadenaPago').val(), selloPago: $('#Pago_SelloPago').val(), spei: null, bancoEmisorId: $('#Pago_BancoOrdenanteId').val(), bancoReceptorId: $('#Pago_BancoBeneficiarioId').val() }),
+                data: JSON.stringify({
+                    fechaPago: $('#Pago_FechaPago').val(),
+                    formaPago: $('#Pago_FormaPago').val(),
+                    moneda: $('#Pago_Moneda').val(),
+                    tipoCambio: $('#Pago_TipoCambio').val(),
+                    monto: $('#Pago_Monto').val(),
+                    numeroOperacion: $('#Pago_NumeroOperacion').val(),
+                    tipoCadenaPago: $('#Pago_TipoCadenaPago').val(),
+                    certificadoPago: $('#Pago_CertificadoPago').val(),
+                    cadenaPago: $('#Pago_CadenaPago').val(),
+                    selloPago: $('#Pago_SelloPago').val(),
+                    spei: null,
+                    bancoEmisorId: $('#Pago_BancoOrdenanteId').val(),
+                    bancoReceptorId: $('#Pago_BancoBeneficiarioId').val()
+                }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
                 success: function (partialView) {
@@ -14,21 +27,17 @@
                 error: function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles");
                 }
-             });
+            });
             return false;
         });
-    });
-    //DETALLE TrasladoDR
-    $(function () {
+
+        //DETALLE TrasladoDR
         $('#agregarDetalleTraslado').click(function () {
             var contador = $(".DTraslado").length + 1;
-        $(".contadorTraslado").replaceWith('<span class="contadorTraslado font-blue">: ' + contador + '</span >');
-    });
-    });
+            $(".contadorTraslado").replaceWith('<span class="contadorTraslado font-blue">: ' + contador + '</span >');
+        });
 
-    $(function () {
-    $("#agregarDetalleTraslado").on('click', function () {
-
+        $("#agregarDetalleTraslado").on('click', function () {
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarDTraslado", "AjaxOperaciones")',
@@ -44,37 +53,33 @@
                 success: function (partialView) {
                     $('#detallesTraslado').append(partialView);
                 },
-            error: function (jqxhr, textStatus, error) {
-                alert("Favor de llenar todos los datos para los detalles");
-            }
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                }
 
             });
             return false;
         });
-    });
 
 
-    function removeDetalleTraslado(elem) {
-        var totalU = $(".DTraslado").length;
-        if (totalU > 0) {
-            var contador = $(".DTraslado").length - 1;
-            $(".contadorTraslado").replaceWith('<span class="contadorTraslado font-blue">: ' + contador + '</span >');
-        } else {
-            $(".contadorTraslado").replaceWith('<span class="contadorTraslado font-blue">');
+        function removeDetalleTraslado(elem) {
+            var totalU = $(".DTraslado").length;
+            if (totalU > 0) {
+                var contador = $(".DTraslado").length - 1;
+                $(".contadorTraslado").replaceWith('<span class="contadorTraslado font-blue">: ' + contador + '</span >');
+            } else {
+                $(".contadorTraslado").replaceWith('<span class="contadorTraslado font-blue">');
+            }
+            $(elem).parent().parent().parent().remove();
         }
-        $(elem).parent().parent().parent().remove();
-        }
 
-    //DETALLE RetencionDR
-    $(function () {
+        //DETALLE RetencionDR
         $('#agregarDetalleRetencion').click(function () {
             var contador = $(".DRetencion").length + 1;
-        $(".contadorRetencion").replaceWith('<span class="contadorRetencion font-blue">: ' + contador + '</span >');
-    });
-    });
+            $(".contadorRetencion").replaceWith('<span class="contadorRetencion font-blue">: ' + contador + '</span >');
+        });
 
-    $(function () {
-    $("#agregarDetalleRetencion").on('click', function () {
+        $("#agregarDetalleRetencion").on('click', function () {
 
             $.ajax({
                 type: 'POST',
@@ -91,57 +96,64 @@
                 success: function (partialView) {
                     $('#detallesRetencion').append(partialView);
                 },
-            error: function (jqxhr, textStatus, error) {
-                alert("Favor de llenar todos los datos para los detalles");
-            }
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                }
 
             });
             return false;
         });
-    });
 
-    function removeDetalleRetencion(elem) {
-        var totalU = $(".DRetencion").length;
-        if (totalU > 0) {
-            var contador = $(".DRetencion").length - 1;
-            $(".contadorRetencion").replaceWith('<span class="contadorRetencion font-blue">: ' + contador + '</span >');
-        } else {
-            $(".contadorRetencion").replaceWith('<span class="contadorRetencion font-blue">');
+        function removeDetalleRetencion(elem) {
+            var totalU = $(".DRetencion").length;
+            if (totalU > 0) {
+                var contador = $(".DRetencion").length - 1;
+                $(".contadorRetencion").replaceWith('<span class="contadorRetencion font-blue">: ' + contador + '</span >');
+            } else {
+                $(".contadorRetencion").replaceWith('<span class="contadorRetencion font-blue">');
+            }
+            $(elem).parent().parent().parent().remove();
         }
-        $(elem).parent().parent().parent().remove();
-    }
 
 
-    function agregarFactura() {
+        function agregarFactura() {
 
-        //Traslados
-        var jsonTraslados = [];
+            //Traslados
+            var jsonTraslados = [];
 
-        $(".DTraslado").each(function (index, element) {
-            var BaseTraslado = $(element).find('.BaseTraslado').val();
-            var ImpuestoTraslado = $(element).find('#ImpuestoTraslado').text().trim();
-            var TipoFactorTraslado = $(element).find('#TipoFactorTraslado').text().trim();
-            var TasaOCuotaTraslado = $(element).find('#TasaOCuotaTraslado').text().trim();
-            var ImporteTraslado = $(element).find('.ImporteTraslado').val();
+            $(".DTraslado").each(function (index, element) {
+                var BaseTraslado = $(element).find('.BaseTraslado').val();
+                var ImpuestoTraslado = $(element).find('#ImpuestoTraslado').text().trim();
+                var TipoFactorTraslado = $(element).find('#TipoFactorTraslado').text().trim();
+                var TasaOCuotaTraslado = $(element).find('#TasaOCuotaTraslado').text().trim();
+                var ImporteTraslado = $(element).find('.ImporteTraslado').val();
 
-            jsonTraslados.push({
-                "Base": BaseTraslado, "Impuesto": ImpuestoTraslado, "TipoFactor": TipoFactorTraslado, "TasaOCuota": TasaOCuotaTraslado, "Importe": ImporteTraslado
+                jsonTraslados.push({
+                    "Base": BaseTraslado,
+                    "Impuesto": ImpuestoTraslado,
+                    "TipoFactor": TipoFactorTraslado,
+                    "TasaOCuota": TasaOCuotaTraslado,
+                    "Importe": ImporteTraslado
+                });
             });
-        });
-        //Retenciones
-        var jsonRetenciones = [];
+            //Retenciones
+            var jsonRetenciones = [];
 
-        $(".DRetencion").each(function (index, element) {
-            var BaseRetencion = $(element).find('.BaseRetencion').val();
-            var ImpuestoRetencion = $(element).find('#ImpuestoRetencion').text().trim();
-            var TipoFactorRetencion = $(element).find('.TipoFactorRetencion option:selected').val();
-            var TasaOCuotaRetencion = $(element).find('.TasaOCuotaRetencion').val();
-            var ImporteRetencion = $(element).find('.ImporteRetencion').val();
+            $(".DRetencion").each(function (index, element) {
+                var BaseRetencion = $(element).find('.BaseRetencion').val();
+                var ImpuestoRetencion = $(element).find('#ImpuestoRetencion').text().trim();
+                var TipoFactorRetencion = $(element).find('.TipoFactorRetencion option:selected').val();
+                var TasaOCuotaRetencion = $(element).find('.TasaOCuotaRetencion').val();
+                var ImporteRetencion = $(element).find('.ImporteRetencion').val();
 
-            jsonRetenciones.push({
-                "Base": BaseRetencion, "Impuesto": ImpuestoRetencion, "TipoFactor": TipoFactorRetencion, "TasaOCuota": TasaOCuotaRetencion, "Importe": ImporteRetencion
+                jsonRetenciones.push({
+                    "Base": BaseRetencion,
+                    "Impuesto": ImpuestoRetencion,
+                    "TipoFactor": TipoFactorRetencion,
+                    "TasaOCuota": TasaOCuotaRetencion,
+                    "Importe": ImporteRetencion
+                });
             });
-        });
 
             $.ajax({
                 type: 'POST',
@@ -179,37 +191,37 @@
                 }
             });
 
-        return false;
-    }
+            return false;
+        }
 
-    $(function () {
         $('#ReceptorId').on('change', function () {
 
             var receptorSeleccionado = $(this).val();
             drowdop(receptorSeleccionado);
 
         });
-    });
 
-    function drowdop(receptorSeleccionado) {
-        var bancoSeleccionado = $('#Pago_BancoOrdenanteId');
-        //var cfdisCancelados = $('#CfdiRelacionadoId');
+        function drowdop(receptorSeleccionado) {
+            var bancoSeleccionado = $('#Pago_BancoOrdenanteId');
+            //var cfdisCancelados = $('#CfdiRelacionadoId');
 
-        bancoSeleccionado.empty();
-        //cfdisCancelados.empty();
-        //bancoSeleccionado.prop('disabled', '');
+            bancoSeleccionado.empty();
+            //cfdisCancelados.empty();
+            //bancoSeleccionado.prop('disabled', '');
 
 
-        bancoSeleccionado.append($('<option>', {
-            text: "Sin seleccionar",
-            value: null
-        }));
+            bancoSeleccionado.append($('<option>', {
+                text: "Sin seleccionar",
+                value: null
+            }));
 
-        if (receptorSeleccionado.length > 0 && receptorSeleccionado !== 0) {
+            if (receptorSeleccionado.length > 0 && receptorSeleccionado !== 0) {
                 $.ajax({
                     type: 'POST',
                     url: ' @Url.Action("GetBancosClientes", "AjaxCatalogos")',
-                    data: JSON.stringify({ clienteId: receptorSeleccionado }),
+                    data: JSON.stringify({
+                        clienteId: receptorSeleccionado
+                    }),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
@@ -225,347 +237,352 @@
                 });
 
             }
-    }
-    //add documento relacionado
-    $(function () {
+        }
+        //add documento relacionado
         $('#agregarDetalleDocRelacionado').click(function () {
             var contador = $(".pago").length + 1;
             $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
         });
-    });
 
-    //remove documento relacionado
-    function removeDetalleDocRelacionado(elem) {
-        var totalU = $(".pago").length;
-        if (totalU > 0) {
-            var contador = $(".pago").length - 1;
-            $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
-        } else {
-            $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">');
-        }
-        $(elem).parent().parent().parent().remove();
-
-    }
-
-
-    //JavaScript
-    function getBase64(file) {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            console.log(reader.result);
-        };
-        reader.onerror = function (error) {
-
-
-        };
-    }
-    //calcula el porcentaje de total a pagar
-    $(function () {
-
-        //retorno los impuestos de una factura externa Relacionada
-        $('#FacturaEmitidaId').on("change", function () {
-            var factEmitidaId = $('#FacturaEmitidaId').val();
-            if (factEmitidaId !== "") {
-            if ($('#Pago_DocumentoRelacionado_ImportePagado').val() > 0) {
-                $.get("/ComplementosPagos/GetDataFactura", { FacturaEmitidaId: factEmitidaId }, function (data) {
-                    if (data.length > 0) {
-                        $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('02');
-                        $('#DescripcionObjetoImpuesto').text('02-Sí objeto de impuesto');
-                        $('.ObjetoImpuesto').show();
-                        $(".DTraslado").parent().remove();
-                        $(".DRetencion").parent().remove();
-                        $.each(data, function (index, row) {
-
-                            if (row.TipoImpuesto == "Traslado" && parseFloat(row.Base)>0) {
-                                var baseT = parseFloat(ImporteSobreIva($('#Pago_DocumentoRelacionado_ImportePagado').val(), row.TasaOCuota));
-                                var importeT = parseFloat(row.Base) * parseFloat(row.TasaOCuota);
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: ' @Url.Action("AgregarDTraslado", "AjaxOperaciones")',
-                                    data: JSON.stringify({
-                                        Tbase: row.Base,//baseT,
-                                        Timpuesto: row.Impuesto,
-                                        TtipoFactor: row.TipoFactor,
-                                        TtasaOCuota: row.TasaOCuota,
-                                        Timporte: importeT.toFixed(2)
-                                    }),
-                                    dataType: 'html',
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (partialView) {
-                                        $('#detallesTraslado').append(partialView);
-                                    },
-                                    error: function (jqxhr, textStatus, error) {
-                                        console.log("Error: ");
-                                    }
-
-                                });
-
-
-                                $('.validacion-traslado').show();
-                            }
-                            if (row.TipoImpuesto == "Retencion" && parseFloat(row.Base) > 0) {
-                                var baseR = parseFloat(row.Importe) / parseFloat(row.TasaOCuota);
-
-                                var importeR = parseFloat(baseR) * parseFloat(row.TasaOCuota);
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: ' @Url.Action("AgregarDRetencion", "AjaxOperaciones")',
-                                    data: JSON.stringify({
-                                        Rbase: baseR,
-                                        Rimpuesto: row.Impuesto,
-                                        RtipoFactor: row.TipoFactor,
-                                        RtasaOCuota: row.TasaOCuota,
-                                        Rimporte: importeR.toFixed(2)
-                                    }),
-                                    dataType: 'html',
-                                    contentType: "application/json; charset=utf-8",
-                                    success: function (partialView) {
-                                        $('#detallesRetencion').append(partialView);
-                                    },
-                                    error: function (jqxhr, textStatus, error) {
-                                        console.log("Favor de llenar todos los datos para los detalles");
-                                    }
-
-                                });
-
-
-                                $('.validacion-retencion').show();
-                            }
-
-                        });
-
-
-
-                    } else {
-                        $(".DTraslado").parent().remove();
-                        $(".DRetencion").parent().remove();
-                        $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('01');
-                        $('#DescripcionObjetoImpuesto').text('01-No objeto de impuesto');
-                        $('.ObjetoImpuesto').show();
-                        $('.validacion-traslado').hide();
-                        $('.validacion-retencion').hide();
-
-                    }
-                });
+        //remove documento relacionado
+        function removeDetalleDocRelacionado(elem) {
+            var totalU = $(".pago").length;
+            if (totalU > 0) {
+                var contador = $(".pago").length - 1;
+                $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
             } else {
-                $('#FacturaEmitidaId option').prop('selected', function () {
-                    return this.defaultSelected;
-                });
-
-                alert("Favor de llenar los importes antes de seleccionar la Factura Emitida!!");
+                $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">');
             }
-        }else {
-            $(".DTraslado").parent().remove();
-            $(".DRetencion").parent().remove();
-                $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('01');
-                $('#DescripcionObjetoImpuesto').text('01-No objeto de impuesto');
-                $('.ObjetoImpuesto').show();
-                $('.validacion-traslado').hide();
-                $('.validacion-retencion').hide();
+            $(elem).parent().parent().parent().remove();
+
         }
-        });
-    });
 
-    function ValidaImpuesto(valor){
-        var resultado = "";
-        switch (valor) {
-            case "001":
-                resultado = "001-ISR";
-                break;
-            case "002":
-                resultado = "002-IVA";
-                break;
-            case "003":
-                resultado = "003-IEPS"
-                break;
+
+        //JavaScript
+        function getBase64(file) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                console.log(reader.result);
+            };
+            reader.onerror = function (error) {
+
+
+            };
         }
-        return resultado;
-    }
-    function ImporteSobreIva(valor,iva) {
-        var ImportPagado = parseFloat(valor);
-        let ivaString = iva;
-        ivaString = "1" + ivaString.toString().substring(1);
-        var Iva = parseFloat(ivaString);
-        var base = ImportPagado / Iva
+        //calcula el porcentaje de total a pagar
+        $(function () {
+            //retorno los impuestos de una factura externa Relacionada
+            $('#FacturaEmitidaId').on("change", function () {
+                var factEmitidaId = $('#FacturaEmitidaId').val();
+                if (factEmitidaId !== "") {
+                    if ($('#Pago_DocumentoRelacionado_ImportePagado').val() > 0) {
+                        $.get("/ComplementosPagos/GetDataFactura", {
+                            FacturaEmitidaId: factEmitidaId
+                        }, function (data) {
+                            if (data.length > 0) {
+                                $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('02');
+                                $('#DescripcionObjetoImpuesto').text('02-Sí objeto de impuesto');
+                                $('.ObjetoImpuesto').show();
+                                $(".DTraslado").parent().remove();
+                                $(".DRetencion").parent().remove();
+                                $.each(data, function (index, row) {
 
-        return base.toFixed(6);
-    }
+                                    if (row.TipoImpuesto == "Traslado" && parseFloat(row.Base) > 0) {
+                                        var baseT = parseFloat(ImporteSobreIva($('#Pago_DocumentoRelacionado_ImportePagado').val(), row.TasaOCuota));
+                                        var importeT = parseFloat(row.Base) * parseFloat(row.TasaOCuota);
 
-    $(function () {
-        tippy('.calculaEquivalencia', {
-            content: 'Calcula la Equivalencia',
-        });
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: ' @Url.Action("AgregarDTraslado", "AjaxOperaciones")',
+                                            data: JSON.stringify({
+                                                Tbase: row.Base, //baseT,
+                                                Timpuesto: row.Impuesto,
+                                                TtipoFactor: row.TipoFactor,
+                                                TtasaOCuota: row.TasaOCuota,
+                                                Timporte: importeT.toFixed(2)
+                                            }),
+                                            dataType: 'html',
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (partialView) {
+                                                $('#detallesTraslado').append(partialView);
+                                            },
+                                            error: function (jqxhr, textStatus, error) {
+                                                console.log("Error: ");
+                                            }
 
-        $('.calculaEquivalencia').on('click', function (e) {
-            e.preventDefault();
-            //calcula la equivalencia
-            var ImportSAnterior = parseFloat($('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val());
-            var ImportPagado = parseFloat($('#Pago_DocumentoRelacionado_ImportePagado').val());
-            var monedaDR = $('#Pago_DocumentoRelacionado_Moneda option:selected').text();
-            var pagoID = $('#PagoId').val();
-            var equivalencia = 1;
-            var montoPago = 0;
+                                        });
 
-            if (monedaDR != "MXN") {
-                //buscamos el importe del pago relacionado
-                $.get("/AjaxOperaciones/GetMontoPago", { PagoId: pagoID }, function (data) {
-                    if (data.length > 0) {
-                        $.each(data, function (index, row) {
-                            montoPago = parseFloat(row.Monto)
-                            tipoCambioPago = parseFloat(row.TipoCambio)
-                            if (montoPago > 0) {
-                                equivalencia = (ImportPagado / montoPago);
-                                $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(equivalencia.toFixed(6))
+
+                                        $('.validacion-traslado').show();
+                                    }
+                                    if (row.TipoImpuesto == "Retencion" && parseFloat(row.Base) > 0) {
+                                        var baseR = parseFloat(row.Importe) / parseFloat(row.TasaOCuota);
+
+                                        var importeR = parseFloat(baseR) * parseFloat(row.TasaOCuota);
+
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: ' @Url.Action("AgregarDRetencion", "AjaxOperaciones")',
+                                            data: JSON.stringify({
+                                                Rbase: baseR,
+                                                Rimpuesto: row.Impuesto,
+                                                RtipoFactor: row.TipoFactor,
+                                                RtasaOCuota: row.TasaOCuota,
+                                                Rimporte: importeR.toFixed(2)
+                                            }),
+                                            dataType: 'html',
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (partialView) {
+                                                $('#detallesRetencion').append(partialView);
+                                            },
+                                            error: function (jqxhr, textStatus, error) {
+                                                console.log("Favor de llenar todos los datos para los detalles");
+                                            }
+
+                                        });
+
+
+                                        $('.validacion-retencion').show();
+                                    }
+
+                                });
+
+
+
+                            } else {
+                                $(".DTraslado").parent().remove();
+                                $(".DRetencion").parent().remove();
+                                $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('01');
+                                $('#DescripcionObjetoImpuesto').text('01-No objeto de impuesto');
+                                $('.ObjetoImpuesto').show();
+                                $('.validacion-traslado').hide();
+                                $('.validacion-retencion').hide();
+
                             }
                         });
+                    } else {
+                        $('#FacturaEmitidaId option').prop('selected', function () {
+                            return this.defaultSelected;
+                        });
+
+                        alert("Favor de llenar los importes antes de seleccionar la Factura Emitida!!");
                     }
-                });
+                } else {
+                    $(".DTraslado").parent().remove();
+                    $(".DRetencion").parent().remove();
+                    $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val('01');
+                    $('#DescripcionObjetoImpuesto').text('01-No objeto de impuesto');
+                    $('.ObjetoImpuesto').show();
+                    $('.validacion-traslado').hide();
+                    $('.validacion-retencion').hide();
+                }
+            });
+        });
+
+        function ValidaImpuesto(valor) {
+            var resultado = "";
+            switch (valor) {
+                case "001":
+                    resultado = "001-ISR";
+                    break;
+                case "002":
+                    resultado = "002-IVA";
+                    break;
+                case "003":
+                    resultado = "003-IEPS"
+                    break;
+            }
+            return resultado;
+        }
+
+        function ImporteSobreIva(valor, iva) {
+            var ImportPagado = parseFloat(valor);
+            let ivaString = iva;
+            ivaString = "1" + ivaString.toString().substring(1);
+            var Iva = parseFloat(ivaString);
+            var base = ImportPagado / Iva
+
+            return base.toFixed(6);
+        }
+
+        $(function () {
+            tippy('.calculaEquivalencia', {
+                content: 'Calcula la Equivalencia',
+            });
+
+            $('.calculaEquivalencia').on('click', function (e) {
+                e.preventDefault();
+                //calcula la equivalencia
+                var ImportSAnterior = parseFloat($('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val());
+                var ImportPagado = parseFloat($('#Pago_DocumentoRelacionado_ImportePagado').val());
+                var monedaDR = $('#Pago_DocumentoRelacionado_Moneda option:selected').text();
+                var pagoID = $('#PagoId').val();
+                var equivalencia = 1;
+                var montoPago = 0;
+
+                if (monedaDR != "MXN") {
+                    //buscamos el importe del pago relacionado
+                    $.get("/AjaxOperaciones/GetMontoPago", {
+                        PagoId: pagoID
+                    }, function (data) {
+                        if (data.length > 0) {
+                            $.each(data, function (index, row) {
+                                montoPago = parseFloat(row.Monto)
+                                tipoCambioPago = parseFloat(row.TipoCambio)
+                                if (montoPago > 0) {
+                                    equivalencia = (ImportPagado / montoPago);
+                                    $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(equivalencia.toFixed(6))
+                                }
+                            });
+                        }
+                    });
 
                 } else {
                     $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(1)
 
                 }
 
-        })
-        //Total de impuesto Trasladado y Retenido
-        $('.TTasaOCuota').on("keyup", function () {
-            if ($('.TTasaOCuota').val() > 0) {
+            })
+            //Total de impuesto Trasladado y Retenido
+            $('.TTasaOCuota').on("keyup", function () {
+                if ($('.TTasaOCuota').val() > 0) {
 
-                var TBase = parseFloat($('.TBase').val());
-                var TTasaOCuota = parseFloat($('.TTasaOCuota').val());
-                if ($('.TBase').val() === "") {
-                    TBase = 0;
+                    var TBase = parseFloat($('.TBase').val());
+                    var TTasaOCuota = parseFloat($('.TTasaOCuota').val());
+                    if ($('.TBase').val() === "") {
+                        TBase = 0;
 
+                    }
+                    if ($('.TTasaOCuota').val() === "") {
+                        TTasaOCuota = 0;
+                    }
+
+                    Total = TBase * TTasaOCuota;
+                    $('.TImporte').val(Total.toFixed(2));
+                } else {
+                    $('.TImporte').val(0);
                 }
-                if ($('.TTasaOCuota').val() === "") {
-                    TTasaOCuota = 0;
-                }
+            });
 
-                Total = TBase * TTasaOCuota;
-                $('.TImporte').val(Total.toFixed(2));
-            } else {
-                $('.TImporte').val(0);
+            $('.RTasaOCuota').on("keyup", function () {
+                if ($('.RTasaOCuota').val() > 0) {
+                    var TBase = parseFloat($('.RBase').val());
+                    var TTasaOCuota = parseFloat($('.RTasaOCuota').val());
+                    if ($('.RBase').val() === "") {
+                        TBase = 0;
+
+                    }
+                    if ($('.RTasaOCuota').val() === "") {
+                        TTasaOCuota = 0;
+                    }
+
+                    Total = TBase * TTasaOCuota;
+                    $('.RImporte').val(Total.toFixed(2));
+                } else {
+                    $('.RImporte').val(0);
+                }
+            });
+
+            $('.TBase').on("keyup", function () {
+
+                cambioimporteT();
+            });
+            $('.TBase').change(function () {
+
+                cambioimporteT();
+            });
+            $('.RBase').on("keyup", function () {
+
+                cambioimporteR();
+            });
+            $('.RBase').change(function () {
+
+                cambioimporteR();
+            });
+
+
+        });
+
+        function cambioimporteR() {
+            var RBase = parseFloat($('.RBase').val());
+            var RTasaOCuota = parseFloat($('.RTasaOCuota').val());
+            if ($('.RBase').val() === "") {
+                RBase = 0;
+
             }
-        });
-
-        $('.RTasaOCuota').on("keyup", function () {
-            if ($('.RTasaOCuota').val() > 0) {
-                var TBase = parseFloat($('.RBase').val());
-                var TTasaOCuota = parseFloat($('.RTasaOCuota').val());
-                if ($('.RBase').val() === "") {
-                    TBase = 0;
-
-                }
-                if ($('.RTasaOCuota').val() === "") {
-                    TTasaOCuota = 0;
-                }
-
-                Total = TBase * TTasaOCuota;
-                $('.RImporte').val(Total.toFixed(2));
-            } else {
-                $('.RImporte').val(0);
+            if ($('.RTasaOCuota').val() === "") {
+                RTasaOCuota = 0;
             }
-        });
 
-        $('.TBase').on("keyup", function () {
+            var TotalRet = (RBase * RTasaOCuota);
 
-            cambioimporteT();
-        });
-        $('.TBase').change(function () {
+            $('.RImporte').val(TotalRet.toFixed(2));
 
-            cambioimporteT();
-        });
-        $('.RBase').on("keyup", function () {
-
-            cambioimporteR();
-        });
-        $('.RBase').change(function () {
-
-            cambioimporteR();
-        });
-
-
-    });
-    function cambioimporteR() {
-        var RBase = parseFloat($('.RBase').val());
-        var RTasaOCuota = parseFloat($('.RTasaOCuota').val());
-        if ($('.RBase').val() === "") {
-            RBase = 0;
 
         }
-        if ($('.RTasaOCuota').val() === "") {
-            RTasaOCuota = 0;
+
+        function cambioimporteT() {
+            //traslado
+            var TBase = parseFloat($('.TBase').val());
+            var TTasaOCuota = parseFloat($('.TTasaOCuota').val());
+            if ($('.TBase').val() === "") {
+                TBase = 0;
+
+            }
+            if ($('.TTasaOCuota').val() === "") {
+                TTasaOCuota = 0;
+            }
+
+            var TotalTras = (TBase * TTasaOCuota);
+            $('.TImporte').val(TotalTras.toFixed(2));
         }
 
-        var TotalRet = (RBase * RTasaOCuota);
+        /****************************/
+        //DETALLE CFDI RELACIONADO
 
-        $('.RImporte').val(TotalRet.toFixed(2));
+        $(function () {
+            $('#agregarDetalleCRelacionado').click(function () {
+                contadorCRelacionado = $(".CRelacionado").length + 1;
+                $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contadorCRelacionado + '</span >');
+            });
+        });
 
+        $(function () {
+            $("#agregarDetalleCRelacionado").on('click', function () {
 
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("AgregarCfdiRelacionado", "AjaxOperaciones")',
+                    data: JSON.stringify({
+                        TipoRelacion: $('#CfdiRelacionado_TipoRelacion').val(),
+                        UUID: $('#CfdiRelacionado_UUIDCfdiRelacionado').val()
+                    }),
+                    dataType: 'html',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (partialView) {
+                        $('#detallesCRelacionado').append(partialView);
+                    },
+                    error: function (jqxhr, textStatus, error) {
+                        alert("Favor de llenar todos los datos para los detalles");
+                    }
+                });
+                return false;
+            });
+        });
+
+        function removeDetalleCRelacionado(elem) {
+            var totalU = $(".CRelacionado").length;
+            if (totalU > 0) {
+                var contador = $(".CRelacionado").length - 1;
+                contadorCRelacionado = contador;
+                $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contador + '</span >');
+            } else {
+                $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">');
+            }
+            $(elem).parent().parent().parent().remove();
+        }
+
+        /***************************/
     }
-    function cambioimporteT() {
-        //traslado
-        var TBase = parseFloat($('.TBase').val());
-        var TTasaOCuota = parseFloat($('.TTasaOCuota').val());
-        if ($('.TBase').val() === "") {
-            TBase = 0;
-
-        }
-        if ($('.TTasaOCuota').val() === "") {
-            TTasaOCuota = 0;
-        }
-
-        var TotalTras = (TBase * TTasaOCuota);
-        $('.TImporte').val(TotalTras.toFixed(2));
-    }
-
-    /****************************/
-    //DETALLE CFDI RELACIONADO
-
-    $(function () {
-        $('#agregarDetalleCRelacionado').click(function () {
-            contadorCRelacionado = $(".CRelacionado").length + 1;
-        $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contadorCRelacionado + '</span >');
-    });
-    });
-
-    $(function () {
-    $("#agregarDetalleCRelacionado").on('click', function () {
-
-            $.ajax({
-                type: 'POST',
-                url: ' @Url.Action("AgregarCfdiRelacionado", "AjaxOperaciones")',
-                data: JSON.stringify({
-                    TipoRelacion: $('#CfdiRelacionado_TipoRelacion').val(),
-                    UUID: $('#CfdiRelacionado_UUIDCfdiRelacionado').val()
-                }),
-                dataType: 'html',
-                contentType: "application/json; charset=utf-8",
-                success: function (partialView) {
-                    $('#detallesCRelacionado').append(partialView);
-                },
-                error: function (jqxhr, textStatus, error) {
-                    alert("Favor de llenar todos los datos para los detalles");
-                }
-              });
-            return false;
-        });
-    });
-
-    function removeDetalleCRelacionado(elem) {
-        var totalU = $(".CRelacionado").length;
-        if (totalU > 0) {
-            var contador = $(".CRelacionado").length - 1;
-            contadorCRelacionado = contador;
-            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contador + '</span >');
-        } else {
-            $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">');
-        }
-        $(elem).parent().parent().parent().remove();
-    }
-
-    /***************************/
 </script>

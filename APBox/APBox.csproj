@@ -353,7 +353,7 @@
     <Compile Include="Controllers\Ajax\AjaxOperacionesController.cs" />
     <Compile Include="Controllers\Catalogos\BancosController.cs" />
     <Compile Include="Controllers\Catalogos\CentrosCostosController.cs" />
-    <Compile Include="Controllers\Operaciones\AutoregistroController.cs" />
+    <Compile Include="Controllers\Operaciones\AutoregistroSociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\SociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\ConceptosController.cs" />
     <Compile Include="Controllers\Catalogos\DepartamentosController.cs" />
@@ -3027,9 +3027,9 @@
     <Content Include="Views\Grupos\Details.cshtml" />
     <Content Include="Views\Grupos\Edit.cshtml" />
     <Content Include="Views\Grupos\Index.cshtml" />
-    <Content Include="Views\ComplementosPagos\Create.cshtml" />
+    <Content Include="Views\ComplementosPagos\PagoManual.cshtml" />
     <Content Include="Views\ComplementosPagos\Delete.cshtml" />
-    <Content Include="Views\ComplementosPagos\Edit.cshtml" />
+    <Content Include="Views\ComplementosPagos\EditPagoManual.cshtml" />
     <Content Include="Views\ComplementosPagos\Index.cshtml" />
     <Content Include="Views\OtrosGastos\Index.cshtml" />
     <Content Include="Views\Gastos\Create.cshtml" />
@@ -3196,10 +3196,10 @@
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_consultas.cshtml" />
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_operaciones.cshtml" />
     <Content Include="Views\DocumentosRecibidos\Edit.cshtml" />
-    <Content Include="Views\Autoregistro\Create.cshtml" />
-    <Content Include="Views\Autoregistro\CreateUsuario.cshtml" />
-    <Content Include="Views\Autoregistro\Error.cshtml" />
-    <Content Include="Views\Autoregistro\Completado.cshtml" />
+    <Content Include="Views\AutoregistroSociosComerciales\Create.cshtml" />
+    <Content Include="Views\AutoregistroSociosComerciales\CreateUsuario.cshtml" />
+    <Content Include="Views\AutoregistroSociosComerciales\Error.cshtml" />
+    <Content Include="Views\AutoregistroSociosComerciales\Completado.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

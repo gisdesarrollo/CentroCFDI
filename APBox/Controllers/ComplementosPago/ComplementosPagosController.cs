@@ -50,8 +50,7 @@ namespace APBox.Controllers.ComplementosPago
        
         #endregion
 
-        // GET: Facturas
-
+        #region Métodos
         public ActionResult Index()
         {
             PopulaEstatus();
@@ -130,8 +129,7 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementosPagosModel);
         }
 
-        // GET: ComplementosPago/Create
-        public ActionResult Create()
+        public ActionResult PagoManual()
         {
             PopulaClientes();
             PopulaBancos(ObtenerSucursal());
@@ -164,13 +162,13 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "Crear Complemento de Pago Manual";
             return View(complementoPago);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ComplementoPago complementoPago)
+        public ActionResult PagoManual(ComplementoPago complementoPago)
         {
             ModelState.Remove("Pago.FechaPago");
             ModelState.Remove("Pago.FormaPago");
@@ -224,7 +222,7 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementoPago);
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult EditPagoManual(int? id)
         {
             if (id == null)
             {
@@ -257,13 +255,13 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "Editar Complemento de Pago Manual";
             return View(complementoPago);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ComplementoPago complementoPago)
+        public ActionResult EditPagoManual(ComplementoPago complementoPago)
         {
             ModelState.Remove("Pago.FechaPago");
             ModelState.Remove("Pago.FormaPago");
@@ -309,101 +307,7 @@ namespace APBox.Controllers.ComplementosPago
             }
             return View(complementoPago);
         }
-
-        [Authorize(Roles = "BORRADO")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            ComplementoPago complementoPago = _db.ComplementosPago.Find(id);
-            _db.ComplementosPago.Remove(complementoPago);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        #region Cargas Masivas
-
-        public ActionResult Exportar()
-        {
-            var pathCompleto = _cargarComplementosPagos.Exportar();
-            byte[] filedata = System.IO.File.ReadAllBytes(pathCompleto);
-            string contentType = MimeMapping.GetMimeMapping(pathCompleto);
-
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = Path.GetFileName(pathCompleto),
-                Inline = false,
-            };
-            Response.AppendHeader("Content-Disposition", cd.ToString());
-            return File(filedata, contentType);
-        }
-
-        public ActionResult Cargar()
-        {
-            ViewBag.Controller = "ComplementosPagos";
-            ViewBag.Action = "Cargar";
-            ViewBag.ActionES = "Cargar Layout";
-            ViewBag.NameHere = "emision";
-            var cargasComplementosModel = new CargasComplementosModel
-            {
-                GrupoId = ObtenerGrupo(),
-                Previsualizacion = true,
-                Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
-                Detalles = new List<ComplementoPago>()
-            };
-
-            return View(cargasComplementosModel);
-        }
-
-        [HttpPost]
-        public ActionResult Cargar(CargasComplementosModel cargasComplementosModel)
-        {
-            ViewBag.Controller = "ComplementosPagos";
-            ViewBag.Action = "Cargar";
-            ViewBag.ActionES = "Cargar Layout";
-            ViewBag.NameHere = "emision";
-            if (ModelState.IsValid)
-            {
-                string archivo;
-                try
-                {
-                    archivo = SubeArchivo(0);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
-                    return View(cargasComplementosModel);
-                }
-
-                try
-                {
-                    cargasComplementosModel.Detalles = _cargarComplementosPagos.Importar(archivo, ObtenerSucursal(), cargasComplementosModel.Mes, cargasComplementosModel.Previsualizacion);
-                    if (cargasComplementosModel.Previsualizacion)
-                    {
-                        //ModelState.AddModelError("", "Comando realizado con éxito");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    
-                }
-                catch (Exception ex)
-                {
-                    var errores = ex.Message.Split('|');
-                    foreach (var error in errores)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-
-            }
-            return View(cargasComplementosModel);
-        }
-
-        #endregion
-
-        #region Operaciones
-
-        public ActionResult DocumentosRelacionados(int id)
+        public ActionResult EditDocumentosRelacionados(int id)
         {
             var complementoPago = _db.ComplementosPago.Find(id);
 
@@ -440,12 +344,12 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "DocumentosRelacionados";
             ViewBag.ActionES = "DocumentosRelacionados";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "Editar Documentos Relacionados al Pago";
             return View(complementoPago);
         }
 
         [HttpPost]
-        public ActionResult DocumentosRelacionados(ComplementoPago complementoP)
+        public ActionResult EditDocumentosRelacionados(ComplementoPago complementoP)
         {
             PopulaFacturas(complementoP.ReceptorId);
             PopulaPagos(complementoP.Id);
@@ -689,6 +593,100 @@ namespace APBox.Controllers.ComplementosPago
             return View(complementoPago);
         }
 
+        [Authorize(Roles = "BORRADO")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ComplementoPago complementoPago = _db.ComplementosPago.Find(id);
+            _db.ComplementosPago.Remove(complementoPago);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Carga Layout
+        public ActionResult Exportar()
+        {
+            var pathCompleto = _cargarComplementosPagos.Exportar();
+            byte[] filedata = System.IO.File.ReadAllBytes(pathCompleto);
+            string contentType = MimeMapping.GetMimeMapping(pathCompleto);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = Path.GetFileName(pathCompleto),
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            return File(filedata, contentType);
+        }
+
+        public ActionResult PagosLayout()
+        {
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Cargar";
+            ViewBag.ActionES = "Cargar Layout";
+            ViewBag.NameHere = "emision";
+            var cargasComplementosModel = new CargasComplementosModel
+            {
+                GrupoId = ObtenerGrupo(),
+                Previsualizacion = true,
+                Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
+                Detalles = new List<ComplementoPago>()
+            };
+
+            return View(cargasComplementosModel);
+        }
+
+        [HttpPost]
+        public ActionResult PagosLayout(CargasComplementosModel cargasComplementosModel)
+        {
+            ViewBag.Controller = "ComplementosPagos";
+            ViewBag.Action = "Cargar";
+            ViewBag.ActionES = "Cargar Layout";
+            ViewBag.NameHere = "emision";
+            if (ModelState.IsValid)
+            {
+                string archivo;
+                try
+                {
+                    archivo = SubeArchivo(0);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                    return View(cargasComplementosModel);
+                }
+
+                try
+                {
+                    cargasComplementosModel.Detalles = _cargarComplementosPagos.Importar(archivo, ObtenerSucursal(), cargasComplementosModel.Mes, cargasComplementosModel.Previsualizacion);
+                    if (cargasComplementosModel.Previsualizacion)
+                    {
+                        //ModelState.AddModelError("", "Comando realizado con éxito");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    
+                }
+                catch (Exception ex)
+                {
+                    var errores = ex.Message.Split('|');
+                    foreach (var error in errores)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+
+            }
+            return View(cargasComplementosModel);
+        }
+
+        #endregion
+
+        #region Operaciones
+
         public ActionResult Generar(int? id)
         {
             
@@ -915,15 +913,6 @@ namespace APBox.Controllers.ComplementosPago
         }
         #endregion
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Popula Forma
 
         private int ObtenerGrupo()
@@ -1060,6 +1049,14 @@ namespace APBox.Controllers.ComplementosPago
             return Json(impuestosDTO, JsonRequestBehavior.AllowGet);
         }
 
-        
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
     }
 }
