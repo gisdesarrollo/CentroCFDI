@@ -62,7 +62,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "CFDI de Ingreso y Egreso";
             return View(comprobanteCfdiModel);
         }
 
@@ -75,7 +75,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "CFDI de Ingreso y Egreso";
 
             if (actionName == "Filtrar")
             {

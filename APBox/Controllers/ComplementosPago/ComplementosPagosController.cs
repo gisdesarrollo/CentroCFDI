@@ -71,7 +71,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "Complementos de Recepción de Pagos";
+            ViewBag.NameHere = "CFDI Complementos de Recepción de Pagos";
             return View(complementosPagosModel);
         }
 

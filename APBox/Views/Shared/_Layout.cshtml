@@ -33,6 +33,7 @@
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="~/_CDN/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="~/_CDN/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script>
     <!--end::Global Stylesheets Bundle-->
     <!--begin::CUSTOM-->
     <link rel="stylesheet" href="~/_CDN/custom/css-custom/styles.css" type="text/css" />
@@ -89,6 +90,7 @@
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="~/_CDN/assets/js/widgets.bundle.js"></script>
     <script src="~/_CDN/assets/js/custom/widgets.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/2.5.4/tippy.all.js" integrity="sha512-jIIh0z4fzfV4cFju6uTH2QY9Q/UrRd09aa35FKbh759/sl4VyIlA9JMbjM3nSFLNESeiih6pzDlsB4GLd0JZlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--end::Custom Javascript-->
     <!--begin::Javascript Initialize-->
     <script src="~/_CDN/custom/js-custom/triggers-init.js"></script>
@@ -218,6 +220,7 @@
         $(".date").flatpickr({
             dateFormat: "d/m/Y"
         });
+
         //solo meses con año
         $(".mes").flatpickr({
             mode: "single",
@@ -230,6 +233,7 @@
             enableTime: true,
             dateFormat: "d/m/Y H:i" //H:i
         });
+
         //activa calendario time
         $(".time").flatpickr({
             enableTime: true,

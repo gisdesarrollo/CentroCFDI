@@ -1,7 +1,5 @@
 ﻿@model API.Operaciones.ComplementosPagos.ComplementoPago
-
-<link href="~/_CDN/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-
+@Html.Partial("_ComplementosPagosScripts")
 
 @using (Html.BeginForm())
 {
@@ -52,10 +50,10 @@
                                     <span class="path2"></span>
                                 </i> CFDI Relacionados
                             </button>
-                            <button id="toggleButton" type="button" class="btn btn-light-primary btn-sm"
+                            <button id="toggleButton2" type="button" class="btn btn-light-primary btn-sm"
                                     data-kt-toggle="true"
                                     data-kt-toggle-state="active"
-                                    data-kt-toggle-target="#toggleTarget"
+                                    data-kt-toggle-target="#toggleTarget2"
                                     data-kt-toggle-name="custom-toggle">
                                 <i class="ki-duotone ki-abstract-26">
                                     <span class="path1"></span>
@@ -84,6 +82,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bold text-gray-900">CFDI Relacionados</span>
+                        <div id="contador">Número de Divs: <span id="numeroDivs">0</span></div>
                     </h3>
                 </div>
                 <!--end::Header-->
@@ -91,7 +90,7 @@
                 <div class="card-body pt-2">
                     <!--begin::Item-->
                     <!--begin::Form group-->
-                    <div class="row form-group" id="repeater">
+                    <div class="row form-group">
                         <div class="col-md-6">
                             @Html.LabelFor(model => model.CfdiRelacionado.TipoRelacion, new { @class = "form-label" })
                             @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select mb-2" })
@@ -102,41 +101,22 @@
                             @Html.EditorFor(model => model.CfdiRelacionado.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control mb-2" } })
                             @Html.ValidationMessageFor(model => model.CfdiRelacionado.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
                         </div>
-                        <div class="col-md-2">
-                            <a href="javascript:;" class="btn btn-sm btn-light-danger mt-10">
-                                <i class="ki-duotone ki-trash fs-5">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                    <span class="path3"></span>
-                                    <span class="path4"></span>
-                                    <span class="path5"></span>
-                                </i>
-                                Borrar
+                        <div class="col-md-2 text-center">
+                            <a id="agregarCfdiRelacionado" href="#" class="btn btn-light-primary mt-8">
+                                <i class="ki-duotone ki-plus fs-3"></i>
+                                Agregar
                             </a>
                         </div>
-                        <div class="content-box-wrapper visually-hidden">
-                            <div>
-                                <div class="row" id="detallesCRelacionado">
-                                    @if (Model.CfdiRelacionados != null)
-                                    {
-                                        foreach (var cfdiRelacionado in Model.CfdiRelacionados)
-                                        {
-                                            @Html.Partial("~/Views/CfdiRelacionados/CfdiRelacionado.cshtml", cfdiRelacionado)
-                                        }
-                                    }
-                                    <div class="separator my-5"></div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
-                    <!--end::Form group-->
-                    <!--begin::Form group-->
-                    <div class="form-group mt-5">
-                        <a href="javascript:;" data-repeater-create class="btn btn-light-primary">
-                            <i class="ki-duotone ki-plus fs-3"></i>
-                            Agregar
-                        </a>
+                        <div id="detallesCRelacionado">
+                            @if (Model.CfdiRelacionados != null)
+                            {
+                                foreach (var cfdiRelacionado in Model.CfdiRelacionados)
+                                {
+                                    @Html.Partial("~/Views/CfdiRelacionados/CfdiRelacionado.cshtml", cfdiRelacionado)
+                                }
+                            }
+                        </div>
                     </div>
                     <!--end::Form group-->
                     <!--end::Item-->
@@ -148,17 +128,15 @@
     </div>
     <!--end::Row-->
 
-
-
     <!--begin::Row-->
-    <div class="row g-5 g-xl-8" id="toggleTarget" data-kt-custom-toggle="on">
+    <div class="row g-5 g-xl-8" id="toggleTarget2" data-kt-custom-toggle="on">
         <div class="col-12">
             <!--begin::List Widget 1-->
             <div class="card card-xl-stretch mb-xl-8">
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold text-gray-900">Información Inicial</span>
+                        <span class="card-label fw-bold text-gray-900">Addenda</span>
                     </h3>
                 </div>
                 <!--end::Header-->
@@ -167,14 +145,9 @@
                     <!--begin::Item-->
                     <div class="row">
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "form-label" })
-                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2" })
-                            @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-3">
-                            <label class="form-label" for="Version">Fecha Emisión</label>
-                            @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
-                            @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.ReferenciaAddenda, htmlAttributes: new { @class = "form-label" })
+                            @Html.EditorFor(model => model.ReferenciaAddenda, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                            @Html.ValidationMessageFor(model => model.ReferenciaAddenda, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <!--end::Item-->
@@ -248,8 +221,8 @@
                                 <i class="glyph-icon icon-cog"></i>
                                 Agregar Cfdi Relacionado
                             </h3>
-                            <div class="card-toolbar disableCRelacionado">
-                                <a href="#" id="agregarDetalleCRelacionado">
+                            <div class="card-toolbar">
+                                <a href="#" id="agregarCfdiRelacioado">
                                     <!--begin::Svg Icon -->
                                     <span class="svg-icon svg-icon-3x">
                                         <img src="~/_CDN/assets/media/icons/duotune/general/gen041.svg" width="40" height="40" />
@@ -257,7 +230,6 @@
                                     <!--end::Svg Icon-->
                                 </a>
                             </div>
-
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -287,7 +259,7 @@
 
                                         <div class="content-box-wrapper">
                                             <div>
-                                                <div class="row" id="detallesCRelacionado">
+                                                <div class="row" id="detallaaaesCRelacionado">
                                                     @if (Model.CfdiRelacionados != null)
                                                     {
                                                         foreach (var cfdiRelacionado in Model.CfdiRelacionados)
@@ -469,37 +441,18 @@
 
 
 <script>
-    window.onload = function () {
-        $('.cfdiRelacionado').change(function () {
-            if ($('.cfdiRelacionado').prop('checked')) {
-                $('.cfdiRelacionadoSeccion').show(200);
-                $('.cfdiRelacionadoSeccion').css('display', 'inline');
-            } else {
-                $('.cfdiRelacionadoSeccion').hide(200);
-            }
-        });
-
-        $('#agregarDetalle').click(function () {
-            var contador = $(".pago").length + 1;
-            $(".contadorPagos").replaceWith('<span class="contadorPagos font-blue">: ' + contador + '</span >');
-        })
-    }
-
-    $('#repeater').repeater({
-        initEmpty: false,
-
-        defaultValues: {
-            'text-input': 'foo'
-        },
-
-        show: function () {
-            $(this).slideDown();
-        },
-
-        hide: function (deleteElement) {
-            $(this).slideUp(deleteElement);
-        }
-    });
+    //$('.cfdiRelacionado').change(function () {
+    //    if ($('.cfdiRelacionado').prop('checked')) {
+    //        $('.cfdiRelacionadoSeccion').show(200);
+    //        $('.cfdiRelacionadoSeccion').css('display', 'inline');
+    //    } else {
+    //        $('.cfdiRelacionadoSeccion').hide(200);
+    //    }
+    //});
+    //$('#agregarDetalle').click(function () {
+    //    var contador = $(".pago").length + 1;
+    //    $(".contadorPagos").replaceWith('<span class="contadorPagos font-blue">: ' + contador + '</span >');
+    //})
 </script>
 <style>
     [data-kt-custom-toggle="on"] {
@@ -507,4 +460,3 @@
     }
 </style>
 
-@Html.Partial("_ComplementosPagosScripts")

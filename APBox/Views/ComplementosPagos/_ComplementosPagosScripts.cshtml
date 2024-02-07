@@ -1,6 +1,8 @@
 ﻿<script>
-    window.onload = function () {
+    $(document).ready(function () {
+
         $("#agregarDetalle").on('click', function () {
+            alert("entro el ajax.");
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarPago", "AjaxOperaciones")',
@@ -541,48 +543,56 @@
         /****************************/
         //DETALLE CFDI RELACIONADO
 
-        $(function () {
-            $('#agregarDetalleCRelacionado').click(function () {
-                contadorCRelacionado = $(".CRelacionado").length + 1;
-                $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contadorCRelacionado + '</span >');
+        $(document).ready(function () {
+            var contador = 0;
+            $('#agregarCfdiRelacionado').click(function () {
+                contador++;
+                $('#contenedor').append('<div>Div ' + contador + '</div>');
+                $('#numeroDivs').text(contador);
             });
         });
 
-        $(function () {
-            $("#agregarDetalleCRelacionado").on('click', function () {
-
-                $.ajax({
-                    type: 'POST',
-                    url: ' @Url.Action("AgregarCfdiRelacionado", "AjaxOperaciones")',
-                    data: JSON.stringify({
-                        TipoRelacion: $('#CfdiRelacionado_TipoRelacion').val(),
-                        UUID: $('#CfdiRelacionado_UUIDCfdiRelacionado').val()
-                    }),
-                    dataType: 'html',
-                    contentType: "application/json; charset=utf-8",
-                    success: function (partialView) {
-                        $('#detallesCRelacionado').append(partialView);
-                    },
-                    error: function (jqxhr, textStatus, error) {
-                        alert("Favor de llenar todos los datos para los detalles");
-                    }
-                });
-                return false;
+        $("#agregarCfdiRelacionado").on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarCfdiRelacionado", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    TipoRelacion: $('#CfdiRelacionado_TipoRelacion').val(),
+                    UUID: $('#CfdiRelacionado_UUIDCfdiRelacionado').val()
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+                success: function (partialView) {
+                    $('#detallesCRelacionado').append(partialView);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de llenar todos los datos para los detalles");
+                }
             });
+            return false;
         });
 
-        function removeDetalleCRelacionado(elem) {
-            var totalU = $(".CRelacionado").length;
-            if (totalU > 0) {
-                var contador = $(".CRelacionado").length - 1;
-                contadorCRelacionado = contador;
-                $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">: ' + contador + '</span >');
-            } else {
-                $(".contadorCRelacionado").replaceWith('<span class="contadorCRelacionado font-blue">');
-            }
-            $(elem).parent().parent().parent().remove();
-        }
+
+
+            $('.removeCFDIRelacionado').click(function () {
+                alert("si entró el borrar, pero no borra ni madre");
+                //$(this).parent().remove();
+            });
+
+        //function removeCFDIRelacionado(elem) {
+        //    var totalU = $("#CFDIRelacionado").length;
+        //    alert(totalU);
+        //    if (totalU > 0) {
+        //        var contador = $("#CFDIRelacionado").length - 1;
+        //        contadorCRelacionado = contador;
+        //        $("#contenedor").html('<div>Div ' + contador + '</div>');
+        //    } else {
+        //        $("#contenedor").html('<div>Div</div>');
+        //    }
+
+        //    $(elem).parent().parent().remove();
+        //}
 
         /***************************/
-    }
+    });
 </script>
