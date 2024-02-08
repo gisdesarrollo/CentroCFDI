@@ -4,11 +4,12 @@
 @{
     var _db = new APBoxContext();
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
-    var GrupoId = Convert.ToInt32(Session["SucursalId"]);
-    var GrupoLlave = _db.Grupos.Find(GrupoId).Llave;
+    //var GrupoId = Convert.ToInt32(Session["SucursalId"]);
+    //var GrupoLlave = _db.Grupos.Find(GrupoId).Llave;
+    var GrupoId = _db.Sucursales.Find(sucursalId).GrupoId;
     var GrupoNombre = _db.Grupos.Find(GrupoId).Nombre;
     ViewBag.GrupoNombre = GrupoNombre;
-    ViewBag.Enlace = "www.centrocfdi.com/Autoregistro/Create/" + GrupoLlave;
+    ViewBag.Enlace = "www.centrocfdi.com/Autoregistro/Create/" + GrupoId;
 }
 
 @if (User.IsInRole("CLIENTES"))

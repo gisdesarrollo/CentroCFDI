@@ -1,6 +1,6 @@
 ﻿@model API.Operaciones.RelacionesCfdi.CfdiRelacionado
 
-@using (Html.BeginCollectionItem("CfdiRelacionados"))
+@*@using (Html.BeginCollectionItem("CfdiRelacionados"))
 {
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.ComplementoCartaPorteId)
@@ -9,7 +9,7 @@
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
     <div class="d-flex flex-column rounded-3 p-4 border border-dashed border-gray-500 mt-5 row">
-        <div class="row CFDIRelacionado" >
+        <div class="row CFDIRelacionado">
             <div class="form-group col-6">
                 @Html.LabelFor(model => model.TipoRelacion, new { @class = "form-label" })<br />
                 @Html.DisplayFor(model => model.TipoRelacion)
@@ -28,4 +28,43 @@
         </div>
         <!--end::Checkbox-->
     </div>
+}*@
+
+@using (Html.BeginCollectionItem("CfdiRelacionados"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+    <div class="d-flex flex-column rounded-3 p-4 border border-dashed border-gray-500 mt-5 row">
+        <div class="card-header" >
+            <h3 class="card-title text-white">
+                Cfdi Relacionados
+            </h3>
+            <div class="card-toolbar">
+                <a href="javascript:;" class="icon-separator" onclick="removeDetalleCRelacionado(this)">
+                    <i class="ki-duotone ki-trash fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                </a>
+            </div>
+
+        </div>
+        <div class="card-body row CRelacionado">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ComplementoCartaPorteId)
+            @Html.HiddenFor(model => model.ComplementoPagoId)
+            @Html.HiddenFor(model => model.ComprobanteId)
+            <div class="form-group col-6">
+                @Html.LabelFor(model => model.TipoRelacion, new { @class = "fw-bold" })<br />
+                @Html.DisplayFor(model => model.TipoRelacion)
+                @Html.HiddenFor(model => model.TipoRelacion)
+            </div>
+            <div class="form-group col-4">
+                @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "fw-bold" })<br />
+                @Html.DisplayFor(model => model.UUIDCfdiRelacionado)
+                @Html.HiddenFor(model => model.UUIDCfdiRelacionado)
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
 }
+
