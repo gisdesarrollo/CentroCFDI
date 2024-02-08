@@ -33,7 +33,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.NameHere = "Socios Comerciales";
 
             return View(clientes);
         }

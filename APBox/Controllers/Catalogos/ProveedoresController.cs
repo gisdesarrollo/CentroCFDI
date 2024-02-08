@@ -29,6 +29,14 @@ namespace APBox.Controllers.Catalogos
         {
             var grupoId = ObtenerGrupo();
             var proveedores = _db.Proveedores.Where(p => p.GrupoId == grupoId).ToList();
+
+            ViewBag.Controller = "Sucursales"; //referenciado al nombre del controlador
+            ViewBag.Action = "Index";
+            ViewBag.ActionES = "Index";
+            ViewBag.Button = "Crear";
+            ViewBag.NameHere = "Socios Comerciales";
+            ViewBag.Root = "Catálogos";
+
             return View(proveedores);
         }
 
