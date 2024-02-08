@@ -86,10 +86,10 @@
                                     Fecha
                                 </th>
                                 <th class="min-w-100px">
-                                    Monto
+                                    Datos CFDi
                                 </th>
                                 <th class="min-w-100px">
-                                    Datos CFDi
+                                    Monto
                                 </th>
                                 <th class="min-w-100px">
                                     Estado
@@ -124,10 +124,6 @@
                                         @Html.DisplayFor(model => Model.ComprobanteCfdi[i].FechaDocumento)
                                     </td>
                                     <td>
-                                        @Model.ComprobanteCfdi[i].Total.ToString("C") <br />
-                                        <div class="text-gray-500 fs-6">@Model.ComprobanteCfdi[i].Moneda</div>
-                                    </td>
-                                    <td>
                                         @if (Model.ComprobanteCfdi[i].TipoDeComprobante == API.Enums.c_TipoDeComprobante.I)
                                         {
                                             @Html.Raw("Ingreso")
@@ -141,6 +137,10 @@
                                             @Model.ComprobanteCfdi[i].MetodoPago
                                             @Model.ComprobanteCfdi[i].FormaPago
                                         </div>
+                                    </td>
+                                    <td class="text-end">
+                                        @Model.ComprobanteCfdi[i].Total.ToString("C") <br />
+                                        <div class="text-gray-500 fs-6">@Model.ComprobanteCfdi[i].Moneda</div>
                                     </td>
                                     <td>
                                         @if (Model.ComprobanteCfdi[i].Generado == true)
