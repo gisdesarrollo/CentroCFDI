@@ -1,4 +1,5 @@
 ﻿using APBox.Context;
+using APBox.Control;
 using API.Catalogos;
 using API.Enums;
 using API.Models.DocumentosRecibidos;
@@ -24,6 +25,7 @@ using Utilerias.LogicaPrincipal;
 
 namespace APBox.Controllers.Operaciones
 {
+    [SessionExpire]
     public class DocumentosRecibidosController : Controller
     {
         private readonly APBoxContext _db = new APBoxContext();
@@ -475,14 +477,14 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.Pagos_Id = null;
                 _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
                 _db.SaveChanges();
-                return Json(new { success = true, redirectTo = Url.Action("Index", "DocumentosRecibidos") });
+                return RedirectToAction("Index", "DocumentosRecibidos"); ;
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
             }
 
-            return Json(new { error = true, redirectTo = Url.Action("CargaCfdi", "DocumentosRecibidos") });
+            return View(documentoRecibidoDr);
 
         }
 
@@ -505,56 +507,60 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibido.isProveedor = false;
                 ViewBag.isProveedor = "Usuario";
             }
+            // Splitting the string into lines
+            string[] lines = documentoRecibido.Validaciones_Detalle.Split('\n');
+            documentoRecibido.DetalleArrays = lines.ToList();
+            TempData["AprobadorId"] = null;
+            TempData["DepartamentoId"] = null;
 
             return View(documentoRecibido);
         }
 
-        public ActionResult ValidaDocumentoRecibido(int id)
-        {
-            PopulaEstadoComercial();
-            ViewBag.Estatus = null;
-            ViewBag.Success = null;
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
-            return PartialView("~/Views/DocumentosRecibidos/_EstatusRecibidos.cshtml", documentoRecibido);
-        }
-        [HttpPost]
-        public ActionResult ValidaDocumentoRecibido(DocumentosRecibidosDR documentoRecibidoModal)
-        {
-            PopulaEstadoComercial();
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoModal.Id);
-            if (documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
-            {
-                documentoRecibido.MotivoRechazo = documentoRecibidoModal.MotivoRechazo;
-            }
-            documentoRecibido.Solicitudes = null;
-            documentoRecibido.Solicitud_Id = null;
-            documentoRecibido.EstadoComercial = documentoRecibidoModal.EstadoComercial;
-            _db.Entry(documentoRecibido).State = EntityState.Modified;
-            _db.SaveChanges();
-            ViewBag.Estatus = "ok";
-            ViewBag.Success = "¡¡Estatus documento recibido actualizado con exito!!";
-
-            //envio email rechazo
-            if (documentoRecibidoModal.EstadoComercial == c_EstadoComercial.Rechazado)
-            {
-                _envioEmail.SendEmailNotifications(null, documentoRecibido, true, (int)ObtenerSucursal());
-            }
-            return PartialView("~/Views/DocumentosRecibidos/_EstatusRecibidos.cshtml", documentoRecibido);
-        }
-
+        
         // POST: DocumentosRecibidos/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(DocumentosRecibidosDR documentoRecibidoEdit)
         {
             try
             {
-                // TODO: Add update logic here
+                var usuario = _db.Usuarios.Find(ObtenerUsuario());
+                var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
+                if (usuario.esProveedor)
+                {
+                    // Obtener los datos guardados en TempData
+                    var aprobadorId = TempData["AprobadorId"] as int?;
+                    var departamentoId = TempData["DepartamentoId"] as int?;
+                    if (aprobadorId != null && departamentoId != null)
+                    {
+                        documentoRecibido.Aprobador_Id = aprobadorId.Value;
+                        documentoRecibido.Departamento_Id = departamentoId.Value;
+                        _db.Entry(documentoRecibido).State = EntityState.Modified;
+                        _db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
+                    {
+                        documentoRecibido.MotivoRechazo = documentoRecibidoEdit.MotivoRechazo;
+                    }
+                    documentoRecibido.Solicitudes = null;
+                    documentoRecibido.Solicitud_Id = null;
+                    documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;
+                    _db.Entry(documentoRecibido).State = EntityState.Modified;
+                    _db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    //envio email rechazo
+                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
+                    {
+                        _envioEmail.SendEmailNotifications(null, documentoRecibido, true, (int)ObtenerSucursal());
+                    }
+                }
+                return RedirectToAction("Index","DocumentosRecibidos");
             }
             catch
             {
-                return View();
+                return View(documentoRecibidoEdit);
             }
         }
 

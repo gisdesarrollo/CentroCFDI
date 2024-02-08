@@ -33,10 +33,11 @@
     @Html.HiddenFor(model => model.FechaEntrega)
     @Html.HiddenFor(model => model.TipoDocumentoRecibido)
     @Html.HiddenFor(model => model.Monto)
+    @Html.HiddenFor(model => model.EstadoComercial)
 
     <!--begin::Row-->
     <div class="row g-5 g-xl-8">
-
+        <div id="valida-view"></div>
         <div class="col-xl-6">
             <!--begin::List Widget 2-->
             <div class="card card-xl-stretch mb-xl-8">
@@ -229,7 +230,33 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body pt-5">
-
+                    @foreach (var detalle in Model.DetalleArrays)
+                    {
+                        if (@detalle.Split(':')[0] != "")
+                        {
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center bg-light-success rounded p-5 mb-7">
+                            <i class="ki-duotone ki-abstract-26 text-success fs-1 me-5"><span class="path1"></span><span class="path2"></span></i>
+                            <!--begin::Title-->
+                            <div class="flex-grow-1 me-2">
+                                <h4 class="fw-semibold fs-6">@detalle.Split(':')[0]</h4>
+                                @if (detalle.Split(':')[1].Length > 1)
+                                {
+                                    <span class="text-muted fw-semibold d-block">@detalle.Split(':')[1]</span>
+                                }
+                                @if (detalle.Split(':')[2].Length > 1)
+                                {
+                                    <span class="text-muted fw-semibold d-block">@detalle.Split(':')[2]</span>
+                                }
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Lable-->
+                            @*<span class="fw-bold text-success py-1">+50%</span>*@
+                            <!--end::Lable-->
+                        </div>
+                        <!--end::Item-->
+                        }
+                    }
 
                 </div>
                 <!--end::Body-->
@@ -258,7 +285,7 @@
                         <!--begin::Balance-->
                         <div class="d-flex text-center flex-column text-white pt-8">
                             <span class="fw-semibold fs-7">Importe Total</span>
-                            <span class="fw-bold fs-2x pt-1">@*@Model.Monto.ToString("C", new System.Globalization.CultureInfo("mx-MX"))*@ <span class="fs-2">@*@Model.Moneda_Id*@</span></span>
+                            <span class="fw-bold fs-2x pt-1">@Model.Monto.ToString("C", new System.Globalization.CultureInfo("mx-MX")) <span class="fs-2">@Model.Moneda_Id</span></span>
                         </div>
                         <!--end::Balance-->
                     </div>
@@ -278,7 +305,7 @@
                             <div class="d-flex align-items-center flex-wrap w-100">
                                 <!--begin::Title-->
                                 <div class="mb-1 pe-3 flex-grow-1">
-                                    <h4 class="fw-semibold fs-6">@*@Model.CfdiRecibidos_Serie - @Model.CfdiRecibidos_Folio*@</h4>
+                                    <h4 class="fw-semibold fs-6">@Model.CfdiRecibidos_Serie - @Model.CfdiRecibidos_Folio</h4>
                                     <div class="text-gray-500 fw-semibold fs-7">Serie - Folio</div>
                                 </div>
                                 <!--end::Title-->
@@ -299,7 +326,7 @@
                             <div class="d-flex align-items-center flex-wrap w-100">
                                 <!--begin::Title-->
                                 <div class="mb-1 pe-3 flex-grow-1">
-                                    <h4 class="fw-semibold fs-6">@*@Model.CfdiRecibidos_UUID*@</h4>
+                                    <h4 class="fw-semibold fs-6">@Model.CfdiRecibidos_UUID</h4>
                                     <div class="text-gray-500 fw-semibold fs-7">Folio Fiscal</div>
                                 </div>
                                 <!--end::Title-->
@@ -326,7 +353,7 @@
                             <div class="d-flex align-items-center flex-wrap w-100">
                                 <!--begin::Title-->
                                 <div class="mb-1 pe-3 flex-grow-1">
-                                    <h4 class="fw-semibold fs-6"></h4>
+                                    <h4 class="fw-semibold fs-6">@Model.FechaComprobante</h4>
                                     <div class="text-gray-500 fw-semibold fs-7">Fecha de generación de CFDi</div>
                                 </div>
                                 <!--end::Title-->
@@ -351,7 +378,7 @@
                             <div class="d-flex align-items-center flex-wrap w-100">
                                 <!--begin::Title-->
                                 <div class="mb-1 pe-3 flex-grow-1">
-                                    <h4 class="fw-semibold fs-6">@ViewBag.MetodoPago - @ViewBag.FormaPago</h4>
+                                    <h4 class="fw-semibold fs-6">@Model.RecibidosComprobante.MetodoPago - @Model.RecibidosComprobante.FormaPago</h4>
                                     <div class="text-gray-500 fw-semibold fs-7">Método y Forma de Pago</div>
                                 </div>
                                 <!--end::Title-->
@@ -376,19 +403,19 @@
                                 <!--begin::Title-->
                                 <div class="mb-1 pe-3 flex-grow-1">
                                     <h4 class="fw-semibold fs-6">
-                                        @if (@ViewBag.TipoComprobante == "I")
+                                        @if (Model.RecibidosComprobante.TipoComprobante == API.Enums.c_TipoDeComprobante.I)
                                         {
                                             <text>Ingreso</text>
                                         }
-                                        else if (@ViewBag.TipoComprobante == "E")
+                                        else if (Model.RecibidosComprobante.TipoComprobante == API.Enums.c_TipoDeComprobante.E)
                                         {
                                             <text>Nota de Crédito</text>
                                         }
-                                        else if (@ViewBag.TipoComprobante == "T")
+                                        else if (Model.RecibidosComprobante.TipoComprobante == API.Enums.c_TipoDeComprobante.T)
                                         {
                                             <text>Traslado</text>
                                         }
-                                        else if (@ViewBag.TipoComprobante == "P")
+                                        else if (Model.RecibidosComprobante.TipoComprobante == API.Enums.c_TipoDeComprobante.P)
                                         {
                                             <text>Pago</text>
                                         }
@@ -425,7 +452,7 @@
                             <div class="d-flex align-items-center flex-wrap w-100">
                                 <!--begin::Title-->
                                 <div class="mb-1 pe-3 flex-grow-1">
-                                    <h4 class="fw-semibold fs-6">@ViewBag.Moneda - @ViewBag.TipoCambio</h4>
+                                    <h4 class="fw-semibold fs-6">@Model.RecibidosComprobante.Moneda - @Model.RecibidosComprobante.TipoCambio</h4>
                                     <div class="text-gray-500 fw-semibold fs-7">Moneda y Tipo de Cambio</div>
                                 </div>
                                 <!--end::Title-->
@@ -451,7 +478,7 @@
                             <div class="d-flex align-items-center flex-wrap w-100">
                                 <!--begin::Title-->
                                 <div class="mb-1 pe-3 flex-grow-1">
-                                    <h4 class="fw-semibold fs-6">@ViewBag.UsoCFDI</h4>
+                                    <h4 class="fw-semibold fs-6">@Model.RecibidosComprobante.SocioComercial.UsoCfdi</h4>
                                     <div class="text-gray-500 fw-semibold fs-7">Uso de CFDI</div>
                                 </div>
                                 <!--end::Title-->
@@ -468,7 +495,7 @@
 
             <!--end::List Widget 6-->
         </div>
-
+       
         <div class="col-6">
 
             <!--begin::List Widget 7-->
@@ -499,7 +526,7 @@
                                     <!--begin::Content-->
                                     <div class="d-flex flex-column">
                                         <!--begin::Title-->
-                                        <h1 class="text-gray-800 fw-semibold">@*@Model.EstadoComercial*@</h1>
+                                        <h1 class="text-gray-800 fw-semibold">@Model.EstadoComercial</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Content-->
@@ -524,7 +551,7 @@
                                         <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
                                             <!--begin::Number-->
                                             <div class="d-flex align-items-center">
-                                                <div class="fs-4 fw-bold">@*@Model.FechaEntrega.ToString("dd MMMM, yyyy")*@</div>
+                                                <div class="fs-4 fw-bold">@Model.FechaEntrega.ToString("dd MMMM, yyyy")</div>
                                             </div>
                                             <!--end::Number-->
                                             <!--begin::Label-->
@@ -536,7 +563,7 @@
                                         <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
                                             <!--begin::Number-->
                                             <div class="d-flex align-items-center">
-                                                <div class="fs-4 fw-bold">@ViewBag.Usuario</div>
+                                                <div class="fs-4 fw-bold">@Model.Usuario.NombreCompleto</div>
                                             </div>
                                             <!--end::Number-->
                                             <!--begin::Label-->
@@ -548,7 +575,7 @@
                                         <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
                                             <!--begin::Number-->
                                             <div class="d-flex align-items-center">
-                                                <div class="fs-4 fw-bold">Nombre Usuario Solicitante</div>
+                                                <div class="fs-4 fw-bold">@Model.Usuario.Email</div>
                                             </div>
                                             <!--end::Number-->
                                             <!--begin::Label-->
@@ -557,17 +584,19 @@
                                         </div>
                                         <!--end::Stat-->
                                         <!--begin::Stat-->
-                                        <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
+                                        @*<div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
                                             <!--begin::Number-->
                                             <div class="d-flex align-items-center">
-                                                <div class="fs-4 fw-bold">Recursos Humanos</div>
+                                                <div class="fs-4 fw-bold">@Model.Usuario.Departamento.Nombre</div>
                                             </div>
                                             <!--end::Number-->
                                             <!--begin::Label-->
                                             <div class="fw-semibold fs-4 text-gray-500">Departamento</div>
                                             <!--end::Label-->
-                                        </div>
+                                        </div>*@
                                         <!--end::Stat-->
+                                        @if (!Model.Usuario.esProveedor)
+                                        {
                                         <!--begin::Option-->
                                         <input type="radio" class="btn-check" name="radio_buttons_2" id="rechazado" />
                                         <label class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger p-7 d-flex align-items-center mb-5" for="rechazado">
@@ -583,6 +612,13 @@
                                                 </span>
                                             </span>
                                         </label>
+                                        <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3" id="motivo-rechazo" style="display:none">
+                                            <div class="form-group col-xs-12">
+                                                @Html.LabelFor(model => model.MotivoRechazo, htmlAttributes: new { @class = "control-label" })
+                                                @Html.EditorFor(model => model.MotivoRechazo, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.MotivoRechazo, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
                                         <!--end::Option-->
                                         <!--begin::Option-->
                                         <input type="radio" class="btn-check" name="radio_buttons_2" id="aprobado" />
@@ -596,8 +632,9 @@
                                                 <span class="text-muted fw-semibold fs-6">We will send a code via SMS if you need to use your backup login method.</span>
                                             </span>
                                         </label>
-                                        <!--end::Option-->
 
+                                        <!--end::Option-->
+                                        }
 
 
 
@@ -616,9 +653,12 @@
             </div>
             <!--end::List Widget 7-->
         </div>
+        
     </div>
     <!--end::Row-->
 
+    if(Model.Usuario.esProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision)
+    {
     <!--begin::Row-->
     <div class="row g-5 g-xl-8">
         <div class="col-12">
@@ -650,7 +690,7 @@
                                     <!--begin::Content-->
                                     <div class="d-flex flex-column">
                                         <!--begin::Title-->
-                                        <h1 class="text-gray-800 fw-semibold">@*@Model.EstadoComercial*@</h1>
+                                        <h1 class="text-gray-800 fw-semibold">@Model.EstadoComercial</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Content-->
@@ -708,7 +748,7 @@
                                         <div class="border border-gray-400 border-dashed rounded py-3 px-4 me-6 mb-3">
                                             <!--begin::Number-->
                                             <div class="d-flex align-items-center">
-                                                <div class="fs-4 fw-bold">@*@Model.FechaEntrega.ToString("dd MMMM, yyyy")*@</div>
+                                                <div class="fs-4 fw-bold">@Model.FechaEntrega.ToString("dd MMMM, yyyy")</div>
                                             </div>
                                             <!--end::Number-->
                                             <!--begin::Label-->
@@ -720,7 +760,7 @@
                                         <div class="border border-gray-400 border-dashed rounded py-3 px-4 me-6 mb-3">
                                             <!--begin::Number-->
                                             <div class="d-flex align-items-center">
-                                                <div class="fs-4 fw-bold">@ViewBag.Usuario</div>
+                                                <div class="fs-4 fw-bold">@Model.Usuario.NombreCompleto</div>
                                             </div>
                                             <!--end::Number-->
                                             <!--begin::Label-->
@@ -781,13 +821,15 @@
         </div>
     </div>
     <!--end::Row-->
-
+    }
     <div class="d-flex justify-content-end">
         <!--begin::Button-->
         <a href="@Url.Action("Index","DocumentosRecibidos")" class="btn btn-light me-5">
             Cancelar
         </a>
         <!--end::Button-->
+        @if ((Model.Usuario.esProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision) || (!Model.Usuario.esProveedor))
+        {
         <!--begin::Button-->
         <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
             <span class="indicator-label">
@@ -795,6 +837,7 @@
             </span>
         </button>
         <!--end::Button-->
+        }
     </div>
 
 }
@@ -802,457 +845,21 @@
 
 @Html.Partial("_DocumentoRecibidoScripts")
 
-@{
-    ViewBag.Title = "Documentos Recibidos";
-}
-<div class="card card-flush">
-    <div class="card pt-4 mb-6 mb-xl-9">
-        <!--begin::Card header-->
-        <div class="card-header border-0">
-            <!--begin::Card title-->
-            <div class="card-title">
-                <h2 class="fw-bold mb-0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Información del documento recibido</font></font></h2>
-                <div class="badge badge-light-primary ms-5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@Model.EstadoComercial</font></font></div>
-            </div>
-            <!--end::Card title-->
-            @if (!Model.isProveedor)
-            {
-                <!--begin::Card toolbar-->
-                <div class="card-toolbar">
-                    <a href="#" class="btn btn-sm btn-flex btn-light-primary dvalida" data-id="@Model.Id">
-                        <i class="ki-duotone ki-plus-square fs-3"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i><font style="vertical-align: inherit;">
-                            <font style="vertical-align: inherit;">
-                                Validar
-                            </font>
-                        </font>
-                    </a>
-                </div>
-                <!--end::Card toolbar-->
-            }
-        </div>
-        <!--end::Card header-->
-        <div id="valida-view"></div>
-        <!--begin::Card body-->
-        <div id="kt_customer_view_payment_method" class="card-body pt-0">
-            <!--begin::Option-->
-            <div class="py-0" data-kt-customer-payment-method="row">
-                <!--begin::Header-->
-                <div class="py-3 d-flex flex-stack flex-wrap">
-                    <!--begin::Toggle-->
-                    <div class="d-flex align-items-center collapsible rotate collapsed" data-bs-toggle="collapse" href="#kt_customer_view_payment_method_1" role="button" aria-expanded="false" aria-controls="kt_customer_view_payment_method_1">
-                        <!--begin::Arrow-->
-                        <div class="me-3 rotate-90">
-                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/arrows/arr023.svg-->
-                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 4L14 12L6 20H10L17.3 12.7C17.7 12.3 17.7 11.7 17.3 11.3L10 4H6Z" fill="currentColor" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                        </div>
-                        <!--end::Arrow-->
-                        <!--begin::Summary-->
-                        <div class="me-3">
-                            <div class="d-flex align-items-center">
-                                <div class="text-gray-800 fw-bold">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            Emisor
-                                        </font>
-                                    </font>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end::Summary-->
-                    </div>
-                    <!--end::Toggle-->
-
-                </div>
-                <!--end::Header-->
-                <!--begin::Body-->
-                <div id="kt_customer_view_payment_method_1" class="fs-6 ps-10 collapse" data-bs-parent="#kt_customer_view_payment_method" style="">
-                    <!--begin::Details-->
-                    <div class="d-flex flex-wrap py-5">
-                        <!--begin::Col-->
-                        <div class="flex-equal me-5">
-                            <table class="table table-flush fw-semibold gy-1">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nombre</font></font></td>
-                                        <td class="text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@Model.RecibidosComprobante.Sucursal.RazonSocial</font></font></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Rfc</font></font></td>
-                                        <td class="text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@Model.RecibidosComprobante.Sucursal.Rfc</font></font></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Regimen Fiscal</font></font></td>
-                                        <td class="text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@DescripcionesEnum.ObtenerDescripcionEnum(Model.RecibidosComprobante.Sucursal.RegimenFiscal)</font></font></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
-                        <!--<div class="flex-equal ">
-                            <table class="table table-flush fw-semibold gy-1">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Dirección de Envio</font></font></td>
-                                        <td class="text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AU</font></font></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Teléfono</font></font></td>
-                                        <td class="text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">No se proporciona teléfono</font></font></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Correo electrónico</font></font></td>
-                                        <td class="text-gray-800"><a href="#" class="text-gray-900 text-hover-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">smith@kpmg.com</font></font></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Origen</font></font></td>
-                                        <td class="text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Australia</font></font><div class="symbol symbol-20px symbol-circle ms-2"><img src="/metronic8/demo2/assets/media/flags/australia.svg"></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">control CVC</font></font></td>
-                                        <td class="text-gray-800"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Aprobado</font></font><i class="ki-duotone ki-check-circle fs-2 text-success"><span class="path1"></span><span class="path2"></span></i></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>-->
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Details-->
-                </div>
-                <!--end::Body-->
-            </div>
-            <!--end::Option-->
-
-            <div class="separator separator-dashed"></div>                    <!--begin::Option-->
-            <div class="py-0" data-kt-customer-payment-method="row">
-                <!--begin::Header-->
-                <div class="py-3 d-flex flex-stack flex-wrap">
-                    <!--begin::Toggle-->
-                    <div class="d-flex align-items-center collapsible collapsed rotate" data-bs-toggle="collapse" href="#kt_customer_view_payment_method_2" role="button" aria-expanded="false" aria-controls="kt_customer_view_payment_method_2">
-                        <!--begin::Arrow-->
-                        <div class="me-3 rotate-90">
-                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/arrows/arr023.svg-->
-                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 4L14 12L6 20H10L17.3 12.7C17.7 12.3 17.7 11.7 17.3 11.3L10 4H6Z" fill="currentColor" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                        </div>
-                        <!--end::Arrow-->
-                        <!--begin::Summary-->
-                        <div class="me-3">
-                            <div class="d-flex align-items-center">
-                                <div class="text-gray-800 fw-bold">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            Receptor
-                                        </font>
-                                    </font>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!--end::Summary-->
-                    </div>
-                    <!--end::Toggle-->
-
-                </div>
-                <!--end::Header-->
-                <!--begin::Body-->
-                <div id="kt_customer_view_payment_method_2" class="collapse  fs-6 ps-10" data-bs-parent="#kt_customer_view_payment_method">
-                    <!--begin::Details-->
-                    <div class="d-flex flex-wrap py-5">
-                        <!--begin::Col-->
-                        <div class="flex-equal me-5">
-                            <table class="table table-flush fw-semibold gy-1">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Nombre</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.SocioComercial.RazonSocial</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Rfc</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.SocioComercial.Rfc</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Residencia Fiscal</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.SocioComercial.Pais.ToString()</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Regimen Fiscal</td>
-                                        <td class="text-gray-800">@{ if (Model.RecibidosComprobante.SocioComercial.RegimenFiscal == 0) { } else { DescripcionesEnum.ObtenerDescripcionEnum(Model.RecibidosComprobante.SocioComercial.RegimenFiscal); } } </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Domicilio Fiscal</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.SocioComercial.CodigoPostal</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Uso Cfdi</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.SocioComercial.UsoCfdi.ToString()</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
-                        <div class="flex-equal ">
-                            <table class="table table-flush fw-semibold gy-1">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Billing address</td>
-                                        <td class="text-gray-800">UK</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Phone</td>
-                                        <td class="text-gray-800">No phone provided</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Email</td>
-                                        <td class="text-gray-800"><a href="#" class="text-gray-900 text-hover-primary">melody@altbox.com</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Origin</td>
-                                        <td class="text-gray-800">United Kingdom <div class="symbol symbol-20px symbol-circle ms-2"><img src="/metronic8/demo2/assets/media/flags/united-kingdom.svg"></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">CVC check</td>
-                                        <td class="text-gray-800">Passed <i class="ki-duotone ki-check fs-2 text-success"></i></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Details-->
-                </div>
-                <!--end::Body-->
-            </div>
-            <!--end::Option-->
-            <div class="separator separator-dashed"></div>                    <!--begin::Option-->
-            <div class="py-0" data-kt-customer-payment-method="row">
-                <!--begin::Header-->
-                <div class="py-3 d-flex flex-stack flex-wrap">
-                    <!--begin::Toggle-->
-                    <div class="d-flex align-items-center collapsible collapsed rotate" data-bs-toggle="collapse" href="#kt_customer_view_payment_method_3" role="button" aria-expanded="false" aria-controls="kt_customer_view_payment_method_2">
-                        <!--begin::Arrow-->
-                        <div class="me-3 rotate-90">
-                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/arrows/arr023.svg-->
-                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 4L14 12L6 20H10L17.3 12.7C17.7 12.3 17.7 11.7 17.3 11.3L10 4H6Z" fill="currentColor" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                        </div>
-                        <!--end::Arrow-->
-                        <!--begin::Summary-->
-                        <div class="me-3">
-                            <div class="d-flex align-items-center">
-                                <div class="text-gray-800 fw-bold">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            CFDI
-                                        </font>
-                                    </font>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!--end::Summary-->
-                    </div>
-                    <!--end::Toggle-->
-
-                </div>
-                <!--end::Header-->
-                <!--begin::Body-->
-                <div id="kt_customer_view_payment_method_3" class="collapse  fs-6 ps-10" data-bs-parent="#kt_customer_view_payment_method">
-                    <!--begin::Details-->
-                    <div class="d-flex flex-wrap py-5">
-                        <!--begin::Col-->
-                        <div class="flex-equal me-5">
-                            <table class="table table-flush fw-semibold gy-1">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Fecha</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.Fecha</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Serie</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.Serie</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Folio</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.Folio</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Tipo Comprobante</td>
-                                        <td class="text-gray-800">@DescripcionesEnum.ObtenerDescripcionEnum(Model.RecibidosComprobante.TipoComprobante)</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Moneda</td>
-                                        <td class="text-gray-800">@DescripcionesEnum.ObtenerDescripcionEnum(Model.RecibidosComprobante.Moneda)</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Subtotal</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.Subtotal</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
-                        <div class="flex-equal ">
-                            <table class="table table-flush fw-semibold gy-1">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Total</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.Total</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Uuid</td>
-                                        <td class="text-gray-800">@Model.RecibidosComprobante.Uuid</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Details-->
-                </div>
-                <!--end::Body-->
-            </div>
-            <!--end::Option-->
-            <div class="separator separator-dashed"></div>                    <!--begin::Option-->
-            <div class="py-0" data-kt-customer-payment-method="row">
-                <!--begin::Header-->
-                <div class="py-3 d-flex flex-stack flex-wrap">
-                    <!--begin::Toggle-->
-                    <div class="d-flex align-items-center collapsible collapsed rotate" data-bs-toggle="collapse" href="#kt_customer_view_payment_method_4" role="button" aria-expanded="false" aria-controls="kt_customer_view_payment_method_3">
-                        <!--begin::Arrow-->
-                        <div class="me-3 rotate-90">
-                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/arrows/arr023.svg-->
-                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 4L14 12L6 20H10L17.3 12.7C17.7 12.3 17.7 11.7 17.3 11.3L10 4H6Z" fill="currentColor" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                        </div>
-                        <!--end::Arrow-->
-                        <!--begin::Summary-->
-                        <div class="me-3">
-                            <div class="d-flex align-items-center">
-                                <div class="text-gray-800 fw-bold">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">
-                                            Pago
-                                        </font>
-                                    </font>
-                                </div>
-
-                                <div class="badge badge-light-warning ms-5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></div>
-                            </div>
-                            <div class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Vence en agosto de 2021</font></font></div>
-                        </div>
-                        <!--end::Summary-->
-                    </div>
-                    <!--end::Toggle-->
-
-                </div>
-                <!--end::Header-->
-                <!--begin::Body-->
-                <div id="kt_customer_view_payment_method_4" class="collapse  fs-6 ps-10" data-bs-parent="#kt_customer_view_payment_method">
-                    <!--begin::Details-->
-                    <div class="d-flex flex-wrap py-5">
-                        <!--begin::Col-->
-                        <div class="flex-equal me-5">
-                            <table class="table table-flush fw-semibold gy-1">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Fecha Pago</td>
-                                        <td class="text-gray-800">@Model.Pagos.FechaPago</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Fecha Programado de Pago</td>
-                                        <td class="text-gray-800">@Model.Pagos.FechaProgramadaPago</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted min-w-125px w-125px">Estado de Pago</td>
-                                        <td class="text-gray-800">@Model.Pagos.EstadoPago.ToString()</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--end::Col-->
-
-                    </div>
-                    <!--end::Details-->
-                </div>
-                <!--end::Body-->
-            </div>
-            <!--end::Option-->
-            <div class="clearfix"></div>
-            <div class="separator my-5"></div>
-            <div class="d-flex justify-content-end">
-                <!--begin::Button-->
-                <a href="@Url.Action("Index","DocumentosRecibidos")" class="btn btn-light me-5">Regresar</a>
-                <!--end::Button-->
-
-            </div>
-        </div>
-        <!--end::Card body-->
-    </div>
-</div>
 <script>
-    $(function () {
-        var activaModal = $('#valida-view');
-        $(".dvalida").on("click", function () {
-            var Id = $(this).attr("data-id");
-            var url = "@Url.Action("ValidaDocumentoRecibido", "DocumentosRecibidos")/" + Id;
-            $.get(url).done(function (data) {
-                activaModal.html(data);
-                activaModal.find('.modal').modal('show');
-            })
-
-        })
-
-        activaModal.on('click', '#submit-valida', function (event) {
-            var form = $(this).parents('.modal').find('form');
-            var actionUrl = form.attr('action');
-            var url =  "@Url.Action("ValidaDocumentoRecibido", "DocumentosRecibidos")/"
-            var sendData = form.serialize();
-            $.post(url, sendData).done(function (data) {
-                activaModal.find('.modal').modal('hide');
-                ValidaEntradaModal();
-                activaModal.html(data);
-                activaModal.find('.modal').modal('show');
-
-            })
-        })
-
-        activaModal.on('click', '#close-modal', function(event){
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
-            var Id = $(".dvalida").attr("data-id");
-            var form = $(this).parents('.modal').find('form');
-            var messageError = form.attr('error-data');
-            var messageSuccess = form.attr('success-data');
-            if (messageError == undefined && messageSuccess != undefined) {
-                window.location.href = "/DocumentosRecibidos/Edit/" +Id
-            }
-
-        })
-         function ValidaEntradaModal() {
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
+    var radioRechazado = document.getElementById('rechazado');
+    var radioAprobado = document.getElementById('aprobado');
+    var motivoRechazoDiv = document.getElementById('motivo-rechazo');
+    radioRechazado.addEventListener('change', function () {
+        if (radioRechazado.checked) {
+            motivoRechazoDiv.style.display = 'block';
+            $('#EstadoComercial').val(2);
         }
-
     });
+
+    radioAprobado.addEventListener('change', function () {
+        motivoRechazoDiv.style.display = 'none';
+        $('#MotivoRechazo').val("");
+        $('#EstadoComercial').val(1);
+    });
+
 </script>

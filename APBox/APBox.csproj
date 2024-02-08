@@ -3050,7 +3050,7 @@
     <Content Include="Views\Bancos\Details.cshtml" />
     <Content Include="Views\Bancos\Edit.cshtml" />
     <Content Include="Views\Bancos\Index.cshtml" />
-    <Content Include="Views\ComplementosPagos\DocumentosRelacionados.cshtml" />
+    <Content Include="Views\ComplementosPagos\EditDocumentosRelacionados.cshtml" />
     <Content Include="Views\Account\SeleccionarSucursal.cshtml" />
     <Content Include="Views\ComplementosPagos\Generar.cshtml" />
     <Content Include="Views\Reportes\EstadisticasCliente.cshtml" />

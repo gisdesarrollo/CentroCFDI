@@ -211,7 +211,7 @@ namespace APBox.Controllers.ComplementosPago
                     }
                     _db.SaveChanges();
 
-                    return RedirectToAction("DocumentosRelacionados", new { @id = complementoPago.Id });
+                    return RedirectToAction("EditDocumentosRelacionados", new { @id = complementoPago.Id });
                 }
                 catch (Exception ex)
                 {

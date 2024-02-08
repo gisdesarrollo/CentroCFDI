@@ -1,8 +1,8 @@
-﻿<script>
+﻿
+<script>
     $(document).ready(function () {
 
         $("#agregarDetalle").on('click', function () {
-            alert("entro el ajax.");
             $.ajax({
                 type: 'POST',
                 url: ' @Url.Action("AgregarPago", "AjaxOperaciones")',
@@ -118,84 +118,6 @@
         }
 
 
-        function agregarFactura() {
-
-            //Traslados
-            var jsonTraslados = [];
-
-            $(".DTraslado").each(function (index, element) {
-                var BaseTraslado = $(element).find('.BaseTraslado').val();
-                var ImpuestoTraslado = $(element).find('#ImpuestoTraslado').text().trim();
-                var TipoFactorTraslado = $(element).find('#TipoFactorTraslado').text().trim();
-                var TasaOCuotaTraslado = $(element).find('#TasaOCuotaTraslado').text().trim();
-                var ImporteTraslado = $(element).find('.ImporteTraslado').val();
-
-                jsonTraslados.push({
-                    "Base": BaseTraslado,
-                    "Impuesto": ImpuestoTraslado,
-                    "TipoFactor": TipoFactorTraslado,
-                    "TasaOCuota": TasaOCuotaTraslado,
-                    "Importe": ImporteTraslado
-                });
-            });
-            //Retenciones
-            var jsonRetenciones = [];
-
-            $(".DRetencion").each(function (index, element) {
-                var BaseRetencion = $(element).find('.BaseRetencion').val();
-                var ImpuestoRetencion = $(element).find('#ImpuestoRetencion').text().trim();
-                var TipoFactorRetencion = $(element).find('.TipoFactorRetencion option:selected').val();
-                var TasaOCuotaRetencion = $(element).find('.TasaOCuotaRetencion').val();
-                var ImporteRetencion = $(element).find('.ImporteRetencion').val();
-
-                jsonRetenciones.push({
-                    "Base": BaseRetencion,
-                    "Impuesto": ImpuestoRetencion,
-                    "TipoFactor": TipoFactorRetencion,
-                    "TasaOCuota": TasaOCuotaRetencion,
-                    "Importe": ImporteRetencion
-                });
-            });
-
-            $.ajax({
-                type: 'POST',
-                url: ' @Url.Action("AgregarFacturaComplementoPago", "AjaxOperaciones")',
-                data: JSON.stringify({
-                    pagoId: $('#PagoId').val(),
-                    facturaEmitidaId: $('#FacturaEmitidaId').val(),
-                    numeroParcialidad: $('#Pago_DocumentoRelacionado_NumeroParcialidad').val(),
-                    moneda: $('#Pago_DocumentoRelacionado_Moneda').val(),
-                    equivalenciaDR: $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(),
-                    importeSaldoAnterior: $('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val(),
-                    importePagado: $('#Pago_DocumentoRelacionado_ImportePagado').val(),
-                    importeSaldoInsoluto: $('#Pago_DocumentoRelacionado_ImporteSaldoInsoluto').val(),
-                    objetoImpuesto: $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val(),
-                    traslados: jsonTraslados,
-                    retenciones: jsonRetenciones
-                    /*baseTraslado: $('#Pago_DocumentoRelacionado_Traslado_Base').val(),
-                    impuestoTraslado: $('#Pago_DocumentoRelacionado_Traslado_Impuesto').val(),
-                    tipoFactorTraslado: $('#Pago_DocumentoRelacionado_Traslado_TipoFactor').val(),
-                    tasaOCuotaTraslado: $('#Pago_DocumentoRelacionado_Traslado_TasaOCuota').val(),
-                    importeTraslado: $('#Pago_DocumentoRelacionado_Traslado_Importe').val(),
-                    baseRetencion: $('#Pago_DocumentoRelacionado_Retencion_Base').val(),
-                    impuestoRetencion: $('#Pago_DocumentoRelacionado_Retencion_Impuesto').val(),
-                    tipoFactorRetencion: $('#Pago_DocumentoRelacionado_Retencion_TipoFactor').val(),
-                    tasaOCuotaRetencion: $('#Pago_DocumentoRelacionado_Retencion_TasaOCuota').val(),
-                    importeRetencion: $('#Pago_DocumentoRelacionado_Retencion_Importe').val()*/
-                }),
-                dataType: 'html',
-                contentType: "application/json; charset=utf-8",
-                success: function (partialView) {
-                    $('#documento' + $('#PagoId').val()).append(partialView);
-                },
-                error: function (jqxhr, textStatus, error) {
-                    alert("Favor de seleccionar una factura");
-                }
-            });
-
-            return false;
-        }
-
         $('#ReceptorId').on('change', function () {
 
             var receptorSeleccionado = $(this).val();
@@ -246,18 +168,7 @@
             $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
         });
 
-        //remove documento relacionado
-        function removeDetalleDocRelacionado(elem) {
-            var totalU = $(".pago").length;
-            if (totalU > 0) {
-                var contador = $(".pago").length - 1;
-                $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
-            } else {
-                $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">');
-            }
-            $(elem).parent().parent().parent().remove();
-
-        }
+        
 
 
         //JavaScript
@@ -572,27 +483,99 @@
             return false;
         });
 
+    });
 
+    function removeDetalleCRelacionado(elem) {
+        var totalU = $(".CFDIRelacionado").length;
+        if (totalU > 0) {
+            var contador = $(".CFDIRelacionado").length - 1;
+            $("#contenedor").html('<div>Div ' + contador + '</div>');
+            $('#numeroDivs').text(contador);
+        } else {
+            $("#contenedor").html('<div>Div</div>');
+            $('#numeroDivs').text(0);
+        }
+        $(elem).parent().parent().parent().remove();
+    }
 
-            $('.removeCFDIRelacionado').click(function () {
-                alert("si entró el borrar, pero no borra ni madre");
-                //$(this).parent().remove();
+    function agregarFactura() {
+
+            //Traslados
+            var jsonTraslados = [];
+
+            $(".DTraslado").each(function (index, element) {
+                var BaseTraslado = $(element).find('.BaseTraslado').val();
+                var ImpuestoTraslado = $(element).find('#ImpuestoTraslado').text().trim();
+                var TipoFactorTraslado = $(element).find('#TipoFactorTraslado').text().trim();
+                var TasaOCuotaTraslado = $(element).find('#TasaOCuotaTraslado').text().trim();
+                var ImporteTraslado = $(element).find('.ImporteTraslado').val();
+
+                jsonTraslados.push({
+                    "Base": BaseTraslado,
+                    "Impuesto": ImpuestoTraslado,
+                    "TipoFactor": TipoFactorTraslado,
+                    "TasaOCuota": TasaOCuotaTraslado,
+                    "Importe": ImporteTraslado
+                });
+            });
+            //Retenciones
+            var jsonRetenciones = [];
+
+            $(".DRetencion").each(function (index, element) {
+                var BaseRetencion = $(element).find('.BaseRetencion').val();
+                var ImpuestoRetencion = $(element).find('#ImpuestoRetencion').text().trim();
+                var TipoFactorRetencion = $(element).find('.TipoFactorRetencion option:selected').val();
+                var TasaOCuotaRetencion = $(element).find('.TasaOCuotaRetencion').val();
+                var ImporteRetencion = $(element).find('.ImporteRetencion').val();
+
+                jsonRetenciones.push({
+                    "Base": BaseRetencion,
+                    "Impuesto": ImpuestoRetencion,
+                    "TipoFactor": TipoFactorRetencion,
+                    "TasaOCuota": TasaOCuotaRetencion,
+                    "Importe": ImporteRetencion
+                });
             });
 
-        //function removeCFDIRelacionado(elem) {
-        //    var totalU = $("#CFDIRelacionado").length;
-        //    alert(totalU);
-        //    if (totalU > 0) {
-        //        var contador = $("#CFDIRelacionado").length - 1;
-        //        contadorCRelacionado = contador;
-        //        $("#contenedor").html('<div>Div ' + contador + '</div>');
-        //    } else {
-        //        $("#contenedor").html('<div>Div</div>');
-        //    }
+            $.ajax({
+                type: 'POST',
+                url: ' @Url.Action("AgregarFacturaComplementoPago", "AjaxOperaciones")',
+                data: JSON.stringify({
+                    pagoId: $('#PagoId').val(),
+                    facturaEmitidaId: $('#FacturaEmitidaId').val(),
+                    numeroParcialidad: $('#Pago_DocumentoRelacionado_NumeroParcialidad').val(),
+                    moneda: $('#Pago_DocumentoRelacionado_Moneda').val(),
+                    equivalenciaDR: $('#Pago_DocumentoRelacionado_EquivalenciaDR').val(),
+                    importeSaldoAnterior: $('#Pago_DocumentoRelacionado_ImporteSaldoAnterior').val(),
+                    importePagado: $('#Pago_DocumentoRelacionado_ImportePagado').val(),
+                    importeSaldoInsoluto: $('#Pago_DocumentoRelacionado_ImporteSaldoInsoluto').val(),
+                    objetoImpuesto: $('#Pago_DocumentoRelacionado_ObjetoImpuesto').val(),
+                    traslados: jsonTraslados,
+                    retenciones: jsonRetenciones
+                }),
+                dataType: 'html',
+                contentType: "application/json; charset=utf-8",
+                success: function (partialView) {
+                    $('#documento' + $('#PagoId').val()).append(partialView);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    alert("Favor de seleccionar una factura");
+                }
+            });
 
-        //    $(elem).parent().parent().remove();
-        //}
+            return false;
+        }
 
-        /***************************/
-    });
+    //remove documento relacionado
+    function removeDetalleDocRelacionado(elem) {
+        var totalU = $(".pago").length;
+        if (totalU > 0) {
+            var contador = $(".pago").length - 1;
+            $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorDocRelacionado").replaceWith('<span class="contadorDocRelacionado font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+
+    }
 </script>
