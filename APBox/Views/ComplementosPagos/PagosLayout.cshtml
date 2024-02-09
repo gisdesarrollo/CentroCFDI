@@ -9,26 +9,19 @@
     <!--begin::Card header-->
     <div class="card-header">
         <div class="card-title">
-            <div class="row">
-                    <h2>Cargar Layout para Complementos de Pagos</h2>
-                    
-            </div>
+            <p>Descarga y llena el layout disponible para generar complementos de pago</p>
         </div>
-        
-         
-            <button class="card-toolbar btn btn-primary" onclick="location.href='@Url.Action("Exportar", "ComplementosPagos")'">
-                <span>Descargar Layout Vacío</span>
-                
+        <div class="card-title d-flex justify-content-end">
+            <button class="btn btn-primary" onclick="location.href='@Url.Action("Exportar", "ComplementosPagos")'">
+                <span class="indicator-label">Descargar Layout Vacío</span>
+
             </button>
-            <div class="card-title">
-                <p>Descarga y llena el layout disponible para generar complementos de pago</p>
-            </div>
-        
+        </div>
     </div>
     <!--end::Card header-->
     <div class="card-body pt-0">
         <div class="row">
-            @using (Html.BeginForm("Cargar", "ComplementosPagos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("PagosLayout", "ComplementosPagos", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.GrupoId)

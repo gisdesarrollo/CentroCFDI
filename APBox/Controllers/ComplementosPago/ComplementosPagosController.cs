@@ -625,7 +625,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Cargar";
             ViewBag.ActionES = "Cargar Layout";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "Cargar Layout para Complementos de Pagos";
             var cargasComplementosModel = new CargasComplementosModel
             {
                 GrupoId = ObtenerGrupo(),
@@ -643,7 +643,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Cargar";
             ViewBag.ActionES = "Cargar Layout";
-            ViewBag.NameHere = "emision";
+            ViewBag.NameHere = "Cargar Layout para Complementos de Pagos";
             if (ModelState.IsValid)
             {
                 string archivo;

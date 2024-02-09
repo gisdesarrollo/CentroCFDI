@@ -3054,7 +3054,7 @@
     <Content Include="Views\Account\SeleccionarSucursal.cshtml" />
     <Content Include="Views\ComplementosPagos\Generar.cshtml" />
     <Content Include="Views\Reportes\EstadisticasCliente.cshtml" />
-    <Content Include="Views\ComplementosPagos\Cargar.cshtml" />
+    <Content Include="Views\ComplementosPagos\PagosLayout.cshtml" />
     <Content Include="Views\ValidacionesRapidas\Validar.cshtml" />
     <Content Include="Views\PortalProveedores\Validaciones.cshtml" />
     <Content Include="Views\SociosComerciales\Bancos.cshtml" />
