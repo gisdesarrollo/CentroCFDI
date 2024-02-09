@@ -1,4 +1,4 @@
-﻿   
+﻿
 <script>
     $(function () {
 
@@ -2037,11 +2037,13 @@
                 $('#activaObjetoImpT').show();
                 $("#Conceptos_ObjetoImpuesto").val("01");
                 $('#objetoImpuestoText').text("01-No objeto de impuesto");
+                $('#activaImpuesto').hide();
+                $('#validaTipoComprobante').hide();
                 //var receptorSeleccionado = $('#ReceptorId').val();
                 //drowdop(receptorSeleccionado);
             }
             if ($(this).val() === "I") {
-
+                $('#validaTipoComprobante').show();
                 $('#ReceptorId').val(1);
                 $('#UsoCfdiCP').val(1);
                 $('#receptorDrop').show();
@@ -2812,7 +2814,9 @@
                             break;
                     }
 
-                    $('#tipoComprobante').val(tipoComprobanteText);
+
+
+                    $('#tipoComprobante').val(tipoComprobanteText).trigger('change');
 
 
                     if (tipoComprobanteText == "T") {
@@ -2864,7 +2868,7 @@
                             break;
                     }
 
-                    $('#MetodoPago').val(MetodoPagoText);
+                    $('#MetodoPago').val(MetodoPagoText).trigger('change');
                     $('#TipoCambio').val(response.TipoCambio);
                     $('#CondicionesPago').val(response.CondicionesDePago);
                     $('#Moneda').val(response.Moneda);
@@ -2874,19 +2878,18 @@
                     $('#total').val(response.Total);
 
                     //Seccion Ubicacion
-                    //$('#claveTransporteId').val();
-
+                    //$('#claveTransporteId').val("01").trigger('change'); //valor siempre por defecto al no venir definido en el xml cargado
 
                     $('#TranspInternac').val(response.CartaPorte.TranspInternac);
                     $('#TotalDistRecorridas').val(response.CartaPorte.TotalDistRec);
 
                     //Seccion Mercancias
                     //$('#pesoBrutoTotalD').val(response.CartaPorte.Mercancias.PesoBrutoTotal); -Dejo que se calcule solo por que duplica el valor
-                    $('#Mercancias_ClaveUnidadPeso_Id').val(response.CartaPorte.Mercancias.UnidadPeso);
+                    $('#Mercancias_ClaveUnidadPeso_Id').val(response.CartaPorte.Mercancias.UnidadPeso).trigger('change');
                     $('#Mercancias_NumTotalMercancias').val(response.CartaPorte.Mercancias.NumTotalMercancias);
 
                     //Mercancia - Autotransporte
-                    $('#Mercancias_AutoTransporte_TipoPermiso_Id').val(response.CartaPorte.Mercancias.Autotransporte.PermSCT);
+                    $('#Mercancias_AutoTransporte_TipoPermiso_Id').val(response.CartaPorte.Mercancias.Autotransporte.PermSCT).trigger('change');
 
                     //Validacion si hay valor en la seccion de Auto Transporte
                     var permisoValue = $('#Mercancias_AutoTransporte_TipoPermiso_Id').val();
@@ -2895,7 +2898,7 @@
                     if (permisoValue) {
 
                         // Si tiene un valor, asignar "01" al elemento con id "claveTransporteId"
-                        $('#claveTransporteId').val("01");
+                        $('#claveTransporteId').val("01").trigger('change');
 
                         // Mostrar la vista que estaba oculta
                         $('#DivAutotransporte').css('display', 'block');
@@ -2903,7 +2906,7 @@
 
                     $('#Mercancias_AutoTransporte_NumPermisoSCT').val(response.CartaPorte.Mercancias.Autotransporte.NumPermisoSCT);
 
-                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_ConfigAutotransporte_Id').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular)
+                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_ConfigAutotransporte_Id').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular).trigger('change')
                     $('#Mercancias_AutoTransporte_IdentificacionVehicular_PlacaVM').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM)
                     $('#Mercancias_AutoTransporte_IdentificacionVehicular_AnioModeloVM').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM)
 
@@ -2999,6 +3002,7 @@
                                 $('#Mercancias_Mercancia_Cantidad').val(mer.Cantidad);
                                 $('#Mercancias_Mercancia_ClavesUnidad').val(mer.ClaveUnidad);
                                 $('#Mercancias_Mercancia_Unidad').val(mer.Unidad);
+                                $('#Mercancias_Mercancia_Unidad').val(mer.Dimensiones);
                                 $('#Mercancias_Mercancia_PesoEnKg').val(mer.PesoEnKg);
                                 $('#agregarDetalleMercancia').trigger('click');
 
@@ -3048,7 +3052,7 @@
                                 }
 
                                 // Asignar los valores a los campos
-                                $('#Mercancias_AutoTransporte_Remolque_SubTipoRem_Id').val(SubTipoRem);
+                                $('#Mercancias_AutoTransporte_Remolque_SubTipoRem_Id').val(SubTipoRem).trigger('change');
                                 $('#Mercancias_AutoTransporte_Remolque_Placa').val(remolque.Placa);
                                 $('#agregarDetalleRemolqueAuTransp').trigger('click');
 
