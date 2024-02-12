@@ -88,20 +88,20 @@
 
 					<td>
 						@Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.RazonSocial) <br />
-						<span class="text-gray-500 fs-6">@Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.Rfc) </span>
+						<span class="text-gray-600">@Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.Rfc) </span>
 					</td>
 					<td>
 						@if (Model.ComplementosPago[i].FacturaEmitida != null)
 						{
 						@Model.ComplementosPago[i].FacturaEmitida.Serie; @Html.Raw(" - ") @Model.ComplementosPago[i].FacturaEmitida.Folio;
 						<br />
-						<span class="text-gray-500 fs-6">
+						<span class="text-gray-600">
 							@Html.DisplayFor(model => Model.ComplementosPago[i].FacturaEmitida.Uuid);
 						</span>
 						}
 						else
 						{
-						<span class="text-gray-500 fs-6"> @Html.Raw("Sin asignar")</span>
+						<span class="text-gray-600"> @Html.Raw("Sin asignar")</span>
 						}
 					</td>
 					<td>

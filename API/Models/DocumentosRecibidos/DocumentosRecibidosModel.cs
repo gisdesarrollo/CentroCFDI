@@ -22,4 +22,5 @@ namespace API.Models.DocumentosRecibidos
         public bool isProveedor { get; set; }
 
     }
+
 }

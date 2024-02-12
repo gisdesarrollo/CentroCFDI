@@ -287,6 +287,7 @@ namespace APBox.Controllers.Operaciones
             //get usaurio
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
+
             if (usuario.esProveedor)
             {
                 ViewBag.isProveedor = "Proveedor";
@@ -493,7 +494,8 @@ namespace APBox.Controllers.Operaciones
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
-            ViewBag.NameHere = "proveedor";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "Revisión de Comprobante Recibido";
 
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
@@ -516,7 +518,6 @@ namespace APBox.Controllers.Operaciones
             return View(documentoRecibido);
         }
 
-        
         // POST: DocumentosRecibidos/Edit/5
         [HttpPost]
         public ActionResult Edit(DocumentosRecibidosDR documentoRecibidoEdit)

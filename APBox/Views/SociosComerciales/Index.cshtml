@@ -4,14 +4,8 @@
 @{
     var _db = new APBoxContext();
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
-<<<<<<< Updated upstream
-    //var GrupoId = Convert.ToInt32(Session["SucursalId"]);
-    //var GrupoLlave = _db.Grupos.Find(GrupoId).Llave;
-    var GrupoId = _db.Sucursales.Find(sucursalId).GrupoId;
-=======
     var GrupoId = _db.Sucursales.Find(sucursalId).GrupoId;
     var GrupoLlave = _db.Grupos.Find(GrupoId).Llave;
->>>>>>> Stashed changes
     var GrupoNombre = _db.Grupos.Find(GrupoId).Nombre;
     ViewBag.GrupoNombre = GrupoNombre;
     ViewBag.Enlace = "www.centrocfdi.com/Autoregistro/Create/" + GrupoId;
@@ -103,43 +97,41 @@
                     </thead>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr class="fs-7 align-text-top">
                             <td>
                                 @Html.Raw(item.RazonSocial.Length > 50 ? item.RazonSocial.Substring(0, 50) + "..." : item.RazonSocial)<br />
-                                <span class="text-gray-500 fs-6">@Html.DisplayFor(modelItem => item.Rfc)</span>
+                                <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Rfc)</span>
                             </td>
                             <td>
                                 @if (!string.IsNullOrEmpty(item.Email))
                                 {
-                                    <span class="badge"> Email: </span> <span class="text-gray-500 fs-6">@Html.DisplayFor(modelItem => item.Email)</span>
+                                    <span class="badge"> Email: </span> <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Email)</span>
                                 }
                                 else
                                 {
                                     <span class="badge badge-light-danger"> Sin Email </span>
                                 }
                                 <br />
-                                <div class="text-gray-500 fs-6">
-                                    @if (!string.IsNullOrEmpty(item.Telefono1))
-                                    {
-                                        <span class="badge"> Teléfono 1: </span> @Html.DisplayFor(modelItem => item.Telefono1)<br />
-                                    }
-                                    @if (!string.IsNullOrEmpty(item.Telefono2))
-                                    {
-                                        <span class="badge"> Teléfono 2: </span> @Html.DisplayFor(modelItem => item.Telefono2)
-                                    }
-                                </div>
+                                @if (!string.IsNullOrEmpty(item.Telefono1))
+                                {
+                                    <span class="badge"> Teléfono 1: </span> <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Telefono1)</span><br />
+                                }
+                                @if (!string.IsNullOrEmpty(item.Telefono2))
+                                {
+                                    <span class="badge"> Teléfono 2: </span> <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Telefono2)</span>
+                                }
                             </td>
                             <td>
-                                <div class="badge">Uso CFDI: </div><span class="text-gray-500 fs-6">@item.UsoCfdi</span><br />
-                                <div class="badge">Regimen Fiscal: </div><span class="text-gray-500 fs-6">@Html.DisplayFor(modelItem => item.RegimenFiscal)</span>
+                                <div class="badge">Uso CFDI: </div><span class="text-gray-600">@item.UsoCfdi</span><br />
+                                <div class="badge">Regimen Fiscal: </div><span class="text-gray-600">@Html.DisplayFor(modelItem => item.RegimenFiscal)</span>
                             <td>
-                                <div class="badge">Pais: </div><span class="text-gray-500 fs-6">@item.Pais</span><br />
-                                <div class="badge">CP: </div><span class="text-gray-500 fs-6">@item.CodigoPostal</span>
+                                <div class="badge">Pais: </div><span class="text-gray-600">@item.Pais</span><br />
+                                <div class="badge">CP: </div><span class="text-gray-600">@item.CodigoPostal</span>
 
                                 <br />
                                 @if (!string.IsNullOrEmpty(item.NumRegIdTrib))
                                 {
-                                    <div class="badge">NumRegIdTrib: </div><span class="text-gray-500 fs-6">@item.NumRegIdTrib</span>
+                                    <div class="badge">NumRegIdTrib: </div><span class="text-gray-600">@item.NumRegIdTrib</span>
                                 }
                             </td>
                             <td>

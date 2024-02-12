@@ -66,7 +66,7 @@
             <!--begin::Card body-->
             <div class="card-body pt-0">
                 <div class="d-flex flex-column gap-10">
-                    <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
+                    <table class="table multiples align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
                         <thead>
                             <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
                                 <th class="min-w-100px">
@@ -78,7 +78,7 @@
                                 <th class="min-w-100px">
                                     Fecha
                                 </th>
-                                <th class="min-w-100px">
+                                <th class="min-w-100px text-center">
                                     Estado
                                 </th>
                                 <th class="min-w-100px">
@@ -93,26 +93,26 @@
 
                                 <td>
                                     @Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.RazonSocial) <br />
-                                    <span class="text-gray-500 fs-6">@Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.Rfc) </span>
+                                    <span class="text-gray-600">@Html.DisplayFor(model => Model.ComplementosPago[i].Receptor.Rfc) </span>
                                 </td>
                                 <td>
                                     @if (Model.ComplementosPago[i].FacturaEmitida != null)
                                     {
                                         @Model.ComplementosPago[i].FacturaEmitida.Serie; @Html.Raw(" - ") @Model.ComplementosPago[i].FacturaEmitida.Folio;
                                         <br />
-                                        <span class="text-gray-500 fs-6">
+                                        <span class="text-gray-600">
                                             @Html.DisplayFor(model => Model.ComplementosPago[i].FacturaEmitida.Uuid);
                                         </span>
                                     }
                                     else
                                     {
-                                        <span class="text-gray-500 fs-6"> @Html.Raw("Sin asignar")</span>
+                                        <span class="text-gray-600"> @Html.Raw("Sin asignar")</span>
                                     }
                                 </td>
                                 <td>
                                     @Html.DisplayFor(model => Model.ComplementosPago[i].FechaDocumento)
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     @if (Model.ComplementosPago[i].Generado == true)
                                     {
                                         if (Model.ComplementosPago[i].Status == API.Enums.Status.Activo)

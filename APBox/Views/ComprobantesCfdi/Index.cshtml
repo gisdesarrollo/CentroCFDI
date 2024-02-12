@@ -88,10 +88,10 @@
                                 <th class="min-w-100px">
                                     Datos CFDi
                                 </th>
-                                <th class="min-w-100px">
+                                <th class="min-w-100px text-end">
                                     Monto
                                 </th>
-                                <th class="min-w-100px">
+                                <th class="min-w-100px text-center">
                                     Estado
                                 </th>
                                 <th class="min-w-100px">
@@ -107,7 +107,7 @@
 
                                     <td>
                                         @Html.DisplayFor(model => Model.ComprobanteCfdi[i].Receptor.RazonSocial) <br />
-                                        <span class="text-gray-500 fs-6">@Html.DisplayFor(model => Model.ComprobanteCfdi[i].Receptor.Rfc)</span>
+                                        <span class="text-gray-600">@Html.DisplayFor(model => Model.ComprobanteCfdi[i].Receptor.Rfc)</span>
                                     </td>
                                     <td>
                                         @if (Model.ComprobanteCfdi[i].FacturaEmitida != null)
@@ -117,7 +117,7 @@
                                         }
                                         else
                                         {
-                                            <span class="text-gray-500 fs-6"> @Html.Raw("Sin asignar")</span>
+                                            <span class="text-gray-600"> @Html.Raw("Sin asignar")</span>
                                         }
                                     </td>
                                     <td>
@@ -133,16 +133,16 @@
                                             @Html.Raw("Egreso")
                                         }
                                         <br />
-                                        <div class="text-gray-500 fs-6">
+                                        <div class="text-gray-600">
                                             @Model.ComprobanteCfdi[i].MetodoPago
                                             @Model.ComprobanteCfdi[i].FormaPago
                                         </div>
                                     </td>
                                     <td class="text-end">
                                         @Model.ComprobanteCfdi[i].Total.ToString("C") <br />
-                                        <div class="text-gray-500 fs-6">@Model.ComprobanteCfdi[i].Moneda</div>
+                                        <div class="text-gray-600">@Model.ComprobanteCfdi[i].Moneda</div>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if (Model.ComprobanteCfdi[i].Generado == true)
                                         {
                                             if (Model.ComprobanteCfdi[i].Status == API.Enums.Status.Activo)

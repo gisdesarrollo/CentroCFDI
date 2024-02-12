@@ -83,12 +83,12 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.RazonSocial) <br />
-                                                                            <span class="text-gray-500 fs-6">@Html.DisplayFor(modelItem => item.Rfc)</span>
+                                                                            <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Rfc)</span>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Email)
                             <br />
-                            <div class="text-gray-500 fs-6">
+                            <div class="text-gray-600">
                                 @if (!string.IsNullOrEmpty(item.Telefono1))
                                 {
                                     <span class="badge"> Teléfono 1: </span> @Html.DisplayFor(modelItem => item.Telefono1)<br />

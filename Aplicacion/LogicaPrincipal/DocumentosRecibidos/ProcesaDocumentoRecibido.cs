@@ -32,13 +32,17 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             var documentoRecibido = new List<DocumentosRecibidosDR>();
             if (socioComercialId != null)
             {
-                documentoRecibido = _db.DocumentoRecibidoDr.Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId && dr.SocioComercial_Id == socioComercialId).ToList();
-
+                documentoRecibido = _db.DocumentoRecibidoDr
+                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId && dr.SocioComercial_Id == socioComercialId)
+                    .OrderBy(dr => dr.EstadoComercial)
+                    .ToList();
             }
             else
             {
-                documentoRecibido = _db.DocumentoRecibidoDr.Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId).ToList();
-
+                documentoRecibido = _db.DocumentoRecibidoDr
+                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId)
+                    .OrderBy(dr => dr.EstadoComercial)
+                    .ToList();
             }
             return documentoRecibido;
         }
@@ -74,7 +78,8 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             {
                 Authentication auth = new Authentication(urlPruebas, user, password);
                 response = auth.GetToken();
-                if (response.status == "error") {
+                if (response.status == "error")
+                {
                     throw new Exception(String.Format("Error al momento de autenticar: {0}", response.message));
                 }
             }
@@ -86,23 +91,23 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             return response;
         }
 
-        public ValidateXmlResponse ValidaCfdi(String token,String pathXml)
+        public ValidateXmlResponse ValidaCfdi(String token, String pathXml)
         {
-            
+
             ValidateXmlResponse response = new ValidateXmlResponse();
-            
+
             try
             {
                 //Creamos una instancia de tipo Validate
-                Validate validate = new Validate(urlPruebas,token);
+                Validate validate = new Validate(urlPruebas, token);
                 //var xml = GetXml(build);
                 string contents = System.IO.File.ReadAllText(pathXml);
                 response = validate.ValidateXml(contents);
-                if(response.status == "error")
+                if (response.status == "error")
                 {
                     throw new Exception(String.Format("Error al momento de validar el CFDI: {0}", response.message));
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -110,6 +115,6 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             }
             return response;
         }
-    
+
     }
 }
