@@ -4,6 +4,7 @@
 @{
     var _db = new APBoxContext();
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
+
     var GrupoId = _db.Sucursales.Find(sucursalId).GrupoId;
     var GrupoLlave = _db.Grupos.Find(GrupoId).Llave;
     var GrupoNombre = _db.Grupos.Find(GrupoId).Nombre;
