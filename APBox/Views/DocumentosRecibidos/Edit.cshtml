@@ -266,23 +266,22 @@
         <div class="col-6">
             <div class="row">
                 <div class="col-12">
-                    <!--begin::List Widget 7-->
-                    <div class="card card-xl-stretch mb-8">
-                        <!--begin::Body-->
-                        <div class="card-body">
+                    @if (!Model.isProveedor)
+                    {
+                        <!--begin::List Widget 7-->
+                        <div class="card card-xl-stretch mb-8">
+                            <!--begin::Body-->
+                            <div class="card-body">
 
-                            <div class="d-flex flex-column flex-xl-row">
-                                <!--begin::Content-->
-                                <div class="flex-lg-row-fluid col-6">
-                                    <!--begin::Ticket view-->
-                                    <div class="mb-0">
-                                        <!--begin::Heading-->
-                                        <div class="d-flex align-items-center">
-                                            <div class="w-100">
-                                                <!--end::Stat-->
-                                                @if (!Model.Usuario.esProveedor)
-                                                {
-
+                                <div class="d-flex flex-column flex-xl-row">
+                                    <!--begin::Content-->
+                                    <div class="flex-lg-row-fluid col-6">
+                                        <!--begin::Ticket view-->
+                                        <div class="mb-0">
+                                            <!--begin::Heading-->
+                                            <div class="d-flex align-items-center">
+                                                <div class="w-100">
+                                                    <!--end::Stat-->
                                                     <!--begin::Option-->
                                                     <input type="radio" class="btn-check" name="radio_buttons_2" id="aprobado" />
                                                     <label class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success p-7 d-flex align-items-center mb-5" for="aprobado">
@@ -320,130 +319,130 @@
                                                         </div>
                                                     </div>
                                                     <!--end::Option-->
-                                                }
-
+                                                   
+                                                </div>
+                                                <!--end::Heading-->
+                                            </div>
+                                        </div>
+                                        <!--end::Ticket view-->
+                                    </div>
+                                    <!--end::Content-->
+                                </div>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                        <!--end::List Widget 7-->
+                    }
+                        <!--begin::List Widget 7-->
+                        <div class="card card-xl-stretch mb-8">
+                            <!--begin::Header-->
+                            <div class="card-header align-items-center border-0 mt-4">
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="fw-bold text-gray-900">Proceso de aprobación</span>
+                                    <span class="text-muted mt-1 fw-semibold fs-7"> </span>
+                                </h3>
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Body-->
+                            <div class="card-body pt-3">
+                                <div class="d-flex flex-column flex-xl-row">
+                                    <!--begin::Content-->
+                                    <div class="flex-lg-row-fluid me-xl-15 col-6">
+                                        <!--begin::Ticket view-->
+                                        <div class="mb-0">
+                                            <!--begin::Heading-->
+                                            <div class="d-flex align-items-center mb-10">
+                                                <!--begin::Icon-->
+                                                <i class="ki-duotone ki-tablet-book fs-4qx text-primary ms-n2 me-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <!--end::Icon-->
+                                                <!--begin::Content-->
+                                                <div class="d-flex flex-column">
+                                                    <!--begin::Title-->
+                                                    <h1 class="text-gray-800 fw-semibold">@Model.EstadoComercial</h1>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Content-->
                                             </div>
                                             <!--end::Heading-->
                                         </div>
-                                    </div>
-                                    <!--end::Ticket view-->
-                                </div>
-                                <!--end::Content-->
-                            </div>
-                        </div>
-                        <!--end::Body-->
-                    </div>
-                    <!--end::List Widget 7-->
-                    <!--begin::List Widget 7-->
-                    <div class="card card-xl-stretch mb-8">
-                        <!--begin::Header-->
-                        <div class="card-header align-items-center border-0 mt-4">
-                            <h3 class="card-title align-items-start flex-column">
-                                <span class="fw-bold text-gray-900">Proceso de aprobación</span>
-                                <span class="text-muted mt-1 fw-semibold fs-7"> </span>
-                            </h3>
-                        </div>
-                        <!--end::Header-->
-                        <!--begin::Body-->
-                        <div class="card-body pt-3">
-                            <div class="d-flex flex-column flex-xl-row">
-                                <!--begin::Content-->
-                                <div class="flex-lg-row-fluid me-xl-15 col-6">
-                                    <!--begin::Ticket view-->
-                                    <div class="mb-0">
-                                        <!--begin::Heading-->
-                                        <div class="d-flex align-items-center mb-10">
-                                            <!--begin::Icon-->
-                                            <i class="ki-duotone ki-tablet-book fs-4qx text-primary ms-n2 me-3">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                            <!--end::Icon-->
-                                            <!--begin::Content-->
-                                            <div class="d-flex flex-column">
-                                                <!--begin::Title-->
-                                                <h1 class="text-gray-800 fw-semibold">@Model.EstadoComercial</h1>
-                                                <!--end::Title-->
-                                            </div>
-                                            <!--end::Content-->
-                                        </div>
-                                        <!--end::Heading-->
-                                    </div>
-                                    <!--end::Ticket view-->
+                                        <!--end::Ticket view-->
 
+                                    </div>
+                                    <!--end::Content-->
                                 </div>
-                                <!--end::Content-->
-                            </div>
 
-                            <div class="d-flex flex-column flex-xl-row">
-                                <!--begin::Content-->
-                                <div class="flex-lg-row-fluid mb-20 mb-xl-0 col-6">
-                                    <!--begin::Ticket view-->
-                                    <div class="mb-0">
-                                        <!--begin::Heading-->
-                                        <div class="d-flex align-items-center">
-                                            <div class="w-100">
-                                                <!--begin::Stat-->
-                                                <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
-                                                    <!--begin::Number-->
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="fs-4 fw-bold">@Model.FechaEntrega.ToString("dd MMMM, yyyy")</div>
-                                                    </div>
-                                                    <!--end::Number-->
-                                                    <!--begin::Label-->
-                                                    <div class="fw-semibold fs-4 text-gray-500">Fecha de Carga</div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Stat-->
-                                                <!--begin::Stat-->
-                                                <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
-                                                    <!--begin::Number-->
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="fs-4 fw-bold">@Model.Usuario.NombreCompleto</div>
-                                                    </div>
-                                                    <!--end::Number-->
-                                                    <!--begin::Label-->
-                                                    <div class="fw-semibold fs-4 text-gray-500">Usuario que entrega</div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Stat-->
-                                                <!--begin::Stat-->
-                                                <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
-                                                    <!--begin::Number-->
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="fs-4 fw-bold">@Model.Usuario.Email</div>
-                                                    </div>
-                                                    <!--end::Number-->
-                                                    <!--begin::Label-->
-                                                    <div class="fw-semibold fs-4 text-gray-500">mail solicitante</div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Stat-->
-                                                <!--begin::Stat-->
-                                                @*<div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
+                                <div class="d-flex flex-column flex-xl-row">
+                                    <!--begin::Content-->
+                                    <div class="flex-lg-row-fluid mb-20 mb-xl-0 col-6">
+                                        <!--begin::Ticket view-->
+                                        <div class="mb-0">
+                                            <!--begin::Heading-->
+                                            <div class="d-flex align-items-center">
+                                                <div class="w-100">
+                                                    <!--begin::Stat-->
+                                                    <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
                                                         <!--begin::Number-->
                                                         <div class="d-flex align-items-center">
-                                                            <div class="fs-4 fw-bold">@Model.Usuario.Departamento.Nombre</div>
+                                                            <div class="fs-4 fw-bold">@Model.FechaEntrega.ToString("dd MMMM, yyyy")</div>
                                                         </div>
                                                         <!--end::Number-->
                                                         <!--begin::Label-->
-                                                        <div class="fw-semibold fs-4 text-gray-500">Departamento</div>
+                                                        <div class="fw-semibold fs-4 text-gray-500">Fecha de Carga</div>
                                                         <!--end::Label-->
-                                                    </div>*@
-                                                <!--end::Stat-->
+                                                    </div>
+                                                    <!--end::Stat-->
+                                                    <!--begin::Stat-->
+                                                    <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
+                                                        <!--begin::Number-->
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="fs-4 fw-bold">@Model.Usuario.NombreCompleto</div>
+                                                        </div>
+                                                        <!--end::Number-->
+                                                        <!--begin::Label-->
+                                                        <div class="fw-semibold fs-4 text-gray-500">Usuario que entrega</div>
+                                                        <!--end::Label-->
+                                                    </div>
+                                                    <!--end::Stat-->
+                                                    <!--begin::Stat-->
+                                                    <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
+                                                        <!--begin::Number-->
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="fs-4 fw-bold">@Model.Usuario.Email</div>
+                                                        </div>
+                                                        <!--end::Number-->
+                                                        <!--begin::Label-->
+                                                        <div class="fw-semibold fs-4 text-gray-500">mail solicitante</div>
+                                                        <!--end::Label-->
+                                                    </div>
+                                                    <!--end::Stat-->
+                                                    <!--begin::Stat-->
+                                                    @*<div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
+                                            <!--begin::Number-->
+                                            <div class="d-flex align-items-center">
+                                                <div class="fs-4 fw-bold">@Model.Usuario.Departamento.Nombre</div>
                                             </div>
-                                            <!--end::Heading-->
+                                            <!--end::Number-->
+                                            <!--begin::Label-->
+                                            <div class="fw-semibold fs-4 text-gray-500">Departamento</div>
+                                            <!--end::Label-->
+                                        </div>*@
+                                                    <!--end::Stat-->
+                                                </div>
+                                                <!--end::Heading-->
+                                            </div>
                                         </div>
+                                        <!--end::Ticket view-->
                                     </div>
-                                    <!--end::Ticket view-->
+                                    <!--end::Content-->
                                 </div>
-                                <!--end::Content-->
                             </div>
+                            <!--end::Body-->
                         </div>
-                        <!--end::Body-->
+                        <!--end::List Widget 7-->
                     </div>
-                    <!--end::List Widget 7-->
-                </div>
             </div>
 
         </div>
@@ -858,7 +857,7 @@
             Cancelar
         </a>
         <!--end::Button-->
-        @if ((Model.Usuario.esProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision) || (!Model.Usuario.esProveedor))
+        @if ((Model.isProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision) || (!Model.isProveedor))
         {
             <!--begin::Button-->
             <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
@@ -877,6 +876,7 @@
 
 <script>
     var radioRechazado = document.getElementById('rechazado');
+    console.log("rechazado: "+ radioRechazado);
     var radioAprobado = document.getElementById('aprobado');
     var motivoRechazoDiv = document.getElementById('motivo-rechazo');
     radioRechazado.addEventListener('change', function () {

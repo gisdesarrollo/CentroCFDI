@@ -29,188 +29,236 @@
     <!--end:Tabs nav-->
     <!--begin:Tab content-->
     <div class="tab-content py-4 py-lg-8 px-lg-7">
-
-        <!--begin:Tab pane-->
-        <div class="tab-pane active w-lg-600px" id="empresa">
-            <!--begin:Row-->
-            <div class="row">
-                <!--begin:Col-->
-                <div class="col-lg-8">
-                    <!--begin:Row-->
-                    <div class="row">
-                        <!--begin:Col-->
-                        <div class="col-lg-4 mb-6 mb-lg-0">
-                            <!--begin:Menu heading-->
-                            <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Entidades</h4>
-                            <!--end:Menu heading-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item p-0 m-0">
-                                <!--begin:Menu link-->
-                                <a href="@Url.Action("Index","Sucursales")" class="menu-link ">
-                                    <span class="menu-title">Empresas</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item p-0 m-0">
-                                <!--begin:Menu link-->
-                                <a href="@Url.Action("Index","SociosComerciales")" class="menu-link ">
-                                    <span class="menu-title">Socios Comerciales</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item p-0 m-0">
-                                <!--begin:Menu link-->
-                                <a href="@Url.Action("Index","Bancos")" class="menu-link ">
-                                    <span class="menu-title">Bancos</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
-                        </div>
-                        <!--end:Col-->
-                        <!--begin:Col-->
+            <!--begin:Tab pane-->
+            <div class="tab-pane active w-lg-600px" id="empresa">
+                <!--begin:Row-->
+                <div class="row">
+                    <!--begin:Col-->
+                    <div class="col-lg-8">
+                        <!--begin:Row-->
+                        <div class="row">
+                            @if (User.IsInRole("SUCURSALES") || User.IsInRole("CLIENTES") || User.IsInRole("BANCOS"))
+                            {
+                                <!--begin:Col-->
+                                <div class="col-lg-4 mb-6 mb-lg-0">
+                                    <!--begin:Menu heading-->
+                                    <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Entidades</h4>
+                                    <!--end:Menu heading-->
+                                    @if (User.IsInRole("SUCURSALES"))
+                                    {
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item p-0 m-0">
+                                            <!--begin:Menu link-->
+                                            <a href="@Url.Action("Index", "Sucursales")" class="menu-link ">
+                                                <span class="menu-title">Empresas</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    }
+                                    @if (User.IsInRole("CLIENTES"))
+                                    {
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item p-0 m-0">
+                                            <!--begin:Menu link-->
+                                            <a href="@Url.Action("Index", "SociosComerciales")" class="menu-link ">
+                                                <span class="menu-title">Socios Comerciales</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    }
+                                    @if (User.IsInRole("BANCOS"))
+                                    {
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item p-0 m-0">
+                                            <!--begin:Menu link-->
+                                            <a href="@Url.Action("Index", "Bancos")" class="menu-link ">
+                                                <span class="menu-title">Bancos</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    }
+                                </div>
+                                <!--end:Col-->
+                            }
+                            @if (User.IsInRole("GRUPOS") || User.IsInRole("PERFILES") || User.IsInRole("USUARIOS") || User.IsInRole("DEPARTAMENTOS"))
+                            {
+                                <!--begin:Col-->
                         <div class="col-lg-4 mb-6 mb-lg-0">
                             <!--begin:Menu heading-->
                             <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Sistema</h4>
                             <!--end:Menu heading-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item p-0 m-0">
-                                <!--begin:Menu link-->
-                                <a href="@Url.Action("Index","Grupos")" class="menu-link ">
-                                    <span class="menu-title">Grupos</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item p-0 m-0">
-                                <!--begin:Menu link-->
-                                <a href="@Url.Action("Index","Perfiles")" class="menu-link ">
-                                    <span class="menu-title">Perfiles</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item p-0 m-0">
-                                <!--begin:Menu link-->
-                                <a href="@Url.Action("Index","Usuarios")" class="menu-link ">
-                                    <span class="menu-title">Usuarios</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
-                        </div>
-                        <!--end:Col-->
-                    </div>
-                    <!--end:Row-->
-                </div>
-                <!--end:Col-->
-                <!--begin:Col-->
-                <div class="col-lg-4">
-                    <img src="~/_CDN/assets/media/stock/600x600/img-82.jpg" class="rounded mw-100" alt="" />
-                </div>
-                <!--end:Col-->
-            </div>
-            <!--end:Row-->
-        </div>
-        <!--end:Tab pane-->
-        <!--begin:Tab pane-->
-        <div class="tab-pane  w-lg-600px" id="cfdis">
-            <!--begin:Row-->
-            <div class="row">
-                <!--begin:Col-->
-                <div class="col-lg-8">
-                    <!--begin:Row-->
-                    <div class="row">
-                        <!--begin:Col-->
-                        <div class="col-lg-4 mb-6 mb-lg-0">
-                            <!--begin:Menu section-->
-                            <div class="mb-0">
-                                <!--begin:Menu heading-->
-                                <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Comprobantes</h4>
-                                <!--end:Menu heading-->
+                            @if (User.IsInRole("GRUPOS"))
+                            {
                                 <!--begin:Menu item-->
                                 <div class="menu-item p-0 m-0">
                                     <!--begin:Menu link-->
-                                    <a href="@Url.Action("Index","Conceptos")" class="menu-link ">
-                                        <span class="menu-title">Conceptos</span>
+                                    <a href="@Url.Action("Index", "Grupos")" class="menu-link ">
+                                        <span class="menu-title">Grupos</span>
                                     </a>
                                     <!--end:Menu link-->
                                 </div>
                                 <!--end:Menu item-->
+                            }
+                            @if (User.IsInRole("PERFILES"))
+                            {
                                 <!--begin:Menu item-->
                                 <div class="menu-item p-0 m-0">
                                     <!--begin:Menu link-->
-                                    <a href="@Url.Action("Index","Impuestos")" class="menu-link ">
-                                        <span class="menu-title">Impuestos</span>
+                                    <a href="@Url.Action("Index", "Perfiles")" class="menu-link ">
+                                        <span class="menu-title">Perfiles</span>
                                     </a>
                                     <!--end:Menu link-->
                                 </div>
                                 <!--end:Menu item-->
-                            </div>
-                            <!--end:Menu section-->
+                            }
+                            @if (User.IsInRole("USUARIOS"))
+                            {
+                                <!--begin:Menu item-->
+                                <div class="menu-item p-0 m-0">
+                                    <!--begin:Menu link-->
+                                    <a href="@Url.Action("Index", "Usuarios")" class="menu-link ">
+                                        <span class="menu-title">Usuarios</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            }
+                            @if (User.IsInRole("DEPARTAMENTOS"))
+                            {
+                                <!--begin:Menu item-->
+                                <div class="menu-item p-0 m-0">
+                                    <!--begin:Menu link-->
+                                    <a href="@Url.Action("Index", "Departamentos")" class="menu-link ">
+                                        <span class="menu-title">Departamentos</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            }
                         </div>
+                                <!--end:Col-->
+                            }
+                            </div>
+                        <!--end:Row-->
                     </div>
-                    <!--end:Row-->
+                    <!--end:Col-->
+                    <!--begin:Col-->
+                    <div class="col-lg-4">
+                        <img src="~/_CDN/assets/media/stock/600x600/img-82.jpg" class="rounded mw-100" alt="" />
+                    </div>
+                    <!--end:Col-->
                 </div>
-                <!--end:Col-->
-                <!--begin:Col-->
-                <div class="col-lg-4">
-                    <img src="~/_CDN/assets/media/stock/600x600/img-69.jpg" class="rounded mw-100" alt="" />
-                </div>
-                <!--end:Col-->
+                <!--end:Row-->
             </div>
-            <!--end:Row-->
-        </div>
-        <!--end:Tab pane-->
+            <!--end:Tab pane-->
+        
+            <!--begin:Tab pane-->
+            <div class="tab-pane  w-lg-600px" id="cfdis">
+                <!--begin:Row-->
+                <div class="row">
+                    <!--begin:Col-->
+                    <div class="col-lg-8">
+                        <!--begin:Row-->
+                        <div class="row">
+                            <!--begin:Col-->
+                            <div class="col-lg-4 mb-6 mb-lg-0">
+                                @if (User.IsInRole("CONCEPTOS") || User.IsInRole("IMPUESTOS"))
+                                {
+                                    <!--begin:Menu section-->
+                                <div class="mb-0">
+                                    <!--begin:Menu heading-->
+                                    <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Comprobantes</h4>
+                                    <!--end:Menu heading-->
+                                    @if (User.IsInRole("CONCEPTOS"))
+                                    {
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item p-0 m-0">
+                                            <!--begin:Menu link-->
+                                            <a href="@Url.Action("Index", "Conceptos")" class="menu-link ">
+                                                <span class="menu-title">Conceptos</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    }
+                                    @if (User.IsInRole("IMPUESTOS"))
+                                    {
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item p-0 m-0">
+                                            <!--begin:Menu link-->
+                                            <a href="@Url.Action("Index", "Impuestos")" class="menu-link ">
+                                                <span class="menu-title">Impuestos</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    }
+                                    </div>
+                                    <!--end:Menu section-->
+                                }
+                                </div>
+                        </div>
+                        <!--end:Row-->
+                    </div>
+                    <!--end:Col-->
+                    <!--begin:Col-->
+                    <div class="col-lg-4">
+                        <img src="~/_CDN/assets/media/stock/600x600/img-69.jpg" class="rounded mw-100" alt="" />
+                    </div>
+                    <!--end:Col-->
+                </div>
+                <!--end:Row-->
+            </div>
+            <!--end:Tab pane-->
 
-        <!--begin:Tab pane-->
-        <div class="tab-pane  w-lg-600px" id="complementos">
-            <!--begin:Row-->
-            <div class="row">
-                <!--begin:Col-->
-                <div class="col-lg-8">
-                    <!--begin:Row-->
-                    <div class="row">
-                        <!--begin:Col-->
-                        <div class="col-lg-4 mb-6 mb-lg-0">
-                            <!--begin:Menu section-->
-                            <div class="mb-0">
-                                <!--begin:Menu heading-->
-                                <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Carta Porte</h4>
-                                <!--end:Menu heading-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item p-0 m-0">
-                                    <!--begin:Menu link-->
-                                    <a href="@Url.Action("Index","Mercancias")" class="menu-link ">
-                                        <span class="menu-title">Mercancías</span>
-                                    </a>
-                                    <!--end:Menu link-->
+            <!--begin:Tab pane-->
+            <div class="tab-pane  w-lg-600px" id="complementos">
+                <!--begin:Row-->
+                <div class="row">
+                    <!--begin:Col-->
+                    <div class="col-lg-8">
+                        <!--begin:Row-->
+                        <div class="row">
+                            <!--begin:Col-->
+                            <div class="col-lg-4 mb-6 mb-lg-0">
+                                @if (User.IsInRole("MERCANCIAS"))
+                                {
+                                    <!--begin:Menu section-->
+                                    <div class="mb-0">
+                                        <!--begin:Menu heading-->
+                                        <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Carta Porte</h4>
+                                        <!--end:Menu heading-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item p-0 m-0">
+                                            <!--begin:Menu link-->
+                                            <a href="@Url.Action("Index", "Mercancias")" class="menu-link ">
+                                                <span class="menu-title">Mercancías</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu section-->
+                                }
                                 </div>
-                                <!--end:Menu item-->
-                            </div>
-                            <!--end:Menu section-->
                         </div>
+                        <!--end:Row-->
                     </div>
-                    <!--end:Row-->
+                    <!--end:Col-->
+                    <!--begin:Col-->
+                    <div class="col-lg-4">
+                        <img src="~/_CDN/assets/media/stock/600x600/img-85.jpg" class="rounded mw-100" alt="" />
+                    </div>
+                    <!--end:Col-->
                 </div>
-                <!--end:Col-->
-                <!--begin:Col-->
-                <div class="col-lg-4">
-                    <img src="~/_CDN/assets/media/stock/600x600/img-85.jpg" class="rounded mw-100" alt="" />
-                </div>
-                <!--end:Col-->
+                <!--end:Row-->
             </div>
-            <!--end:Row-->
-        </div>
-        <!--end:Tab pane-->
+            <!--end:Tab pane-->
 
-    </div>
+        </div>
     <!--end:Tab content-->
 </div>
 <!--end:Pages menu-->

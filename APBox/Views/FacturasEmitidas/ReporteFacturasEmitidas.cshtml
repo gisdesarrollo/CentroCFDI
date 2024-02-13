@@ -123,6 +123,15 @@
                                 Tipo de Cambio
                             </th>
                             <th class="min-w-100px">
+                                Metodo Pago
+                            </th>
+                            <th class="min-w-100px">
+                                Forma de Pago
+                            </th>
+                            <th class="min-w-100px">
+                                Uso Cfdi
+                            </th>
+                            <th class="min-w-100px">
                                 Subtotal
                             </th>
 
@@ -144,17 +153,17 @@
 
                             <th>
                                 @*@{
-                                    //var bd = new APBox.Context.APBoxContext();
-                                    //var sucursal = bd.Sucursales.Find(Model.SucursalId);
-                                    if (Model.SucursalId == 42)
-                                    {*@
-                                        <p>Referencia</p>
-                                    @*}
-                                    else
-                                    {
+            //var bd = new APBox.Context.APBoxContext();
+            //var sucursal = bd.Sucursales.Find(Model.SucursalId);
+            if (Model.SucursalId == 42)
+            {*@
+                                <p>Referencia</p>
+                                @*}
+                else
+                {
 
-                                    }
-                                }*@
+                }
+            }*@
                             </th>
 
                         </tr>
@@ -170,87 +179,96 @@
                                 var receptor = db.Clientes.Find(item.ReceptorId);
                                 var facturaEmitida = db.FacturasEmitidas.Find(item.Id);
 
-                            <tr class="odd">
-                                <td>
-                                    @receptor.Rfc
-                                </td>
+                        <tr class="odd">
+                            <td>
+                                @receptor.Rfc
+                            </td>
 
-                                <td>
-                                    @receptor.RazonSocial
-                                </td>
-                                <td>
-                                    @item.Uuid
-                                </td>
-                                <td>
-                                    @item.Serie
-                                </td>
+                            <td>
+                                @receptor.RazonSocial
+                            </td>
+                            <td>
+                                @item.Uuid
+                            </td>
+                            <td>
+                                @item.Serie
+                            </td>
 
-                                <td>
-                                    @item.Folio
-                                </td>
+                            <td>
+                                @item.Folio
+                            </td>
 
 
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Fecha)
-                                </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>
 
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Moneda)
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Moneda)
 
-                                </td>
+                            </td>
 
-                                <td>
-                                    @facturaEmitida.TipoCambio.ToString()
-                                </td>
-                                @{
-//var db = new APBox.Context.APBoxContext();
-//var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-//var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-//var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+                            <td>
+                                @facturaEmitida.TipoCambio.ToString()
+                            </td>
+                            <td>
+                                @facturaEmitida.MetodoPago.ToString()
+                            </td>
+                            <td>
+                                @facturaEmitida.FormaPago
+                            </td>
+                            <td>
+                                @facturaEmitida.Receptor.UsoCfdi
+                            </td>
+                            @{
+                                //var db = new APBox.Context.APBoxContext();
+                                //var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+                                //var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+                                //var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
 
-                                }
+                            }
 
-                                <td>
-                                    @facturaEmitida.Subtotal
-                                </td>
-                                <td>
-                                    @facturaEmitida.Descuento
-                                </td>
+                            <td>
+                                @facturaEmitida.Subtotal
+                            </td>
+                            <td>
+                                @facturaEmitida.Descuento
+                            </td>
 
-                                <td class="text-right">
+                            <td class="text-right">
 
-                                    @facturaEmitida.TotalImpuestosTrasladados
+                                @facturaEmitida.TotalImpuestosTrasladados
 
-                                </td>
-                                <td class="text-right">
+                            </td>
+                            <td class="text-right">
 
-                                    @facturaEmitida.TotalImpuestosRetenidos
+                                @facturaEmitida.TotalImpuestosRetenidos
 
-                                </td>
-                                <td class="text-right">
-                                    @item.Total
-                                </td>
-                                <td class="text-center">
-                                    @item.TipoComprobante
-                                </td>
+                            </td>
+                            <td class="text-right">
+                                @item.Total
+                            </td>
+                            <td class="text-center">
+                                @item.TipoComprobante
+                            </td>
 
-                                <td class="text-center">
-                                    @*@{
-                                        //var db1 = new APBox.Context.APBoxContext();
-                                        //var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
-                                        if (Model.SucursalId == 42)
-                                        {*@
-                                            @item.ReferenciaAddenda
-                                        @*}
-                                        else
-                                        {
+                            <td class="text-center">
+                                @*@{
+            //var db1 = new APBox.Context.APBoxContext();
+            //var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
+            if (Model.SucursalId == 42)
+            {*@
+                                @item.ReferenciaAddenda
+                                @*}
+                else
+                {
 
-                                        }
-                                    }*@
+                }
+            }*@
 
-                                </td>
+                            </td>
 
-                            </tr>
+                        </tr>
                             }
                         }
                     </tbody>

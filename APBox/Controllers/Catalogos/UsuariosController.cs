@@ -205,6 +205,7 @@ namespace APBox.Controllers.Catalogos
                 return HttpNotFound();
             }
             PopulaForma(usuario.PerfilId);
+            PopulaDepartamento(usuario.Departamento_Id);
             ViewBag.Controller = "Usuarios";
 
             ViewBag.Action = "Edit";
@@ -222,7 +223,7 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaClientes(usuario.SocioComercialID);
             PopulaForma(usuario.PerfilId);
-
+            PopulaDepartamento(usuario.Departamento_Id);
 
             var proveedorExistente = _db.Usuarios.FirstOrDefault(e => e.esProveedor == usuario.esProveedor &&  e.Id != usuario.Id);
             if (ModelState.IsValid)

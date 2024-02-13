@@ -1,8 +1,13 @@
 @using APBox.Context;
+@using API.Catalogos;
 @{
     var _db = new APBoxContext();
     var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
     var usuario = _db.Usuarios.Find(usuarioId);
+    var socioComercial =  new Cliente();
+    if(usuario != null) {
+        socioComercial = _db.Clientes.Find(usuario.SocioComercialID);
+    }
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
     var sucursal = _db.Sucursales.Find(sucursalId);
 }
@@ -22,7 +27,7 @@
                     <div class="fw-bold d-flex align-items-center fs-5">
                         @usuario.Nombre @usuario.ApellidoPaterno
                     </div>
-                    @if (usuario.Perfil.Proveedor)
+                    @if (usuario.Perfil.Nombre == "PROVEEDOR")
                     {
                         <div class="badge badge-light-success fw-bold fs-8">
                             Socio Comercial
@@ -30,9 +35,12 @@
                     }
                     else
                     {
+                        if (usuario.Departamento != null)
+                        {
                         <div class="badge badge-light-success fw-bold fs-8">
                             @usuario.Departamento.Nombre
                         </div>
+                        }
                     }
                 </div>
                 <!--end::Username-->
@@ -46,9 +54,9 @@
 
             <div class="menu-content d-flex">
                 <div class="fw-semibold text-muted text-hover-primary fs-7">
-                    @if (usuario.Perfil.Proveedor)
+                    @if (usuario.Perfil.Nombre == "PROVEEDOR")
                     {
-                        @usuario.SocioComercial.RazonSocial <br />
+                        @socioComercial.RazonSocial <br />
                     }
                     @usuario.Email
                 </div>

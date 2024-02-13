@@ -32,6 +32,11 @@ namespace Aplicacion.LogicaPrincipal.Correos
             {
                 message.Bcc.Add(new MailAddress(emailReceptor));
             }
+            if (complementoPago.SucursalId == 49)
+            {
+                message.Bcc.Add(new MailAddress("Alejandro.Islas@rohlig.com"));
+                message.Bcc.Add(new MailAddress("Erendira.Lopez@rohlig.com"));
+            }
             message.Subject = emailDto.EncabezadoCorreo;
             message.Body = emailDto.CuerpoCorreo;
 

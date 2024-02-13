@@ -30,6 +30,8 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
         {
             var usuario = _db.Usuarios.Find(usuarioId);
             var documentoRecibido = new List<DocumentosRecibidosDR>();
+            List<DocumentosRecibidosDR> documentoRecibidoAprobador = new List<DocumentosRecibidosDR>();
+            List<DocumentosRecibidosDR> documentoRecibidos = new List<DocumentosRecibidosDR>();
             if (socioComercialId != null)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
@@ -39,10 +41,20 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             }
             else
             {
-                documentoRecibido = _db.DocumentoRecibidoDr
+                
+                documentoRecibidoAprobador = _db.DocumentoRecibidoDr
+                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Aprobador_Id == usuarioId)
+                    .OrderBy(dr => dr.EstadoComercial)
+                    .ToList();
+                
+                documentoRecibidos = _db.DocumentoRecibidoDr
                     .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId)
                     .OrderBy(dr => dr.EstadoComercial)
                     .ToList();
+                
+                documentoRecibido.AddRange(documentoRecibidoAprobador);
+                documentoRecibido.AddRange(documentoRecibidos);
+                
             }
             return documentoRecibido;
         }
