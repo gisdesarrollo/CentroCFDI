@@ -77,8 +77,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Button = "Crear";
             ViewBag.NameHere = "CFDI de Ingreso y Egreso";
 
-            if (actionName == "Filtrar")
-            {
+            
                 DateTime fechaI = comprobanteCfdiModel.FechaInicial;
                 DateTime fechaF = comprobanteCfdiModel.FechaFinal;
                 
@@ -90,7 +89,6 @@ namespace APBox.Controllers.ComprobantesCfdi
 
                 comprobanteCfdiModel.ComprobanteCfdi = _logicaFacadeFacturas.FiltrarComprobanteCFDI(fechaInicial, fechaFinal, comprobanteCfdiModel.Estatus,comprobanteCfdiModel.TipoDeComprobante, ObtenerSucursal());
 
-            }
             return View(comprobanteCfdiModel);
         }
 
