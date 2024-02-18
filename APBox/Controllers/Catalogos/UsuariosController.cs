@@ -36,7 +36,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "sistema";
+            ViewBag.NameHere = "Usuarios";
 
             return View(usuarios);
         }
@@ -78,9 +78,6 @@ namespace APBox.Controllers.Catalogos
             return View(usuario);
         }
 
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Usuario usuario, bool esProveedor)
@@ -215,8 +212,6 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Usuario usuario, bool esProveedor)
@@ -278,8 +273,9 @@ namespace APBox.Controllers.Catalogos
 
         public ActionResult Reseteo(int id)
         {
-            var personal = _db.Usuarios.Find(id);
-            _operacionesUsuarios.Reseteo(personal.NombreUsuario);
+            var usuario = _db.Usuarios.Find(id);
+            _operacionesUsuarios.Reseteo(usuario.NombreUsuario);
+            EnviarCorreoBienvenida(usuario);
             return RedirectToAction("Index");
         }
 
