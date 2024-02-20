@@ -20,12 +20,10 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
         #region Variables
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly Decodificar _decodificar = new Decodificar();
-        //private static string urlPruebas = $"http://services.test.sw.com.mx";
-        private static string urlProduccion = $"https://services.sw.com.mx";
-        //private static string userPruebas = "eduardo.ayala@gisconsultoria.com";
-        //private static string passwordPruebas = "Dr5$%5jHefg9";
-        private static string user = "desarrollo@gisconsultoria.com";
-        private static string password = "GI/2201*qA";
+        private static string urlPruebas = $"http://services.test.sw.com.mx";
+        private static string urlProduccion = $"https://services.test.sw.com.mx";
+        private static string user = "eduardo.ayala@gisconsultoria.com";
+        private static string password = "Dr5$%5jHefg9";
         #endregion
 
         public List<DocumentosRecibidosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int usuarioId, int? socioComercialId)
@@ -90,7 +88,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             AuthResponse response = new AuthResponse();
             try
             {
-                Authentication auth = new Authentication(urlProduccion, user, password);
+                Authentication auth = new Authentication(urlPruebas, user, password);
                 response = auth.GetToken();
                 if (response.status == "error")
                 {
@@ -113,7 +111,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             try
             {
                 //Creamos una instancia de tipo Validate
-                Validate validate = new Validate(urlProduccion, token);
+                Validate validate = new Validate(urlPruebas, token);
                 //var xml = GetXml(build);
                 string contents = System.IO.File.ReadAllText(pathXml);
                 response = validate.ValidateXml(contents);

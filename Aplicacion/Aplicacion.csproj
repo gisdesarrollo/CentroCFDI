@@ -158,7 +158,7 @@
     </Reference>
     <Reference Include="RVCFDI33, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\DEPLOY-centrocfdi\DLL-MODIFICADOREALVIRTUAL-DECIMALES\RVCFDI33.dll</HintPath>
+      <HintPath>C:\Users\Alexander\Documents\RVCFDI33.dll</HintPath>
     </Reference>
     <Reference Include="SAT.Services, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SW-sdk-45.0.0.25.1-rc\lib\net45\SAT.Services.dll</HintPath>
