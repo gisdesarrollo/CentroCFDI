@@ -25,7 +25,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.NameHere = "Crea y modifica los conceptos";
 
             return View(cat_Conceptos);
         }
@@ -41,7 +41,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Conceptos";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.NameHere = "Create";
 
             return View(cat_Conceptos);
         }

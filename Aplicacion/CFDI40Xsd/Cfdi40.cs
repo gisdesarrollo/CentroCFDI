@@ -2553,6 +2553,10 @@ public enum c_ObjetoImp {
     [DescriptionAttribute("03-Sí objeto del impuesto y no obligado al desglose")]
     [System.Xml.Serialization.XmlEnumAttribute("03")]
     Item03,
+
+    [DescriptionAttribute("04-Sí objeto del impuesto y no causa impuesto")]
+    [System.Xml.Serialization.XmlEnumAttribute("04")]
+    Item04,
 }
 
 /// <remarks/>

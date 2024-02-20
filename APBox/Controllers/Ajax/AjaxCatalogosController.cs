@@ -46,7 +46,7 @@ namespace InventorAid.Controllers.Ajax
                 NumeroCuenta = numeroCuenta
             };
 
-            return PartialView("~/Views/Clientes/Bancos.cshtml", bancoCliente);
+            return PartialView("~/Views/SociosComerciales/Bancos.cshtml", bancoCliente);
         }
 
         public PartialViewResult BancosSucursales(int bancoId, string nombre, string numeroCuenta)

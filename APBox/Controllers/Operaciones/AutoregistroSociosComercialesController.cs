@@ -39,7 +39,7 @@ namespace APBox.Controllers.Catalogos
             catch (Exception)
             {
                 string error = "Se encontró un error en el link del acceso que te compartieron, favor de contactar a tu administrador.";
-                return RedirectToAction("Error", "Autoregistro", new { errorMessage = error });
+                return RedirectToAction("Error", "AutoregistroSociosComerciales", new { errorMessage = error });
             }
 
             try
@@ -49,7 +49,7 @@ namespace APBox.Controllers.Catalogos
             catch (Exception)
             {
                 string error = "Parece que la empresa aun no cuenta con todas las configuraciones necesarias para dar de alta proveedores, favor de consultar a tu administrador para revisar el perfil faltante.";
-                return RedirectToAction("Error", "Autoregistro", new { errorMessage = error });
+                return RedirectToAction("Error", "AutoregistroSociosComerciales", new { errorMessage = error });
             }
 
             var sucursal = _db.Sucursales.FirstOrDefault(e => e.GrupoId == grupo.Id);
@@ -127,6 +127,7 @@ namespace APBox.Controllers.Catalogos
             if (entidadExistente != null)
             {
                 ViewBag.ErrorMessage = "El nombre de usuario ya existe";
+                ModelState.AddModelError("", "El nombre de usuario ya existe");
                 return View(usuario);
             }
 
@@ -149,6 +150,7 @@ namespace APBox.Controllers.Catalogos
             usuario.Departamento = null;
             usuario.Departamento_Id = null;
             usuario.GrupoId = (int)(TempData["grupoId"] as int?);
+            usuario.PerfilId = (int)(TempData["perfilId"] as int?);
 
             // Obtener los datos guardados en TempData
             var ClienteId = TempData["SocioComercialId"] as int?;
@@ -161,7 +163,7 @@ namespace APBox.Controllers.Catalogos
             // Envío de correo electrónico de bienvenida
             EnviarCorreoBienvenida(usuario);
 
-            return RedirectToAction("Completado", "Autoregistro");
+            return RedirectToAction("Completado", "AutoregistroSociosComerciales");
 
         }
 

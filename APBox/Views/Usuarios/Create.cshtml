@@ -4,6 +4,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.GrupoId)
+    @Html.HiddenFor(model => model.esProveedor)
 
 
     <div class="card card-flush py-4">
@@ -156,14 +157,21 @@
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
-
-
-            <div class="card-header">
-                <div class="card-title">
-                    <h2>Nuevo Usuario</h2>
-                </div>
-            </div>
             <div class="fv-row mb-7 row">
+                <div class="form-group col-3">
+                    @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
+                    <div class="form-check">
+                        @{
+                            bool isChecked = Model.esProveedor ? true : false;
+                        }
+                        <input type="hidden" name="esProveedor" value="false" />
+                        <input class="form-check-input" type="checkbox" id="chkProveedor" name="esProveedor" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label" for="chkProveedor">
+                            Proveedor
+                        </label>
+                    </div>
+                </div>
+
                 <div class="form-group col-3">
                     @Html.LabelFor(model => model.PerfilId, htmlAttributes: new { @class = "form-label required" })
                     @Html.DropDownList("PerfilId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-control" })
@@ -178,19 +186,7 @@
 
             </div>
 
-            <div class="form-group col-xs-12 col-sm-6 col-md-4">
-                @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-label" })
-                <div class="form-check">
-                    @{
-                        bool isChecked = Model.esProveedor ? true : false;
-                    }
-                    <input type="hidden" name="esProveedor" value="false" />
-                    <input class="form-check-input" type="checkbox" id="chkProveedor" name="esProveedor" @(isChecked ? "checked" : "") />
-                    <label class="form-check-label" for="chkProveedor">
-                        Proveedor
-                    </label>
-                </div>
-            </div>
+
 
             <div id="divSocioComercial" class="form-group col-xs-12 col-sm-6 col-md-4" style="display: none;">
                 @Html.LabelFor(model => model.SocioComercialID, htmlAttributes: new { @class = "form-label" })
@@ -228,15 +224,7 @@
         </div>
     </div>
 
-    <div class="card card-flush py-4">
-        <!--begin::Card header-->
-        <div class="card-header">
-            <div class="card-title">
-                <h2>Info Usuarios</h2>
-            </div>
-        </div>
-        <!--end::Card header-->
-    </div>
+    
 }
 
 

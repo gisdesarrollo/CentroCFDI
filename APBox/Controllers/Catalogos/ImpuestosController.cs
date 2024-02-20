@@ -25,7 +25,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.NameHere = "Crea y modifica los impuestos";
 
             return View(cat_impuestos);
         }
