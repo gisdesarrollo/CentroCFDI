@@ -88,10 +88,10 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             
                             //Se desorganizaron los numeros por que necesito el cliente para determinar el banco
                             var nombreBancoOrdenante = registros[i][7];
-                            BancoCliente bancoOrdenante = null;
+                            BancoSocioComercial bancoOrdenante = null;
                             if (!String.IsNullOrEmpty(nombreBancoOrdenante))
                             {
-                                bancoOrdenante = _db.BancosClientes.FirstOrDefault(b => b.Nombre == nombreBancoOrdenante && b.Cliente.SucursalId == sucursalId && b.ClienteId == facturaEmitida.ReceptorId);
+                                bancoOrdenante = _db.BancosSociosComerciales.FirstOrDefault(b => b.Nombre == nombreBancoOrdenante && b.SocioComercial.SucursalId == sucursalId && b.SocioComercialId == facturaEmitida.ReceptorId);
                                 if (bancoOrdenante == null)
                                 {
                                     errores.Add(String.Format("El banco {0} no fue encontrado para el registro {1}", nombreBancoOrdenante, i));

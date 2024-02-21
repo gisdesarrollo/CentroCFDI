@@ -122,7 +122,7 @@
                             {
                                 var concaRfcNombre="";
                                 {
-                                    var receptor = db.Clientes.Find(item.ReceptorId);
+                                    var receptor = db.SociosComerciales.Find(item.ReceptorId);
                                     concaRfcNombre = receptor.Rfc + "-" + receptor.RazonSocial;
                                 }
                                 //var concaSerieFolioUuid = item.Serie + "-" + item.Folio + "-" + item.Uuid;

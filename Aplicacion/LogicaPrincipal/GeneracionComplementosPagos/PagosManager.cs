@@ -71,7 +71,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         public void GeneraFactura(ComplementoPago complementoPago, int sucursalId)
         {
             var sucursal = _db.Sucursales.Find(sucursalId);
-            var cliente = _db.Clientes.Find(complementoPago.ReceptorId);
+            var cliente = _db.SociosComerciales.Find(complementoPago.ReceptorId);
 
             // Crea instancia
             RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
@@ -656,7 +656,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                     }
                     throw new Exception(string.Join(",", errores.ToArray()));
                 }
-                var cliente = _db.Clientes.Find(complementoPago.ReceptorId);
+                var cliente = _db.SociosComerciales.Find(complementoPago.ReceptorId);
                 var utf8 = new UTF8Encoding();
                 //envio email SMTP
                 try

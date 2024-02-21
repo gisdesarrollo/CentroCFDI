@@ -22,7 +22,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
         {
             comprobanteCfdi.FacturaEmitida = null;
             //Cfdi Global
-            var cliente = _db.Clientes.Find(comprobanteCfdi.ReceptorId);
+            var cliente = _db.SociosComerciales.Find(comprobanteCfdi.ReceptorId);
             if (cliente != null)
             {
                 if (cliente.Rfc != "XAXX010101000" && cliente.RazonSocial != "PUBLICO EN GENERAL")
@@ -78,7 +78,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
         public void CargaRelacion(ComprobanteCfdi comprobanteCfdi)
         {
             //Cfdi Global
-            var cliente = _db.Clientes.Find(comprobanteCfdi.ReceptorId);
+            var cliente = _db.SociosComerciales.Find(comprobanteCfdi.ReceptorId);
             if (cliente != null)
             {
                 if (cliente.Rfc != "XAXX010101000" && cliente.RazonSocial != "PUBLICO EN GENERAL")

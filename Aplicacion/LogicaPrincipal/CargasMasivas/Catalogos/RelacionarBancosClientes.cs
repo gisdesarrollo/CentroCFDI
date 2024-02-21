@@ -44,19 +44,19 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.Catalogos
                 {
                     try
                     {
-                        var bancoCliente = new BancoCliente();
+                        var bancoCliente = new BancoSocioComercial();
 
                         var rfcCliente = registros[i][0];
                         var nombreBanco = registros[i][1];
                         var nombre = registros[i][2];
                         var numeroCuenta = registros[i][3];
 
-                        var cliente = _db.Clientes.FirstOrDefault(p => p.Rfc == rfcCliente && p.SucursalId == sucursalId);
+                        var cliente = _db.SociosComerciales.FirstOrDefault(p => p.Rfc == rfcCliente && p.SucursalId == sucursalId);
                         if (cliente == null)
                         {
                             throw new Exception(String.Format("El cliente con RFC {0} no fue encontrado en el registro {1}", rfcCliente, i));
                         }
-                        bancoCliente.ClienteId = cliente.Id;
+                        bancoCliente.SocioComercialId = cliente.Id;
 
                         var banco = _db.Bancos.FirstOrDefault(p => p.NombreCorto == nombreBanco);
                         if (banco == null)
@@ -81,14 +81,14 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.Catalogos
                         }
 
                         //Registro Existente
-                        var registroAnterior = _db.BancosClientes.FirstOrDefault(bc => bc.ClienteId == cliente.Id && bc.BancoId == banco.Id && bc.NumeroCuenta == numeroCuenta);
+                        var registroAnterior = _db.BancosSociosComerciales.FirstOrDefault(bc => bc.SocioComercialId == cliente.Id && bc.BancoId == banco.Id && bc.NumeroCuenta == numeroCuenta);
                         if(registroAnterior != null)
                         {
                             bancoCliente.Id = registroAnterior.Id;
                         }
 
                         //Actualizacion
-                        _db.BancosClientes.AddOrUpdate(bancoCliente);
+                        _db.BancosSociosComerciales.AddOrUpdate(bancoCliente);
 
                         try
                         {
@@ -132,7 +132,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.Catalogos
         public String Exportar(int sucursalId, bool prepopulado)
         {
             var path = String.Format("C:/Infodextra/Temp/BancosClientes_S{0}_{1}.csv", sucursalId, DateTime.Now.ToString("ddMMyyyyHHmmss"));
-            var bancosClientes = _db.BancosClientes.Where(t => t.Banco.Status == Status.Activo && t.Cliente.Status == Status.Activo && t.Cliente.SucursalId == sucursalId).ToList();
+            var bancosClientes = _db.BancosSociosComerciales.Where(t => t.Banco.Status == Status.Activo && t.SocioComercial.Status == Status.Activo && t.SocioComercial.SucursalId == sucursalId).ToList();
 
             #region Encabezados
 
@@ -155,7 +155,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.Catalogos
                 {
                     var registroBancoCliente = new List<String>();
 
-                    registroBancoCliente.Add(bancoCliente.Cliente.Rfc);
+                    registroBancoCliente.Add(bancoCliente.SocioComercial.Rfc);
                     registroBancoCliente.Add(bancoCliente.Banco.NombreCorto);
                     registroBancoCliente.Add(bancoCliente.Nombre);
                     registroBancoCliente.Add(bancoCliente.NumeroCuenta);

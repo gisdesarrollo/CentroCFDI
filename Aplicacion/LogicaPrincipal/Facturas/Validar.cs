@@ -78,22 +78,22 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                 throw new Exception(String.Format("El RFC del emisor {0} no fue encontrado en la base de datos", RFCComprobante));
             }
 
-            Cliente cliente;
+            SocioComercial cliente;
 
             if(RFCReceptor == "XEXX010101000" || RFCReceptor == "XAXX010101000")
             {
-                cliente = _db.Clientes.FirstOrDefault(s => s.Rfc == RFCReceptor && s.RazonSocial == NombreReceptor && s.SucursalId == emisor.Id);
+                cliente = _db.SociosComerciales.FirstOrDefault(s => s.Rfc == RFCReceptor && s.RazonSocial == NombreReceptor && s.SucursalId == emisor.Id);
             }
             else
             {
-                cliente = _db.Clientes.FirstOrDefault(s => s.Rfc == RFCReceptor && s.SucursalId == emisor.Id);
+                cliente = _db.SociosComerciales.FirstOrDefault(s => s.Rfc == RFCReceptor && s.SucursalId == emisor.Id);
             }
 
             if (cliente == null)
             {
                 if (comprobante33 != null)
                 {
-                    cliente = new Cliente
+                    cliente = new SocioComercial
                     {
                         FechaAlta = DateTime.Now,
                         SucursalId = emisor.Id,
@@ -106,7 +106,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                     };
                 }
                 else {
-                    cliente = new Cliente
+                    cliente = new SocioComercial
                     {
                         FechaAlta = DateTime.Now,
                         SucursalId = emisor.Id,
@@ -122,7 +122,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
 
                 cliente.Banco = null;
 
-                _db.Clientes.Add(cliente);
+                _db.SociosComerciales.Add(cliente);
 
                 try
                 {

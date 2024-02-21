@@ -90,25 +90,25 @@ namespace Aplicacion.LogicaPrincipal.Correos
             System.IO.File.Delete(archivoZip);
         }
 
-        public EmailDto ObjectCorreo(Cliente cliente, List<String> archivos)
+        public EmailDto ObjectCorreo(SocioComercial sociocomercial, List<String> archivos)
         {
             var envioEmailDto = new EmailDto
             {
-                CuerpoCorreo = cliente.Sucursal.CuerpoCorreo,
-                EncabezadoCorreo = cliente.Sucursal.EncabezadoCorreo,
-                EmailEmisor = cliente.Sucursal.MailEmisor,
-                NombreSucursal = cliente.Sucursal.Nombre,
-                User = cliente.Sucursal.UserCorreo,
-                Contrasena = cliente.Sucursal.PasswordCorreo,
-                Servidor = cliente.Sucursal.Smtp,
-                Puerto = (int)cliente.Sucursal.Puerto
+                CuerpoCorreo = sociocomercial.Sucursal.CuerpoCorreo,
+                EncabezadoCorreo = sociocomercial.Sucursal.EncabezadoCorreo,
+                EmailEmisor = sociocomercial.Sucursal.MailEmisor,
+                NombreSucursal = sociocomercial.Sucursal.Nombre,
+                User = sociocomercial.Sucursal.UserCorreo,
+                Contrasena = sociocomercial.Sucursal.PasswordCorreo,
+                Servidor = sociocomercial.Sucursal.Smtp,
+                Puerto = (int)sociocomercial.Sucursal.Puerto
             };
 
             //replace espacios en blanco y split cadena email
-            if (cliente.Email != null)
+            if (sociocomercial.Email != null)
             {
                 envioEmailDto.EmailsReceptores = new List<string>();
-                string replaceEspacios = Regex.Replace(cliente.Email, @"\s", "");
+                string replaceEspacios = Regex.Replace(sociocomercial.Email, @"\s", "");
                 string[] correos = replaceEspacios.Split(',');
 
                 foreach (var correoArray in correos)
@@ -124,7 +124,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
                     archivosAdjuntosDto.Add(new ArchivosAdjuntosDto
                     {
                         Path = archivo,
-                        NombreArchivo = String.Format("{0}_{1}{2}", cliente.Rfc, DateTime.Now.ToString("ddMMyyyyHHmmssffff"), Path.GetExtension(archivo))
+                        NombreArchivo = String.Format("{0}_{1}{2}", sociocomercial.Rfc, DateTime.Now.ToString("ddMMyyyyHHmmssffff"), Path.GetExtension(archivo))
                     });
                 }
 

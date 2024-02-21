@@ -21,7 +21,7 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("Socio Comercial")]
         public int SocioComercial_Id { get; set; }
         [ForeignKey("SocioComercial_Id")]
-        public virtual Cliente SocioComercial { get; set; }
+        public virtual SocioComercial SocioComercial { get; set; }
 
         [DisplayName("Fecha Comprobante")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

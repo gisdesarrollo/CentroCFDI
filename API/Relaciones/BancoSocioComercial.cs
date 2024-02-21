@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Relaciones
 {
-    [Table("rel_bancosclientes")]
-    public class BancoCliente
+    [Table("rel_bancossocioscomerciales")]
+    public class BancoSocioComercial
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -21,11 +21,11 @@ namespace API.Relaciones
         [ForeignKey("BancoId")]
         public virtual Banco Banco { get; set; }
 
-        [DisplayName("Cliente")]
+        [DisplayName("SocioComercial")]
         [Required(ErrorMessage = "Campo Obligatorio")]
-        public int ClienteId { get; set; }
-        [ForeignKey("ClienteId")]
-        public virtual Cliente Cliente { get; set; }
+        public int SocioComercialId { get; set; }
+        [ForeignKey("SocioComercialId")]
+        public virtual SocioComercial SocioComercial { get; set; }
 
         [Required(ErrorMessage = "Campo Obligatorio")]
         public String NumeroCuenta { get; set; }

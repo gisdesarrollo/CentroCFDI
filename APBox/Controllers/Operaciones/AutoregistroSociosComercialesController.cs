@@ -58,7 +58,7 @@ namespace APBox.Controllers.Catalogos
             TempData["grupoNombre"] = grupo.Nombre;
             TempData["perfilId"] = ObtenerPerfilId(grupo.Id);
 
-            var cliente = new Cliente
+            var socioComercial = new SocioComercial
             {
                 Status = API.Enums.Status.Activo,
                 FechaAlta = DateTime.Now,
@@ -73,27 +73,27 @@ namespace APBox.Controllers.Catalogos
             ViewBag.NameHere = "Registro de Socios Comerciales";
             ViewBag.Grupo = TempData["grupoNombre"];
 
-            return View(cliente);
+            return View(socioComercial);
         }
 
         
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Cliente cliente)
+        public ActionResult Create(SocioComercial socioComercial)
         {            
-            _acondicionarClientes.CargaInicial(ref cliente);
-            var receptor = _db.Clientes.Where(c => c.Rfc == cliente.Rfc && c.RazonSocial == cliente.RazonSocial && c.SucursalId == cliente.SucursalId).FirstOrDefault();
+            _acondicionarClientes.CargaInicial(ref socioComercial);
+            var receptor = _db.SociosComerciales.Where(c => c.Rfc == socioComercial.Rfc && c.RazonSocial == socioComercial.RazonSocial && c.SucursalId == socioComercial.SucursalId).FirstOrDefault();
             if (receptor != null)
             {
                 ModelState.AddModelError("", "Error RFC o Razon Social Ya Se Encuentra Registrado!!");
-                return View(cliente);
+                return View(socioComercial);
             }
             // Guardar datos en TempData para asignarlo a otro metodo
-            _db.Clientes.Add(cliente);
+            _db.SociosComerciales.Add(socioComercial);
             _db.SaveChanges();
 
-            TempData["SocioComercialId"] = cliente.Id;
+            TempData["SocioComercialId"] = socioComercial.Id;
             return View("CreateUsuario");
         }
 

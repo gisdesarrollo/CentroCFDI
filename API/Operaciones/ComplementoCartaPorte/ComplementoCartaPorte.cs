@@ -151,7 +151,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [Required(ErrorMessage = "Campo Obligatorio")]
         public int ReceptorId { get; set; }
         [ForeignKey("ReceptorId")]
-        public virtual Cliente Receptor { get; set; }
+        public virtual SocioComercial Receptor { get; set; }
 
         [DisplayName("Fecha del Documento")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

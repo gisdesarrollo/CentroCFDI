@@ -104,12 +104,12 @@ namespace APBox.Controllers.Operaciones
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
                 var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
                 var sucursal = _db.Sucursales.Find(ObtenerSucursal());
-                var socioComercial = new Cliente();
+                var socioComercial = new SocioComercial();
 
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
                 if (usuario.esProveedor)
                 {
-                    socioComercial = _db.Clientes.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
+                    socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
                     var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
                     if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
                     {
@@ -129,11 +129,11 @@ namespace APBox.Controllers.Operaciones
                 {
                     if (cfdi.Receptor.Rfc == "XEXX010101000" || cfdi.Receptor.Rfc == "XAXX010101000")
                     {
-                        socioComercial = _db.Clientes.Where(s => s.Rfc == cfdi.Receptor.Rfc && s.RazonSocial == cfdi.Receptor.Nombre && s.SucursalId == sucursal.Id).FirstOrDefault();
+                        socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Receptor.Rfc && s.RazonSocial == cfdi.Receptor.Nombre && s.SucursalId == sucursal.Id).FirstOrDefault();
                     }
                     else
                     {
-                        socioComercial = _db.Clientes.Where(s => s.Rfc == cfdi.Receptor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
+                        socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Receptor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
                     }
 
                 }

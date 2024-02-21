@@ -10,8 +10,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Catalogos
 {
-    [Table("cat_clientes")]
-    public class Cliente
+    [Table("SociosComerciales")]
+    public class SocioComercial
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -68,8 +68,8 @@ namespace API.Catalogos
         public c_RegimenFiscal RegimenFiscal { get; set; }
 
         [NotMapped]
-        public virtual BancoCliente Banco { get; set; }
-        public virtual List<BancoCliente> Bancos { get; set; }
+        public virtual BancoSocioComercial Banco { get; set; }
+        public virtual List<BancoSocioComercial> Bancos { get; set; }
 
         #region Grupo
 

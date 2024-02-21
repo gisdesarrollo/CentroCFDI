@@ -28,7 +28,7 @@ namespace APBox.Controllers.Ajax
         {
             var pago = new Pago
             {
-                BancoOrdenante = _db.BancosClientes.Find(bancoEmisorId),
+                BancoOrdenante = _db.BancosSociosComerciales.Find(bancoEmisorId),
                 BancoOrdenanteId = bancoEmisorId,
                 BancoBeneficiario = _db.BancosSucursales.Find(bancoReceptorId),
                 BancoBeneficiarioId = bancoReceptorId,
