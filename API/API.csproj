@@ -133,7 +133,7 @@
     <Compile Include="CatalogosCartaPorte\TipoRelacion.cs" />
     <Compile Include="Catalogos\Banco.cs" />
     <Compile Include="Catalogos\CentroCosto.cs" />
-    <Compile Include="Catalogos\Cliente.cs" />
+    <Compile Include="Catalogos\SocioComercial.cs" />
     <Compile Include="Catalogos\Departamento.cs" />
     <Compile Include="Catalogos\Grupo.cs" />
     <Compile Include="Catalogos\Perfil.cs" />
@@ -287,7 +287,7 @@
     <Compile Include="RelacionesCartaPorte\TransporteMaritimoContenedorM.cs" />
     <Compile Include="RelacionesCartaPorte\AutotransporteRemolque.cs" />
     <Compile Include="RelacionesCartaPorte\CarroContenedorC.cs" />
-    <Compile Include="Relaciones\BancoCliente.cs" />
+    <Compile Include="Relaciones\BancoSocioComercial.cs" />
     <Compile Include="Relaciones\BancoSucursal.cs" />
     <Compile Include="Relaciones\ProveedorSucursal.cs" />
     <Compile Include="Relaciones\UsuarioSucursal.cs" />

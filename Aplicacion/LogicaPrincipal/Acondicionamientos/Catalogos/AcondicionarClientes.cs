@@ -14,42 +14,42 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos
 
         #endregion
 
-        public void CargaInicial(ref Cliente Cliente)
+        public void CargaInicial(ref SocioComercial sociocomercial)
         {
-            if (Cliente.Bancos != null)
+            if (sociocomercial.Bancos != null)
             {
-                foreach (var banco in Cliente.Bancos)
+                foreach (var banco in sociocomercial.Bancos)
                 {
                     banco.Banco = null;
-                    banco.Cliente = null;
+                    banco.SocioComercial = null;
                 }
             }
         }
 
-        public void Bancos(Cliente Cliente)
+        public void Bancos(SocioComercial SocioComercial)
         {
-            if (Cliente.Bancos != null)
+            if (SocioComercial.Bancos != null)
             {
-                var idsBorrar = Cliente.Bancos.Select(e => e.Id);
-                var bancosAnteriores = _db.BancosClientes.Where(es => es.ClienteId == Cliente.Id && !idsBorrar.Contains(es.Id)).ToList();
+                var idsBorrar = SocioComercial.Bancos.Select(e => e.Id);
+                var bancosAnteriores = _db.BancosSociosComerciales.Where(es => es.SocioComercialId == SocioComercial.Id && !idsBorrar.Contains(es.Id)).ToList();
 
-                _db.BancosClientes.RemoveRange(bancosAnteriores);
+                _db.BancosSociosComerciales.RemoveRange(bancosAnteriores);
                 _db.SaveChanges();
 
-                foreach (var banco in Cliente.Bancos)
+                foreach (var banco in SocioComercial.Bancos)
                 {
-                    banco.ClienteId = Cliente.Id;
+                    banco.SocioComercialId = SocioComercial.Id;
                     banco.Banco = null;
-                    _db.BancosClientes.AddOrUpdate(banco);
+                    _db.BancosSociosComerciales.AddOrUpdate(banco);
                 }
 
                 _db.SaveChanges();
             }
             else
             {
-                var bancosAnteriores = _db.BancosClientes.Where(es => es.ClienteId == Cliente.Id).ToList();
+                var bancosAnteriores = _db.BancosSociosComerciales.Where(es => es.SocioComercialId == SocioComercial.Id).ToList();
 
-                _db.BancosClientes.RemoveRange(bancosAnteriores);
+                _db.BancosSociosComerciales.RemoveRange(bancosAnteriores);
                 _db.SaveChanges();
             }
         }

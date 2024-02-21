@@ -186,7 +186,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             Random random = new Random();
             var randomNumber = random.Next(0,1000000).ToString("D6");
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
-            var cliente = _db.Clientes.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
+            var cliente = _db.SociosComerciales.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
             var ComplementoCartaPorte = new ComplementoCartaPorte()
             {
                 Generado = false,
@@ -871,7 +871,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var randomNumber = random.Next(0, 1000000).ToString("D6");
             //
             var sucursal = _db.Sucursales.Find(complementoCP.Sucursal.Id);
-            var cliente = _db.Clientes.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
+            var cliente = _db.SociosComerciales.Where(c => c.Rfc == sucursal.Rfc && c.SucursalId == sucursal.Id).FirstOrDefault();
             complementoCP.IDCliente = cliente.Id;
             complementoCP.IdFormaPago = complementoCP.FormaPago;
             complementoCP.IdTipoRelacion = complementoCP.CfdiRelacionados.Count().ToString();

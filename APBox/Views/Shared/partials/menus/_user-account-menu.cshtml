@@ -4,9 +4,9 @@
     var _db = new APBoxContext();
     var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
     var usuario = _db.Usuarios.Find(usuarioId);
-    var socioComercial =  new Cliente();
+    var socioComercial =  new SocioComercial();
     if(usuario != null) {
-        socioComercial = _db.Clientes.Find(usuario.SocioComercialID);
+        socioComercial = _db.SociosComerciales.Find(usuario.SocioComercialID);
     }
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
     var sucursal = _db.Sucursales.Find(sucursalId);
@@ -27,7 +27,7 @@
                     <div class="fw-bold d-flex align-items-center fs-5">
                         @usuario.Nombre @usuario.ApellidoPaterno
                     </div>
-                    @if (usuario.Perfil.Nombre == "PROVEEDOR")
+                    @if (usuario.Perfil.Proveedor)
                     {
                         <div class="badge badge-light-success fw-bold fs-8">
                             Socio Comercial
@@ -54,9 +54,12 @@
 
             <div class="menu-content d-flex">
                 <div class="fw-semibold text-muted text-hover-primary fs-7">
-                    @if (usuario.Perfil.Nombre == "PROVEEDOR")
+                    @if (usuario.Perfil.Proveedor)
                     {
-                        @socioComercial.RazonSocial <br />
+                        if (socioComercial != null)
+                        {
+                            @socioComercial.RazonSocial <br />
+                        }
                     }
                     @usuario.Email
                 </div>

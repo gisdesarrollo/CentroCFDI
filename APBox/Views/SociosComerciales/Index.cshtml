@@ -1,4 +1,4 @@
-﻿@model IEnumerable<API.Catalogos.Cliente>
+﻿@model IEnumerable<API.Catalogos.SocioComercial>
 @using APBox.Context;
 
 @{
@@ -9,7 +9,7 @@
     var GrupoLlave = _db.Grupos.Find(GrupoId).Llave;
     var GrupoNombre = _db.Grupos.Find(GrupoId).Nombre;
     ViewBag.GrupoNombre = GrupoNombre;
-    ViewBag.Enlace = "www.centrocfdi.com/Autoregistro/Create/" + GrupoId;
+    ViewBag.Enlace = "www.centrocfdi.com/AutoregistroSociosComerciales/Create/" + GrupoLlave;
 }
 
 @if (User.IsInRole("CLIENTES"))
@@ -160,7 +160,7 @@
                                     }
                                     @if (User.IsInRole("BORRADO"))
                                     {
-                                        <div class="menu-item px-3">@Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el complemento?');", @class = "menu-link px-3" })</div>
+                                        <div class="menu-item px-3">@Html.ActionLink("Eliminar", "DeleteConfirmed", new { id = item.Id }, new { onclick = "return confirm('¿Estás seguro de elminar el complemento?');", @class = "menu-link px-3" })</div>
                                     }
                                 </div>
                                 <!--end::Menu-->

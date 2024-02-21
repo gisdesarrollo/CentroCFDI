@@ -210,6 +210,10 @@
     <Reference Include="RazorEngine, Version=3.8.2.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.8.2\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
+    <Reference Include="RVCFDI33, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\DEPLOY-centrocfdi\DLL-MODIFICADOREALVIRTUAL-DECIMALES\RVCFDI33.dll</HintPath>
+    </Reference>
     <Reference Include="SAT.Services, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SW-sdk-45.0.0.25.1-rc\lib\net45\SAT.Services.dll</HintPath>
     </Reference>

@@ -176,7 +176,7 @@
                         @foreach (var item in Model.FacturaEmitidasTemporal)
                         {
                             {
-                                var receptor = db.Clientes.Find(item.ReceptorId);
+                                var receptor = db.SociosComerciales.Find(item.ReceptorId);
                                 var facturaEmitida = db.FacturasEmitidas.Find(item.Id);
 
                         <tr class="odd">

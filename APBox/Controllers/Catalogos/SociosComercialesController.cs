@@ -26,14 +26,14 @@ namespace APBox.Controllers.Catalogos
         public ActionResult Index()
         {
             var sucursalId = ObtenerSucursal();
-            var clientes = _db.Clientes.Where(c => c.SucursalId == sucursalId).ToList();
+            var clientes = _db.SociosComerciales.Where(c => c.SucursalId == sucursalId).ToList();
 
 
             ViewBag.Controller = "SociosComerciales";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "Socios Comerciales";
+            ViewBag.NameHere = "Crea y modifica Socios Comerciales";
 
             return View(clientes);
         }
@@ -45,7 +45,7 @@ namespace APBox.Controllers.Catalogos
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cliente cliente = _db.Clientes.Find(id);
+            SocioComercial cliente = _db.SociosComerciales.Find(id);
             if (cliente == null)
             {
                 return HttpNotFound();
@@ -60,7 +60,7 @@ namespace APBox.Controllers.Catalogos
         {
             PopulaForma();
 
-            var cliente = new Cliente
+            var sociocomercial = new SocioComercial
             {
                 Status = API.Enums.Status.Activo,
                 FechaAlta = DateTime.Now,
@@ -73,7 +73,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.ActionES = "Crear";
             ViewBag.NameHere = "catalogo";
 
-            return View(cliente);
+            return View(sociocomercial);
         }
 
         // POST: Clientes/Create
@@ -81,7 +81,7 @@ namespace APBox.Controllers.Catalogos
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Cliente cliente)
+        public ActionResult Create(SocioComercial sociocomercial)
         {
             ModelState.Remove("Banco.Id");
             ModelState.Remove("Banco.Nombre");
@@ -89,19 +89,19 @@ namespace APBox.Controllers.Catalogos
             PopulaForma();
             if (ModelState.IsValid)
             {
-                _acondicionarClientes.CargaInicial(ref cliente);
-                var receptor = _db.Clientes.Where(c=> c.Rfc == cliente.Rfc && c.RazonSocial == cliente.RazonSocial && c.SucursalId == cliente.SucursalId).FirstOrDefault();
+                _acondicionarClientes.CargaInicial(ref sociocomercial);
+                var receptor = _db.SociosComerciales.Where(c=> c.Rfc == sociocomercial.Rfc && c.RazonSocial == sociocomercial.RazonSocial && c.SucursalId == sociocomercial.SucursalId).FirstOrDefault();
                 if(receptor != null)
                 {
                     ModelState.AddModelError("", "Error RFC o Razon Social Ya Se Encuentra Registrado!!");
-                    return View(cliente);
+                    return View(sociocomercial);
                 }
-                _db.Clientes.Add(cliente);
+                _db.SociosComerciales.Add(sociocomercial);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cliente);
+            return View(sociocomercial);
         }
 
         // GET: Clientes/Edit/5
@@ -111,8 +111,8 @@ namespace APBox.Controllers.Catalogos
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cliente cliente = _db.Clientes.Find(id);
-            if (cliente == null)
+            SocioComercial sociocomercial = _db.SociosComerciales.Find(id);
+            if (sociocomercial == null)
             {
                 return HttpNotFound();
             }
@@ -122,7 +122,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
             ViewBag.NameHere = "catalogo";
-            return View(cliente);
+            return View(sociocomercial);
         }
 
         // POST: Clientes/Edit/5
@@ -130,7 +130,7 @@ namespace APBox.Controllers.Catalogos
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Cliente cliente)
+        public ActionResult Edit(SocioComercial sociocomercial)
         {
             ModelState.Remove("Banco.Id");
             ModelState.Remove("Banco.Nombre");
@@ -138,15 +138,15 @@ namespace APBox.Controllers.Catalogos
 
             if (ModelState.IsValid)
             {
-                _acondicionarClientes.Bancos(cliente);
+                _acondicionarClientes.Bancos(sociocomercial);
 
-                _db.Entry(cliente).State = EntityState.Modified;
+                _db.Entry(sociocomercial).State = EntityState.Modified;
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             PopulaForma();
-            return View(cliente);
+            return View(sociocomercial);
         }
 
         // GET: Clientes/Delete/5
@@ -156,7 +156,7 @@ namespace APBox.Controllers.Catalogos
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cliente cliente = _db.Clientes.Find(id);
+            SocioComercial cliente = _db.SociosComerciales.Find(id);
             if (cliente == null)
             {
                 return HttpNotFound();
@@ -170,8 +170,8 @@ namespace APBox.Controllers.Catalogos
         //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Cliente cliente = _db.Clientes.Find(id);
-            _db.Clientes.Remove(cliente);
+            SocioComercial cliente = _db.SociosComerciales.Find(id);
+            _db.SociosComerciales.Remove(cliente);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

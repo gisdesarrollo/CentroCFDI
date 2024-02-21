@@ -28,7 +28,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "sistema";
+            ViewBag.NameHere = "Crea y modifica los grupos de la empresa";
 
             return View(_db.Grupos.ToList());
 

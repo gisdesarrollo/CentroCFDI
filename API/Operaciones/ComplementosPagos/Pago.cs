@@ -75,7 +75,7 @@ namespace API.Operaciones.ComplementosPagos
         [DisplayName("Banco Ordenante")]
         public int? BancoOrdenanteId { get; set; }
         [ForeignKey("BancoOrdenanteId")]
-        public virtual BancoCliente BancoOrdenante { get; set; }
+        public virtual BancoSocioComercial BancoOrdenante { get; set; }
 
         [DisplayName("Banco Beneficiario")]
         public int? BancoBeneficiarioId { get; set; }

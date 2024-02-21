@@ -52,10 +52,10 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                 throw new Exception(String.Format("No se encontró el RFC del emisor {0}", comprobante40.Emisor.Rfc));
             }
 
-            Cliente receptor;
+            SocioComercial receptor;
             if (comprobante40.Receptor.Rfc == "XEXX010101000" || comprobante40.Receptor.Rfc == "XAXX010101000")
             {
-                receptor = _db.Clientes.FirstOrDefault(s => s.Rfc == comprobante40.Receptor.Rfc && s.RazonSocial == comprobante40.Receptor.Nombre && s.SucursalId == emisor.Id);
+                receptor = _db.SociosComerciales.FirstOrDefault(s => s.Rfc == comprobante40.Receptor.Rfc && s.RazonSocial == comprobante40.Receptor.Nombre && s.SucursalId == emisor.Id);
                 if (receptor == null)
                 {
                     throw new Exception(String.Format("No se encontró receptor con RFC {0} y Razón Social {1}", comprobante40.Emisor.Rfc, comprobante40.Emisor.Nombre));
@@ -63,7 +63,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             }
             else
             {
-                receptor = _db.Clientes.FirstOrDefault(s => s.Rfc == comprobante40.Receptor.Rfc && s.SucursalId == emisor.Id);
+                receptor = _db.SociosComerciales.FirstOrDefault(s => s.Rfc == comprobante40.Receptor.Rfc && s.SucursalId == emisor.Id);
                 if (receptor == null)
                 {
                     throw new Exception(String.Format("No se encontró receptor con RFC {0}", comprobante40.Emisor.Rfc));
@@ -117,10 +117,10 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                 throw new Exception(String.Format("No se encontró el RFC del emisor {0}", comprobante33.Emisor.Rfc));
             }
 
-            Cliente receptor;
+            SocioComercial receptor;
             if (comprobante33.Receptor.Rfc == "XEXX010101000" || comprobante33.Receptor.Rfc == "XAXX010101000")
             {
-                receptor = _db.Clientes.FirstOrDefault(s => s.Rfc == comprobante33.Receptor.Rfc && s.RazonSocial == comprobante33.Receptor.Nombre && s.SucursalId == emisor.Id);
+                receptor = _db.SociosComerciales.FirstOrDefault(s => s.Rfc == comprobante33.Receptor.Rfc && s.RazonSocial == comprobante33.Receptor.Nombre && s.SucursalId == emisor.Id);
                 if (receptor == null)
                 {
                     throw new Exception(String.Format("No se encontró receptor con RFC {0} y Razón Social {1}", comprobante33.Emisor.Rfc, comprobante33.Emisor.Nombre));
@@ -128,7 +128,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             }
             else
             {
-                receptor = _db.Clientes.FirstOrDefault(s => s.Rfc == comprobante33.Receptor.Rfc && s.SucursalId == emisor.Id);
+                receptor = _db.SociosComerciales.FirstOrDefault(s => s.Rfc == comprobante33.Receptor.Rfc && s.SucursalId == emisor.Id);
                 if (receptor == null)
                 {
                     throw new Exception(String.Format("No se encontró receptor con RFC {0}", comprobante33.Emisor.Rfc));

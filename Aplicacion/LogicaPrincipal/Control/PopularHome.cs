@@ -97,7 +97,7 @@ namespace Aplicacion.LogicaPrincipal.Control
 
 
             //Clientes Totales
-            homeModel.Clientes = _db.Clientes.Count(c => c.SucursalId == _sucursalId);
+            homeModel.Clientes = _db.SociosComerciales.Count(c => c.SucursalId == _sucursalId);
 
             //Facturas emitidas del mes presente
             homeModel.CfdiEmitidos = _db.FacturasEmitidasTemp.Count(fe => fe.EmisorId == _sucursalId && fe.Fecha >= fechaInicial && fe.Fecha <= fechaFinal);

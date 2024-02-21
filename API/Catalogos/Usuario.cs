@@ -75,7 +75,7 @@ namespace API.Catalogos
         [DisplayName("SocioComercial")]
         public int? SocioComercialID { get; set; }
         [ForeignKey("SocioComercialID")]
-        public virtual Cliente SocioComercial { get; set; }
+        public virtual SocioComercial SocioComercial { get; set; }
         #endregion
 
         #region Proveedor

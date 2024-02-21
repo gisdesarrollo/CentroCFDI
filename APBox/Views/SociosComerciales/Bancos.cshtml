@@ -1,4 +1,4 @@
-﻿@model API.Relaciones.BancoCliente
+﻿@model API.Relaciones.BancoSocioComercial
 
 @using (Html.BeginCollectionItem("Bancos"))
 {
@@ -23,7 +23,7 @@
     <div class="col-lg-1">
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.BancoId)
-        @Html.HiddenFor(model => model.ClienteId)
+        @Html.HiddenFor(model => model.SocioComercialId)
         <span onclick="$(this).parent().parent().remove();" class="fa-stack fa-lg" style="cursor:pointer">
             <i class="fas fa-square fa-stack-2x font-red"></i>
             <i class="fas fa-trash-alt fa-stack-1x fa-inverse"></i>

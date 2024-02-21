@@ -56,7 +56,7 @@ namespace API.Operaciones.OperacionesProveedores
 
         public int? SocioComercial_Id { get; set; }
         [ForeignKey("SocioComercial_Id")]
-        public virtual Cliente SocioComercial { get; set; }
+        public virtual SocioComercial SocioComercial { get; set; }
 
         public int? CfdiRecibidos_Id { get; set; }
         [ForeignKey("CfdiRecibidos_Id")]

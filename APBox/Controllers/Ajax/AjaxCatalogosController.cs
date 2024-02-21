@@ -38,7 +38,7 @@ namespace InventorAid.Controllers.Ajax
 
         public PartialViewResult BancosClientes(int bancoId, string nombre, string numeroCuenta)
         {
-            var bancoCliente = new BancoCliente
+            var bancoCliente = new BancoSocioComercial
             {
                 BancoId = bancoId,
                 Banco = _db.Bancos.Find(bancoId),
@@ -46,7 +46,7 @@ namespace InventorAid.Controllers.Ajax
                 NumeroCuenta = numeroCuenta
             };
 
-            return PartialView("~/Views/Clientes/Bancos.cshtml", bancoCliente);
+            return PartialView("~/Views/SociosComerciales/Bancos.cshtml", bancoCliente);
         }
 
         public PartialViewResult BancosSucursales(int bancoId, string nombre, string numeroCuenta)
@@ -92,16 +92,16 @@ namespace InventorAid.Controllers.Ajax
 
         public JsonResult GetBancosClientes(int clienteId)
         {
-            var bancosClientes = _db.BancosClientes.Where(s => s.ClienteId == clienteId).OrderBy(s => s.Nombre).ToList();
+            var bancosClientes = _db.BancosSociosComerciales.Where(s => s.SocioComercialId == clienteId).OrderBy(s => s.Nombre).ToList();
 
             foreach (var banco in bancosClientes)
             {
-                banco.Cliente.Sucursal = new API.Catalogos.Sucursal();
+                banco.SocioComercial.Sucursal = new API.Catalogos.Sucursal();
                 
-                if(banco.Cliente.Bancos != null)
+                if(banco.SocioComercial.Bancos != null)
                 {
-                    banco.Cliente.Bancos.Clear();
-                    banco.Cliente.Bancos = null;
+                    banco.SocioComercial.Bancos.Clear();
+                    banco.SocioComercial.Bancos = null;
                 }
             }
 
@@ -180,7 +180,7 @@ namespace InventorAid.Controllers.Ajax
 
         public int GetReceptorGlobal(int clienteId)
         {
-            var cliente = _db.Clientes.Find(clienteId);
+            var cliente = _db.SociosComerciales.Find(clienteId);
             int result = 0;
             if (cliente.Rfc == "XAXX010101000" && cliente.RazonSocial == "PUBLICO EN GENERAL")
             {

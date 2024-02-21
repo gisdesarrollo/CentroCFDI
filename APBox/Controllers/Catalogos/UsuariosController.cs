@@ -95,6 +95,33 @@ namespace APBox.Controllers.Catalogos
                 }
 
                 _acondicionarUsuarios.CargaInicial(ref usuario);
+                if (usuario.esProveedor == true)
+                {
+                    //Asignacion de valor si es Proveedor
+                    usuario.esProveedor = esProveedor;
+                    if (usuario.PerfilId != null)
+                    {
+                        var perfil = _db.Perfiles.Find(usuario.PerfilId);
+                        if (perfil.Proveedor)
+                        {
+                            usuario.Departamento = null;
+                            usuario.Departamento_Id = null;
+                        }
+                        else
+                        {
+                            ViewBag.ErrorMessage = "Error: Al activar como proveedor , seleccione un perfil que tenga las opciones de proveedor";
+                            ModelState.AddModelError("", "Error: Al activar como proveedor , seleccione un perfil que tenga las opciones de proveedor");
+                            return View(usuario);
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Error: seleccione un perfil proveedor";
+                        ModelState.AddModelError("", "Error: seleccione un perfil proveedor");
+                        return View(usuario);
+                    }
+
+                }
 
                 try
                 {
@@ -107,18 +134,11 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                if (usuario.esProveedor == true)
-                {
-                    //Asignacion de valor si es Proveedor
-                    usuario.esProveedor = esProveedor;
-                    usuario.PerfilId = 32;
-                    // Envío de correo electrónico de bienvenida
-                    //EnviarCorreoBienvenida(usuario);
-                }
-                // Envío de correo electrónico de bienvenida
-                EnviarCorreoBienvenida(usuario);
+                
                 _db.Usuarios.Add(usuario);
                 _db.SaveChanges();
+                // Envío de correo electrónico de bienvenida
+                EnviarCorreoBienvenida(usuario);
                 return RedirectToAction("Index");
             }
             

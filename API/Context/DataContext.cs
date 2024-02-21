@@ -96,7 +96,7 @@ namespace API.Context
 
         public DbSet<Banco> Bancos { get; set; }
         public DbSet<CentroCosto> CentrosCostos { get; set; }
-        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<SocioComercial> SociosComerciales { get; set; }
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Grupo> Grupos { get; set; }
         public DbSet<Perfil> Perfiles { get; set; }
@@ -156,7 +156,7 @@ namespace API.Context
 
         #region Relaciones
 
-        public DbSet<BancoCliente> BancosClientes { get; set; }
+        public DbSet<BancoSocioComercial> BancosSociosComerciales { get; set; }
         public DbSet<BancoSucursal> BancosSucursales { get; set; }
         public DbSet<ProveedorSucursal> ProveedoresSucursales { get; set; }
         public DbSet<UsuarioSucursal> UsuariosSucursales { get; set; }

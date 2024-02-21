@@ -215,7 +215,7 @@
                                         if (Model.ComplementosCartaPorte[i].Status == API.Enums.Status.Activo)
                                         {
                                             <!--begin::Menu item-->
-                                            <div class="menu-item px-3">@Html.ActionLink("XML", "DescargarXml", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
+                                            <div class="menu-item px-3">@Html.ActionLink("XML", "Descargar", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                             <div class="menu-item px-3">@Html.ActionLink("PDF", "DescargarPDF", new { id = Model.ComplementosCartaPorte[i].Id }, new { @class = "menu-link px-3" })</div>
                                             <div class="menu-item px-3"><div class="menu-link px-3 dcancelar" data-id="@Model.ComplementosCartaPorte[i].Id">Cancelar</div></div>
                                             <!--end::Menu item-->

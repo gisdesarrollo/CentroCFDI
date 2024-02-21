@@ -38,7 +38,7 @@ namespace APBox.Control
 
         public List<(String RFC, String RazonSocial, String Pais)> PopulaDatosCliente(int seleccion)
         { 
-                var result=_db.Clientes.Where(a => a.Id == seleccion).Select(a => new { a.Rfc, a.RazonSocial,a.Pais}).ToList();
+                var result=_db.SociosComerciales.Where(a => a.Id == seleccion).Select(a => new { a.Rfc, a.RazonSocial,a.Pais}).ToList();
                 return result.Select(r => (r.Rfc, r.RazonSocial, r.Pais.ToString())).ToList();
         }
         public List<ClaveUnidad> PopulaDatosClaveUnidad(string seleccion)
@@ -326,7 +326,7 @@ namespace APBox.Control
 
         public SelectList PopulaBancosClientes(int clienteId, int? seleccion)
         {
-            return new SelectList(_db.BancosClientes.Where(a => a.ClienteId == clienteId).OrderBy(a => a.Nombre), "Id", "Nombre", seleccion);
+            return new SelectList(_db.BancosSociosComerciales.Where(a => a.SocioComercialId == clienteId).OrderBy(a => a.Nombre), "Id", "Nombre", seleccion);
         }
 
         public SelectList PopulaBancosSucursales(int sucursalId, int? seleccion)
@@ -341,7 +341,7 @@ namespace APBox.Control
 
         public SelectList PopulaClientes(int? seleccion)
         {
-            return new SelectList(_db.Clientes.Where(a => a.Status == Status.Activo && a.SucursalId == _entidadId).OrderBy(a => a.RazonSocial).ThenBy(a => a.Rfc), "Id", "RfcRazonSocial", seleccion);
+            return new SelectList(_db.SociosComerciales.Where(a => a.Status == Status.Activo && a.SucursalId == _entidadId).OrderBy(a => a.RazonSocial).ThenBy(a => a.Rfc), "Id", "RfcRazonSocial", seleccion);
         }
 
         public SelectList PopulaDepartamentos(int? seleccion)

@@ -1,8 +1,8 @@
-﻿@model API.Catalogos.Cliente
+﻿@model API.Catalogos.SocioComercial
 
 @{
     ViewBag.Title = "Crear";
-    ViewBag.Clase = "Cliente";
+    ViewBag.Clase = "SocioComercial";
 }
 
 
@@ -220,7 +220,7 @@
                                                      {
                                                          foreach (var banco in Model.Bancos)
                                                          {
-                                                             @Html.Partial("~/Views/Clientes/Bancos.cshtml", banco)}
+                                                             @Html.Partial("~/Views/SociosComerciales/Bancos.cshtml", banco)}
                                                      }
                                                  </div>
                                              </div>
