@@ -10,6 +10,7 @@
     var GrupoNombre = _db.Grupos.Find(GrupoId).Nombre;
     ViewBag.GrupoNombre = GrupoNombre;
     ViewBag.Enlace = "www.centrocfdi.com/AutoregistroSociosComerciales/Create/" + GrupoLlave;
+    ViewBag.EnlaceExterno = "AutoregistroSociosComerciales/Create/" + GrupoLlave;
 }
 
 @if (User.IsInRole("CLIENTES"))
@@ -281,7 +282,7 @@
                                 <p>De parte de @ViewBag.GrupoNombre te damos la bienvenida a <strong>CentroCFDi</strong>.</p>
                                 <p>Para comenzar a utilizar esta plataforma, te invitamos cordialmente a registrarte. A continuación, te detallamos los pasos que debes seguir:</p>
                                 <ol>
-                                    <li>Accede al siguiente enlace: <a href="@ViewBag.Enlace">Enlace de Autorregistro</a>.</li>
+                                    <li>Accede al siguiente enlace: <a href="@ViewBag.EnlaceExterno">Enlace de Autorregistro</a>.</li>
                                     <li>Serás dirigido a la página de registro del portal de tu organización.</li>
                                     <li>Completa todos los campos requeridos, incluyendo los datos fiscales solicitados.</li>
                                     <li>En la siguiente pantalla tendrás que hacer el registro de tu usuario para acceder al sistema.</li>

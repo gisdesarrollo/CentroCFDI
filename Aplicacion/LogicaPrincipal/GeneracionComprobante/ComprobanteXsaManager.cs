@@ -884,7 +884,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComprobante
                 }
                 else
                 {
-                    comprobanteCfdi = _db.ComprobantesCfdi.Find(comprobanteId);
+                    //comprobanteCfdi = _db.ComprobantesCfdi.Find(comprobanteId);
+                    comprobanteCfdi = _db.ComprobantesCfdi.Where(n => n.FacturaEmitidaId == comprobanteId).FirstOrDefault();
                     serie = comprobanteCfdi.FacturaEmitida.Serie;
                     folio = comprobanteCfdi.FacturaEmitida.Folio;
                     uuid = comprobanteCfdi.FacturaEmitida.Uuid;
