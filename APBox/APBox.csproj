@@ -236,9 +236,8 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.6.0.0\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RESPALDO-PROYECTOS\CENTRO-CFDI\ApBox-master2023-05-19\ApBox-master\Aplicacion\bin\Release\System.IO.Compression.dll</HintPath>
+    <Reference Include="System.IO.Compression">
+      <HintPath>..\..\..\ApBox-master2023-05-19\ApBox-master\Aplicacion\bin\Release\System.IO.Compression.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression.ZipFile, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

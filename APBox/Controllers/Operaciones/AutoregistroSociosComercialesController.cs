@@ -90,6 +90,7 @@ namespace APBox.Controllers.Catalogos
                 return View(socioComercial);
             }
             // Guardar datos en TempData para asignarlo a otro metodo
+            socioComercial.Status = API.Enums.Status.Activo;
             _db.SociosComerciales.Add(socioComercial);
             _db.SaveChanges();
 
@@ -151,6 +152,7 @@ namespace APBox.Controllers.Catalogos
             usuario.Departamento_Id = null;
             usuario.GrupoId = (int)(TempData["grupoId"] as int?);
             usuario.PerfilId = (int)(TempData["perfilId"] as int?);
+            usuario.Status = API.Enums.Status.Activo;
 
             // Obtener los datos guardados en TempData
             var ClienteId = TempData["SocioComercialId"] as int?;
