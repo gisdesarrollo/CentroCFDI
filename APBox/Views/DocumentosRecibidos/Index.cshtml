@@ -38,6 +38,7 @@
                                 <th class="min-w-100px">Identificador</th>
                                 <th class="min-w-100px">Datos de Recepción</th>
                                 <th class="min-w-100px text-end">Monto</th>
+                                <th class="min-w-100px text-center">Referencia</th>
                                 <th class="min-w-100px text-center">Estado</th>
                                 <th class="min-w-100px"></th>
                             </tr>
@@ -67,6 +68,10 @@
                                     <td class="text-end">
                                         @item.Monto.ToString("c") <br />
                                         <div class="text-gray-600">@item.Moneda_Id</div>
+                                    </td>
+                                   
+                                    <td class="min-w-100px text-center">
+                                        @item.Referencia
                                     </td>
                                     <td class="text-center">
                                         @switch (item.EstadoComercial)
@@ -143,6 +148,7 @@
                                 <th class="min-w-100px">Identificador</th>
                                 <th class="min-w-100px">Datos de Recepción</th>
                                 <th class="min-w-100px text-end">Monto</th>
+                                <th class="min-w-100px text-center">Referencia</th>
                                 <th class="min-w-100px text-center">Estado</th>
                                 <th class="min-w-100px"></th>
                             </tr>
@@ -173,6 +179,9 @@
                                         @item.Monto.ToString("c") <br />
                                         <div class="text-gray-600">@item.Moneda_Id</div>
                                     </td>
+                                    <td class ="min-w-100px text-end">
+                                        @item.Referencia
+                                     </td>
                                     <td class="text-center">
                                         @switch (item.EstadoComercial)
                                         {

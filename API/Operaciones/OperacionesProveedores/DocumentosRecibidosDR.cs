@@ -104,6 +104,9 @@ namespace API.Operaciones.OperacionesProveedores
         public String MotivoRechazo { get; set; }
 
         public String OrdenDeCompra { get; set; }
+
+        public string Referencia { get; set; }
+
         //NotMapped
         [DisplayName("Archivo")]
         [NotMapped]
@@ -115,6 +118,7 @@ namespace API.Operaciones.OperacionesProveedores
         public string PathArchivoPdf { get; set; }
         [NotMapped]
         public bool Procesado { get; set; }
+        
 
         [NotMapped]
 

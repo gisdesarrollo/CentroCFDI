@@ -471,6 +471,7 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.Solicitud_Id = null;
                 documentoRecibidoDr.Pagos = null;
                 documentoRecibidoDr.Pagos_Id = null;
+                documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
                 _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
                 _db.SaveChanges();
                 return RedirectToAction("Index", "DocumentosRecibidos"); ;
