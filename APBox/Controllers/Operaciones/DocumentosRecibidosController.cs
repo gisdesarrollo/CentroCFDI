@@ -375,11 +375,6 @@ namespace APBox.Controllers.Operaciones
 
             return View(documentoRecibidoDr);
         }
-          // GET: DocumentosRecibidos/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: DocumentosRecibidos/Create
         public ActionResult Create()
@@ -490,7 +485,7 @@ namespace APBox.Controllers.Operaciones
         }
 
         // GET: DocumentosRecibidos/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Revision(int id)
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
@@ -520,7 +515,7 @@ namespace APBox.Controllers.Operaciones
 
         // POST: DocumentosRecibidos/Edit/5
         [HttpPost]
-        public ActionResult Edit(DocumentosRecibidosDR documentoRecibidoEdit)
+        public ActionResult Revision(DocumentosRecibidosDR documentoRecibidoEdit)
         {
             try
             {
@@ -557,7 +552,7 @@ namespace APBox.Controllers.Operaciones
                         _envioEmail.SendEmailNotifications(null, documentoRecibido, true, (int)ObtenerSucursal());
                     }
                 }
-                return RedirectToAction("Index","DocumentosRecibidos");
+                return RedirectToAction("Index", "DocumentosRecibidos");
             }
             catch
             {

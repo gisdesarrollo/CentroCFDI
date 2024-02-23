@@ -99,7 +99,7 @@
                             </div>
                             <!--end:Col-->
                             <!--begin:Col-->
-                            <div class="col-lg-8 mb-6 mb-lg-0">
+                            <div class="col-lg-4 mb-6 mb-lg-0">
                                 <!--begin:Menu heading-->
                                 <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Adicionales</h4>
                                 <!--end:Menu heading-->
@@ -153,7 +153,7 @@
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
                                         <a href="@Url.Action("Index", "DocumentosRecibidos")" class="menu-link ">
-                                            <span class="menu-title">Comprobantes Recibidos</span>
+                                            <span class="menu-title">Comprobantes CFDi</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -213,56 +213,75 @@
                 <!--end:Row-->
             </div>
             <!--end:Tab pane-->
-        
-        <!--begin:Tab pane-->
-        <div class="tab-pane  w-lg-600px" id="pagos">
-            <!--begin:Row-->
-            <div class="row">
-                <!--begin:Col-->
-                <div class="col-lg-8">
-                    <!--begin:Row-->
-                    <div class="row">
-                        <!--begin:Col-->
-                        <div class="col-lg-4 mb-6 mb-lg-0">
-                            <!--begin:Menu section-->
-                            <div class="mb-0">
-                                <!--begin:Menu heading-->
-                                <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Operaciones</h4>
-                                <!--end:Menu heading-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item p-0 m-0">
-                                    <!--begin:Menu link-->
-                                    <a href="@Url.Action("Index","Home")" class="menu-link ">
-                                        <span class="menu-title">Listar Pagos</span>
-                                    </a>
-                                    <!--end:Menu link-->
+
+            <!--begin:Tab pane-->
+            <div class="tab-pane  w-lg-600px" id="pagos">
+                <!--begin:Row-->
+                <div class="row">
+                    <!--begin:Col-->
+                    <div class="col-lg-8">
+                        <!--begin:Row-->
+                        <div class="row">
+                            <!--begin:Col-->
+                            <div class="col-lg-4 mb-6 mb-lg-0">
+                                <!--begin:Menu section-->
+                                <div class="mb-0">
+                                    <!--begin:Menu heading-->
+                                    <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Aprobaciones</h4>
+                                    <!--end:Menu heading-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index","DocumentosPagos")" class="menu-link ">
+                                            <span class="menu-title">Comprobantes aprobados</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
                                 </div>
-                                <!--end:Menu item-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item p-0 m-0">
-                                    <!--begin:Menu link-->
-                                    <a href="@Url.Action("Index","Home")" class="menu-link ">
-                                        <span class="menu-title">Cargar Complementos de Pago</span>
-                                    </a>
-                                    <!--end:Menu link-->
-                                </div>
-                                <!--end:Menu item-->
+                                <!--end:Menu section-->
                             </div>
-                            <!--end:Menu section-->
+
+                            <div class="col-lg-4 mb-6 mb-lg-0">
+                                <!--begin:Menu section-->
+                                <div class="mb-0">
+                                    <!--begin:Menu heading-->
+                                    <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Operaciones</h4>
+                                    <!--end:Menu heading-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index","Home")" class="menu-link ">
+                                            <span class="menu-title">Listar Pagos</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index","Home")" class="menu-link ">
+                                            <span class="menu-title">Cargar Complementos de Pago</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                </div>
+                                <!--end:Menu section-->
+                            </div>
                         </div>
+                        <!--end:Row-->
                     </div>
-                    <!--end:Row-->
+                    <!--end:Col-->
+                    <!--begin:Col-->
+                    <div class="col-lg-4">
+                        <img src="~/_CDN/assets/media/stock/600x600/img-80.jpg" class="rounded mw-100" alt="" />
+                    </div>
+                    <!--end:Col-->
                 </div>
-                <!--end:Col-->
-                <!--begin:Col-->
-                <div class="col-lg-4">
-                    <img src="~/_CDN/assets/media/stock/600x600/img-80.jpg" class="rounded mw-100" alt="" />
-                </div>
-                <!--end:Col-->
+                <!--end:Row-->
             </div>
-            <!--end:Row-->
-        </div>
-        <!--end:Tab pane-->
+            <!--end:Tab pane-->
         }
         @if (User.IsInRole("ADDENDA"))
         {
@@ -304,7 +323,7 @@
             </div>
             <!--end:Tab pane-->
         }
-        </div>
+    </div>
     <!--end:Tab content-->
 </div>
 <!--end:Pages menu-->

@@ -44,7 +44,7 @@
                         </thead>
                         <tbody class="align-text-top">
 
-                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId == i.Aprobador_Id.Value))
+                            @foreach (var item in Model.DocumentosRecibidos.Where(i => i.EstadoComercial == API.Enums.c_EstadoComercial.Aprobado))
                             {
                                 var nombreAprobador = _db.Usuarios.Find(item.Aprobador_Id).Nombre + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoMaterno;
                                 var nombreDepartamento = _db.Departamentos.Find(item.Departamento_Id).Nombre;
@@ -149,7 +149,7 @@
                         </thead>
                         <tbody class="align-text-top">
 
-                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId != i.Aprobador_Id.Value))
+                            @foreach (var item in Model.DocumentosRecibidos.Where(i => i.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision))
                             {
                                 var nombreAprobador = _db.Usuarios.Find(item.Aprobador_Id).Nombre + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoMaterno;
                                 var nombreDepartamento = _db.Departamentos.Find(item.Departamento_Id).Nombre;

@@ -375,6 +375,7 @@
     <Compile Include="Controllers\Operaciones\AddendaController.cs" />
     <Compile Include="Controllers\Operaciones\CargasMasivasController.cs" />
     <Compile Include="Controllers\Operaciones\DocumentosExtranjerosController.cs" />
+    <Compile Include="Controllers\Operaciones\DocumentosPagosController.cs" />
     <Compile Include="Controllers\Operaciones\DocumentosRecibidosController.cs" />
     <Compile Include="Controllers\Operaciones\OperacionesCfdisRecibidosController.cs" />
     <Compile Include="Controllers\Operaciones\SolicitudesAccesosController.cs" />
@@ -399,6 +400,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Archivos\CartaPTemp\CLM181204AD3_D5B05D95-A10F-488B-B217-D8CB82D6E22D.xml" />
+    <Content Include="Archivos\CartaPTemp\TR - 3505 - 20230712112716173.xml" />
     <Content Include="Archivos\DocumentosProveedores\Defectuosa.xml" />
     <Content Include="Archivos\DocumentosProveedores\Proveedor.xml" />
     <Content Include="Archivos\DocumentosProveedores\Viaticos.xml" />
@@ -3198,11 +3201,12 @@
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_catalogos.cshtml" />
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_consultas.cshtml" />
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_operaciones.cshtml" />
-    <Content Include="Views\DocumentosRecibidos\Edit.cshtml" />
     <Content Include="Views\AutoregistroSociosComerciales\Create.cshtml" />
     <Content Include="Views\AutoregistroSociosComerciales\CreateUsuario.cshtml" />
     <Content Include="Views\AutoregistroSociosComerciales\Error.cshtml" />
     <Content Include="Views\AutoregistroSociosComerciales\Completado.cshtml" />
+    <Content Include="Views\DocumentosRecibidos\RevisionComercial.cshtml" />
+    <Content Include="Views\DocumentosPagos\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

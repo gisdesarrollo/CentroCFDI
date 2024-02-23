@@ -9,10 +9,14 @@ namespace API.Enums
 {
     public enum c_EstadoPago
     {
-        [DescriptionAttribute("Pendiente")]
-        Pendiente,
-        [DescriptionAttribute("Programado Para Pago")]
-        ProgramadoParaPago,
+        [DescriptionAttribute("En Revisión")]
+        EnRevision,
+        [DescriptionAttribute("Aprobado")]
+        Aprobado,
+        [DescriptionAttribute("Pagado")]
+        Pagado,
+        [DescriptionAttribute("Completado")]
+        Completado,
         [DescriptionAttribute("Rechazado")]
         Rechazado,
     }
