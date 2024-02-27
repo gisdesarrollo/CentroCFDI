@@ -105,7 +105,7 @@ namespace API.Operaciones.OperacionesProveedores
 
         public String OrdenDeCompra { get; set; }
 
-        public string Referencia { get; set; }
+        public String Referencia { get; set; }
 
         //NotMapped
         [DisplayName("Archivo")]

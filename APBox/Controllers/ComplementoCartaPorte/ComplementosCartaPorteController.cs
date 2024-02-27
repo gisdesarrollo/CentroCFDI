@@ -114,7 +114,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
         }
 
         [HttpPost]
-        public ActionResult Index(ComplementosCartaPorteModel complementosCPorteModel, string actionName)
+        public ActionResult Index(ComplementosCartaPorteModel complementosCPorteModel)
         {
             PopulaTiposDeComprobante();
             PopulaTransporte();
@@ -124,8 +124,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
             ViewBag.NameHere = "emision";
-            if (actionName == "Filtrar")
-            {
+            
                 DateTime fechaI = complementosCPorteModel.FechaInicial;
                 DateTime fechaF = complementosCPorteModel.FechaFinal;
                
@@ -134,7 +133,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
                 complementosCPorteModel.ComplementosCartaPorte = _acondicionarComplementosCartaPorte.Filtrar(fechaInicial, fechaFinal,
                     complementosCPorteModel.TipoDeComprobante,complementosCPorteModel.ClaveTransporteId,complementosCPorteModel.Estatus, ObtenerSucursal());
-            }
+            
             return View(complementosCPorteModel);
         }
 

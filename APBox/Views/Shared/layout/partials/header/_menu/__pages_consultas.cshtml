@@ -37,25 +37,31 @@
                                 <!--begin:Menu heading-->
                                 <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">CFDi</h4>
                                 <!--end:Menu heading-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item p-0 m-0">
-                                    <!--begin:Menu link-->
-                                    <a href="@Url.Action("Index", "Home")" class="menu-link ">
-                                        <span class="menu-title">CFDi Emitidos</span>
-                                    </a>
-                                    <!--end:Menu link-->
+                                @if (User.IsInRole("FACTURASEMITIDAS"))
+                                {
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index", "FacturasEmitidas")" class="menu-link ">
+                                            <span class="menu-title">CFDi Emitidos</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                }
+                                @if (User.IsInRole("FACTURASRECIBIDAS"))
+                                {
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index", "Home")" class="menu-link ">
+                                            <span class="menu-title">CFDi Recibidos</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                }
                                 </div>
-                                <!--end:Menu item-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item p-0 m-0">
-                                    <!--begin:Menu link-->
-                                    <a href="@Url.Action("Index", "Home")" class="menu-link ">
-                                        <span class="menu-title">CFDi Recibidos</span>
-                                    </a>
-                                    <!--end:Menu link-->
-                                </div>
-                                <!--end:Menu item-->
-                            </div>
                             <!--end:Col-->
                         </div>
                         <!--end:Row-->
