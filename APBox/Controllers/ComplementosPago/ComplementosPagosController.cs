@@ -76,7 +76,7 @@ namespace APBox.Controllers.ComplementosPago
         }
 
         [HttpPost]
-        public ActionResult Index(ComplementosPagosModel complementosPagosModel, string actionName)
+        public ActionResult Index(ComplementosPagosModel complementosPagosModel)
         {
             PopulaEstatus();
             ViewBag.Controller = "ComplementosPagos";
@@ -84,8 +84,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
             ViewBag.NameHere = "emision";
-            if (actionName == "Filtrar")
-            {
+            
                 DateTime fechaI = complementosPagosModel.FechaInicial;
                 DateTime fechaF = complementosPagosModel.FechaFinal;
                 //var dia = DateTime.DaysInMonth(complementosPagosModel.Anio, (int)complementosPagosModel.Mes);
@@ -96,35 +95,7 @@ namespace APBox.Controllers.ComplementosPago
                 complementosPagosModel.FechaFinal = fechaFinal;
 
                 complementosPagosModel.ComplementosPago = _logicaFacadeFacturas.Filtrar(fechaInicial, fechaFinal,complementosPagosModel.Estatus, ObtenerSucursal());
-            }
-            else if (actionName == "Timbrar")
-            {
-                var errores = new List<String>();
-                foreach (var complementoPago in complementosPagosModel.ComplementosPago.Where(cp => cp.Seleccionado))
-                {
-                    try
-                    {
-                        //_pagosManager.GenerarComplementoPago(complementoPago.SucursalId, complementoPago.Id, "");
-                    }
-                    catch (Exception ex)
-                    {
-                        var complementoPagoInterno = _db.ComplementosPago.Find(complementoPago.Id);
-                        errores.Add(String.Format("Error de generación del complemento del receptor {0} con total de montos {1:c}: {2}", complementoPagoInterno.Receptor.RazonSocial, complementoPagoInterno.Pagos.Sum(p => p.Monto), ex.Message));
-                    }
-                }
-
-                if (errores.Count == 0)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    foreach (var error in errores)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-            }
+            
 
             return View(complementosPagosModel);
         }
