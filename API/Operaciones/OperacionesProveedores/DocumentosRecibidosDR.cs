@@ -86,6 +86,9 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("Estado Comercial")]
         public c_EstadoComercial EstadoComercial { get; set; }
 
+        [DisplayName("Estado Pago")]
+        public c_EstadoPago EstadoPago { get; set; }
+
         [DisplayName("Validaciones")]
         public int? Solicitud_Id { get; set; }
         [ForeignKey("Solicitud_Id")]

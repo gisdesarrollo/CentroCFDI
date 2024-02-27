@@ -12,9 +12,10 @@ using System.Collections.Generic;
 using System.IO.Compression;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Utilerias.LogicaPrincipal;
+using System.Data.Entity;
+
 
 namespace APBox.Controllers.Operaciones
 {
@@ -29,11 +30,11 @@ namespace APBox.Controllers.Operaciones
         // GET: DocumentosPagos
         public ActionResult Index()
         {
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentosAprobados";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Índice";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.NameHere = "Documentos Aprobados";
             //get usaurio
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
@@ -68,11 +69,11 @@ namespace APBox.Controllers.Operaciones
         [HttpPost]
         public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
         {
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentosAprobados";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.NameHere = "Documentos Aprobados";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
@@ -122,35 +123,89 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        // GET: DocumentosPagos/Edit/5
-        public ActionResult Edit(int id)
+        // GET: DocumentosRecibidos/Edit/5
+        public ActionResult Revision(int id)
         {
-            return View();
+            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Action = "Edit";
+            ViewBag.ActionES = "Editar";
+            ViewBag.NameHere = "Revisión de Comprobante Recibido";
+
+            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            if (usuario.esProveedor)
+            {
+                documentoRecibido.isProveedor = true;
+                ViewBag.isProveedor = "Proveedor";
+            }
+            else
+            {
+                documentoRecibido.isProveedor = false;
+                ViewBag.isProveedor = "Usuario";
+            }
+            // Splitting the string into lines
+            string[] lines = documentoRecibido.Validaciones_Detalle.Split('\n');
+            documentoRecibido.DetalleArrays = lines.ToList();
+            TempData["AprobadorId"] = null;
+            TempData["DepartamentoId"] = null;
+
+            return View(documentoRecibido);
         }
 
-        // POST: DocumentosPagos/Edit/5
+        // POST: DocumentosRecibidos/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Revision(DocumentosRecibidosDR documentoRecibidoEdit)
         {
             try
             {
-                // TODO: Add update logic here
+                var usuario = _db.Usuarios.Find(ObtenerUsuario());
+                var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
+                if (usuario.esProveedor)
+                {
+                    // Obtener los datos guardados en TempData
+                    var aprobadorId = TempData["AprobadorId"] as int?;
+                    var departamentoId = TempData["DepartamentoId"] as int?;
+                    if (aprobadorId != null && departamentoId != null)
+                    {
+                        documentoRecibido.Aprobador_Id = aprobadorId.Value;
+                        documentoRecibido.Departamento_Id = departamentoId.Value;
+                        _db.Entry(documentoRecibido).State = EntityState.Modified;
+                        _db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
+                    {
+                        documentoRecibido.MotivoRechazo = documentoRecibidoEdit.MotivoRechazo;
+                    }
+                    documentoRecibido.Solicitudes = null;
+                    documentoRecibido.Solicitud_Id = null;
+                    documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;
+                    _db.Entry(documentoRecibido).State = EntityState.Modified;
+                    _db.SaveChanges();
 
-                return RedirectToAction("Index");
+                    //envio email rechazo
+                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
+                    {
+                        _envioEmail.SendEmailNotifications(null, documentoRecibido, true, (int)ObtenerSucursal());
+                    }
+                }
+                return RedirectToAction("Index", "DocumentosRecibidos");
             }
             catch
             {
-                return View();
+                return View(documentoRecibidoEdit);
             }
         }
 
-        // GET: DocumentosPagos/Delete/5
+        // GET: DocumentosRecibidos/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: DocumentosPagos/Delete/5
+        // POST: DocumentosRecibidos/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -165,7 +220,7 @@ namespace APBox.Controllers.Operaciones
                 return View();
             }
         }
-
+        
         #region Validaciones
 
         public ActionResult AprobarEstadoComercial(int id)

@@ -98,26 +98,6 @@
                                 }
                             </div>
                             <!--end:Col-->
-                            <!--begin:Col-->
-                            <div class="col-lg-4 mb-6 mb-lg-0">
-                                <!--begin:Menu heading-->
-                                <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Adicionales</h4>
-                                <!--end:Menu heading-->
-                                @if (User.IsInRole("COMPLEMENTOSPAGOS"))
-                                {
-                                    <!--begin:Menu item-->
-                                    <div class="menu-item p-0 m-0">
-                                        <!--begin:Menu link-->
-
-                                        <a href="@Url.Action("CargarDocumentosExternos", "RecepcionDocumentos")" class="menu-link ">
-                                            <span class="menu-title">Cargar Documentos Externos</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    <!--end:Menu item-->
-                                }
-                            </div>
-                            <!--end:Col-->
                         }
                     </div>
                     <!--end:Row-->
@@ -238,6 +218,15 @@
                                         <!--end:Menu link-->
                                     </div>
                                     <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index","DocumentosPagos")" class="menu-link ">
+                                            <span class="menu-title">Cargar Complementos de Pagos</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
                                 </div>
                                 <!--end:Menu section-->
                             </div>
@@ -252,16 +241,7 @@
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
                                         <a href="@Url.Action("Index","Home")" class="menu-link ">
-                                            <span class="menu-title">Listar Pagos</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    <!--end:Menu item-->
-                                    <!--begin:Menu item-->
-                                    <div class="menu-item p-0 m-0">
-                                        <!--begin:Menu link-->
-                                        <a href="@Url.Action("Index","Home")" class="menu-link ">
-                                            <span class="menu-title">Cargar Complementos de Pago</span>
+                                            <span class="menu-title">Cargar Pagos Realizados</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>

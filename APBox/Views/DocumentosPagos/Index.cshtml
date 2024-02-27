@@ -17,6 +17,10 @@
         <div class="card card-flush shadow-sm py-4 mb-xl-8">
             <!--begin::Card header-->
             <div class="card-header">
+                <h3 class="card-title align-items-start flex-column w-100 mb-5">
+                    <span class="card-label text-gray-900">Comprobantes Aprobados</span>
+                    <span class="text-gray-600 mt-4 fw-semibold fs-6">Lista de comprobantes con Estado Comercial Aprobado</span>
+                </h3>
                 <!--begin::Search-->
                 <div class="d-flex align-items-center position-relative my-1">
                     <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
@@ -31,14 +35,16 @@
             <!--begin::Card body-->
             <div class="card-body pt-0">
                 <div class="d-flex flex-column gap-10">
-                    <table class="align-middle rounded table-row-dashed fs-7 g-5" id="tablaIndividuales">
+                    <table class="table align-middle rounded table-row-dashed fs-7 g-5" id="tablaIndividuales">
                         <thead>
                             <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
                                 <th class="min-w-100px">Socio Comercial</th>
                                 <th class="min-w-100px">Identificador</th>
                                 <th class="min-w-100px">Datos de Recepción</th>
                                 <th class="min-w-100px text-end">Monto</th>
-                                <th class="min-w-100px text-center">Estado</th>
+                                <th class="min-w-100px text-center">Referencia</th>
+                                <th class="min-w-100px text-center">Estado Comercial</th>
+                                <th class="min-w-100px text-center">Estado Pago</th>
                                 <th class="min-w-100px"></th>
                             </tr>
                         </thead>
@@ -62,11 +68,14 @@
                                     <td>
                                         Solicitante: @nombreAprobador <br />
                                         <span class="text-gray-600">@nombreDepartamento </span><br />
-                                        @item.FechaEntrega.ToString("dd/MM/yyyy")
+                                        <span class="text-gray-600">Fecha de Entrega: @item.FechaEntrega.ToString("dd/MM/yyyy")</span><br />
                                     </td>
                                     <td class="text-end">
                                         @item.Monto.ToString("c") <br />
-                                        <div class="text-gray-600">@item.Moneda_Id</div>
+                                        <div class="text-gray-600">@item.Moneda_Id</div> <br />
+                                    </td>
+                                    <td>
+                                        @item.Referencia
                                     </td>
                                     <td class="text-center">
                                         @switch (item.EstadoComercial)
@@ -84,6 +93,29 @@
                                                 break;
                                         }
                                     </td>
+                                    <td class="text-center">
+                                        @switch (item.EstadoPago)
+                                        {
+                                            case API.Enums.c_EstadoPago.EnRevision:
+                                                <div class="badge badge-light-primary">En Revision</div>
+                                                break;
+                                            case API.Enums.c_EstadoPago.Aprobado:
+                                                <div class="badge badge-light-info">Aprobado</div>
+                                                break;
+                                            case API.Enums.c_EstadoPago.Pagado:
+                                                <div class="badge badge-light-success">Pagado</div>
+                                                break;
+                                            case API.Enums.c_EstadoPago.Completado:
+                                                <div class="badge badge-light-dark">Completado</div>
+                                                break;
+                                            case API.Enums.c_EstadoPago.Rechazado:
+                                                <div class="badge badge-light-danger">Rechazado</div>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                    </td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                             Acciones
@@ -95,14 +127,6 @@
                                             <div class="menu-item px-3">@Html.ActionLink("Revisión", "Revision", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
                                             <div class="menu-item px-3">@Html.ActionLink("Descarga Xml", "DescargaXml", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
                                             <div class="menu-item px-3">@Html.ActionLink("Descarga Pdf", "DescargaPDF", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
-
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3">
-                                                    Eliminar
-                                                </a>
-                                            </div>
-                                            <!--end::Menu item-->
                                         </div>
                                         <!--end::Menu-->
                                     </td>
@@ -122,6 +146,10 @@
         <div class="card card-flush shadow-sm py-4 mb-xl-8">
             <!--begin::Card header-->
             <div class="card-header">
+                <h3 class="card-title align-items-start flex-column w-100 mb-5">
+                    <span class="card-label text-gray-900">Comprobantes En Revisión</span>
+                    <span class="text-gray-600 mt-4 fw-semibold fs-6">Lista de comprobantes con Estado Comercial En Revisión en espera del Usuario Solicitante para su procesamiento</span>
+                </h3>
                 <!--begin::Search-->
                 <div class="d-flex align-items-center position-relative my-1">
                     <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
@@ -143,7 +171,8 @@
                                 <th class="min-w-100px">Identificador</th>
                                 <th class="min-w-100px">Datos de Recepción</th>
                                 <th class="min-w-100px text-end">Monto</th>
-                                <th class="min-w-100px text-center">Estado</th>
+                                <th class="min-w-100px text-center">Referencia</th>
+                                <th class="min-w-100px text-center">Estado Comercial</th>
                                 <th class="min-w-100px"></th>
                             </tr>
                         </thead>
@@ -167,11 +196,14 @@
                                     <td>
                                         Solicitante: @nombreAprobador <br />
                                         <span class="text-gray-600">@nombreDepartamento </span><br />
-                                        @item.FechaEntrega.ToString("dd/MM/yyyy")
+                                        <span class="text-gray-600">Fecha de Entrega: @item.FechaEntrega.ToString("dd/MM/yyyy")</span><br />
                                     </td>
                                     <td class="text-end">
                                         @item.Monto.ToString("c") <br />
                                         <div class="text-gray-600">@item.Moneda_Id</div>
+                                    </td>
+                                    <td>
+                                        @item.Referencia
                                     </td>
                                     <td class="text-center">
                                         @switch (item.EstadoComercial)
@@ -180,7 +212,7 @@
                                                 <div class="badge badge-light-success">Aprobado</div>
                                                 break;
                                             case API.Enums.c_EstadoComercial.EnRevision:
-                                                <div class="badge badge-light-primary">EnRevisión</div>
+                                                <div class="badge badge-light-primary">En Revisión</div>
                                                 break;
                                             case API.Enums.c_EstadoComercial.Rechazado:
                                                 <div class="badge badge-light-danger">Rechazado</div>
@@ -201,13 +233,6 @@
                                             <div class="menu-item px-3">@Html.ActionLink("Descarga Xml", "DescargaXml", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
                                             <div class="menu-item px-3">@Html.ActionLink("Descarga Pdf", "DescargaPDF", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
 
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3">
-                                                    Eliminar
-                                                </a>
-                                            </div>
-                                            <!--end::Menu item-->
                                         </div>
                                         <!--end::Menu-->
                                     </td>

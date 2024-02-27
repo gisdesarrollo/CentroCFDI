@@ -43,6 +43,20 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaAprobacionPagos { get; set; }
 
+        [DisplayName("Usuario Carga Pagos")]
+        public int? UsuarioCargaPagos_id { get; set; }
+
+        [DisplayName("Fecha Carga Pagos")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? FechaCargaPagos { get; set; }
+
+        [DisplayName("Usuario Completa Pagos")]
+        public int? UsuarioCompletaPagos_id { get; set; }
+
+        [DisplayName("Fecha Completa Pagos")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? FechaCompletaPagos { get; set; }
+
         [DisplayName("Usuario Rechazo")]
         public int? UsuarioRechazo_id { get; set; }
 
@@ -52,7 +66,6 @@ namespace API.Operaciones.OperacionesProveedores
 
         [DisplayName("Detalle Rechazo")]
         public String Detalle { get; set; }
-
 
         //eliminar este campo mas tarde
         [DisplayName("Fecha")]
