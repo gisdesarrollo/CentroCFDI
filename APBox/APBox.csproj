@@ -2941,6 +2941,7 @@
     <Content Include="Views\DocumentosPagos\Index.cshtml" />
     <Content Include="Views\DocumentosPagos\Revision.cshtml" />
     <Content Include="Views\DocumentosPagos\_DocumentoPagoScripts.cshtml" />
+    <Content Include="Views\DocumentosRecibidos\ReporteDocumentosRecibidos.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

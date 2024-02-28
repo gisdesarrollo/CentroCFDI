@@ -261,6 +261,7 @@
     <Compile Include="LogicaPrincipal\Descargas\DescargasManager.cs" />
     <Compile Include="LogicaPrincipal\DocumentosRecibidos\ProcesaDocumentoRecibido.cs" />
     <Compile Include="LogicaPrincipal\Facturas\GetTipoCambioDocRel.cs" />
+    <Compile Include="LogicaPrincipal\Facturas\OperacionesDocumentosRecibidos.cs" />
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteManager.cs" />
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteXsaManager.cs" />
     <Compile Include="LogicaPrincipal\GeneracionXSA\XsaManager.cs" />

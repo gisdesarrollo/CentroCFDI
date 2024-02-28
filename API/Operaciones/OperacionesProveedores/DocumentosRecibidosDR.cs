@@ -104,6 +104,10 @@ namespace API.Operaciones.OperacionesProveedores
         [ForeignKey("Departamento_Id")]
         public virtual Departamento Departamento { get; set; }
 
+        public int? AprobacionesDR_Id { get; set; }
+        [ForeignKey("AprobacionesDR_Id")]
+        public virtual AprobacionesDR AprobacionesDR { get; set; }
+
         public String MotivoRechazo { get; set; }
 
         public String OrdenDeCompra { get; set; }

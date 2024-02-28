@@ -26,11 +26,13 @@ namespace APBox.Controllers.Operaciones
     [SessionExpire]
     public class DocumentosRecibidosController : Controller
     {
+        #region variables
         private readonly APBoxContext _db = new APBoxContext();
         private readonly ProcesaDocumentoRecibido _procesaDocumentoRecibido = new ProcesaDocumentoRecibido();
         private readonly Decodificar _decodifica = new Decodificar();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
-
+        private readonly OperacionesDocumentosRecibidos _operacionesDocumentosRecibidos = new OperacionesDocumentosRecibidos();
+        #endregion
         #region Consultas
 
         //Metodo de Validacion E-Mail para usuarios solicitantes
@@ -209,11 +211,10 @@ namespace APBox.Controllers.Operaciones
                 var socioComercial = new SocioComercial();
 
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
-                if (usuario.esProveedor)
-                {
-                    socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
+                
+                socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
                     var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
-                    if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
+                    if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc && usuario.esProveedor)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
 
@@ -226,22 +227,11 @@ namespace APBox.Controllers.Operaciones
                     {
                         throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
                     }
-                }
-                else
-                {
-                    if (cfdi.Receptor.Rfc == "XEXX010101000" || cfdi.Receptor.Rfc == "XAXX010101000")
-                    {
-                        socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Receptor.Rfc && s.RazonSocial == cfdi.Receptor.Nombre && s.SucursalId == sucursal.Id).FirstOrDefault();
-                    }
-                    else
-                    {
-                        socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Receptor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
-                    }
-
-                }
+                
 
                 if (socioComercial == null)
                 {
+                    //crear socio comercial apartir del emisor
                     throw new Exception("Error Validación : El socio comercial no esta registrado en la BD");
                 }
 
@@ -298,7 +288,7 @@ namespace APBox.Controllers.Operaciones
                 }
                 else
                 {
-                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                     documentoRecibidoDr.Procesado = true;
                     documentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
                 }
@@ -329,14 +319,13 @@ namespace APBox.Controllers.Operaciones
 
                 if (facturaMesCorriente)
                 {
-
                     //Primer dia del Mes Actual
                     DateTime primerDiaMesActual = new DateTime(fechaActual.Year, fechaActual.Month, 1);
 
                     //Ultimo dia del Mes Actual
                     DateTime ultimoDiaMesActual = primerDiaMesActual.AddMonths(1).AddDays(-1);
 
-                    if (documentoRecibidoDr.FechaComprobante < primerDiaMesActual || documentoRecibidoDr.FechaComprobante > ultimoDiaMesActual)
+                    if (documentoRecibidoDr.FechaComprobante >= primerDiaMesActual || documentoRecibidoDr.FechaComprobante <= ultimoDiaMesActual)
                     {
                         throw new InvalidOperationException("La factura o el comprobante no corresponde al mes actual. Por favor, cargue una factura del mes actual.");
                     }
@@ -474,6 +463,11 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.Pagos = null;
                 documentoRecibidoDr.Pagos_Id = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
+                documentoRecibidoDr.AprobacionesDR.UsuarioEntrega_Id = usuario.Id;
+                documentoRecibidoDr.AprobacionesDR.UsuarioSolicitante_Id = documentoRecibidoDr.Aprobador_Id;
+                documentoRecibidoDr.AprobacionesDR.DepartamentoUsuarioSolicitante_Id = documentoRecibidoDr.Departamento_Id;
+                documentoRecibidoDr.AprobacionesDR.FechaSolicitud = DateTime.Now;
+
                 _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
                 _db.SaveChanges();
                 return RedirectToAction("Index", "DocumentosRecibidos"); ;
@@ -585,6 +579,51 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
+        #region Reportes
+        public ActionResult ReporteDocumentosRecibidos()
+        {
+            var sucursalId = ObtenerSucursal();
+            var usuarioId = ObtenerUsuario();
+            var documentosRecibidosModel = new DocumentosRecibidosModel
+            {
+                FechaInicial = DateTime.Now.AddDays(-5), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
+                FechaFinal = DateTime.Now,
+                SucursalId = ObtenerSucursal(),
+            };
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, documentosRecibidosModel.FechaInicial.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            documentosRecibidosModel.FechaInicial = fechaInicial;
+            documentosRecibidosModel.FechaFinal = fechaFinal;
+            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel,usuarioId);
+
+            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Action = "ReporteDocumetosRecibidos";
+            ViewBag.ActionES = "Reporte Documentos Recibidos";
+            ViewBag.NameHere = "Reportes";
+
+            return View(documentosRecibidosModel);
+        }
+
+        [HttpPost]
+        public ActionResult ReporteDocumentosRecibidos(DocumentosRecibidosModel documentosRecibidosModel)
+        {
+            var usuarioId = ObtenerUsuario();
+            var fechaI = documentosRecibidosModel.FechaInicial;
+            var fechaF = documentosRecibidosModel.FechaFinal;
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            documentosRecibidosModel.FechaInicial = fechaInicial;
+            documentosRecibidosModel.FechaFinal = fechaFinal;
+            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, usuarioId);
+
+            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Action = "ReporteDocumetosRecibidos";
+            ViewBag.ActionES = "Reporte Documentos Recibidos";
+            ViewBag.NameHere = "Reportes";
+
+            return View(documentosRecibidosModel);
+        }
+        #endregion
         #region Validaciones
 
         public ActionResult AprobarEstadoComercial(int id)

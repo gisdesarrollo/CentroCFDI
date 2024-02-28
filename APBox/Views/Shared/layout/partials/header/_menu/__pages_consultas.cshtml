@@ -49,18 +49,18 @@
                                     </div>
                                     <!--end:Menu item-->
                                 }
-                                @if (User.IsInRole("FACTURASRECIBIDAS"))
-                                {
+                                @*@if (User.IsInRole("FACTURASRECIBIDAS"))
+                                {*@
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
-                                        <a href="@Url.Action("Index", "Home")" class="menu-link ">
+                                        <a href="@Url.Action("ReporteDocumentosRecibidos", "DocumentosRecibidos")" class="menu-link ">
                                             <span class="menu-title">CFDi Recibidos</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
                                     <!--end:Menu item-->
-                                }
+                                @*}*@
                                 </div>
                             <!--end:Col-->
                         </div>

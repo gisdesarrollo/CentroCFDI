@@ -1,4 +1,5 @@
 ﻿using API.Catalogos;
+using API.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -66,11 +67,6 @@ namespace API.Operaciones.OperacionesProveedores
 
         [DisplayName("Detalle Rechazo")]
         public String Detalle { get; set; }
-
-        //eliminar este campo mas tarde
-        [DisplayName("Fecha")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? Fecha { get; set; }
 
     }
 }
