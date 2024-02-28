@@ -129,7 +129,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "Revisión de Comprobante Recibido";
+            ViewBag.NameHere = "Revisión de Comprobante Recibido para Pago";
 
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());

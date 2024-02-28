@@ -8,8 +8,6 @@ using API.Operaciones.OperacionesProveedores;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
 using Aplicacion.LogicaPrincipal.Facturas;
-using Google.Protobuf.WellKnownTypes;
-using Newtonsoft.Json;
 using SW.Services.Authentication;
 using SW.Services.Validate;
 using System;
@@ -64,9 +62,10 @@ namespace APBox.Controllers.Operaciones
                 });
             }
         }
-  
+
         #endregion
 
+        // GET: DocumentosRecibidos/Index
         public ActionResult Index()
         {
             ViewBag.Controller = "DocumentosRecibidos";
@@ -104,6 +103,7 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
 
+        // POST: DocumentosRecibidos/Index
         [HttpPost]
         public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
         {
@@ -139,6 +139,7 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
 
+        // GET: DocumentosRecibidos/CargaCfdi
         public ActionResult CargaCfdi()
         {
             ViewBag.Controller = "DocumentosRecibidos";
@@ -166,6 +167,7 @@ namespace APBox.Controllers.Operaciones
             return View(documentoRecibidoDr);
         }
 
+        // POST: DocumentosRecibidos/CargaCfdi
         [HttpPost]
         public ActionResult CargaCfdi(DocumentosRecibidosDR documentoRecibidoDr)
         {
@@ -373,7 +375,6 @@ namespace APBox.Controllers.Operaciones
 
             return View(documentoRecibidoDr);
         }
-
 
         // GET: DocumentosRecibidos/Create
         public ActionResult Create()
@@ -785,6 +786,7 @@ namespace APBox.Controllers.Operaciones
             }
         }
         #endregion
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
