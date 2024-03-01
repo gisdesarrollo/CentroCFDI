@@ -59,7 +59,7 @@
                         </thead>
                         <tbody class="align-text-top">
 
-                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId == i.Aprobador_Id.Value  || usuarioId == i.Usuario_Id))
+                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId == i.Aprobador_Id.Value || usuarioId == i.Usuario_Id))
                             {
                                 var nombreAprobador = _db.Usuarios.Find(item.Aprobador_Id).Nombre + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoMaterno;
                                 var nombreDepartamento = _db.Departamentos.Find(item.Departamento_Id).Nombre;
@@ -247,6 +247,16 @@
 
 <div class="hiddenDiv">
     <div class="d-flex align-items-center py-3 py-md-1" id="tools">
+        <div class="me-4">
+            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-bs-toggle="modal" data-bs-target="#modal">
+                <i class="ki-duotone ki-message-question fs-2 me-1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                </i>
+                Ayuda
+            </a>
+        </div>
         <!--begin::Wrapper-->
         <div class="me-4">
             <!--begin::Menu-->
@@ -308,108 +318,7 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        "use strict";
 
-        // Class definition
-        var KTDatatablesExample = function () {
-            // Shared variables
-            var table;
-            var datatable;
 
-            // Private functions
-            var initDatatable = function () {
-                // Set date data order
-                const tableRows = table.querySelectorAll('tbody tr');
-
-                // Init datatable --- more info on datatables: https://datatables.net/manual/
-                datatable = $(table).DataTable({
-                    "info": false,
-                    'order': [],
-                    'pageLength': 10,
-                });
-            }
-
-            // Hook export buttons
-
-            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
-            var handleSearchDatatable = () => {
-                const filterSearch = document.querySelector('[data-kt-filter-Individuales="search"]');
-                filterSearch.addEventListener('keyup', function (e) {
-                    datatable.search(e.target.value).draw();
-                });
-            }
-
-            // Public methods
-            return {
-                init: function () {
-                    table = document.querySelector('#tablaIndividuales');
-
-                    if (!table) {
-                        return;
-                    }
-
-                    initDatatable();
-                    handleSearchDatatable();
-                }
-            };
-        }();
-
-        // On document ready
-        KTUtil.onDOMContentLoaded(function () {
-            KTDatatablesExample.init();
-        });
-    });
-
-    $(document).ready(function () {
-        "use strict";
-
-        // Class definition
-        var KTDatatablesExample = function () {
-            // Shared variables
-            var table;
-            var datatable;
-
-            // Private functions
-            var initDatatable = function () {
-                // Set date data order
-                const tableRows = table.querySelectorAll('tbody tr');
-
-                // Init datatable --- more info on datatables: https://datatables.net/manual/
-                datatable = $(table).DataTable({
-                    "info": false,
-                    'order': [],
-                    'pageLength': 10,
-                });
-            }
-
-            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
-            var handleSearchDatatable = () => {
-                const filterSearch = document.querySelector('[data-kt-filter-Grupales="search"]');
-                filterSearch.addEventListener('keyup', function (e) {
-                    datatable.search(e.target.value).draw();
-                });
-            }
-
-            // Public methods
-            return {
-                init: function () {
-                    table = document.querySelector('#tablaGrupales');
-
-                    if (!table) {
-                        return;
-                    }
-
-                    initDatatable();
-                    handleSearchDatatable();
-                }
-            };
-        }();
-
-        // On document ready
-        KTUtil.onDOMContentLoaded(function () {
-            KTDatatablesExample.init();
-        });
-    });
-</script>
+@Html.Partial("_DocumentoRecibidoScripts")
+@Html.Partial("~/Views/DocumentosRecibidos/_ModalGuia.cshtml")

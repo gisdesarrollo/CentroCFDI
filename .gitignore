@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 ApBox/Web.config
+ApBox/_CDN
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

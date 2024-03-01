@@ -383,7 +383,7 @@
     <Compile Include="Controllers\PortalProveedores\ComplementosPagosProveedoresController.cs" />
     <Compile Include="Controllers\PortalProveedores\PortalProveedoresController.cs" />
     <Compile Include="Controllers\PortalUsuarios\PortalUsuariosController.cs" />
-    <Compile Include="Controllers\RecepcionDocumentos\RecepcionDocumentosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\DescartarRecepcionDocumentosController.cs" />
     <Compile Include="Controllers\Reportes\ReportesController.cs" />
     <Compile Include="Control\Helpers.cs" />
     <Compile Include="Control\OperacionesUsuarios.cs" />
@@ -596,16 +596,6 @@
     <Content Include="bin\Zstandard.Net.dll" />
     <Content Include="bin\_CDN\custom\css-custom\custom.css" />
     <Content Include="BouncyCastle.Crypto.dll" />
-    <Content Include="Content\Images\Clientes\Aguas.jpg" />
-    <Content Include="Content\Images\Clientes\Bisquets.jpg" />
-    <Content Include="Content\Images\Clientes\Corpogas.png" />
-    <Content Include="Content\Images\Clientes\Huixquilucan.png" />
-    <Content Include="Content\Images\Clientes\Televisa.png" />
-    <Content Include="Content\Images\Clientes\Wendys.jpg" />
-    <Content Include="Content\Images\Logos\AP.Box.jpg" />
-    <Content Include="Content\Images\Logos\APBox-Navbar.png" />
-    <Content Include="Content\Images\Logos\Infodextra.jpg" />
-    <Content Include="Content\Images\Logos\Infodextra.png" />
     <Content Include="Content\Infodextra\Catalogos\Clientes.js" />
     <Content Include="Content\Infodextra\Catalogos\Sucursales.js" />
     <Content Include="Content\Infodextra\ComplementosPago.js" />
@@ -621,6 +611,16 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="lib\CodeScales.Http.dll" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\1.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\10.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\2.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\3.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\4.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\5.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\6.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\7.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\8.jpg" />
+    <Content Include="Content\Ayuda\DocumentosRecibidos\Index\9.jpg" />
     <Content Include="Views\Shared\layout\header\_base.cshtml" />
     <Content Include="Views\Shared\layout\header\__menu.cshtml" />
     <Content Include="Views\Shared\layout\header\__topbar.cshtml" />
@@ -2604,6 +2604,7 @@
     <Folder Include="Content\FileTxt\" />
     <Folder Include="Content\Temp\" />
     <Folder Include="Controllers\Control\" />
+    <Folder Include="Views\RecepcionDocumentos\" />
     <Folder Include="Views\Recepcion\" />
     <Folder Include="Views\Shared\partials\widgets-2\calendar\" />
     <Folder Include="_CDN\assets\js\custom\pages\user-profile\" />
@@ -2823,7 +2824,7 @@
     <Content Include="Views\ValidacionesRapidas\Reporte.cshtml" />
     <Content Include="Views\OperacionesCfdisRecibidos\ReporteIndividual.cshtml" />
     <Content Include="Views\ComplementosPagos\_ComplementosPagosScripts.cshtml" />
-    <Content Include="Views\RecepcionDocumentos\CargarDocumentosExternos.cshtml" />
+    <Content Include="Views\ComplementosPagos\CargarDocumentosExternos.cshtml" />
     <Content Include="Views\OperacionesCfdisRecibidos\Rechazar.cshtml" />
     <Content Include="web.config" />
     <Content Include="Views\ComplementosCartaPorte\Index.cshtml" />
@@ -2942,6 +2943,7 @@
     <Content Include="Views\DocumentosPagos\Revision.cshtml" />
     <Content Include="Views\DocumentosPagos\_DocumentoPagoScripts.cshtml" />
     <Content Include="Views\DocumentosRecibidos\ReporteDocumentosRecibidos.cshtml" />
+    <Content Include="Views\DocumentosRecibidos\_ModalGuia.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

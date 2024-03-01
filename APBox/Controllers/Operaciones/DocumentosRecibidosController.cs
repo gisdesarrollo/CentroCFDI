@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Aplicacion.RecepcionDocumentos;
 using Utilerias.LogicaPrincipal;
 
 namespace APBox.Controllers.Operaciones
@@ -151,6 +152,7 @@ namespace APBox.Controllers.Operaciones
 
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
+
             if (usuario.esProveedor)
             {
                 ViewBag.isProveedor = "Proveedor";
@@ -176,7 +178,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
             ViewBag.NameHere = "Documentos Recibidos";
-            //ViewBag.ActionES = "Index";
+
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
@@ -192,6 +194,27 @@ namespace APBox.Controllers.Operaciones
             AuthResponse responseAutenticacion = new AuthResponse();
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
             documentoRecibidoDr.DetalleArrays = new List<String>();
+
+            //empieza mi prueba
+            //se crea una instancia con los datos a validar en una petición
+            var dataValidar = new DataValidar
+            {
+                Cfdi = cfdi,
+                TimbreFiscalDigital = cfdi.TimbreFiscalDigital,
+            };
+
+            ValidacionesComerciales validacionesComerciales = new ValidacionesComerciales();
+            
+            try 
+            {
+                validacionesComerciales.Validaciones(cfdi, ObtenerSucursal()); 
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                return View(documentoRecibidoDr);
+            }
+            //termina mi prueba
 
             try
             {
@@ -209,25 +232,24 @@ namespace APBox.Controllers.Operaciones
                 var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
                 var sucursal = _db.Sucursales.Find(ObtenerSucursal());
                 var socioComercial = new SocioComercial();
-
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
-                
-                socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
-                    var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
-                    if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc && usuario.esProveedor)
-                    {
-                        throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
 
-                    }
-                    if (sucursal.Rfc != cfdi.Receptor.Rfc)
-                    {
-                        throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
-                    }
-                    if (existUUID != null)
-                    {
-                        throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
-                    }
-                
+                socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
+                var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
+                if (usuario.esProveedor == true && usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
+                {
+                    throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
+
+                }
+                if (sucursal.Rfc != cfdi.Receptor.Rfc)
+                {
+                    throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
+                }
+                if (existUUID != null)
+                {
+                    throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
+                }
+
 
                 if (socioComercial == null)
                 {
@@ -594,7 +616,7 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
-            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel,usuarioId);
+            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, usuarioId);
 
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "ReporteDocumetosRecibidos";
@@ -624,6 +646,7 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
         #endregion
+
         #region Validaciones
 
         public ActionResult AprobarEstadoComercial(int id)
@@ -678,6 +701,15 @@ namespace APBox.Controllers.Operaciones
             string fechaFormat = fechaConvertDate.ToString("dd/MM/yyyy");
             return fechaFormat;
         }
+
+        public class DataValidar
+        {
+            public ComprobanteCFDI Cfdi { get; set; }
+            public TimbreFiscalDigital TimbreFiscalDigital { get; set; }
+            public Sucursal Sucursal { get; set; }
+            public SocioComercial SocioComercial { get; set; }
+
+        }
         public ConfiguracionesDR ConfiguracionEmpresa()
         {
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
@@ -691,6 +723,7 @@ namespace APBox.Controllers.Operaciones
 
             return configuracion;
         }
+        
         private void PopulaEstadoComercial()
         {
             List<SelectListItem> items = new List<SelectListItem>();
@@ -701,7 +734,6 @@ namespace APBox.Controllers.Operaciones
         }
         private int ObtenerGrupo()
         {
-
             return Convert.ToInt32(Session["GrupoId"]);
         }
         private int ObtenerSucursal()
@@ -825,7 +857,7 @@ namespace APBox.Controllers.Operaciones
             }
         }
         #endregion
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace APBox.Controllers.RecepcionDocumentos
 {
-    public class RecepcionDocumentosController : Controller
+    public class DescartarRecepcionDocumentosController : Controller
     {
         
         // GET: RecepcionDocumentos

@@ -3,6 +3,9 @@ using API.Catalogos;
 using API.Context;
 using System.Collections.Generic;
 using System.Linq;
+// necesito el using para corregir el error que sale en Session
+
+using System.Web;
 using System.Text;
 using System.Threading.Tasks;
 using Infodextra.LogicaPrincipal;
@@ -19,6 +22,11 @@ namespace Aplicacion.RecepcionDocumentos
         private readonly DataContext _db = new DataContext();
 
         #endregion
+
+        public void Validaciones(ComprobanteCFDI comprobante, int sucursalId)
+        {
+
+        }
 
         public void Negocios(FacturaRecibida facturaRecibida, int sucursalId)
         {
