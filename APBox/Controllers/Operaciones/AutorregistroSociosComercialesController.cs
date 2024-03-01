@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace APBox.Controllers.Catalogos
 {
-    public class AutoregistroSociosComercialesController : Controller
+    public class AutorregistroSociosComercialesController : Controller
     {
         #region Variables
 
@@ -39,7 +39,7 @@ namespace APBox.Controllers.Catalogos
             catch (Exception)
             {
                 string error = "Se encontró un error en el link del acceso que te compartieron, favor de contactar a tu administrador.";
-                return RedirectToAction("Error", "AutoregistroSociosComerciales", new { errorMessage = error });
+                return RedirectToAction("Error", "AutorregistroSociosComerciales", new { errorMessage = error });
             }
 
             try
@@ -49,7 +49,7 @@ namespace APBox.Controllers.Catalogos
             catch (Exception)
             {
                 string error = "Parece que la empresa aun no cuenta con todas las configuraciones necesarias para dar de alta proveedores, favor de consultar a tu administrador para revisar el perfil faltante.";
-                return RedirectToAction("Error", "AutoregistroSociosComerciales", new { errorMessage = error });
+                return RedirectToAction("Error", "AutorregistroSociosComerciales", new { errorMessage = error });
             }
 
             var sucursal = _db.Sucursales.FirstOrDefault(e => e.GrupoId == grupo.Id);
@@ -67,7 +67,7 @@ namespace APBox.Controllers.Catalogos
 
             };
 
-            ViewBag.Controller = "Autoregistro";
+            ViewBag.Controller = "AutorRegistro";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
             ViewBag.NameHere = "Registro de Socios Comerciales";
@@ -165,7 +165,7 @@ namespace APBox.Controllers.Catalogos
             // Envío de correo electrónico de bienvenida
             EnviarCorreoBienvenida(usuario);
 
-            return RedirectToAction("Completado", "AutoregistroSociosComerciales");
+            return RedirectToAction("Completado", "AutorregistroSociosComerciales");
 
         }
 

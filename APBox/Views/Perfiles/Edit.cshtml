@@ -1,7 +1,7 @@
 ﻿@model API.Catalogos.Perfil
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
 @using (Html.BeginForm())
@@ -145,6 +145,15 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group col-sm-6 col-md-4">
+                                                <label class="form-label">Departamentos</label>
+                                                <div class="col-md-10">
+                                                    <div class="checkbox">
+                                                        @Html.EditorFor(model => model.Departamentos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                        @Html.ValidationMessageFor(model => model.Departamentos, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <label class="form-label">Empresa</label>
@@ -168,8 +177,8 @@
                                                 <label class="form-label">Socios Comerciales</label>
                                                 <div class="col-md-10">
                                                     <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Clientes, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Clientes, "", new { @class = "text-danger" })
+                                                        @Html.EditorFor(model => model.SociosComerciales, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                        @Html.ValidationMessageFor(model => model.SociosComerciales, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -301,16 +310,6 @@
                                             </div>
                                             <div class="form-group col-sm-6 col-md-4">
 
-                                                <label class="form-label">Recibidos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.FacturasRecibidas, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.FacturasRecibidas, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-
                                                 <label class="form-label">Carga Cfdi</label>
                                                 <div class="col-md-10">
                                                     <div class="checkbox">
@@ -393,6 +392,24 @@
                                                     <div class="checkbox">
                                                         @Html.EditorFor(model => model.Recepcion, new { htmlAttributes = new { @class = "form-check-input" } })
                                                         @Html.ValidationMessageFor(model => model.Recepcion, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-4">
+                                                <label class="form-label">Documentos Recibidos</label>
+                                                <div class="col-md-10">
+                                                    <div class="checkbox">
+                                                        @Html.EditorFor(model => model.DocumentosRecibidos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                        @Html.ValidationMessageFor(model => model.DocumentosRecibidos, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           <div class="form-group col-sm-6 col-md-4">
+                                                <label class="form-label">Pagos</label>
+                                                <div class="col-md-10">
+                                                    <div class="checkbox">
+                                                        @Html.EditorFor(model => model.Pagos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                        @Html.ValidationMessageFor(model => model.Pagos, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                             </div>

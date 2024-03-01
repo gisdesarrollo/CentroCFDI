@@ -35,7 +35,8 @@ namespace API.Catalogos
 
         public bool Proveedores { get; set; }
 
-        public bool Clientes { get; set; }
+        [DisplayName("Socios Comerciales")]
+        public bool SociosComerciales { get; set; }
  
         public bool Conceptos { get; set; }
 
@@ -71,9 +72,7 @@ namespace API.Catalogos
 
         [DisplayName("Validación Rápida")]
         public bool ValidacionRapida { get; set; }
-        public bool FacturasRecibidas { get; set; }
-       
-
+        
         //Complementos de Pago
         [DisplayName("Facturas Emitidas")]
         public bool FacturasEmitidas { get; set; }
@@ -120,7 +119,10 @@ namespace API.Catalogos
         [DisplayName("Proveedor")]
         public bool Proveedor { get; set; }
 
-
+        [DisplayName("Pagos")]
+        public bool Pagos { get; set; }
+        [DisplayName("Documentos Recibidos")]
+        public bool DocumentosRecibidos { get; set; }
 
         #region Grupo
 

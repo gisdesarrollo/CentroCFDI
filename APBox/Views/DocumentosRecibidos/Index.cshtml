@@ -44,6 +44,7 @@
             <!--end::Card header-->
             <!--begin::Card body-->
             <div class="card-body pt-0">
+                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt", @style = "color:red;" })
                 <div class="d-flex flex-column gap-10">
                     <table class="table align-middle rounded table-row-dashed fs-7 g-5" id="tablaIndividuales">
                         <thead>

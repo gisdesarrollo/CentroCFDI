@@ -11,7 +11,7 @@
     ViewBag.Title = "Documentos Recibidos";
 }
 
-@using (Html.BeginForm("Edit", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data", id = "form" }))
+@using (Html.BeginForm("Revision", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data", id = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
@@ -266,7 +266,7 @@
         <div class="col-6">
             <div class="row">
                 <div class="col-12">
-                    @if (!Model.isProveedor)
+                    @if (!Model.isProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision)
                     {
                         <!--begin::List Widget 7-->
                         <div class="card card-xl-stretch mb-8">
@@ -857,7 +857,7 @@
             Cancelar
         </a>
         <!--end::Button-->
-        @if ((Model.isProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision) || (!Model.isProveedor))
+        @if ((Model.isProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision) || (!Model.isProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision))
         {
             <!--begin::Button-->
             <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">

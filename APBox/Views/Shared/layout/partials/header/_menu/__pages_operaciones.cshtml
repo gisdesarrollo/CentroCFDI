@@ -193,7 +193,9 @@
                 <!--end:Row-->
             </div>
             <!--end:Tab pane-->
-
+        }
+        @if (User.IsInRole("PAGOS"))
+        {
             <!--begin:Tab pane-->
             <div class="tab-pane  w-lg-600px" id="pagos">
                 <!--begin:Row-->

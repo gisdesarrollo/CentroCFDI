@@ -233,24 +233,26 @@ namespace APBox.Controllers.Operaciones
                 var sucursal = _db.Sucursales.Find(ObtenerSucursal());
                 var socioComercial = new SocioComercial();
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
-
+                
                 socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
-                var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
-                if (usuario.esProveedor == true && usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
+                    var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
+                if (usuario.esProveedor)
                 {
-                    throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
+                    if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
+                    {
+                        throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
 
+                    }
                 }
-                if (sucursal.Rfc != cfdi.Receptor.Rfc)
-                {
-                    throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
-                }
-                if (existUUID != null)
-                {
-                    throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
-                }
-
-
+                    if (sucursal.Rfc != cfdi.Receptor.Rfc)
+                    {
+                        throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
+                    }
+                    if (existUUID != null)
+                    {
+                        throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
+                    }
+                
                 if (socioComercial == null)
                 {
                     //crear socio comercial apartir del emisor
@@ -422,7 +424,7 @@ namespace APBox.Controllers.Operaciones
             }
             try
             {
-
+                
                 // Obtener los datos guardados en TempData
                 var aprobadorId = TempData["AprobadorId"] as int?;
                 var departamentoId = TempData["DepartamentoId"] as int?;
@@ -432,10 +434,11 @@ namespace APBox.Controllers.Operaciones
                     documentoRecibidoDr.Aprobador_Id = aprobadorId.Value;
                     documentoRecibidoDr.Departamento_Id = departamentoId.Value;
                 }
+                
 
                 //
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
-                var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault();
+                var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Receptor.Rfc).FirstOrDefault();
 
                 var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
 
@@ -485,10 +488,14 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.Pagos = null;
                 documentoRecibidoDr.Pagos_Id = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
-                documentoRecibidoDr.AprobacionesDR.UsuarioEntrega_Id = usuario.Id;
-                documentoRecibidoDr.AprobacionesDR.UsuarioSolicitante_Id = documentoRecibidoDr.Aprobador_Id;
-                documentoRecibidoDr.AprobacionesDR.DepartamentoUsuarioSolicitante_Id = documentoRecibidoDr.Departamento_Id;
-                documentoRecibidoDr.AprobacionesDR.FechaSolicitud = DateTime.Now;
+                documentoRecibidoDr.AprobacionesDR =  new AprobacionesDR()
+                {
+                    UsuarioEntrega_Id = usuario.Id,
+                    UsuarioSolicitante_Id = documentoRecibidoDr.Aprobador_Id,
+                    DepartamentoUsuarioSolicitante_Id = documentoRecibidoDr.Departamento_Id,
+                    FechaSolicitud = DateTime.Now
+                };
+                
 
                 _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
                 _db.SaveChanges();
@@ -559,6 +566,8 @@ namespace APBox.Controllers.Operaciones
                     {
                         documentoRecibido.MotivoRechazo = documentoRecibidoEdit.MotivoRechazo;
                     }
+                    documentoRecibido.Pagos = null;
+                    documentoRecibido.Pagos_Id = null;
                     documentoRecibido.Solicitudes = null;
                     documentoRecibido.Solicitud_Id = null;
                     documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;

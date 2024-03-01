@@ -47,7 +47,10 @@ namespace APBox.Controllers.Catalogos
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
-
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, facturasEmitidasModel.FechaInicial.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            facturasEmitidasModel.FechaInicial = fechaInicial;
+            facturasEmitidasModel.FechaFinal = fechaFinal;
             List<facturareferencia> listaFacturaReferencia = new List<facturareferencia>();
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             bool isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
@@ -76,6 +79,12 @@ namespace APBox.Controllers.Catalogos
         public ActionResult Index(FacturasEmitidasModel facturasEmitidasModel)
         {
             bool isEmpty;
+            var fechaI = facturasEmitidasModel.FechaInicial;
+            var fechaF = facturasEmitidasModel.FechaFinal;
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            facturasEmitidasModel.FechaInicial = fechaInicial;
+            facturasEmitidasModel.FechaFinal = fechaFinal;
             if (ModelState.IsValid)
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
@@ -111,7 +120,10 @@ namespace APBox.Controllers.Catalogos
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
-
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, facturasEmitidasModel.FechaInicial.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            facturasEmitidasModel.FechaInicial = fechaInicial;
+            facturasEmitidasModel.FechaFinal = fechaFinal;
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
 
             isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
@@ -145,6 +157,12 @@ namespace APBox.Controllers.Catalogos
         public ActionResult ReporteFacturasEmitidas(FacturasEmitidasModel facturasEmitidasModel)
         {
             bool isEmpty;
+            var fechaI = facturasEmitidasModel.FechaInicial;
+            var fechaF = facturasEmitidasModel.FechaFinal;
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            facturasEmitidasModel.FechaInicial = fechaInicial;
+            facturasEmitidasModel.FechaFinal = fechaFinal;
             if (ModelState.IsValid)
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);

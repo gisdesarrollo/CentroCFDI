@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("CreateUsuario", "AutoregistroSociosComerciales", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CreateUsuario", "AutorregistroSociosComerciales", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.GrupoId)

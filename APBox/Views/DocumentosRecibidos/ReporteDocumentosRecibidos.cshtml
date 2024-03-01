@@ -1,9 +1,9 @@
 ﻿@model API.Models.DocumentosRecibidos.DocumentosRecibidosModel
 @{
-    ViewBag.Title = "Facturas Emitidas";
+    ViewBag.Title = "Documentos Recibidos";
 }
 
-@if (User.IsInRole("FACTURASEMITIDAS"))
+@if (User.IsInRole("DOCUMENTOSRECIBIDOS"))
 {
     <div class="card card-flush">
         <div class="card-header align-items-center py-5 gap-2 gap-md-5">

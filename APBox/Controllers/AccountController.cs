@@ -518,7 +518,7 @@ namespace APBox.Controllers
            
            
 
-            AddRole(um, userId, perfil.Clientes, "CLIENTES");
+            AddRole(um, userId, perfil.SociosComerciales, "SOCIOSCOMERCIALES");
             AddRole(um, userId, perfil.Conceptos, "CONCEPTOS");
             AddRole(um, userId, perfil.Impuestos, "IMPUESTOS");
             AddRole(um, userId, perfil.Mercancias, "MERCANCIAS");
@@ -540,7 +540,6 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.FacturasEmitidas, "FACTURASEMITIDAS");
             AddRole(um, userId, perfil.GeneracionManual, "GENERACIONMANUAL");
             AddRole(um, userId, perfil.GeneracionLayout, "GENERACIONLAYOUT");
-            AddRole(um, userId, perfil.FacturasRecibidas, "FACTURASRECIBIDAS");
             //Portal de Usuarios
             AddRole(um, userId, perfil.PortalUsuarios, "PORTALUSUARIOS");
 
@@ -553,9 +552,11 @@ namespace APBox.Controllers
             AddRole(um, userId, perfil.CargaCFDI, "CARGACFDI");
             //Addenda
             AddRole(um, userId, perfil.Addenda, "ADDENDA");
-
+            //proveedores
+            AddRole(um, userId, perfil.FacturasEmitidas, "DOCUMENTOSRECIBIDOS");
             AddRole(um, userId, perfil.Proveedor, "PROVEEDOR");
             AddRole(um, userId, perfil.Recepcion, "RECEPCION");
+            AddRole(um, userId, perfil.Pagos, "PAGOS");
             return usuario.Id;
         }
 

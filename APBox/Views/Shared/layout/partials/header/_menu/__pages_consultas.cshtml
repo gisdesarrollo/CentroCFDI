@@ -22,7 +22,7 @@
     <!--end:Tabs nav-->
     <!--begin:Tab content-->
     <div class="tab-content py-4 py-lg-8 px-lg-7">
-        @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("FACTURASRECIBIDAS"))
+        @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("DOCUMENTOSRECIBIDOS"))
         {
             <!--begin:Tab pane-->
             <div class="tab-pane active w-lg-600px" id="descargas">
@@ -49,18 +49,18 @@
                                     </div>
                                     <!--end:Menu item-->
                                 }
-                                @*@if (User.IsInRole("FACTURASRECIBIDAS"))
-                                {*@
+                                @if (User.IsInRole("DOCUMENTOSRECIBIDOS"))
+                                {
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
-                                        <a href="@Url.Action("ReporteDocumentosRecibidos", "DocumentosRecibidos")" class="menu-link ">
+                                        <a href="@Url.Action("Index", "Home")" class="menu-link ">
                                             <span class="menu-title">CFDi Recibidos</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
                                     <!--end:Menu item-->
-                                @*}*@
+                                }
                                 </div>
                             <!--end:Col-->
                         </div>
@@ -87,30 +87,33 @@
                         <div class="row">
                             <!--begin:Col-->
                             <div class="col-lg-4 mb-6 mb-lg-0">
-                                @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("FACTURASRECIBIDAS"))
+                                @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("DOCUMENTOSRECIBIDOS"))
                                 {
                                     <!--begin:Menu section-->
-                                    <div class="mb-0">
-                                        <!--begin:Menu heading-->
-                                        <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Timbrado</h4>
-                                        <!--end:Menu heading-->
+                                <div class="mb-0">
+                                    <!--begin:Menu heading-->
+                                    <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Timbrado</h4>
+                                    <!--end:Menu heading-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("ReporteFacturasEmitidas","FacturasEmitidas")" class="menu-link ">
+                                            <span class="menu-title">CFDi Emitidos</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    @if (User.IsInRole("DOCUMENTOSRECIBIDOS"))
+                                    {
                                         <!--begin:Menu item-->
                                         <div class="menu-item p-0 m-0">
                                             <!--begin:Menu link-->
-                                            <a href="@Url.Action("ReporteFacturasEmitidas","FacturasEmitidas")" class="menu-link ">
-                                                <span class="menu-title">CFDi Emitidos</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="@Url.Action("Index","Home")" class="menu-link ">
+                                            <a href="@Url.Action("ReporteDocumentosRecibidos", "DocumentosRecibidos")" class="menu-link ">
                                                 <span class="menu-title">CFDi Recibidos</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
+                                    }
                                         <!--end:Menu item-->
                                         <!--begin:Menu item-->
                                         <div class="menu-item p-0 m-0">
