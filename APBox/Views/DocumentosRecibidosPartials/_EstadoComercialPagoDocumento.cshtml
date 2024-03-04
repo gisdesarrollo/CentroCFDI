@@ -1,0 +1,534 @@
+﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
+@using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
+
+
+@{
+    //Poner en viewbag todas las propiedades de AproacionesDR
+    ViewBag.EstadoComercial = Model.EstadoComercial;
+    ViewBag.EstadoPago = Model.EstadoPago;
+    ViewBag.UsuarioEntrega = AcondicionarUsuarios.ObtenerNombreCompleto(Model.AprobacionesDR.UsuarioEntrega_Id);
+    ViewBag.UsuarioSolicitante = AcondicionarUsuarios.ObtenerNombreCompleto(Model.AprobacionesDR.UsuarioSolicitante_Id);
+    ViewBag.DepartamentoUsuarioSolicitanteId = Model.AprobacionesDR.DepartamentoUsuarioSolicitante_Id;
+    ViewBag.FechaSolicitud = Model.AprobacionesDR.FechaSolicitud;
+    ViewBag.UsuarioApobacionComercial = AcondicionarUsuarios.ObtenerNombreCompleto(Model.AprobacionesDR.UsuarioAprobacionComercial_id);
+    ViewBag.FechaAprobacionComercial = Model.AprobacionesDR.FechaAprobacionComercial;
+    ViewBag.UsuarioAprobacionPagos = AcondicionarUsuarios.ObtenerNombreCompleto(Model.AprobacionesDR.UsuarioAprobacionPagos_id);
+    ViewBag.FechaAprobacionPagos = Model.AprobacionesDR.FechaAprobacionPagos;
+    ViewBag.UsuarioCargaPagos = AcondicionarUsuarios.ObtenerNombreCompleto(Model.AprobacionesDR.UsuarioCargaPagos_id);
+    ViewBag.FechaCargaPagos = Model.AprobacionesDR.FechaCargaPagos;
+    ViewBag.UsuarioCompletaPagos = AcondicionarUsuarios.ObtenerNombreCompleto(Model.AprobacionesDR.UsuarioCompletaPagos_id);
+    ViewBag.FechaCompletaPagos = Model.AprobacionesDR.FechaCompletaPagos;
+    ViewBag.UsuarioRechazo = AcondicionarUsuarios.ObtenerNombreCompleto(Model.AprobacionesDR.UsuarioRechazo_id);
+    ViewBag.FechaRechazo = Model.AprobacionesDR.FechaRechazo;
+    ViewBag.detalleRechazo = Model.AprobacionesDR.DetalleRechazo;
+
+    var stepActual = 1;
+
+    if (Model.AprobacionesDR.UsuarioSolicitante_Id != null)
+    {
+        stepActual = 2;
+    };
+    if (Model.AprobacionesDR.UsuarioAprobacionComercial_id != null)
+    {
+        stepActual = 3;
+    };
+    if (Model.AprobacionesDR.UsuarioAprobacionPagos_id != null)
+    {
+        stepActual = 4;
+    };
+    if (Model.AprobacionesDR.UsuarioCargaPagos_id != null)
+    {
+        stepActual = 5;
+    };
+    if (Model.AprobacionesDR.UsuarioCompletaPagos_id != null)
+    {
+        stepActual = 6;
+    };
+    if (Model.AprobacionesDR.UsuarioRechazo_id != null)
+    {
+        stepActual = 7;
+    };
+}
+<script>
+$(document).ready(function() {
+  var valorActual = @Html.Raw(stepActual); // Reemplazar con el valor actual
+
+  $(".stepper-item").each(function(index) {
+    var numeroDiv = $(this).attr("data-step");
+
+    if (numeroDiv == valorActual) {
+      $(this).addClass("completed");
+    } else if (numeroDiv == valorActual + 1) {
+      $(this).addClass("current");
+    } else if (numeroDiv < valorActual) {
+      $(this).addClass("completed");
+    }
+  });
+});
+
+</script>
+
+<!--begin::List Widget 2-->
+<div class="card card-stretch mb-xl-8">
+    <!--begin::Body-->
+    <div class="card-body">
+        @switch (Model.EstadoComercial)
+        {
+            case API.Enums.c_EstadoComercial.EnRevision:
+                <!--begin::Alert-->
+                <div class="alert bg-light-primary d-flex flex-column flex-sm-row p-5">
+                    <!--begin::Icon-->
+                    <i class="ki-duotone ki-tablet-book fs-4x text-primary me-4 mb-5 mb-sm-0">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <!--end::Icon-->
+                    <!--begin::Wrapper-->
+                    <div class="d-flex flex-column pe-0 pe-sm-10">
+                        <!--begin::Title-->
+                        <h4 class="fw-semibold fs-4">Estado Comercial: @Model.EstadoComercial</h4>
+                        <!--end::Title-->
+                        <!--begin::Content-->
+                        <span>El Comprobantre se encuentra en revisión.</span>
+                        <!--end::Content-->
+                    </div>
+                    <!--end::Wrapper-->
+                </div>
+                <!--end::Alert-->
+                break;
+            case API.Enums.c_EstadoComercial.Aprobado:
+                <!--begin::Alert-->
+                <div class="alert bg-light-success d-flex flex-column flex-sm-row p-5">
+                    <!--begin::Icon-->
+                    <i class="ki-duotone ki-tablet-ok fs-4x text-success me-4 mb-5 mb-sm-0">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                    </i>
+                    <!--end::Icon-->
+                    <!--begin::Wrapper-->
+                    <div class="d-flex flex-column pe-0 pe-sm-10">
+                        <!--begin::Title-->
+                        <h4 class="fw-semibold fs-4">Estado Comercial: @Model.EstadoComercial</h4>
+                        <!--end::Title-->
+                        <!--begin::Content-->
+                        <span>El Comprobantre continúa en el proceso de pago.</span>
+                        <!--end::Content-->
+                    </div>
+                    <!--end::Wrapper-->
+                </div>
+                <!--end::Alert-->
+                break;
+            case API.Enums.c_EstadoComercial.Rechazado:
+                <!--begin::Alert-->
+                <div class="alert bg-light-danger d-flex flex-column flex-sm-row p-5">
+                    <!--begin::Icon-->
+                    <i class="ki-duotone ki-tablet-delete fs-4x text-danger me-4 mb-5 mb-sm-0">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                    </i>
+                    <!--end::Icon-->
+                    <!--begin::Wrapper-->
+                    <div class="d-flex flex-column pe-0 pe-sm-10">
+                        <!--begin::Title-->
+                        <h4 class="fw-semibold fs-4">Estado Comercial: @Model.EstadoComercial</h4>
+                        <!--end::Title-->
+                        <!--begin::Content-->
+                        <span>El Comprobantre se encuentra rechazado y no continuará con el proceso de pago.</span>
+                        <!--end::Content-->
+                    </div>
+                    <!--end::Wrapper-->
+                </div>
+                <!--end::Alert-->
+                break;
+
+            default:
+                break;
+        }
+
+        @if (Model.EstadoComercial == API.Enums.c_EstadoComercial.Aprobado)
+        {
+            switch (Model.EstadoPago)
+            {
+                case API.Enums.c_EstadoPago.EnRevision:
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-primary d-flex flex-column flex-sm-row p-5">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-tablet-book fs-4x text-primary me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h4 class="fw-semibold fs-4">Estado Pago: @Model.EstadoPago</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>El Comprobantre se encuentra en revisión antes de pago.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                    break;
+                case API.Enums.c_EstadoPago.Aprobado:
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-primary d-flex flex-column flex-sm-row p-5">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-tablet-book fs-4x text-primary me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h4 class="fw-semibold fs-4">Estado Pago: @Model.EstadoPago</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>El Comprobantre se encuentra aprobado para realizar el pago.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                    break;
+                case API.Enums.c_EstadoPago.Pagado:
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-info d-flex flex-column flex-sm-row p-5">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-tablet-down fs-4x text-info me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h4 class="fw-semibold fs-4">Estado Pago: @Model.EstadoPago</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>El Comprobantre se encuentra pagado.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                    break;
+                case API.Enums.c_EstadoPago.Completado:
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-dark d-flex flex-column flex-sm-row p-5">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-questionnaire-tablet fs-4x text-dark me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h4 class="fw-semibold fs-4">Estado Pago: @Model.EstadoPago</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>El Comprobantre se encuentra pagado y con comprobante de pago cargado y validado.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                    break;
+                case API.Enums.c_EstadoPago.Rechazado:
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-danger d-flex flex-column flex-sm-row p-5">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-tablet-delete fs-4x text-danger me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h4 class="fw-semibold fs-4">Estado Pago: @Model.EstadoPago</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>El Comprobantre se encuentra rechazado y no continuará con el proceso de pago.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
+        <div class="d-flex flex-column flex-xl-row">
+            <!--begin::Content-->
+            <div class="flex-lg-row-fluid mb-20 mb-xl-0 col-6">
+                <!--begin::Ticket view-->
+                <div class="mb-0">
+                    <!--begin::Heading-->
+                    <div class="d-flex align-items-center">
+                        <div class="w-100">
+                            <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="kt_modal_create_app_stepper" data-kt-stepper="true">
+                                <!--begin::Aside-->
+                                <div class="d-flex justify-content-center justify-content-xl-start flex-row-auto py-5">
+                                    <!--begin::Nav-->
+                                    <div class="stepper-nav ps-lg-10">
+                                        <!--begin::Step 1-->
+                                        <div class="stepper-item" data-step="1">
+                                            <!--begin::Wrapper-->
+                                            <div class="stepper-wrapper">
+                                                <!--begin::Icon-->
+                                                <div class="stepper-icon w-40px h-40px">
+                                                    <i class="ki-duotone ki-check stepper-check fs-2"></i><span class="stepper-number">1</span>
+                                                </div>
+                                                <!--end::Icon-->
+                                                <!--begin::Label-->
+                                                <div class="stepper-label">
+                                                    <p class="fw-semibold mb-1 text-gray-700">
+                                                        Entrega de Comprobante
+                                                    </p>
+                                                    <h3 class="stepper-title">
+                                                        @ViewBag.UsuarioEntrega
+                                                    </h3>
+
+                                                    <div class="stepper-desc">
+                                                        @if (ViewBag.FechaSolicitud != null)
+                                                        {
+                                                            @ViewBag.FechaSolicitud.ToString("dd MMM, yyyy")
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                            <!--begin::Line-->
+                                            <div class="stepper-line h-40px"></div>
+                                            <!--end::Line-->
+                                        </div>
+                                        <!--end::Step 1-->
+                                        <!--begin::Step 2-->
+                                        <div class="stepper-item" data-step="2">
+                                            <!--begin::Wrapper-->
+                                            <div class="stepper-wrapper">
+                                                <!--begin::Icon-->
+                                                <div class="stepper-icon w-40px h-40px">
+                                                    <i class="ki-duotone ki-check stepper-check fs-2"></i><span class="stepper-number">2</span>
+                                                </div>
+                                                <!--begin::Icon-->
+                                                <!--begin::Label-->
+                                                <div class="stepper-label">
+                                                    <p class="fw-semibold mb-1 text-gray-700">
+                                                        Usuario Solicitado para Aprobación
+                                                    </p>
+                                                    <h3 class="stepper-title">
+                                                        @ViewBag.UsuarioSolicitante
+                                                    </h3>
+
+                                                    <div class="stepper-desc">
+                                                        @if (ViewBag.FechaSolicitud != null)
+                                                        {
+                                                            @ViewBag.FechaSolicitud.ToString("dd MMM, yyyy")
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <!--begin::Label-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                            <!--begin::Line-->
+                                            <div class="stepper-line h-40px"></div>
+                                            <!--end::Line-->
+                                        </div>
+
+                                        <!--end::Step 2-->
+                                        <!--begin::Step 3-->
+                                        <div class="stepper-item" data-step="3">
+                                            <!--begin::Wrapper-->
+                                            <div class="stepper-wrapper">
+                                                <!--begin::Icon-->
+                                                <div class="stepper-icon w-40px h-40px">
+                                                    <i class="ki-duotone ki-check stepper-check fs-2"></i><span class="stepper-number">3</span>
+                                                </div>
+                                                <!--end::Icon-->
+                                                <!--begin::Label-->
+                                                <div class="stepper-label">
+                                                    <p class="fw-semibold mb-1 text-gray-700">
+                                                        Aprobación Comercial
+                                                    </p>
+                                                    <h3 class="stepper-title">
+                                                        @ViewBag.UsuarioApobacionComercial
+                                                    </h3>
+
+                                                    <div class="stepper-desc">
+                                                        @if (ViewBag.FechaAprobacionComercial != null)
+                                                        {
+                                                            @ViewBag.FechaAprobacionComercial.ToString("dd MMM, yyyy")
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                            <!--begin::Line-->
+                                            <div class="stepper-line h-40px"></div>
+                                            <!--end::Line-->
+                                        </div>
+                                        <!--end::Step 3-->
+                                        <!--begin::Step 4-->
+                                        <div class="stepper-item" data-step="4">
+                                            <!--begin::Wrapper-->
+                                            <div class="stepper-wrapper">
+                                                <!--begin::Icon-->
+                                                <div class="stepper-icon w-40px h-40px">
+                                                    <i class="ki-duotone ki-check stepper-check fs-2"></i><span class="stepper-number">4</span>
+                                                </div>
+                                                <!--end::Icon-->
+                                                <!--begin::Label-->
+                                                <div class="stepper-label">
+                                                    <p class="fw-semibold mb-1 text-gray-700">
+                                                        Aprobación Pagos
+                                                    </p>
+                                                    <h3 class="stepper-title">
+                                                        @ViewBag.UsuarioAprobacionPagos
+                                                    </h3>
+                                                    <div class="stepper-desc">
+                                                        @if (ViewBag.FechaAprobacionPagos != null)
+                                                        {
+                                                            @ViewBag.FechaAprobacionPagos.ToString("dd MMM, yyyy")
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                            <!--begin::Line-->
+                                            <div class="stepper-line h-40px"></div>
+                                            <!--end::Line-->
+                                        </div>
+                                        <!--end::Step 4-->
+                                        <!--begin::Step 5-->
+                                        <div class="stepper-item" data-step="5">
+                                            <!--begin::Wrapper-->
+                                            <div class="stepper-wrapper">
+                                                <!--begin::Icon-->
+                                                <div class="stepper-icon w-40px h-40px">
+                                                    <i class="ki-duotone ki-check stepper-check fs-2"></i><span class="stepper-number">5</span>
+                                                </div>
+                                                <!--end::Icon-->
+                                                <!--begin::Label-->
+                                                <div class="stepper-label">
+                                                    <p class="fw-semibold mb-1 text-gray-700">
+                                                        Carga de Pagos
+                                                    </p>
+                                                    <h3 class="stepper-title">
+                                                        @ViewBag.UsuarioCargaPagos
+                                                    </h3>
+
+                                                    <div class="stepper-desc">
+                                                        @if (ViewBag.FechaCargaPagos != null)
+                                                        {
+                                                            @ViewBag.FechaCargaPagos.ToString("dd MMM, yyyy")
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                            <!--begin::Line-->
+                                            <div class="stepper-line h-40px"></div>
+                                            <!--end::Line-->
+                                        </div>
+                                        <!--end::Step 5-->
+                                        <!--begin::Step 6-->
+                                        <div class="stepper-item" data-step="6">
+                                            <!--begin::Wrapper-->
+                                            <div class="stepper-wrapper">
+                                                <!--begin::Icon-->
+                                                <div class="stepper-icon w-40px h-40px">
+                                                    <i class="ki-duotone ki-check stepper-check fs-2"></i><span class="stepper-number">6</span>
+                                                </div>
+                                                <!--end::Icon-->
+                                                <!--begin::Label-->
+                                                <div class="stepper-label">
+                                                    <p class="fw-semibold mb-1 text-gray-700">
+                                                        Completa Pago
+                                                    </p>
+                                                    <h3 class="stepper-title">
+                                                        @ViewBag.UsuarioCompletaPagos
+                                                    </h3>
+
+                                                    <div class="stepper-desc">
+                                                        @if (ViewBag.FechaCompletaPagos != null)
+                                                        {
+                                                            @ViewBag.FechaCompletaPagos.ToString("dd MMM, yyyy")
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                            <!--begin::Line-->
+                                            <!--end::Line-->
+                                        </div>
+                                        <!--end::Step 6-->
+                                        @if (ViewBag.UsuarioRechazo != "")
+                                        {
+                                            <!--begin::Step 7-->
+                                            <div class="stepper-line h-40px"></div>
+                                            <div class="stepper-item" data-step="7">
+                                                <!--begin::Wrapper-->
+                                                <div class="stepper-wrapper">
+                                                    <!--begin::Icon-->
+                                                    <div class="stepper-icon w-40px h-40px bg-danger">
+                                                        <i class="ki-duotone ki-check stepper-check fs-2"></i><span class="stepper-number text-white">X</span>
+                                                    </div>
+                                                    <!--end::Icon-->
+                                                    <!--begin::Label-->
+                                                    <div class="stepper-label">
+                                                        <p class="fw-semibold mb-1 text-gray-700">
+                                                            Rechazado
+                                                        </p>
+                                                        <h3 class="stepper-title">
+                                                            @ViewBag.UsuarioRechazo
+                                                        </h3>
+
+                                                        <div class="stepper-desc">
+                                                            @if (ViewBag.FechaRechazo != null)
+                                                            {
+                                                                @ViewBag.FechaRechazo.ToString("dd MMM, yyyy")
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Label-->
+                                                </div>
+                                                <!--end::Wrapper-->
+                                            </div>
+                                            <!--end::Step 7-->
+                                        }
+                                    </div>
+                                    <!--end::Nav-->
+                                </div>
+                                <!--begin::Aside-->
+                            </div>
+                        </div>
+                        <!--end::Heading-->
+                    </div>
+                </div>
+                <!--end::Ticket view-->
+            </div>
+            <!--end::Content-->
+        </div>
+
+
+    </div>
+    <!--end::Body-->
+</div>
+<!--end::List Widget 2-->

@@ -99,20 +99,25 @@ namespace API.Operaciones.OperacionesProveedores
         [ForeignKey("Pagos_Id")]
         public virtual PagosDR Pagos { get; set; }
 
-        public int? Aprobador_Id { get; set; }
-        public int? Departamento_Id { get; set; }
-        [ForeignKey("Departamento_Id")]
-        public virtual Departamento Departamento { get; set; }
-
+        [DisplayName("Aprobaciones")]
         public int? AprobacionesDR_Id { get; set; }
         [ForeignKey("AprobacionesDR_Id")]
         public virtual AprobacionesDR AprobacionesDR { get; set; }
-
-        public String MotivoRechazo { get; set; }
-
-        public String OrdenDeCompra { get; set; }
+        [NotMapped]
+        public List<AprobacionesDR> AprobacionesList { get; set; }
 
         public String Referencia { get; set; }
+        
+        public String OrdenDeCompra { get; set; }
+        
+        //Eliminar estos campos de la BD
+        //public int? Aprobador_Id { get; set; }
+
+        //public int? Departamento_Id { get; set; }
+        //[ForeignKey("Departamento_Id")]
+        //public virtual Departamento Departamento { get; set; }
+        
+        //public String MotivoRechazo { get; set; }
 
         //NotMapped
         [DisplayName("Archivo")]
@@ -121,14 +126,14 @@ namespace API.Operaciones.OperacionesProveedores
 
         [NotMapped]
         public String PathArchivoXml { get; set; }
+        
         [NotMapped]
         public string PathArchivoPdf { get; set; }
+        
         [NotMapped]
         public bool Procesado { get; set; }
         
-
         [NotMapped]
-
         public string VerificarEmail { get; set; }
 
         [NotMapped]

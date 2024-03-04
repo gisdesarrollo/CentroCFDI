@@ -3,6 +3,7 @@ using Aplicacion.Context;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
+
 namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos
 {
     public class AcondicionarUsuarios
@@ -50,6 +51,21 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos
 
                 _db.UsuariosSucursales.RemoveRange(sucursalesAnteriores);
                 _db.SaveChanges();
+            }
+        }
+
+        public static string ObtenerNombreCompleto(int ?usuarioid)
+        {
+            var _db = new AplicacionContext();
+            var usuario = _db.Usuarios.Find(usuarioid);
+
+            if (usuario != null)
+            {
+                return $"{usuario.Nombre} {usuario.ApellidoPaterno} {usuario.ApellidoMaterno}";
+            }
+            else
+            {
+                return "";
             }
         }
     }

@@ -45,7 +45,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             {
                 
                 documentoRecibidoAprobador = _db.DocumentoRecibidoDr
-                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Aprobador_Id == usuarioId)
+                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.AprobacionesDR.UsuarioSolicitante_Id == usuarioId)
                     .OrderBy(dr => dr.EstadoComercial)
                     .ToList();
                 

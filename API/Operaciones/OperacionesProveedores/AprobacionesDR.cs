@@ -66,7 +66,7 @@ namespace API.Operaciones.OperacionesProveedores
         public DateTime? FechaRechazo { get; set; }
 
         [DisplayName("Detalle Rechazo")]
-        public String Detalle { get; set; }
+        public String DetalleRechazo { get; set; }
 
     }
 }

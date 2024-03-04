@@ -153,7 +153,7 @@ namespace APBox.Controllers.Catalogos
         */
         private void EnviarCorreoBienvenida(Usuario usuario)
         {
-            _envioEmail.SendEmailNotifications(usuario, null, false, ObtenerSucursal());
+            _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
         }
 
 

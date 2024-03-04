@@ -24,6 +24,7 @@ function validarEmail() {
                     $('#nombreDiv').text(usuarioSolicitanteNombre);
                     $('#emailDiv').text(usuarioSolicitanteEmail);
                     $('#departamentoDiv').text(usuarioSolicitanteDepartamento);
+                    $('.submit').removeClass('disabled');
                     $('#cuadroUsuarioSolicitante').show();
 
                     toastr.options = {
@@ -47,6 +48,7 @@ function validarEmail() {
 
                 } else {
                     // La validación falló
+                    $('.submit').addClass('disabled');
                     toastr.options = {
                         "closeButton": false,
                         "debug": false,
@@ -84,6 +86,10 @@ function validarEmail() {
         if (radioRechazado.checked) {
             motivoRechazoDiv.style.display = 'block';
             $('#EstadoComercial').val(2);
+            $('#EstadoPago').val(4);
+            console.log("rechazado");
+            console.log("EstadoPago: " + $('#EstadoPago').val());
+
         }
     });
 
@@ -91,5 +97,117 @@ function validarEmail() {
         motivoRechazoDiv.style.display = 'none';
         $('#MotivoRechazo').val("");
         $('#EstadoComercial').val(1);
+        $('#EstadoPago').val(1);
+        console.log("aprobado");
+        console.log("EstadoPago: " + $('#EstadoPago').val());
     });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        "use strict";
+
+        // Class definition
+        var KTDatatablesExample = function () {
+            // Shared variables
+            var table;
+            var datatable;
+
+            // Private functions
+            var initDatatable = function () {
+                // Set date data order
+                const tableRows = table.querySelectorAll('tbody tr');
+
+                // Init datatable --- more info on datatables: https://datatables.net/manual/
+                datatable = $(table).DataTable({
+                    "info": false,
+                    'order': [],
+                    'pageLength': 10,
+                });
+            }
+
+            // Hook export buttons
+
+            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+            var handleSearchDatatable = () => {
+                const filterSearch = document.querySelector('[data-kt-filter-Individuales="search"]');
+                filterSearch.addEventListener('keyup', function (e) {
+                    datatable.search(e.target.value).draw();
+                });
+            }
+
+            // Public methods
+            return {
+                init: function () {
+                    table = document.querySelector('#tablaIndividuales');
+
+                    if (!table) {
+                        return;
+                    }
+
+                    initDatatable();
+                    handleSearchDatatable();
+                }
+            };
+        }();
+
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablesExample.init();
+        });
+    });
+
+    $(document).ready(function () {
+        "use strict";
+
+        // Class definition
+        var KTDatatablesExample = function () {
+            // Shared variables
+            var table;
+            var datatable;
+
+            // Private functions
+            var initDatatable = function () {
+                // Set date data order
+                const tableRows = table.querySelectorAll('tbody tr');
+
+                // Init datatable --- more info on datatables: https://datatables.net/manual/
+                datatable = $(table).DataTable({
+                    "info": false,
+                    'order': [],
+                    'pageLength': 10,
+                });
+            }
+
+            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+            var handleSearchDatatable = () => {
+                const filterSearch = document.querySelector('[data-kt-filter-Grupales="search"]');
+                filterSearch.addEventListener('keyup', function (e) {
+                    datatable.search(e.target.value).draw();
+                });
+            }
+
+            // Public methods
+            return {
+                init: function () {
+                    table = document.querySelector('#tablaGrupales');
+
+                    if (!table) {
+                        return;
+                    }
+
+                    initDatatable();
+                    handleSearchDatatable();
+                }
+            };
+        }();
+
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablesExample.init();
+        });
+    });
+
+
 </script>

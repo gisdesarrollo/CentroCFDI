@@ -356,7 +356,7 @@
     <Compile Include="Controllers\Ajax\AjaxOperacionesController.cs" />
     <Compile Include="Controllers\Catalogos\BancosController.cs" />
     <Compile Include="Controllers\Catalogos\CentrosCostosController.cs" />
-    <Compile Include="Controllers\Operaciones\AutorregistroSociosComercialesController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\AutorregistroSociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\SociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\ConceptosController.cs" />
     <Compile Include="Controllers\Catalogos\DepartamentosController.cs" />
@@ -374,16 +374,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Operaciones\AddendaController.cs" />
     <Compile Include="Controllers\Operaciones\CargasMasivasController.cs" />
-    <Compile Include="Controllers\Operaciones\DocumentosExtranjerosController.cs" />
-    <Compile Include="Controllers\Operaciones\DocumentosPagosController.cs" />
-    <Compile Include="Controllers\Operaciones\DocumentosRecibidosController.cs" />
-    <Compile Include="Controllers\Operaciones\OperacionesCfdisRecibidosController.cs" />
-    <Compile Include="Controllers\Operaciones\SolicitudesAccesosController.cs" />
-    <Compile Include="Controllers\Operaciones\ValidacionesRapidasController.cs" />
-    <Compile Include="Controllers\PortalProveedores\ComplementosPagosProveedoresController.cs" />
-    <Compile Include="Controllers\PortalProveedores\PortalProveedoresController.cs" />
-    <Compile Include="Controllers\PortalUsuarios\PortalUsuariosController.cs" />
-    <Compile Include="Controllers\RecepcionDocumentos\DescartarRecepcionDocumentosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\DocumentosExtranjerosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\DocumentosPagosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\DocumentosRecibidosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\OperacionesCfdisRecibidosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\ValidacionesRapidasController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\PortalProveedoresController.cs" />
+    <Compile Include="Controllers\ComplementosPago\DescartarRecepcionDocumentosController.cs" />
     <Compile Include="Controllers\Reportes\ReportesController.cs" />
     <Compile Include="Control\Helpers.cs" />
     <Compile Include="Control\OperacionesUsuarios.cs" />
@@ -2442,8 +2439,6 @@
     <Folder Include="Content\FileTxt\" />
     <Folder Include="Content\Temp\" />
     <Folder Include="Controllers\Control\" />
-    <Folder Include="Views\RecepcionDocumentos\" />
-    <Folder Include="Views\Recepcion\" />
     <Folder Include="Views\Shared\partials\widgets-2\calendar\" />
     <Folder Include="_CDN\assets\js\custom\pages\user-profile\" />
   </ItemGroup>
@@ -2526,31 +2521,10 @@
     <Content Include="Views\Sucursales\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\GastosProveedores\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\GastosProveedores\Delete.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\GastosProveedores\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\GastosProveedores\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\PortalProveedores\EstadosCuenta.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\PortalUsuarios\EstadosCuenta.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Reportes\EstadisticasUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Reportes\EstadisticasProveedor.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Anticipos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Archivos\DocumentosProveedores\Proveedor.pdf" />
@@ -2586,9 +2560,6 @@
     <None Include="Properties\PublishProfiles\IISProfile8.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile9.pubxml" />
     <None Include="Properties\PublishProfiles\Jeronimo.pubxml" />
-    <Content Include="Views\SolicitudesAccesos\Solicitar.cshtml" />
-    <Content Include="Views\SolicitudesAccesos\Index.cshtml" />
-    <Content Include="Views\SolicitudesAccesos\Operar.cshtml" />
     <Content Include="Views\Perfiles\Create.cshtml" />
     <Content Include="Views\Perfiles\Delete.cshtml" />
     <Content Include="Views\Perfiles\Details.cshtml" />
@@ -2608,20 +2579,9 @@
     <Content Include="Views\ComplementosPagos\Delete.cshtml" />
     <Content Include="Views\ComplementosPagos\EditPagoManual.cshtml" />
     <Content Include="Views\ComplementosPagos\Index.cshtml" />
-    <Content Include="Views\OtrosGastos\Index.cshtml" />
-    <Content Include="Views\Gastos\Create.cshtml" />
-    <Content Include="Views\Gastos\Delete.cshtml" />
-    <Content Include="Views\Gastos\Index.cshtml" />
     <Content Include="Views\ComplementosPagos\Pagos.cshtml" />
     <Content Include="Views\Proveedores\Sucursales.cshtml" />
     <Content Include="Views\ComplementosPagos\FacturasDetalles.cshtml" />
-    <Content Include="Views\ComplementosPagosProveedores\Create.cshtml" />
-    <Content Include="Views\ComplementosPagosProveedores\Delete.cshtml" />
-    <Content Include="Views\ComplementosPagosProveedores\Details.cshtml" />
-    <Content Include="Views\ComplementosPagosProveedores\Detalles.cshtml" />
-    <Content Include="Views\ComplementosPagosProveedores\Edit.cshtml" />
-    <Content Include="Views\ComplementosPagosProveedores\Facturas.cshtml" />
-    <Content Include="Views\ComplementosPagosProveedores\Index.cshtml" />
     <Content Include="Views\Bancos\Create.cshtml" />
     <Content Include="Views\Bancos\Delete.cshtml" />
     <Content Include="Views\Bancos\Details.cshtml" />
@@ -2632,8 +2592,6 @@
     <Content Include="Views\ComplementosPagos\Generar.cshtml" />
     <Content Include="Views\Reportes\EstadisticasCliente.cshtml" />
     <Content Include="Views\ComplementosPagos\PagosLayout.cshtml" />
-    <Content Include="Views\ValidacionesRapidas\Validar.cshtml" />
-    <Content Include="Views\PortalProveedores\Validaciones.cshtml" />
     <Content Include="Views\SociosComerciales\Bancos.cshtml" />
     <Content Include="Views\Sucursales\Bancos.cshtml" />
     <Content Include="Views\FacturasEmitidas\Delete.cshtml" />
@@ -2648,13 +2606,7 @@
     <None Include="Properties\PublishProfiles\Lalo.pubxml" />
     <Content Include="Views\CargasMasivas\RelacionClientesBancos.cshtml" />
     <Content Include="Views\CargasMasivas\RelacionSucursalesBancos.cshtml" />
-    <Content Include="Views\DocumentosExtranjeros\Index.cshtml" />
-    <Content Include="Views\DocumentosExtranjeros\Create.cshtml" />
-    <Content Include="Views\DocumentosExtranjeros\Details.cshtml" />
-    <Content Include="Views\DocumentosExtranjeros\Edit.cshtml" />
-    <Content Include="Views\DocumentosExtranjeros\Delete.cshtml" />
     <Content Include="Views\FacturasEmitidas\SubirPdf.cshtml" />
-    <Content Include="Views\ValidacionesRapidas\Reporte.cshtml" />
     <Content Include="Views\OperacionesCfdisRecibidos\ReporteIndividual.cshtml" />
     <Content Include="Views\ComplementosPagos\_ComplementosPagosScripts.cshtml" />
     <Content Include="Views\ComplementosPagos\CargarDocumentosExternos.cshtml" />
@@ -2763,7 +2715,7 @@
     <Content Include="Views\CfdiRelacionados\CfdiRelacionado.cshtml" />
     <Content Include="Views\DocumentosRecibidos\Index.cshtml" />
     <Content Include="Views\DocumentosRecibidos\CargaCfdi.cshtml" />
-    <Content Include="Views\DocumentosRecibidos\_DocumentoRecibidoScripts.cshtml" />
+    <Content Include="Views\DocumentosRecibidosPartials\_DocumentoRecibidoPagoScripts.cshtml" />
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_catalogos.cshtml" />
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_consultas.cshtml" />
     <Content Include="Views\Shared\layout\partials\header\_menu\__pages_operaciones.cshtml" />
@@ -2774,9 +2726,9 @@
     <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
     <Content Include="Views\DocumentosPagos\Index.cshtml" />
     <Content Include="Views\DocumentosPagos\Revision.cshtml" />
-    <Content Include="Views\DocumentosPagos\_DocumentoPagoScripts.cshtml" />
     <Content Include="Views\DocumentosRecibidos\ReporteDocumentosRecibidos.cshtml" />
     <Content Include="Views\DocumentosRecibidos\_ModalGuia.cshtml" />
+    <Content Include="Views\DocumentosRecibidosPartials\_EstadoComercialPagoDocumento.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

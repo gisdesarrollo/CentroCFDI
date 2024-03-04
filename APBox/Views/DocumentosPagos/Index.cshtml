@@ -1,4 +1,6 @@
 ﻿@model API.Models.DocumentosRecibidos.DocumentosRecibidosModel
+@using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
+
 @using APBox.Context;
 
 @{
@@ -19,7 +21,7 @@
             <div class="card-header">
                 <h3 class="card-title align-items-start flex-column w-100 mb-5">
                     <span class="card-label text-gray-900">Comprobantes Aprobados</span>
-                    <span class="text-gray-600 mt-4 fw-semibold fs-6">Lista de comprobantes con Estado Comercial Aprobado</span>
+                    <span class="text-gray-600 mt-4 fw-semibold fs-6">Lista de comprobantes con Estado Comercial <span class="badge badge-light-success">Aprobado</span></span>
                 </h3>
                 <!--begin::Search-->
                 <div class="d-flex align-items-center position-relative my-1">
@@ -43,7 +45,6 @@
                                 <th class="min-w-100px">Datos de Recepción</th>
                                 <th class="min-w-100px text-end">Monto</th>
                                 <th class="min-w-100px text-center">Referencia</th>
-                                <th class="min-w-100px text-center">Estado Comercial</th>
                                 <th class="min-w-100px text-center">Estado Pago</th>
                                 <th class="min-w-100px"></th>
                             </tr>
@@ -52,8 +53,17 @@
 
                             @foreach (var item in Model.DocumentosRecibidos.Where(i => i.EstadoComercial == API.Enums.c_EstadoComercial.Aprobado))
                             {
-                                var nombreAprobador = _db.Usuarios.Find(item.Aprobador_Id).Nombre + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoMaterno;
-                                var nombreDepartamento = _db.Departamentos.Find(item.Departamento_Id).Nombre;
+                                var aprobacion = item.AprobacionesDR;
+
+                                ViewBag.usuarioEntrega = AcondicionarUsuarios.ObtenerNombreCompleto((Int32)aprobacion.UsuarioEntrega_Id);
+
+                                var departamentoUsuarioSolicitante = _db.Departamentos.Find(aprobacion.DepartamentoUsuarioSolicitante_Id);
+                                var nombreDepartamento = departamentoUsuarioSolicitante != null ? departamentoUsuarioSolicitante.Nombre : "Departamento no encontrado";
+                                ViewBag.nombreDepartamento = nombreDepartamento;
+
+                                ViewBag.usuarioAprobador = AcondicionarUsuarios.ObtenerNombreCompleto((Int32)aprobacion.UsuarioAprobacionComercial_id);
+
+
                                 <tr>
                                     <td>
                                         @item.SocioComercial.RazonSocial <br />
@@ -66,9 +76,12 @@
                                         <span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
                                     </td>
                                     <td>
-                                        Solicitante: @nombreAprobador <br />
-                                        <span class="text-gray-600">@nombreDepartamento </span><br />
-                                        <span class="text-gray-600">Fecha de Entrega: @item.FechaEntrega.ToString("dd/MM/yyyy")</span><br />
+                                        <div class="badge">Usuario Entrega:</div> @ViewBag.usuarioEntrega <br />
+                                        <div class="badge">Fecha de Entrega:</div> <span class="text-gray-600">@item.AprobacionesDR.FechaSolicitud.Value.ToString("dd MMM, yyyy")</span><br />
+                                        <div class="separator"></div>
+                                        <div class="badge">Aprobador:</div> @ViewBag.usuarioAprobador <br />
+                                        <div class="badge">Departamento:</div> <span class="text-gray-600">@ViewBag.nombreDepartamento</span><br />
+                                        <div class="badge">Fecha de Aprobación: </div> <span class="text-gray-600">@item.AprobacionesDR.FechaAprobacionComercial.Value.ToString("dd MMM, yyyy")</span><br />
                                     </td>
                                     <td class="text-end">
                                         @item.Monto.ToString("c") <br />
@@ -76,22 +89,6 @@
                                     </td>
                                     <td>
                                         @item.Referencia
-                                    </td>
-                                    <td class="text-center">
-                                        @switch (item.EstadoComercial)
-                                        {
-                                            case API.Enums.c_EstadoComercial.Aprobado:
-                                                <div class="badge badge-light-success">Aprobado</div>
-                                                break;
-                                            case API.Enums.c_EstadoComercial.EnRevision:
-                                                <div class="badge badge-light-primary">EnRevisión</div>
-                                                break;
-                                            case API.Enums.c_EstadoComercial.Rechazado:
-                                                <div class="badge badge-light-danger">Rechazado</div>
-                                                break;
-                                            default:
-                                                break;
-                                        }
                                     </td>
                                     <td class="text-center">
                                         @switch (item.EstadoPago)
@@ -177,11 +174,17 @@
                             </tr>
                         </thead>
                         <tbody class="align-text-top">
-
                             @foreach (var item in Model.DocumentosRecibidos.Where(i => i.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision))
                             {
-                                var nombreAprobador = _db.Usuarios.Find(item.Aprobador_Id).Nombre + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoMaterno;
-                                var nombreDepartamento = _db.Departamentos.Find(item.Departamento_Id).Nombre;
+                                var aprobacion = item.AprobacionesDR;
+
+                                var usuarioSolicitante = _db.Usuarios.Find(aprobacion.UsuarioAprobacionComercial_id);
+                                var nombreAprobador = usuarioSolicitante != null ? string.Format("{0} {1} {2}", usuarioSolicitante.Nombre, usuarioSolicitante.ApellidoPaterno, usuarioSolicitante.ApellidoMaterno) : "Usuario no encontrado";
+                                ViewBag.nombreAprobador = nombreAprobador;
+
+                                var departamentoUsuarioSolicitante = _db.Departamentos.Find(aprobacion.DepartamentoUsuarioSolicitante_Id);
+                                var nombreDepartamento = departamentoUsuarioSolicitante != null ? departamentoUsuarioSolicitante.Nombre : "Departamento no encontrado";
+                                ViewBag.nombreDepartamento = nombreDepartamento;
 
                                 <tr>
                                     <td>
@@ -194,8 +197,8 @@
                                         <span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
                                     </td>
                                     <td>
-                                        Solicitante: @nombreAprobador <br />
-                                        <span class="text-gray-600">@nombreDepartamento </span><br />
+                                        Solicitante: @ViewBag.nombreAprobador <br />
+                                        <span class="text-gray-600">@ViewBag.nombreDepartamento </span><br />
                                         <span class="text-gray-600">Fecha de Entrega: @item.FechaEntrega.ToString("dd/MM/yyyy")</span><br />
                                     </td>
                                     <td class="text-end">
@@ -310,108 +313,8 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        "use strict";
 
-        // Class definition
-        var KTDatatablesExample = function () {
-            // Shared variables
-            var table;
-            var datatable;
+@Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
 
-            // Private functions
-            var initDatatable = function () {
-                // Set date data order
-                const tableRows = table.querySelectorAll('tbody tr');
 
-                // Init datatable --- more info on datatables: https://datatables.net/manual/
-                datatable = $(table).DataTable({
-                    "info": false,
-                    'order': [],
-                    'pageLength': 10,
-                });
-            }
 
-            // Hook export buttons
-
-            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
-            var handleSearchDatatable = () => {
-                const filterSearch = document.querySelector('[data-kt-filter-Individuales="search"]');
-                filterSearch.addEventListener('keyup', function (e) {
-                    datatable.search(e.target.value).draw();
-                });
-            }
-
-            // Public methods
-            return {
-                init: function () {
-                    table = document.querySelector('#tablaIndividuales');
-
-                    if (!table) {
-                        return;
-                    }
-
-                    initDatatable();
-                    handleSearchDatatable();
-                }
-            };
-        }();
-
-        // On document ready
-        KTUtil.onDOMContentLoaded(function () {
-            KTDatatablesExample.init();
-        });
-    });
-
-    $(document).ready(function () {
-        "use strict";
-
-        // Class definition
-        var KTDatatablesExample = function () {
-            // Shared variables
-            var table;
-            var datatable;
-
-            // Private functions
-            var initDatatable = function () {
-                // Set date data order
-                const tableRows = table.querySelectorAll('tbody tr');
-
-                // Init datatable --- more info on datatables: https://datatables.net/manual/
-                datatable = $(table).DataTable({
-                    "info": false,
-                    'order': [],
-                    'pageLength': 10,
-                });
-            }
-
-            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
-            var handleSearchDatatable = () => {
-                const filterSearch = document.querySelector('[data-kt-filter-Grupales="search"]');
-                filterSearch.addEventListener('keyup', function (e) {
-                    datatable.search(e.target.value).draw();
-                });
-            }
-
-            // Public methods
-            return {
-                init: function () {
-                    table = document.querySelector('#tablaGrupales');
-
-                    if (!table) {
-                        return;
-                    }
-
-                    initDatatable();
-                    handleSearchDatatable();
-                }
-            };
-        }();
-
-        // On document ready
-        KTUtil.onDOMContentLoaded(function () {
-            KTDatatablesExample.init();
-        });
-    });
-</script>

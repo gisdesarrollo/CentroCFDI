@@ -34,6 +34,7 @@ namespace APBox.Controllers.Operaciones
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly OperacionesDocumentosRecibidos _operacionesDocumentosRecibidos = new OperacionesDocumentosRecibidos();
         #endregion
+
         #region Consultas
 
         //Metodo de Validacion E-Mail para usuarios solicitantes
@@ -53,8 +54,9 @@ namespace APBox.Controllers.Operaciones
                 var usuarioSolicitanteNombre = usuarioSolicitante.NombreCompleto;
                 var usuarioSolicitanteDepartamento = usuarioSolicitante.Departamento.Nombre;
 
-                TempData["AprobadorId"] = usuarioSolicitante.Id;
-                TempData["DepartamentoId"] = usuarioSolicitante.Departamento.Id;
+                Session["AprobadorId"] = usuarioSolicitante.Id;
+                Session["DepartamentoId"] = usuarioSolicitante.Departamento.Id;
+
 
                 return Json(new
                 {
@@ -68,6 +70,7 @@ namespace APBox.Controllers.Operaciones
 
         #endregion
 
+        #region Vistas
         // GET: DocumentosRecibidos/Index
         public ActionResult Index()
         {
@@ -204,10 +207,10 @@ namespace APBox.Controllers.Operaciones
             };
 
             ValidacionesComerciales validacionesComerciales = new ValidacionesComerciales();
-            
-            try 
+
+            try
             {
-                validacionesComerciales.Validaciones(cfdi, ObtenerSucursal()); 
+                validacionesComerciales.Validaciones(cfdi, ObtenerSucursal());
             }
             catch (Exception ex)
             {
@@ -233,9 +236,9 @@ namespace APBox.Controllers.Operaciones
                 var sucursal = _db.Sucursales.Find(ObtenerSucursal());
                 var socioComercial = new SocioComercial();
                 documentoRecibidoDr.Validaciones = new ValidacionesDR();
-                
+
                 socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
-                    var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
+                var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
                 if (usuario.esProveedor)
                 {
                     if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
@@ -244,19 +247,34 @@ namespace APBox.Controllers.Operaciones
 
                     }
                 }
-                    if (sucursal.Rfc != cfdi.Receptor.Rfc)
-                    {
-                        throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor ala empresa asignada");
-                    }
-                    if (existUUID != null)
-                    {
-                        throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
-                    }
-                
+                if (sucursal.Rfc != cfdi.Receptor.Rfc)
+                {
+                    throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor a la empresa asignada");
+                }
+                if (existUUID != null)
+                {
+                    throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
+                }
+
                 if (socioComercial == null)
                 {
                     //crear socio comercial apartir del emisor
-                    throw new Exception("Error Validación : El socio comercial no esta registrado en la BD");
+                    socioComercial = new SocioComercial()
+                    {
+                        Rfc = cfdi.Emisor.Rfc,
+                        RazonSocial = cfdi.Emisor.Nombre,
+                        RegimenFiscal = (API.Enums.c_RegimenFiscal)cfdi.Emisor.RegimenFiscal,
+                        CodigoPostal = cfdi.LugarExpedicion,
+                        Pais = API.Enums.c_Pais.MEX,
+                        SucursalId = sucursal.Id,
+                        Status = Status.Activo,
+                        FechaAlta = DateTime.Now,
+                        GrupoId = ObtenerGrupo(),
+                        Observaciones = "Socio Comercial creado automaticamente"
+                    };
+                    //guardar datos en base de datos
+                    _db.SociosComerciales.Add(socioComercial);
+                    _db.SaveChanges();
                 }
 
                 var configuracionEmpresa = ConfiguracionEmpresa();
@@ -316,7 +334,6 @@ namespace APBox.Controllers.Operaciones
                     documentoRecibidoDr.Procesado = true;
                     documentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
                 }
-
 
                 //add socio comercial
                 documentoRecibidoDr.SocioComercial_Id = socioComercial.Id;
@@ -410,7 +427,6 @@ namespace APBox.Controllers.Operaciones
         [HttpPost]
         public ActionResult Create(DocumentosRecibidosDR documentoRecibidoDr)
         {
-            //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
             ViewBag.NameHere = "proveedor";
@@ -424,19 +440,14 @@ namespace APBox.Controllers.Operaciones
             }
             try
             {
-                
+
                 // Obtener los datos guardados en TempData
-                var aprobadorId = TempData["AprobadorId"] as int?;
-                var departamentoId = TempData["DepartamentoId"] as int?;
+                var usuarioSolicitanteId = Session["AprobadorId"];
+                var usuarioSolicitanteDepartamentoId = Session["DepartamentoId"];
 
-                if (aprobadorId != null && departamentoId != null)
-                {
-                    documentoRecibidoDr.Aprobador_Id = aprobadorId.Value;
-                    documentoRecibidoDr.Departamento_Id = departamentoId.Value;
-                }
-                
+                Session.Remove("AprobadorId");
+                Session.Remove("DepartamentoId");
 
-                //
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
                 var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Receptor.Rfc).FirstOrDefault();
 
@@ -452,11 +463,16 @@ namespace APBox.Controllers.Operaciones
                     byte[] pdfFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoPdf);
                     documentoRecibidoDr.RecibidosPdf.Archivo = pdfFile;
                 }
-                else { documentoRecibidoDr.RecibidosPdf = null; documentoRecibidoDr.CfdiRecibidos_PDF_Id = null; }
+                else
+                {
+                    documentoRecibidoDr.RecibidosPdf = null;
+                    documentoRecibidoDr.CfdiRecibidos_PDF_Id = null;
+                }
                 //table validaciones
                 if (documentoRecibidoDr.Validaciones == null)
                 {
-                    documentoRecibidoDr.Validaciones = null; documentoRecibidoDr.Validaciones_Id = null;
+                    documentoRecibidoDr.Validaciones = null;
+                    documentoRecibidoDr.Validaciones_Id = null;
                 }
                 // table recibidosComprobante
                 documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
@@ -480,7 +496,6 @@ namespace APBox.Controllers.Operaciones
                     TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
                 };
                 documentoRecibidoDr.CfdiRecibidos_Id = null;
-                // table solicitudes
                 documentoRecibidoDr.Solicitudes = null;
                 documentoRecibidoDr.Solicitud_Id = null;
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
@@ -488,26 +503,27 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.Pagos = null;
                 documentoRecibidoDr.Pagos_Id = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
-                documentoRecibidoDr.AprobacionesDR =  new AprobacionesDR()
+
+                //Table Aprobaciones
+                documentoRecibidoDr.AprobacionesDR_Id = null;
+                documentoRecibidoDr.AprobacionesDR = new AprobacionesDR()
                 {
                     UsuarioEntrega_Id = usuario.Id,
-                    UsuarioSolicitante_Id = documentoRecibidoDr.Aprobador_Id,
-                    DepartamentoUsuarioSolicitante_Id = documentoRecibidoDr.Departamento_Id,
-                    FechaSolicitud = DateTime.Now
+                    UsuarioSolicitante_Id = (int?)usuarioSolicitanteId,
+                    DepartamentoUsuarioSolicitante_Id = (int?)usuarioSolicitanteDepartamentoId,
+                    FechaSolicitud = DateTime.Now,
                 };
-                
+
 
                 _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
                 _db.SaveChanges();
-                return RedirectToAction("Index", "DocumentosRecibidos"); ;
+                return RedirectToAction("Index", "DocumentosRecibidos");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
             }
-
-            return View(documentoRecibidoDr);
-
+            return this.View(documentoRecibidoDr);
         }
 
         // GET: DocumentosRecibidos/Edit/5
@@ -547,39 +563,33 @@ namespace APBox.Controllers.Operaciones
             {
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
                 var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
-                if (usuario.esProveedor)
-                {
-                    // Obtener los datos guardados en TempData
-                    var aprobadorId = TempData["AprobadorId"] as int?;
-                    var departamentoId = TempData["DepartamentoId"] as int?;
-                    if (aprobadorId != null && departamentoId != null)
-                    {
-                        documentoRecibido.Aprobador_Id = aprobadorId.Value;
-                        documentoRecibido.Departamento_Id = departamentoId.Value;
-                        _db.Entry(documentoRecibido).State = EntityState.Modified;
-                        _db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
-                    {
-                        documentoRecibido.MotivoRechazo = documentoRecibidoEdit.MotivoRechazo;
-                    }
-                    documentoRecibido.Pagos = null;
-                    documentoRecibido.Pagos_Id = null;
-                    documentoRecibido.Solicitudes = null;
-                    documentoRecibido.Solicitud_Id = null;
-                    documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;
-                    _db.Entry(documentoRecibido).State = EntityState.Modified;
-                    _db.SaveChanges();
+                var usuarioEntrega = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioEntrega_Id);
 
-                    //envio email rechazo
-                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
-                    {
-                        _envioEmail.SendEmailNotifications(null, documentoRecibido, true, (int)ObtenerSucursal());
-                    }
+
+
+                if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Aprobado)
+                {
+                    documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+                    documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
+                    
+                    documentoRecibido.EstadoComercial = c_EstadoComercial.Aprobado;
                 }
+
+                if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
+                {
+                    documentoRecibido.AprobacionesDR.FechaRechazo = DateTime.Now;
+                    documentoRecibido.AprobacionesDR.UsuarioRechazo_id = usuario.Id;
+                    documentoRecibido.AprobacionesDR.DetalleRechazo = documentoRecibidoEdit.AprobacionesDR.DetalleRechazo;
+
+                    documentoRecibido.EstadoComercial = c_EstadoComercial.Rechazado;
+
+                    //Notificación al usuario que entrega
+                    _envioEmail.NotificacionCambioEstadoComercial(usuarioEntrega, documentoRecibido, c_EstadoComercial.Rechazado, (int)ObtenerSucursal());
+                }
+
+                _db.Entry(documentoRecibido).State = EntityState.Modified;
+                _db.SaveChanges();
+
                 return RedirectToAction("Index", "DocumentosRecibidos");
             }
             catch
@@ -609,6 +619,8 @@ namespace APBox.Controllers.Operaciones
                 return View();
             }
         }
+
+        #endregion
 
         #region Reportes
         public ActionResult ReporteDocumentosRecibidos()
@@ -732,7 +744,7 @@ namespace APBox.Controllers.Operaciones
 
             return configuracion;
         }
-        
+
         private void PopulaEstadoComercial()
         {
             List<SelectListItem> items = new List<SelectListItem>();

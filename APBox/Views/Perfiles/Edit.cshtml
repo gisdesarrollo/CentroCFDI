@@ -11,446 +11,458 @@
     @Html.HiddenFor(model => model.GrupoId)
     if (User.IsInRole("EDICION")) //SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
     {
-        <div class="d-flex flex-row flex-column-fluid align-items-stretch">
-            <!--begin::Content-->
+<div class="d-flex flex-row flex-column-fluid align-items-stretch">
+    <!--begin::Content-->
+    <div class="wrapper d-flex flex-column flex-row-fluid container-xxl" id="kt_content">
+        <!--begin::Form-->
+        <form id="kt_ecommerce_edit_order_form" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" data-kt-redirect="/metronic8/demo19/../demo19/apps/ecommerce/sales/listing.html">
+            <div class="d-flex flex-column flex-lg-row-fluid gap-7 gap-lg-10">
+                <div class="card card-flush py-4">
+                    <div class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2>  @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "" })</h2>
 
-            <div class="wrapper d-flex flex-column flex-row-fluid container-xxl" id="kt_content">
-                <!--begin::Form-->
-                <form id="kt_ecommerce_edit_order_form" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" data-kt-redirect="/metronic8/demo19/../demo19/apps/ecommerce/sales/listing.html">
-
-                    <div class="d-flex flex-column flex-lg-row-fluid gap-7 gap-lg-10">
-
-                        <div class="card card-flush py-4">
-
-                            <div class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <h2>  @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "" })</h2>
-
-                                    </div>
-                                </div>
-
-                                <div class="ms-5">
-                                    <!--begin::Title-->
-                                    <h2>
-                                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                                    </h2>
-                                    <!--end::SKU-->
-                                </div>
-
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <h2>@Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "" })</h2>
-
-                                    </div>
-                                </div>
-
-                                <div class="ms-5">
-                                    <!--begin::Title-->
-                                    <h2>
-                                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
-                                    </h2>
-                                    <!--end::SKU-->
-                                </div>
                             </div>
-
-
-                         
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body pt-0">
-
-
-
-                                    <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                                        <h3 class="text-gray-700 fw-bold fs-5">
-                                            Permisos Generales
-                                        </h3>
-                                    </div>
-                             
-
-                                <div class="d-flex flex-column gap-10">
-                                    <!--begin::Input group-->
-                                    <div>
-                                        <!--begin::Label-->
-                                        <!--begin::Selected products-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <!--end::Empty message-->
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                @Html.LabelFor(model => model.Insercion, htmlAttributes: new { @class = "form-label" })
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Insercion, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Insercion, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                @Html.LabelFor(model => model.Edicion, htmlAttributes: new { @class = "form-label" })
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Edicion, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Edicion, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                @Html.LabelFor(model => model.Borrado, htmlAttributes: new { @class = "form-label" })
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Borrado, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Borrado, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                                            <h3 class="text-gray-700 fw-bold fs-5">
-                                                Catalogos
-                                            </h3>
-                                        </div>
-                                        <label class="form-label">Accesos</label>
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <!--end::Empty message-->
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                @Html.LabelFor(model => model.Grupos, htmlAttributes: new { @class = "form-label" })
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Grupos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Grupos, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                @Html.LabelFor(model => model.Perfiles, htmlAttributes: new { @class = "form-label" })
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Perfiles, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Perfiles, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                @Html.LabelFor(model => model.Usuarios, htmlAttributes: new { @class = "form-label" })
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Usuarios, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Usuarios, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                <label class="form-label">Departamentos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Departamentos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Departamentos, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <label class="form-label">Empresa</label>
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <!--end::Empty message-->
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Empresas</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Sucursales, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Sucursales, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Socios Comerciales</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.SociosComerciales, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.SociosComerciales, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Bancos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Bancos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Bancos, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <label class="form-label">CFDI</label>
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <!--end::Empty message-->
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Conceptos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Conceptos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Conceptos, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Impuestos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Impuestos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Impuestos, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Mercancias</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Mercancias, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Mercancias, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                                            <h3 class="text-gray-700 fw-bold fs-5">
-                                                Emision
-                                            </h3>
-                                        </div>
-
-
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <!--end::Empty message-->
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Cfdi</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Cfdi, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Cfdi, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <label class="form-label">Complementos CFDI</label>
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <!--end::Empty message-->
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Complementos de Pagos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.ComplementoPago, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.ComplementoPago, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Complemento de Carta Porte</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.ComplementoCartaPorte, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.ComplementoCartaPorte, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                                            <h3 class="text-gray-700 fw-bold fs-5">
-                                                CFDI
-                                            </h3>
-                                        </div>
-
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <!--end::Empty message-->
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Emitidos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.FacturasEmitidas, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.ComplementoPago, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Carga Cfdi</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.CargaCFDI, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.CargaCFDI, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                                            <h3 class="text-gray-700 fw-bold fs-5">
-                                                Reportes
-                                            </h3>
-                                        </div>
-
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Reporte De Facturas Con Pago</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.ReportesFacturasPago, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.ReportesFacturasPago, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                                            <h3 class="text-gray-700 fw-bold fs-5">
-                                                Addenda
-                                            </h3>
-                                        </div>
-
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Addenda Compras</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Addenda, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Addenda, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
-                                            <h3 class="text-gray-700 fw-bold fs-5">
-                                                Recepción
-                                            </h3>
-                                        </div>
-                                        <!--end::Label-->
-                                        <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
-                                            <!--begin::Empty message-->
-                                            <span class="w-100 text-muted d-none"></span>
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Portal Proveedores</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Proveedor, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Proveedor, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-sm-6 col-md-4">
-
-                                                <label class="form-label">Recepcion CFDi</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Recepcion, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Recepcion, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6 col-md-4">
-                                                <label class="form-label">Documentos Recibidos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.DocumentosRecibidos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.DocumentosRecibidos, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                           <div class="form-group col-sm-6 col-md-4">
-                                                <label class="form-label">Pagos</label>
-                                                <div class="col-md-10">
-                                                    <div class="checkbox">
-                                                        @Html.EditorFor(model => model.Pagos, new { htmlAttributes = new { @class = "form-check-input" } })
-                                                        @Html.ValidationMessageFor(model => model.Pagos, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        </div>
-
-
-
-
-                                        <div class="separator"></div>
-
-                                    </div>
-
-                                <div class="d-flex justify-content-end">
-                                    <a href="@Url.Action("Index", "Perfiles")" class="btn btn-light me-5">Cancelar</a>
-
-                                    <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
-                                        <span class="indicator-label">Guardar</span>
-                                        <span class="indicator-progress">
-                                            Please wait...
-                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                            <!--end::Card header-->
                         </div>
 
+                        <div class="ms-5">
+                            <!--begin::Title-->
+                            <h2>
+                                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", placeholder = "name" } })
+                            </h2>
+                            <!--end::SKU-->
+                        </div>
+
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2>@Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "" })</h2>
+
+                            </div>
+                        </div>
+
+                        <div class="ms-5">
+                            <!--begin::Title-->
+                            <h2>
+                                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
+                            </h2>
+                            <!--end::SKU-->
+                        </div>
                     </div>
-                    <!--end::Main column-->
-                    <div></div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
 
-                </form>
-                <!--end::Form-->
+
+                        <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                            <h3 class="text-gray-700 fw-bold fs-5">
+                                Permisos Generales
+                            </h3>
+                        </div>
+
+                        <div class="d-flex flex-column gap-10">
+                            <!--begin::Input group-->
+                            <div>
+                                <!--begin::Label-->
+                                <!--begin::Selected products-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
+                                    <!--end::Empty message-->
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        @Html.LabelFor(model => model.Insercion, htmlAttributes: new { @class = "form-label" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Insercion, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Insercion, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        @Html.LabelFor(model => model.Edicion, htmlAttributes: new { @class = "form-label" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Edicion, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Edicion, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        @Html.LabelFor(model => model.Borrado, htmlAttributes: new { @class = "form-label" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Borrado, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Borrado, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                    <h3 class="text-gray-700 fw-bold fs-5">
+                                        Catalogos
+                                    </h3>
+                                </div>
+
+                                <br />
+
+
+                                <label class="form-label">Accesos</label>
+
+
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
+                                    <!--end::Empty message-->
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        @Html.LabelFor(model => model.Grupos, htmlAttributes: new { @class = "form-label" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Grupos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Grupos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        @Html.LabelFor(model => model.Perfiles, htmlAttributes: new { @class = "form-label" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Perfiles, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Perfiles, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        @Html.LabelFor(model => model.Usuarios, htmlAttributes: new { @class = "form-label" })
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Usuarios, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Usuarios, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        <label class="form-label">Departamentos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Departamentos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Departamentos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <label class="form-label">Empresa</label>
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
+                                    <!--end::Empty message-->
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Empresas</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Sucursales, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Sucursales, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Socios Comerciales</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.SociosComerciales, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.SociosComerciales, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Bancos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Bancos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Bancos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <label class="form-label">CFDI</label>
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
+                                    <!--end::Empty message-->
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Conceptos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Conceptos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Conceptos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Impuestos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Impuestos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Impuestos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Mercancias</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Mercancias, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Mercancias, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                    <h3 class="text-gray-700 fw-bold fs-5">
+                                        Emision
+                                    </h3>
+                                </div>
+
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
+                                    <!--end::Empty message-->
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Cfdi</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Cfdi, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Cfdi, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <label class="form-label">Complementos CFDI</label>
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
+                                    <!--end::Empty message-->
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Complementos de Pagos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.ComplementoPago, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.ComplementoPago, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Complemento de Carta Porte</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.ComplementoCartaPorte, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.ComplementoCartaPorte, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                    <h3 class="text-gray-700 fw-bold fs-5">
+                                        CFDI
+                                    </h3>
+                                </div>
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none">Select one or more products from the list below by ticking the checkbox.</span>
+                                    <!--end::Empty message-->
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Emitidos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.FacturasEmitidas, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.ComplementoPago, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Carga Cfdi</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.CargaCFDI, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.CargaCFDI, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                    <h3 class="text-gray-700 fw-bold fs-5">
+                                        Reportes
+                                    </h3>
+                                </div>
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none"></span>
+                                    <!--end::Empty message-->
+                                    @*<div class="form-group col-sm-6 col-md-4">
+
+                                            <label class="form-label">Reporte Facturas Emitidas</label>
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.FacturasEmitidas, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                    @Html.ValidationMessageFor(model => model.FacturasEmitidas, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div*@
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Reporte De Facturas Con Pago</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.ReportesFacturasPago, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.ReportesFacturasPago, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                    <h3 class="text-gray-700 fw-bold fs-5">
+                                        Addenda
+                                    </h3>
+                                </div>
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none"></span>
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Addenda Compras</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Addenda, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Addenda, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="d-flex align-items-center rounded py-5 px-5 bg-light-primary">
+                                    <h3 class="text-gray-700 fw-bold fs-5">
+                                        Recepción
+                                    </h3>
+                                </div>
+                                <!--end::Label-->
+                                <div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+                                    <!--begin::Empty message-->
+                                    <span class="w-100 text-muted d-none"></span>
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Portal Proveedores</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Proveedor, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Proveedor, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6 col-md-4">
+
+                                        <label class="form-label">Recepcion CFDi</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Recepcion, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Recepcion, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        <label class="form-label">Documentos Recibidos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.DocumentosRecibidos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.DocumentosRecibidos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-4">
+                                        <label class="form-label">Pagos</label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Pagos, new { htmlAttributes = new { @class = "form-check-input" } })
+                                                @Html.ValidationMessageFor(model => model.Pagos, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+
+                            <div class="separator"></div>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <!--begin::Button-->
+                            <a href="@Url.Action("Index", "Perfiles")" class="btn btn-light me-5">Cancelar</a>
+                            <!--end::Button-->
+                            <!--begin::Button-->
+                            <button type="submit" id="submit" class="btn btn-primary">
+                                <span class="indicator-label">Guardar</span>
+                            </button>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <!--end::Card header-->
+                </div>
+
             </div>
-            <!--end::Content-->
+            <!--end::Main column-->
+            <div></div>
+
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Content-->
 
 
-        </div>
+</div>
     }
 }
 <script>

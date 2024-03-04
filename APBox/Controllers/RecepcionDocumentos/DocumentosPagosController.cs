@@ -123,7 +123,7 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        // GET: DocumentosRecibidos/Edit/5
+        // GET: DocumentosPagos/Edit/5
         public ActionResult Revision(int id)
         {
             ViewBag.Controller = "DocumentosRecibidos";
@@ -133,6 +133,7 @@ namespace APBox.Controllers.Operaciones
 
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
+
             if (usuario.esProveedor)
             {
                 documentoRecibido.isProveedor = true;
@@ -146,13 +147,11 @@ namespace APBox.Controllers.Operaciones
             // Splitting the string into lines
             string[] lines = documentoRecibido.Validaciones_Detalle.Split('\n');
             documentoRecibido.DetalleArrays = lines.ToList();
-            TempData["AprobadorId"] = null;
-            TempData["DepartamentoId"] = null;
 
             return View(documentoRecibido);
         }
 
-        // POST: DocumentosRecibidos/Edit/5
+        // POST: DocumentosPagos/Edit/5
         [HttpPost]
         public ActionResult Revision(DocumentosRecibidosDR documentoRecibidoEdit)
         {
@@ -160,38 +159,30 @@ namespace APBox.Controllers.Operaciones
             {
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
                 var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
-                if (usuario.esProveedor)
-                {
-                    // Obtener los datos guardados en TempData
-                    var aprobadorId = TempData["AprobadorId"] as int?;
-                    var departamentoId = TempData["DepartamentoId"] as int?;
-                    if (aprobadorId != null && departamentoId != null)
-                    {
-                        documentoRecibido.Aprobador_Id = aprobadorId.Value;
-                        documentoRecibido.Departamento_Id = departamentoId.Value;
-                        _db.Entry(documentoRecibido).State = EntityState.Modified;
-                        _db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
-                    {
-                        documentoRecibido.MotivoRechazo = documentoRecibidoEdit.MotivoRechazo;
-                    }
-                    documentoRecibido.Solicitudes = null;
-                    documentoRecibido.Solicitud_Id = null;
-                    documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;
-                    _db.Entry(documentoRecibido).State = EntityState.Modified;
-                    _db.SaveChanges();
+                var usuarioEntrega = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioEntrega_Id);
 
-                    //envio email rechazo
-                    if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Rechazado)
-                    {
-                        _envioEmail.SendEmailNotifications(null, documentoRecibido, true, (int)ObtenerSucursal());
-                    }
+                if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Aprobado)
+                {
+                    documentoRecibido.EstadoPago = c_EstadoPago.Aprobado;
+                    documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+                    documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
                 }
-                return RedirectToAction("Index", "DocumentosRecibidos");
+
+                if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Rechazado)
+                {
+                    documentoRecibido.EstadoPago = c_EstadoPago.Rechazado;
+                    documentoRecibido.EstadoComercial = c_EstadoComercial.Rechazado;
+                    documentoRecibido.AprobacionesDR.FechaRechazo = DateTime.Now;
+                    documentoRecibido.AprobacionesDR.UsuarioRechazo_id = usuario.Id;
+                    documentoRecibido.AprobacionesDR.DetalleRechazo = documentoRecibidoEdit.AprobacionesDR.DetalleRechazo;
+
+                    //Notificación al usuario que entrega
+                    _envioEmail.NotificacionCambioEstadoComercial(usuarioEntrega, documentoRecibido, c_EstadoComercial.Rechazado, (int)ObtenerSucursal());
+                }
+                _db.Entry(documentoRecibido).State = EntityState.Modified;
+                _db.SaveChanges();
+
+                return RedirectToAction("Index", "DocumentosPagos");
             }
             catch
             {
@@ -199,13 +190,14 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        // GET: DocumentosRecibidos/Delete/5
+
+        // GET: DocumentosPagos/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: DocumentosRecibidos/Delete/5
+        // POST: DocumentosPagos/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -220,7 +212,7 @@ namespace APBox.Controllers.Operaciones
                 return View();
             }
         }
-        
+
         #region Validaciones
 
         public ActionResult AprobarEstadoComercial(int id)
@@ -275,7 +267,7 @@ namespace APBox.Controllers.Operaciones
             string fechaFormat = fechaConvertDate.ToString("dd/MM/yyyy");
             return fechaFormat;
         }
-        
+
         public ConfiguracionesDR ConfiguracionEmpresa()
         {
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
@@ -289,7 +281,7 @@ namespace APBox.Controllers.Operaciones
 
             return configuracion;
         }
-        
+
         private void PopulaEstadoComercial()
         {
             List<SelectListItem> items = new List<SelectListItem>();
@@ -298,7 +290,7 @@ namespace APBox.Controllers.Operaciones
             items.Add(new SelectListItem { Text = "Rechazado", Value = "2" });
             ViewBag.estadoComercial = items;
         }
-        
+
         private int ObtenerGrupo()
         {
 

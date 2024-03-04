@@ -60,10 +60,10 @@
                         </thead>
                         <tbody class="align-text-top">
 
-                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId == i.Aprobador_Id.Value || usuarioId == i.Usuario_Id))
+                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId == i.AprobacionesDR.UsuarioSolicitante_Id.Value || usuarioId == i.Usuario_Id))
                             {
-                                var nombreAprobador = _db.Usuarios.Find(item.Aprobador_Id).Nombre + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoMaterno;
-                                var nombreDepartamento = _db.Departamentos.Find(item.Departamento_Id).Nombre;
+                                var nombreAprobador = _db.Usuarios.Find(item.AprobacionesDR.UsuarioSolicitante_Id).Nombre + " " + _db.Usuarios.Find(item.AprobacionesDR.UsuarioSolicitante_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.AprobacionesDR.UsuarioSolicitante_Id).ApellidoMaterno;
+                                var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
                                 <tr>
                                     <td>
                                         @item.SocioComercial.RazonSocial <br />
@@ -177,10 +177,10 @@
                         </thead>
                         <tbody class="align-text-top">
 
-                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId != i.Aprobador_Id.Value && usuario.Id == i.Usuario_Id))
+                            @foreach (var item in Model.DocumentosRecibidos.Where(i => usuarioId != i.AprobacionesDR.UsuarioSolicitante_Id.Value && usuario.Id == i.Usuario_Id))
                             {
-                                var nombreAprobador = _db.Usuarios.Find(item.Aprobador_Id).Nombre + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.Aprobador_Id).ApellidoMaterno;
-                                var nombreDepartamento = _db.Departamentos.Find(item.Departamento_Id).Nombre;
+                                var nombreAprobador = _db.Usuarios.Find(item.AprobacionesDR.UsuarioSolicitante_Id).Nombre + " " + _db.Usuarios.Find(item.AprobacionesDR.UsuarioSolicitante_Id).ApellidoPaterno + " " + _db.Usuarios.Find(item.AprobacionesDR.UsuarioSolicitante_Id).ApellidoMaterno;
+                                var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
 
                                 <tr>
                                     <td>
@@ -321,5 +321,5 @@
 
 
 
-@Html.Partial("_DocumentoRecibidoScripts")
+@Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
 @Html.Partial("~/Views/DocumentosRecibidos/_ModalGuia.cshtml")

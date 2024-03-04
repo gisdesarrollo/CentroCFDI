@@ -1,15 +1,5 @@
 ﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
-@using Aplicacion.Utilidades;
 
-@using APBox.Context;
-@{
-    var _db = new APBoxContext();
-    var sucursalId = Convert.ToInt32(Session["SucursalId"]);
-    var sucursal = _db.Sucursales.Find(sucursalId);
-    var sucursalRazonSocial = sucursalId == 0 ? "" : sucursal.RazonSocial;
-    var sucursalNombre = sucursalId == 0 ? "" : sucursal.Nombre;
-    ViewBag.Title = "Documentos Recibidos";
-}
 
 @using (Html.BeginForm("Revision", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data", id = "form" }))
 {
@@ -33,12 +23,10 @@
     @Html.HiddenFor(model => model.FechaEntrega)
     @Html.HiddenFor(model => model.TipoDocumentoRecibido)
     @Html.HiddenFor(model => model.Monto)
-    @Html.HiddenFor(model => model.EstadoComercial)
 
 
     <!--begin::Row-->
     <div class="row g-5 g-xl-8">
-
         <div class="col-xl-6">
             <!--begin::List Widget 6-->
             <div class="card card-xl-stretch mb-xl-8">
@@ -264,191 +252,11 @@
         </div>
 
         <div class="col-6">
-            <div class="row">
-                <div class="col-12">
-                    @if (!Model.isProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision)
-                    {
-                        <!--begin::List Widget 7-->
-                        <div class="card card-xl-stretch mb-8">
-                            <!--begin::Body-->
-                            <div class="card-body">
-
-                                <div class="d-flex flex-column flex-xl-row">
-                                    <!--begin::Content-->
-                                    <div class="flex-lg-row-fluid col-6">
-                                        <!--begin::Ticket view-->
-                                        <div class="mb-0">
-                                            <!--begin::Heading-->
-                                            <div class="d-flex align-items-center">
-                                                <div class="w-100">
-                                                    <!--end::Stat-->
-                                                    <!--begin::Option-->
-                                                    <input type="radio" class="btn-check" name="radio_buttons_2" id="aprobado" />
-                                                    <label class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success p-7 d-flex align-items-center mb-5" for="aprobado">
-                                                        <i class="ki-duotone ki-file-added fs-4x me-4">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                        </i>
-                                                        <span class="d-block fw-semibold text-start">
-                                                            <span class="text-gray-900 fw-bold d-block fs-3">Aprobar</span>
-                                                            <span class="text-muted fw-semibold fs-6">Al aprobar el documento empezará el proceso administrativo y de pago.</span>
-                                                        </span>
-                                                    </label>
-
-                                                    <!--end::Option-->
-                                                    <!--begin::Option-->
-                                                    <input type="radio" class="btn-check" name="radio_buttons_2" id="rechazado" />
-                                                    <label class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger p-7 d-flex align-items-center" for="rechazado">
-                                                        <i class="ki-duotone ki-tablet-delete fs-4x me-4">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                            <span class="path3"></span>
-                                                        </i>
-                                                        <span class="d-block fw-semibold text-start">
-                                                            <span class="text-gray-900 fw-bold d-block fs-3">Rechazar</span>
-                                                            <span class="text-muted fw-semibold fs-6">
-                                                                Al rechazar el Comprobante, se le enviará un email al usuario que lo entregó informando el motivo de su rechazo.
-                                                            </span>
-                                                        </span>
-                                                    </label>
-                                                    <div class="border border-gray-400 border-dashed rounded py-3 px-4 mt-5" id="motivo-rechazo" style="display:none">
-                                                        <div class="form-group col-xs-12">
-                                                            @Html.LabelFor(model => model.MotivoRechazo, htmlAttributes: new { @class = "control-label" })
-                                                            @Html.EditorFor(model => model.MotivoRechazo, new { htmlAttributes = new { @class = "form-control" } })
-                                                            @Html.ValidationMessageFor(model => model.MotivoRechazo, "", new { @class = "text-danger" })
-                                                        </div>
-                                                    </div>
-                                                    <!--end::Option-->
-                                                   
-                                                </div>
-                                                <!--end::Heading-->
-                                            </div>
-                                        </div>
-                                        <!--end::Ticket view-->
-                                    </div>
-                                    <!--end::Content-->
-                                </div>
-                            </div>
-                            <!--end::Body-->
-                        </div>
-                        <!--end::List Widget 7-->
-                    }
-                        <!--begin::List Widget 7-->
-                        <div class="card card-xl-stretch mb-8">
-                            <!--begin::Header-->
-                            <div class="card-header align-items-center border-0 mt-4">
-                                <h3 class="card-title align-items-start flex-column">
-                                    <span class="fw-bold text-gray-900">Proceso de aprobación</span>
-                                    <span class="text-muted mt-1 fw-semibold fs-7"> </span>
-                                </h3>
-                            </div>
-                            <!--end::Header-->
-                            <!--begin::Body-->
-                            <div class="card-body pt-3">
-                                <div class="d-flex flex-column flex-xl-row">
-                                    <!--begin::Content-->
-                                    <div class="flex-lg-row-fluid me-xl-15 col-6">
-                                        <!--begin::Ticket view-->
-                                        <div class="mb-0">
-                                            <!--begin::Heading-->
-                                            <div class="d-flex align-items-center mb-10">
-                                                <!--begin::Icon-->
-                                                <i class="ki-duotone ki-tablet-book fs-4qx text-primary ms-n2 me-3">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <!--end::Icon-->
-                                                <!--begin::Content-->
-                                                <div class="d-flex flex-column">
-                                                    <!--begin::Title-->
-                                                    <h1 class="text-gray-800 fw-semibold">@Model.EstadoComercial</h1>
-                                                    <!--end::Title-->
-                                                </div>
-                                                <!--end::Content-->
-                                            </div>
-                                            <!--end::Heading-->
-                                        </div>
-                                        <!--end::Ticket view-->
-
-                                    </div>
-                                    <!--end::Content-->
-                                </div>
-
-                                <div class="d-flex flex-column flex-xl-row">
-                                    <!--begin::Content-->
-                                    <div class="flex-lg-row-fluid mb-20 mb-xl-0 col-6">
-                                        <!--begin::Ticket view-->
-                                        <div class="mb-0">
-                                            <!--begin::Heading-->
-                                            <div class="d-flex align-items-center">
-                                                <div class="w-100">
-                                                    <!--begin::Stat-->
-                                                    <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
-                                                        <!--begin::Number-->
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="fs-4 fw-bold">@Model.FechaEntrega.ToString("dd MMMM, yyyy")</div>
-                                                        </div>
-                                                        <!--end::Number-->
-                                                        <!--begin::Label-->
-                                                        <div class="fw-semibold fs-4 text-gray-500">Fecha de Carga</div>
-                                                        <!--end::Label-->
-                                                    </div>
-                                                    <!--end::Stat-->
-                                                    <!--begin::Stat-->
-                                                    <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
-                                                        <!--begin::Number-->
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="fs-4 fw-bold">@Model.Usuario.NombreCompleto</div>
-                                                        </div>
-                                                        <!--end::Number-->
-                                                        <!--begin::Label-->
-                                                        <div class="fw-semibold fs-4 text-gray-500">Usuario que entrega</div>
-                                                        <!--end::Label-->
-                                                    </div>
-                                                    <!--end::Stat-->
-                                                    <!--begin::Stat-->
-                                                    <div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
-                                                        <!--begin::Number-->
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="fs-4 fw-bold">@Model.Usuario.Email</div>
-                                                        </div>
-                                                        <!--end::Number-->
-                                                        <!--begin::Label-->
-                                                        <div class="fw-semibold fs-4 text-gray-500">mail solicitante</div>
-                                                        <!--end::Label-->
-                                                    </div>
-                                                    <!--end::Stat-->
-                                                    <!--begin::Stat-->
-                                                    @*<div class="border border-gray-400 border-dashed rounded py-3 px-4 mb-3">
-                                            <!--begin::Number-->
-                                            <div class="d-flex align-items-center">
-                                                <div class="fs-4 fw-bold">@Model.Usuario.Departamento.Nombre</div>
-                                            </div>
-                                            <!--end::Number-->
-                                            <!--begin::Label-->
-                                            <div class="fw-semibold fs-4 text-gray-500">Departamento</div>
-                                            <!--end::Label-->
-                                        </div>*@
-                                                    <!--end::Stat-->
-                                                </div>
-                                                <!--end::Heading-->
-                                            </div>
-                                        </div>
-                                        <!--end::Ticket view-->
-                                    </div>
-                                    <!--end::Content-->
-                                </div>
-                            </div>
-                            <!--end::Body-->
-                        </div>
-                        <!--end::List Widget 7-->
-                    </div>
-            </div>
-
+            @Html.Partial("~/Views/DocumentosRecibidosPartials/_EstadoComercialPagoDocumento.cshtml", Model)
         </div>
-
     </div>
     <!--end::Row-->
+
 
     if (Model.Usuario.esProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision)
     {
@@ -849,8 +657,80 @@
 
     </div>
     <!--end::Row-->
-    
-    
+
+    <!--begin::Row-->
+    <div class="row g-5 g-xl-8">
+        @if (!Model.isProveedor && Model.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision)
+        {
+            <div class="col-6 ">
+                <!--begin::List Widget 7-->
+                <div class="card card-xl-stretch mb-8">
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-xl-row">
+                            <!--begin::Content-->
+                            <div class="flex-lg-row-fluid col-6">
+                                <!--begin::Ticket view-->
+                                <div class="mb-0">
+                                    <!--begin::Heading-->
+                                    <div class="d-flex align-items-center">
+                                        <div class="w-100">
+                                            <!--end::Stat-->
+                                            <!--begin::Option-->
+                                            <input type="radio" class="btn-check" name="radio_buttons_2" id="aprobado" />
+                                            <label class="btn btn-outline btn-outline-dashed btn-active-light-success p-7 d-flex align-items-center mb-5" for="aprobado">
+                                                <i class="ki-duotone ki-file-added fs-4x me-4">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <span class="d-block fw-semibold text-start">
+                                                    <span class="text-gray-900 fw-bold d-block fs-3">Aprobar</span>
+                                                    <span class="text-muted fw-semibold fs-6">Al aprobar el documento empezará el proceso administrativo y de pago.</span>
+                                                </span>
+                                            </label>
+
+                                            <!--end::Option-->
+                                            <!--begin::Option-->
+                                            <input type="radio" class="btn-check" name="radio_buttons_2" id="rechazado" />
+                                            <label class="btn btn-outline btn-outline-dashed btn-active-light-danger p-7 d-flex align-items-center" for="rechazado">
+                                                <i class="ki-duotone ki-tablet-delete fs-4x me-4">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                                <span class="d-block fw-semibold text-start">
+                                                    <span class="text-gray-900 fw-bold d-block fs-3">Rechazar</span>
+                                                    <span class="text-muted fw-semibold fs-6">
+                                                        Al rechazar el Comprobante, se le enviará un email al usuario que lo entregó informando el motivo de su rechazo.
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <div class="border border-gray-400 border-dashed rounded py-3 px-4 mt-5" id="motivo-rechazo" style="display:none">
+                                                <div class="form-group col-xs-12">
+                                                    @Html.LabelFor(model => model.AprobacionesDR.DetalleRechazo, htmlAttributes: new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.AprobacionesDR.DetalleRechazo, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.AprobacionesDR.DetalleRechazo, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <!--end::Option-->
+
+                                        </div>
+                                        <!--end::Heading-->
+                                    </div>
+                                </div>
+                                <!--end::Ticket view-->
+                            </div>
+                            <!--end::Content-->
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 7-->
+            </div>
+        }
+    </div>
+    <!--end::Row-->
+
     <div class="d-flex justify-content-end">
         <!--begin::Button-->
         <a href="@Url.Action("Index","DocumentosRecibidos")" class="btn btn-light me-5">
@@ -872,11 +752,11 @@
 }
 
 
-@Html.Partial("_DocumentoRecibidoScripts")
+@Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
 
 <script>
     var radioRechazado = document.getElementById('rechazado');
-    console.log("rechazado: "+ radioRechazado);
+    console.log("rechazado: " + radioRechazado);
     var radioAprobado = document.getElementById('aprobado');
     var motivoRechazoDiv = document.getElementById('motivo-rechazo');
     radioRechazado.addEventListener('change', function () {
@@ -887,6 +767,7 @@
     });
 
     radioAprobado.addEventListener('change', function () {
+        console.log("aprobado");
         motivoRechazoDiv.style.display = 'none';
         $('#MotivoRechazo').val("");
         $('#EstadoComercial').val(1);

@@ -121,6 +121,7 @@ namespace API.Catalogos
 
         [DisplayName("Pagos")]
         public bool Pagos { get; set; }
+
         [DisplayName("Documentos Recibidos")]
         public bool DocumentosRecibidos { get; set; }
 

@@ -197,7 +197,7 @@ namespace APBox.Controllers.Catalogos
         {
             var sucursal = _db.Sucursales.Where(s => s.GrupoId == usuario.GrupoId).FirstOrDefault();
 
-            _envioEmail.SendEmailNotifications(usuario, null, false, sucursal.Id);
+            _envioEmail.NotificacionNuevoUsuario(usuario, sucursal.Id);
         }
         private void PopulaClientes(int? receptorId = null)
         {
