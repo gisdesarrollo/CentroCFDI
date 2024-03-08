@@ -91,8 +91,20 @@ namespace APBox.Controllers.Catalogos
             }
             // Guardar datos en TempData para asignarlo a otro metodo
             socioComercial.Status = API.Enums.Status.Activo;
-            _db.SociosComerciales.Add(socioComercial);
-            _db.SaveChanges();
+            
+
+            try
+            {
+                _db.SociosComerciales.Add(socioComercial);
+                _db.SaveChanges();
+            }
+
+            catch (Exception ex)
+
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(socioComercial);
+            }
 
             TempData["SocioComercialId"] = socioComercial.Id;
             return View("CreateUsuario");
@@ -159,8 +171,18 @@ namespace APBox.Controllers.Catalogos
             usuario.SocioComercialID = ClienteId;
 
 
-            _db.Usuarios.Add(usuario);
-            _db.SaveChanges();
+            try
+            {
+                _db.Usuarios.Add(usuario);
+                _db.SaveChanges();
+            }
+
+            catch (Exception ex)
+
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(usuario);
+            }
 
             // Envío de correo electrónico de bienvenida
             EnviarCorreoBienvenida(usuario);

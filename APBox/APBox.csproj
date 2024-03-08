@@ -381,6 +381,7 @@
     <Compile Include="Controllers\RecepcionDocumentos\ValidacionesRapidasController.cs" />
     <Compile Include="Controllers\RecepcionDocumentos\PortalProveedoresController.cs" />
     <Compile Include="Controllers\ComplementosPago\DescartarRecepcionDocumentosController.cs" />
+    <Compile Include="Controllers\Reportes\ReporteRecibidosController.cs" />
     <Compile Include="Controllers\Reportes\ReportesController.cs" />
     <Compile Include="Control\Helpers.cs" />
     <Compile Include="Control\OperacionesUsuarios.cs" />
@@ -2729,6 +2730,8 @@
     <Content Include="Views\DocumentosRecibidos\ReporteDocumentosRecibidos.cshtml" />
     <Content Include="Views\DocumentosRecibidos\_ModalGuia.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_EstadoComercialPagoDocumento.cshtml" />
+    <Content Include="Views\DocumentosRecibidosPartials\_InformacionDocumento.cshtml" />
+    <Content Include="Views\ReporteRecibidos\ReporteCfdiRecibidos.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

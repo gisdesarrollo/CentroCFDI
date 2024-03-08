@@ -110,15 +110,6 @@ namespace API.Operaciones.OperacionesProveedores
         
         public String OrdenDeCompra { get; set; }
         
-        //Eliminar estos campos de la BD
-        //public int? Aprobador_Id { get; set; }
-
-        //public int? Departamento_Id { get; set; }
-        //[ForeignKey("Departamento_Id")]
-        //public virtual Departamento Departamento { get; set; }
-        
-        //public String MotivoRechazo { get; set; }
-
         //NotMapped
         [DisplayName("Archivo")]
         [NotMapped]

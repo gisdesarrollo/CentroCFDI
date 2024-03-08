@@ -173,8 +173,10 @@ namespace APBox.Controllers.Catalogos
             }
             PopulaForma(usuario.PerfilId);
             PopulaDepartamento(usuario.Departamento_Id);
-            ViewBag.Controller = "Usuarios";
 
+            usuario.Departamento_Id = usuario.Departamento_Id;
+
+            ViewBag.Controller = "Usuarios";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
             ViewBag.NameHere = "sistema";

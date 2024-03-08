@@ -163,22 +163,24 @@ namespace APBox.Controllers.Operaciones
 
                 if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Aprobado)
                 {
-                    documentoRecibido.EstadoPago = c_EstadoPago.Aprobado;
                     documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
                     documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
+
+                    documentoRecibido.EstadoComercial = c_EstadoComercial.Aprobado;
                 }
 
                 if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Rechazado)
                 {
-                    documentoRecibido.EstadoPago = c_EstadoPago.Rechazado;
-                    documentoRecibido.EstadoComercial = c_EstadoComercial.Rechazado;
                     documentoRecibido.AprobacionesDR.FechaRechazo = DateTime.Now;
                     documentoRecibido.AprobacionesDR.UsuarioRechazo_id = usuario.Id;
                     documentoRecibido.AprobacionesDR.DetalleRechazo = documentoRecibidoEdit.AprobacionesDR.DetalleRechazo;
 
+                    documentoRecibido.EstadoPago = c_EstadoPago.Rechazado;
+
                     //Notificación al usuario que entrega
                     _envioEmail.NotificacionCambioEstadoComercial(usuarioEntrega, documentoRecibido, c_EstadoComercial.Rechazado, (int)ObtenerSucursal());
                 }
+
                 _db.Entry(documentoRecibido).State = EntityState.Modified;
                 _db.SaveChanges();
 

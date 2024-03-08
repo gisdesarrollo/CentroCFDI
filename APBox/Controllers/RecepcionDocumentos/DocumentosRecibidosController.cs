@@ -21,6 +21,7 @@ using System.Web;
 using System.Web.Mvc;
 using Aplicacion.RecepcionDocumentos;
 using Utilerias.LogicaPrincipal;
+using APBox.Models;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -552,6 +553,7 @@ namespace APBox.Controllers.Operaciones
             TempData["AprobadorId"] = null;
             TempData["DepartamentoId"] = null;
 
+
             return View(documentoRecibido);
         }
 
@@ -564,8 +566,6 @@ namespace APBox.Controllers.Operaciones
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
                 var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
                 var usuarioEntrega = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioEntrega_Id);
-
-
 
                 if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Aprobado)
                 {
@@ -669,52 +669,6 @@ namespace APBox.Controllers.Operaciones
         #endregion
 
         #region Validaciones
-
-        public ActionResult AprobarEstadoComercial(int id)
-        {
-            // Obtener el documento recibido con el ID proporcionado 
-            // y asignarlo a la variable tuObjeto
-            var tuObjeto = _db.DocumentoRecibidoDr.Find(id);
-
-            // Verificar si el objeto no es nulo
-            if (tuObjeto != null)
-            {
-                // Cambiar la propiedad EstadoComercial a aprobado
-                tuObjeto.EstadoComercial = c_EstadoComercial.Aprobado;
-
-                // Guardar los cambios 
-                _db.SaveChanges();
-
-                // Redirigir al método Index
-                return RedirectToAction("Index");
-            }
-
-            // Manejar el caso en que el objeto no se encuentre
-            return HttpNotFound();
-        }
-
-        public ActionResult RechazarEstadoComercial(int id)
-        {
-            // Obtener el documento recibido con el ID proporcionado 
-            // y asignarlo a la variable tuObjeto
-            var tuObjeto = _db.DocumentoRecibidoDr.Find(id);
-
-            // Verificar si el objeto no es nulo
-            if (tuObjeto != null)
-            {
-                // Cambiar la propiedad EstadoComercial a aprobado
-                tuObjeto.EstadoComercial = c_EstadoComercial.Rechazado;
-
-                // Guardar los cambios 
-                _db.SaveChanges();
-
-                // Redirigir al método Index
-                return RedirectToAction("Index");
-            }
-
-            // Manejar el caso en que el objeto no se encuentre
-            return HttpNotFound();
-        }
 
         public static string FechaFormat(string fecha)
         {

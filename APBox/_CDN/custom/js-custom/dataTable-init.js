@@ -21,7 +21,8 @@ var KTDatatablesExample = function () {
 
     // Hook export buttons
     var exportButtons = () => {
-        const documentTitle = 'Customer Orders Report';
+        var titulo = document.querySelector(".page-title h1").textContent;
+        const documentTitle = titulo;
         var buttons = new $.fn.dataTable.Buttons(table, {
             buttons: [
                 {

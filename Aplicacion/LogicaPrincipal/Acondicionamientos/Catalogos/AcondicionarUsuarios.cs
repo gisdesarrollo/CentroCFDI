@@ -56,11 +56,11 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos
 
         public static string ObtenerNombreCompleto(int ?usuarioid)
         {
+            if (usuarioid != null)
+            {
             var _db = new AplicacionContext();
             var usuario = _db.Usuarios.Find(usuarioid);
 
-            if (usuario != null)
-            {
                 return $"{usuario.Nombre} {usuario.ApellidoPaterno} {usuario.ApellidoMaterno}";
             }
             else

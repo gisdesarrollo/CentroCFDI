@@ -14,7 +14,7 @@
 <div class="row g-5 g-xl-8">
     @if (!Model.Procesado)
     {
-        <div class="col-5">
+        <div class="col-6">
             <!--begin::List Widget 1-->
             <div class="card card-xl-stretch mb-xl-8">
                 <!--begin::Header-->
@@ -316,6 +316,7 @@
 
         </div>
 
+
         <div class="row g-5 g-xl-8">
             <div class="col-xl-6">
                 <!--begin::List Widget 6-->
@@ -324,11 +325,7 @@
                     <div class="card-body p-0">
                         <!--begin::Header-->
                         <div class="px-9 pt-7 card-rounded h-275px w-100 bg-primary">
-                            <!--begin::Heading-->
-                            <div class="d-flex flex-stack">
-                                <h3 class="m-0 text-white fw-bold fs-3">Datos de CFDi</h3>
-                            </div>
-                            <!--end::Heading-->
+
                             <!--begin::Balance-->
                             <div class="d-flex text-center flex-column text-white pt-8">
                                 <span class="fw-semibold fs-7">Importe Total</span>
@@ -585,19 +582,11 @@
             <div class="col-12">
                 <!--begin::List Widget 7-->
                 <div class="card card-xl-stretch mb-xl-8">
-                    <!--begin::Header-->
-                    <div class="card-header align-items-center border-0 mt-4">
-                        <h3 class="card-title align-items-start flex-column">
-                            <span class="fw-bold text-gray-900">Proceso de aprobación</span>
-                            <span class="text-muted mt-1 fw-semibold fs-7"> </span>
-                        </h3>
-                    </div>
-                    <!--end::Header-->
                     <!--begin::Body-->
-                    <div class="card-body pt-3">
+                    <div class="card-body">
                         <div class="d-flex flex-column flex-xl-row">
                             <!--begin::Content-->
-                            <div class="flex-lg-row-fluid me-xl-15 mb-20 mb-xl-0 col-6">
+                            <div class="flex-lg-row-fluid col-6">
                                 <!--begin::Ticket view-->
                                 <div class="mb-0">
                                     <!--begin::Heading-->
@@ -623,10 +612,27 @@
                             </div>
                             <!--end::Content-->
                             <!--begin::Content-->
-                            <div class="flex-lg-row-fluid me-xl-15 mb-20 mb-xl-0 col-6 ">
+                            <div class="flex-lg-row-fluid col-6">
                                 <!--begin::Ticket view-->
                                 <div class="mb-0">
                                     <!--begin::Heading-->
+                                    <!--begin::Alert-->
+                                    <div class="alert alert-primary d-flex align-items-center p-5">
+                                        <!--begin::Icon-->
+                                        <i class="ki-duotone ki-shield-tick fs-2hx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>
+                                        <!--end::Icon-->
+                                        <!--begin::Wrapper-->
+                                        <div class="d-flex flex-column">
+                                            <!--begin::Title-->
+                                            <h4 class="mb-1 text-dark">Asignar tu CFDi a un aprobador</h4>
+                                            <!--end::Title-->
+                                            <!--begin::Content-->
+                                            <span>El mail del solicitante debe ser del usuario de @sucursalNombre que aprobará tu CFDi. Es importante que des clic en el botón de búsqueda para confirmar que es correcto.</span>
+                                            <!--end::Content-->
+                                        </div>
+                                        <!--end::Wrapper-->
+                                    </div>
+                                    <!--end::Alert-->
                                     <div class="d-flex align-items-center mb-12">
                                         <!--begin::Input wrapper-->
                                         <div class="w-100">
@@ -659,11 +665,11 @@
 
                         <div class="d-flex flex-column flex-xl-row">
                             <!--begin::Content-->
-                            <div class="flex-lg-row-fluid me-xl-15 mb-20 mb-xl-0 col-6">
+                            <div class="flex-lg-row-fluid col-6">
                                 <!--begin::Ticket view-->
                                 <div class="mb-0">
                                     <!--begin::Heading-->
-                                    <div class="d-flex align-items-center mb-12">
+                                    <div class="d-flex align-items-center">
                                         <div class="w-100">
                                             <!--begin::Stat-->
                                             <div class="border border-gray-400 border-dashed rounded py-3 px-4 me-6 mb-3">
@@ -697,7 +703,7 @@
                             </div>
                             <!--end::Content-->
                             <!--begin::Content-->
-                            <div class="flex-lg-row-fluid me-xl-15 mb-20 mb-xl-0 col-6">
+                            <div class="flex-lg-row-fluid col-6">
                                 <!--begin::Ticket view-->
                                 <div class="mb-0">
                                     <!--begin::Heading-->
@@ -763,5 +769,7 @@
 
 @Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
 
+<script>
 
+</script>
 

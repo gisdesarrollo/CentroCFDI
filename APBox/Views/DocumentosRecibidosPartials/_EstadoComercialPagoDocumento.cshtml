@@ -50,22 +50,21 @@
     };
 }
 <script>
-$(document).ready(function() {
-  var valorActual = @Html.Raw(stepActual); // Reemplazar con el valor actual
+    $(document).ready(function() {
+      var valorActual = @Html.Raw(stepActual); // Reemplazar con el valor actual
 
-  $(".stepper-item").each(function(index) {
-    var numeroDiv = $(this).attr("data-step");
+      $(".stepper-item").each(function(index) {
+        var numeroDiv = $(this).attr("data-step");
 
-    if (numeroDiv == valorActual) {
-      $(this).addClass("completed");
-    } else if (numeroDiv == valorActual + 1) {
-      $(this).addClass("current");
-    } else if (numeroDiv < valorActual) {
-      $(this).addClass("completed");
-    }
-  });
-});
-
+        if (numeroDiv == valorActual) {
+          $(this).addClass("completed");
+        } else if (numeroDiv == valorActual + 1) {
+          $(this).addClass("current");
+        } else if (numeroDiv < valorActual) {
+          $(this).addClass("completed");
+        }
+      });
+    });
 </script>
 
 <!--begin::List Widget 2-->

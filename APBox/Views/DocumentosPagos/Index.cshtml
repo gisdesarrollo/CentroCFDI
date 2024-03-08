@@ -60,8 +60,7 @@
                                 var departamentoUsuarioSolicitante = _db.Departamentos.Find(aprobacion.DepartamentoUsuarioSolicitante_Id);
                                 var nombreDepartamento = departamentoUsuarioSolicitante != null ? departamentoUsuarioSolicitante.Nombre : "Departamento no encontrado";
                                 ViewBag.nombreDepartamento = nombreDepartamento;
-
-                                ViewBag.usuarioAprobador = AcondicionarUsuarios.ObtenerNombreCompleto((Int32)aprobacion.UsuarioAprobacionComercial_id);
+                                ViewBag.usuarioAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(aprobacion.UsuarioAprobacionComercial_id);
 
 
                                 <tr>
@@ -304,12 +303,6 @@
             <!--end::Menu-->
         </div>
         <!--end::Wrapper-->
-        <!--begin::Button-->
-        <a href="@Url.Action("CargaCfdi","DocumentosRecibidos")" class="btn btn-secondary">
-            Nuevo
-        </a>
-        <!--end::Button-->
-
     </div>
 </div>
 

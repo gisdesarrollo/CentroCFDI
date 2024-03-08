@@ -34,30 +34,25 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             var documentoRecibido = new List<DocumentosRecibidosDR>();
             List<DocumentosRecibidosDR> documentoRecibidoAprobador = new List<DocumentosRecibidosDR>();
             List<DocumentosRecibidosDR> documentoRecibidos = new List<DocumentosRecibidosDR>();
-            if (socioComercialId != null)
+
+            //Si el usuario es proveedor
+            if(usuario.esProveedor)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
-                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId && dr.SocioComercial_Id == socioComercialId)
-                    .OrderBy(dr => dr.EstadoComercial)
-                    .ToList();
+                                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.SocioComercial_Id == usuario.SocioComercialID)
+                                    .OrderBy(dr => dr.EstadoComercial)
+                                    .ToList();
             }
-            else
+
+            //Si el usuartio es interno
+            if (!usuario.esProveedor)
             {
-                
-                documentoRecibidoAprobador = _db.DocumentoRecibidoDr
-                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.AprobacionesDR.UsuarioSolicitante_Id == usuarioId)
-                    .OrderBy(dr => dr.EstadoComercial)
-                    .ToList();
-                
-                documentoRecibidos = _db.DocumentoRecibidoDr
-                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.Usuario_Id == usuarioId)
-                    .OrderBy(dr => dr.EstadoComercial)
-                    .ToList();
-                
-                documentoRecibido.AddRange(documentoRecibidoAprobador);
-                documentoRecibido.AddRange(documentoRecibidos);
-                
+                documentoRecibido = _db.DocumentoRecibidoDr
+                                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal)
+                                    .OrderBy(dr => dr.EstadoComercial)
+                                    .ToList();
             }
+
             return documentoRecibido;
         }
 
