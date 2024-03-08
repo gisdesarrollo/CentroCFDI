@@ -173,6 +173,7 @@
     <Compile Include="Models\ComplementosPagos\CargasComplementosModel.cs" />
     <Compile Include="Models\Control\ConfiguracionesModel.cs" />
     <Compile Include="Models\Control\HomeModel.cs" />
+    <Compile Include="Models\DocumentosPagos\DocumentosPagosModel.cs" />
     <Compile Include="Models\DocumentosRecibidos\DocumentosRecibidosModel.cs" />
     <Compile Include="Models\Dto\AddendaDto.cs" />
     <Compile Include="Models\Dto\CfdiRelacionadoDto.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Operaciones\Facturacion\FacturaRecibida.cs" />
     <Compile Include="Operaciones\Facturacion\Validacion.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\AdjuntosDR.cs" />
+    <Compile Include="Operaciones\OperacionesProveedores\DocumentosPagadosDR.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\ValidacionesDR.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\ConfiguracionesDR.cs" />
     <Compile Include="Operaciones\OperacionesProveedores\DocumentosRecibidosDR.cs" />

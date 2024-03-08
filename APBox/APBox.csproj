@@ -2552,6 +2552,8 @@
     <None Include="Properties\PublishProfiles\IISProfile12.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile13.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile14.pubxml" />
+    <None Include="Properties\PublishProfiles\IISProfile15.pubxml" />
+    <None Include="Properties\PublishProfiles\IISProfile16.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile2.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile3.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile4.pubxml" />
@@ -2732,6 +2734,8 @@
     <Content Include="Views\DocumentosRecibidosPartials\_EstadoComercialPagoDocumento.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_InformacionDocumento.cshtml" />
     <Content Include="Views\ReporteRecibidos\ReporteCfdiRecibidos.cshtml" />
+    <Content Include="Views\DocumentosPagos\CargaLayout.cshtml" />
+    <Content Include="Views\DocumentosPagos\Pagos.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -146,6 +146,7 @@ namespace API.Context
         public DbSet<RecibidosComprobanteDR> RecibidoComprobanteDr { get; set; }
         public DbSet<AdjuntosDR> AdjuntoDr { get; set; }
         public DbSet<PagosDR> PagoDr { get; set; }
+        public DbSet<DocumentosPagadosDR> DocumentoPagadoDr { get; set; }
         public DbSet<RecibidosXMLDR> RecibidoXmlDr { get; set; }
         public DbSet<RecibidosPDFDR> RecibidoPdfDr { get; set; }
         public DbSet<SolicitudesDR> SolicitudDr { get; set; }

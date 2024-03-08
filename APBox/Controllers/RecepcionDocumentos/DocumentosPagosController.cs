@@ -15,7 +15,10 @@ using System.Linq;
 using System.Web.Mvc;
 using Utilerias.LogicaPrincipal;
 using System.Data.Entity;
-
+using System.Web;
+using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
+using API.Models.DocumentosPagos;
+using Aplicacion.LogicaPrincipal.DocumentosPagos;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -26,6 +29,8 @@ namespace APBox.Controllers.Operaciones
         private readonly ProcesaDocumentoRecibido _procesaDocumentoRecibido = new ProcesaDocumentoRecibido();
         private readonly Decodificar _decodifica = new Decodificar();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
+        private readonly CargaPagosDR _cargaPagosDR = new CargaPagosDR();
+        private readonly ProcesaDocumentoPago _procesaDocumentoPago = new ProcesaDocumentoPago();
 
         // GET: DocumentosPagos
         public ActionResult Index()
@@ -192,7 +197,94 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
+        public ActionResult Exportar()
+        {
+            var pathCompleto = _cargaPagosDR.Exportar();
+            byte[] filedata = System.IO.File.ReadAllBytes(pathCompleto);
+            string contentType = MimeMapping.GetMimeMapping(pathCompleto);
 
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = Path.GetFileName(pathCompleto),
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            return File(filedata, contentType);
+        }
+        public ActionResult Pagos()
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "Pagos";
+            ViewBag.ActionES = "Pagos";
+            ViewBag.NameHere = "Complemento Pagos Cargados";
+
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            
+            
+            DocumentosPagosModel pagosModel = new DocumentosPagosModel();
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            pagosModel.FechaInicial = fechaInicial;
+            pagosModel.FechaFinal = fechaFinal;
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial,fechaFinal,usuario.esProveedor , (int)usuario.SocioComercialID);
+
+            return View(pagosModel);
+        }
+        [HttpPost]
+        public ActionResult Pagos(DocumentosPagosModel pagosModel)
+        {
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            DateTime fechaI = pagosModel.FechaInicial;
+            DateTime fechaF = pagosModel.FechaFinal;
+
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            pagosModel.FechaInicial = fechaInicial;
+            pagosModel.FechaFinal = fechaFinal;
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, usuario.esProveedor,(int)usuario.SocioComercialID);
+
+            return View(pagosModel);
+        }
+        public ActionResult CargaLayout()
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "CargaLayout";
+            ViewBag.ActionES = "Carga Layout";
+            ViewBag.NameHere = "Carga Layout";
+
+            DocumentosPagosModel documentoPagoModel = new DocumentosPagosModel();
+            documentoPagoModel.Previsualizacion = true;
+
+            return View(documentoPagoModel);
+        }
+
+        [HttpPost]
+        public ActionResult CargaLayout(DocumentosPagosModel documentoPagoModel)
+        {
+            String archivo;
+            try
+            {
+                archivo = SubeArchivo(0);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                return View(documentoPagoModel);
+            }
+
+            try
+            {
+              documentoPagoModel.Pagos= _cargaPagosDR.Importar(archivo,ObtenerSucursal(),documentoPagoModel.Previsualizacion);
+                if (!documentoPagoModel.Previsualizacion)
+                {
+                    return RedirectToAction("Pagos");
+                }
+            }catch(Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("Ocurrio un error: {0}", ex.Message));
+            }
+            return View(documentoPagoModel);
+        }
         // GET: DocumentosPagos/Delete/5
         public ActionResult Delete(int id)
         {
@@ -306,46 +398,28 @@ namespace APBox.Controllers.Operaciones
         {
             return Convert.ToInt32(Session["UsuarioId"]);
         }
-        private PathArchivosDto SubeArchivo()
+        private String SubeArchivo(int indice)
         {
-            PathArchivosDto pathArchivos = new PathArchivosDto();
             if (Request.Files.Count > 0)
             {
-                var operacionesStreams = new OperacionesStreams();
-                for (var r = 0; r < Request.Files.Count; r++)
+                var archivo = Request.Files[indice];
+                if (archivo.ContentLength > 0)
                 {
-                    var archivo = Request.Files[r];
-                    var extencion = Path.GetExtension(archivo.FileName);
-                    if (extencion == ".xml" || extencion == ".XML")
-                    {
-                        var pathDestinoXml = Path.Combine(Server.MapPath("~/Archivos/DocumentosProveedores/"), archivo.FileName);
-                        Stream fileStream = archivo.InputStream;
-                        var mStreamer = new MemoryStream();
-                        mStreamer.SetLength(fileStream.Length);
-                        fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
-                        mStreamer.Seek(0, SeekOrigin.Begin);
-                        operacionesStreams.StreamArchivo(mStreamer, pathDestinoXml);
+                    var operacionesStreams = new OperacionesStreams();
+                    var nombreArchivo = Path.GetFileName(archivo.FileName);
 
-                        pathArchivos.PathDestinoXml = pathDestinoXml;
-                    }
-                    if (extencion == ".pdf" || extencion == ".PDF")
-                    {
-                        var pathDestinoPdf = Path.Combine(Server.MapPath("~/Archivos/DocumentosProveedores/"), archivo.FileName);
-                        Stream fileStream = archivo.InputStream;
-                        var mStreamer = new MemoryStream();
-                        mStreamer.SetLength(fileStream.Length);
-                        fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
-                        mStreamer.Seek(0, SeekOrigin.Begin);
-                        operacionesStreams.StreamArchivo(mStreamer, pathDestinoPdf);
-
-                        pathArchivos.PathDestinoPdf = pathDestinoPdf;
-                    }
-
+                    var pathDestino = Path.Combine(Server.MapPath("~/Archivos/DocumentosProveedores/"), archivo.FileName);
+                    Stream fileStream = archivo.InputStream;
+                    var mStreamer = new MemoryStream();
+                    mStreamer.SetLength(fileStream.Length);
+                    fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
+                    mStreamer.Seek(0, SeekOrigin.Begin);
+                    operacionesStreams.StreamArchivo(mStreamer, pathDestino);
+                    return pathDestino;
                 }
-
-                return pathArchivos;
             }
             throw new Exception("Favor de cargar por lo menos un archivo");
+            
         }
         public ActionResult DescargaXml(int id)
         {

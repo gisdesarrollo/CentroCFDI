@@ -492,17 +492,22 @@ namespace APBox.Controllers.Operaciones
                     MetodoPago = cfdi.MetodoPago,
                     Descuento = (double)cfdi.Descuento,
                     Subtotal = (double)cfdi.SubTotal,
-                    Total = (double)cfdi.Total,
-                    TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
-                    TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
+                    Total = (double)cfdi.Total
+                    //TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
+                    //TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
                 };
+                if(cfdi.Impuestos != null)
+                {
+                    documentoRecibidoDr.RecibidosComprobante.TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
+                    documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
+                }
                 documentoRecibidoDr.CfdiRecibidos_Id = null;
                 documentoRecibidoDr.Solicitudes = null;
                 documentoRecibidoDr.Solicitud_Id = null;
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                 documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
                 documentoRecibidoDr.Pagos = null;
-                documentoRecibidoDr.Pagos_Id = null;
+                //documentoRecibidoDr.Pagos_Id = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
 
                 //Table Aprobaciones

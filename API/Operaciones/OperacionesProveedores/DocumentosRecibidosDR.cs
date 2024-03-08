@@ -94,10 +94,10 @@ namespace API.Operaciones.OperacionesProveedores
         [ForeignKey("Solicitud_Id")]
         public virtual SolicitudesDR Solicitudes { get; set; }
 
-        [DisplayName("Validaciones")]
-        public int? Pagos_Id { get; set; }
-        [ForeignKey("Pagos_Id")]
+        [NotMapped]
         public virtual PagosDR Pagos { get; set; }
+        [NotMapped]
+        public virtual List<PagosDR> Detalles { get; set; }
 
         [DisplayName("Aprobaciones")]
         public int? AprobacionesDR_Id { get; set; }
@@ -130,5 +130,9 @@ namespace API.Operaciones.OperacionesProveedores
         [NotMapped]
         public bool isProveedor { get; set; }
 
+        [NotMapped]
+        public bool Previsualizacion { get; set; }
+
+        
     }
 }

@@ -254,11 +254,13 @@
     <Compile Include="CFDI33Objetos\Cfdi33.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Operaciones\AcondicionarComprobanteCfdi.cs" />
     <Compile Include="LogicaPrincipal\Addenda\ProcesaAddenda.cs" />
+    <Compile Include="LogicaPrincipal\CargasMasivas\CSV\CargaPagosDR.cs" />
     <Compile Include="LogicaPrincipal\CargasMasivas\CSV\CargarConceptos.cs" />
     <Compile Include="LogicaPrincipal\Correos\ArchivosAdjuntosDto.cs" />
     <Compile Include="LogicaPrincipal\Correos\EmailDto.cs" />
     <Compile Include="LogicaPrincipal\Correos\EnviosEmails.cs" />
     <Compile Include="LogicaPrincipal\Descargas\DescargasManager.cs" />
+    <Compile Include="LogicaPrincipal\DocumentosPagos\ProcesaDocumentoPago.cs" />
     <Compile Include="LogicaPrincipal\DocumentosRecibidos\ProcesaDocumentoRecibido.cs" />
     <Compile Include="LogicaPrincipal\Facturas\GetTipoCambioDocRel.cs" />
     <Compile Include="LogicaPrincipal\Facturas\OperacionesDocumentosRecibidos.cs" />
