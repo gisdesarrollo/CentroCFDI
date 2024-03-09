@@ -180,7 +180,7 @@
 <script>
     //poner todo en un document ready
     $(document).ready(function () {
-
+    
     
     // Define form element
     const form = document.getElementById('miForm');
@@ -279,8 +279,8 @@
                         //        confirmButton: "btn btn-primary"
                         //    }
                         //});
-
-                        form.submit(); // Submit form
+                        form.dispatchEvent(new Event('submit'));
+                        //form2.submit(); // Submit form
                     }, 2000);
                 }
             });

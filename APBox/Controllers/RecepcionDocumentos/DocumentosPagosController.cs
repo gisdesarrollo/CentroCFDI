@@ -211,6 +211,7 @@ namespace APBox.Controllers.Operaciones
             Response.AppendHeader("Content-Disposition", cd.ToString());
             return File(filedata, contentType);
         }
+            
         public ActionResult Pagos()
         {
             ViewBag.Controller = "DocumentosPagos";
@@ -220,13 +221,12 @@ namespace APBox.Controllers.Operaciones
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             
-            
             DocumentosPagosModel pagosModel = new DocumentosPagosModel();
             var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
             var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial,fechaFinal,usuario.esProveedor , (int)usuario.SocioComercialID);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial,fechaFinal,false , null);
 
             return View(pagosModel);
         }
@@ -241,7 +241,7 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, usuario.esProveedor,(int)usuario.SocioComercialID);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false,null);
 
             return View(pagosModel);
         }

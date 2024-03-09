@@ -203,8 +203,8 @@
                         //        confirmButton: "btn btn-primary"
                         //    }
                         //});
-
-                        form.submit(); // Submit form
+                        form.dispatchEvent(new Event('submit'));
+                        //form.submit(); // Submit form
                     }, 2000);
                 }
             });
