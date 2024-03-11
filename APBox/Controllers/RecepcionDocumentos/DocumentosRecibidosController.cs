@@ -252,7 +252,7 @@ namespace APBox.Controllers.Operaciones
                 {
                     throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor a la empresa asignada");
                 }
-                if (existUUID != null)
+                if (existUUID != null && existUUID.EstadoComercial != c_EstadoComercial.Rechazado)
                 {
                     throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
                 }
