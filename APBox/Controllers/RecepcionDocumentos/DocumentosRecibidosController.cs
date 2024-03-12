@@ -509,6 +509,7 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.Pagos = null;
                 //documentoRecibidoDr.Pagos_Id = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
+                documentoRecibidoDr.SucursalId = sucursal.Id;
 
                 //Table Aprobaciones
                 documentoRecibidoDr.AprobacionesDR_Id = null;
@@ -625,52 +626,6 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        #endregion
-
-        #region Reportes
-        public ActionResult ReporteDocumentosRecibidos()
-        {
-            var sucursalId = ObtenerSucursal();
-            var usuarioId = ObtenerUsuario();
-            var documentosRecibidosModel = new DocumentosRecibidosModel
-            {
-                FechaInicial = DateTime.Now.AddDays(-5), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
-                FechaFinal = DateTime.Now,
-                SucursalId = ObtenerSucursal(),
-            };
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, documentosRecibidosModel.FechaInicial.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-            documentosRecibidosModel.FechaInicial = fechaInicial;
-            documentosRecibidosModel.FechaFinal = fechaFinal;
-            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, usuarioId);
-
-            ViewBag.Controller = "DocumentosRecibidos";
-            ViewBag.Action = "ReporteDocumetosRecibidos";
-            ViewBag.ActionES = "Reporte Documentos Recibidos";
-            ViewBag.NameHere = "Reportes";
-
-            return View(documentosRecibidosModel);
-        }
-
-        [HttpPost]
-        public ActionResult ReporteDocumentosRecibidos(DocumentosRecibidosModel documentosRecibidosModel)
-        {
-            var usuarioId = ObtenerUsuario();
-            var fechaI = documentosRecibidosModel.FechaInicial;
-            var fechaF = documentosRecibidosModel.FechaFinal;
-            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-            documentosRecibidosModel.FechaInicial = fechaInicial;
-            documentosRecibidosModel.FechaFinal = fechaFinal;
-            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, usuarioId);
-
-            ViewBag.Controller = "DocumentosRecibidos";
-            ViewBag.Action = "ReporteDocumetosRecibidos";
-            ViewBag.ActionES = "Reporte Documentos Recibidos";
-            ViewBag.NameHere = "Reportes";
-
-            return View(documentosRecibidosModel);
-        }
         #endregion
 
         #region Validaciones

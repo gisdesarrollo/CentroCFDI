@@ -13,12 +13,12 @@ namespace Aplicacion.LogicaPrincipal.Facturas
         #region variables
         private readonly AplicacionContext _db = new AplicacionContext();
         #endregion
-        public void ObtenerFacturas(ref DocumentosRecibidosModel documentosRecibidosModel,int usuarioId)
+        
+        public void ObtenerFacturas(ref DocumentosRecibidosModel documentosRecibidosModel, int sucursalId)
         {
             var fechaInicial = documentosRecibidosModel.FechaInicial;
             var fechaFinal = documentosRecibidosModel.FechaFinal.AddDays(1); //SE AGREGA UN DIA A LA FECHA FINAL
-            var sucursalId = documentosRecibidosModel.SucursalId;
-            documentosRecibidosModel.DocumentosRecibidos = _db.DocumentoRecibidoDr.Where(fe => fe.Usuario_Id == usuarioId && fe.FechaComprobante >= fechaInicial && fe.FechaComprobante < fechaFinal).ToList();
+            documentosRecibidosModel.DocumentosRecibidos = _db.DocumentoRecibidoDr.Where(fe => fe.FechaComprobante >= fechaInicial && fe.FechaComprobante < fechaFinal && fe.SucursalId == sucursalId).ToList();
 
         }
 

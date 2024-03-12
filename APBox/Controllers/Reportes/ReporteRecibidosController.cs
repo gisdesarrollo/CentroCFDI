@@ -17,11 +17,11 @@ namespace APBox.Controllers.Reportes
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly OperacionesDocumentosRecibidos _operacionesDocumentosRecibidos = new OperacionesDocumentosRecibidos();
         #endregion
+        
         // GET: ReporteCfdiRecibidos
         public ActionResult ReporteCfdiRecibidos()
         {
             var sucursalId = ObtenerSucursal();
-            var usuarioId = ObtenerUsuario();
             var documentosRecibidosModel = new DocumentosRecibidosModel
             {
                 FechaInicial = DateTime.Now.AddDays(-5), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
@@ -32,7 +32,7 @@ namespace APBox.Controllers.Reportes
             var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
-            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, usuarioId);
+            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, sucursalId);
 
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "ReporteDocumetosRecibidos";
@@ -46,14 +46,14 @@ namespace APBox.Controllers.Reportes
         [HttpPost]
         public ActionResult ReporteCfdiRecibidos(DocumentosRecibidosModel documentosRecibidosModel)
         {
-            var usuarioId = ObtenerUsuario();
+            var sucursalId = ObtenerSucursal();
             var fechaI = documentosRecibidosModel.FechaInicial;
             var fechaF = documentosRecibidosModel.FechaFinal;
             var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
-            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, usuarioId);
+            _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, sucursalId);
 
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "ReporteDocumetosRecibidos";

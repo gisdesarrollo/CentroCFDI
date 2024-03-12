@@ -14,9 +14,34 @@
     var usuarioesProveedor = usuario.esProveedor;
 }
 
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex flex-wrap flex-stack pb-7">
+            <!--begin::Title-->
+            <div class="d-flex flex-wrap align-items-center my-1">
+                <h3 class="fw-bold me-5 my-1 text-white">
+                    Selecciona la lista de Comprobantes a Revisar
+                    <span class="text-white fs-7">↓</span>
+                </h3>
+            </div>
+            <!--end::Title-->
+            <!--begin::Actions-->
+            <div class="d-flex my-0 w-300px">
+                <!--begin::Select-->
+                <select class="form-select form-select form-select-solid" data-control="select2" data-hide-search="true" id="tablas">
+                    <option value="tabla1">Comprobantes Aprobados</option>
+                    <option value="tabla2">Comprobantes En Revisión</option>
+                </select>
+            </div>
+            <!--end::Actions-->
+        </div>
+    </div>
+</div>
+
 <div class="row g-5 g-xl-8">
     <div class="col-12">
-        <div class="card card-flush shadow-sm py-4 mb-xl-8">
+        <div class="card card-flush shadow-sm py-4 mb-xl-8 tablas" id="tabla1">
             <!--begin::Card header-->
             <div class="card-header">
                 <h3 class="card-title align-items-start flex-column w-100 mb-5">
@@ -139,7 +164,7 @@
 
 <div class="row g-5 g-xl-8">
     <div class="col-12">
-        <div class="card card-flush shadow-sm py-4 mb-xl-8">
+        <div class="card card-flush shadow-sm py-4 mb-xl-8 tablas" id="tabla2">
             <!--begin::Card header-->
             <div class="card-header">
                 <h3 class="card-title align-items-start flex-column w-100 mb-5">
@@ -306,6 +331,21 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $("#tablas").change(function () {
+            var tabSeleccionado = $(this).val();
+            $(".tablas").hide();
+            $("#" + tabSeleccionado).fadeIn(400); // Se ha cambiado .show() por .fadeIn()
+        });
+
+        // Mostrar la primera pestaña por defecto
+        $("#tablas").trigger("change");
+
+        // Ocultar las pestañas que no sean la primera al cargar la página
+        $(".tablas:not(#tabla1)").hide();
+    });
+</script>
 
 @Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
 

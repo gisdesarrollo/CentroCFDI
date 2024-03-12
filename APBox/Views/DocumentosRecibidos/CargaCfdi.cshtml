@@ -126,7 +126,7 @@
 </div>
 <!--end::Row-->
 
-@using (Html.BeginForm("Create", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data", id = "form" }))
+@using (Html.BeginForm("Create", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data", id = "miForm" }))
 {
     @Html.HiddenFor(model => model.Procesado)
     @Html.HiddenFor(model => model.PathArchivoXml)
@@ -554,7 +554,7 @@
                     <div class="card-body pt-5">
                         <div class="w-100">
                             <!--begin::Title-->
-                            <h4 class="fs-5 fw-semibold text-gray-800">Referencia</h4>
+                            <label for="Referencia" class="form-label fs-5 fw-semibold text-gray-800">Referencia</label>
                             <!--end::Title-->
                             <!--begin::Title-->
                             <div class="d-flex">
@@ -564,7 +564,7 @@
                                         <i class="ki-duotone ki-element-11 fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
                                     </span>
                                 </div>
-                                @Html.EditorFor(model => model.Referencia, new { htmlAttributes = new { @class = "form-control me-3 flex-grow-1" } })
+                                @Html.EditorFor(model => model.Referencia, new { htmlAttributes = new { @class = "form-control me-3 flex-grow-1", required = "required" } })
                                 @Html.ValidationMessageFor(model => model.Referencia, "", new { @class = "text-danger" })
                             </div>
                             <!--end::Title-->
@@ -769,7 +769,7 @@
 
 @Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
 
+
 <script>
 
 </script>
-

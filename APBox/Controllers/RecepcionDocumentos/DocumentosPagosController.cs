@@ -217,7 +217,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosPagos";
             ViewBag.Action = "Pagos";
             ViewBag.ActionES = "Pagos";
-            ViewBag.NameHere = "Complemento Pagos Cargados";
+            ViewBag.NameHere = "Pagos Procesados";
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             
@@ -245,12 +245,13 @@ namespace APBox.Controllers.Operaciones
 
             return View(pagosModel);
         }
+        
         public ActionResult CargaLayout()
         {
             ViewBag.Controller = "DocumentosPagos";
             ViewBag.Action = "CargaLayout";
             ViewBag.ActionES = "Carga Layout";
-            ViewBag.NameHere = "Carga Layout";
+            ViewBag.NameHere = "Carga Layout de Pagos";
 
             DocumentosPagosModel documentoPagoModel = new DocumentosPagosModel();
             documentoPagoModel.Previsualizacion = true;
@@ -261,6 +262,11 @@ namespace APBox.Controllers.Operaciones
         [HttpPost]
         public ActionResult CargaLayout(DocumentosPagosModel documentoPagoModel)
         {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "CargaLayout";
+            ViewBag.ActionES = "Carga Layout";
+            ViewBag.NameHere = "Carga Layout de Pagos";
+
             String archivo;
             try
             {
@@ -283,6 +289,9 @@ namespace APBox.Controllers.Operaciones
             {
                 ModelState.AddModelError("", String.Format("Ocurrio un error: {0}", ex.Message));
             }
+
+            documentoPagoModel.Previsualizacion = false;
+            
             return View(documentoPagoModel);
         }
         // GET: DocumentosPagos/Delete/5

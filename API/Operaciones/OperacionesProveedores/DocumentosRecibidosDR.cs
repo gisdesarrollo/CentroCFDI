@@ -19,6 +19,10 @@ namespace API.Operaciones.OperacionesProveedores
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public int SucursalId { get; set; }
+        [ForeignKey("SucursalId")]
+        public virtual Sucursal Sucursal { get; set; }
+
         [DisplayName("Tipo Documento Recibido")]
         public c_TipoDocumentoRecibido TipoDocumentoRecibido { get; set; }
 

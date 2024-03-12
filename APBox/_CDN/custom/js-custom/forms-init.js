@@ -2,16 +2,8 @@ $(document).ready(function() {
 
     // Agrega las clases de bootstrap para todas las tablas que tengan dataTables
     $('.dataTable').addClass('table table-condensed');
-    $('table').addClass('table table-condensed font-size-11');
+    $('table').addClass('table table-condensed');
 
-
-    //Convierte a todos los inputs de texto en mayasculas
-    $(':input:not(".minusculas")').css('text-transform', 'uppercase');
-    $('textarea:not(".minusculas")').css('text-transform', 'uppercase');
-    $('input[type=text]:not(".minusculas")').keyup(function() {
-        $(this).css('text-transform', 'uppercase');
-        this.value = this.value.toUpperCase();
-    });
 
     $(function() {
         $("#Pago_FechaPago").datetimepicker({

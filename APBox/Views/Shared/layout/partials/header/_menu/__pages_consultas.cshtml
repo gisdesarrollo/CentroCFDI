@@ -3,20 +3,26 @@
     <!--begin:Tabs nav-->
     <div class="d-flex w-100 overflow-auto">
         <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
-            <!--begin:Nav item-->
-            <li class="nav-item mx-lg-1">
-                <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#" data-bs-toggle="tab" data-bs-target="#descargas">
-                    Descargas
-                </a>
-            </li>
-            <!--end:Nav item-->
-            <!--begin:Nav item-->
-            <li class="nav-item mx-lg-1">
-                <a class="nav-link py-3 py-lg-6  text-active-primary" href="#" data-bs-toggle="tab" data-bs-target="#reportes">
-                    Reportes
-                </a>
-            </li>
-            <!--end:Nav item-->
+            @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("DOCUMENTOSRECIBIDOS"))
+            {
+                <!--begin:Nav item-->
+                <li class="nav-item mx-lg-1">
+                    <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#" data-bs-toggle="tab" data-bs-target="#descargas">
+                        Descargas
+                    </a>
+                </li>
+                <!--end:Nav item-->
+            }
+            @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("DOCUMENTOSRECIBIDOS"))
+            {
+                <!--begin:Nav item-->
+                <li class="nav-item mx-lg-1">
+                    <a class="nav-link py-3 py-lg-6  text-active-primary" href="#" data-bs-toggle="tab" data-bs-target="#reportes">
+                        Reportes
+                    </a>
+                </li>
+                <!--end:Nav item-->
+            }
         </ul>
     </div>
     <!--end:Tabs nav-->
@@ -61,7 +67,7 @@
                                     </div>
                                     <!--end:Menu item-->
                                 }
-                                </div>
+                            </div>
                             <!--end:Col-->
                         </div>
                         <!--end:Row-->
@@ -77,6 +83,8 @@
             </div>
             <!--end:Tab pane-->
         }
+        @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("DOCUMENTOSRECIBIDOS"))
+        {
             <!--begin:Tab pane-->
             <div class="tab-pane  w-lg-600px" id="reportes">
                 <!--begin:Row-->
@@ -87,9 +95,8 @@
                         <div class="row">
                             <!--begin:Col-->
                             <div class="col-lg-6 mb-6 mb-lg-0">
-                                @if (User.IsInRole("FACTURASEMITIDAS") || User.IsInRole("DOCUMENTOSRECIBIDOS"))
-                                {
-                                    <!--begin:Menu section-->
+
+                                <!--begin:Menu section-->
                                 <div class="mb-0">
                                     <!--begin:Menu heading-->
                                     <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Timbrado</h4>
@@ -97,7 +104,7 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
-                                        <a href="@Url.Action("ReporteFacturasEmitidas","FacturasEmitidas")" class="menu-link ">
+                                        <a href="@Url.Action("ReporteFacturasEmitidas", "FacturasEmitidas")" class="menu-link ">
                                             <span class="menu-title">CFDi Emitidos</span>
                                         </a>
                                         <!--end:Menu link-->
@@ -114,28 +121,27 @@
                                             <!--end:Menu link-->
                                         </div>
                                     }
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="@Url.Action("ReportePagos","FacturasEmitidas")" class="menu-link ">
-                                                <span class="menu-title">CFDi Complemento Pago</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="@Url.Action("Index","Home")" class="menu-link ">
-                                                <span class="menu-title">CFDi Nómina</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("ReportePagos", "FacturasEmitidas")" class="menu-link ">
+                                            <span class="menu-title">CFDi Complemento Pago</span>
+                                        </a>
+                                        <!--end:Menu link-->
                                     </div>
-                                    <!--end:Menu section-->
-                                }
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index", "Home")" class="menu-link ">
+                                            <span class="menu-title">CFDi Nómina</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                </div>
+                                <!--end:Menu section-->
                             </div>
                         </div>
                         <!--end:Row-->
@@ -150,8 +156,8 @@
                 <!--end:Row-->
             </div>
             <!--end:Tab pane-->
-
-        </div>
+        }
+    </div>
     <!--end:Tab content-->
 </div>
 <!--end:Pages menu-->

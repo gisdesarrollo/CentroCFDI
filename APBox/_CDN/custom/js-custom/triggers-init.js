@@ -44,7 +44,7 @@ $(".fecha").flatpickr({
 });
 
 //Agrega la clase de bootstrap a todos los form elements
-$('input:not(:file):not(:button), select, textarea').addClass('form-control');
+//$('input:not(:file):not(:button), select, textarea').addClass('');
 
 //Funcion para agregar el plugin de select2 a todos los select
 $('select').attr('data-control', 'select2');
