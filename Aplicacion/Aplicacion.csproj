@@ -267,6 +267,7 @@
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteManager.cs" />
     <Compile Include="LogicaPrincipal\GeneracionComprobante\ComprobanteXsaManager.cs" />
     <Compile Include="LogicaPrincipal\GeneracionXSA\XsaManager.cs" />
+    <Compile Include="LogicaPrincipal\Validacion\ValidacionesPagos.cs" />
     <Compile Include="ObjetoImpDocRel\Cfdi40Objetos.cs" />
     <Compile Include="CFDI40Xsd\Cfdi40.cs" />
     <Compile Include="Context\AplicacionContext.cs" />

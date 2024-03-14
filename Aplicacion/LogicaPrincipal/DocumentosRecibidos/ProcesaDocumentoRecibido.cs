@@ -4,6 +4,7 @@ using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
 using Newtonsoft.Json;
 using SW.Services.Authentication;
+using SW.Services.Taxpayer;
 using SW.Services.Validate;
 using System;
 using System.Collections.Generic;
@@ -117,6 +118,25 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
                     throw new Exception(String.Format("Error al momento de validar el CFDI: {0}", response.message));
                 }
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return response;
+        }
+
+        public TaxpayerResponse ValidaRFC(String token,String rfc)
+        {
+            TaxpayerResponse response = new TaxpayerResponse();
+            try
+            {
+                Taxpayer taxpayer = new Taxpayer(urlProduccion, token);
+                response = taxpayer.GetTaxpayer(rfc);
+                if(response.status == "error")
+                {
+                    throw new Exception(String.Format("Error al momento de validar el RFC: {0}", response.message));
+                }
             }
             catch (Exception ex)
             {

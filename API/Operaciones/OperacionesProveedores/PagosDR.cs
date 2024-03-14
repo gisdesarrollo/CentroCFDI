@@ -1,6 +1,7 @@
 ﻿using API.Catalogos;
 using API.Enums;
 using API.Models;
+using API.Models.Dto;
 using API.Relaciones;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,16 @@ namespace API.Operaciones.OperacionesProveedores
         [ForeignKey("SocioComercial_Id")]
         public virtual SocioComercial SocioComercial { get; set; }
 
+        [NotMapped]
+        public bool Procesado { get; set; }
 
+        [NotMapped]
+        public HttpPostedFileBase ArchivoXml { get; set; }
+
+        [NotMapped]
+        public ComplementoPagoDto ComplementoPago{ get; set; }
+
+        [NotMapped]
+        public String Detalle_Validacion { get; set; }
     }
 }

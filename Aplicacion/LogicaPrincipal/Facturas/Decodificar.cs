@@ -21,6 +21,33 @@ namespace Aplicacion.LogicaPrincipal.Facturas
                     var serializer40 = new XmlSerializer(typeof(ComprobanteCFDI));
                     StreamReader reader40 = new StreamReader(path);
                     var comprobante40 = (ComprobanteCFDI)serializer40.Deserialize(reader40);
+                    foreach (var oComplementoInterior in comprobante40.Complemento.Any)
+                    {
+                        if (oComplementoInterior.Name.Contains("TimbreFiscalDigital"))
+                        {
+
+                            XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(TimbreFiscalDigital));
+                            using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                            {
+                                comprobante40.TimbreFiscalDigital =
+                                    (TimbreFiscalDigital)oSerializerComplemento.Deserialize(readerComplemento);
+                            }
+
+                        }
+                        
+                        if (oComplementoInterior.Name.Contains("Pagos"))
+                        {
+                            XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(Pagos));
+                            using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                            {
+                                comprobante40.Pagos =
+                                    (Pagos)oSerializerComplemento.Deserialize(readerComplemento);
+                            }
+
+                        }
+
+                    }
+
                     reader40.Close();
                     reader40.Dispose();
                     return comprobante40;

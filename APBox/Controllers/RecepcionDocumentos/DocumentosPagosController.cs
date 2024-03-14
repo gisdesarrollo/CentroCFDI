@@ -19,6 +19,7 @@ using System.Web;
 using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using API.Models.DocumentosPagos;
 using Aplicacion.LogicaPrincipal.DocumentosPagos;
+using Aplicacion.LogicaPrincipal.Validacion;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -31,6 +32,7 @@ namespace APBox.Controllers.Operaciones
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly CargaPagosDR _cargaPagosDR = new CargaPagosDR();
         private readonly ProcesaDocumentoPago _procesaDocumentoPago = new ProcesaDocumentoPago();
+        private readonly ValidacionesPagos _validaPagos = new ValidacionesPagos();
 
         // GET: DocumentosPagos
         public ActionResult Index()
@@ -220,20 +222,27 @@ namespace APBox.Controllers.Operaciones
             ViewBag.NameHere = "Pagos Procesados";
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
             DocumentosPagosModel pagosModel = new DocumentosPagosModel();
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            DateTime dayI = DateTime.Now.AddDays(-6);
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, dayI.Day, 0, 0, 0);
             var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial,fechaFinal,false , null);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial,fechaFinal,false , null,sucursal.Id);
 
             return View(pagosModel);
         }
         [HttpPost]
         public ActionResult Pagos(DocumentosPagosModel pagosModel)
         {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "Pagos";
+            ViewBag.ActionES = "Pagos";
+            ViewBag.NameHere = "Pagos Procesados";
+
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
             DateTime fechaI = pagosModel.FechaInicial;
             DateTime fechaF = pagosModel.FechaFinal;
 
@@ -241,7 +250,7 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false,null);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false,null,sucursal.Id);
 
             return View(pagosModel);
         }
@@ -280,7 +289,8 @@ namespace APBox.Controllers.Operaciones
 
             try
             {
-              documentoPagoModel.Pagos= _cargaPagosDR.Importar(archivo,ObtenerSucursal(),documentoPagoModel.Previsualizacion);
+                var usuario = _db.Usuarios.Find(ObtenerUsuario());
+              documentoPagoModel.Pagos= _cargaPagosDR.Importar(archivo,ObtenerSucursal(),documentoPagoModel.Previsualizacion,usuario.Id);
                 if (!documentoPagoModel.Previsualizacion)
                 {
                     return RedirectToAction("Pagos");
@@ -294,6 +304,137 @@ namespace APBox.Controllers.Operaciones
             
             return View(documentoPagoModel);
         }
+
+        public ActionResult ComplementosPagosCargados()
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "ComplementosPagosCargados";
+            ViewBag.ActionES = "Complementos Pagos Cargados";
+            ViewBag.NameHere = "Complementos Pagos Cargados";
+
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            DocumentosPagosModel pagosModel = new DocumentosPagosModel();
+            DateTime dayI = DateTime.Now.AddDays(-6);
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, dayI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            pagosModel.FechaInicial = fechaInicial;
+            pagosModel.FechaFinal = fechaFinal;
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null,sucursal.Id);
+
+            return View(pagosModel);
+        }
+        [HttpPost]
+        public ActionResult ComplementosPagosCargados(DocumentosPagosModel pagosModel)
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "ComplementosPagosCargados";
+            ViewBag.ActionES = "Complementos Pagos Cargados";
+            ViewBag.NameHere = "Complementos Pagos Cargados";
+
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            var fechaI = pagosModel.FechaInicial;
+            var fechaF = pagosModel.FechaFinal;
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            pagosModel.FechaInicial = fechaInicial;
+            pagosModel.FechaFinal = fechaFinal;
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null,sucursal.Id);
+
+            return View(pagosModel);
+        }
+        public ActionResult CargaComplementoPago(int Id)
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "CargaComplementoPago";
+            ViewBag.ActionES = "Carga Complemento Pago";
+            ViewBag.NameHere = "Carga complemento Pago";
+            var pago = _db.PagoDr.Find(Id);
+            pago.Procesado = false;
+
+            return View(pago);
+        }
+        [HttpPost]
+        public ActionResult CargaComplementoPago(PagosDR pagoDR)
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "CargaComplementoPago";
+            ViewBag.ActionES = "Carga Complemento Pago";
+            ViewBag.NameHere = "Carga complemento Pago";
+            ComprobanteCFDI cfdi = new ComprobanteCFDI();
+            ComplementoPagoDto pagoDto = new ComplementoPagoDto();
+            String archivo;
+            try
+            {
+                archivo = SubeArchivo(0);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                return View(pagoDR);
+            }
+            
+            var pago = _db.PagoDr.Find(pagoDR.Id);
+            try
+            {
+                cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo);
+                if (cfdi != null)
+                {
+                    pago.ComplementoPago = new ComplementoPagoDto();
+                    pago.ComplementoPago.NombreEmisor = cfdi.Emisor.Nombre;
+                    pago.ComplementoPago.NombreReceptor = cfdi.Receptor.Nombre;
+                    if(cfdi.Pagos.Pago.Length > 1)
+                    {
+                        ModelState.AddModelError("", "Error: se encontraron mas de 1 pago realizado");
+                    }
+                    foreach (var pagoXml in cfdi.Pagos.Pago)
+                    {
+                        pago.ComplementoPago.FormaPago = pagoXml.FormaDePagoP;
+                        pago.ComplementoPago.TipoComprobante = cfdi.TipoDeComprobante;
+                        pago.ComplementoPago.TipoCambio = pagoXml.TipoCambioP;
+                        pago.ComplementoPago.Moneda = pagoXml.MonedaP;
+                        pago.ComplementoPago.Monto = pagoXml.Monto;
+                        pago.ComplementoPago.Serie = cfdi.Serie;
+                        pago.ComplementoPago.Folio = cfdi.Folio;
+                        pago.ComplementoPago.Uuid = cfdi.TimbreFiscalDigital.UUID;
+                        pago.ComplementoPago.FechaPago = pagoXml.FechaPago.ToString("dd/MM/yyyy");
+                    }
+                   pago.Detalle_Validacion = _validaPagos.ValidaComplementoPago(pago, cfdi);
+                }
+                pago.Procesado = true;
+            }catch(Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
+                return View(pagoDR);
+            }
+            return View(pago);
+        }
+
+        public ActionResult EstadoPago(PagosDR pagoDR)
+        {
+            try
+            {
+                var pago = _db.PagoDr.Find(pagoDR.Id);
+                var usuario = _db.Usuarios.Find(ObtenerUsuario());
+                var documentoRecibido = _db.DocumentoRecibidoDr.Find(pago.ComplementoPagoRecibido_Id);
+                
+                documentoRecibido.EstadoPago = c_EstadoPago.Completado;
+                documentoRecibido.AprobacionesDR.FechaCompletaPagos = DateTime.Now;
+                documentoRecibido.AprobacionesDR.UsuarioCompletaPagos_id = usuario.Id;
+                
+                _db.Entry(documentoRecibido).State = EntityState.Modified;
+                _db.SaveChanges();
+
+                return RedirectToAction("ComplementosPagosCargados");
+            }
+            catch
+            {
+                return View("CargaComplementoPago",pagoDR.Id);
+            }
+            
+        }
+    
         // GET: DocumentosPagos/Delete/5
         public ActionResult Delete(int id)
         {

@@ -5,6 +5,7 @@ using Aplicacion.Context;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
             return path;
         }
 
-        public List<PagosDR> Importar(string path, int sucursalId, bool previsualizacion)
+        public List<PagosDR> Importar(string path, int sucursalId, bool previsualizacion,int usuarioId)
         {
             var errores = new List<String>();
             var pagos = new List<PagosDR>();
@@ -196,6 +197,14 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             docPagoRelacionado.Pago_Id = pago.Id;
                             _db.DocumentoPagadoDr.Add(docPagoRelacionado);
                         }
+                        _db.SaveChanges();
+
+                        //actualiza estatus pago
+                        var documentoRecibido = _db.DocumentoRecibidoDr.Find(pago.ComplementoPagoRecibido_Id);
+                        documentoRecibido.EstadoPago = c_EstadoPago.Pagado;
+                        documentoRecibido.AprobacionesDR.FechaCargaPagos = DateTime.Now;
+                        documentoRecibido.AprobacionesDR.UsuarioCargaPagos_id = usuarioId;
+                        _db.Entry(documentoRecibido).State = EntityState.Modified;
                         _db.SaveChanges();
                     }
                     catch (DbEntityValidationException dbEx)

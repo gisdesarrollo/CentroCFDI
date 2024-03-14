@@ -178,6 +178,7 @@
     <Compile Include="Models\Dto\AddendaDto.cs" />
     <Compile Include="Models\Dto\CfdiRelacionadoDto.cs" />
     <Compile Include="Models\Dto\ComplementoCartaPorteDto.cs" />
+    <Compile Include="Models\Dto\ComplementoPagoDto.cs" />
     <Compile Include="Models\Dto\ComprobanteDto.cs" />
     <Compile Include="Models\Dto\ConceptoAddendaDto.cs" />
     <Compile Include="Models\Dto\DataCancelacionRequestXsaDto.cs" />
