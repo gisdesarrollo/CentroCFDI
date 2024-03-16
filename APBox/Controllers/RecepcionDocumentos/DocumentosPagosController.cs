@@ -167,6 +167,20 @@ namespace APBox.Controllers.Operaciones
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
                 var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
                 var usuarioEntrega = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioEntrega_Id);
+                var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+
+                documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;
+                documentoRecibido.EstadoPago = documentoRecibidoEdit.EstadoPago;
+                documentoRecibido.AprobacionesDR.Observaciones = documentoRecibidoEdit.AprobacionesDR.Observaciones;
+
+                if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.EnRevision && documentoRecibidoEdit.AprobacionesDR.Observaciones != null)
+                {
+                    var usuarioAprobador = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id);
+
+                    documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+                    documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
+                    _envioEmail.NotificacionRevisionComercial(usuarioAprobador, documentoRecibido, sucursal.Id);
+                }
 
                 if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Aprobado)
                 {

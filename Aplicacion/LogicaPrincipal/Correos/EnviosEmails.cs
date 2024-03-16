@@ -192,6 +192,57 @@ namespace Aplicacion.LogicaPrincipal.Correos
             }
         }
 
+        public void NotificacionRevisionComercial(Usuario usuario, DocumentosRecibidosDR documentoRecibido, int sucursalId)
+        {
+            //Obtener el correo del usuario
+            string destinatario = usuario.Email;
+            string asunto = null;
+            string cuerpoCorreo = null;
+
+            var sucursal = _db.Sucursales.Find(sucursalId);
+
+            if (sucursal.MailEmisor != null)
+            {
+                var validaEmail = ComprobarFormatoEmail(sucursal.MailEmisor);
+
+                if (validaEmail)
+                {
+                    asunto = "Revisión de Documento en CentroCFDi: Acción Requerida";
+                    cuerpoCorreo = $"Estimado {usuario.NombreCompleto},\n\n" +
+                                   "Quería informarte que uno de los Documentos Recibidos que aprobaste en el sistema CentroCFDi ha sido devuelto para revisión por parte del departamento de Cuentas por Pagar.\n\n" +
+                                   "Detalle del Documento:\n\n" +
+                                   $"Número de Documento: {documentoRecibido.CfdiRecibidos_UUID}\n" +
+                                   $"Fecha de Carga: {documentoRecibido.FechaEntrega}\n" +
+                                   $"Proveedor: {documentoRecibido.SocioComercial.RazonSocial}\n\n" +
+                                   "Observaciones de Cuentas por Pagar:\n\n" +
+                                   $"{documentoRecibido.AprobacionesDR.Observaciones}\n\n" +
+                                   "Por favor, te solicitamos que revises las observaciones proporcionadas por el departamento de Cuentas por Pagar y tomes las medidas necesarias para resolver cualquier problema o discrepancia que haya surgido.\n\n" +
+                                   "Una vez que hayas realizado los ajustes pertinentes, por favor, vuelve a Aprobar el documento en el sistema CentroCFDi para su revisión adicional.\n\n" +
+                                   "Si el problema no puede resolverse en este movimiento, Rechaza el Documento y podrán cargarlo de nuevo.\n\n" +
+                                   "Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con Cuentas por Pagar.\n\n" +
+                                   "Gracias por tu atención y pronta acción en este asunto.\n\n" +
+                                   "Saludos,\n" +
+                                   "Equipo de CentroCFDi";
+
+                    using (SmtpClient smtpClient = new SmtpClient("mail.gisconsultoria.com", 26))
+                    {
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = new NetworkCredential("facturas.xsa@gisconsultoria.com", "Gisconsul+01");
+                        smtpClient.EnableSsl = false;
+
+                        MailMessage mail = new MailMessage();
+                        mail.From = new MailAddress(sucursal.MailEmisor);
+                        mail.To.Add(destinatario);
+                        mail.Subject = asunto;
+                        mail.Body = cuerpoCorreo;
+
+                        smtpClient.Send(mail);
+                    }
+                }
+            }
+
+        }
+
         public void NotificacionNuevoUsuario(Usuario usuario, int sucursalId)
         {
             string destinatario = usuario.Email;

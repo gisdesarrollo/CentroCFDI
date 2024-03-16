@@ -68,5 +68,8 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("Detalle Rechazo")]
         public String DetalleRechazo { get; set; }
 
+        [DisplayName("Observaciones")]
+        public String Observaciones { get; set; }
+
     }
 }

@@ -77,31 +77,41 @@ function validarEmail() {
             }
         });
     }
+</script>
 
-    var radioRechazado = document.getElementById('rechazado');
-    console.log("rechazado: " + radioRechazado);
-    var radioAprobado = document.getElementById('aprobado');
-    var motivoRechazoDiv = document.getElementById('motivo-rechazo');
-    radioRechazado.addEventListener('change', function () {
-        if (radioRechazado.checked) {
-            motivoRechazoDiv.style.display = 'block';
-            $('#EstadoComercial').val(2);
-            $('#EstadoPago').val(4);
-            console.log("rechazado");
-            console.log("EstadoPago: " + $('#EstadoPago').val());
+<script>
+    $(document).ready(function () {
 
-        }
+        //obtener el nombre del radio al que le de click
+        $('input[type=radio]').click(function () {
+            var name = $(this).attr('name');
+            var id = $(this).attr('id');
+            var value = $(this).val();
+
+            if (name == 'EstadoComercial') {
+                $('#EstadoComercial').val(value);
+                if (id == 'RechazadoComercial') {
+                    $('#motivo-rechazo').show();
+                } else {
+                    $('#motivo-rechazo').hide();
+                }
+                if (id == 'EnRevisionComercial') {
+                    $('#observaciones').show();
+                } else {
+                    $('#observaciones').hide();
+                }
+            }
+            if (name == 'EstadoPago') {
+                $('#EstadoPago').val(value);
+                if (id == 'RechazadoPago') {
+                    $('#motivo-rechazo').show();
+                    alert('Rechazado');
+                } else {
+                    $('#motivo-rechazo').hide();
+                }
+            }
+        });
     });
-
-    radioAprobado.addEventListener('change', function () {
-        motivoRechazoDiv.style.display = 'none';
-        $('#MotivoRechazo').val("");
-        $('#EstadoComercial').val(1);
-        $('#EstadoPago').val(1);
-        console.log("aprobado");
-        console.log("EstadoPago: " + $('#EstadoPago').val());
-    });
-
 </script>
 
 <script>
@@ -209,5 +219,55 @@ function validarEmail() {
         });
     });
 
+    $(document).ready(function () {
+        "use strict";
+
+        // Class definition
+        var KTDatatablesExample = function () {
+            // Shared variables
+            var table;
+            var datatable;
+
+            // Private functions
+            var initDatatable = function () {
+                // Set date data order
+                const tableRows = table.querySelectorAll('tbody tr');
+
+                // Init datatable --- more info on datatables: https://datatables.net/manual/
+                datatable = $(table).DataTable({
+                    "info": false,
+                    'order': [],
+                    'pageLength': 10,
+                });
+            }
+
+            // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+            var handleSearchDatatable = () => {
+                const filterSearch = document.querySelector('[data-kt-filter-Todos="search"]');
+                filterSearch.addEventListener('keyup', function (e) {
+                    datatable.search(e.target.value).draw();
+                });
+            }
+
+            // Public methods
+            return {
+                init: function () {
+                    table = document.querySelector('#tablaTodos');
+
+                    if (!table) {
+                        return;
+                    }
+
+                    initDatatable();
+                    handleSearchDatatable();
+                }
+            };
+        }();
+
+        // On document ready
+        KTUtil.onDOMContentLoaded(function () {
+            KTDatatablesExample.init();
+        });
+    });
 
 </script>

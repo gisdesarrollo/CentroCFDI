@@ -1,0 +1,165 @@
+﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
+
+<div class="col-xl-6">
+    <!--begin::List Widget 2-->
+    <div class="card shadow card-xl-stretch  mb-8">
+        <!--begin::Header-->
+        <div class="card-header border-0">
+            <h3 class="card-title fw-bold text-gray-900">Resultado de la validación</h3>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body pt-2">
+            <!--begin::Alert-->
+            <div class="alert bg-light-primary d-flex flex-column flex-sm-row p-5 mb-10">
+                <!--begin::Icon-->
+                <i class="ki-duotone ki-shield-tick fs-2hx text-primary me-4 mb-5 mb-sm-0">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                <!--end::Icon-->
+                <!--begin::Wrapper-->
+                <div class="d-flex flex-column pe-0 pe-sm-10">
+                    <!--begin::Title-->
+                    <h4 class="fw-semibold fs-6">CFDi validado exitosamente</h4>
+                    <!--end::Title-->
+                    <!--begin::Content-->
+                    <span>El CFDi cumple con las condiciones para ser cargado en el sistema y procesado para pago.</span>
+                    <!--end::Content-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Alert-->
+            <!--begin::Alert-->
+            <div class="d-flex align-items-center mb-7">
+                <!--begin::Symbol-->
+                <div class="symbol symbol-50px me-5">
+                    <span class="symbol-label bg-light-primary">
+                        <i class="ki-duotone ki-double-check fs-2x text-primary">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </span>
+                </div>
+                <!--end::Symbol-->
+                <!--begin::Text-->
+                <div class="d-flex flex-column">
+                    <h4 class="fw-semibold fs-6">El Receptor del CFDi es correcto</h4>
+                    <span class="text-muted fw-bold"> </span>
+                </div>
+                <!--end::Text-->
+            </div>
+            <!--end::Alert-->
+            <!--begin::Alert-->
+            <div class="d-flex align-items-center mb-7">
+                <!--begin::Symbol-->
+                <div class="symbol symbol-50px me-5">
+                    <span class="symbol-label bg-light-primary">
+                        <i class="ki-duotone ki-double-check fs-2x text-primary">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </span>
+                </div>
+                <!--end::Symbol-->
+                <!--begin::Text-->
+                <div class="d-flex flex-column">
+                    <h4 class="fw-semibold fs-6">El Emisor del CFDi es correcto</h4>
+                    <span class="text-muted fw-bold">@ViewBag.Emisor</span>
+                </div>
+                <!--end::Text-->
+            </div>
+            <!--end::Alert-->
+            <!--begin::Alert-->
+            <div class="d-flex align-items-center mb-7">
+                <!--begin::Symbol-->
+                <div class="symbol symbol-50px me-5">
+                    <span class="symbol-label bg-light-primary">
+                        <i class="ki-duotone ki-double-check fs-2x text-primary">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </span>
+                </div>
+                <!--end::Symbol-->
+                <!--begin::Text-->
+                <div class="d-flex flex-column">
+                    <h4 class="fw-semibold fs-6">El CFDi no se ha cargado previamente</h4>
+                    <span class="text-muted fw-bold">@Html.DisplayFor(model => model.CfdiRecibidos_UUID)</span>
+                </div>
+                <!--end::Text-->
+            </div>
+            <!--end::Alert-->
+            <!--begin::Alert-->
+            <div class="d-flex align-items-center mb-7">
+                <!--begin::Symbol-->
+                <div class="symbol symbol-50px me-5">
+                    <span class="symbol-label bg-light-primary">
+                        <i class="ki-duotone ki-double-check fs-2x text-primary">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </span>
+                </div>
+                <!--end::Symbol-->
+                <!--begin::Text-->
+                <div class="d-flex flex-column">
+                    <h4 class="fw-semibold fs-6">La fecha del CFDi está dentro del mes actual</h4>
+                    <span class="text-muted fw-bold">@Html.DisplayFor(model => model.FechaComprobante)</span>
+                </div>
+                <!--end::Text-->
+            </div>
+            <!--end::Alert-->
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::List Widget 2-->
+</div>
+
+<div class="col-xl-6">
+    <!--begin::List Widget 4-->
+    <div class="card shadow card-xl-stretch mb-xl-8">
+        <!--begin::Header-->
+        <div class="card-header border-0 pt-5">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label fw-bold text-gray-900">Informe de validación SAT</span>
+
+                <span class="text-muted mt-1 fw-semibold fs-7">Respuesta de validación de timbrado</span>
+            </h3>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body pt-5">
+            @foreach (var detalle in Model.DetalleArrays)
+            {
+                if (@detalle.Split(':')[0] != "")
+                {
+                    <!--begin::Item-->
+                    <div class="d-flex align-items-center bg-light-success rounded p-5 mb-7">
+                        <i class="ki-duotone ki-abstract-26 text-success fs-1 me-5"><span class="path1"></span><span class="path2"></span></i>
+                        <!--begin::Title-->
+                        <div class="flex-grow-1 me-2">
+                            <h4 class="fw-semibold fs-6">@detalle.Split(':')[0]</h4>
+                            @if (detalle.Split(':')[1].Length > 1)
+                            {
+                                <span class="text-muted fw-semibold d-block">@detalle.Split(':')[1]</span>
+                            }
+                            @if (detalle.Split(':')[2].Length > 1)
+                            {
+                                <span class="text-muted fw-semibold d-block">@detalle.Split(':')[2]</span>
+                            }
+                        </div>
+                        <!--end::Title-->
+                        <!--begin::Lable-->
+                        @*<span class="fw-bold text-success py-1">+50%</span>*@
+                        <!--end::Lable-->
+                    </div>
+                    <!--end::Item-->
+                }
+            }
+
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::List Widget 4-->
+</div>

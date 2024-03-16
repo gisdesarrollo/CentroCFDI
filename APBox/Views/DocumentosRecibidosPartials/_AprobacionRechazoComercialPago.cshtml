@@ -1,0 +1,213 @@
+﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
+
+<div class="col-6 ">
+    <!--begin::List Widget 7-->
+    <div class="card card-xl-stretch mb-8">
+        <!--begin::Body-->
+        <div class="card-body">
+            <div class="d-flex flex-stack mb-7">
+                <h3 class="m-0 text-gray-700 fw-bold">Aprobación Comercial</h3>
+            </div>
+            <div class="d-flex flex-column flex-xl-row">
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid col-6">
+                    <!--begin::Ticket view-->
+                    <div class="mb-0">
+                        <!--begin::Heading-->
+                        <div class="d-flex align-items-center">
+                            <div class="w-100">
+                                <!--end::Stat-->
+                                <!--begin::Option-->
+                                <input type="radio" class="btn-check" name="EstadoComercial" id="EnRevisionComercial" value="EnRevision" />
+                                <label class="btn btn-outline dashed btn-active-light-primary p-7 d-flex align-items-center mb-5" for="EnRevisionComercial">
+                                    <i class="ki-duotone ki-tablet-book fs-4x me-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    <span class="d-block fw-semibold text-start">
+                                        <span class="text-gray-700 d-block fs-3">EnRevisión</span>
+                                        <span class="text-muted fw-semibold fs-6">Al aprobar el documento empezará el proceso administrativo y de pago.</span>
+                                    </span>
+                                </label>
+
+                                <div class="border border-gray-400 border-dashed rounded p-4 my-5" id="observaciones" style="display:none">
+                                    <div class="form-group col-xs-12">
+                                        @Html.LabelFor(model => model.AprobacionesDR.Observaciones, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.AprobacionesDR.Observaciones, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.AprobacionesDR.Observaciones, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <!--end::Option-->
+                                <!--begin::Option-->
+                                <input type="radio" class="btn-check" name="EstadoComercial" id="AprobadoComercial" value="Aprobado" />
+                                <label class="btn btn-outline dashed btn-active-light-success p-7 d-flex align-items-center mb-5" for="AprobadoComercial">
+                                    <i class="ki-duotone ki-file-added fs-4x me-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    <span class="d-block fw-semibold text-start">
+                                        <span class="text-gray-700 d-block fs-3">Aprobar</span>
+                                        <span class="text-muted fw-semibold fs-6">Al aprobar el documento empezará el proceso administrativo y de pago.</span>
+                                    </span>
+                                </label>
+                                <!--end::Option-->
+                                <!--begin::Option-->
+                                <input type="radio" class="btn-check" name="EstadoComercial" id="RechazadoComercial" value="Rechazado" />
+                                <label class="btn btn-outline btn-active-light-danger p-7 d-flex align-items-center" for="RechazadoComercial">
+                                    <i class="ki-duotone ki-tablet-delete fs-4x me-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                    <span class="d-block fw-semibold text-start">
+                                        <span class="text-gray-700 d-block fs-3">Rechazar</span>
+                                        <span class="text-muted fw-semibold fs-6">
+                                            Al rechazar el Comprobante, se le enviará un email al usuario que lo entregó informando el motivo de su rechazo.
+                                        </span>
+                                    </span>
+                                </label>
+                                <div class="border border-gray-400 border-dashed rounded py-3 px-4 mt-5" id="motivo-rechazo" style="display:none">
+                                    <div class="form-group col-xs-12">
+                                        @Html.LabelFor(model => model.AprobacionesDR.DetalleRechazo, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.AprobacionesDR.DetalleRechazo, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.AprobacionesDR.DetalleRechazo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!--end::Option-->
+                            </div>
+                            <!--end::Heading-->
+                        </div>
+                    </div>
+                    <!--end::Ticket view-->
+                </div>
+                <!--end::Content-->
+            </div>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::List Widget 7-->
+</div>
+
+<div class="col-6 ">
+    <!--begin::List Widget 7-->
+    <div class="card card-xl-stretch mb-8">
+        <!--begin::Body-->
+        <div class="card-body">
+            <div class="d-flex flex-stack mb-7">
+                <h3 class="m-0 text-gray-700 fw-bold">Aprobación para Pagos</h3>
+            </div>
+            <div class="d-flex flex-column flex-xl-row">
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid col-6">
+                    <!--begin::Ticket view-->
+                    <div class="mb-0">
+                        <!--begin::Heading-->
+                        <div class="d-flex align-items-center">
+                            <div class="w-100">
+                                <!--end::Stat-->
+                                <!--begin::Option-->
+                                <input type="radio" class="btn-check" name="EstadoPago" id="EnRevisionPago" value="EnRevision" />
+                                <label class="btn btn-outline dashed btn-active-light-primary p-7 d-flex align-items-center mb-5" for="EnRevisionPago">
+                                    <i class="ki-duotone ki-tablet-book fs-4x me-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    <span class="d-block fw-semibold text-start">
+                                        <span class="text-gray-700 d-block fs-3">EnRevisión</span>
+                                        <span class="text-muted fw-semibold fs-6">Al aprobar el documento empezará el proceso administrativo y de pago.</span>
+                                    </span>
+                                </label>
+                                <!--end::Option-->
+                                <!--begin::Option-->
+                                <input type="radio" class="btn-check" name="EstadoPago" id="AprobadoPago" value="Aprobado" />
+                                <label class="btn btn-outline btn-active-light-success p-7 d-flex align-items-center mb-5" for="AprobadoPago">
+                                    <i class="ki-duotone ki-file-added fs-4x me-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    <span class="d-block fw-semibold text-start">
+                                        <span class="text-gray-700 fw-bold d-block fs-3">Aprobar</span>
+                                        <span class="text-muted fw-semibold fs-6">Al aprobar el documento empezará el proceso administrativo y de pago.</span>
+                                    </span>
+                                </label>
+
+                                <!--end::Option-->
+                                <!--begin::Option-->
+                                <input type="radio" class="btn-check" name="EstadoPago" id="RechazadoPago" value="Rechazado" />
+                                <label class="btn btn-outline btn-active-light-danger p-7 d-flex align-items-center" for="RechazadoPago">
+                                    <i class="ki-duotone ki-tablet-delete fs-4x me-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                    <span class="d-block fw-semibold text-start">
+                                        <span class="text-gray-700 fw-bold d-block fs-3">Rechazar</span>
+                                        <span class="text-muted fw-semibold fs-6">
+                                            Al rechazar el Comprobante, se le enviará un email al usuario que lo entregó informando el motivo de su rechazo.
+                                        </span>
+                                    </span>
+                                </label>
+                                <div class="border border-gray-400 border-dashed rounded p-3 my-5" id="motivo-rechazo" style="display:none">
+                                    <div class="form-group col-xs-12">
+                                        @Html.LabelFor(model => model.AprobacionesDR.DetalleRechazo, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.AprobacionesDR.DetalleRechazo, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.AprobacionesDR.DetalleRechazo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!--end::Option-->
+                            </div>
+                            <!--end::Heading-->
+                        </div>
+                    </div>
+                    <!--end::Ticket view-->
+                </div>
+                <!--end::Content-->
+            </div>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::List Widget 7-->
+</div>
+
+
+<script>
+$(document).ready(function () {
+    // Leer los valores de los estados desde el modelo
+    var estadoComercial = '@Model.EstadoComercial';
+    var estadoPago = '@Model.EstadoPago';
+
+    // Activar los inputs correspondientes basados en los estados
+    switch (estadoComercial) {
+        case 'EnRevision':
+            $('#EnRevisionComercial').prop('checked', true);
+            break;
+        case 'Aprobado':
+            $('#AprobadoComercial').prop('checked', true);
+            break;
+        case 'Rechazado':
+            $('#RechazadoComercial').prop('checked', true);
+            break;
+        default:
+            break;
+    }
+
+    switch (estadoPago) {
+        case 'EnRevision':
+            $('#EnRevisionPago').prop('checked', true);
+            break;
+        case 'Aprobado':
+            $('#AprobadoPago').prop('checked', true);
+            break;
+        case 'Rechazado':
+            $('#RechazadoPago').prop('checked', true);
+            break;
+        default:
+            break;
+    }
+});
+
+</script>
+
+
+

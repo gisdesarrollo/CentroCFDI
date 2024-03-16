@@ -252,9 +252,12 @@ namespace APBox.Controllers.Operaciones
                 {
                     throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor a la empresa asignada");
                 }
-                if (existUUID != null && existUUID.EstadoComercial != c_EstadoComercial.Rechazado)
+                if (existUUID != null)
                 {
-                    throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema");
+                    if (existUUID.EstadoComercial != c_EstadoComercial.Rechazado && existUUID.EstadoPago != c_EstadoPago.Rechazado)
+                    {
+                        throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema y no puede duplicarse. De ser necesario, debe rechazarse la solicitud anterior de este CFDi para poder subirlo nuevamente.");
+                    }
                 }
 
                 if (socioComercial == null)
@@ -496,7 +499,7 @@ namespace APBox.Controllers.Operaciones
                     //TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
                     //TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
                 };
-                if(cfdi.Impuestos != null)
+                if (cfdi.Impuestos != null)
                 {
                     documentoRecibidoDr.RecibidosComprobante.TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
                     documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
@@ -573,11 +576,14 @@ namespace APBox.Controllers.Operaciones
                 var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
                 var usuarioEntrega = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioEntrega_Id);
 
+                documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;
+                documentoRecibido.Referencia = documentoRecibidoEdit.Referencia;
+
                 if (documentoRecibidoEdit.EstadoComercial == c_EstadoComercial.Aprobado)
                 {
                     documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
                     documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
-                    
+
                     documentoRecibido.EstadoComercial = c_EstadoComercial.Aprobado;
                 }
 

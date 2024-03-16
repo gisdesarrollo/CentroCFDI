@@ -2662,11 +2662,6 @@
     <Content Include="Views\CentrosCostos\Edit.cshtml" />
     <Content Include="Views\CentrosCostos\Index.cshtml" />
     <Content Include="Views\Control\Configuraciones.cshtml" />
-    <Content Include="Views\Proveedores\Create.cshtml" />
-    <Content Include="Views\Proveedores\Delete.cshtml" />
-    <Content Include="Views\Proveedores\Details.cshtml" />
-    <Content Include="Views\Proveedores\Edit.cshtml" />
-    <Content Include="Views\Proveedores\Index.cshtml" />
     <Content Include="Views\Usuarios\Create.cshtml" />
     <Content Include="Views\Usuarios\Delete.cshtml" />
     <Content Include="Views\Usuarios\Details.cshtml" />
@@ -2748,7 +2743,6 @@
     <Content Include="Views\ComplementosPagos\EditPagoManual.cshtml" />
     <Content Include="Views\ComplementosPagos\Index.cshtml" />
     <Content Include="Views\ComplementosPagos\Pagos.cshtml" />
-    <Content Include="Views\Proveedores\Sucursales.cshtml" />
     <Content Include="Views\ComplementosPagos\FacturasDetalles.cshtml" />
     <Content Include="Views\Bancos\Create.cshtml" />
     <Content Include="Views\Bancos\Delete.cshtml" />
@@ -2891,19 +2885,24 @@
     <Content Include="Views\AutorregistroSociosComerciales\CreateUsuario.cshtml" />
     <Content Include="Views\AutorregistroSociosComerciales\Error.cshtml" />
     <Content Include="Views\AutorregistroSociosComerciales\Completado.cshtml" />
-    <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
     <Content Include="Views\DocumentosPagos\Index.cshtml" />
-    <Content Include="Views\DocumentosPagos\Revision.cshtml" />
-    <Content Include="Views\DocumentosRecibidos\ReporteDocumentosRecibidos.cshtml" />
     <Content Include="Views\DocumentosRecibidos\_ModalGuia.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_EstadoComercialPagoDocumento.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_InformacionDocumento.cshtml" />
     <Content Include="Views\ReporteRecibidos\ReporteCfdiRecibidos.cshtml" />
     <Content Include="Views\DocumentosPagos\CargaLayout.cshtml" />
     <Content Include="Views\DocumentosPagos\Pagos.cshtml" />
+<<<<<<< Updated upstream
     <Content Include="Views\DocumentosPagos\CargaComplementoPago.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_InformacionComplementoPago.cshtml" />
     <Content Include="Views\DocumentosPagos\ComplementosPagosCargados.cshtml" />
+=======
+    <Content Include="Views\DocumentosRecibidosPartials\_AprobacionRechazoComercialPago.cshtml" />
+    <Content Include="Views\DocumentosPagos\Revision.cshtml" />
+    <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
+    <Content Include="Views\DocumentosRecibidosPartials\_ValidacionFiscalDocumento.cshtml" />
+    <Content Include="Views\DocumentosRecibidosPartials\_ArchivosAdjuntos.cshtml" />
+>>>>>>> Stashed changes
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
