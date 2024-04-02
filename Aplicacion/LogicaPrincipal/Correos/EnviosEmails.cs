@@ -41,7 +41,6 @@ namespace Aplicacion.LogicaPrincipal.Correos
             message.Subject = emailDto.EncabezadoCorreo;
             message.Body = emailDto.CuerpoCorreo;
 
-
             //archivos adjuntos
             var archivoZip = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.zip", complementoPago.FacturaEmitida.Serie, complementoPago.FacturaEmitida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
             // Crear un archivo ZIP
@@ -53,10 +52,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
                     // Agregar archivo a ZIP
                     zip.CreateEntryFromFile(file.Path, file.NombreArchivo);
                 }
-
             }
-
-
 
             var attachment = new Attachment(archivoZip)
             {
@@ -77,12 +73,11 @@ namespace Aplicacion.LogicaPrincipal.Correos
                 client.Send(message);
                 message.Dispose();
             }
-
             catch (Exception ex)
             {
                 //throw new Exception(ex.Message);
             }
-            //se eliminan los files 
+            //se eliminan los files
             foreach (var file in emailDto.Archivos)
             {
                 System.IO.File.Delete(file.Path);
@@ -132,10 +127,10 @@ namespace Aplicacion.LogicaPrincipal.Correos
                 envioEmailDto.Archivos = archivosAdjuntosDto;
             }
             return envioEmailDto;
-
         }
 
         #region Notificaciones de Recepción de Facturas y Pagos
+
         public void NotificacionCambioEstadoComercial(Usuario usuario, DocumentosRecibidosDR documentoRecibido, c_EstadoComercial EstadoComercial, int sucursalId)
         {
             //Obtener el correo del usuario
@@ -155,6 +150,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
                     {
                         case c_EstadoComercial.Aprobado:
                             break;
+
                         case c_EstadoComercial.Rechazado:
                             asunto = "CentroCFDi - Notificación de Rechazo de Factura";
                             cuerpoCorreo = $"Estimado {documentoRecibido.Usuario.Nombre},\n\n" +
@@ -169,10 +165,68 @@ namespace Aplicacion.LogicaPrincipal.Correos
                             $"{sucursal.Nombre}\n \n" +
                             "Equipo de CentroCFDi";
                             break;
+
                         default:
                             break;
-
                     }
+
+                    using (SmtpClient smtpClient = new SmtpClient("mail.gisconsultoria.com", 26))
+                    {
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = new NetworkCredential("facturas.xsa@gisconsultoria.com", "Gisconsul+01");
+                        smtpClient.EnableSsl = false;
+
+                        MailMessage mail = new MailMessage();
+                        mail.From = new MailAddress(sucursal.MailEmisor);
+                        mail.To.Add(destinatario);
+                        mail.Subject = asunto;
+                        mail.Body = cuerpoCorreo;
+
+                        smtpClient.Send(mail);
+                    }
+                }
+            }
+        }
+
+        public void NotificacionPagoSocioComercial(int? usuario_id, int? sucursal_id, PagosDR pagos, int? socioComercial_id)
+        {
+            var usuario = _db.Usuarios.Find(usuario_id);
+            var sucursal = _db.Sucursales.Find(sucursal_id);
+            var socioComercial = _db.SociosComerciales.Find(socioComercial_id);
+
+            string destinatario = usuario.Email;
+
+            if (sucursal.MailEmisor != null)
+            {
+                var validaEmail = ComprobarFormatoEmail(sucursal.MailEmisor);
+
+                if (validaEmail)
+                {
+                    string documentosPagados = null;
+
+                    if (pagos.DocumentosPagados.Count > 0)
+                    {
+                        foreach (var documento in pagos.DocumentosPagados)
+                        {
+                            documentosPagados += $"- {documento.UUID}\n";
+                        }
+                    }
+                    string asunto = "CentroCFDi - Notificación de Pago Realizado";
+                    string cuerpoCorreo =
+                        $"Estimado {usuario.NombreCompleto},\n\n" +
+                        $"Nos complace informarte que hemos emitido un pago correspondiente a {socioComercial.RazonSocial}:\n\n" +
+                        $"UUID de Factura: \n" +
+                        $"Importe del pago: {pagos.Total.ToString("c")} {pagos.Moneda}\n" +
+                        $"Fecha de Emisión:{pagos.FechaPago}\n\n" +
+                        $"Referencia Bancaria: {pagos.ReferenciaBancaria}\n" +
+                        $"Documens Pagados: \n" +
+                        $"{documentosPagados}\n\n" +
+                        $"Nos gustaría recordarte esta acción requiere que cargues el CFDi con Complemento de Recepción de Pagos correspondiente para completar el ciclo de facturación en CentroCFDi. Esto nos ayudará a mantener un registro preciso de todas las transacciones y garantizar una relación comercial fluida.\n\n" +
+                        $"Por favor, accede a CentroCFDi en la sección de carga de Complementos de Pago. Si necesitas ayuda o tienes alguna pregunta, no dudes en ponerte en contacto con nuestro equipo de finanzas.\n\n" +
+                        $"Agradecemos tu pronta atención a este asunto y esperamos seguir colaborando de manera fluuida.\n\n" +
+                        $"Saludos,\n" +
+                        $"{sucursal.Nombre}\n \n" +
+                        "Equipo de CentroCFDi";
 
                     using (SmtpClient smtpClient = new SmtpClient("mail.gisconsultoria.com", 26))
                     {
@@ -240,7 +294,6 @@ namespace Aplicacion.LogicaPrincipal.Correos
                     }
                 }
             }
-
         }
 
         public void NotificacionNuevoUsuario(Usuario usuario, int sucursalId)
@@ -270,8 +323,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
                        "Como proveedor, tu participación es fundamental para el éxito de nuestra plataforma. Esperamos que encuentres todas las herramientas necesarias para gestionar tus servicios de manera efectiva. Si tienes alguna pregunta específica sobre cómo utilizar la plataforma como proveedor, no dudes en ponerte en contacto con nuestro equipo de soporte dedicado a proveedores.\n\n" +
                        "¡Gracias por unirte a nuestra red!\n\n" +
                        "Saludos cordiales,\n" +
-                       "Equipo de GIS Consultoria\n" +
-                       "Centro CFDI.";
+                       "Equipo de Centro CFDI";
                     }
                     else
                     {
@@ -286,8 +338,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
                             "Como miembro de nuestro equipo, tendrás acceso a recursos y herramientas que facilitarán tu trabajo diario. Estamos comprometidos a proporcionar un entorno en el que puedas crecer y tener éxito. Si tienes alguna pregunta sobre cómo aprovechar al máximo nuestra plataforma como trabajador, no dudes en ponerte en contacto con nuestro equipo de recursos humanos.\n\n" +
                             "¡Bienvenido a nuestro equipo!\n\n" +
                             "Saludos cordiales,\n" +
-                            "Equipo de GIS Consultoria\n" +
-                            "Centro CFDI.";
+                            "Equipo de Centro CFDI";
                     }
 
                     using (SmtpClient smtpClient = new SmtpClient("mail.gisconsultoria.com", 26))
@@ -306,9 +357,9 @@ namespace Aplicacion.LogicaPrincipal.Correos
                     }
                 }
             }
-
         }
-        #endregion
+
+        #endregion Notificaciones de Recepción de Facturas y Pagos
 
         public bool ComprobarFormatoEmail(string email)
         {
@@ -330,6 +381,5 @@ namespace Aplicacion.LogicaPrincipal.Correos
                 return false;
             }
         }
-
     }
 }

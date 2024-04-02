@@ -21,10 +21,15 @@ namespace API.Operaciones.OperacionesProveedores
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public int SucursalId { get; set; }
+
+        [ForeignKey("SucursalId")]
+        public virtual Sucursal Sucursal { get; set; }
+
         [DisplayName("Fecha Pago")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaPago { get; set; }
-        
+
         public c_Moneda? Moneda { get; set; }
 
         [DisplayName("Tipo de Cambio")]
@@ -33,21 +38,26 @@ namespace API.Operaciones.OperacionesProveedores
         public Double Total { get; set; }
 
         public String ReferenciaBancaria { get; set; }
+
         public String ReferenciaERP { get; set; }
 
         public int? CuentaBancariaSucursal_Id { get; set; }
+
         [ForeignKey("CuentaBancariaSucursal_Id")]
         public virtual BancoSucursal BancoSucursal { get; set; }
 
         [NotMapped]
         public DocumentosPagadosDR DocumentoPagado { get; set; }
+
         public virtual List<DocumentosPagadosDR> DocumentosPagados { get; set; }
 
         public int? ComplementoPagoRecibido_Id { get; set; }
+
         [ForeignKey("ComplementoPagoRecibido_Id")]
         public virtual DocumentosRecibidosDR DocumentoRecibido { get; set; }
 
         public int? SocioComercial_Id { get; set; }
+
         [ForeignKey("SocioComercial_Id")]
         public virtual SocioComercial SocioComercial { get; set; }
 
@@ -58,7 +68,7 @@ namespace API.Operaciones.OperacionesProveedores
         public HttpPostedFileBase ArchivoXml { get; set; }
 
         [NotMapped]
-        public ComplementoPagoDto ComplementoPago{ get; set; }
+        public ComplementoPagoDto ComplementoPago { get; set; }
 
         [NotMapped]
         public String Detalle_Validacion { get; set; }

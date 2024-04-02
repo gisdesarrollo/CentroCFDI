@@ -10,10 +10,7 @@
     {
         @Html.AntiForgeryToken()
 
-
         <div id="cancelar-view"></div>
-
-
 
         <div class="card card-flush shadow-sm py-4">
             <!--begin::Card header-->
@@ -66,7 +63,6 @@
                     <!--begin::Hide default export buttons-->
                     <div id="kt_datatable_example_buttons" class="d-none"></div>
                     <!--end::Hide default export buttons-->
-
                 </div>
             </div>
             <!--end::Card header-->
@@ -95,7 +91,6 @@
                                     Estado
                                 </th>
                                 <th class="min-w-100px">
-
                                 </th>
                             </tr>
                         </thead>
@@ -201,7 +196,6 @@
 
                                                 }
                                             }
-
                                         </div>
                                         <!--end::Menu-->
                                         <!--end::Action=-->
@@ -222,7 +216,7 @@
             <!--begin::Wrapper-->
             <div class="me-4">
                 <!--begin::Menu-->
-                <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
                     <i class="ki-duotone ki-filter fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
                     Filtros
                 </a>
@@ -243,7 +237,7 @@
                         <!--begin::Form-->
                         <div class="px-7 py-5">
                             <!--begin::Input group-->
-                            <div class="mb-10">
+                            <div class="mb-5">
                                 <!--begin::Label-->
                                 <label class="form-label fw-semibold">Periodo:</label>
                                 <!--end::Label-->
@@ -257,11 +251,11 @@
                                 <!--end::Input-->
                                 <div class="mb-3">
                                     @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "control-label" })
-                                    @Html.DropDownListFor(model => model.TipoDeComprobante, (IEnumerable<SelectListItem>)ViewBag.TipoDeComprobante, "Todas", new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.TipoDeComprobante, (IEnumerable<SelectListItem>)ViewBag.TipoDeComprobante, "Todas", new { @class = "form-control select" })
                                 </div>
                                 <div class="mb-3">
                                     @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label" })
-                                    @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-control select" })
                                 </div>
                             </div>
                             <!--end::Input group-->
@@ -283,10 +277,10 @@
                 Nuevo
             </a>
             <!--end::Button-->
-
         </div>
     </div>
 }
+
 <script>
      //activa modal cancelar comrpobante CFDI
     $(function () {
@@ -333,5 +327,3 @@
 
     });
 </script>
-
-

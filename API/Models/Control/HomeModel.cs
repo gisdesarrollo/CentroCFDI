@@ -7,6 +7,37 @@ namespace API.Models.Control
 
     public class HomeModel
     {
+        //Datos para home de recepción de documentos Usuario y Cuentas por pagar
+
+        public int DocumentosRecibidosEnRevisionUsuario { get; set; }
+                   
+        public int DocumentosRecibidosDepartamentoUsuario { get; set; }
+
+        public int DocumentosPagosRevisionUsuario { get; set; }
+
+        public int DocumentosPagosAprobadoUsuario { get; set; }
+
+        public int PagosEnRevisionUsuario { get; set; }
+
+        public double PorcentajeAprobacionUsuario { get; set; }
+
+        public int DocumentosRecibidos30DiasUsuario { get; set; }
+
+        //Datos para home de recepción de documentos Socios Comerciales
+
+        public int DocumentosRecibidosEnRevisionUsuarioSC { get; set; }
+
+        public int DocumentosRecibidosEnRevisionSC { get; set; }
+                   
+        public int DocumentosPagosRevisionSC { get; set; }
+                   
+        public int DocumentosPagosAprobadosSC { get; set; }
+                   
+        public int DocumentosRechazadosSC { get; set; }
+        
+        public double PorcentajeAprobacionSC { get; set; }
+
+        public int DocumentosRecibidos30DiasSC { get; set; }
 
         [DisplayName("Clientes Totales")]
         public int Clientes { get; set; }

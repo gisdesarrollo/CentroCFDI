@@ -271,3 +271,11 @@ function validarEmail() {
     });
 
 </script>
+
+<script>
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && (event.key === 'Enter' || event.keyCode === 13)) {
+            event.preventDefault(); // Evitar el envío del formulario
+        }
+    });
+</script>

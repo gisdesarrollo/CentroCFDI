@@ -204,7 +204,7 @@
 				<!--begin::Form-->
 				<div class="px-7 py-5">
 					<!--begin::Input group-->
-					<div class="mb-10">
+					<div class="mb-5">
 						<!--begin::Label-->
 						<label class="form-label fw-semibold">Periodo:</label>
 						<!--end::Label-->
@@ -266,7 +266,7 @@
 				<!--begin::Form-->
 				<div class="px-7 py-5">
 					<!--begin::Input group-->
-					<div class="mb-10">
+					<div class="mb-5">
 						<!--begin::Label-->
 						<label class="form-label fw-semibold">Periodo:</label>
 						<!--end::Label-->
@@ -279,7 +279,7 @@
 						</div>
 						<div class="mb-3">
 							@Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "form-label" })
-							@Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-select mb-2" })
+							@Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-select select mb-2" })
 						</div>
 						<!--end::Input-->
 					</div>

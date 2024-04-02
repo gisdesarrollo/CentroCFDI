@@ -406,7 +406,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownList("TipoDecomprobante", null, "Seleccionar..", new { @class = "form-select mb-2", @id = "tipoComprobante" })
+                                            @Html.DropDownList("TipoDecomprobante", null, "Seleccionar..", new { @class = "form-select select mb-2", @id = "tipoComprobante" })
                                             @Html.ValidationMessageFor(model => model.TipoDeComprobante, "Comprobante no puede ir vacío", new { @class = "text-danger" })
 
                                         </div>
@@ -417,7 +417,7 @@
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                                 @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.FormaPago, (IEnumerable<SelectListItem>)ViewBag.FormaPAgo, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                                                @Html.DropDownListFor(model => model.FormaPago, (IEnumerable<SelectListItem>)ViewBag.FormaPAgo, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
                                                 @Html.ValidationMessageFor(model => model.FormaPago, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -437,7 +437,7 @@
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-3">
                                                 @Html.LabelFor(model => model.Moneda, new { @class = "form-label" })
-                                                @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
+                                                @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select select mb-2", @data_control = "select2" })
                                                 @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
                                             </div>
 
@@ -497,7 +497,7 @@
                             <i class="col-xs-12 InformacionReceptor"></i>
                             <div class="form-group col-xs-12 col-sm-6 col-md-5">
                                 @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "form-label" })
-                                @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                                @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
                                 @*@Html.DropDownListFor(model => model.ReceptorId, (IEnumerable<SelectListItem>)ViewBag.ReceptorId, "Favor de hacer su selección", new { @class = "form-control"})*@
                                 @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
 
@@ -566,7 +566,7 @@
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                             @Html.LabelFor(model => model.CfdiRelacionado.TipoRelacion, new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                            @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                             @Html.ValidationMessageFor(model => model.CfdiRelacionado.TipoRelacion, "", new { @class = "text-danger" })
                                         </div>
 
@@ -655,7 +655,7 @@
                                 <div class="row">
                                     <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                         @Html.LabelFor(model => model.Conceptos.CatConcepto, htmlAttributes: new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Conceptos.CatConcepto, (IEnumerable<SelectListItem>)ViewBag.Conceptos, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "CConcepto" })
+                                        @Html.DropDownListFor(model => model.Conceptos.CatConcepto, (IEnumerable<SelectListItem>)ViewBag.Conceptos, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "CConcepto" })
                                         @Html.ValidationMessageFor(model => model.Conceptos.CatConcepto, "", new { @class = "text-danger" })
 
                                     </div>
@@ -712,7 +712,7 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-4" id="activaObjetoImpI">
                                         @Html.LabelFor(model => model.Conceptos.ObjetoImpuesto, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Conceptos.ObjetoImpuesto, "", new { @class = "text-danger" })
                                         <div id="Conceptos_ObjetoImpuesto_Error" style="color:red;"></div>
 
@@ -745,7 +745,7 @@
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                                 @Html.LabelFor(model => model.Conceptos.Traslado.Impuesto, htmlAttributes: new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.Conceptos.Traslado.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                                @Html.DropDownListFor(model => model.Conceptos.Traslado.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                                 @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Impuesto, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 col-md-2">
@@ -784,7 +784,7 @@
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                                 @Html.LabelFor(model => model.Conceptos.Retencion.Impuesto, htmlAttributes: new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.Conceptos.Retencion.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                                @Html.DropDownListFor(model => model.Conceptos.Retencion.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                                 @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Impuesto, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 col-md-2">
@@ -852,7 +852,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.ClaveTransporteId, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.ClaveTransporteId, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "claveTransporteId" })
+                                    @Html.DropDownListFor(model => model.ClaveTransporteId, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "claveTransporteId" })
                                     @Html.ValidationMessageFor(model => model.ClaveTransporteId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -874,19 +874,19 @@
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 ">
 
                                             @Html.LabelFor(model => model.EntradaSalidaMerc, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.EntradaSalidaMerc, (IEnumerable<SelectListItem>)ViewBag.EntradaSMercancia, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                            @Html.DropDownListFor(model => model.EntradaSalidaMerc, (IEnumerable<SelectListItem>)ViewBag.EntradaSMercancia, "Favor de hacer su selección", new { @class = "form-select select mb-2 select" })
                                             @Html.ValidationMessageFor(model => model.EntradaSalidaMerc, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.PaisOrigendestino, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.PaisOrigendestino, (IEnumerable<SelectListItem>)ViewBag.Paises, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                            @Html.DropDownListFor(model => model.PaisOrigendestino, (IEnumerable<SelectListItem>)ViewBag.Paises, "Favor de hacer su selección", new { @class = "form-select select mb-2 select" })
                                             @Html.ValidationMessageFor(model => model.PaisOrigendestino, "", new { @class = "text-danger" })
                                             <div id="UPais" style="color:red;"></div>
                                         </div>
 
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.viaEntradaSalida, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.viaEntradaSalida, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "ClaveTransporteCP" })
+                                            @Html.DropDownListFor(model => model.viaEntradaSalida, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select select mb-2 select", @id = "ClaveTransporteCP" })
                                             @Html.ValidationMessageFor(model => model.viaEntradaSalida, "", new { @class = "text-danger" })
                                         </div>
 
@@ -911,7 +911,7 @@
                             </h3>
                             <div class="form-group col-xs-12 col-sm-4">
                                 @Html.LabelFor(model => model.Ubicacion.TipoUbicacion, htmlAttributes: new { @class = "form-label" })
-                                @Html.DropDownListFor(model => model.Ubicacion.TipoUbicacion, (IEnumerable<SelectListItem>)ViewBag.TipoUbicacion, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "TipoUbicacionRD" })
+                                @Html.DropDownListFor(model => model.Ubicacion.TipoUbicacion, (IEnumerable<SelectListItem>)ViewBag.TipoUbicacion, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "TipoUbicacionRD" })
                                 @Html.ValidationMessageFor(model => model.Ubicacion.TipoUbicacion, "", new { @class = "text-danger" })
 
                             </div>
@@ -977,17 +977,17 @@
                                         @*</div>*@
                                         <div class="form-group col-xs-12 col-sm-4" @*@ActTransporteMaritimo*@ id="DivEstacionMaritimo">
                                             @Html.LabelFor(model => model.Ubicacion.NombreEstacion, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownList("NombreEstacionMaritimo", null, "Favor de hacer su selección", new { @class = "form-select mb-2 NombreEstacion" })
+                                            @Html.DropDownList("NombreEstacionMaritimo", null, "Favor de hacer su selección", new { @class = "form-select select mb-2 NombreEstacion" })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.NombreEstacion, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-4" @*@ActTransporteAereo*@ id="DivEstacionAereo">
                                             @Html.LabelFor(model => model.Ubicacion.NombreEstacion, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownList("NombreEstacionAereo", null, "Favor de hacer su selección", new { @class = "form-select mb-2 NombreEstacion" })
+                                            @Html.DropDownList("NombreEstacionAereo", null, "Favor de hacer su selección", new { @class = "form-select select mb-2 NombreEstacion" })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.NombreEstacion, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-4" @*@ActTransporteFerroviario*@ id="DivEstacionFerroviario">
                                             @Html.LabelFor(model => model.Ubicacion.NombreEstacion, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownList("NombreEstacionFerroviario", null, "Favor de hacer su selección", new { @class = "form-select mb-2 NombreEstacion" })
+                                            @Html.DropDownList("NombreEstacionFerroviario", null, "Favor de hacer su selección", new { @class = "form-select select mb-2 NombreEstacion" })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.NombreEstacion, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-4" id="DivNumEstacion" @*@ActNumEstacion*@>
@@ -997,7 +997,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-4" id="DivNavegacionTrafico" @*@ActDimension*@>
                                             @Html.LabelFor(model => model.Ubicacion.NavegacionTrafico, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.Ubicacion.NavegacionTrafico, (IEnumerable<SelectListItem>)ViewBag.TipoNavegacionTrafico, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                            @Html.DropDownListFor(model => model.Ubicacion.NavegacionTrafico, (IEnumerable<SelectListItem>)ViewBag.TipoNavegacionTrafico, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.NavegacionTrafico, "", new { @class = "text-danger" })
                                         </div>
 
@@ -1010,7 +1010,7 @@
                                         @*<div class="activaTipoEstacion">*@
                                         <div class=" form-group col-xs-12 col-sm-4 activaTipoEstacion" id="TipoEs">
                                             @Html.LabelFor(model => model.Ubicacion.TipoEstacion_Id, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownList("TipoEstacion", null, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "UTipoEstacion" })
+                                            @Html.DropDownList("TipoEstacion", null, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "UTipoEstacion" })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.TipoEstacion_Id, "", new { @class = "text-danger" })
                                         </div>
                                         @*</div>*@
@@ -1132,7 +1132,7 @@
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.CatMercancia, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.Mercancias.Mercancia.CatMercancia, (IEnumerable<SelectListItem>)ViewBag.Mercancias, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "CMercancia" })
+                                            @Html.DropDownListFor(model => model.Mercancias.Mercancia.CatMercancia, (IEnumerable<SelectListItem>)ViewBag.Mercancias, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "CMercancia" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CatMercancia, "", new { @class = "text-danger" })
 
                                         </div>
@@ -1199,7 +1199,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso hiddenDiv">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.DescripEmbalaje, htmlAttributes: new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.Mercancias.Mercancia.DescripEmbalaje, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                            @Html.DropDownListFor(model => model.Mercancias.Mercancia.DescripEmbalaje, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DescripEmbalaje, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso hiddenDiv">
@@ -1224,7 +1224,7 @@
 
                                         <div class="form-group col-xs-12 col-sm-3">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.Moneda, new { @class = "form-label" })
-                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
+                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "form-select select mb-2", @data_control = "select2" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "text-danger" })
                                         </div>
 
@@ -1420,21 +1420,21 @@
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                                 @Html.LabelFor(model => model.Mercancias.Mercancia.CantidadTransportada.CveTransporte_Id, new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.CveTransporte_Id, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.CveTransporte_Id, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.CveTransporte_Id, "", new { @class = "text-danger" })
                                                 <div id="CveTransporteId" style="color:red;"></div>
                                             </div>
 
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                                 @Html.LabelFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDOrigen, "", new { @class = "text-danger" })
                                                 <div id="UbicacionOrigenId" style="color:red;"></div>
                                             </div>
 
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                                 @Html.LabelFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CantidadTransportada.IDDestino, "", new { @class = "text-danger" })
                                                 <div id="UbicacionDestinoId" style="color:red;"></div>
                                             </div>
@@ -1486,7 +1486,7 @@
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                                 @Html.LabelFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, htmlAttributes: new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, (IEnumerable<SelectListItem>)ViewBag.ClavesUnidadPeso, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                                @Html.DropDownListFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, (IEnumerable<SelectListItem>)ViewBag.ClavesUnidadPeso, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                                 @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DetalleMercancia.ClaveUnidadPeso_Id, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1559,7 +1559,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.AutoTransporte.TipoPermiso_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.AutoTransporte.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_AT, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.AutoTransporte.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_AT, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.AutoTransporte.TipoPermiso_Id, "", new { @class = "text-danger" })
                                 </div>
 
@@ -1576,7 +1576,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.ConfigAutotransporte_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.ConfigAutotransporte_Id, (IEnumerable<SelectListItem>)ViewBag.ConfigAutotransporte_Id, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.ConfigAutotransporte_Id, (IEnumerable<SelectListItem>)ViewBag.ConfigAutotransporte_Id, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.ConfigAutotransporte_Id, "", new { @class = "text-danger" })
                                 </div>
 
@@ -1656,7 +1656,7 @@
                                 <div class="card-body row">
                                     <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                         @Html.LabelFor(model => model.Mercancias.AutoTransporte.Remolque.SubTipoRem_Id, htmlAttributes: new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Mercancias.AutoTransporte.Remolque.SubTipoRem_Id, (IEnumerable<SelectListItem>)ViewBag.SubTipoRem_Id, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.Mercancias.AutoTransporte.Remolque.SubTipoRem_Id, (IEnumerable<SelectListItem>)ViewBag.SubTipoRem_Id, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Mercancias.AutoTransporte.Remolque.SubTipoRem_Id, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1704,7 +1704,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_M, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_M, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.TipoPermiso_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1724,7 +1724,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.ConfigMaritima_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.ConfigMaritima_Id, (IEnumerable<SelectListItem>)ViewBag.ConfigMaritima_Id, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.ConfigMaritima_Id, (IEnumerable<SelectListItem>)ViewBag.ConfigMaritima_Id, "Favor de hacer su selección", new { @class = "form-select select mb-2 select" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ConfigMaritima_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1749,7 +1749,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, (IEnumerable<SelectListItem>)ViewBag.Paises, new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, (IEnumerable<SelectListItem>)ViewBag.Paises, new { @class = "form-select select mb-2 select" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.NacionalidadEmbarc, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1759,7 +1759,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.ClaveTipoCarga_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.ClaveTipoCarga_Id, (IEnumerable<SelectListItem>)ViewBag.ClaveTipoCarga_Id, new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.ClaveTipoCarga_Id, (IEnumerable<SelectListItem>)ViewBag.ClaveTipoCarga_Id, new { @class = "form-select select mb-2 select select" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ClaveTipoCarga_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1794,7 +1794,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.NumAutorizacionNaviero_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.NumAutorizacionNaviero_Id, (IEnumerable<SelectListItem>)ViewBag.NumAutorizacionNaviero_Id, new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.NumAutorizacionNaviero_Id, (IEnumerable<SelectListItem>)ViewBag.NumAutorizacionNaviero_Id, new { @class = "form-select select mb-2 select" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.NumAutorizacionNaviero_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1838,7 +1838,7 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-4">
                                         @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.ContenedorMaritimo_Id, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.ContenedorMaritimo_Id, (IEnumerable<SelectListItem>)ViewBag.ContenedorMaritimo_Id, new { @class = "form-select", @id = "contenedorMaritimo" })
+                                        @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.ContenedorMaritimo_Id, (IEnumerable<SelectListItem>)ViewBag.ContenedorMaritimo_Id, new { @class = "form-select select", @id = "contenedorMaritimo" })
                                         @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.ContenedorMaritimo_Id, "", new { @class = "text-danger" })
                                         <div id="ContenedorMaritId" style="color:red;"></div>
                                     </div>
@@ -1889,7 +1889,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_A, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoPermiso_A, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteAereo.TipoPermiso_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1930,7 +1930,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteAereo.CodigoTransporteAereo_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteAereo.CodigoTransporteAereo_Id, (IEnumerable<SelectListItem>)ViewBag.CodigoTransporteAereo_Id, new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteAereo.CodigoTransporteAereo_Id, (IEnumerable<SelectListItem>)ViewBag.CodigoTransporteAereo_Id, new { @class = "form-select select mb-2" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteAereo.CodigoTransporteAereo_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -1960,7 +1960,7 @@
                             <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteFerroviario.TipoDeServicio_Id, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.TipoDeServicio_Id, (IEnumerable<SelectListItem>)ViewBag.TipoDeServicio_Id, new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.TipoDeServicio_Id, (IEnumerable<SelectListItem>)ViewBag.TipoDeServicio_Id, new { @class = "form-select select mb-2 select" })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteFerroviario.TipoDeServicio_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
@@ -2004,7 +2004,7 @@
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-4">
                                             @Html.LabelFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso_Id, new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoDerechoPaso, new { @class = "form-select mb-2" })
+                                            @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso_Id, (IEnumerable<SelectListItem>)ViewBag.TipoDerechoPaso, new { @class = "form-select select mb-2 select" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.TransporteFerroviario.DerechosDePasos.TipoDerechoDePaso_Id, "", new { @class = "text-danger" })
                                             <div id="TipoDerechosDePasoId" style="color:red;"></div>
                                         </div>
@@ -2074,7 +2074,7 @@
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-4">
                                             @Html.LabelFor(model => model.Mercancias.TransporteFerroviario.Carro.TipoCarro_Id, new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.Carro.TipoCarro_Id, (IEnumerable<SelectListItem>)ViewBag.TipoCarro_Id, new { @class = "form-select mb-2" })
+                                            @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.Carro.TipoCarro_Id, (IEnumerable<SelectListItem>)ViewBag.TipoCarro_Id, new { @class = "form-select select mb-2 select" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.TransporteFerroviario.Carro.TipoCarro_Id, "", new { @class = "text-danger" })
                                             <div id="TFTipoCarroID" style="color:red;"></div>
                                         </div>
@@ -2122,7 +2122,7 @@
                                             <div class="row">
                                                 <div class="form-group col-xs-12 col-sm-4">
                                                     @Html.LabelFor(model => model.Mercancias.TransporteFerroviario.Carro.ContenedorC.Contenedor_Id, new { @class = "form-label" })
-                                                    @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.Carro.ContenedorC.Contenedor_Id, (IEnumerable<SelectListItem>)ViewBag.Contenedor_Id, new { @class = "form-select mb-2", @Id = "contenedorTransFerr" })
+                                                    @Html.DropDownListFor(model => model.Mercancias.TransporteFerroviario.Carro.ContenedorC.Contenedor_Id, (IEnumerable<SelectListItem>)ViewBag.Contenedor_Id, new { @class = "form-select select mb-2 select", @Id = "contenedorTransFerr" })
                                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteFerroviario.Carro.ContenedorC.Contenedor_Id, "", new { @class = "text-danger" })
                                                     <div id="MTFcontenedorId" style="color:red;"></div>
                                                 </div>
@@ -2240,7 +2240,7 @@
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-4">
                                             @Html.LabelFor(model => model.TiposFigura.FiguraTransporte, new { @class = "form-label" })
-                                            @Html.DropDownListFor(model => model.TiposFigura.FiguraTransporte, (IEnumerable<SelectListItem>)ViewBag.TipoFiguraTransporte, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "TipoFiguraTransporte" })
+                                            @Html.DropDownListFor(model => model.TiposFigura.FiguraTransporte, (IEnumerable<SelectListItem>)ViewBag.TipoFiguraTransporte, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "TipoFiguraTransporte" })
                                             @Html.ValidationMessageFor(model => Model.TiposFigura.FiguraTransporte, "", new { @class = "text-danger" })
                                             <div id="TFFiguraTransporte" style="color:red;"></div>
                                         </div>

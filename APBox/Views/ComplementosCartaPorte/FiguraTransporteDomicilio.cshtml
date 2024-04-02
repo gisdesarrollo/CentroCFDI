@@ -16,7 +16,7 @@
 
         <div class="form-group col-xs-12 col-sm-4 dropdownEstadoF">
             @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "form-label" })
-            @Html.DropDownList("ddlEstados", new List<SelectListItem>(), "Favor de hacer su selección",  new { @class = "form-select mb-2 ddlEstadosChangeF DEstadoList", @data_control = "select2", @disabled = "disabled" })
+            @Html.DropDownList("ddlEstados", new List<SelectListItem>(), "Favor de hacer su selección",  new { @class = "form-select select mb-2 ddlEstadosChangeF DEstadoList", @data_control = "select2", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
             <div id="UEstado" style="color:red;"></div>
 
@@ -39,7 +39,7 @@
         </div>
         <div class="form-group col-xs-12 col-sm-4 dropdownLocalidadF">
             @Html.LabelFor(model => model.Localidad, htmlAttributes: new { @class = "form-label" })
-            @Html.DropDownList("ddlLocalidades", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select mb-2 localidadesVal", @data_control = "select2", @disabled = "disabled" })
+            @Html.DropDownList("ddlLocalidades", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select select mb-2 localidadesVal", @data_control = "select2", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.Localidad, "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-xs-12 col-sm-4 hiddenDiv inputLocalidadF">
@@ -56,7 +56,7 @@
 
         <div class="form-group col-xs-12 col-sm-4 dropdownColoniaF">
             @Html.LabelFor(model => model.Colonia, htmlAttributes: new { @class = "form-label" })
-            @Html.DropDownList("ddlColonias", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2", @disabled = "disabled" })
+            @Html.DropDownList("ddlColonias", new List<SelectListItem>(), "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.Colonia, "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-xs-12 col-sm-4 hiddenDiv inputColoniaF">

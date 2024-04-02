@@ -7,6 +7,8 @@ using API.Catalogos;
 using System;
 using APBox.Control;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
+using Microsoft.AspNet.Identity;
+using Org.BouncyCastle.Crypto.Tls;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -21,7 +23,7 @@ namespace APBox.Controllers.Catalogos
 
         #endregion
 
-       
+
         // GET: Clientes
         public ActionResult Index()
         {
@@ -107,6 +109,8 @@ namespace APBox.Controllers.Catalogos
         // GET: Clientes/Edit/5
         public ActionResult Edit(int? id)
         {
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -115,6 +119,16 @@ namespace APBox.Controllers.Catalogos
             if (sociocomercial == null)
             {
                 return HttpNotFound();
+            }
+
+            if (usuario.esProveedor && usuario.SocioComercialID != id)
+            {
+                // Si no coincide, redirigir al usuario a una página de error o denegar el acceso
+                // Puedes mostrar un mensaje de error u otra información relevante al usuario
+                ViewBag.ErrorMessage = "No tienes permiso para acceder a esta página.";
+                
+                // Redirigir al usuario a la página de inicio (Home)
+                return RedirectToAction("Index", "Home");
             }
 
             PopulaForma();
@@ -206,5 +220,9 @@ namespace APBox.Controllers.Catalogos
 
         #endregion
 
+        private int ObtenerUsuario()
+        {
+            return Convert.ToInt32(Session["UsuarioId"]);
+        }
     }
 }

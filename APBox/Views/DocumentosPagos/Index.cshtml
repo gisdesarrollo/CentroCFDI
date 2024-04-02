@@ -92,7 +92,6 @@
                                     <td>
                                         @item.SocioComercial.RazonSocial <br />
                                         <span class="text-gray-600">@item.SocioComercial.Rfc</span>
-
                                     </td>
                                     <td>
                                         @item.CfdiRecibidos_Serie - @item.CfdiRecibidos_Folio <br />
@@ -278,7 +277,7 @@
         <!--begin::Wrapper-->
         <div class="me-0">
             <!--begin::Menu-->
-            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+           <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
                 <i class="ki-duotone ki-filter fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
                 Filtros
             </a>
@@ -298,28 +297,28 @@
                     <div class="separator border-gray-200"></div>
                     <!--end::Menu separator-->
                     <!--begin::Form-->
-                    <div class="px-7 py-5">
-                        <!--begin::Input group-->
-                        <div class="mb-10">
-                            <!--begin::Label-->
-                            <label class="form-label fw-semibold">Periodo:</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <div class="mb-3">
-                                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
-                            </div>
-                            <div class="mb-3">
-                                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
-                            </div>
-                            <!--end::Input-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Actions-->
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
-                        </div>
-                        <!--end::Actions-->
+            <div class="px-7 py-5">
+                <!--begin::Input group-->
+                <div class="mb-5">
+                    <!--begin::Label-->
+                    <label class="form-label fw-semibold">Periodo:</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <div class="mb-3">
+                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
                     </div>
+                    <div class="mb-3">
+                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
+                    </div>
+                    <!--end::Input-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Actions-->
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
+                </div>
+                <!--end::Actions-->
+            </div>
                     <!--end::Form-->
                 }
             </div>

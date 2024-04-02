@@ -12,19 +12,27 @@ namespace Aplicacion.LogicaPrincipal.DocumentosPagos
     public class ProcesaDocumentoPago
     {
         #region variables
-            private readonly AplicacionContext _db = new AplicacionContext();
-            private readonly Decodificar _decodificar = new Decodificar();
+        private readonly AplicacionContext _db = new AplicacionContext();
+        private readonly Decodificar _decodificar = new Decodificar();
         #endregion
         public List<PagosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, bool esProveedor, int? socioComercialId, int sucursalId)
         {
-            //var usuario = _db.Usuarios.Find(usuarioId);
-            //agregar filtro sucursalId de documentos recibidos , socio comercial o usuarioId preguntar a lalo
             var pagos = new List<PagosDR>();
-            
+
+            if (esProveedor)
+            {
                 pagos = _db.PagoDr
-                        .Where(dr => dr.FechaPago >= fechaInicial && dr.FechaPago <= fechaFinal && dr.DocumentoRecibido.SucursalId == sucursalId)
+                        .Where(dr => dr.FechaPago >= fechaInicial && dr.FechaPago <= fechaFinal && dr.SucursalId == sucursalId && dr.SocioComercial_Id == socioComercialId)
                         .ToList();
-            
+            }
+            else
+            {
+
+                pagos = _db.PagoDr
+                        .Where(dr => dr.FechaPago >= fechaInicial && dr.FechaPago <= fechaFinal && dr.SucursalId == sucursalId)
+                        .ToList();
+            }
+
             return pagos;
         }
 

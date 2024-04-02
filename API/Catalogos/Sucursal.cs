@@ -23,10 +23,11 @@ namespace API.Catalogos
 
         public Status Status { get; set; }
 
+        [RegularExpression(@"^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$", ErrorMessage = "El formato del correo electrónico no es válido.")]
         [DisplayName("E-Mail de Confirmación")]
-        [DataType(DataType.EmailAddress, ErrorMessage = "Sintaxis Incorrecta")]
         public String MailConfirmacion { get; set; }
 
+        [RegularExpression(@"^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$", ErrorMessage = "El formato del correo electrónico no es válido.")]
         [DisplayName("E-Mail Emisor")]
         public String MailEmisor { get; set; }
 
@@ -38,10 +39,11 @@ namespace API.Catalogos
 
         public byte[] Logo { get; set; }
 
-        #endregion
+        #endregion Informacion General
 
         #region Informacion Fiscal
 
+        [RegularExpression(@"^[^\s].*[^\s]$", ErrorMessage = "El campo de RazonSocial no puede terminar en un espacio.")]
         [DisplayName("Razón Social")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public String RazonSocial { get; set; }
@@ -61,11 +63,11 @@ namespace API.Catalogos
         [DisplayName("Régimen Fiscal")]
         [Required(ErrorMessage = "Campo obligatorio")]
         public c_RegimenFiscal RegimenFiscal { get; set; }
-        
+
         [DisplayName("Numero operación Adquirente")]
         public string FactAtrAdquirente { get; set; }
 
-        #endregion
+        #endregion Informacion Fiscal
 
         #region Informacion Correo
 
@@ -90,7 +92,7 @@ namespace API.Catalogos
         [DisplayName("SSL")]
         public bool Ssl { get; set; }
 
-        #endregion
+        #endregion Informacion Correo
 
         #region Especificaciones Fiscales
 
@@ -121,19 +123,21 @@ namespace API.Catalogos
 
         [DisplayName("Serie Carta Porte")]
         public String SerieCartaPorte { get; set; }
-        #endregion
+
+        #endregion Especificaciones Fiscales
 
         [DisplayName("Folio Ingreso")]
         public int FolioIngreso { get; set; }
+
         [DisplayName("Serie Ingreso")]
         public String SerieIngreso { get; set; }
 
         [DisplayName("Folio Comprobante Egreso")]
         public int FolioEgreso { get; set; }
-        
+
         [DisplayName("Serie Egreso")]
         public String SerieEgreso { get; set; }
-        
+
         #region Informacion XSA
 
         [DisplayName("Servicio")]
@@ -152,25 +156,27 @@ namespace API.Catalogos
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? FechaInicial { get; set; }
 
-        #endregion
+        #endregion Informacion XSA
 
         #region Bancos
 
         [NotMapped]
         public virtual BancoSucursal Banco { get; set; }
+
         public virtual List<BancoSucursal> Bancos { get; set; }
 
-        #endregion
+        #endregion Bancos
 
         #region Grupo
 
         [Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Grupo")]
         public int GrupoId { get; set; }
+
         [ForeignKey("GrupoId")]
         public virtual Grupo Grupo { get; set; }
 
-        #endregion
+        #endregion Grupo
 
         //[NotMapped]
         [DisplayName("RealVirtual")]
@@ -179,7 +185,5 @@ namespace API.Catalogos
         //[NotMapped]
         [DisplayName("XSA Tralix")]
         public bool Txsa { get; set; }
-
-
     }
 }

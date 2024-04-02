@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2 clean readonly", @data_control = "select2" })
+                                @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select select mb-2 clean readonly", @data_control = "select2" })
                                 @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
                             </div>
 
@@ -48,7 +48,6 @@
                                 @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
                                 @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
                             </div>
-
                         </div>
 
                         <div class="row">
@@ -74,7 +73,6 @@
                                     </i> Addenda
                                 </button>
                             </div>
-
                         </div>
                         <!--begin::Row-->
                         <div class="row g-5 g-xl-8" id="toggleTarget" data-kt-custom-toggle="on">
@@ -99,7 +97,7 @@
                                         <div class="row form-group">
                                             <div class="col-md-6">
                                                 @Html.LabelFor(model => model.CfdiRelacionado.TipoRelacion, new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                                @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                                 @Html.ValidationMessageFor(model => model.CfdiRelacionado.TipoRelacion, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-md-4">
@@ -192,13 +190,13 @@
 
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.FormaPago, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Pago.FormaPago, (IEnumerable<SelectListItem>)ViewBag.formaPago, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.Pago.FormaPago, (IEnumerable<SelectListItem>)ViewBag.formaPago, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Pago.FormaPago, "", new { @class = "text-danger" })
                                     </div>
 
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.Moneda, new { @class = "form-label" })
-                                        @Html.EnumDropDownListFor(model => model.Pago.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
+                                        @Html.EnumDropDownListFor(model => model.Pago.Moneda, "", new { @class = "form-select select mb-2", @data_control = "select2" })
                                         @Html.ValidationMessageFor(model => model.Pago.Moneda, "", new { @class = "text-danger" })
                                     </div>
 
@@ -222,13 +220,13 @@
 
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.BancoBeneficiarioId, new { @class = "form-label" })
-                                        @Html.DropDownList("BancoBeneficiarioId", null, "Favor de hacer su selección", new { @id = "Pago_BancoBeneficiarioId", @class = "form-select mb-2" })
+                                        @Html.DropDownList("BancoBeneficiarioId", null, "Favor de hacer su selección", new { @id = "Pago_BancoBeneficiarioId", @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Pago.BancoBeneficiarioId, "", new { @class = "text-danger" })
                                     </div>
 
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.BancoOrdenanteId, new { @class = "form-label" })
-                                        @Html.DropDownList("BancoOrdenanteId", null, "Favor de hacer su selección", new { @id = "Pago_BancoOrdenanteId", @class = "form-select mb-2" })
+                                        @Html.DropDownList("BancoOrdenanteId", null, "Favor de hacer su selección", new { @id = "Pago_BancoOrdenanteId", @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Pago.BancoOrdenanteId, "", new { @class = "text-danger" })
                                     </div>
 
@@ -244,7 +242,6 @@
                                             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <input type="file" id="file" name="FileUpload" value="Favor de subir su archivo de SPEI" accept=".xml" class="fileSpei" />
                                             </div>
-
                                         </div>
                                     </div>
 
@@ -256,7 +253,6 @@
                                                 <i class="glyph-icon icon-inbox"></i>
                                                 Pagos Agregados
                                                 <span class="contadorPagos font-blue">
-
                                                 </span>
                                             </h3>
                                             <div id="detalles">
@@ -268,7 +264,6 @@
                                                     }
                                                 }
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -288,7 +283,6 @@
                                 <span class="indicator-label">Guardar</span>
                             </button>
                         </div>
-
                     </div>
                 }
             </div>
@@ -297,7 +291,7 @@
 </div>
 
 <script>
-    
+
     if ($("#IdTipoRelacion").val() > 0) {
 
         $('.cfdiRelacionadoSeccion').show();

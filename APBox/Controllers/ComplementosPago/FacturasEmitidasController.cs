@@ -19,13 +19,11 @@ using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
 
-
 namespace APBox.Controllers.Catalogos
 {
     [APBox.Control.SessionExpire]
     public class FacturasEmitidasController : Controller
     {
-
         #region Variables
 
         private readonly APBoxContext _db = new APBoxContext();
@@ -34,7 +32,8 @@ namespace APBox.Controllers.Catalogos
         private readonly DescargasManager _descargasManager = new DescargasManager();
         private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
         private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
-        #endregion
+
+        #endregion Variables
 
         // GET: FacturasEmitidas
         public ActionResult Index()
@@ -47,24 +46,24 @@ namespace APBox.Controllers.Catalogos
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, facturasEmitidasModel.FechaInicial.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+
             facturasEmitidasModel.FechaInicial = fechaInicial;
             facturasEmitidasModel.FechaFinal = fechaFinal;
+
             List<facturareferencia> listaFacturaReferencia = new List<facturareferencia>();
+
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             bool isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
             if (isEmpty)
             {
-                
-                  foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
-                  {
-                      //get status
-                      FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
-                      facturasEmitidas.Status = facturaEmitStatus.Status;
-                  }
-                
-
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                {
+                    //get status
+                    FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                    facturasEmitidas.Status = facturaEmitStatus.Status;
+                }
             }
 
             ViewBag.Controller = "FacturasEmitidas";
@@ -89,19 +88,17 @@ namespace APBox.Controllers.Catalogos
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
-            
+
             isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
 
             if (isEmpty)
             {
-                
-                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
-                    {
-                        //get status
-                        FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
-                        facturasEmitidas.Status = facturaEmitStatus.Status;
-                    }
-                
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                {
+                    //get status
+                    FacturaEmitida facturaEmitStatus = _db.FacturasEmitidas.Find(facturasEmitidas.Id);
+                    facturasEmitidas.Status = facturaEmitStatus.Status;
+                }
             }
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "Index";
@@ -206,7 +203,7 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: FacturasEmitidas/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -238,7 +235,7 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: FacturasEmitidas/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -302,6 +299,7 @@ namespace APBox.Controllers.Catalogos
             }
             return View(facturaEmitida);
         }
+
         public ActionResult DescargaXML(int id)
         {
             //get xml
@@ -339,7 +337,6 @@ namespace APBox.Controllers.Catalogos
             {
                 //dowload pdf in XSA
                 archivoFisico = _ComprobanteXsaManager.DownloadPDFXsa(id, true);
-
             }
             else
             {
@@ -361,13 +358,13 @@ namespace APBox.Controllers.Catalogos
                     {
                         oComprobante33 = _decodifica.DeserealizarXML33(facturaEmitida.ArchivoFisicoXml);
                         tipoDocumento = _decodifica.TipoDocumentoCfdi33(facturaEmitida.ArchivoFisicoXml);
-                        archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, true,false);
+                        archivoFisico = _descargasManager.GeneraPDF33(oComprobante33, tipoDocumento, id, true, false);
                     }
                     else
                     {
                         oComprobante = _decodifica.DeserealizarXML40(facturaEmitida.ArchivoFisicoXml);
                         tipoDocumento = _decodifica.TipoDocumentoCfdi40(facturaEmitida.ArchivoFisicoXml);
-                        archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, true,false);
+                        archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, true, false);
                     }
                 }
             }
@@ -379,7 +376,6 @@ namespace APBox.Controllers.Catalogos
             Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
             Response.OutputStream.Flush();
             Response.End();
-
 
             return new FileStreamResult(Response.OutputStream, "application/pdf");
         }
@@ -432,7 +428,6 @@ namespace APBox.Controllers.Catalogos
             catch (Exception ex)
             {
                 error = ex.Message;
-
             }
             if (error == null)
             {
@@ -490,6 +485,7 @@ namespace APBox.Controllers.Catalogos
 
             return new FileStreamResult(Response.OutputStream, "application/xml");
         }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -506,7 +502,7 @@ namespace APBox.Controllers.Catalogos
             return Convert.ToInt32(Session["SucursalId"]);
         }
 
-        #endregion
+        #endregion PopulaForma
 
         #region Archivos
 
@@ -523,7 +519,6 @@ namespace APBox.Controllers.Catalogos
                     {
                         try
                         {
-
                             var fileName = Path.GetFileName(file.FileName);
 
                             if (Path.GetExtension(fileName) != ".xml")
@@ -538,7 +533,6 @@ namespace APBox.Controllers.Catalogos
                         catch (Exception)
                         {
                         }
-
                     }
                 }
                 return paths;
@@ -546,9 +540,10 @@ namespace APBox.Controllers.Catalogos
             return null;
         }
 
-        #endregion
+        #endregion Archivos
 
-        public ActionResult ReportePagos() {
+        public ActionResult ReportePagos()
+        {
             var sucursalId = ObtenerSucursal();
 
             var facturasEmitidasModel = new FacturasEmitidasModel
@@ -573,9 +568,7 @@ namespace APBox.Controllers.Catalogos
                         facturasEmitidas.FacturaComplementoPagoId = queryFacturas.Id;
                         facturasEmitidas.FacturaEmitidaPagada = true;
                     }
-
                 }
-
             }
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReportePagos";
@@ -642,11 +635,7 @@ namespace APBox.Controllers.Catalogos
             public string Serie { get; set; }
 
             public int Id { get; set; }
-
         }
-
-
-
 
         public facturareferencia facturaidferencia(int id)
         {
@@ -654,12 +643,11 @@ namespace APBox.Controllers.Catalogos
             const string query = @"select  cm.ReferenciaAddenda,  cm.TotalImpuestoTrasladado, cm.TotalImpuestoRetenidos , fe.Status from cp_complementocartaporte cm  " +
                         "join ori_facturasemitidas fe on (fe.Id= cm.FacturaEmitidaId) " +
                         "where fe.Id in (@Id); ";
-           
+
             var consulta = _db.Database.SqlQuery<facturareferencia>(query,
                     new MySqlParameter { ParameterName = "@Id", MySqlDbType = MySqlDbType.String, Value = id }).FirstOrDefault();
 
             return consulta;
-
         }
 
         public class facturareferencia
@@ -673,11 +661,7 @@ namespace APBox.Controllers.Catalogos
             public double TotalImpuestoRetenidos { get; set; }
 
             public Status Status { get; set; }
-
         }
-
-
-
 
         private void PopulaMotivoCancelacion()
         {
@@ -688,8 +672,5 @@ namespace APBox.Controllers.Catalogos
             items.Add(new SelectListItem { Text = "04 - Operación nominativa relacionada en una factura global", Value = "04" });
             ViewBag.motivoCancelacion = items;
         }
-      
-    
-
     }
 }

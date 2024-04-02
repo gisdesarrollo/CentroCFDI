@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.OperacionesProveedores
 {
-    [Table("DocumentosPagos")]
+    [Table("DocumentosPagados")]
     public class DocumentosPagadosDR
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

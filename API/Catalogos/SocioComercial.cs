@@ -23,9 +23,10 @@ namespace API.Catalogos
         [DisplayName("Teléfono 2")]
         public String Telefono2 { get; set; }
 
+        [RegularExpression(@"^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$", ErrorMessage = "El formato del correo electrónico no es válido.")]
         [DisplayName("E-Mail")]
         public String Email { get; set; }
-        
+
         [DisplayName("Fecha de Alta")]
         public DateTime FechaAlta { get; set; }
 
@@ -34,23 +35,26 @@ namespace API.Catalogos
         public String Observaciones { get; set; }
 
         //Facturacion
+        [RegularExpression(@"^[^\s].*[^\s]$", ErrorMessage = "El campo de RazonSocial no puede terminar en un espacio.")]
         [DisplayName("Razón Social")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public String RazonSocial { get; set; }
 
+        [RegularExpression(@"^[A-Z&Ññ]{3,4}\d{6}[A-V1-9][A-Z1-9\d]([0-9A]|\s)$", ErrorMessage = "El campo RFC no puede terminar en un espacio en blanco.")]
         public String Rfc { get; set; }
 
         [NotMapped]
         [DisplayName("RFC - Razón Social")]
-        public String RfcRazonSocial { get { return String.Format("{0} - {1}", Rfc, RazonSocial); } }
+        public String RfcRazonSocial
+        { get { return String.Format("{0} - {1}", Rfc, RazonSocial); } }
 
-        [DisplayName("Domicilio Fiscal")]
+        [DisplayName("Código Postal")]
         [RegularExpression("[\\s]{0,3}([0-9]{5})[\\s]{0,3}", ErrorMessage = "El código postal tiene que conformarse de 5 caracteres numéricos")]
         public String CodigoPostal { get; set; }
 
         [DisplayName("Uso Cfdi")]
         public c_UsoCfdiCP UsoCfdi { get; set; }
-        
+
         [DisplayName("País")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public c_Pais Pais { get; set; }
@@ -58,17 +62,17 @@ namespace API.Catalogos
         [DisplayName("Numero Registro Identificación Tributaria")]
         public string NumRegIdTrib { get; set; }
 
-        
         /*[DisplayName("Domicilio Fiscal")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         public string DomicilioFiscal { get; set; }*/
-        
+
         [DisplayName("Régimen Fiscal")]
         [Required(ErrorMessage = "Campo obligatorio")]
         public c_RegimenFiscal RegimenFiscal { get; set; }
 
         [NotMapped]
         public virtual BancoSocioComercial Banco { get; set; }
+
         public virtual List<BancoSocioComercial> Bancos { get; set; }
 
         #region Grupo
@@ -76,17 +80,16 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Sucursal")]
         public int SucursalId { get; set; }
+
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
-
 
         [DisplayName("Grupo")]
         public int? GrupoId { get; set; }
 
-
         [ForeignKey("GrupoId")]
         public virtual Grupo Grupo { get; set; }
 
-        #endregion
+        #endregion Grupo
     }
 }

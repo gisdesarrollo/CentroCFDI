@@ -1,7 +1,9 @@
-﻿using API.Enums;
+﻿using API.Catalogos;
+using API.Enums;
 using API.Operaciones.OperacionesProveedores;
 using API.Relaciones;
 using Aplicacion.Context;
+using Aplicacion.LogicaPrincipal.Correos;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
@@ -9,14 +11,14 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 {
     public class CargaPagosDR
     {
         private readonly AplicacionContext _db = new AplicacionContext();
+        private readonly EnviosEmails _envioEmail = new EnviosEmails();
+
         public String Exportar()
         {
             var path = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//Temp//LayoutPagos_{0}.csv", DateTime.Now.ToString("ddMMyyyyHHmmss"));
@@ -32,12 +34,10 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                 "*Referencia Bancaria",
                 "*Referencia ERP",
                 "*Cuenta Bancaria",
-                "*Serie",
-                "*Folio",
                 "*UUID"
             };
 
-            #endregion
+            #endregion Encabezados
 
             using (var textWriter = File.CreateText(path))
             {
@@ -51,7 +51,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
             return path;
         }
 
-        public List<PagosDR> Importar(string path, int sucursalId, bool previsualizacion,int usuarioId)
+        public List<PagosDR> Importar(string path, int sucursalId, bool previsualizacion, int usuarioId)
         {
             var errores = new List<String>();
             var pagos = new List<PagosDR>();
@@ -78,24 +78,21 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     {
                         try
                         {
-
                             var fechaPago = Convert.ToDateTime(registros[i][0]);
                             fechaPago = fechaPago.Date.AddHours(time.Hour).AddMinutes(time.Minute).AddSeconds(00);
                             var moneda = ParseEnum<c_Moneda>(registros[i][1], i);
                             var tipoCambioPago = Convert.ToDouble(registros[i][2]);
-                            var TotalPago = String.IsNullOrEmpty(registros[i][3]) ?  0: Convert.ToDouble(registros[i][3]);
+                            var TotalPago = String.IsNullOrEmpty(registros[i][3]) ? 0 : Convert.ToDouble(registros[i][3]);
                             var referenciaBancaria = registros[i][4];
                             var referenciaERP = registros[i][5];
                             var cuentaBancariaNombre = registros[i][6];
-                            var serie = registros[i][7];
-                            var folio = registros[i][8];
-                            var UUID = registros[i][9];
-                            
+                            var UUID = registros[i][7];
 
                             var documentoRecibido = _db.DocumentoRecibidoDr.FirstOrDefault(fe => fe.CfdiRecibidos_UUID == UUID);
+
                             if (documentoRecibido == null)
                             {
-                                errores.Add(String.Format("El pago {0} - {1} - {2} no fue encontrada para el registro {3}", serie, folio,UUID, i));
+                                errores.Add(String.Format("El CFDi de folio fiscal {0} no fue encontrada para el registro {3}", UUID, i));
                                 continue;
                             }
 
@@ -112,21 +109,20 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var documentoPagado = new DocumentosPagadosDR
                             {
                                 FechaDocumento = documentoRecibido.RecibidosComprobante.Fecha,
-                                Folio = folio,
-                                Serie = serie,
+                                Folio = documentoRecibido.CfdiRecibidos_Folio,
+                                Serie = documentoRecibido.CfdiRecibidos_Serie,
                                 Moneda = documentoRecibido.RecibidosComprobante.Moneda,
                                 Total = documentoRecibido.RecibidosComprobante.Total,
                                 UUID = UUID,
                                 TipoCambio = documentoRecibido.RecibidosComprobante.TipoCambio,
                                 FormaPago = documentoRecibido.RecibidosComprobante.FormaPago,
-                                MetodoPago = documentoRecibido.RecibidosComprobante.MetodoPago                               
+                                MetodoPago = documentoRecibido.RecibidosComprobante.MetodoPago
                             };
 
-                            
-                            if (pagos.Any(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.DocumentoRecibido.SocioComercial.Id == documentoRecibido.SocioComercial.Id ))
+                            if (pagos.Any(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.SocioComercial_Id == documentoRecibido.SocioComercial.Id))
                             {
-                                var pago  = pagos.First(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.DocumentoRecibido.SocioComercial.Id == documentoRecibido.SocioComercial.Id);
-                                if(pago != null)
+                                var pago = pagos.First(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.SocioComercial_Id == documentoRecibido.SocioComercial.Id);
+                                if (pago != null)
                                 {
                                     pago.DocumentosPagados.Add(documentoPagado);
                                 }
@@ -136,11 +132,11 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 var pago = new PagosDR
                                 {
                                     FechaPago = fechaPago,
+                                    SucursalId = sucursalId,
                                     Total = TotalPago,
-                                    ComplementoPagoRecibido_Id = documentoRecibido.Id,
-                                    DocumentoRecibido = documentoRecibido,
+                                    ComplementoPagoRecibido_Id = null,
+                                    DocumentoRecibido = null,
                                     Moneda = moneda,
-                                    //agregar socio comercial id
                                     SocioComercial_Id = documentoRecibido.SocioComercial_Id,
                                     SocioComercial = documentoRecibido.SocioComercial,
                                     TipoCambio = tipoCambioPago,
@@ -149,12 +145,13 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                     ReferenciaBancaria = referenciaBancaria,
                                     ReferenciaERP = referenciaERP
                                 };
-                                pago.DocumentosPagados = new List<DocumentosPagadosDR>();
-                                pago.DocumentosPagados.Add(documentoPagado);
 
+                                pago.DocumentosPagados = new List<DocumentosPagadosDR>
+                                {
+                                    documentoPagado
+                                };
                                 pagos.Add(pago);
                             }
-
                         }
                         catch (Exception ex)
                         {
@@ -162,7 +159,6 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             continue;
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -186,26 +182,31 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                 {
                     try
                     {
-                        var documentoPagoRelacionado = pago.DocumentosPagados;
+                        var documentosPagados = pago.DocumentosPagados;
                         pago.DocumentosPagados = null;
                         pago.DocumentoPagado = null;
+                        pago.ComplementoPagoRecibido_Id = null;
                         _db.PagoDr.Add(pago);
                         _db.SaveChanges();
-                        foreach(var docPagoRelacionado in documentoPagoRelacionado)
+
+                        foreach (var documentoPagado in documentosPagados)
                         {
-                            docPagoRelacionado.Pagos = null;
-                            docPagoRelacionado.Pago_Id = pago.Id;
-                            _db.DocumentoPagadoDr.Add(docPagoRelacionado);
+                            documentoPagado.Pagos = null;
+                            documentoPagado.Pago_Id = pago.Id;
+                            _db.DocumentoPagadoDr.Add(documentoPagado);
+
+                            var docRecib = _db.DocumentoRecibidoDr.FirstOrDefault(fe => fe.CfdiRecibidos_UUID == documentoPagado.UUID);
+                            //actualiza estatus pago
+                            docRecib.EstadoPago = c_EstadoPago.Pagado;
+                            docRecib.AprobacionesDR.FechaCargaPagos = DateTime.Now;
+                            docRecib.AprobacionesDR.UsuarioCargaPagos_id = usuarioId;
+                            _db.Entry(docRecib).State = EntityState.Modified;
                         }
                         _db.SaveChanges();
 
-                        //actualiza estatus pago
-                        var documentoRecibido = _db.DocumentoRecibidoDr.Find(pago.ComplementoPagoRecibido_Id);
-                        documentoRecibido.EstadoPago = c_EstadoPago.Pagado;
-                        documentoRecibido.AprobacionesDR.FechaCargaPagos = DateTime.Now;
-                        documentoRecibido.AprobacionesDR.UsuarioCargaPagos_id = usuarioId;
-                        _db.Entry(documentoRecibido).State = EntityState.Modified;
-                        _db.SaveChanges();
+                        var usuarioAprobacion = ObtenerUsuarioDeAprobacionesDR(documentosPagados.FirstOrDefault().Id);
+                        var socioComercial = _db.Usuarios.FirstOrDefault(u => u.Id == usuarioAprobacion).SocioComercial;
+                        _envioEmail.NotificacionPagoSocioComercial(usuarioAprobacion, sucursalId, pago, socioComercial.Id);
                     }
                     catch (DbEntityValidationException dbEx)
                     {
@@ -218,11 +219,11 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                         }
                     }
                 }
-
             }
 
             return pagos;
         }
+
         private T ParseEnum<T>(string valor, int registro)
         {
             var esNumero = int.TryParse(valor, out int numero);
@@ -258,29 +259,35 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     case "1":
                         formaPagoValid = "01";
                         break;
+
                     case "2":
                         formaPagoValid = "02";
                         break;
+
                     case "3":
                         formaPagoValid = "03";
                         break;
+
                     case "4":
                         formaPagoValid = "04";
                         break;
+
                     case "5":
                         formaPagoValid = "05";
                         break;
+
                     case "6":
                         formaPagoValid = "06";
                         break;
+
                     case "8":
                         formaPagoValid = "08";
                         break;
+
                     default:
                         formaPagoValid = "03";
                         break;
                 }
-
             }
             else
             {
@@ -289,8 +296,10 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
             return formaPagoValid;
         }
 
-
-
-
+        private int? ObtenerUsuarioDeAprobacionesDR(int documentoRecibidoId)
+        {
+            var usuarioAprobacion = _db.DocumentoRecibidoDr.FirstOrDefault(fe => fe.Id == documentoRecibidoId);
+            return usuarioAprobacion.AprobacionesDR.UsuarioEntrega_Id;
+        }
     }
 }

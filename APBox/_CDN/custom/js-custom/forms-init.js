@@ -1,8 +1,7 @@
 $(document).ready(function() {
 
     // Agrega las clases de bootstrap para todas las tablas que tengan dataTables
-    $('.dataTable').addClass('table table-condensed');
-    $('table').addClass('table table-condensed');
+    //$('table').addClass('table table-condensed');
 
 
     $(function() {

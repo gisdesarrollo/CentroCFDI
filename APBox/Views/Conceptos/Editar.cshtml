@@ -111,19 +111,19 @@
             </div>
             <div class="form-group col-xs-12 col-sm-6 col-md-2">
                 @Html.LabelFor(model => model.ObjetoImpuesto, htmlAttributes: new { @class = "form-label" })
-                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "objetoImpuestoDrop" })
+                @Html.DropDownListFor(model => model.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "objetoImpuestoDrop" })
                 @Html.ValidationMessageFor(model => model.ObjetoImpuesto, "", new { @class = "text-danger" })
             </div>
 
             
                 <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
                     @Html.LabelFor(model => model.ImpuestoIdTras, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "CImpuestoT" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdTras, (IEnumerable<SelectListItem>)ViewBag.ImpuestoT, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "CImpuestoT" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdTras, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-md-2 habilita-impuesto" style="display:none">
                     @Html.LabelFor(model => model.ImpuestoIdRet, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "CImpuestoR" })
+                    @Html.DropDownListFor(model => model.ImpuestoIdRet, (IEnumerable<SelectListItem>)ViewBag.ImpuestoR, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "CImpuestoR" })
                     @Html.ValidationMessageFor(model => model.ImpuestoIdRet, "", new { @class = "text-danger" })
                 </div>
             

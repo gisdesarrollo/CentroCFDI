@@ -63,7 +63,7 @@
                     </div>
                     <div class="form-group col-xs-12 col-sm-6 col-md-3">
                         @Html.LabelFor(model => model.TipoDeComprobante, htmlAttributes: new { @class = "form-label" })
-                        @Html.DropDownList("TipoDecomprobante", null, new { @class = "form-select mb-2", @id = "tipoComprobante" })
+                        @Html.DropDownList("TipoDecomprobante", null, new { @class = "form-select select mb-2", @id = "tipoComprobante" })
                         @Html.ValidationMessageFor(model => model.TipoDeComprobante, "Comprobante no puede ir vacío", new { @class = "text-danger" })
                     </div>
                     <div class="form-group col-xs-12 col-sm-6 col-md-3">
@@ -88,7 +88,7 @@
                     </div>
                     <div class="form-group col-xs-12 col-sm-6 col-md-3" id="moneda">
                         @Html.LabelFor(model => model.Moneda, htmlAttributes: new { @class = "form-label" })
-                        @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
+                        @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select select mb-2", @data_control = "select2" })
                         @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
                     </div>
                     <div class="row">
@@ -106,7 +106,7 @@
                     </div>
                     <div class="form-group col-xs-12 col-sm-6 col-md-6">
                         @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "form-label" })
-                        @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                        @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
                         @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
                     </div>
                     <div class="row @activaImformacionGlobal" id="activa-informacion-global">
@@ -168,7 +168,7 @@
                                 <div class="row">
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         @Html.LabelFor(model => model.CfdiRelacionado.TipoRelacion, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.CfdiRelacionado.TipoRelacion, "", new { @class = "text-danger" })
                                     </div>
 
@@ -311,7 +311,7 @@
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-3" id="activaObjetoImpI">
                                     @Html.LabelFor(model => model.Conceptos.ObjetoImpuesto, new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                    @Html.DropDownListFor(model => model.Conceptos.ObjetoImpuesto, (IEnumerable<SelectListItem>)ViewBag.objetoImpuesto, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                     @Html.ValidationMessageFor(model => model.Conceptos.ObjetoImpuesto, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -335,7 +335,7 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                         @Html.LabelFor(model => model.Conceptos.Traslado.Impuesto, htmlAttributes: new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Conceptos.Traslado.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.Conceptos.Traslado.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Conceptos.Traslado.Impuesto, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
@@ -373,7 +373,7 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">
                                         @Html.LabelFor(model => model.Conceptos.Retencion.Impuesto, htmlAttributes: new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Conceptos.Retencion.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.Conceptos.Retencion.Impuesto, (IEnumerable<SelectListItem>)ViewBag.ImpuestoSat, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Conceptos.Retencion.Impuesto, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-2">

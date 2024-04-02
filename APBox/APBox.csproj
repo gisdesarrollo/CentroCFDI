@@ -2892,17 +2892,14 @@
     <Content Include="Views\ReporteRecibidos\ReporteCfdiRecibidos.cshtml" />
     <Content Include="Views\DocumentosPagos\CargaLayout.cshtml" />
     <Content Include="Views\DocumentosPagos\Pagos.cshtml" />
-<<<<<<< Updated upstream
     <Content Include="Views\DocumentosPagos\CargaComplementoPago.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_InformacionComplementoPago.cshtml" />
     <Content Include="Views\DocumentosPagos\ComplementosPagosCargados.cshtml" />
-=======
     <Content Include="Views\DocumentosRecibidosPartials\_AprobacionRechazoComercialPago.cshtml" />
     <Content Include="Views\DocumentosPagos\Revision.cshtml" />
     <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ValidacionFiscalDocumento.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ArchivosAdjuntos.cshtml" />
->>>>>>> Stashed changes
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

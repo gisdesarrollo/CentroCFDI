@@ -96,7 +96,7 @@
                 </div>
                 <div class="form-group col-xs-12 col-sm-3">
                     @Html.LabelFor(model => model.Moneda, new { @class = "form-label" })
-                    @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select mb-2", @data_control = "select2" })
+                    @Html.EnumDropDownListFor(model => model.Moneda, "", new { @class = "form-select select mb-2", @data_control = "select2" })
                     @Html.ValidationMessageFor(model => model.Moneda, "", new { @class = "text-danger" })
                 </div>
 
@@ -121,7 +121,7 @@
                 </div>
                 <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso hiddenDiv">
                     @Html.LabelFor(model => model.DescripEmbalaje, htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.DescripEmbalaje, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "DesEmbalajeMer" })
+                    @Html.DropDownListFor(model => model.DescripEmbalaje, (IEnumerable<SelectListItem>)ViewBag.TiposEmbalaje, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "DesEmbalajeMer" })
                     @Html.ValidationMessageFor(model => model.DescripEmbalaje, "", new { @class = "text-danger" })
                     <div id="ClaveMatPeligroso" style="color:red;"></div>
                 </div>

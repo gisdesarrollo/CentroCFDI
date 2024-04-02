@@ -101,7 +101,7 @@
                                         @Model.ComplementosPago[i].FacturaEmitida.Serie; @Html.Raw(" - ") @Model.ComplementosPago[i].FacturaEmitida.Folio;
                                         <br />
                                         <span class="text-gray-600">
-                                            @Html.DisplayFor(model => Model.ComplementosPago[i].FacturaEmitida.Uuid);
+                                            @Html.DisplayFor(model => Model.ComplementosPago[i].FacturaEmitida.Uuid)
                                         </span>
                                     }
                                     else
@@ -193,7 +193,7 @@
         </div>
         <div class="me-4">
             <!--begin::Menu-->
-            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
                 <i class="ki-duotone ki-filter fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
                 Filtros
             </a>
@@ -214,7 +214,7 @@
                     <!--begin::Form-->
                     <div class="px-7 py-5">
                         <!--begin::Input group-->
-                        <div class="mb-10">
+                        <div class="mb-5">
                             <!--begin::Label-->
                             <label class="form-label fw-semibold">Periodo:</label>
                             <!--end::Label-->
@@ -227,7 +227,7 @@
                             </div>
                             <div class="mb-3">
                                 @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "form-label" })
-                                @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-select mb-2" })
+                                @Html.DropDownListFor(model => model.Estatus, (IEnumerable<SelectListItem>)ViewBag.StatusCP, "Todas", new { @class = "form-select select mb-2" })
                             </div>
                             <!--end::Input-->
                         </div>

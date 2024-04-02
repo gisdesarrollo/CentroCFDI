@@ -62,7 +62,7 @@
                             @Html.ValidationMessageFor(model => model.FechaDocumento, "", new { @class = "text-danger" })
                         </td>
                         <td colspan="4">
-                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select mb-2", @data_control = "select2" })
+                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select select mb-2", @data_control = "select2" })
                             @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
                         </td>
                     </tr>

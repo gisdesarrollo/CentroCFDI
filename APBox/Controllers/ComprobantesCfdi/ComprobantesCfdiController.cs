@@ -33,16 +33,18 @@ namespace APBox.Controllers.ComprobantesCfdi
     public class ComprobantesCfdiController : Controller
     {
         #region Variables
-            private readonly APBoxContext _db = new APBoxContext();
-            private readonly LogicaFacadeFacturas _logicaFacadeFacturas = new LogicaFacadeFacturas();
-            private readonly AcondicionarComprobanteCfdi _acondicionarComprobante = new AcondicionarComprobanteCfdi();
-            private readonly ComprobanteManager _ComprobanteManager = new ComprobanteManager();
-            private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
-            private readonly CreationFile _creationFile = new CreationFile();
-            private readonly CargarConceptos _cargarConceptos = new CargarConceptos();
-            private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
-            private readonly DescargasManager _descargasManager = new DescargasManager();
-        #endregion
+
+        private readonly APBoxContext _db = new APBoxContext();
+        private readonly LogicaFacadeFacturas _logicaFacadeFacturas = new LogicaFacadeFacturas();
+        private readonly AcondicionarComprobanteCfdi _acondicionarComprobante = new AcondicionarComprobanteCfdi();
+        private readonly ComprobanteManager _ComprobanteManager = new ComprobanteManager();
+        private readonly ComprobanteXsaManager _ComprobanteXsaManager = new ComprobanteXsaManager();
+        private readonly CreationFile _creationFile = new CreationFile();
+        private readonly CargarConceptos _cargarConceptos = new CargarConceptos();
+        private readonly DecodificaFacturas _decodifica = new DecodificaFacturas();
+        private readonly DescargasManager _descargasManager = new DescargasManager();
+
+        #endregion Variables
 
         // GET: ComprobanteCfdi
         public ActionResult Index()
@@ -50,10 +52,10 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaEstatus();
             PopulaTiposDeComprobante();
             var comprobanteCfdiModel = new ComprobanteCfdiModel();
-            
-            
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+
             comprobanteCfdiModel.FechaInicial = fechaInicial;
             comprobanteCfdiModel.FechaFinal = fechaFinal;
 
@@ -77,18 +79,16 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Button = "Crear";
             ViewBag.NameHere = "CFDI de Ingreso y Egreso";
 
-                DateTime fechaI = comprobanteCfdiModel.FechaInicial;
-                DateTime fechaF = comprobanteCfdiModel.FechaFinal;
-                
+            DateTime fechaI = comprobanteCfdiModel.FechaInicial;
+            DateTime fechaF = comprobanteCfdiModel.FechaFinal;
 
-                var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
-                var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-                comprobanteCfdiModel.FechaInicial = fechaInicial;
-                comprobanteCfdiModel.FechaFinal = fechaFinal;
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            comprobanteCfdiModel.FechaInicial = fechaInicial;
+            comprobanteCfdiModel.FechaFinal = fechaFinal;
 
-                comprobanteCfdiModel.ComprobanteCfdi = _logicaFacadeFacturas.FiltrarComprobanteCFDI(fechaInicial, fechaFinal, comprobanteCfdiModel.Estatus,comprobanteCfdiModel.TipoDeComprobante, ObtenerSucursal());
+            comprobanteCfdiModel.ComprobanteCfdi = _logicaFacadeFacturas.FiltrarComprobanteCFDI(fechaInicial, fechaFinal, comprobanteCfdiModel.Estatus, comprobanteCfdiModel.TipoDeComprobante, ObtenerSucursal());
 
-            
             return View(comprobanteCfdiModel);
         }
 
@@ -133,7 +133,6 @@ namespace APBox.Controllers.ComprobantesCfdi
                         TasaOCuota = 0,
                         Importe = 0
                     }
-
                 }
             };
             ViewBag.Controller = "ComprobantesCfdi";
@@ -152,7 +151,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ModelState.Remove("Conceptos.ObjetoImpuesto");
 
             PopulaClientes(comprobanteCfdi.ReceptorId);
-            
+
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaObjetoImpuesto();
@@ -172,15 +171,15 @@ namespace APBox.Controllers.ComprobantesCfdi
             {
                 try
                 {
-                if (Request.Files.Count > 0)
-                {
-                    if (Request.Files[0].ContentLength > 0)
+                    if (Request.Files.Count > 0)
                     {
-                        archivo = SubeArchivo(0);
-                      
+                        if (Request.Files[0].ContentLength > 0)
+                        {
+                            archivo = SubeArchivo(0);
+                        }
                     }
                 }
-                }catch(Exception ex)
+                catch (Exception ex)
                 {
                     ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
                     return View(comprobanteCfdi);
@@ -188,12 +187,11 @@ namespace APBox.Controllers.ComprobantesCfdi
 
                 try
                 {
-                    if(archivo != null)
+                    if (archivo != null)
                     {
-                      conceptosCSV = _cargarConceptos.Importar(archivo,comprobanteCfdi.SucursalId);
+                        conceptosCSV = _cargarConceptos.Importar(archivo, comprobanteCfdi.SucursalId);
                         if (conceptosCSV.Count > 0)
                         {
-                            
                             comprobanteCfdi.Conceptoss = new List<Conceptos>();
                             conceptosCSV.ForEach(c => comprobanteCfdi.Conceptoss.Add(c));
                             decimal subtotal = 0;
@@ -202,21 +200,24 @@ namespace APBox.Controllers.ComprobantesCfdi
                             decimal totalRetencion = 0;
                             //calcula subtotal y total
                             conceptosCSV.ForEach(c => subtotal += (decimal)c.Importe);
-                            conceptosCSV.ForEach(c => { if (c.Traslado != null) { totalTraslado += c.Traslado.Importe; }
+                            conceptosCSV.ForEach(c =>
+                            {
+                                if (c.Traslado != null) { totalTraslado += c.Traslado.Importe; }
                                 if (c.Retencion != null) { totalRetencion += c.Retencion.Importe; }
                             });
                             total = (subtotal + totalTraslado) - totalRetencion;
-                            
+
                             comprobanteCfdi.Subtotal = subtotal;
                             comprobanteCfdi.Total = total;
                             // se actualizan cambios en el ModelState
                             ModelState.SetModelValue("Subtotal", new ValueProviderResult(subtotal, string.Empty, CultureInfo.InvariantCulture));
                             ModelState.SetModelValue("Total", new ValueProviderResult(total, string.Empty, CultureInfo.InvariantCulture));
-                            
+
                             return View(comprobanteCfdi);
                         }
                     }
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     var errores = ex.Message.Split('|');
                     foreach (var error in errores)
@@ -224,14 +225,14 @@ namespace APBox.Controllers.ComprobantesCfdi
                         ModelState.AddModelError("", error);
                     }
                 }
-            
+
                 try
                 {
                     _acondicionarComprobante.CargaInicial(ref comprobanteCfdi);
                     var conceptos = comprobanteCfdi.Conceptoss;
                     conceptos.ForEach(p => { p.ComprobanteCfdi = null; p.ComplementoCP = null; });
                     comprobanteCfdi.Conceptoss = null;
-                    comprobanteCfdi.Status= Status.Activo;
+                    comprobanteCfdi.Status = Status.Activo;
                     _db.ComprobantesCfdi.Add(comprobanteCfdi);
                     _db.SaveChanges();
 
@@ -274,9 +275,9 @@ namespace APBox.Controllers.ComprobantesCfdi
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ComprobanteCfdi CCfdi = _db.ComprobantesCfdi.Find(id);
-            if(CCfdi == null) { return HttpNotFound(); }
+            if (CCfdi == null) { return HttpNotFound(); }
             PopulaClientes(CCfdi.ReceptorId);
-            
+
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaObjetoImpuesto();
@@ -288,27 +289,25 @@ namespace APBox.Controllers.ComprobantesCfdi
             CCfdi.FormaPagoId = CCfdi.FormaPago;
             CCfdi.IdTipoRelacion = CCfdi.CfdiRelacionados.Count().ToString();
             CCfdi.TipoComprobanteId = CCfdi.TipoDeComprobante;
-             CCfdi.Conceptos = new Conceptos()
-             {
-                 Traslado = new TrasladoCP()
-                 {
-                     TipoImpuesto = "Traslado",
-                     TipoFactor = c_TipoFactor.Tasa,
-                     Base = 0,
-                     TasaOCuota = 0,
-                     Importe = 0
-                 },
-                 Retencion = new RetencionCP()
-                 {
-                     TipoImpuesto = "Retencion",
-                     TipoFactor = c_TipoFactor.Tasa,
-                     Base = 0,
-                     TasaOCuota = 0,
-                     Importe = 0
-                 }
-
-             };
-
+            CCfdi.Conceptos = new Conceptos()
+            {
+                Traslado = new TrasladoCP()
+                {
+                    TipoImpuesto = "Traslado",
+                    TipoFactor = c_TipoFactor.Tasa,
+                    Base = 0,
+                    TasaOCuota = 0,
+                    Importe = 0
+                },
+                Retencion = new RetencionCP()
+                {
+                    TipoImpuesto = "Retencion",
+                    TipoFactor = c_TipoFactor.Tasa,
+                    Base = 0,
+                    TasaOCuota = 0,
+                    Importe = 0
+                }
+            };
 
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Edit";
@@ -329,7 +328,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.ActionES = "Editar";
             ViewBag.NameHere = "emision";
             PopulaClientes(comprobanteCfdi.ReceptorId);
-           
+
             PopulaTipoRelacion();
             PopulaFormaPago();
             PopulaObjetoImpuesto();
@@ -350,7 +349,6 @@ namespace APBox.Controllers.ComprobantesCfdi
                         if (Request.Files[0].ContentLength > 0)
                         {
                             archivo = SubeArchivo(0);
-
                         }
                     }
                 }
@@ -359,40 +357,43 @@ namespace APBox.Controllers.ComprobantesCfdi
                     ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
                     return View(comprobanteCfdi);
                 }
-                try { 
-                if (archivo != null)
+                try
                 {
-                    conceptosCSV = _cargarConceptos.Importar(archivo, comprobanteCfdi.SucursalId);
-                    if (conceptosCSV.Count > 0)
+                    if (archivo != null)
                     {
-                        if(comprobanteCfdi.Conceptoss.Count == 0)
+                        conceptosCSV = _cargarConceptos.Importar(archivo, comprobanteCfdi.SucursalId);
+                        if (conceptosCSV.Count > 0)
+                        {
+                            if (comprobanteCfdi.Conceptoss.Count == 0)
                             {
                                 comprobanteCfdi.Conceptoss = new List<Conceptos>();
                             }
-                        
-                        conceptosCSV.ForEach(c => comprobanteCfdi.Conceptoss.Add(c));
-                        decimal subtotal = 0;
-                        decimal total = 0;
-                        decimal totalTraslado = 0;
-                        decimal totalRetencion = 0;
-                        //calcula subtotal y total
-                        conceptosCSV.ForEach(c => subtotal += (decimal)c.Importe);
-                        conceptosCSV.ForEach(c => {
-                            if (c.Traslado != null) { totalTraslado += c.Traslado.Importe; }
-                            if (c.Retencion != null) { totalRetencion += c.Retencion.Importe; }
-                        });
-                        total = (subtotal + totalTraslado) - totalRetencion;
 
-                        comprobanteCfdi.Subtotal += subtotal;
-                        comprobanteCfdi.Total += total;
-                        // se actualizan cambios en el ModelState
-                        ModelState.SetModelValue("Subtotal", new ValueProviderResult(comprobanteCfdi.Subtotal, string.Empty, CultureInfo.InvariantCulture));
-                        ModelState.SetModelValue("Total", new ValueProviderResult(comprobanteCfdi.Total, string.Empty, CultureInfo.InvariantCulture));
+                            conceptosCSV.ForEach(c => comprobanteCfdi.Conceptoss.Add(c));
+                            decimal subtotal = 0;
+                            decimal total = 0;
+                            decimal totalTraslado = 0;
+                            decimal totalRetencion = 0;
+                            //calcula subtotal y total
+                            conceptosCSV.ForEach(c => subtotal += (decimal)c.Importe);
+                            conceptosCSV.ForEach(c =>
+                            {
+                                if (c.Traslado != null) { totalTraslado += c.Traslado.Importe; }
+                                if (c.Retencion != null) { totalRetencion += c.Retencion.Importe; }
+                            });
+                            total = (subtotal + totalTraslado) - totalRetencion;
 
-                        return View(comprobanteCfdi);
+                            comprobanteCfdi.Subtotal += subtotal;
+                            comprobanteCfdi.Total += total;
+                            // se actualizan cambios en el ModelState
+                            ModelState.SetModelValue("Subtotal", new ValueProviderResult(comprobanteCfdi.Subtotal, string.Empty, CultureInfo.InvariantCulture));
+                            ModelState.SetModelValue("Total", new ValueProviderResult(comprobanteCfdi.Total, string.Empty, CultureInfo.InvariantCulture));
+
+                            return View(comprobanteCfdi);
+                        }
                     }
-                  }
-                }catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     var errores = ex.Message.Split('|');
                     foreach (var error in errores)
@@ -446,13 +447,11 @@ namespace APBox.Controllers.ComprobantesCfdi
             }
             PopulaClientes(comprobanteCfdi.ReceptorId);
 
-
             _db.ComprobantesCfdi.Remove(comprobanteCfdi);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-     
         public ActionResult Generar(int? id)
         {
             ViewBag.Controller = "ComprobantesCfdi";
@@ -464,7 +463,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ComprobanteCfdi comprobanteCfdi = _db.ComprobantesCfdi.Find(id);
-            
+
             if (comprobanteCfdi == null)
             {
                 return HttpNotFound();
@@ -472,6 +471,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             PopulaClientes(comprobanteCfdi.ReceptorId);
             return View(comprobanteCfdi);
         }
+
         [HttpPost]
         public ActionResult Generar(ComprobanteCfdi comprobanteCfdi)
         {
@@ -495,9 +495,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                     var CCfdi = _db.ComprobantesCfdi.Find(comprobanteCfdi.Id);
                     CCfdi.ReceptorId = comprobanteCfdi.ReceptorId;
                     CCfdi.FechaDocumento = fechaTime;
-                    
 
-                    
                     if (sucursal.Trv && sucursal.Txsa)
                     {
                         throw new Exception("Seleccionar Solo Un Tipo De Timbrado..");
@@ -508,13 +506,13 @@ namespace APBox.Controllers.ComprobantesCfdi
                         _db.SaveChanges();
                         _ComprobanteManager.GenerarComprobanteCfdi(sucursalId, comprobanteCfdi.Id);
                     }
-                    else if(sucursal.Txsa) {
+                    else if (sucursal.Txsa)
+                    {
                         _db.Entry(CCfdi).State = EntityState.Modified;
                         _db.SaveChanges();
-                        _ComprobanteXsaManager.GenerarComprobanteCfdi(sucursalId, comprobanteCfdi.Id); 
+                        _ComprobanteXsaManager.GenerarComprobanteCfdi(sucursalId, comprobanteCfdi.Id);
                     }
                     else { throw new Exception("Seleccionar Un Tipo De Timbrado!!"); }
-
                 }
                 catch (Exception ex)
                 {
@@ -599,14 +597,14 @@ namespace APBox.Controllers.ComprobantesCfdi
             {
                 oComprobante = _decodifica.DeserealizarXML40(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml);
                 tipoDocumento = _decodifica.TipoDocumentoCfdi40(comprobanteCfdi.FacturaEmitida.ArchivoFisicoXml);
-                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false,false);
+                archivoFisico = _descargasManager.GeneraPDF40(oComprobante, tipoDocumento, id, false, false);
                 //oComprobante = _creationFile.DeserealizarComprobanteXML(id);
                 //archivoFisico = _creationFile.GeneraPDFComprobante(oComprobante, id);
             }
-            if (comprobanteCfdi.Sucursal.Txsa) 
+            if (comprobanteCfdi.Sucursal.Txsa)
             {
-                archivoFisico =_ComprobanteXsaManager.DownloadPDFXsa(comprobanteCfdi.Id,false);   
-            }            
+                archivoFisico = _ComprobanteXsaManager.DownloadPDFXsa(comprobanteCfdi.Id, false);
+            }
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = comprobanteCfdi.FacturaEmitida.Serie + "-" + comprobanteCfdi.FacturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
@@ -615,7 +613,6 @@ namespace APBox.Controllers.ComprobantesCfdi
             Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
             Response.OutputStream.Flush();
             Response.End();
-
 
             return new FileStreamResult(Response.OutputStream, "application/pdf");
         }
@@ -640,19 +637,18 @@ namespace APBox.Controllers.ComprobantesCfdi
             comprobante.MotivoCancelacion = comprobanteCfdi.MotivoCancelacion;
             try
             {
-                if (comprobante.Sucursal.Trv) { 
-                    _ComprobanteManager.Cancelar(comprobante); 
+                if (comprobante.Sucursal.Trv)
+                {
+                    _ComprobanteManager.Cancelar(comprobante);
                 }
-                if (comprobante.Sucursal.Txsa) { 
-                    dataXsa = _ComprobanteXsaManager.Cancelar(comprobanteCfdi.Id,comprobanteCfdi.FolioSustitucion,comprobanteCfdi.MotivoCancelacion,false); 
-                   
+                if (comprobante.Sucursal.Txsa)
+                {
+                    dataXsa = _ComprobanteXsaManager.Cancelar(comprobanteCfdi.Id, comprobanteCfdi.FolioSustitucion, comprobanteCfdi.MotivoCancelacion, false);
                 }
-
             }
             catch (Exception ex)
             {
                 error = ex.Message;
-
             }
             if (error == null)
             {
@@ -660,13 +656,14 @@ namespace APBox.Controllers.ComprobantesCfdi
                 {
                     ViewBag.Success = "Proceso de cancelación finalizado con éxito.";
                 }
-                else {
+                else
+                {
                     foreach (var d in dataXsa)
                     {
                         ViewBag.Success = "STATUS:" + d.status + "-" + d.descripcion;
                     }
                 }
-                    ViewBag.Error = null;
+                ViewBag.Error = null;
             }
             else
             {
@@ -676,25 +673,26 @@ namespace APBox.Controllers.ComprobantesCfdi
             return PartialView("~/Views/ComprobantesCfdi/_Cancelacion.cshtml", comprobante);
         }
 
-
         public ActionResult DescargarAcuse(int id)
         {
             var comprobante = _db.ComprobantesCfdi.Find(id);
             string xmlCancelacion = "";
             byte[] byteXml = new byte[1024];
             string error = "";
-            try {
+            try
+            {
                 if (comprobante.Sucursal.Trv)
                 {
                     xmlCancelacion = _ComprobanteManager.DowloadAcuseCancelacion(comprobante);
                     byteXml = Encoding.UTF8.GetBytes(xmlCancelacion);
                 }
-                if(comprobante.Sucursal.Txsa)
+                if (comprobante.Sucursal.Txsa)
                 {
-                    byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(comprobante.FacturaEmitida.Serie,comprobante.FacturaEmitida.Folio,comprobante.FacturaEmitida.Uuid,comprobante.FacturaEmitida.EmisorId);
+                    byteXml = _ComprobanteXsaManager.DowloadAcuseCancelacion(comprobante.FacturaEmitida.Serie, comprobante.FacturaEmitida.Folio, comprobante.FacturaEmitida.Uuid, comprobante.FacturaEmitida.EmisorId);
                 }
-           }
-            catch (Exception ex){
+            }
+            catch (Exception ex)
+            {
                 error = ex.Message;
             }
             if (error != "")
@@ -702,7 +700,7 @@ namespace APBox.Controllers.ComprobantesCfdi
                 ModelState.AddModelError("", error);
                 return RedirectToAction("Index");
             }
-            
+
             MemoryStream ms = new MemoryStream(byteXml, 0, 0, true, true);
             string nameArchivo = comprobante.FacturaEmitida.Serie + "-" + comprobante.FacturaEmitida.Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");
@@ -719,6 +717,7 @@ namespace APBox.Controllers.ComprobantesCfdi
         {
             return Convert.ToInt32(Session["SucursalId"]);
         }
+
         private void PopulaEstatus()
         {
             List<SelectListItem> items = new List<SelectListItem>();
@@ -752,6 +751,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.formaPago = (popularDropDowns.PopulaFormaPago());
         }*/
+
         private void PopulaFormaPago()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -763,6 +763,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.ImpuestoSat = (popularDropDowns.PopulaImpuestoSat());
         }
+
         private void PopulaObjetoImpuesto()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -841,6 +842,7 @@ namespace APBox.Controllers.ComprobantesCfdi
 
             return Json(Conceptos, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult DatosCatalogoImpuesto(int IdImpuesto)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);

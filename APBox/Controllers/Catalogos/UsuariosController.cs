@@ -156,8 +156,6 @@ namespace APBox.Controllers.Catalogos
             _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
         }
 
-
-
         // GET: Usuarios/Edit/5
         public ActionResult Edit(int? id)
         {

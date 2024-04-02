@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="form-group col-6">
                             @Html.LabelFor(model => model.ReceptorId, htmlAttributes: new { @class = "form-label" })
-                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                            @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                             @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-3">
@@ -89,7 +89,7 @@
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         @Html.LabelFor(model => model.CfdiRelacionado.TipoRelacion, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.CfdiRelacionado.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.CfdiRelacionado.TipoRelacion, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-4">
@@ -191,13 +191,13 @@
 
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.FormaPago, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Pago.FormaPago, (IEnumerable<SelectListItem>)ViewBag.formaPago, "Favor de hacer su selección", new { @class = "form-select mb-2" })
+                                        @Html.DropDownListFor(model => model.Pago.FormaPago, (IEnumerable<SelectListItem>)ViewBag.formaPago, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Pago.FormaPago, "", new { @class = "text-danger" })
                                     </div>
 
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.Moneda, new { @class = "form-label" })
-                                        @Html.EnumDropDownListFor(model => model.Pago.Moneda, "Favor de hacer su selección", new { @class = "form-select mb-2", @data_control = "select2" })
+                                        @Html.EnumDropDownListFor(model => model.Pago.Moneda, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
                                         @Html.ValidationMessageFor(model => model.Pago.Moneda, "", new { @class = "text-danger" })
                                     </div>
 
@@ -222,13 +222,13 @@
                                     @*Bancos*@
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.BancoBeneficiarioId, new { @class = "form-label" })
-                                        @Html.DropDownList("BancoBeneficiarioId", null, "Favor de hacer su selección", new { @id = "Pago_BancoBeneficiarioId", @class = "form-select mb-2" })
+                                        @Html.DropDownList("BancoBeneficiarioId", null, "Favor de hacer su selección", new { @id = "Pago_BancoBeneficiarioId", @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Pago.BancoBeneficiarioId, "", new { @class = "text-danger" })
                                     </div>
 
                                     <div class="form-group col-xs-12 col-sm-3">
                                         @Html.LabelFor(model => model.Pago.BancoOrdenanteId, new { @class = "form-label" })
-                                        @Html.DropDownList("BancoOrdenanteId", null, "Favor de hacer su selección", new { @id = "Pago_BancoOrdenanteId", @class = "form-select mb-2" })
+                                        @Html.DropDownList("BancoOrdenanteId", null, "Favor de hacer su selección", new { @id = "Pago_BancoOrdenanteId", @class = "form-select select mb-2" })
                                         @Html.ValidationMessageFor(model => model.Pago.BancoOrdenanteId, "", new { @class = "text-danger" })
                                     </div>
 

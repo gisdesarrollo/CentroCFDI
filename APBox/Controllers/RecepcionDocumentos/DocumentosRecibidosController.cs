@@ -29,12 +29,14 @@ namespace APBox.Controllers.Operaciones
     public class DocumentosRecibidosController : Controller
     {
         #region variables
+
         private readonly APBoxContext _db = new APBoxContext();
         private readonly ProcesaDocumentoRecibido _procesaDocumentoRecibido = new ProcesaDocumentoRecibido();
         private readonly Decodificar _decodifica = new Decodificar();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly OperacionesDocumentosRecibidos _operacionesDocumentosRecibidos = new OperacionesDocumentosRecibidos();
-        #endregion
+
+        #endregion variables
 
         #region Consultas
 
@@ -58,7 +60,6 @@ namespace APBox.Controllers.Operaciones
                 Session["AprobadorId"] = usuarioSolicitante.Id;
                 Session["DepartamentoId"] = usuarioSolicitante.Departamento.Id;
 
-
                 return Json(new
                 {
                     success = true,
@@ -69,9 +70,10 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        #endregion
+        #endregion Consultas
 
         #region Vistas
+
         // GET: DocumentosRecibidos/Index
         public ActionResult Index()
         {
@@ -93,10 +95,11 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.isProveedor = "Usuario";
             }
 
-
             var documentosRecibidosModel = new DocumentosRecibidosModel();
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
             if (usuario.esProveedor)
@@ -245,7 +248,6 @@ namespace APBox.Controllers.Operaciones
                     if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
                     {
                         throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
-
                     }
                 }
                 if (sucursal.Rfc != cfdi.Receptor.Rfc)
@@ -322,9 +324,7 @@ namespace APBox.Controllers.Operaciones
                                         documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail + "\r\n");
                                     }
                                     else { documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail); }
-
                                 }
-
                             }
                             documentoRecibidoDr.Validaciones.Detalle = sb.ToString();
                             documentoRecibidoDr.Validaciones_Detalle = sb.ToString();
@@ -374,7 +374,6 @@ namespace APBox.Controllers.Operaciones
                     {
                         throw new InvalidOperationException("La factura o el comprobante no corresponde al mes actual. Por favor, cargue una factura del mes actual.");
                     }
-
                 }
 
                 documentoRecibidoDr.CfdiRecibidos_UUID = timbreFiscalDigital.UUID;
@@ -385,7 +384,6 @@ namespace APBox.Controllers.Operaciones
 
                 documentoRecibidoDr.PathArchivoXml = archivo.PathDestinoXml;
                 documentoRecibidoDr.PathArchivoPdf = archivo.PathDestinoPdf;
-
             }
             catch (Exception ex)
             {
@@ -444,7 +442,6 @@ namespace APBox.Controllers.Operaciones
             }
             try
             {
-
                 // Obtener los datos guardados en TempData
                 var usuarioSolicitanteId = Session["AprobadorId"];
                 var usuarioSolicitanteDepartamentoId = Session["DepartamentoId"];
@@ -524,7 +521,6 @@ namespace APBox.Controllers.Operaciones
                     FechaSolicitud = DateTime.Now,
                 };
 
-
                 _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
                 _db.SaveChanges();
                 return RedirectToAction("Index", "DocumentosRecibidos");
@@ -561,7 +557,6 @@ namespace APBox.Controllers.Operaciones
             documentoRecibido.DetalleArrays = lines.ToList();
             TempData["AprobadorId"] = null;
             TempData["DepartamentoId"] = null;
-
 
             return View(documentoRecibido);
         }
@@ -632,7 +627,7 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        #endregion
+        #endregion Vistas
 
         #region Validaciones
 
@@ -649,13 +644,12 @@ namespace APBox.Controllers.Operaciones
             public TimbreFiscalDigital TimbreFiscalDigital { get; set; }
             public Sucursal Sucursal { get; set; }
             public SocioComercial SocioComercial { get; set; }
-
         }
+
         public ConfiguracionesDR ConfiguracionEmpresa()
         {
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
             var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
-
 
             if (configuracion == null)
             {
@@ -673,18 +667,22 @@ namespace APBox.Controllers.Operaciones
             items.Add(new SelectListItem { Text = "Rechazado", Value = "2" });
             ViewBag.estadoComercial = items;
         }
+
         private int ObtenerGrupo()
         {
             return Convert.ToInt32(Session["GrupoId"]);
         }
+
         private int ObtenerSucursal()
         {
             return Convert.ToInt32(Session["SucursalId"]);
         }
+
         private int ObtenerUsuario()
         {
             return Convert.ToInt32(Session["UsuarioId"]);
         }
+
         private PathArchivosDto SubeArchivo()
         {
             PathArchivosDto pathArchivos = new PathArchivosDto();
@@ -719,19 +717,18 @@ namespace APBox.Controllers.Operaciones
 
                         pathArchivos.PathDestinoPdf = pathDestinoPdf;
                     }
-
                 }
 
                 return pathArchivos;
             }
             throw new Exception("Favor de cargar por lo menos un archivo");
         }
+
         public ActionResult DescargaXml(int id)
         {
             byte[] archivoFisico = new byte[255];
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             archivoFisico = documentoRecibido.RecibidosXml.Archivo;
-
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
@@ -742,15 +739,14 @@ namespace APBox.Controllers.Operaciones
             Response.OutputStream.Flush();
             Response.End();
 
-
             return new FileStreamResult(Response.OutputStream, "application/xml");
         }
+
         public ActionResult DescargaPdf(int id)
         {
             byte[] archivoFisico = new byte[255];
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             archivoFisico = documentoRecibido.RecibidosPdf.Archivo;
-
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
@@ -761,9 +757,9 @@ namespace APBox.Controllers.Operaciones
             Response.OutputStream.Flush();
             Response.End();
 
-
             return new FileStreamResult(Response.OutputStream, "application/pdf");
         }
+
         public ActionResult DescargaAdjunto(int id)
         {
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
@@ -786,9 +782,8 @@ namespace APBox.Controllers.Operaciones
             };
 
             return fileStreamResult;
-
-
         }
+
         private void AddFileToZip(ZipArchive archive, byte[] fileBytes, string entryName)
         {
             var entry = archive.CreateEntry(entryName);
@@ -797,7 +792,8 @@ namespace APBox.Controllers.Operaciones
                 entryStream.Write(fileBytes, 0, fileBytes.Length);
             }
         }
-        #endregion
+
+        #endregion Validaciones
 
         protected override void Dispose(bool disposing)
         {

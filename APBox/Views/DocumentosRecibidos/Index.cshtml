@@ -27,8 +27,18 @@
                 <!--begin::Select-->
                 <select class="form-select form-select form-select-solid" data-control="select2" data-hide-search="true" id="tablas">
                     <option value="tabla1" selected>Mis Comprobantes En Revisión</option>
-                    <option value="tabla2">Comprobantes del Departamento</option>
-                    <option value="tabla3">Todos los Comprobantes</option>
+                    @if (usuario.esProveedor)
+                    {
+                        <option value="tabla2">Comprobantes de la Empresa</option>
+                    }
+                    @if (!usuario.esProveedor)
+                    {
+                        <option value="tabla2">Comprobantes del Departamento</option>
+                    }
+                    @if (User.IsInRole("PAGOS") && !usuario.esProveedor)
+                    {
+                        <option value="tabla3">Todos los Comprobantes</option>
+                    }
                 </select>
             </div>
             <!--end::Actions-->
@@ -54,13 +64,54 @@
                     </div>
                     <!--end::Search-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                        <!--begin::Export dropdown-->
+                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <i class="fa fa-file-export"></i>
+                            Exportar
+                        </button>
+                        <!--begin::Menu-->
+                        <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="copy">
+                                    Copiar a portapapeles
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                    Exportar a Excel
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                    Exportar a CSV
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                    Exportar a PDF
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                        </div>
+                        <!--end::Menu-->
+                        <!--end::Export dropdown-->
+                        <!--begin::Hide default export buttons-->
+                        <div id="kt_datatable_example_buttons" class="d-none"></div>
+                        <!--end::Hide default export buttons-->
 
                     </div>
+
                 </div>
                 <!--end::Card header-->
                 <!--begin::Card body-->
                 <div class="card-body pt-0">
-                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt", @style = "color:red;" })
                     <div class="d-flex flex-column gap-10">
                         <table class="table align-middle rounded table-row-dashed fs-7 g-5" id="tablaIndividuales">
                             <thead>
@@ -162,8 +213,50 @@
                     </div>
                     <!--end::Search-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                        <!--begin::Export dropdown-->
+                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <i class="fa fa-file-export"></i>
+                            Exportar
+                        </button>
+                        <!--begin::Menu-->
+                        <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="copy">
+                                    Copiar a portapapeles
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                    Exportar a Excel
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                    Exportar a CSV
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                    Exportar a PDF
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                        </div>
+                        <!--end::Menu-->
+                        <!--end::Export dropdown-->
+                        <!--begin::Hide default export buttons-->
+                        <div id="kt_datatable_example_buttons" class="d-none"></div>
+                        <!--end::Hide default export buttons-->
 
                     </div>
+
                 </div>
                 <!--end::Card header-->
                 <!--begin::Card body-->
@@ -183,15 +276,15 @@
                             </thead>
                             <tbody class="align-text-top">
 
-                                @foreach (var item in Model.DocumentosRecibidos.Where(i => usuario.Id != i.AprobacionesDR.UsuarioEntrega_Id))
+                                @foreach (var item in Model.DocumentosRecibidos.Where(i => i.SocioComercial_Id == usuario.SocioComercialID))
                                 {
                                     var nombreAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(item.AprobacionesDR.UsuarioSolicitante_Id);
                                     var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
-
                                     <tr>
                                         <td>
                                             @item.SocioComercial.RazonSocial <br />
                                             <span class="text-gray-600">@item.SocioComercial.Rfc</span>
+
                                         </td>
                                         <td>
                                             @item.CfdiRecibidos_Serie - @item.CfdiRecibidos_Folio <br />
@@ -207,7 +300,8 @@
                                             @item.Monto.ToString("c") <br />
                                             <div class="text-gray-600">@item.Moneda_Id</div>
                                         </td>
-                                        <td class="min-w-100px text-end">
+
+                                        <td class="min-w-100px text-center">
                                             @item.Referencia
                                         </td>
                                         <td class="text-center">
@@ -272,8 +366,50 @@
                     </div>
                     <!--end::Search-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                        <!--begin::Export dropdown-->
+                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <i class="fa fa-file-export"></i>
+                            Exportar
+                        </button>
+                        <!--begin::Menu-->
+                        <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="copy">
+                                    Copiar a portapapeles
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                    Exportar a Excel
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                    Exportar a CSV
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                    Exportar a PDF
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                        </div>
+                        <!--end::Menu-->
+                        <!--end::Export dropdown-->
+                        <!--begin::Hide default export buttons-->
+                        <div id="kt_datatable_example_buttons" class="d-none"></div>
+                        <!--end::Hide default export buttons-->
 
                     </div>
+
                 </div>
                 <!--end::Card header-->
                 <!--begin::Card body-->
@@ -300,7 +436,6 @@
                                     var nombreAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(item.AprobacionesDR.UsuarioSolicitante_Id);
                                     var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
 
-                                    Console.WriteLine(nombreDepartamento);
                                     <tr>
                                         <td>
                                             @item.SocioComercial.RazonSocial <br />
@@ -383,8 +518,50 @@
                     </div>
                     <!--end::Search-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                        <!--begin::Export dropdown-->
+                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <i class="fa fa-file-export"></i>
+                            Exportar
+                        </button>
+                        <!--begin::Menu-->
+                        <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="copy">
+                                    Copiar a portapapeles
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                    Exportar a Excel
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                    Exportar a CSV
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                    Exportar a PDF
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                        </div>
+                        <!--end::Menu-->
+                        <!--end::Export dropdown-->
+                        <!--begin::Hide default export buttons-->
+                        <div id="kt_datatable_example_buttons" class="d-none"></div>
+                        <!--end::Hide default export buttons-->
 
                     </div>
+
                 </div>
                 <!--end::Card header-->
                 <!--begin::Card body-->
@@ -408,8 +585,6 @@
                                 {
                                     var nombreAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(item.AprobacionesDR.UsuarioSolicitante_Id);
                                     var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
-
-                                    Console.WriteLine(nombreDepartamento);
 
                                     <tr>
                                         <td>
@@ -491,8 +666,50 @@
                     </div>
                     <!--end::Search-->
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                        <!--begin::Export dropdown-->
+                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <i class="fa fa-file-export"></i>
+                            Exportar
+                        </button>
+                        <!--begin::Menu-->
+                        <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="copy">
+                                    Copiar a portapapeles
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                    Exportar a Excel
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                    Exportar a CSV
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                    Exportar a PDF
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                        </div>
+                        <!--end::Menu-->
+                        <!--end::Export dropdown-->
+                        <!--begin::Hide default export buttons-->
+                        <div id="kt_datatable_example_buttons" class="d-none"></div>
+                        <!--end::Hide default export buttons-->
 
                     </div>
+
                 </div>
                 <!--end::Card header-->
                 <!--begin::Card body-->
@@ -516,8 +733,6 @@
                                 {
                                     var nombreAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(item.AprobacionesDR.UsuarioSolicitante_Id);
                                     var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
-
-                                    Console.WriteLine(nombreDepartamento);
 
                                     <tr>
                                         <td>
@@ -600,7 +815,7 @@
         <!--begin::Wrapper-->
         <div class="me-4">
             <!--begin::Menu-->
-            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+           <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
                 <i class="ki-duotone ki-filter fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
                 Filtros
             </a>
@@ -620,28 +835,28 @@
                     <div class="separator border-gray-200"></div>
                     <!--end::Menu separator-->
                     <!--begin::Form-->
-                    <div class="px-7 py-5">
-                        <!--begin::Input group-->
-                        <div class="mb-10">
-                            <!--begin::Label-->
-                            <label class="form-label fw-semibold">Periodo:</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <div class="mb-3">
-                                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
-                            </div>
-                            <div class="mb-3">
-                                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
-                            </div>
-                            <!--end::Input-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Actions-->
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
-                        </div>
-                        <!--end::Actions-->
+            <div class="px-7 py-5">
+                <!--begin::Input group-->
+                <div class="mb-5">
+                    <!--begin::Label-->
+                    <label class="form-label fw-semibold">Periodo:</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <div class="mb-3">
+                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
                     </div>
+                    <div class="mb-3">
+                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
+                    </div>
+                    <!--end::Input-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Actions-->
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
+                </div>
+                <!--end::Actions-->
+            </div>
                     <!--end::Form-->
                 }
             </div>

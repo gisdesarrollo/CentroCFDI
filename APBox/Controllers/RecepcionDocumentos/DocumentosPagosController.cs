@@ -20,6 +20,7 @@ using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using API.Models.DocumentosPagos;
 using Aplicacion.LogicaPrincipal.DocumentosPagos;
 using Aplicacion.LogicaPrincipal.Validacion;
+using API.Catalogos;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -55,10 +56,9 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.isProveedor = "Usuario";
             }
 
-
             var documentosRecibidosModel = new DocumentosRecibidosModel();
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
             if (usuario.esProveedor)
@@ -227,7 +227,7 @@ namespace APBox.Controllers.Operaciones
             Response.AppendHeader("Content-Disposition", cd.ToString());
             return File(filedata, contentType);
         }
-            
+
         public ActionResult Pagos()
         {
             ViewBag.Controller = "DocumentosPagos";
@@ -243,10 +243,11 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial,fechaFinal,false , null,sucursal.Id);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
 
             return View(pagosModel);
         }
+
         [HttpPost]
         public ActionResult Pagos(DocumentosPagosModel pagosModel)
         {
@@ -260,15 +261,24 @@ namespace APBox.Controllers.Operaciones
             DateTime fechaI = pagosModel.FechaInicial;
             DateTime fechaF = pagosModel.FechaFinal;
 
+            if (usuario.esProveedor)
+            {
+                pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaI, fechaF, true, usuario.SocioComercialID, sucursal.Id);
+            }
+            else
+            {
+                pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaI, fechaF, false, null, sucursal.Id);
+            }
+
             var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false,null,sucursal.Id);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
 
             return View(pagosModel);
         }
-        
+
         public ActionResult CargaLayout()
         {
             ViewBag.Controller = "DocumentosPagos";
@@ -304,18 +314,23 @@ namespace APBox.Controllers.Operaciones
             try
             {
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
-              documentoPagoModel.Pagos= _cargaPagosDR.Importar(archivo,ObtenerSucursal(),documentoPagoModel.Previsualizacion,usuario.Id);
+                documentoPagoModel.Pagos = _cargaPagosDR.Importar(archivo, ObtenerSucursal(), documentoPagoModel.Previsualizacion, usuario.Id);
                 if (!documentoPagoModel.Previsualizacion)
                 {
                     return RedirectToAction("Pagos");
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", String.Format("Ocurrio un error: {0}", ex.Message));
+                foreach (var error in ex.Message)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
             }
 
             documentoPagoModel.Previsualizacion = false;
-            
+
             return View(documentoPagoModel);
         }
 
@@ -334,10 +349,11 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null,sucursal.Id);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
 
             return View(pagosModel);
         }
+
         [HttpPost]
         public ActionResult ComplementosPagosCargados(DocumentosPagosModel pagosModel)
         {
@@ -354,10 +370,11 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null,sucursal.Id);
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
 
             return View(pagosModel);
         }
+
         public ActionResult CargaComplementoPago(int Id)
         {
             ViewBag.Controller = "DocumentosPagos";
@@ -369,6 +386,7 @@ namespace APBox.Controllers.Operaciones
 
             return View(pago);
         }
+
         [HttpPost]
         public ActionResult CargaComplementoPago(PagosDR pagoDR)
         {
@@ -388,7 +406,7 @@ namespace APBox.Controllers.Operaciones
                 ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
                 return View(pagoDR);
             }
-            
+
             var pago = _db.PagoDr.Find(pagoDR.Id);
             try
             {
@@ -398,7 +416,7 @@ namespace APBox.Controllers.Operaciones
                     pago.ComplementoPago = new ComplementoPagoDto();
                     pago.ComplementoPago.NombreEmisor = cfdi.Emisor.Nombre;
                     pago.ComplementoPago.NombreReceptor = cfdi.Receptor.Nombre;
-                    if(cfdi.Pagos.Pago.Length > 1)
+                    if (cfdi.Pagos.Pago.Length > 1)
                     {
                         ModelState.AddModelError("", "Error: se encontraron mas de 1 pago realizado");
                     }
@@ -414,10 +432,11 @@ namespace APBox.Controllers.Operaciones
                         pago.ComplementoPago.Uuid = cfdi.TimbreFiscalDigital.UUID;
                         pago.ComplementoPago.FechaPago = pagoXml.FechaPago.ToString("dd/MM/yyyy");
                     }
-                   pago.Detalle_Validacion = _validaPagos.ValidaComplementoPago(pago, cfdi);
+                    pago.Detalle_Validacion = _validaPagos.ValidaComplementoPago(pago, cfdi);
                 }
                 pago.Procesado = true;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
                 return View(pagoDR);
@@ -432,11 +451,11 @@ namespace APBox.Controllers.Operaciones
                 var pago = _db.PagoDr.Find(pagoDR.Id);
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
                 var documentoRecibido = _db.DocumentoRecibidoDr.Find(pago.ComplementoPagoRecibido_Id);
-                
+
                 documentoRecibido.EstadoPago = c_EstadoPago.Completado;
                 documentoRecibido.AprobacionesDR.FechaCompletaPagos = DateTime.Now;
                 documentoRecibido.AprobacionesDR.UsuarioCompletaPagos_id = usuario.Id;
-                
+
                 _db.Entry(documentoRecibido).State = EntityState.Modified;
                 _db.SaveChanges();
 
@@ -444,11 +463,10 @@ namespace APBox.Controllers.Operaciones
             }
             catch
             {
-                return View("CargaComplementoPago",pagoDR.Id);
+                return View("CargaComplementoPago", pagoDR.Id);
             }
-            
         }
-    
+
         // GET: DocumentosPagos/Delete/5
         public ActionResult Delete(int id)
         {
@@ -463,7 +481,7 @@ namespace APBox.Controllers.Operaciones
             {
                 // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Pagos");
             }
             catch
             {
@@ -471,52 +489,45 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        #region Validaciones
-
-        public ActionResult AprobarEstadoComercial(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            // Obtener el documento recibido con el ID proporcionado 
-            // y asignarlo a la variable tuObjeto
-            var tuObjeto = _db.DocumentoRecibidoDr.Find(id);
-
-            // Verificar si el objeto no es nulo
-            if (tuObjeto != null)
+            var pago = _db.PagoDr.Find(id);
+            if (pago == null)
             {
-                // Cambiar la propiedad EstadoComercial a aprobado
-                tuObjeto.EstadoComercial = c_EstadoComercial.Aprobado;
-
-                // Guardar los cambios 
-                _db.SaveChanges();
-
-                // Redirigir al método Index
-                return RedirectToAction("Index");
+                // Manejar el caso en el que no se encuentra ningún pago con el ID proporcionado
+                return HttpNotFound(); // O puedes devolver una vista de error personalizada
             }
 
-            // Manejar el caso en que el objeto no se encuentre
-            return HttpNotFound();
+            // Buscar y eliminar los registros en DocumentosPagados asociados al pago
+            var documentosPagados = _db.DocumentoPagadoDr.Where(doc => doc.Pago_Id == id);
+            _db.DocumentoPagadoDr.RemoveRange(documentosPagados);
+
+            // Actualizar los documentos recibidos relacionados a los documentos pagados eliminados
+            foreach (var documentoPagado in documentosPagados)
+            {
+                var documentoRecibido = _db.DocumentoRecibidoDr.FirstOrDefault(doc => doc.CfdiRecibidos_UUID == documentoPagado.UUID);
+                if (documentoRecibido != null)
+                {
+                    //Regresa el estado de Pagado a En Revisión
+                    documentoRecibido.EstadoPago = c_EstadoPago.EnRevision;
+                }
+            }
+
+            _db.PagoDr.Remove(pago);
+            _db.SaveChanges();
+
+            return RedirectToAction("Pagos");
         }
 
-        public ActionResult RechazarEstadoComercial(int id)
+        #region Validaciones
+
+        protected override void Dispose(bool disposing)
         {
-            // Obtener el documento recibido con el ID proporcionado 
-            // y asignarlo a la variable tuObjeto
-            var tuObjeto = _db.DocumentoRecibidoDr.Find(id);
-
-            // Verificar si el objeto no es nulo
-            if (tuObjeto != null)
+            if (disposing)
             {
-                // Cambiar la propiedad EstadoComercial a aprobado
-                tuObjeto.EstadoComercial = c_EstadoComercial.Rechazado;
-
-                // Guardar los cambios 
-                _db.SaveChanges();
-
-                // Redirigir al método Index
-                return RedirectToAction("Index");
+                _db.Dispose();
             }
-
-            // Manejar el caso en que el objeto no se encuentre
-            return HttpNotFound();
+            base.Dispose(disposing);
         }
 
         public static string FechaFormat(string fecha)
@@ -530,7 +541,6 @@ namespace APBox.Controllers.Operaciones
         {
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
             var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
-
 
             if (configuracion == null)
             {
@@ -551,17 +561,19 @@ namespace APBox.Controllers.Operaciones
 
         private int ObtenerGrupo()
         {
-
             return Convert.ToInt32(Session["GrupoId"]);
         }
+
         private int ObtenerSucursal()
         {
             return Convert.ToInt32(Session["SucursalId"]);
         }
+
         private int ObtenerUsuario()
         {
             return Convert.ToInt32(Session["UsuarioId"]);
         }
+
         private String SubeArchivo(int indice)
         {
             if (Request.Files.Count > 0)
@@ -583,14 +595,13 @@ namespace APBox.Controllers.Operaciones
                 }
             }
             throw new Exception("Favor de cargar por lo menos un archivo");
-            
         }
+
         public ActionResult DescargaXml(int id)
         {
             byte[] archivoFisico = new byte[255];
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             archivoFisico = documentoRecibido.RecibidosXml.Archivo;
-
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
@@ -601,15 +612,14 @@ namespace APBox.Controllers.Operaciones
             Response.OutputStream.Flush();
             Response.End();
 
-
             return new FileStreamResult(Response.OutputStream, "application/xml");
         }
+
         public ActionResult DescargaPdf(int id)
         {
             byte[] archivoFisico = new byte[255];
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             archivoFisico = documentoRecibido.RecibidosPdf.Archivo;
-
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
             string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
@@ -620,9 +630,9 @@ namespace APBox.Controllers.Operaciones
             Response.OutputStream.Flush();
             Response.End();
 
-
             return new FileStreamResult(Response.OutputStream, "application/pdf");
         }
+
         public ActionResult DescargaAdjunto(int id)
         {
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
@@ -645,9 +655,8 @@ namespace APBox.Controllers.Operaciones
             };
 
             return fileStreamResult;
-
-
         }
+
         private void AddFileToZip(ZipArchive archive, byte[] fileBytes, string entryName)
         {
             var entry = archive.CreateEntry(entryName);
@@ -656,14 +665,7 @@ namespace APBox.Controllers.Operaciones
                 entryStream.Write(fileBytes, 0, fileBytes.Length);
             }
         }
-        #endregion
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
+        #endregion Validaciones
     }
 }

@@ -18,7 +18,7 @@
             
             <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 @Html.LabelFor(model => model.TipoImpuesto, htmlAttributes: new { @class = "form-label" })
-                @Html.DropDownListFor(model => model.TipoImpuesto, (IEnumerable<SelectListItem>)ViewBag.TImpuesto, "Favor de hacer su selección", new { @class = "form-select mb-2", @id = "TipoImpuestoImp" })
+                @Html.DropDownListFor(model => model.TipoImpuesto, (IEnumerable<SelectListItem>)ViewBag.TImpuesto, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "TipoImpuestoImp" })
                 @* @Html.EditorFor(model => model.TipoImpuesto, new { htmlAttributes = new { @class = "form-control", @id = "TipoImpuestoImp" } })*@
                 @Html.ValidationMessageFor(model => model.TipoImpuesto, "", new { @class = "text-danger" })
                 <div id="TipoImpuestoImpSignal" style="color:red;"></div>

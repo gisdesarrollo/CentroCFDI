@@ -127,7 +127,7 @@
         foreach (var pago in Model.Pagos)
         {
             i++;
-            <div class="card card-flush">
+            <div class="card card-flush mb-8">
                 <div class="card-body pt-0">
                     <div class="row">
 
@@ -149,7 +149,7 @@
 
                             <div class="row mb-8">
                                 <div class="col-4">
-                                    <span class="fs-3">@pago.DocumentoRecibido.SocioComercial.RazonSocial</span><br />
+                                    <span class="fs-3">@pago.SocioComercial.RazonSocial</span><br />
                                     <span class="text-gray-700">Receptor del pago</span>
                                 </div>
                                 <div class="col-4">
@@ -163,12 +163,12 @@
                             </div>
                             <div class="row mb-8">
                                 <div class="col-4">
-                                    <span class="fs-3">@pago.BancoSucursal.Banco.NombreCorto</span><br />
-                                    <span class="text-gray-700">Cuenta Bancaria Emisora</span>
+                                    <span class="fs-3">@pago.BancoSucursal.Nombre</span><br />
+                                    <span class="text-gray-700">Cuenta Bancaria Emisora / Ref CentroCFDi</span>
                                 </div>
                                 <div class="col-4">
                                     <span class="fs-3">@pago.ReferenciaBancaria</span><br />
-                                    <span class="text-gray-700">Referencia Bancaria</span>
+                                    <span class="text-gray-700">Referencia Bancaria / Numero Operación</span>
                                 </div>
                                 <div class="col-4">
                                     <span class="fs-3">@pago.ReferenciaERP</span><br />
