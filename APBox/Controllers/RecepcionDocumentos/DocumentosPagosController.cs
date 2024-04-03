@@ -322,11 +322,12 @@ namespace APBox.Controllers.Operaciones
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", String.Format("Ocurrio un error: {0}", ex.Message));
-                foreach (var error in ex.Message)
+                var errores = ex.Message.Split('|');
+                foreach (var error in errores)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    ModelState.AddModelError("", error);
                 }
+                
             }
 
             documentoPagoModel.Previsualizacion = false;

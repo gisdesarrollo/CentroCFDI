@@ -92,7 +92,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
                             if (documentoRecibido == null)
                             {
-                                errores.Add(String.Format("El CFDi de folio fiscal {0} no fue encontrada para el registro {3}", UUID, i));
+                                errores.Add(String.Format("El CFDi de folio fiscal {0} no fue encontrada para el registro {1}", UUID, i));
                                 continue;
                             }
 
