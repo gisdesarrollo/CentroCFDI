@@ -40,7 +40,7 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo Obligatorio")]
         public String RazonSocial { get; set; }
 
-        [RegularExpression(@"^[A-Z&Ññ]{3,4}\d{6}[A-V1-9][A-Z1-9\d]([0-9A]|\s)$", ErrorMessage = "El campo RFC no puede terminar en un espacio en blanco.")]
+        [RegularExpression(@"^[A-Z&Ññ]{3,4}\d{6}[A-V1-9][0-9A]$", ErrorMessage = "El campo RFC no puede terminar en un espacio en blanco.")]
         public String Rfc { get; set; }
 
         [NotMapped]

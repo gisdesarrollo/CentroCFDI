@@ -19,15 +19,20 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
     public class ProcesaDocumentoRecibido
     {
         #region Variables
+
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly Decodificar _decodificar = new Decodificar();
+
         //private static string urlPruebas = $"http://services.test.sw.com.mx";
         private static string urlProduccion = $"https://services.sw.com.mx";
+
         //private static string userPruebas = "eduardo.ayala@gisconsultoria.com";
         //private static string passwordPruebas = "Dr5$%5jHefg9";
         private static string user = "desarrollo@gisconsultoria.com";
+
         private static string password = "GI/2201*qA";
-        #endregion
+
+        #endregion Variables
 
         public List<DocumentosRecibidosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int usuarioId, int? socioComercialId)
         {
@@ -37,7 +42,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             List<DocumentosRecibidosDR> documentoRecibidos = new List<DocumentosRecibidosDR>();
 
             //Si el usuario es proveedor
-            if(usuario.esProveedor)
+            if (usuario.esProveedor)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
                                     .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.SocioComercial_Id == usuario.SocioComercialID)
@@ -68,9 +73,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
                 if (version == "4.0")
                 {
                     comprobante40 = _decodificar.DecodificarComprobante40(pathXml, version);
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -82,7 +85,6 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         public AuthResponse GetToken()
         {
-
             AuthResponse response = new AuthResponse();
             try
             {
@@ -103,7 +105,6 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         public ValidateXmlResponse ValidaCfdi(String token, String pathXml)
         {
-
             ValidateXmlResponse response = new ValidateXmlResponse();
 
             try
@@ -117,7 +118,6 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
                 {
                     throw new Exception(String.Format("Error al momento de validar el CFDI: {0}", response.message));
                 }
-
             }
             catch (Exception ex)
             {
@@ -126,14 +126,14 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             return response;
         }
 
-        public TaxpayerResponse ValidaRFC(String token,String rfc)
+        public TaxpayerResponse ValidaRFC(String token, String rfc)
         {
             TaxpayerResponse response = new TaxpayerResponse();
             try
             {
                 Taxpayer taxpayer = new Taxpayer(urlProduccion, token);
                 response = taxpayer.GetTaxpayer(rfc);
-                if(response.status == "error")
+                if (response.status == "error")
                 {
                     throw new Exception(String.Format("Error al momento de validar el RFC: {0}", response.message));
                 }
@@ -144,6 +144,5 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             }
             return response;
         }
-
     }
 }

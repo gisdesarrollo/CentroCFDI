@@ -53,7 +53,6 @@
                     <!--begin::Hide default export buttons-->
                     <div id="kt_datatable_example_buttons" class="d-none"></div>
                     <!--end::Hide default export buttons-->
-
                 </div>
             </div>
             <!--end::Card header-->
@@ -90,12 +89,45 @@
                                     <td>@item.SocioComercial.Rfc</td>
                                     <td>@item.SocioComercial.RazonSocial</td>
                                     <td>@item.CfdiRecibidos_UUID</td>
-                                    <td>@item.RecibidosComprobante.Serie - @item.RecibidosComprobante.Folio</td>
+                                    <td>
+                                        @if (item.RecibidosComprobante.Serie != null)
+                                        {
+                                            @item.RecibidosComprobante.Serie @Html.Raw(" - ")
+                                        }
+                                        else
+                                        {
+                                        }
+
+                                        @if (item.RecibidosComprobante.Folio != null)
+                                        {
+                                            @item.RecibidosComprobante.Folio}
+                                        else
+                                        {
+                                        }
+                                    </td>
                                     <td>@item.EstadoComercial.ToString()</td>
                                     <td>@item.EstadoPago.ToString()</td>
                                     <td class="text-center">@item.RecibidosComprobante.Fecha.ToString("dd/MM/yyyy")</td>
-                                    <td class="text-center">@item.RecibidosComprobante.MetodoPago.ToString()</td>
-                                    <td class="text-center">@item.RecibidosComprobante.FormaPago.ToString()</td>
+                                    <td class="text-center">
+                                        @if (item.RecibidosComprobante.MetodoPago != null)
+                                        {
+                                            @item.RecibidosComprobante.MetodoPago.ToString()
+                                        }
+                                        else
+                                        {
+                                            <span>NA</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.RecibidosComprobante.FormaPago != null)
+                                        {
+                                            @item.RecibidosComprobante.FormaPago.ToString()
+                                        }
+                                        else
+                                        {
+                                            <span>NA</span>
+                                        }
+                                    </td>
                                     <td class="text-center">@item.RecibidosComprobante.TipoComprobante.ToString()</td>
                                     <td class="text-center">@item.RecibidosComprobante.Moneda.ToString()</td>
                                     <td class="text-center">@item.RecibidosComprobante.TipoCambio</td>
@@ -119,7 +151,7 @@
         <!--begin::Wrapper-->
         <div class="me-4">
             <!--begin::Menu-->
-           <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
+            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
                 <i class="ki-duotone ki-filter fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
                 Filtros
             </a>
@@ -139,28 +171,28 @@
                     <div class="separator border-gray-200"></div>
                     <!--end::Menu separator-->
                     <!--begin::Form-->
-            <div class="px-7 py-5">
-                <!--begin::Input group-->
-                <div class="mb-5">
-                    <!--begin::Label-->
-                    <label class="form-label fw-semibold">Periodo:</label>
-                    <!--end::Label-->
-                    <!--begin::Input-->
-                    <div class="mb-3">
-                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
+                    <div class="px-7 py-5">
+                        <!--begin::Input group-->
+                        <div class="mb-5">
+                            <!--begin::Label-->
+                            <label class="form-label fw-semibold">Periodo:</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <div class="mb-3">
+                                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
+                            </div>
+                            <div class="mb-3">
+                                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
+                        </div>
+                        <!--end::Actions-->
                     </div>
-                    <div class="mb-3">
-                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
-                    </div>
-                    <!--end::Input-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Actions-->
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
-                </div>
-                <!--end::Actions-->
-            </div>
                     <!--end::Form-->
                 }
             </div>

@@ -184,7 +184,6 @@ namespace APBox.Controllers.ComprobantesCfdi
                     ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
                     return View(comprobanteCfdi);
                 }
-
                 try
                 {
                     if (archivo != null)

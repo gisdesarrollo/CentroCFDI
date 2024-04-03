@@ -8,6 +8,7 @@ using API.Operaciones.OperacionesProveedores;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
 using Aplicacion.LogicaPrincipal.Facturas;
+using Aplicacion.RecepcionDocumentos;
 using SW.Services.Authentication;
 using SW.Services.Validate;
 using System;
@@ -17,11 +18,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using Aplicacion.RecepcionDocumentos;
 using Utilerias.LogicaPrincipal;
-using APBox.Models;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -187,41 +185,9 @@ namespace APBox.Controllers.Operaciones
             ViewBag.NameHere = "Documentos Recibidos";
 
             //get usaurio
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
             PathArchivosDto archivo;
             ValidateXmlResponse responseValidacion = new ValidateXmlResponse();
-            AuthResponse responseAutenticacion = new AuthResponse();
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
-            documentoRecibidoDr.DetalleArrays = new List<String>();
-
-            //empieza mi prueba
-            //se crea una instancia con los datos a validar en una petición
-            var dataValidar = new DataValidar
-            {
-                Cfdi = cfdi,
-                TimbreFiscalDigital = cfdi.TimbreFiscalDigital,
-            };
-
-            ValidacionesComerciales validacionesComerciales = new ValidacionesComerciales();
-
-            try
-            {
-                validacionesComerciales.Validaciones(cfdi, ObtenerSucursal());
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
-                return View(documentoRecibidoDr);
-            }
-            //termina mi prueba
 
             try
             {
@@ -232,120 +198,50 @@ namespace APBox.Controllers.Operaciones
                 ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
                 return View(documentoRecibidoDr);
             }
+
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            documentoRecibidoDr.DetalleArrays = new List<String>();
+            cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
+
+            //se crea una instancia con los datos a validar en una petición
+            var dataValidar = new ValidacionesComerciales.DataValidar
+            {
+                Cfdi = cfdi,
+                TimbreFiscalDigital = cfdi.TimbreFiscalDigital,
+                Sucursal = _db.Sucursales.Find(ObtenerSucursal()),
+                SocioComercial = cfdi.Emisor.Equals(null) ? null : _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault(),
+                Usuario = usuario,
+                ConfiguracionEmpresa = ConfiguracionEmpresa(),
+                DocumentoRecibidoDr = documentoRecibidoDr,
+                Archivo = archivo
+            };
+
+            ValidacionesComerciales validacionesComerciales = new ValidacionesComerciales();
+
+            //Se manda validar al grupo de valiadciones de stock para verificar que el documento pueda procesar las validaciones de configuraciones
             try
             {
-                //Deserealiza XML
-                cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
-                var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
-                var sucursal = _db.Sucursales.Find(ObtenerSucursal());
-                var socioComercial = new SocioComercial();
-                documentoRecibidoDr.Validaciones = new ValidacionesDR();
+                validacionesComerciales.ValidacionesNegocio(dataValidar);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                return View(documentoRecibidoDr);
+            }
 
-                socioComercial = _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id).FirstOrDefault();
-                var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == timbreFiscalDigital.UUID).FirstOrDefault();
-                if (usuario.esProveedor)
-                {
-                    if (usuario.SocioComercial.Rfc != cfdi.Emisor.Rfc)
-                    {
-                        throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc emisor al socio comercial");
-                    }
-                }
-                if (sucursal.Rfc != cfdi.Receptor.Rfc)
-                {
-                    throw new Exception("Error Validación : El archivo cargado no coincide con el Rfc receptor a la empresa asignada");
-                }
-                if (existUUID != null)
-                {
-                    if (existUUID.EstadoComercial != c_EstadoComercial.Rechazado && existUUID.EstadoPago != c_EstadoPago.Rechazado)
-                    {
-                        throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema y no puede duplicarse. De ser necesario, debe rechazarse la solicitud anterior de este CFDi para poder subirlo nuevamente.");
-                    }
-                }
+            try
+            {
+                validacionesComerciales.ValidacionesConfiguraciones(dataValidar);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
+                return View(documentoRecibidoDr);
+            }
 
-                if (socioComercial == null)
-                {
-                    //crear socio comercial apartir del emisor
-                    socioComercial = new SocioComercial()
-                    {
-                        Rfc = cfdi.Emisor.Rfc,
-                        RazonSocial = cfdi.Emisor.Nombre,
-                        RegimenFiscal = (API.Enums.c_RegimenFiscal)cfdi.Emisor.RegimenFiscal,
-                        CodigoPostal = cfdi.LugarExpedicion,
-                        Pais = API.Enums.c_Pais.MEX,
-                        SucursalId = sucursal.Id,
-                        Status = Status.Activo,
-                        FechaAlta = DateTime.Now,
-                        GrupoId = ObtenerGrupo(),
-                        Observaciones = "Socio Comercial creado automaticamente"
-                    };
-                    //guardar datos en base de datos
-                    _db.SociosComerciales.Add(socioComercial);
-                    _db.SaveChanges();
-                }
-
-                var configuracionEmpresa = ConfiguracionEmpresa();
-                //Parametro configuracion (Documentos Obligatorios)
-                if (configuracionEmpresa == null)
-                {
-                    throw new Exception("Error Configuracion : No se a configuraro la validación de la empresa");
-                }
-
-                if (configuracionEmpresa.ValidacionDocumentosObligatoria)
-                {
-                    //autenticacion
-                    responseAutenticacion = _procesaDocumentoRecibido.GetToken();
-
-                    if (responseAutenticacion.data.token != null)
-                    {
-                        //Valida CFDI
-                        responseValidacion = _procesaDocumentoRecibido.ValidaCfdi(responseAutenticacion.data.token, archivo.PathDestinoXml);
-                        if (responseValidacion == null) { throw new Exception("Error response validación CFDI : null"); }
-                        if (responseValidacion.status == "success")
-                        {
-                            documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
-                            documentoRecibidoDr.Procesado = true;
-                            //Para iterar la lista sobre la validacion estructura
-                            List<Detail> detail1 = responseValidacion.detail;
-                            StringBuilder sb = new StringBuilder();
-                            var count = detail1.Count();
-                            var limite = 0;
-
-                            foreach (var detalle in detail1)
-                            {
-                                limite++;
-                                var limiteDetail = 0;
-                                foreach (var nodedetalle in detalle.detail)
-                                {
-                                    limiteDetail++;
-                                    sb.AppendLine(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail);
-                                    //add validaciones
-                                    if (limite < count)
-                                    {
-                                        documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail + "\r\n");
-                                    }
-                                    else { documentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail); }
-                                }
-                            }
-                            documentoRecibidoDr.Validaciones.Detalle = sb.ToString();
-                            documentoRecibidoDr.Validaciones_Detalle = sb.ToString();
-                            documentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
-                        }
-                    }
-                }
-                else
-                {
-                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
-                    documentoRecibidoDr.Procesado = true;
-                    documentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
-                }
-
-                //add socio comercial
-                documentoRecibidoDr.SocioComercial_Id = socioComercial.Id;
-                //add usuario
-                documentoRecibidoDr.Usuario_Id = usuario.Id;
-                documentoRecibidoDr.CfdiRecibidos_Serie = cfdi.Serie;
-                documentoRecibidoDr.CfdiRecibidos_Folio = cfdi.Folio;
-                documentoRecibidoDr.Moneda_Id = cfdi.Moneda;
+            //validaciones de configuraciones, donde la empresa valida opcionalmente varios parámetros
+            try
+            {
                 ViewBag.MetodoPago = cfdi.MetodoPago;
                 ViewBag.FormaPago = cfdi.FormaPago;
                 ViewBag.TipoComprobante = cfdi.TipoDeComprobante.ToString();
@@ -355,35 +251,6 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.Usuario = usuario.NombreCompleto;
                 ViewBag.Emisor = cfdi.Emisor.Nombre;
                 ViewBag.Receptor = cfdi.Receptor.Nombre;
-
-                //Implemento validacion para recibir facturas dentro del mes en curso
-                DateTime fechaActual = DateTime.Now;
-
-                var facturaMesCorriente = ConfiguracionEmpresa().RecibirFacturasMesCorriente;
-                documentoRecibidoDr.FechaComprobante = Convert.ToDateTime(cfdi.Fecha);
-
-                if (facturaMesCorriente)
-                {
-                    //Primer dia del Mes Actual
-                    DateTime primerDiaMesActual = new DateTime(fechaActual.Year, fechaActual.Month, 1);
-
-                    //Ultimo dia del Mes Actual
-                    DateTime ultimoDiaMesActual = primerDiaMesActual.AddMonths(1).AddDays(-1);
-
-                    if (documentoRecibidoDr.FechaComprobante >= primerDiaMesActual || documentoRecibidoDr.FechaComprobante <= ultimoDiaMesActual)
-                    {
-                        throw new InvalidOperationException("La factura o el comprobante no corresponde al mes actual. Por favor, cargue una factura del mes actual.");
-                    }
-                }
-
-                documentoRecibidoDr.CfdiRecibidos_UUID = timbreFiscalDigital.UUID;
-                documentoRecibidoDr.FechaEntrega = DateTime.Now;
-                documentoRecibidoDr.TipoDocumentoRecibido = c_TipoDocumentoRecibido.CFDI;
-                documentoRecibidoDr.Monto = cfdi.Total;
-                //add data validacion correcta
-
-                documentoRecibidoDr.PathArchivoXml = archivo.PathDestinoXml;
-                documentoRecibidoDr.PathArchivoPdf = archivo.PathDestinoPdf;
             }
             catch (Exception ex)
             {
@@ -405,7 +272,7 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.DetalleArrays = null;
             }
 
-            return View(documentoRecibidoDr);
+            return View(dataValidar.DocumentoRecibidoDr);
         }
 
         // GET: DocumentosRecibidos/Create
@@ -636,14 +503,6 @@ namespace APBox.Controllers.Operaciones
             DateTime fechaConvertDate = Convert.ToDateTime(fecha);
             string fechaFormat = fechaConvertDate.ToString("dd/MM/yyyy");
             return fechaFormat;
-        }
-
-        public class DataValidar
-        {
-            public ComprobanteCFDI Cfdi { get; set; }
-            public TimbreFiscalDigital TimbreFiscalDigital { get; set; }
-            public Sucursal Sucursal { get; set; }
-            public SocioComercial SocioComercial { get; set; }
         }
 
         public ConfiguracionesDR ConfiguracionEmpresa()
