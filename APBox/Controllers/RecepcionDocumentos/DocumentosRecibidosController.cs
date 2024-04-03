@@ -202,12 +202,12 @@ namespace APBox.Controllers.Operaciones
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             documentoRecibidoDr.DetalleArrays = new List<String>();
             cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
-
+            var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
             //se crea una instancia con los datos a validar en una petición
             var dataValidar = new ValidacionesComerciales.DataValidar
             {
                 Cfdi = cfdi,
-                TimbreFiscalDigital = cfdi.TimbreFiscalDigital,
+                TimbreFiscalDigital = timbreFiscalDigital,
                 Sucursal = _db.Sucursales.Find(ObtenerSucursal()),
                 SocioComercial = cfdi.Emisor.Equals(null) ? null : _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault(),
                 Usuario = usuario,
@@ -359,7 +359,9 @@ namespace APBox.Controllers.Operaciones
                     MetodoPago = cfdi.MetodoPago,
                     Descuento = (double)cfdi.Descuento,
                     Subtotal = (double)cfdi.SubTotal,
-                    Total = (double)cfdi.Total
+                    Total = (double)cfdi.Total,
+                    Uuid = timbreFiscalDigital.UUID,
+                    FechaTimbrado = timbreFiscalDigital.FechaTimbrado
                     //TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
                     //TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
                 };

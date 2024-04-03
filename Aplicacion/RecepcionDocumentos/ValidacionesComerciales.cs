@@ -142,7 +142,10 @@ namespace Aplicacion.RecepcionDocumentos
                             }
                         }
                         dv.DocumentoRecibidoDr.Validaciones_Detalle = sb.ToString();
-                        dv.DocumentoRecibidoDr.Validaciones.Detalle = sb.ToString();
+                        dv.DocumentoRecibidoDr.Validaciones = new ValidacionesDR()
+                        {
+                            Detalle = sb.ToString()
+                        };
                         dv.DocumentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
                     }
                 }
