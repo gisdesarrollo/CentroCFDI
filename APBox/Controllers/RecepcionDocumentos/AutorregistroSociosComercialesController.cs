@@ -31,7 +31,6 @@ namespace APBox.Controllers.Catalogos
             PopulaForma();
             var grupo = _db.Grupos.FirstOrDefault(c => c.Llave == id);
             
-
             try
             {
                 Guid llaveGrupo = ObtenerLlaveGrupo(id.Value);

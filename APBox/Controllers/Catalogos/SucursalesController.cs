@@ -15,17 +15,15 @@ using System.Text;
 namespace APBox.Controllers.Catalogos
 {
     [SessionExpire]
-    //[Authorize(Roles = "SUCURSALES")]
     public class SucursalesController : Controller
     {
         private readonly APBoxContext _db = new APBoxContext();
         private readonly OperacionesStreams _operacionesStreams = new OperacionesStreams();
         private readonly AcondicionarSucursales _acondicionarSucursales = new AcondicionarSucursales();
 
-
         // GET: Sucursales
         //[Authorize(Roles = "SUCURSALES")]
-        
+
         public ActionResult Index()
         {
             var grupoId = ObtenerGrupo();
@@ -83,8 +81,6 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Sucursales/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Sucursal sucursal)
@@ -150,7 +146,7 @@ namespace APBox.Controllers.Catalogos
         }
 
         // POST: Sucursales/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -183,7 +179,7 @@ namespace APBox.Controllers.Catalogos
                 {
                 }
 
-                if(sucursal.Bancos != null)
+                if (sucursal.Bancos != null)
                 {
                     sucursal.Bancos.Clear();
                     sucursal.Bancos = null;
@@ -246,7 +242,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.BancoId = popularDropDowns.PopulaBancos(null);
         }
 
-        #endregion
+        #endregion PopulaForma
 
         #region Operaciones Archivos
 
@@ -268,11 +264,13 @@ namespace APBox.Controllers.Catalogos
                         case ".cer":
                             carpeta = "Certificados";
                             break;
+
                         case ".jpg":
                         case ".jpeg":
                         case ".png":
                             carpeta = "Logos";
                             break;
+
                         default:
                             continue;
                     }
@@ -284,7 +282,7 @@ namespace APBox.Controllers.Catalogos
                     fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
                     mStreamer.Seek(0, SeekOrigin.Begin);
                     _operacionesStreams.StreamArchivo(mStreamer, pathDestino);
-                    
+
                     switch (Path.GetExtension(archivo.FileName.ToLower()))
                     {
                         case ".key":
@@ -293,17 +291,20 @@ namespace APBox.Controllers.Catalogos
                             byte[] Key = System.IO.File.ReadAllBytes(pathDestino);
                             sucursal.Key = Key;/*_operacionesStreams.ArchivoStream(pathDestino).ToArray();*/
                             break;
+
                         case ".cer":
                             sucursal.NombreArchivoCer = Path.GetFileName(archivo.FileName);
                             byte[] Cer = System.IO.File.ReadAllBytes(pathDestino);
                             sucursal.Cer = Cer;/*_operacionesStreams.ArchivoStream(pathDestino).ToArray();*/
                             break;
+
                         case ".jpg":
                         case ".jpeg":
                         case ".png":
                             sucursal.NombreLogo = Path.GetFileName(archivo.FileName);
                             sucursal.Logo = _operacionesStreams.ArchivoStream(pathDestino).ToArray();
                             break;
+
                         default:
                             break;
                     }
@@ -321,21 +322,22 @@ namespace APBox.Controllers.Catalogos
                     Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", sucursal.NombreArchivoKey));
                     mimeType = MimeMapping.GetMimeMapping(sucursal.NombreArchivoKey);
                     return File(sucursal.Key, mimeType);
+
                 case "cer":
                     Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", sucursal.NombreArchivoCer));
                     mimeType = MimeMapping.GetMimeMapping(sucursal.NombreArchivoCer);
                     return File(sucursal.Cer, mimeType);
+
                 case "logo":
                     Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", sucursal.NombreLogo));
                     mimeType = MimeMapping.GetMimeMapping(sucursal.NombreLogo);
                     return File(sucursal.Logo, mimeType);
+
                 default:
                     return File(new byte[0], "");
             }
-
         }
 
-        #endregion
-
+        #endregion Operaciones Archivos
     }
 }

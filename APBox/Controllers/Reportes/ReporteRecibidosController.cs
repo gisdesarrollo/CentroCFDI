@@ -28,8 +28,8 @@ namespace APBox.Controllers.Reportes
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, documentosRecibidosModel.FechaInicial.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
             _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, sucursalId);

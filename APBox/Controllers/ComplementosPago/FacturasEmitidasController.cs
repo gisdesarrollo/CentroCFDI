@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using APBox.Context;
 using API.Enums;
+using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
 using API.Models.Facturas;
 using API.Operaciones.Facturacion;
@@ -117,10 +118,12 @@ namespace APBox.Controllers.Catalogos
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, facturasEmitidasModel.FechaInicial.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+
             facturasEmitidasModel.FechaInicial = fechaInicial;
             facturasEmitidasModel.FechaFinal = fechaFinal;
+
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
 
             isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();

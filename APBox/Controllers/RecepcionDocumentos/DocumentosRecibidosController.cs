@@ -432,6 +432,7 @@ namespace APBox.Controllers.Operaciones
 
         // POST: DocumentosRecibidos/Edit/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Revision(DocumentosRecibidosDR documentoRecibidoEdit)
         {
             try

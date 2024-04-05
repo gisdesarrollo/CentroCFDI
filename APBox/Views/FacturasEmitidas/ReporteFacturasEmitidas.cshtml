@@ -8,7 +8,7 @@
 {
     <div class="card card-flush">
         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-            
+
             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                 <!--begin::Export dropdown-->
                 <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -60,221 +60,210 @@
             {
                 @Html.AntiForgeryToken()
 
-            <div class="form">
-                @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-                @Html.HiddenFor(model => model.SucursalId)
+                    @Html.HiddenFor(model => model.SucursalId)
 
-                <div class="sub-title">
-                    <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
-                </div>
-                <div class="row">
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        <span class="input-group-addon">Fecha Inicial</span>
-                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                        @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                    <div class="sub-title">
+                        <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
                     </div>
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        <span class="input-group-addon">Fecha Final</span>
-                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                        @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <span class="input-group-addon">Fecha Inicial</span>
+                            @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                            @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <span class="input-group-addon">Fecha Final</span>
+                            @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                            @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                            <button type="submit" class="btn btn-primary">Filtrar</button>
+                        </div>
                     </div>
-                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <div class="clearfix"></div>
+                    <hr />
+                    <!--begin::Search-->
+
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+                        <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
                     </div>
-                </div>
-                <div class="clearfix"></div>
-                <hr />
-                <!--begin::Search-->
+                    <!--end::Search-->
+                    <div id="cancelar-view"></div>
+                    <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
+                        <thead>
+                            <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
+                                <th class="min-w-100px">
+                                    Rfc
+                                </th>
+                                <th class="min-w-100px">
+                                    Razon Social
+                                </th>
+                                <th class="min-w-100px">
+                                    UUID
+                                </th>
+                                <th class="min-w-100px">
+                                    Serie
+                                </th>
 
-                <div class="d-flex align-items-center position-relative my-1">
-                    <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
-                    <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
-                </div>
-                <!--end::Search-->
-                <div id="cancelar-view"></div>
-                <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
-                    <thead>
-                        <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
-                            <th class="min-w-100px">
-                                Rfc
-                            </th>
-                            <th class="min-w-100px">
-                                Razon Social
-                            </th>
-                            <th class="min-w-100px">
-                                UUID
-                            </th>
-                            <th class="min-w-100px">
-                                Serie
-                            </th>
+                                <th class="min-w-100px">
+                                    Folio
+                                </th>
 
-                            <th class="min-w-100px">
-                                Folio
-                            </th>
+                                <th class="min-w-100px">
+                                    Fecha
+                                </th>
+                                <th class="min-w-100px">
+                                    Moneda
+                                </th>
+                                <th class="min-w-100px">
+                                    Tipo de Cambio
+                                </th>
+                                <th class="min-w-100px">
+                                    Metodo Pago
+                                </th>
+                                <th class="min-w-100px">
+                                    Forma de Pago
+                                </th>
+                                <th class="min-w-100px">
+                                    Uso Cfdi
+                                </th>
+                                <th class="min-w-100px">
+                                    Subtotal
+                                </th>
 
-                            <th class="min-w-100px">
-                                Fecha
-                            </th>
-                            <th class="min-w-100px">
-                                Moneda
-                            </th>
-                            <th class="min-w-100px">
-                                Tipo de Cambio
-                            </th>
-                            <th class="min-w-100px">
-                                Metodo Pago
-                            </th>
-                            <th class="min-w-100px">
-                                Forma de Pago
-                            </th>
-                            <th class="min-w-100px">
-                                Uso Cfdi
-                            </th>
-                            <th class="min-w-100px">
-                                Subtotal
-                            </th>
+                                <th class="min-w-100px">
+                                    Descuento
+                                </th>
+                                <th>
+                                    Total Impuestos Trasladados
+                                </th>
+                                <th>
+                                    Total Impuestos Retenidos
+                                </th>
+                                <th class="min-w-100px">
+                                    Total
+                                </th>
+                                <th>
+                                    Tipo Comprobante
+                                </th>
 
-                            <th class="min-w-100px">
-                                Descuento
-                            </th>
-                            <th>
-                                Total Impuestos Trasladados
-                            </th>
-                            <th>
-                                Total Impuestos Retenidos
-                            </th>
-                            <th class="min-w-100px">
-                                Total
-                            </th>
-                            <th>
-                                Tipo Comprobante
-                            </th>
+                                <th>
+                                    <p>Referencia</p>
+                                </th>
 
-                            <th>
-                                @*@{
-            //var bd = new APBox.Context.APBoxContext();
-            //var sucursal = bd.Sucursales.Find(Model.SucursalId);
-            if (Model.SucursalId == 42)
-            {*@
-                                <p>Referencia</p>
-                                @*}
-                else
-                {
+                            </tr>
+                        </thead>
 
-                }
-            }*@
-                            </th>
-
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @{
-                            var db = new APBox.Context.APBoxContext();
-                        }
-                        @foreach (var item in Model.FacturaEmitidasTemporal)
-                        {
-                            {
-                                var receptor = db.SociosComerciales.Find(item.ReceptorId);
-                                var facturaEmitida = db.FacturasEmitidas.Find(item.Id);
-
-                        <tr class="odd">
-                            <td>
-                                @receptor.Rfc
-                            </td>
-
-                            <td>
-                                @receptor.RazonSocial
-                            </td>
-                            <td>
-                                @item.Uuid
-                            </td>
-                            <td>
-                                @item.Serie
-                            </td>
-
-                            <td>
-                                @item.Folio
-                            </td>
-
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Fecha)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Moneda)
-
-                            </td>
-
-                            <td>
-                                @facturaEmitida.TipoCambio.ToString()
-                            </td>
-                            <td>
-                                @facturaEmitida.MetodoPago.ToString()
-                            </td>
-                            <td>
-                                @facturaEmitida.FormaPago
-                            </td>
-                            <td>
-                                @facturaEmitida.Receptor.UsoCfdi
-                            </td>
+                        <tbody>
                             @{
-                                //var db = new APBox.Context.APBoxContext();
-                                //var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-                                //var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-                                //var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-
+                                var db = new APBox.Context.APBoxContext();
                             }
+                            @foreach (var item in Model.FacturaEmitidasTemporal)
+                            {
+                                {
+                                    var receptor = db.SociosComerciales.Find(item.ReceptorId);
+                                    var facturaEmitida = db.FacturasEmitidas.Find(item.Id);
 
-                            <td>
-                                @facturaEmitida.Subtotal
-                            </td>
-                            <td>
-                                @facturaEmitida.Descuento
-                            </td>
+                                    <tr class="odd">
+                                        <td>
+                                            @receptor.Rfc
+                                        </td>
 
-                            <td class="text-right">
+                                        <td>
+                                            @receptor.RazonSocial
+                                        </td>
+                                        <td>
+                                            @item.Uuid
+                                        </td>
+                                        <td>
+                                            @item.Serie
+                                        </td>
 
-                                @facturaEmitida.TotalImpuestosTrasladados
+                                        <td>
+                                            @item.Folio
+                                        </td>
 
-                            </td>
-                            <td class="text-right">
 
-                                @facturaEmitida.TotalImpuestosRetenidos
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Fecha)
+                                        </td>
 
-                            </td>
-                            <td class="text-right">
-                                @item.Total
-                            </td>
-                            <td class="text-center">
-                                @item.TipoComprobante
-                            </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Moneda)
 
-                            <td class="text-center">
-                                @*@{
-            //var db1 = new APBox.Context.APBoxContext();
-            //var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
-            if (Model.SucursalId == 42)
-            {*@
-                                @item.ReferenciaAddenda
-                                @*}
-                else
-                {
+                                        </td>
 
-                }
-            }*@
+                                        <td>
+                                            @facturaEmitida.TipoCambio.ToString()
+                                        </td>
+                                        <td>
+                                            @facturaEmitida.MetodoPago.ToString()
+                                        </td>
+                                        <td>
+                                            @facturaEmitida.FormaPago
+                                        </td>
+                                        <td>
+                                            @facturaEmitida.Receptor.UsoCfdi
+                                        </td>
+                                        @{
+                                            //var db = new APBox.Context.APBoxContext();
+                                            //var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+                                            //var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+                                            //var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
 
-                            </td>
+                                        }
 
-                        </tr>
+                                        <td>
+                                            @facturaEmitida.Subtotal
+                                        </td>
+                                        <td>
+                                            @facturaEmitida.Descuento
+                                        </td>
+
+                                        <td class="text-right">
+
+                                            @facturaEmitida.TotalImpuestosTrasladados
+
+                                        </td>
+                                        <td class="text-right">
+
+                                            @facturaEmitida.TotalImpuestosRetenidos
+
+                                        </td>
+                                        <td class="text-right">
+                                            @item.Total
+                                        </td>
+                                        <td class="text-center">
+                                            @item.TipoComprobante
+                                        </td>
+
+                                        <td class="text-center">
+                                            @*@{
+                                                //var db1 = new APBox.Context.APBoxContext();
+                                                //var sucursal1 = db1.Sucursales.Find(Model.SucursalId);
+                                                if (Model.SucursalId == 42)
+                                                {*@
+                                            @item.ReferenciaAddenda
+                                            @*}
+                                                    else
+                                                    {
+
+                                                    }
+                                                }*@
+
+                                        </td>
+
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-            </div>
+                </div>
             }
         </div>
 

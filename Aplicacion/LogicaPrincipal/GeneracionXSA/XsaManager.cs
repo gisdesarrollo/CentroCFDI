@@ -25,11 +25,11 @@ namespace Aplicacion.LogicaPrincipal.GeneracionXSA
         private readonly AplicacionContext _db = new AplicacionContext();
         /*private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porteCRANETimbrado.xml";*/
 
-        public int GenerarCFDI(String xml,Sucursal sucursal,int folio,string serie, ComprobanteDto comprobanteDto,String pathXml)
+        public int GenerarCFDI(String xml, Sucursal sucursal, int folio, string serie, ComprobanteDto comprobanteDto, String pathXml)
         {
             DataResponseXsaDto data = new DataResponseXsaDto();
             int idFacturaEmitida = 0;
-           // string cadenaFormateada = ReplaceCadena(xml); 
+            // string cadenaFormateada = ReplaceCadena(xml); 
             try
             {
 
@@ -52,19 +52,22 @@ namespace Aplicacion.LogicaPrincipal.GeneracionXSA
             }
             return idFacturaEmitida;
         }
-        
+
         public string RequestGeneracionCfdi(Sucursal sucursal, int folio, string serie, string path)
         {
             string responseBody = null;
             var tipoCfdXsa = "";
             //URL produccion
-            if(sucursal.Id == 29)
-            {
-                tipoCfdXsa = "3fe557e55f8691df583d406e53cb7dd6";
-                //sucursal.TipoCfdXsa = "3fe557e55f8691df583d406e53cb7dd6";
-            }else if(sucursal.Id == 1) { tipoCfdXsa = "b4b7fb57ebfd8641a054e7905fb6de5b"; }
-            else { tipoCfdXsa = sucursal.TipoCfdXsa; }
-            //
+
+            if (sucursal.Id == 29)
+            { tipoCfdXsa = "3fe557e55f8691df583d406e53cb7dd6"; }
+            else if (sucursal.Id == 1)
+            { tipoCfdXsa = "b4b7fb57ebfd8641a054e7905fb6de5b"; }
+            else if (sucursal.Id == 52)
+            { tipoCfdXsa = "d2e621f71389ff426a62952bc76bd14f"; }
+            else 
+            { tipoCfdXsa = sucursal.TipoCfdXsa; }
+
             var urlXsa = $"https://" + sucursal.Servidor + ":9050/" + sucursal.KeyXsa + "/cfdis";
             if (sucursal.TipoCfdXsa == null) { throw new Exception("Error: Tipo CFD XSA NULL"); }
             if (sucursal.IdSucursalXsa == null) { throw new Exception("Error: Id Sucursal XSA NULL"); }
@@ -72,10 +75,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionXSA
             request.Method = "PUT";
             request.ContentType = "application/json";
             request.Accept = "application/json";
-            
+
             //nombre del archivo xml
             string nameFile = String.Format("{0}{1}_{2}.xml", serie, folio, sucursal.Rfc);
-            
+
             //Objeto de produccion
             var dataJsonXsa = new DataApiXSA()
             {
@@ -196,7 +199,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionXSA
         public String ReplaceCadena(string cadena)
         {
             string formatString = cadena.Replace("\\u0022", "\"");
-                   formatString = Regex.Unescape(formatString);
+            formatString = Regex.Unescape(formatString);
             return formatString;
         }
         public byte[] GetByteCfdiGenerado(DataResponseXsaDto data, Sucursal sucursal)
@@ -229,7 +232,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionXSA
         }
     }
 
-    
+
 
 
 }
