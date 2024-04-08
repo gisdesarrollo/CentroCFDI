@@ -9,7 +9,9 @@ using APBox.Control;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 using Microsoft.AspNet.Identity;
 using Org.BouncyCastle.Crypto.Tls;
-using System.Collections.Generic;
+
+using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
+using SW.Services.Authentication;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -20,11 +22,13 @@ namespace APBox.Controllers.Catalogos
 
         private readonly APBoxContext _db = new APBoxContext();
         private readonly AcondicionarClientes _acondicionarClientes = new AcondicionarClientes();
+        private readonly ProcesaDocumentoRecibido _procesaValidacion = new ProcesaDocumentoRecibido();
 
         #endregion Variables
 
         public ActionResult Index()
         {
+            PopulaSocioComercial();
             var sucursalId = ObtenerSucursal();
             var clientes = _db.SociosComerciales.Where(c => c.SucursalId == sucursalId).ToList();
 
@@ -46,7 +50,8 @@ namespace APBox.Controllers.Catalogos
                 Status = API.Enums.Status.Activo,
                 FechaAlta = DateTime.Now,
                 Pais = (API.Enums.c_Pais)c_Pais.MEX,
-                SucursalId = ObtenerSucursal()
+                SucursalId = ObtenerSucursal(),
+                GrupoId = ObtenerGrupo()
             };
 
             ViewBag.Controller = "SociosComerciales";
@@ -80,13 +85,9 @@ namespace APBox.Controllers.Catalogos
             }
             if (!ModelState.IsValid)
             {
-                // El modelo no es válido, por lo que hay errores de validación
-
-                // Puedes acceder a los errores de validación y enviarlos a la vista
                 var errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-
-                // Puedes hacer algo con los errores, como enviarlos a la vista
-                return View("Error", errores);
+                ViewBag.errores = errores;
+              
             }
 
             return View(sociocomercial);
@@ -108,12 +109,12 @@ namespace APBox.Controllers.Catalogos
 
             if (usuario.esProveedor && usuario.SocioComercialID != id)
             {
-                // Si no coincide, redirigir al usuario a una página de error o denegar el acceso
-                // Puedes mostrar un mensaje de error u otra información relevante al usuario
-                ViewBag.ErrorMessage = "No tienes permiso para acceder a esta página.";
-
-                // Redirigir al usuario a la página de inicio (Home)
-                return RedirectToAction("Index", "Home");
+            // Si no coincide, redirigir al usuario a una página de error o denegar el acceso
+            // Puedes mostrar un mensaje de error u otra información relevante al usuario
+            // Si no coincide, mostrar una alerta al usuario antes de redirigir
+            TempData["Mensaje"] = "No tienes permiso para acceder a esta página.";
+            // Redirigir al usuario a la página de inicio (Home)
+            return RedirectToAction("Index", "Home");
             }
 
             PopulaForma();
@@ -134,12 +135,12 @@ namespace APBox.Controllers.Catalogos
 
             try
             {
-                var socioComercial = _db.SociosComerciales.Find(socioComercialEdit.Id);
-                socioComercial = socioComercialEdit;
-                socioComercial.GrupoId = ObtenerGrupo();
-                socioComercial.SucursalId = ObtenerSucursal();
+                //var socioComercial = _db.SociosComerciales.Find(socioComercialEdit.Id);
+                //socioComercial = socioComercialEdit;
+                socioComercialEdit.GrupoId = ObtenerGrupo();
+                socioComercialEdit.SucursalId = ObtenerSucursal();
 
-                _db.Entry(socioComercial).State = EntityState.Modified;
+                _db.Entry(socioComercialEdit).State = EntityState.Modified;
                 _db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -194,6 +195,16 @@ namespace APBox.Controllers.Catalogos
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public ActionResult ValidaRfc(string idSocioComercial)
+        {
+            AuthResponse responseAutenticacion = new AuthResponse();
+            var socioComercial = _db.SociosComerciales.Find(idSocioComercial);
+            responseAutenticacion = _procesaValidacion.GetToken();
+            _procesaValidacion.ValidaRFC(responseAutenticacion.data.token,socioComercial.Rfc);
+            return Content("¡Formulario enviado correctamente!");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -204,7 +215,12 @@ namespace APBox.Controllers.Catalogos
         }
 
         #region PopulaForma
+        private void PopulaSocioComercial(int? receptorId = null)
+        {
+            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
 
+            ViewBag.ReceptorId = popularDropDowns.PopulaClientes(receptorId);
+        }
         private int ObtenerGrupo()
         {
             return Convert.ToInt32(Session["GrupoId"]);

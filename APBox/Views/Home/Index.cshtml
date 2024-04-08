@@ -9,9 +9,41 @@
     var usuario = _db.Usuarios.Find(Convert.ToInt32(Session["UsuarioId"]));
 }
 
+@{
+    // Renderiza el script si existe en TempData
+    string mensaje = TempData["Mensaje"] as string;
+    if (!string.IsNullOrEmpty(mensaje))
+    {
+        Html.Raw("alert('" + mensaje + "');");
+    <script>
+        
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toastr-bottom-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "500",
+                "hideDuration": "500",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.error("", '@Html.Raw(mensaje)');
+    </script>
+        
+        
 
+    }
+}
 @if (Request.IsAuthenticated && sucursal.Id != 0)
 {
+
     // home si el usuario es interno
     if (User.IsInRole("RECEPCION") && !usuario.esProveedor)
     {
@@ -950,6 +982,8 @@
         var chart = new ApexCharts(element, options);
         chart.render();
     });
+
+
 </script>
 
 

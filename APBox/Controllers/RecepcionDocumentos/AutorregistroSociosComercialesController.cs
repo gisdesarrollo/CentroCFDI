@@ -63,6 +63,7 @@ namespace APBox.Controllers.Catalogos
                 FechaAlta = DateTime.Now,
                 Pais = (API.Enums.c_Pais)c_Pais.MEX,
                 SucursalId = sucursal.Id,
+                GrupoId = grupo.Id
 
             };
 
