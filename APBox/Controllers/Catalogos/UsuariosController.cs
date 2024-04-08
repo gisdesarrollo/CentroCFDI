@@ -15,24 +15,23 @@ using Aplicacion.LogicaPrincipal.Correos;
 namespace APBox.Controllers.Catalogos
 {
     [SessionExpire]
-    //[Authorize(Roles = "USUARIOS")]
     public class UsuariosController : Controller
     {
-
         #region Variables
 
         private readonly APBoxContext _db = new APBoxContext();
         private readonly OperacionesUsuarios _operacionesUsuarios = new OperacionesUsuarios();
         private readonly AcondicionarUsuarios _acondicionarUsuarios = new AcondicionarUsuarios();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
-        #endregion
+
+        #endregion Variables
 
         // GET: Usuarios
         public ActionResult Index()
         {
             var grupoId = ObtenerGrupo();
             var usuarios = _db.Usuarios.Where(u => u.GrupoId == grupoId).ToList();
-            
+
             ViewBag.Controller = "Usuarios";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
@@ -40,22 +39,6 @@ namespace APBox.Controllers.Catalogos
             ViewBag.NameHere = "Usuarios";
 
             return View(usuarios);
-        }
-
-        // GET: Usuarios/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Usuario usuario = _db.Usuarios.Find(id);
-            if (usuario == null)
-            {
-                return HttpNotFound();
-            }
-            PopulaForma(usuario.PerfilId);
-            return View(usuario);
         }
 
         // GET: Usuarios/Create
@@ -70,11 +53,11 @@ namespace APBox.Controllers.Catalogos
                 Sucursales = new List<UsuarioSucursal>(),
                 GrupoId = ObtenerGrupo()
             };
-            
+
             ViewBag.Controller = "Usuarios";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "sistema";
+            ViewBag.NameHere = "Crear Usuario";
 
             return View(usuario);
         }
@@ -88,11 +71,11 @@ namespace APBox.Controllers.Catalogos
             PopulaDepartamento(usuario.Departamento_Id);
             if (ModelState.IsValid)
             {
-                var entidadExistente = _db.Usuarios.FirstOrDefault(e =>  e.NombreUsuario == usuario.NombreUsuario);
+                var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.NombreUsuario == usuario.NombreUsuario);
                 if (entidadExistente != null)
                 {
-                   ViewBag.ErrorMessage = "El usuario ya existe";
-                   return View(usuario);
+                    ViewBag.ErrorMessage = "El usuario ya existe";
+                    return View(usuario);
                 }
 
                 _acondicionarUsuarios.CargaInicial(ref usuario);
@@ -121,13 +104,11 @@ namespace APBox.Controllers.Catalogos
                         ModelState.AddModelError("", "Error: seleccione un perfil proveedor");
                         return View(usuario);
                     }
-
                 }
 
                 try
                 {
                     _operacionesUsuarios.Crear(usuario.NombreUsuario);
-                   
                 }
                 catch (Exception ex)
                 {
@@ -135,25 +116,14 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                
                 _db.Usuarios.Add(usuario);
                 _db.SaveChanges();
                 // Envío de correo electrónico de bienvenida
                 EnviarCorreoBienvenida(usuario);
                 return RedirectToAction("Index");
             }
-            
-            return View(usuario);
-        }
 
-        
-        /*
-        * Kevin Enrique 
-        * Descripción: Implementación de envio Email al asignar usuarios(
-        */
-        private void EnviarCorreoBienvenida(Usuario usuario)
-        {
-            _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
+            return View(usuario);
         }
 
         // GET: Usuarios/Edit/5
@@ -190,7 +160,7 @@ namespace APBox.Controllers.Catalogos
             PopulaForma(usuario.PerfilId);
             PopulaDepartamento(usuario.Departamento_Id);
 
-            var proveedorExistente = _db.Usuarios.FirstOrDefault(e => e.esProveedor == usuario.esProveedor &&  e.Id != usuario.Id);
+            var proveedorExistente = _db.Usuarios.FirstOrDefault(e => e.esProveedor == usuario.esProveedor && e.Id != usuario.Id);
             if (ModelState.IsValid)
             {
                 var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno && e.Id != usuario.Id);
@@ -225,9 +195,8 @@ namespace APBox.Controllers.Catalogos
                         ModelState.AddModelError("", "Error: seleccione un perfil proveedor");
                         return View(usuario);
                     }
-
                 }
-                
+
                 _acondicionarUsuarios.Sucursales(usuario);
                 _db.Entry(usuario).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -292,11 +261,11 @@ namespace APBox.Controllers.Catalogos
         {
             return Convert.ToInt32(Session["GrupoId"]);
         }
-        
+
         private void PopulaForma(int? perfilId = null, int? grupoId = null)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerGrupo(), false);
-            
+
             ViewBag.PerfilId = popularDropDowns.PopulaPerfiles(perfilId);
             ViewBag.GrupoId = popularDropDowns.PopulaGrupos(grupoId);
 
@@ -319,7 +288,11 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Departamento_Id = popularDropDowns.PopulaDepartamentos(DepartamentoId);
         }
 
+        private void EnviarCorreoBienvenida(Usuario usuario)
+        {
+            _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
+        }
 
-        #endregion
+        #endregion PopulaForma
     }
 }
