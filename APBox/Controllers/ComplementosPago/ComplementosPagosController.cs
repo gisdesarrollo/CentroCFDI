@@ -327,7 +327,7 @@ namespace APBox.Controllers.ComplementosPago
             PopulaPagos(complementoP.Id);
             PopulaObjetoImpuesto();
             PopulaImpuestoSat();
-
+            ModelState.Remove("Receptor.Rfc");
             ModelState.Remove("Receptor.Nombre");
             ModelState.Remove("Receptor.Pais");
             ModelState.Remove("Pago.DocumentoRelacionado.IdDocumento");
