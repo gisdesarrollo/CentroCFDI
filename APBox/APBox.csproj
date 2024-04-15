@@ -2894,7 +2894,6 @@
     <Content Include="Views\DocumentosPagos\Pagos.cshtml" />
     <Content Include="Views\DocumentosPagos\CargaComplementoPago.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_InformacionComplementoPago.cshtml" />
-    <Content Include="Views\DocumentosPagos\ComplementosPagosCargados.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_AprobacionRechazoComercialPago.cshtml" />
     <Content Include="Views\DocumentosPagos\Revision.cshtml" />
     <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />

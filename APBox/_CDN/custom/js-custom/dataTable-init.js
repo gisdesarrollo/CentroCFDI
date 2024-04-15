@@ -59,7 +59,7 @@ var KTDatatablesExample = function () {
             });
         });
     }
-    //hola
+
     // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
     var handleSearchDatatable = () => {
         const filterSearch = document.querySelector('[data-kt-filter="search"]');

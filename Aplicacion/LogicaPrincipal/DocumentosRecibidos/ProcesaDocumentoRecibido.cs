@@ -34,7 +34,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         #endregion Variables
 
-        public List<DocumentosRecibidosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int usuarioId, int? socioComercialId)
+        public List<DocumentosRecibidosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
             var documentoRecibido = new List<DocumentosRecibidosDR>();
@@ -45,7 +45,11 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             if (usuario.esProveedor)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
-                                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.SocioComercial_Id == usuario.SocioComercialID)
+                                    .Where(dr =>
+                                            dr.FechaEntrega >= fechaInicial &&
+                                            dr.FechaEntrega <= fechaFinal &&
+                                            dr.SocioComercial_Id == usuario.SocioComercialID &&
+                                            dr.SucursalId == sucursalId)
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
             }
@@ -54,7 +58,10 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             if (!usuario.esProveedor)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
-                                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal)
+                                    .Where(dr =>
+                                            dr.FechaEntrega >= fechaInicial &&
+                                            dr.FechaEntrega <= fechaFinal &&
+                                            dr.SucursalId == sucursalId)
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
             }

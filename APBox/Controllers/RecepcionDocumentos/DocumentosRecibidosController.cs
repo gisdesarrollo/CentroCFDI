@@ -83,31 +83,17 @@ namespace APBox.Controllers.Operaciones
             //get usaurio
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
+            var sucursal = _db.Usuarios.Find(ObtenerSucursal());
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
-
             var fechaInicial = DateTime.Today.AddDays(-10);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
 
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
-            if (usuario.esProveedor)
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
-            }
-            else
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
-            }
+
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
+
             return View(documentosRecibidosModel);
         }
 
@@ -122,27 +108,15 @@ namespace APBox.Controllers.Operaciones
             ViewBag.NameHere = "Documentos Recibidos";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
-            DateTime fechaI = documentosRecibidosModel.FechaInicial;
-            DateTime fechaF = documentosRecibidosModel.FechaFinal;
+            var sucursal = _db.Usuarios.Find(ObtenerSucursal());
 
-            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-            if (usuario.esProveedor)
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
-            }
-            else
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
-            }
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+
+            documentosRecibidosModel.FechaInicial = fechaInicial;
+            documentosRecibidosModel.FechaFinal = fechaFinal;
+
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }
@@ -158,14 +132,6 @@ namespace APBox.Controllers.Operaciones
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
 
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
             DocumentosRecibidosDR documentoRecibidoDr = new DocumentosRecibidosDR()
             {
                 Validaciones = new ValidacionesDR()
@@ -281,14 +247,6 @@ namespace APBox.Controllers.Operaciones
             ViewBag.NameHere = "Crear";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
             return View();
         }
 
@@ -298,15 +256,6 @@ namespace APBox.Controllers.Operaciones
         {
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
-            ViewBag.NameHere = "proveedor";
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
             try
             {
                 // Obtener los datos guardados en TempData

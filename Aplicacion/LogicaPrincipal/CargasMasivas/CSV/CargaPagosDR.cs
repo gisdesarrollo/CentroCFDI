@@ -55,6 +55,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
         {
             var errores = new List<String>();
             var pagos = new List<PagosDR>();
+
             using (StreamReader archivo = File.OpenText(path))
             {
                 try
@@ -93,6 +94,18 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             if (documentoRecibido == null)
                             {
                                 errores.Add(String.Format("El CFDi de folio fiscal {0} no fue encontrada para el registro {1}", UUID, i));
+                                continue;
+                            }
+
+                            if (documentoRecibido.EstadoPago == c_EstadoPago.EnRevision)
+                            {
+                                errores.Add(String.Format("El CFDi de folio fiscal {0} aun no se encuentra en Estado Aprobado para Pago para el registro {1}", UUID, i));
+                                continue;
+                            }
+
+                            if (documentoRecibido.EstadoPago == c_EstadoPago.Pagado)
+                            {
+                                errores.Add(String.Format("El CFDi de folio fiscal {0} ya fue pagado para el registro {1}", UUID, i));
                                 continue;
                             }
 
@@ -183,11 +196,15 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                     try
                     {
                         var documentosPagados = pago.DocumentosPagados;
+
+                        int usuarioEntrega = 0;
+                        var socioComercial = pago.SocioComercial;
+
                         pago.DocumentosPagados = null;
                         pago.DocumentoPagado = null;
                         pago.ComplementoPagoRecibido_Id = null;
+
                         _db.PagoDr.Add(pago);
-                        _db.SaveChanges();
 
                         foreach (var documentoPagado in documentosPagados)
                         {
@@ -200,13 +217,16 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             docRecib.EstadoPago = c_EstadoPago.Pagado;
                             docRecib.AprobacionesDR.FechaCargaPagos = DateTime.Now;
                             docRecib.AprobacionesDR.UsuarioCargaPagos_id = usuarioId;
+
+                            usuarioEntrega = (int)docRecib.AprobacionesDR.UsuarioEntrega_Id;
+
                             _db.Entry(docRecib).State = EntityState.Modified;
                         }
                         _db.SaveChanges();
 
-                        var usuarioAprobacion = ObtenerUsuarioDeAprobacionesDR(documentosPagados.FirstOrDefault().Id);
-                        var socioComercial = _db.Usuarios.FirstOrDefault(u => u.Id == usuarioAprobacion).SocioComercial;
-                        _envioEmail.NotificacionPagoSocioComercial(usuarioAprobacion, sucursalId, pago, socioComercial.Id);
+                        //Corregir este método, el problema esta en mandar el pago en los parámetros
+                        //_envioEmail.NotificacionPagoSocioComercial(usuarioEntrega, sucursalId, pago, socioComercial.Id);
+
                     }
                     catch (DbEntityValidationException dbEx)
                     {
@@ -218,9 +238,9 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             }
                         }
                     }
+
                 }
             }
-
             return pagos;
         }
 
@@ -294,12 +314,6 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                 formaPagoValid = formaPago;
             }
             return formaPagoValid;
-        }
-
-        private int? ObtenerUsuarioDeAprobacionesDR(int documentoRecibidoId)
-        {
-            var usuarioAprobacion = _db.DocumentoRecibidoDr.FirstOrDefault(fe => fe.Id == documentoRecibidoId);
-            return usuarioAprobacion.AprobacionesDR.UsuarioEntrega_Id;
         }
     }
 }
