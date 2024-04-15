@@ -207,9 +207,13 @@ namespace APBox.Controllers.Ajax
         public PartialViewResult AgregarMercancia(String ClaveProdServID, string ClaveProdSTCCID,string Descripcion,
             int Cantidad,string Unidad,string ClaveUnidadID,string Dimensiones,bool MaterialPeligorosoSN, 
             string MaterialPeligrosoID, string DescripcionEmbalaje, string TipoEmbalajeID,Decimal PesoEnKg,string ValorMercancia,
-            string Moneda, string FraccionArancelariaID, string UUIDComercioExt,
+            string Moneda, string FraccionArancelariaID, string UUIDComercioExt,string SectorCofepris,string NombreIngredienteActivo,
+            string NomQuimico,string DenominacionGenericaProd,string DenominacionDistintivaProd,string Fabricante,DateTime? FechaCaducidad,
+            string LoteMedicamento,string FormaFarmaceutica,string CondicionesEspecialesTransp,string RegistroSanitarioFolioAutorizacion,
+            string PermisoImportacion,string FolioImpoVucem,string NumCas,string RazonSocialEmpImp,string NumRegSanPlagCofepris,string DatosFabricante,
+            string DatosFormulador,string DatosMaquilador,string UsoAutorizado,string TipoMateria,string DescripcionMateria,
             string DEClaveUnidadPesoID, Decimal DEPesoBruto, Decimal DEPEsoNeto,Decimal DEPesoTara, int DENumPiezas,
-            List<Pedimentos> PedimentoArray, List<GuiasIdentificacion> GIdentificacionArray, List<CantidadTransportada> CTransportadaArray)
+            List<DocumentacionAduanera> DAduaneraArray, List<GuiasIdentificacion> GIdentificacionArray, List<CantidadTransportada> CTransportadaArray)
         {
             
             var mercancia = new Mercancia()
@@ -230,6 +234,25 @@ namespace APBox.Controllers.Ajax
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), Moneda, true), 
                 FraccionArancelarias= FraccionArancelariaID,
                 UUIDComecioExt = UUIDComercioExt,
+                NombreIngredienteActivo = NombreIngredienteActivo,
+                NomQuimico = NomQuimico,
+                DenominacionGenericaProd = DenominacionGenericaProd,
+                DenominacionDistintivaProd = DenominacionDistintivaProd,
+                Fabricante = Fabricante,
+                FechaCaducidad = FechaCaducidad,
+                LoteMedicamento = LoteMedicamento,
+                RegistroSanitarioFolioAutorizacion = RegistroSanitarioFolioAutorizacion,
+                PermisoImportacion =PermisoImportacion,
+                FolioImpoVucem = FolioImpoVucem,
+                NumCas= NumCas,
+                RazonSocialEmpImp = RazonSocialEmpImp,
+                NumRegSanPlagCofepris = NumRegSanPlagCofepris,
+                DatosFabricante = DatosFabricante,
+                DatosFormulador = DatosFormulador,
+                DatosMaquilador = DatosMaquilador,
+                UsoAutorizado = UsoAutorizado,
+                DescripcionMateria = DescripcionMateria,
+
                 DetalleMercancia = new DetalleMercancia()
                 {
                     ClaveUnidadPeso_Id = DEClaveUnidadPesoID,
@@ -240,12 +263,34 @@ namespace APBox.Controllers.Ajax
                 }
                 
             };
-            if (PedimentoArray != null)
+            //nuevo datos version 3.0
+            
+            if (SectorCofepris != "")
+            {   
+                mercancia.SectorCofepris = (c_SectorCofepris)Enum.Parse(typeof(c_SectorCofepris), SectorCofepris, true);
+            }
+            else { mercancia.SectorCofepris = null; }
+            if(FormaFarmaceutica != "")
             {
-                mercancia.Pedimentoss = new List<Pedimentos>();
-                foreach(var ped in PedimentoArray)
+                mercancia.FormaFarmaceutica = (c_FormaFarmaceutica)Enum.Parse(typeof(c_FormaFarmaceutica), FormaFarmaceutica, true);
+            }
+            else { mercancia.FormaFarmaceutica = null; }
+            if(CondicionesEspecialesTransp != "")
+            {
+                mercancia.CondicionesEspecialesTransp = (c_CondicionesEspeciales)Enum.Parse(typeof(c_CondicionesEspeciales), CondicionesEspecialesTransp, true);
+            }
+            else { mercancia.CondicionesEspecialesTransp = null; }
+            if (TipoMateria != "")
+            {
+                mercancia.TipoMateria = (c_TipoMateria)Enum.Parse(typeof(c_TipoMateria), TipoMateria, true);
+            }
+            else { mercancia.TipoMateria = null; }
+            if (DAduaneraArray != null)
+            {
+                mercancia.DocumentacionAduaneras = new List<DocumentacionAduanera>();
+                foreach(var DA in DAduaneraArray)
                 {
-                    mercancia.Pedimentoss.Add(ped);
+                    mercancia.DocumentacionAduaneras.Add(DA);
                 }
             }
             if (GIdentificacionArray != null)
@@ -270,9 +315,13 @@ namespace APBox.Controllers.Ajax
         public PartialViewResult AgregarMercanciaEdit(String ClaveProdServID, string ClaveProdSTCCID, string Descripcion,
             int Cantidad, string Unidad, string ClaveUnidadID, string Dimensiones, bool MaterialPeligorosoSN,
             string MaterialPeligrosoID, string DescripcionEmbalaje, string TipoEmbalajeID, Decimal PesoEnKg, string ValorMercancia,
-            string Moneda, string FraccionArancelariaID, string UUIDComercioExt,
+            string Moneda, string FraccionArancelariaID, string UUIDComercioExt, string SectorCofepris, string NombreIngredienteActivo,
+            string NomQuimico, string DenominacionGenericaProd, string DenominacionDistintivaProd, string Fabricante, DateTime? FechaCaducidad,
+            string LoteMedicamento, string FormaFarmaceutica, string CondicionesEspecialesTransp, string RegistroSanitarioFolioAutorizacion,
+            string PermisoImportacion, string FolioImpoVucem, string NumCas, string RazonSocialEmpImp, string NumRegSanPlagCofepris, string DatosFabricante,
+            string DatosFormulador, string DatosMaquilador, string UsoAutorizado, string TipoMateria, string DescripcionMateria,
             string DEClaveUnidadPesoID, Decimal DEPesoBruto, Decimal DEPEsoNeto, Decimal DEPesoTara, int DENumPiezas,
-            List<Pedimentos> PedimentoArray, List<GuiasIdentificacion> GIdentificacionArray, List<CantidadTransportada> CTransportadaArray)
+            List<DocumentacionAduanera> DAduaneraArray, List<GuiasIdentificacion> GIdentificacionArray, List<CantidadTransportada> CTransportadaArray)
         {
 
             var mercancia = new Mercancia()
@@ -293,6 +342,24 @@ namespace APBox.Controllers.Ajax
                 Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), Moneda, true),
                 FraccionArancelarias = FraccionArancelariaID,
                 UUIDComecioExt = UUIDComercioExt,
+                NombreIngredienteActivo = NombreIngredienteActivo,
+                NomQuimico = NomQuimico,
+                DenominacionGenericaProd = DenominacionGenericaProd,
+                DenominacionDistintivaProd = DenominacionDistintivaProd,
+                Fabricante = Fabricante,
+                FechaCaducidad = FechaCaducidad,
+                LoteMedicamento = LoteMedicamento,
+                RegistroSanitarioFolioAutorizacion = RegistroSanitarioFolioAutorizacion,
+                PermisoImportacion = PermisoImportacion,
+                FolioImpoVucem = FolioImpoVucem,
+                NumCas = NumCas,
+                RazonSocialEmpImp = RazonSocialEmpImp,
+                NumRegSanPlagCofepris = NumRegSanPlagCofepris,
+                DatosFabricante = DatosFabricante,
+                DatosFormulador = DatosFormulador,
+                DatosMaquilador = DatosMaquilador,
+                UsoAutorizado = UsoAutorizado,
+                DescripcionMateria = DescripcionMateria,
                 DetalleMercancia = new DetalleMercancia()
                 {
                     ClaveUnidadPeso_Id = DEClaveUnidadPesoID,
@@ -303,12 +370,33 @@ namespace APBox.Controllers.Ajax
                 }
 
             };
-            if (PedimentoArray != null)
+            //nuevo datos version 3.0
+            if (SectorCofepris != "")
             {
-                mercancia.Pedimentoss = new List<Pedimentos>();
-                foreach (var ped in PedimentoArray)
+                mercancia.SectorCofepris = (c_SectorCofepris)Enum.Parse(typeof(c_SectorCofepris), SectorCofepris, true);
+            }
+            else { mercancia.SectorCofepris = null; }
+            if (FormaFarmaceutica != "")
+            {
+                mercancia.FormaFarmaceutica = (c_FormaFarmaceutica)Enum.Parse(typeof(c_FormaFarmaceutica), FormaFarmaceutica, true);
+            }
+            else { mercancia.FormaFarmaceutica = null; }
+            if (CondicionesEspecialesTransp != "")
+            {
+                mercancia.CondicionesEspecialesTransp = (c_CondicionesEspeciales)Enum.Parse(typeof(c_CondicionesEspeciales), CondicionesEspecialesTransp, true);
+            }
+            else { mercancia.CondicionesEspecialesTransp = null; }
+            if (TipoMateria != "")
+            {
+                mercancia.TipoMateria = (c_TipoMateria)Enum.Parse(typeof(c_TipoMateria), TipoMateria, true);
+            }
+            else { mercancia.TipoMateria = null; }
+            if (DAduaneraArray != null)
+            {
+                mercancia.DocumentacionAduaneras = new List<DocumentacionAduanera>();
+                foreach (var DA in DAduaneraArray)
                 {
-                    mercancia.Pedimentoss.Add(ped);
+                    mercancia.DocumentacionAduaneras.Add(DA);
                 }
             }
             if (GIdentificacionArray != null)
@@ -419,6 +507,15 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/ContenedoresM.cshtml", ContenedorM);
         }
 
+        public PartialViewResult AgregarRemolqueCCP(string SubTipoRemCCP, string PlacaCCP)
+        {
+            var remolqueCCP = new RemolqueCCP()
+            {
+                SubTipoRemCCP = SubTipoRemCCP,
+                PlacaCCP = PlacaCCP
+            };
+            return PartialView("~/Views/ComplementosCartaPorte/RemolqueCCP.cshtml", remolqueCCP);
+        }
         public PartialViewResult AgregarTMContenedorEdit(string MatContenedor, string ContenedorMaritId, string NumPrecinto)
         {
             var ContenedorM = new ContenedorM()
@@ -504,13 +601,16 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/ContenedoresC.cshtml",ContenedorC);
         }
 
-        public PartialViewResult AgregarPedimentos(string Pedimento)
+        public PartialViewResult AgregarDocumentacionAduanera(string TipoDocumento, string NumPedimento,string IdentDocAduanero,string RfcImpo)
         {
-            var Pedimentos = new Pedimentos()
+            var documentacionAduanera = new DocumentacionAduanera()
             {
-                Pedimento = Pedimento
+                TipoDocumento = (c_DocumentoAduanero)Enum.Parse(typeof(c_DocumentoAduanero), TipoDocumento, true),
+                NumPedimento = NumPedimento,
+                IdentDocAduanero = IdentDocAduanero,
+                RfcImpo = RfcImpo
             };
-            return PartialView("~/Views/ComplementosCartaPorte/Pedimentos.cshtml", Pedimentos);
+            return PartialView("~/Views/ComplementosCartaPorte/DocumentacionAduanera.cshtml", documentacionAduanera);
         }
 
         public PartialViewResult AgregarGIdentificacion(string NumGuiIdentificacion,string DescripGuiaIdentificacion,Decimal PesoGuiaIdentificacion)

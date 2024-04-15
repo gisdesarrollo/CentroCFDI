@@ -1,5 +1,4 @@
-﻿
-<script>
+﻿<script>
     $(function () {
 
 
@@ -161,12 +160,12 @@
     });
     //checkbox activa pedimento,guias identificacion ,cantidad transportada  y detalle mercancia
     $(function () {
-    $('.addPedimento').change(function () {
-        if ($('.addPedimento').prop('checked')) {
-            $('.DivPedimento').show(200);
-            //$('.DivPedimento').css('display', 'inline');
+      $('.addDAduanera').change(function () {
+        if ($('.addDAduanera').prop('checked')) {
+            $('.DivDAduanera').show(200);
+            
         } else {
-            $('.DivPedimento').hide(200);
+            $('.DivDAduanera').hide(200);
         }
     });
 
@@ -200,27 +199,29 @@
         });
 
     });
-    //ACTIVA CAMPOS CON TRANSPORTE INTERNACIONAL Y COMPROBANTE INGRESO
+
     $(function () {
+        //ACTIVA CAMPOS CON TRANSPORTE INTERNACIONAL
         $('.ActivaCheckTransInter').change(function () {
             var ClaveTransporteId = $('#claveTransporteId').val();
 
-
             if ($('#TranspInternac').prop('checked') && (ClaveTransporteId === "01" || ClaveTransporteId ==="03")) {
-                //$('.DivPedimento').show(200);
-
                 $('.activaFraccionArancelaria').show();
-                //$('.DivCantidadTransportada').show(200);
-
-
             } else {
-                //$('.DivPedimento').hide(200);
                 $('.activaFraccionArancelaria').hide(200);
-                //$('.DivCantidadTransportada').hide(200);
 
             }
         });
 
+        $('.ActivaCheckRegistroIstmo').change(function () {
+
+            if ($('#RegistroIstmo').prop('checked')) {
+                $('.divValidaRegistroIstmo').show(200);
+            } else {
+                $('.divValidaRegistroIstmo').hide(200);
+
+            }
+        });
 
     });
 
@@ -299,14 +300,20 @@
         var message;
 
 
-            //pedimento
-            var jsonPedimentos = [];
-            $(".Pedimentos").each(function (index, element) {
+            //Documentacion aduanera
+            var jsonDAduanera = [];
+            $(".DAduanera").each(function (index, element) {
 
-                var Pedimento = $(element).find('#Pedimento').text().trim();
+                var TipoDocumento = $(element).find('#TipoDocumento').text().trim();
+                var NumPedimento = $(element).find('#NumPedimento').text().trim();
+                var IdentDocAduanero = $(element).find('#IdentDocAduanero').text().trim();
+                var RfcImpo = $(element).find('#RfcImpo').text().trim();
 
-                jsonPedimentos.push({
-                    "Pedimento": Pedimento
+                jsonDAduanera.push({
+                    "TipoDocumento": TipoDocumento,
+                    "NumPedimento": NumPedimento,
+                    "IdentDocAduanero": IdentDocAduanero,
+                    "RfcImpo": RfcImpo
                 });
             });
             //Guia identificacion
@@ -357,12 +364,35 @@
                     Moneda: $('#Mercancias_Mercancia_Moneda').val(),
                     FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelarias').val(),
                     UUIDComercioExt: $('#Mercancias_Mercancia_UUIDComecioExt').val(),
+                    //version 3.0
+                    SectorCofepris: $('#Mercancias_Mercancia_SectorCofepris').val(),
+                    NombreIngredienteActivo: $('#Mercancias_Mercancia_NombreIngredienteActivo').val(),
+                    NomQuimico: $('#Mercancias_Mercancia_NomQuimico').val(),
+                    DenominacionGenericaProd: $('#Mercancias_Mercancia_DenominacionGenericaProd').val(),
+                    DenominacionDistintivaProd: $('#Mercancias_Mercancia_DenominacionDistintivaProd').val(),
+                    Fabricante: $('#Mercancias_Mercancia_Fabricante').val(),
+                    FechaCaducidad: $('#Mercancias_Mercancia_FechaCaducidad').val(),
+                    LoteMedicamento: $('#Mercancias_Mercancia_LoteMedicamento').val(),
+                    FormaFarmaceutica: $('#Mercancias_Mercancia_FormaFarmaceutica').val(),
+                    CondicionesEspecialesTransp: $('#Mercancias_Mercancia_CondicionesEspecialesTransp').val(),
+                    RegistroSanitarioFolioAutorizacion: $('#Mercancias_Mercancia_RegistroSanitarioFolioAutorizacion').val(),
+                    PermisoImportacion: $('#Mercancias_Mercancia_PermisoImportacion').val(),
+                    FolioImpoVucem: $('#Mercancias_Mercancia_FolioImpoVucem').val(),
+                    NumCas: $('#Mercancias_Mercancia_NumCas').val(),
+                    RazonSocialEmpImp: $('#Mercancias_Mercancia_RazonSocialEmpImp').val(),
+                    NumRegSanPlagCofepris: $('#Mercancias_Mercancia_NumRegSanPlagCofepris').val(),
+                    DatosFabricante: $('#Mercancias_Mercancia_DatosFabricante').val(),
+                    DatosFormulador: $('#Mercancias_Mercancia_DatosFormulador').val(),
+                    DatosMaquilador: $('#Mercancias_Mercancia_DatosMaquilador').val(),
+                    UsoAutorizado: $('#Mercancias_Mercancia_UsoAutorizado').val(),
+                    TipoMateria: $('#Mercancias_Mercancia_TipoMateria').val(),
+                    DescripcionMateria: $('#Mercancias_Mercancia_DescripcionMateria').val(),
                     DEClaveUnidadPesoID: $('#Mercancias_Mercancia_DetalleMercancia_ClaveUnidadPeso_Id').val(),//option:selected
                     DEPesoBruto: $('#pesoBruto').val(),
                     DEPEsoNeto: $('#pesoNeto').val(),
                     DEPesoTara: $('#pesoTara').val(),
                     DENumPiezas: $('#Mercancias_Mercancia_DetalleMercancia_NumPiezas').val(),
-                    PedimentoArray: jsonPedimentos,
+                    DAduaneraArray: jsonDAduanera,
                     GIdentificacionArray: jsonGIdentificacion,
                     CTransportadaArray: jsonCTransportadas,
                 }),
@@ -416,17 +446,23 @@
         var CTCD = true;
         var message;
 
+        //Documentacion aduanera
+        var jsonDAduanera = [];
+        $(".DAduanera").each(function (index, element) {
 
-            //pedimento
-            var jsonPedimentos = [];
-            $(".Pedimentos").each(function (index, element) {
+            var TipoDocumento = $(element).find('#TipoDocumento').text().trim();
+            var NumPedimento = $(element).find('#NumPedimento').text().trim();
+            var IdentDocAduanero = $(element).find('#IdentDocAduanero').text().trim();
+            var RfcImpo = $(element).find('#RfcImpo').text().trim();
 
-                var Pedimento = $(element).find('#Pedimento').text().trim();
-
-                jsonPedimentos.push({
-                    "Pedimento": Pedimento
-                });
+            jsonDAduanera.push({
+                "TipoDocumento": TipoDocumento,
+                "NumPedimento": NumPedimento,
+                "IdentDocAduanero": IdentDocAduanero,
+                "RfcImpo": RfcImpo
             });
+        });
+
             //Guia identificacion
             var jsonGIdentificacion = [];
 
@@ -475,12 +511,35 @@
                     Moneda: $('#Mercancias_Mercancia_Moneda').val(),
                     FraccionArancelariaID: $('#Mercancias_Mercancia_FraccionArancelarias').val(),
                     UUIDComercioExt: $('#Mercancias_Mercancia_UUIDComecioExt').val(),
+                    //version 3.0
+                    SectorCofepris: $('#Mercancias_Mercancia_SectorCofepris').val(),
+                    NombreIngredienteActivo: $('#Mercancias_Mercancia_NombreIngredienteActivo').val(),
+                    NomQuimico: $('#Mercancias_Mercancia_NomQuimico').val(),
+                    DenominacionGenericaProd: $('#Mercancias_Mercancia_DenominacionGenericaProd').val(),
+                    DenominacionDistintivaProd: $('#Mercancias_Mercancia_DenominacionDistintivaProd').val(),
+                    Fabricante: $('#Mercancias_Mercancia_Fabricante').val(),
+                    FechaCaducidad: $('#Mercancias_Mercancia_FechaCaducidad').val(),
+                    LoteMedicamento: $('#Mercancias_Mercancia_LoteMedicamento').val(),
+                    FormaFarmaceutica: $('#Mercancias_Mercancia_FormaFarmaceutica').val(),
+                    CondicionesEspecialesTransp: $('#Mercancias_Mercancia_CondicionesEspecialesTransp').val(),
+                    RegistroSanitarioFolioAutorizacion: $('#Mercancias_Mercancia_RegistroSanitarioFolioAutorizacion').val(),
+                    PermisoImportacion: $('#Mercancias_Mercancia_PermisoImportacion').val(),
+                    FolioImpoVucem: $('#Mercancias_Mercancia_FolioImpoVucem').val(),
+                    NumCas: $('#Mercancias_Mercancia_NumCas').val(),
+                    RazonSocialEmpImp: $('#Mercancias_Mercancia_RazonSocialEmpImp').val(),
+                    NumRegSanPlagCofepris: $('#Mercancias_Mercancia_NumRegSanPlagCofepris').val(),
+                    DatosFabricante: $('#Mercancias_Mercancia_DatosFabricante').val(),
+                    DatosFormulador: $('#Mercancias_Mercancia_DatosFormulador').val(),
+                    DatosMaquilador: $('#Mercancias_Mercancia_DatosMaquilador').val(),
+                    UsoAutorizado: $('#Mercancias_Mercancia_UsoAutorizado').val(),
+                    TipoMateria: $('#Mercancias_Mercancia_TipoMateria').val(),
+                    DescripcionMateria: $('#Mercancias_Mercancia_DescripcionMateria').val(),
                     DEClaveUnidadPesoID: $('#Mercancias_Mercancia_DetalleMercancia_ClaveUnidadPeso_Id').val(),//option:selected
                     DEPesoBruto: $('#pesoBruto').val(),
                     DEPEsoNeto: $('#pesoNeto').val(),
                     DEPesoTara: $('#pesoTara').val(),
                     DENumPiezas: $('#Mercancias_Mercancia_DetalleMercancia_NumPiezas').val(),
-                    PedimentoArray: jsonPedimentos,
+                    DAduaneraArray: jsonDAduanera,
                     GIdentificacionArray: jsonGIdentificacion,
                     CTransportadaArray: jsonCTransportadas,
                 }),
@@ -515,11 +574,7 @@
         $("#Mercancias_NumTotalMercancias").val(totalMercancia);
     }
 
-    /////////////
-
-
-
-
+    
 
     //DETALLE FIGURA TRANSPORTE
     var contadorPTransporte = 0;
@@ -783,7 +838,48 @@
         }
         $(elem).parent().parent().parent().remove();
     }
+    //DETALLE TRASNPORTE MARITIMO - REMOLQUECCP
+    $(function () {
+        $('#agregarDetalleRemolqueCPP').click(function () {
+            var contador = $(".RemolqueCCP").length + 1;
+        $(".contadorRemolqueCCP").replaceWith('<span class="contadorRemolqueCCP font-blue">: ' + contador + '</span >');
+    });
+    });
 
+    $(function () {
+        $("#agregarDetalleRemolqueCCP").on('click', function () {
+           
+                $.ajax({
+                    type: 'POST',
+                    url: ' @Url.Action("AgregarRemolqueCCP", "AjaxOperaciones")',
+                    data: JSON.stringify({
+                        SubTipoRemCCP: $('#Mercancias_TransporteMaritimo_RemolqueCCP_SubTipoRemCCP').val(),
+                        PlacaCCP: $('#Mercancias_TransporteMaritimo_RemolqueCCP_PlacaCCP').val()
+                    }),
+                    dataType: 'html',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (partialView) {
+                        $('#detallesRemolqueCCP').append(partialView);
+                    },
+                    error: function (jqxhr, textStatus, error) {
+                        alert("Favor de llenar todos los datos para los detalles");
+                    }
+                  });
+                return false;
+            
+        });
+    });
+
+    function removeDetalleRemolqueCCP(elem) {
+        var totalU = $(".RemolqueCCP").length;
+        if (totalU > 0) {
+            var contador = $(".RemolqueCCP").length - 1;
+            $(".contadorRemolqueCCP").replaceWith('<span class="contadorRemolqueCCP font-blue">: ' + contador + '</span >');
+        } else {
+            $(".contadorRemolqueCCP").replaceWith('<span class="contadorRemolqueCCP font-blue">');
+        }
+        $(elem).parent().parent().parent().remove();
+    }
 
     //DETALLE TRANSPORTE MARITIMO CONTENEDOR EDITAR
     $(function () {
@@ -1212,27 +1308,30 @@
 
     }
 
-    //DETALLE MERCANCIA PEDIMENTOS
+    //DETALLE MERCANCIA DOCUMENTACION ADUANERA
     $(function () {
-    $('#agregarDetallePedimentos').click(function () {
+    $('#agregarDetalleDAduanera').click(function () {
         var contador = $(".Pedimentos").length + 1;
-        $(".contadorPedimentos").replaceWith('<span class="contadorPedimentos font-blue">: ' + contador + '</span >');
+        $(".contadorDAduanera").replaceWith('<span class="contadorDAduanera font-blue">: ' + contador + '</span >');
     });
     });
 
     $(function () {
-    $("#agregarDetallePedimentos").on('click', function () {
+    $("#agregarDetalleDAduanera").on('click', function () {
 
             $.ajax({
                 type: 'POST',
-                url: ' @Url.Action("AgregarPedimentos", "AjaxOperaciones")',
+                url: ' @Url.Action("AgregarDocumentacionAduanera", "AjaxOperaciones")',
                 data: JSON.stringify({
-                    Pedimento: $('#Mercancias_Mercancia_Pedimentos_Pedimento').val()
+                    TipoDocumento: $('#Mercancias_Mercancia_DocumentacionAduanera_TipoDocumento').val(),
+                    NumPedimento: $('#Mercancias_Mercancia_DocumentacionAduanera_NumPedimento').val(),
+                    IdentDocAduanero: $('#Mercancias_Mercancia_DocumentacionAduanera_IdentDocAduanero').val(),
+                    RfcImpo: $('#Mercancias_Mercancia_DocumentacionAduanera_RfcImpo').val()
                 }),
                 dataType: 'html',
                 contentType: "application/json; charset=utf-8",
                 success: function (partialView) {
-                    $('#detallesPedimentos').append(partialView);
+                    $('#detallesDAduanera').append(partialView);
                 },
                 error: function (jqxhr, textStatus, error) {
                     alert("Favor de llenar todos los datos para los detalles");
@@ -1243,13 +1342,13 @@
         });
     });
 
-    function removeDetallePedimentos(elem) {
-        var totalU = $(".Pedimentos").length;
+    function removeDetalleDAduanera(elem) {
+        var totalU = $(".DAduanera").length;
         if (totalU > 0) {
-            var contador = $(".Pedimentos").length - 1;
-            $(".contadorPedimentos").replaceWith('<span class="contadorPedimentos font-blue">: ' + contador + '</span >');
+            var contador = $(".DAduanera").length - 1;
+            $(".contadorDAduanera").replaceWith('<span class="contadorDAduanera font-blue">: ' + contador + '</span >');
         } else {
-            $(".contadorPedimentos").replaceWith('<span class="contadorPedimentos font-blue">');
+            $(".contadorDAduanera").replaceWith('<span class="contadorDAduanera font-blue">');
         }
         $(elem).parent().parent().parent().remove();
     }
@@ -2395,6 +2494,7 @@
                 $('.cfdiRelacionadoSeccion').hide(200);
             }
         });
+    
 
         //Detalle Ubicaciones
     $('#agregarDetalleUbicacion').click(function () {
@@ -2570,6 +2670,7 @@
                     //$(".pesoBrutoTotalD").attr('disabled', 'disabled');
                     $(".activaClaveSTCC").hide();
                     // $('.DivCantidadTransportada').hide(200);
+                    $('#DivLogisticaInversaRD').hide();
                     break;
                 case "03":
                     $('#DivEstacionMaritimo').hide();
@@ -2595,6 +2696,7 @@
                     $('#DivCargoTasacion').show();
                     //$(".pesoBrutoTotalD").removeAttr('disabled');
                     $(".activaClaveSTCC").hide();
+                    $('#DivLogisticaInversaRD').hide();
                     break;
                 case "04":
                     $('#DivEstacionMaritimo').hide();
@@ -2621,6 +2723,7 @@
                     // $(".pesoBrutoTotalD").attr('disabled', 'disabled');
                     $(".activaClaveSTCC").show();
                     //$('.DivCantidadTransportada').show();
+                    $('#DivLogisticaInversaRD').hide();
                     break;
                 case "05":
                     $('#DivEstacionMaritimo').hide();
@@ -2647,6 +2750,7 @@
                     //$(".pesoBrutoTotalD").attr('disabled', 'disabled');
                     $(".activaClaveSTCC").hide();
                     //$('.DivCantidadTransportada').hide();
+                    $('#DivLogisticaInversaRD').hide();
                     break;
                 default:
                     $('#DivEstacionMaritimo').hide();
@@ -2672,6 +2776,7 @@
                     $('#DivCargoTasacion').hide();
                     //$(".pesoBrutoTotalD").removeAttr('disabled');
                     $(".activaClaveSTCC").hide();
+                    $('#DivLogisticaInversaRD').show();
             }
 
         });
@@ -2756,8 +2861,8 @@
         stepper.on("kt.stepper.previous", function (stepper) {
             stepper.goPrevious(); // go previous step
         });
-
     });
+    
 
 
 

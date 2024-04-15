@@ -99,7 +99,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public virtual List<Mercancia> Mercanciass { get; set; }
 
         [NotMapped]
-        public virtual List<Pedimentos> Pedimentoss { get; set; }
+        public virtual List<DocumentacionAduanera> DocumentacionAduanerass { get; set; }
 
         [NotMapped]
         public virtual List<GuiasIdentificacion> GuiasIdentificacioness { get; set; }
@@ -109,6 +109,9 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [NotMapped]
         public virtual List<Remolques> Remolques { get; set; }
+
+        [NotMapped]
+        public virtual List<RemolqueCCP> RemolqueCCPs { get; set; }
 
         [NotMapped]
         public virtual List<ContenedorM> ContenedoresM { get; set; }
@@ -136,6 +139,18 @@ namespace API.Operaciones.ComplementoCartaPorte
 
         [DisplayName("Referencia")]
         public String ReferenciaAddenda { get; set; }
+
+        //campos nuevos version 3.0 CartaPorte
+        public String IdCCP { get; set; }
+        [DisplayName("Regimen Aduanero")]
+        public c_RegimenAduanero? RegimenAduanero { get; set; }
+        [DisplayName("Registro ISTMO")]
+        public bool RegistroIstmo { get; set; }
+        [DisplayName("Ubicación polo origen")]
+        public c_RegistroIstmo? UbicacionPoloOrigen { get; set; }
+        [DisplayName("Ubicación polo destino")]
+        public c_RegistroIstmo? UbicacionPoloDestino { get; set; }
+        
 
         #region Campos CFDI
 

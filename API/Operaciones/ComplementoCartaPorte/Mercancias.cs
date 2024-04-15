@@ -38,6 +38,10 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Unidad de Peso")]
         public String UnidadPeso { get; set; }
 
+        //campos nuevos version 3.0 CartaPorte
+        [DisplayName("Logisitica Inversa")]
+        public bool LogisticaInversaRecoleccionDevolucion { get; set; }
+        ///
         public int? AutoTransporte_Id { get; set; }
         [ForeignKey("AutoTransporte_Id")]
         public virtual AutoTransporte AutoTransporte { get; set; }

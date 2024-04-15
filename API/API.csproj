@@ -145,7 +145,14 @@
     <Compile Include="Enums\Addenda\IvaPCT.cs" />
     <Compile Include="Enums\Addenda\ProveedorEKT.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_CartaPorteEntradaSalidaMerc.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_CondicionesEspeciales.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_DocumentoAduanero.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_FormaFarmaceutica.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_ImpuestoCP.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_RegimenAduanero.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_RegistroIstmo.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_SectorCofepris.cs" />
+    <Compile Include="Enums\CartaPorteEnums\c_TipoMateria.cs" />
     <Compile Include="Enums\c_EstadoComercial.cs" />
     <Compile Include="Enums\c_EstadoPago.cs" />
     <Compile Include="Enums\c_EstatusSolicitudes.cs" />
@@ -217,6 +224,7 @@
     <Compile Include="Operaciones\ComplementoCartaPorte\ContenedorM.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\DerechosDePasos.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\DetalleMercancia.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\DocumentacionAduanera.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Domicilio.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\GuiasIdentificacion.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\IdentificacionVehicular.cs" />
@@ -227,6 +235,7 @@
     <Compile Include="Operaciones\ComplementoCartaPorte\PartesTransporte.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Pedimentos.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Propietario.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\RemolqueCCP.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Remolques.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\RetencionCP.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Seguros.cs" />
