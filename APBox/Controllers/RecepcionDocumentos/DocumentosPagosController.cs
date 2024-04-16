@@ -44,7 +44,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.NameHere = "Documentos Aprobados";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            var sucursal = _db.Usuarios.Find(ObtenerSucursal());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
             var fechaInicial = DateTime.Today.AddDays(-10);
@@ -68,7 +68,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.NameHere = "Documentos Aprobados";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            var sucursal = _db.Usuarios.Find(ObtenerSucursal());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
             DateTime fechaI = documentosRecibidosModel.FechaInicial;
             DateTime fechaF = documentosRecibidosModel.FechaFinal;
