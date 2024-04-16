@@ -190,6 +190,7 @@ namespace API.Context
         public DbSet<ConfigAutotransporte> ConfigAutotransportes { get; set; }
         public DbSet<ConfigMaritima> ConfigMaritimas { get; set; }
         public DbSet<Contenedor> Contenedores { get; set; }
+        public DbSet<RemolqueCCP> RemolqueCCP { get; set; }
         public DbSet<ContenedorMaritimo> ContenedoresMaritimos { get; set; }
         public DbSet<CveTransporte> CveTransportes { get; set; }
         public DbSet<DerechosDePaso> DerechosDePasos { get; set; }
@@ -229,8 +230,8 @@ namespace API.Context
         public DbSet<Mercancias> Mercancias { get; set; }
        
         public DbSet<PartesTransporte> PartesTransporte { get; set; }
-        public DbSet<Pedimentos> Pedimentos { get; set; }
-        
+        //public DbSet<Pedimentos> Pedimentos { get; set; }
+        public DbSet<DocumentacionAduanera> DocumentacionAduanera { get; set; }
         public DbSet<Remolques> Remolques { get; set; }
         public DbSet<Seguros> Seguros { get; set; }
         public DbSet<TiposFigura> Tiposfigura { get; set; }

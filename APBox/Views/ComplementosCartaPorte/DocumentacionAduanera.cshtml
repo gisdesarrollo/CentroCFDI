@@ -1,0 +1,54 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.DocumentacionAduanera
+
+@using (Html.BeginCollectionItem("DocumentacionAduanerass"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #6D84C2;">
+            <h3 class="card-title text-white">
+                Documentación Aduanera
+            </h3>
+            <div class="card-toolbar">
+                <a href="#" class="icon-separator" onclick="removeDetalleDAduanera(this)">
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </div>
+
+        </div>
+        <div class="card-body row DAduanera">
+            @Html.HiddenFor(model=> model.Id)
+            @Html.HiddenFor(model=> model.Mercancia_Id)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.TipoDocumento, new { @class = "fw-bold" })<br />
+                <p id="TipoDocumento">@Model.TipoDocumento</p>
+                @Html.HiddenFor(model => model.TipoDocumento)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.NumPedimento, new { @class = "fw-bold" })<br />
+                <p id="NumPedimento">@Model.NumPedimento</p>
+                @Html.HiddenFor(model => model.NumPedimento)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.IdentDocAduanero, new { @class = "fw-bold" })<br />
+                <p id="IdentDocAduanero">@Model.IdentDocAduanero</p>
+                @Html.HiddenFor(model => model.IdentDocAduanero)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.RfcImpo, new { @class = "fw-bold" })<br />
+                <p id="RfcImpo">@Model.RfcImpo</p>
+                @Html.HiddenFor(model => model.RfcImpo)
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+}
+
+
+

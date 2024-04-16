@@ -210,10 +210,6 @@
     <Reference Include="RazorEngine, Version=3.8.2.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.8.2\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
-    <Reference Include="RVCFDI33, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\DEPLOY-centrocfdi\DLL-MODIFICADOREALVIRTUAL-DECIMALES\RVCFDI33.dll</HintPath>
-    </Reference>
     <Reference Include="SAT.Services, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SW-sdk-45.0.0.25.1-rc\lib\net45\SAT.Services.dll</HintPath>
     </Reference>
@@ -449,6 +445,7 @@
     <Content Include="bin\EntityFramework.dll" />
     <Content Include="bin\EntityFramework.SqlServer.dll" />
     <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.xml" />
     <Content Include="bin\es\System.Web.Helpers.resources.dll" />
     <Content Include="bin\es\System.Web.Mvc.resources.dll" />
     <Content Include="bin\es\System.Web.Razor.resources.dll" />
@@ -552,8 +549,9 @@
     <Content Include="bin\SW-sdk-45.dll" />
     <Content Include="bin\System.Buffers.dll" />
     <Content Include="bin\System.Buffers.xml" />
+    <Content Include="bin\System.IO.Compression.dll" />
+    <Content Include="bin\System.IO.Compression.ZipFile.dll" />
     <Content Include="bin\System.Memory.dll" />
-    <Content Include="bin\System.Memory.xml" />
     <Content Include="bin\System.Numerics.Vectors.dll" />
     <Content Include="bin\System.Numerics.Vectors.xml" />
     <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
@@ -2899,6 +2897,8 @@
     <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ValidacionFiscalDocumento.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ArchivosAdjuntos.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\DocumentacionAduanera.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\RemolqueCCP.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
