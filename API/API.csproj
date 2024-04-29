@@ -148,14 +148,11 @@
     <Compile Include="Enums\Addenda\ProveedorEKT.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_CartaPorteEntradaSalidaMerc.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_ImpuestoCP.cs" />
-<<<<<<< Updated upstream
-=======
     <Compile Include="Enums\CartaPorteEnums\c_RegimenAduanero.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_RegistroIstmo.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_SectorCofepris.cs" />
     <Compile Include="Enums\CartaPorteEnums\c_TipoMateria.cs" />
     <Compile Include="Enums\c_Estatus.cs" />
->>>>>>> Stashed changes
     <Compile Include="Enums\c_EstadoComercial.cs" />
     <Compile Include="Enums\c_EstadoPago.cs" />
     <Compile Include="Enums\c_Pais.cs" />

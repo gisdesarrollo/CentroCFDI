@@ -2892,8 +2892,6 @@
     <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ValidacionFiscalDocumento.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ArchivosAdjuntos.cshtml" />
-<<<<<<< Updated upstream
-=======
     <Content Include="Views\ComplementosCartaPorte\DocumentacionAduanera.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\RemolqueCCP.cshtml" />
     <Content Include="Views\Proyectos\Index.cshtml" />
@@ -2901,7 +2899,6 @@
     <Content Include="Views\Proyectos\Edit.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
->>>>>>> Stashed changes
     <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
     <Content Include="Views\Proyectos\Create.cshtml" />
