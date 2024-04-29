@@ -124,10 +124,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\API\API.csproj">
-      <Project>{20A7E0F9-B699-4182-82AF-82DF8AB48E7E}</Project>
-      <Name>API</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Aplicacion\Aplicacion.csproj">
       <Project>{196A70E8-A942-419F-91D6-1C431F1CC36F}</Project>
       <Name>Aplicacion</Name>

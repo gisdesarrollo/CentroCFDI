@@ -1,18 +1,13 @@
-﻿using API.Models.Dto;
-using API.Operaciones.OperacionesProveedores;
+﻿using API.Operaciones.OperacionesProveedores;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
-using Newtonsoft.Json;
 using SW.Services.Authentication;
 using SW.Services.Taxpayer;
 using SW.Services.Validate;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 {
