@@ -2902,6 +2902,11 @@
     <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
 >>>>>>> Stashed changes
+    <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
+    <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
+    <Content Include="Views\Proyectos\Create.cshtml" />
+    <Content Include="Views\Proyectos\Edit.cshtml" />
+    <Content Include="Views\Proyectos\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
