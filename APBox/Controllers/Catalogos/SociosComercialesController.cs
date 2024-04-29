@@ -36,7 +36,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "Crea y modifica Socios Comerciales";
+            ViewBag.Title = "Crea y modifica Socios Comerciales";
 
             return View(clientes);
         }
@@ -57,7 +57,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "SociosComerciales";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.Title = "catalogo";
 
             return View(sociocomercial);
         }
@@ -107,7 +107,7 @@ namespace APBox.Controllers.Catalogos
                 return HttpNotFound();
             }
 
-            if (usuario.esProveedor && usuario.SocioComercialID != id)
+            if (usuario.esProveedor && usuario.SocioComercialId != id)
             {
             // Si no coincide, redirigir al usuario a una página de error o denegar el acceso
             // Puedes mostrar un mensaje de error u otra información relevante al usuario
@@ -120,7 +120,7 @@ namespace APBox.Controllers.Catalogos
             PopulaForma();
             ViewBag.Controller = "SociosComerciales";
             ViewBag.Action = "Editar";
-            ViewBag.NameHere = "Editar Expediente Socio Comercial";
+            ViewBag.Title = "Editar Expediente Socio Comercial";
             return View(sociocomercial);
         }
 

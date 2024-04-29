@@ -72,7 +72,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "CFDI Complementos de Recepción de Pagos";
+            ViewBag.Title = "CFDI Complementos de Recepción de Pagos";
             return View(complementosPagosModel);
         }
 
@@ -84,7 +84,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "CFDI Complementos de Recepción de Pagos";
+            ViewBag.Title = "CFDI Complementos de Recepción de Pagos";
 
             DateTime fechaI = complementosPagosModel.FechaInicial;
             DateTime fechaF = complementosPagosModel.FechaFinal;
@@ -133,7 +133,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "Crear Complemento de Pago Manual";
+            ViewBag.Title = "Crear Complemento de Pago Manual";
             return View(complementoPago);
         }
 
@@ -226,7 +226,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "Editar Complemento de Pago Manual";
+            ViewBag.Title = "Editar Complemento de Pago Manual";
             return View(complementoPago);
         }
 
@@ -256,7 +256,7 @@ namespace APBox.Controllers.ComplementosPago
                 ViewBag.Controller = "ComplementosPagos";
                 ViewBag.Action = "Edit";
                 ViewBag.ActionES = "Editar";
-                ViewBag.NameHere = "emision";
+                ViewBag.Title = "emision";
                 _acondicionarComplementosPagos.Pagos(complementoPago);
 
                 complementoPago.Pagos = null;
@@ -316,7 +316,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "DocumentosRelacionados";
             ViewBag.ActionES = "DocumentosRelacionados";
-            ViewBag.NameHere = "Editar Documentos Relacionados al Pago";
+            ViewBag.Title = "Editar Documentos Relacionados al Pago";
             return View(complementoPago);
         }
 
@@ -588,7 +588,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Cargar";
             ViewBag.ActionES = "Cargar Layout";
-            ViewBag.NameHere = "Cargar Layout para Complementos de Pagos";
+            ViewBag.Title = "Cargar Layout para Complementos de Pagos";
             var cargasComplementosModel = new CargasComplementosModel
             {
                 GrupoId = ObtenerGrupo(),
@@ -606,7 +606,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Cargar";
             ViewBag.ActionES = "Cargar Layout";
-            ViewBag.NameHere = "Cargar Layout para Complementos de Pagos";
+            ViewBag.Title = "Cargar Layout para Complementos de Pagos";
             if (ModelState.IsValid)
             {
                 string archivo;
@@ -663,7 +663,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             return View(complementoPago);
         }
 
@@ -673,7 +673,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "ComplementosPagos";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
 
             PopulaClientes(complementoPago.ReceptorId);
             string error = "";
@@ -1003,7 +1003,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "RecepcionDocumentos";
             ViewBag.Action = "CargarDocumentosExternos";
             ViewBag.ActionES = "Carga Documentos Externos";
-            ViewBag.NameHere = "cfdi";
+            ViewBag.Title = "cfdi";
             return View();
         }
 
@@ -1034,7 +1034,7 @@ namespace APBox.Controllers.ComplementosPago
             ViewBag.Controller = "RecepcionDocumentos";
             ViewBag.Action = "CargarDocumentosExternos";
             ViewBag.ActionES = "Carga Documentos Externos";
-            ViewBag.NameHere = "cfdi";
+            ViewBag.Title = "cfdi";
             return View();
         }
 

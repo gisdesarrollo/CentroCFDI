@@ -36,7 +36,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "Usuarios";
+            ViewBag.Title = "Usuarios";
 
             return View(usuarios);
         }
@@ -57,7 +57,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Usuarios";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "Crear Usuario";
+            ViewBag.Title = "Crear Usuario";
 
             return View(usuario);
         }
@@ -66,9 +66,9 @@ namespace APBox.Controllers.Catalogos
         [ValidateAntiForgeryToken]
         public ActionResult Create(Usuario usuario, bool esProveedor)
         {
-            PopulaClientes(usuario.SocioComercialID);
+            PopulaClientes(usuario.SocioComercialId);
             PopulaForma(usuario.PerfilId);
-            PopulaDepartamento(usuario.Departamento_Id);
+            PopulaDepartamento(usuario.DepartamentoId);
             if (ModelState.IsValid)
             {
                 var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.NombreUsuario == usuario.NombreUsuario);
@@ -89,7 +89,7 @@ namespace APBox.Controllers.Catalogos
                         if (perfil.Proveedor)
                         {
                             usuario.Departamento = null;
-                            usuario.Departamento_Id = null;
+                            usuario.DepartamentoId = null;
                         }
                         else
                         {
@@ -100,10 +100,28 @@ namespace APBox.Controllers.Catalogos
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Error: seleccione un perfil proveedor";
-                        ModelState.AddModelError("", "Error: seleccione un perfil proveedor");
+                        ViewBag.ErrorMessage = "Error: Seleccione un perfil proveedor";
+                        ModelState.AddModelError("", "Error: Seleccione un perfil proveedor");
                         return View(usuario);
                     }
+                }
+                else
+                {
+                    usuario.esProveedor = false;
+                    if (usuario.PerfilId == null)
+                    {
+                        ViewBag.ErrorMessage = "Error: Seleccione un Perfil para el usuario";
+                        ModelState.AddModelError("", "Error: Seleccione un Perfil para el usuario");
+                        return View(usuario);
+                    }
+
+                    if (usuario.DepartamentoId == null)
+                    {
+                        ViewBag.ErrorMessage = "Error: Seleccione un Departamento para asignar al usuario";
+                        ModelState.AddModelError("", "Error: Seleccione un Departamento para asignar al usuario");
+                        return View(usuario);
+                    }
+
                 }
 
                 try
@@ -116,10 +134,17 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
+                bool correoEnviado = EnviarCorreoBienvenida(usuario);
+                if (!correoEnviado)
+                {
+                    ViewBag.ErrorMessage = "Error: El buzón de correo no está disponible, es posible que esté mal escrito";
+                    ModelState.AddModelError("", "Error: El buzón de correo no está disponible, es posible que esté mal escrito");
+                    return View(usuario);
+                }
+
                 _db.Usuarios.Add(usuario);
                 _db.SaveChanges();
                 // Envío de correo electrónico de bienvenida
-                EnviarCorreoBienvenida(usuario);
                 return RedirectToAction("Index");
             }
 
@@ -140,14 +165,14 @@ namespace APBox.Controllers.Catalogos
                 return HttpNotFound();
             }
             PopulaForma(usuario.PerfilId);
-            PopulaDepartamento(usuario.Departamento_Id);
+            PopulaDepartamento(usuario.DepartamentoId);
 
-            usuario.Departamento_Id = usuario.Departamento_Id;
+            usuario.DepartamentoId = usuario.DepartamentoId;
 
             ViewBag.Controller = "Usuarios";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "sistema";
+            ViewBag.Title = "sistema";
             return View(usuario);
         }
 
@@ -156,9 +181,9 @@ namespace APBox.Controllers.Catalogos
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Usuario usuario, bool esProveedor)
         {
-            PopulaClientes(usuario.SocioComercialID);
+            PopulaClientes(usuario.SocioComercialId);
             PopulaForma(usuario.PerfilId);
-            PopulaDepartamento(usuario.Departamento_Id);
+            PopulaDepartamento(usuario.DepartamentoId);
 
             var proveedorExistente = _db.Usuarios.FirstOrDefault(e => e.esProveedor == usuario.esProveedor && e.Id != usuario.Id);
             if (ModelState.IsValid)
@@ -180,7 +205,7 @@ namespace APBox.Controllers.Catalogos
                         if (perfil.Proveedor)
                         {
                             usuario.Departamento = null;
-                            usuario.Departamento_Id = null;
+                            usuario.DepartamentoId = null;
                         }
                         else
                         {
@@ -277,7 +302,7 @@ namespace APBox.Controllers.Catalogos
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
 
-            ViewBag.SocioComercialID = popularDropDowns.PopulaClientes(receptorId);
+            ViewBag.SocioComercialId = popularDropDowns.PopulaClientes(receptorId);
         }
 
         //DropDown Departamentos
@@ -285,12 +310,17 @@ namespace APBox.Controllers.Catalogos
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
 
-            ViewBag.Departamento_Id = popularDropDowns.PopulaDepartamentos(DepartamentoId);
+            ViewBag.DepartamentoId = popularDropDowns.PopulaDepartamentos(DepartamentoId);
         }
 
-        private void EnviarCorreoBienvenida(Usuario usuario)
+        private bool EnviarCorreoBienvenida(Usuario usuario)
         {
-            _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
+            bool enviado = _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
+            if (enviado)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion PopulaForma

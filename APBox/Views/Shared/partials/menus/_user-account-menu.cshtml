@@ -6,14 +6,14 @@
     var usuario = _db.Usuarios.Find(usuarioId);
     var socioComercial =  new SocioComercial();
     if(usuario != null) {
-        socioComercial = _db.SociosComerciales.Find(usuario.SocioComercialID);
+        socioComercial = _db.SociosComerciales.Find(usuario.SocioComercialId);
     }
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
     var sucursal = _db.Sucursales.Find(sucursalId);
     ViewBag.UsuarioNombre = usuario != null ? usuario.Nombre + " " + usuario.ApellidoPaterno : "";
     ViewBag.UsuarioPerfil = usuario != null ? usuario.Perfil.Nombre : "";
     ViewBag.UsuarioEmaill = usuario != null ? usuario.Email : "";
-    ViewBag.UsuarioDepartamento = usuario != null && usuario.Departamento_Id != null ? usuario.Departamento.Nombre : "";
+    ViewBag.UsuarioDepartamento = usuario != null && usuario.DepartamentoId != null ? usuario.Departamento.Nombre : "";
     ViewBag.UsuarioEsProveedor = usuario != null && usuario.esProveedor ? true : false;
 
 }

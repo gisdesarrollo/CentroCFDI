@@ -70,7 +70,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
-            ViewBag.NameHere = "cfdi";
+            ViewBag.Title = "cfdi";
 
             return View(facturasEmitidasModel);
         }
@@ -104,7 +104,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
-            ViewBag.NameHere = "cfdi";
+            ViewBag.Title = "cfdi";
             return View(facturasEmitidasModel);
         }
 
@@ -148,7 +148,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReporteFacturasEmitidas";
             ViewBag.ActionES = "Reporte Facturas Emitidas";
-            ViewBag.NameHere = "reportes";
+            ViewBag.Title = "reportes";
 
             return View(facturasEmitidasModel);
         }
@@ -189,7 +189,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReporteFacturasEmitidas";
             ViewBag.ActionES = "Reporte Facturas Emitidas";
-            ViewBag.NameHere = "reportes";
+            ViewBag.Title = "reportes";
 
             return View(facturasEmitidasModel);
         }
@@ -576,7 +576,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReportePagos";
             ViewBag.ActionES = "Reporte Pago";
-            ViewBag.NameHere = "reportes";
+            ViewBag.Title = "reportes";
             return View(facturasEmitidasModel);
         }
 
@@ -610,7 +610,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReportePagos";
             ViewBag.ActionES = "Reporte Pago";
-            ViewBag.NameHere = "reportes";
+            ViewBag.Title = "reportes";
             return View(facturasEmitidasModel);
         }
 

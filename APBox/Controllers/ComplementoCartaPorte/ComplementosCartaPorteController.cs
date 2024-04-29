@@ -93,7 +93,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "CFDI Complementos Carta Porte";
+            ViewBag.Title = "CFDI Complementos Carta Porte";
             var complementoCartaPorteModel = new ComplementosCartaPorteModel()
             {
                 Mes = (Meses)(DateTime.Now.Month),
@@ -121,7 +121,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
 
             DateTime fechaI = complementosCPorteModel.FechaInicial;
             DateTime fechaF = complementosCPorteModel.FechaFinal;
@@ -295,7 +295,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             return View(ComplementoCartaPorte);
         }
 
@@ -988,7 +988,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             return View(complementoCP);
         }
 
@@ -1141,7 +1141,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -1165,7 +1165,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
 
             string error = "";
             try

@@ -1,6 +1,7 @@
 ﻿using API.Catalogos;
 using API.Enums;
 using API.Operaciones.Facturacion;
+using API.Operaciones.OperacionesRecepcion;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,11 +94,6 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("Estado Pago")]
         public c_EstadoPago EstadoPago { get; set; }
 
-        [DisplayName("Validaciones")]
-        public int? Solicitud_Id { get; set; }
-        [ForeignKey("Solicitud_Id")]
-        public virtual SolicitudesDR Solicitudes { get; set; }
-
         [NotMapped]
         public virtual PagosDR Pagos { get; set; }
         [NotMapped]
@@ -113,7 +109,12 @@ namespace API.Operaciones.OperacionesProveedores
         public String Referencia { get; set; }
         
         public String OrdenDeCompra { get; set; }
-        
+
+        [DisplayName("Comprobación Gastos")]
+        public int? ComprobacionGasto_Id { get; set; }
+        [ForeignKey("ComprobacionGasto_Id")]
+        public virtual ComprobacionGasto ComprobacionesGastos { get; set; }
+
         //NotMapped
         [DisplayName("Archivo")]
         [NotMapped]

@@ -106,12 +106,6 @@ namespace Aplicacion.LogicaPrincipal.Descargas
                     }
                     else
                     {
-                        var facturaRecibida = _db.FacturasRecibidas.Find(id);
-                        if (facturaRecibida != null)
-                        {
-                            sucursal = _db.Sucursales.Find(facturaRecibida.EmisorId);
-
-                        }
                     }
                     
                 }
@@ -257,14 +251,6 @@ namespace Aplicacion.LogicaPrincipal.Descargas
                 else
                 {
 
-                    var facturaRecibida = _db.FacturasRecibidas.Find(id);
-                    if (facturaRecibida != null)
-                    {
-                        sucursal = _db.Sucursales.Find(facturaRecibida.EmisorId);
-                        //Genera QR para CFDI Externos
-                        oComprobante.CodigoQR = GeneraQR(oComprobante.Emisor.Rfc, oComprobante.Receptor.Rfc, oComprobante.Total, oComprobante.TimbreFiscalDigital.UUID);
-
-                    }
                 }
 
                 //asigna plantilla

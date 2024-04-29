@@ -946,8 +946,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         {
             try
             {
-                var facturaRecibida = _db.FacturasRecibidas.Find(facturaId);
-                var pathXml = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.xml", facturaRecibida.Serie, facturaRecibida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+                var facturaRecibida = _db.DocumentoRecibidoDr.Find(facturaId);
+                //var pathXml = String.Format(AppDomain.CurrentDomain.BaseDirectory + "//Content//FileCfdiGenerados//{0} - {1} - {2}.xml", facturaRecibida.Serie, facturaRecibida.Folio, DateTime.Now.ToString("yyyyMMddHHmmssfff"));
 
                 if (File.Exists(pathXml))
                 {
@@ -955,7 +955,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                 }
 
                 //guardar string en un archivo
-                System.IO.File.WriteAllText(pathXml, Encoding.UTF8.GetString(facturaRecibida.ArchivoFisicoXml));
+                //System.IO.File.WriteAllText(pathXml, Encoding.UTF8.GetString(facturaRecibida.ArchivoFisicoXml));
 
                 return pathXml;
             }

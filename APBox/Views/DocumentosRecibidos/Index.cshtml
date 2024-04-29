@@ -1,4 +1,5 @@
 ﻿@model API.Models.DocumentosRecibidos.DocumentosRecibidosModel
+
 @using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 @using APBox.Context;
 
@@ -6,7 +7,7 @@
     var _db = new APBoxContext();
     var usuario = _db.Usuarios.Find(Convert.ToInt32(Session["UsuarioId"]));
     var sucursal = _db.Sucursales.Find(Convert.ToInt32(Session["SucursalId"]));
-    var usuarioDepartamento = usuario.Departamento_Id;
+    var usuarioDepartamento = usuario.DepartamentoId;
     var usuarioSocioComercial = usuario.PerfilId;
     var usuarioesProveedor = usuario.esProveedor;
 }
@@ -276,7 +277,7 @@
                             </thead>
                             <tbody class="align-text-top">
 
-                                @foreach (var item in Model.DocumentosRecibidos.Where(i => i.SocioComercial_Id == usuario.SocioComercialID))
+                                @foreach (var item in Model.DocumentosRecibidos.Where(i => i.SocioComercial_Id == usuario.SocioComercialId))
                                 {
                                     var nombreAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(item.AprobacionesDR.UsuarioSolicitante_Id);
                                     var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
@@ -581,7 +582,7 @@
                             </thead>
                             <tbody class="align-text-top">
 
-                                @foreach (var item in Model.DocumentosRecibidos.Where(i => i.AprobacionesDR.DepartamentoUsuarioSolicitante_Id == usuario.Departamento_Id))
+                                @foreach (var item in Model.DocumentosRecibidos.Where(i => i.AprobacionesDR.DepartamentoUsuarioSolicitante_Id == usuario.DepartamentoId))
                                 {
                                     var nombreAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(item.AprobacionesDR.UsuarioSolicitante_Id);
                                     var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;

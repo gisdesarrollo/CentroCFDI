@@ -25,7 +25,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "Crea y modifica los conceptos";
+            ViewBag.Title = "Crea y modifica los conceptos";
 
             return View(cat_Conceptos);
         }
@@ -41,7 +41,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Conceptos";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "Create";
+            ViewBag.Title = "Create";
 
             return View(cat_Conceptos);
         }
@@ -207,7 +207,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Conceptos";
             ViewBag.Action = "Editar";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.Title = "catalogo";
             return View(cat_conceptos);
         }
         public ActionResult EditarConceptos(int Id, string ClaveProdServID, string ClaveUnidadID, string Cantidad, string Unidad, string NoIdentificacion, string Descripcion, string ValorUnitario, double Importe, string Descuento,string ObjetoImpuesto, int? ImpuestoR, int? ImpuestoT)

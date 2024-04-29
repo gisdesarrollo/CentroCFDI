@@ -70,7 +70,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "AutorRegistro";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "Registro de Socios Comerciales";
+            ViewBag.Title = "Registro de Socios Comerciales";
             ViewBag.Grupo = TempData["grupoNombre"];
 
             return View(socioComercial);
@@ -127,7 +127,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Autoregistro";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "Registro de Socios Comerciales";
+            ViewBag.Title = "Registro de Socios Comerciales";
 
             return View(usuario);
         }
@@ -161,14 +161,14 @@ namespace APBox.Controllers.Catalogos
             //Asignacion de valor si es Proveedor
             usuario.esProveedor = true;
             usuario.Departamento = null;
-            usuario.Departamento_Id = null;
+            usuario.DepartamentoId = null;
             usuario.GrupoId = (int)(TempData["grupoId"] as int?);
             usuario.PerfilId = (int)(TempData["perfilId"] as int?);
             usuario.Status = API.Enums.Status.Activo;
 
             // Obtener los datos guardados en TempData
             var ClienteId = TempData["SocioComercialId"] as int?;
-            usuario.SocioComercialID = ClienteId;
+            usuario.SocioComercialId = ClienteId;
 
 
             try
@@ -197,7 +197,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Autoregistro";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "Error en acceso";
+            ViewBag.Title = "Error en acceso";
             ViewBag.Error = errorMessage;
 
             return View();
@@ -209,7 +209,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Autoregistro";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "Registo Completado";
+            ViewBag.Title = "Registo Completado";
             return View();
         }
         #endregion
@@ -225,7 +225,7 @@ namespace APBox.Controllers.Catalogos
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
 
-            ViewBag.SocioComercialID = popularDropDowns.PopulaClientes(receptorId);
+            ViewBag.SocioComercialId = popularDropDowns.PopulaClientes(receptorId);
         }
         private void PopulaForma(int? perfilId = null, int? grupoId = null)
         {

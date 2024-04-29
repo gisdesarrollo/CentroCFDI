@@ -45,7 +45,15 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             if (usuario.esProveedor)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
+<<<<<<< Updated upstream
                                     .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.SocioComercial_Id == usuario.SocioComercialID)
+=======
+                                    .Where(dr =>
+                                            dr.FechaEntrega >= fechaInicial &&
+                                            dr.FechaEntrega <= fechaFinal &&
+                                            dr.SocioComercial_Id == usuario.SocioComercialId &&
+                                            dr.SucursalId == sucursalId)
+>>>>>>> Stashed changes
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
             }

@@ -64,7 +64,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "CFDI de Ingreso y Egreso";
+            ViewBag.Title = "CFDI de Ingreso y Egreso";
             return View(comprobanteCfdiModel);
         }
 
@@ -77,7 +77,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "CFDI de Ingreso y Egreso";
+            ViewBag.Title = "CFDI de Ingreso y Egreso";
 
             DateTime fechaI = comprobanteCfdiModel.FechaInicial;
             DateTime fechaF = comprobanteCfdiModel.FechaFinal;
@@ -138,7 +138,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             return View(comprobante);
         }
 
@@ -163,7 +163,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             string archivo = null;
             List<Conceptos> conceptosCSV = new List<Conceptos>();
 
@@ -311,7 +311,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             return View(CCfdi);
         }
 
@@ -325,7 +325,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             PopulaClientes(comprobanteCfdi.ReceptorId);
 
             PopulaTipoRelacion();
@@ -456,7 +456,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -479,7 +479,7 @@ namespace APBox.Controllers.ComprobantesCfdi
             ViewBag.Controller = "ComprobantesCfdi";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.NameHere = "emision";
+            ViewBag.Title = "emision";
             PopulaClientes(comprobanteCfdi.ReceptorId);
             string error = "";
             if (ModelState.IsValid)

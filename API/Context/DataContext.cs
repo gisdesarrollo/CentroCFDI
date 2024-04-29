@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure;
 using API.CatalogosCartaPorte.Domicilio;
 using API.Operaciones.ComprobantesCfdi;
 using API.Operaciones.RelacionesCfdi;
+using API.Operaciones.OperacionesRecepcion;
 
 namespace API.Context
 {
@@ -31,12 +32,6 @@ namespace API.Context
                         .HasRequired(s => s.Usuario)
                         .WithMany()
                         .HasForeignKey(s => s.UsuarioId)
-                        .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<PagoProveedor>()
-                        .HasRequired(s => s.Proveedor)
-                        .WithMany()
-                        .HasForeignKey(s => s.ProveedorId)
                         .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Perfil>()
@@ -89,7 +84,6 @@ namespace API.Context
                         .HasForeignKey(s => s.SucursalId)
                         .WillCascadeOnDelete(false);
 
-
         }
 
         #region Catalogos
@@ -100,9 +94,10 @@ namespace API.Context
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Grupo> Grupos { get; set; }
         public DbSet<Perfil> Perfiles { get; set; }
-        public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Sucursal> Sucursales { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Evento> Eventos { get; set; }
+        public DbSet<Proyecto> Proyectos { get; set; }
 
         #endregion
 
@@ -134,11 +129,9 @@ namespace API.Context
         public DbSet<FacturaEmitida> FacturasEmitidas { get; set; }
 
         public DbSet<FacturaEmitidaTemporal> FacturasEmitidasTemp {get; set; }
-        public DbSet<FacturaRecibida> FacturasRecibidas { get; set; }
         public DbSet<Validacion> Validaciones { get; set; }
 
         //OperacionesProveedores
-        public DbSet<PagoProveedor> PagosProveedores { get; set; }
         public DbSet<SolicitudAcceso> SolicitudesAccesos { get; set; }
 
         //Documentos Recibidos
@@ -149,9 +142,10 @@ namespace API.Context
         public DbSet<DocumentosPagadosDR> DocumentoPagadoDr { get; set; }
         public DbSet<RecibidosXMLDR> RecibidoXmlDr { get; set; }
         public DbSet<RecibidosPDFDR> RecibidoPdfDr { get; set; }
-        public DbSet<SolicitudesDR> SolicitudDr { get; set; }
         public DbSet<ValidacionesDR> ValidacionDr { get; set; }
 
+        //ComrpobacionesGastos
+        public DbSet<ComprobacionGasto> ComprobacionGasto { get; set; }
 
         #endregion
 
@@ -159,7 +153,6 @@ namespace API.Context
 
         public DbSet<BancoSocioComercial> BancosSociosComerciales { get; set; }
         public DbSet<BancoSucursal> BancosSucursales { get; set; }
-        public DbSet<ProveedorSucursal> ProveedoresSucursales { get; set; }
         public DbSet<UsuarioSucursal> UsuariosSucursales { get; set; }
 
         #endregion

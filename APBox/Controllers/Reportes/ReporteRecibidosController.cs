@@ -37,7 +37,7 @@ namespace APBox.Controllers.Reportes
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "ReporteDocumetosRecibidos";
             ViewBag.ActionES = "Reporte CFDI Recibidos";
-            ViewBag.NameHere = "Reporte CFDI Recibidos";
+            ViewBag.Title = "Reporte CFDI Recibidos";
 
             return View(documentosRecibidosModel);
         }
@@ -58,7 +58,7 @@ namespace APBox.Controllers.Reportes
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "ReporteDocumetosRecibidos";
             ViewBag.ActionES = "Reporte CFDI Recibidos";
-            ViewBag.NameHere = "Reporte CFDI Recibidos";
+            ViewBag.Title = "Reporte CFDI Recibidos";
 
             return View(documentosRecibidosModel);
         }

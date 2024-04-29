@@ -24,7 +24,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.Title = "catalogo";
 
             return View(cat_Mercancias);
         }
@@ -40,7 +40,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Mercancias";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.Title = "catalogo";
 
             return View(cat_Mercancias);
         }
@@ -132,7 +132,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Mercancias";
             ViewBag.Action = "Editar";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "catalogo";
+            ViewBag.Title = "catalogo";
             return View(cat_Mercancias);
         }
       

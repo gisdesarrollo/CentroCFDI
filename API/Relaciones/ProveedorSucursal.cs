@@ -5,17 +5,17 @@ using API.Catalogos;
 
 namespace API.Relaciones
 {
-    [Table("rel_proveedoressucursales")]
+    [Table("rel_SocioComerciaSucursales")]
     public class ProveedorSucursal
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [DisplayName("Proveedor")]
+        [DisplayName("SocioComercial")]
         [Required(ErrorMessage = "Campo Obligatorio")]
-        public int ProveedorId { get; set; }
-        [ForeignKey("ProveedorId")]
-        public virtual Proveedor Proveedor { get; set; }
+        public int SocioComercialId { get; set; }
+        [ForeignKey("SocioComercialId")]
+        public virtual SocioComercial SocioComercial { get; set; }
 
         [DisplayName("Sucursal")]
         [Required(ErrorMessage = "Campo Obligatorio")]

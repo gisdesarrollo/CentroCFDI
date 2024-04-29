@@ -79,7 +79,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Índice";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.Title = "Documentos Recibidos";
             //get usaurio
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
@@ -119,7 +119,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.Title = "Documentos Recibidos";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
@@ -152,7 +152,7 @@ namespace APBox.Controllers.Operaciones
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
-            ViewBag.NameHere = "Carga de CFDI";
+            ViewBag.Title = "Carga de CFDI";
             ViewBag.ActionES = "CargaCfdi";
 
             //get usaurio
@@ -182,7 +182,7 @@ namespace APBox.Controllers.Operaciones
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.Title = "Documentos Recibidos";
 
             //get usaurio
             PathArchivosDto archivo;
@@ -278,7 +278,7 @@ namespace APBox.Controllers.Operaciones
         // GET: DocumentosRecibidos/Create
         public ActionResult Create()
         {
-            ViewBag.NameHere = "Crear";
+            ViewBag.Title = "Crear";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
@@ -371,8 +371,8 @@ namespace APBox.Controllers.Operaciones
                     documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
                 }
                 documentoRecibidoDr.CfdiRecibidos_Id = null;
-                documentoRecibidoDr.Solicitudes = null;
-                documentoRecibidoDr.Solicitud_Id = null;
+                documentoRecibidoDr.ComprobacionesGastos = null;
+                documentoRecibidoDr.ComprobacionGasto_Id = null;
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                 documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
                 documentoRecibidoDr.Pagos = null;
@@ -407,7 +407,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "Revisión de Comprobante Recibido";
+            ViewBag.Title = "Revisión de Comprobante Recibido";
 
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());

@@ -1,0 +1,163 @@
+﻿@model API.Operaciones.OperacionesRecepcion.ComprobacionGasto
+@using APBox.Context;
+@{
+    var _db = new APBoxContext();
+    var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
+    var usuario = _db.Usuarios.Find(usuarioId);
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.SucursalId)
+    @Html.HiddenFor(model => model.Folio)
+    @Html.HiddenFor(model => model.Estatus, new { @value = API.Enums.c_Estatus.Activo })
+    <div class="card card-stretch card-flush mb-8">
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <div class="pt-10">
+                <div class="row">
+                    <div class="pb-0">
+                        <!--begin::Information-->
+                        <!--begin::Alert-->
+                        <div class="alert bg-light-secondary border border-secondary d-flex flex-column flex-sm-row p-5 mb-10">
+                            <!--begin::Icon-->
+                            <i class="ki-duotone ki-office-bag fs-2hx text-info me-4 mb-5 mb-sm-0">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                            <!--end::Icon-->
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column pe-0 pe-sm-10">
+                                <!--begin::Title-->
+                                <h5 class="mb-1">Importante</h5>
+                                <!--end::Title-->
+                                <!--begin::Content-->
+                                <p>Para crear una Comprobación de Gastos, sigue estos pasos:</p>
+                                <ul>
+                                    <li>Sube todos los documentos asociados a la comprobación de gastos.</li>
+                                    <li>Si la comprobación de gastos está relacionada con un evento, asegúrate de que los gastos tengan fecha dentro del periodo del evento.</li>
+                                    <li>Si los comprobantes están asociados a un proyecto, se acumularán en ese centro de costos.</li>
+                                    <li>Puedes cargar CFDi, fotos de comprobantes o documentos internacionales.</li>
+                                    <li>Asigna cada comprobante a un usuario solicitante para su aprobación.</li>
+                                    <li>Una vez aprobados todos los comprobantes, la comprobación de gastos se cerrará automáticamente.</li>
+                                </ul>
+                                <!--end::Content-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Alert-->
+                        <!--end::Information-->
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="separator separator-dashed mb-10"></div>
+
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+            }
+
+            <div class="d-flex mb-7 row ">
+                <div class="mb-10 row">
+                    <div class="h1 fs-2qx col-4">
+                        <span class="text-gray-600">Folio</span><br />
+                        @usuario.Departamento.Clave - @Model.Folio
+                    </div>
+
+                    <div class="h1 fs-2qx col-4">
+                        <span class="text-gray-600">Fecha </span><br />
+                        @DateTime.Now.ToString("dd/MM/yyyy")
+                    </div>
+
+                    <div class="h1 fs-2qx col-4">
+                        <span class="text-gray-600">Monto Comprobado </span><br />
+                        <span class="h2 text-gray-500" id="divMoneda"></span> $ 0.00
+                    </div>
+                </div>
+
+                <div class="separator separator-dashed mb-10"></div>
+
+                <div class="mb-10 row ">
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label required" })
+                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-10 row">
+                    <div class="form-group col-8">
+                        @Html.LabelFor(model => model.Comentarios, htmlAttributes: new { @class = "form-label required" })
+                        @Html.TextAreaFor(model => model.Comentarios, htmlAttributes: new { @class = "form-control textarea mb-2" })
+                        @Html.ValidationMessageFor(model => model.Comentarios, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-10 row">
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.MonedaId, htmlAttributes: new { @class = "form-label required" })
+                        @Html.EnumDropDownListFor(model => model.MonedaId, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                        @Html.ValidationMessageFor(model => model.MonedaId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.ProyectoId, htmlAttributes: new { @class = "form-label required" })
+                        @Html.DropDownListFor(model => model.ProyectoId, ViewBag.Proyectos as SelectList, "Favor de hacer su selección", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProyectoId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.EventoId, htmlAttributes: new { @class = "form-label required" })
+                        @Html.DropDownListFor(model => model.EventoId, ViewBag.Eventos as SelectList, "Favor de hacer su selección", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EventoId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--begin::Guardar-->
+    <div class="d-flex justify-content-end">
+        <!--begin::Button-->
+        <a href="@Url.Action("Index","ComprobacionesGastos")" class="btn btn-light me-5">
+            Cancelar
+        </a>
+        <!--end::Button-->
+        <!--begin::Button-->
+        <button type="submit" class="btn btn-primary">
+            <span class="indicator-label">
+                Guardar
+            </span>
+        </button>
+        <!--end::Button-->
+    </div>
+    <!--end::Guardar-->
+}
+
+<script>
+    $(document).ready(function () {
+        // Seleccionar todos los elementos select y agregar la clase .select2
+        $('select').addClass('select');
+        // Inicializar select2
+        $('.select').select2();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        const selectElement = $('#MonedaId');
+        const divElement = $('#divMoneda');
+
+        // Obtener el texto de la opción seleccionada por defecto
+        const selectedText = $(selectElement).find('option:selected').text();
+
+        // Mostrar el texto en el 'div'
+        divElement.html(selectedText);
+    });
+</script>

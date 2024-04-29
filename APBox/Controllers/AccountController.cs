@@ -136,16 +136,16 @@ namespace APBox.Controllers
             }
             else
             {
-                var proveedorId = Convert.ToInt32(Session["UsuarioId"]);
-                var proveedor = _db.Proveedores.Find(proveedorId);
+                var socioComercialId = Convert.ToInt32(Session["UsuarioId"]);
+                var socioComercial = _db.SociosComerciales.Find(socioComercialId);
 
                 var loginSucursal = new LoginSucursal
                 {
-                    ProveedorId = proveedorId,
-                    GrupoId = proveedor.GrupoId
+                    ProveedorId = socioComercialId,
+                    GrupoId = (int)socioComercial.GrupoId
                 };
 
-                var sucursales = _db.Sucursales.Where(s => s.GrupoId == proveedor.GrupoId).ToList();
+                var sucursales = _db.Sucursales.Where(s => s.GrupoId == socioComercial.GrupoId).ToList();
                 if (sucursales.Count == 1)
                 {
                     Session["SucursalId"] = sucursales.First().Id;
@@ -154,7 +154,7 @@ namespace APBox.Controllers
                 }
 
                 var popularDropDowns = new PopularDropDowns(loginSucursal.GrupoId, true);
-                ViewBag.SucursalId = popularDropDowns.PopulaSucursalesProveedores(null, proveedorId);
+                //ViewBag.SucursalId = popularDropDowns.PopulaSucursalesProveedores(null, socioComercialId);
                 return View(loginSucursal);
             }
         }
@@ -166,7 +166,7 @@ namespace APBox.Controllers
 
             var popularDropDowns = new PopularDropDowns(loginSucursal.GrupoId, true);
 
-            if(tipoUsuario == TiposUsuarios.Usuario)
+            if (tipoUsuario == TiposUsuarios.Usuario)
             {
                 ViewBag.SucursalId = popularDropDowns.PopulaSucursalesUsuarios(loginSucursal.GrupoId);
 
@@ -190,17 +190,18 @@ namespace APBox.Controllers
             }
             else
             {
-                ViewBag.SucursalId = popularDropDowns.PopulaSucursalesProveedores(loginSucursal.GrupoId);
-                var proveedor = _db.Proveedores.Find(loginSucursal.ProveedorId);
+                //ViewBag.SucursalId = popularDropDowns.PopulaSucursalesProveedores(loginSucursal.GrupoId);
+                var socioComercial = _db.SociosComerciales.Find(loginSucursal.ProveedorId);
 
-                var sucursalesLigadas = _db.ProveedoresSucursales.FirstOrDefault(us => us.SucursalId == loginSucursal.SucursalId && us.ProveedorId == proveedor.Id);
-                if (sucursalesLigadas == null)
-                {
-                    ModelState.AddModelError("", "Proveedor no ligado a esa sucursal");
-                    return View(loginSucursal);
-                }
+                //var sucursalesLigadas = _db.ProveedoresSucursales.FirstOrDefault(us => us.SucursalId == loginSucursal.SucursalId && us.ProveedorId == socioComercial.Id);
+                    
+                //if (sucursalesLigadas == null)
+                //{
+                //    ModelState.AddModelError("", "Proveedor no ligado a esa sucursal");
+                //    return View(loginSucursal);
+                //}
 
-                Session["GrupoId"] = proveedor.GrupoId;
+                Session["GrupoId"] = socioComercial.GrupoId;
                 Session["SucursalId"] = loginSucursal.SucursalId;
 
                 return RedirectToAction("Index", "Home");
@@ -469,7 +470,7 @@ namespace APBox.Controllers
                 case TiposUsuarios.Usuario:
                     return _db.Usuarios.Find(usuarioId).GrupoId;
                 case TiposUsuarios.Proveedor:
-                    return _db.Proveedores.Find(usuarioId).GrupoId;
+                    return (int)_db.SociosComerciales.Find(usuarioId).GrupoId;
                 default:
                     throw new Exception(String.Format("Usuario no encontrado: {0} - {1}", tipoUsuario, usuarioId));
             }
@@ -483,7 +484,7 @@ namespace APBox.Controllers
                 return TiposUsuarios.Usuario;
             }
 
-            var proveedor = _db.Proveedores.FirstOrDefault(u => u.Rfc == nombreUsuario);
+            var proveedor = _db.SociosComerciales.FirstOrDefault(u => u.Rfc == nombreUsuario);
             if (proveedor != null)
             {
                 return TiposUsuarios.Proveedor;
@@ -499,9 +500,9 @@ namespace APBox.Controllers
 
             /*if (tipoUsuario == TiposUsuarios.Proveedor)
             {
-                var proveedor = _db.Proveedores.First(u => u.Rfc == nombreUsuario && u.Status == Status.Activo);
+                var socioComercial = _db.Proveedores.First(u => u.Rfc == nombreUsuario && u.Status == Status.Activo);
                 AddRole(um, userId, true, "PORTALPROVEEDORES");
-                return proveedor.Id;
+                return socioComercial.Id;
             }*/
 
             var usuario = _db.Usuarios.First(u => u.NombreUsuario == nombreUsuario && u.Status == Status.Activo);

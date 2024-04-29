@@ -25,16 +25,15 @@ namespace InventorAid.Controllers.Ajax
             return PartialView("~/Views/Usuarios/Sucursales.cshtml", usuarioSucursal);
         }
 
-        public PartialViewResult SucursalesProveedores(int sucursalId)
-        {
-            var proveedorSucursal = new ProveedorSucursal
-            {
-                SucursalId = sucursalId,
-                Sucursal = _db.Sucursales.Find(sucursalId)
-            };
-
-            return PartialView("~/Views/Proveedores/Sucursales.cshtml", proveedorSucursal);
-        }
+        //public PartialViewResult SucursalesProveedores(int sucursalId)
+        //{
+        //    var proveedorSucursal = new ProveedorSucursal
+        //    {
+        //        SucursalId = sucursalId,
+        //        Sucursal = _db.Sucursales.Find(sucursalId)
+        //    };
+        //    return PartialView("~/Views/Proveedores/Sucursales.cshtml", proveedorSucursal);
+        //}
 
         public PartialViewResult BancosClientes(int bancoId, string nombre, string numeroCuenta)
         {

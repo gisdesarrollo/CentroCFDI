@@ -42,7 +42,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Índice";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Aprobados";
+            ViewBag.Title = "Documentos Aprobados";
             //get usaurio
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
@@ -80,7 +80,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Aprobados";
+            ViewBag.Title = "Documentos Aprobados";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
@@ -136,7 +136,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "Revisión de Comprobante Recibido para Pago";
+            ViewBag.Title = "Revisión de Comprobante Recibido para Pago";
 
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
@@ -233,7 +233,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosPagos";
             ViewBag.Action = "Pagos";
             ViewBag.ActionES = "Pagos";
-            ViewBag.NameHere = "Pagos Procesados";
+            ViewBag.Title = "Pagos Procesados";
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
@@ -254,7 +254,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosPagos";
             ViewBag.Action = "Pagos";
             ViewBag.ActionES = "Pagos";
-            ViewBag.NameHere = "Pagos Procesados";
+            ViewBag.Title = "Pagos Procesados";
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
@@ -263,7 +263,7 @@ namespace APBox.Controllers.Operaciones
 
             if (usuario.esProveedor)
             {
-                pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaI, fechaF, true, usuario.SocioComercialID, sucursal.Id);
+                pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaI, fechaF, true, usuario.SocioComercialId, sucursal.Id);
             }
             else
             {
@@ -284,7 +284,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosPagos";
             ViewBag.Action = "CargaLayout";
             ViewBag.ActionES = "Carga Layout";
-            ViewBag.NameHere = "Carga Layout de Pagos";
+            ViewBag.Title = "Carga Layout de Pagos";
 
             DocumentosPagosModel documentoPagoModel = new DocumentosPagosModel();
             documentoPagoModel.Previsualizacion = true;
@@ -298,7 +298,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosPagos";
             ViewBag.Action = "CargaLayout";
             ViewBag.ActionES = "Carga Layout";
-            ViewBag.NameHere = "Carga Layout de Pagos";
+            ViewBag.Title = "Carga Layout de Pagos";
 
             String archivo;
             try
@@ -379,9 +379,15 @@ namespace APBox.Controllers.Operaciones
         public ActionResult CargaComplementoPago(int Id)
         {
             ViewBag.Controller = "DocumentosPagos";
+<<<<<<< Updated upstream
             ViewBag.Action = "CargaComplementoPago";
             ViewBag.ActionES = "Carga Complemento Pago";
             ViewBag.NameHere = "Carga complemento Pago";
+=======
+            ViewBag.Action = "Carga Complemento de Pago";
+            ViewBag.ActionES = "Carga Complemento de Pago";
+            ViewBag.Title = "Carga complemento de Pago";
+>>>>>>> Stashed changes
             var pago = _db.PagoDr.Find(Id);
             pago.Procesado = false;
 
@@ -392,9 +398,16 @@ namespace APBox.Controllers.Operaciones
         public ActionResult CargaComplementoPago(PagosDR pagoDR)
         {
             ViewBag.Controller = "DocumentosPagos";
+<<<<<<< Updated upstream
             ViewBag.Action = "CargaComplementoPago";
             ViewBag.ActionES = "Carga Complemento Pago";
             ViewBag.NameHere = "Carga complemento Pago";
+=======
+            ViewBag.Action = "Carga Complemento de Pago";
+            ViewBag.ActionES = "Carga Complemento de Pago";
+            ViewBag.Title = "Carga complemento de Pago";
+
+>>>>>>> Stashed changes
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
             ComplementoPagoDto pagoDto = new ComplementoPagoDto();
             String archivo;

@@ -13,39 +13,40 @@
 
             @using (Html.BeginForm())
             {
-@Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()
 
                 @Html.HiddenFor(model => model.SucursalId)
 
-                                <div class="form row">
-                                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+                <div class="form row">
+                    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
-                                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-                                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                    </div>
 
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                        @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "form-label" })
-                                        @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                        @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
-                                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
+                    </div>
 
-                                    <div class="clearfix"></div>
-                                    <div class="separator my-5"></div>
-                                    <div class="d-flex justify-content-end">
-                                        <!--begin::Button-->
-                                        <a href="@Url.Action("Index","Departamentos")" class="btn btn-light me-5">Cancelar</a>
-                                        <!--end::Button-->
-                                        <!--begin::Button-->
-                                        <button type="submit" id="submit" class="btn btn-primary">
-                                            <span class="indicator-label">Crear</span>
-                                        </button>
-                                        <!--end::Button-->
-                                    </div>
+                    <div class="clearfix"></div>
+                    <div class="separator my-5"></div>
+                    <div class="d-flex justify-content-end">
+                        <!--begin::Button-->
+                        <a href="@Url.Action("Index","Departamentos")" class="btn btn-light me-5">Cancelar</a>
+                        <!--end::Button-->
+                        <!--begin::Button-->
+                        <button type="submit" id="submit" class="btn btn-primary">
+                            <span class="indicator-label">Crear</span>
+                        </button>
+                        <!--end::Button-->
+                    </div>
 
-                                </div>}
+                </div>
+            }
         </div>
     </div>
 </div>

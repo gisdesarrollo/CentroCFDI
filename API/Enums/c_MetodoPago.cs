@@ -9,10 +9,9 @@ namespace API.Enums
 {
    public enum c_MetodoPago
     {
-        [DescriptionAttribute("PUE-Pago en una sola exhibición")]
+        [DescriptionAttribute("PUE - Pago en una sola exhibición")]
         PUE,
-
-        [DescriptionAttribute("PPD-Pago en parcialidades o diferido")]
+        [DescriptionAttribute("PPD - Pago en parcialidades o diferido")]
         PPD
     }
 }

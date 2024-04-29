@@ -273,7 +273,6 @@
     <Compile Include="Context\AplicacionContext.cs" />
     <Compile Include="LogicaAlterna\ManejoArchivos.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Catalogos\AcondicionarClientes.cs" />
-    <Compile Include="LogicaPrincipal\Acondicionamientos\Catalogos\AcondicionarProveedores.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Catalogos\AcondicionarSucursales.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Catalogos\AcondicionarUsuarios.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Operaciones\AcondicionarComplementosCartaPorte.cs" />
@@ -281,13 +280,11 @@
     <Compile Include="LogicaPrincipal\CargasMasivas\Catalogos\RelacionarBancosClientes.cs" />
     <Compile Include="LogicaPrincipal\CargasMasivas\Catalogos\RelacionarBancosSucursales.cs" />
     <Compile Include="LogicaPrincipal\CargasMasivas\CSV\CargarComplementosPagos.cs" />
-    <Compile Include="LogicaPrincipal\CargasMasivas\CSV\OperacionesSpei.cs" />
     <Compile Include="LogicaPrincipal\ComplementosPagos\LogicaFacadeFacturas.cs" />
     <Compile Include="LogicaPrincipal\Control\PopularHome.cs" />
     <Compile Include="LogicaPrincipal\Facturas\Decodificar.cs" />
     <Compile Include="LogicaPrincipal\Facturas\Guardar.cs" />
     <Compile Include="LogicaPrincipal\Facturas\OperacionesCfdisEmitidos.cs" />
-    <Compile Include="LogicaPrincipal\Facturas\OperacionesCfdisRecibidos.cs" />
     <Compile Include="LogicaPrincipal\Facturas\Timbrado\ParsearComplemento.cs" />
     <Compile Include="LogicaPrincipal\Facturas\Timbrado\Timbrar.cs" />
     <Compile Include="LogicaPrincipal\Facturas\Validar.cs" />
@@ -297,10 +294,7 @@
     <Compile Include="LogicaPrincipal\GeneraPDf\CreationFile.cs" />
     <Compile Include="LogicaPrincipal\ObtencionArchivos\ObtenerArchivosLocales.cs" />
     <Compile Include="LogicaPrincipal\ObtencionArchivos\SolicitudArchivosXsa.cs" />
-    <Compile Include="LogicaPrincipal\SolicitudesAccesos\OperarSolicitudes.cs" />
     <Compile Include="LogicaPrincipal\Validacion\DecodificaFacturas.cs" />
-    <Compile Include="LogicaPrincipal\Validacion\GuardaFacturas.cs" />
-    <Compile Include="LogicaPrincipal\Validacion\ValidacionesFacturas.cs" />
     <Compile Include="PAGOS20Xsd\Pagos20.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
