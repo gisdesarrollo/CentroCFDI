@@ -8,8 +8,6 @@ namespace Aplicacion.RecepcionDocumentos
 {
     internal class ValidacionesPagos
     {
-<<<<<<< Updated upstream
-=======
         #region Variables
 
         private readonly DataContext _db = new DataContext();
@@ -254,6 +252,5 @@ namespace Aplicacion.RecepcionDocumentos
             public DocumentosRecibidosDR DocumentoRecibidoDr { get; set; }
             public PathArchivosDto Archivo { get; set; }
         }
->>>>>>> Stashed changes
     }
 }

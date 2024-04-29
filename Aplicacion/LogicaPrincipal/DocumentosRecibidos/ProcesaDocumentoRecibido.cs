@@ -1,13 +1,18 @@
-﻿using API.Operaciones.OperacionesProveedores;
+﻿using API.Models.Dto;
+using API.Operaciones.OperacionesProveedores;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
+using Newtonsoft.Json;
 using SW.Services.Authentication;
 using SW.Services.Taxpayer;
 using SW.Services.Validate;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 {
@@ -29,7 +34,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         #endregion Variables
 
-        public List<DocumentosRecibidosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int usuarioId, int? socioComercialId)
+        public List<DocumentosRecibidosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
             var documentoRecibido = new List<DocumentosRecibidosDR>();
@@ -40,15 +45,11 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             if (usuario.esProveedor)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
-<<<<<<< Updated upstream
-                                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal && dr.SocioComercial_Id == usuario.SocioComercialID)
-=======
                                     .Where(dr =>
                                             dr.FechaEntrega >= fechaInicial &&
                                             dr.FechaEntrega <= fechaFinal &&
-                                            dr.SocioComercial_Id == usuario.SocioComercialId &&
+                                            dr.SocioComercial_Id == usuario.SocioComercialID &&
                                             dr.SucursalId == sucursalId)
->>>>>>> Stashed changes
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
             }
@@ -57,7 +58,10 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             if (!usuario.esProveedor)
             {
                 documentoRecibido = _db.DocumentoRecibidoDr
-                                    .Where(dr => dr.FechaEntrega >= fechaInicial && dr.FechaEntrega <= fechaFinal)
+                                    .Where(dr =>
+                                            dr.FechaEntrega >= fechaInicial &&
+                                            dr.FechaEntrega <= fechaFinal &&
+                                            dr.SucursalId == sucursalId)
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
             }
