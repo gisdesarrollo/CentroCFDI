@@ -175,7 +175,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
             {
                 complementoCP.Mercancias.Mercancia.Mercancias = null;
                 //complementoCP.Mercancias.Mercancia.Mercancias = complementoCP.Mercancias;
-                complementoCP.Mercancias.Mercancia.Pedimentos = null;
+                complementoCP.Mercancias.Mercancia.DocumentacionAduanera = null;
                 complementoCP.Mercancias.Mercancia.GuiasIdentificacion = null;
                 complementoCP.Mercancias.Mercancia.CantidadTransportada = null;
                 complementoCP.Mercancias.Mercanciass = new List<Mercancia>();
@@ -184,11 +184,11 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     complementoCP.Mercancias.PesoBrutoTotal += mercancia.PesoEnKg;
 
 
-                    if (mercancia.Pedimentoss != null)
+                    if (mercancia.DocumentacionAduaneras != null)
                     {
-                        foreach (var pedimento in mercancia.Pedimentoss)
+                        foreach (var DAduanera in mercancia.DocumentacionAduaneras)
                         {
-                            pedimento.Mercancia = null;
+                            DAduanera.Mercancia = null;
                             //pedimento.Mercancia = mercancia;
                             //mercancia.Pedimentoss.Add(pedimento);
                         }
@@ -234,7 +234,29 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         mercancia.ClaveMaterialPeligroso = null;
                         mercancia.DescripEmbalaje = null;
                         mercancia.TipoEmbalaje_Id = null;
+                        mercancia.SectorCofepris = null;
+                        mercancia.NombreIngredienteActivo = null;
+                        mercancia.NomQuimico = null;
+                        mercancia.DenominacionGenericaProd = null;
+                        mercancia.DenominacionDistintivaProd = null;
+                        mercancia.Fabricante = null;
+                        mercancia.FechaCaducidad = null;
+                        mercancia.LoteMedicamento = null;
+                        mercancia.FormaFarmaceutica = null;
+                        mercancia.CondicionesEspecialesTransp = null;
+                        mercancia.RegistroSanitarioFolioAutorizacion = null;
+                        mercancia.PermisoImportacion = null;
+                        mercancia.FolioImpoVucem = null;
+                        mercancia.NumCas = null;
+                        mercancia.RazonSocialEmpImp = null;
+                        mercancia.NumRegSanPlagCofepris = null;
+                        mercancia.DatosFabricante = null;
+                        mercancia.DatosFormulador = null;
+                        mercancia.DatosMaquilador = null;
+                        mercancia.UsoAutorizado = null;
+
                         complementoCP.ValidaMaterialPeligroso = false;
+
 
                     }
                     else { complementoCP.ValidaMaterialPeligroso = true; }
@@ -250,6 +272,8 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 complementoCP.EntradaSalidaMerc = null;
                 complementoCP.PaisOrigendestino = null;
                 complementoCP.viaEntradaSalida = null;
+                complementoCP.RegimenAduanero = null;
+
             }
             if (complementoCP.ClaveTransporteId == "01")
             {
@@ -280,7 +304,6 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
             }
             else if (complementoCP.ClaveTransporteId == "02")
             {
-
                 complementoCP.Mercancias.TransporteFerroviario = null;
                 complementoCP.Mercancias.AutoTransporte = null;
                 complementoCP.Mercancias.TransporteAereo = null;
@@ -608,7 +631,26 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                             mercancia.ClaveMaterialPeligroso = null;
                             mercancia.DescripEmbalaje = null;
                             mercancia.TipoEmbalaje_Id = null;
-                            
+                            mercancia.SectorCofepris = null;
+                            mercancia.NombreIngredienteActivo = null;
+                            mercancia.NomQuimico = null;
+                            mercancia.DenominacionGenericaProd = null;
+                            mercancia.DenominacionDistintivaProd = null;
+                            mercancia.Fabricante = null;
+                            mercancia.FechaCaducidad = null;
+                            mercancia.LoteMedicamento = null;
+                            mercancia.FormaFarmaceutica = null;
+                            mercancia.CondicionesEspecialesTransp = null;
+                            mercancia.RegistroSanitarioFolioAutorizacion = null;
+                            mercancia.PermisoImportacion = null;
+                            mercancia.FolioImpoVucem = null;
+                            mercancia.NumCas = null;
+                            mercancia.RazonSocialEmpImp = null;
+                            mercancia.NumRegSanPlagCofepris = null;
+                            mercancia.DatosFabricante = null;
+                            mercancia.DatosFormulador = null;
+                            mercancia.DatosMaquilador = null;
+                            mercancia.UsoAutorizado = null;
 
                         }
                     }
@@ -616,8 +658,8 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     mercancia.Mercancias = null;
                     
 
-                    var copiaPedimentos = mercancia.Pedimentoss;
-                    mercancia.Pedimentoss = null;
+                    var copiaDocumentacionAduanera = mercancia.DocumentacionAduaneras;
+                    mercancia.DocumentacionAduaneras = null;
                     var copiaGuiasIdentificacion = mercancia.GuiasIdentificacionss;
                     mercancia.GuiasIdentificacionss = null;
                     var copiaCantidadTransportada = mercancia.CantidadTransportadass;
@@ -643,6 +685,26 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                         mercancia.ClaveMaterialPeligroso = null;
                         mercancia.DescripEmbalaje = null;
                         mercancia.TipoEmbalaje_Id = null;
+                        mercancia.SectorCofepris = null;
+                        mercancia.NombreIngredienteActivo = null;
+                        mercancia.NomQuimico = null;
+                        mercancia.DenominacionGenericaProd = null;
+                        mercancia.DenominacionDistintivaProd = null;
+                        mercancia.Fabricante = null;
+                        mercancia.FechaCaducidad = null;
+                        mercancia.LoteMedicamento = null;
+                        mercancia.FormaFarmaceutica = null;
+                        mercancia.CondicionesEspecialesTransp = null;
+                        mercancia.RegistroSanitarioFolioAutorizacion = null;
+                        mercancia.PermisoImportacion = null;
+                        mercancia.FolioImpoVucem = null;
+                        mercancia.NumCas = null;
+                        mercancia.RazonSocialEmpImp = null;
+                        mercancia.NumRegSanPlagCofepris = null;
+                        mercancia.DatosFabricante = null;
+                        mercancia.DatosFormulador = null;
+                        mercancia.DatosMaquilador = null;
+                        mercancia.UsoAutorizado = null;
                     }
                     _db.Mercancia.AddOrUpdate(mercancia);
                     try
@@ -652,25 +714,25 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     catch (System.Exception)
                     {
                     }
-                    if (copiaPedimentos != null)
+                    if (copiaDocumentacionAduanera != null)
                     {
-                        var idsPBorrar = copiaPedimentos.Select(e => e.Id);
-                        var pedimentosAnteriores = _db.Pedimentos.Where(es => es.Mercancia_Id == mercancia.Id && !idsPBorrar.Contains(es.Id)).ToList();
+                        var idsPBorrar = copiaDocumentacionAduanera.Select(e => e.Id);
+                        var DAduaneraAnteriores = _db.DocumentacionAduanera.Where(es => es.Mercancia_Id == mercancia.Id && !idsPBorrar.Contains(es.Id)).ToList();
 
-                        _db.Pedimentos.RemoveRange(pedimentosAnteriores);
+                        _db.DocumentacionAduanera.RemoveRange(DAduaneraAnteriores);
                         _db.SaveChanges();
-                        foreach (var pedimento in copiaPedimentos.Except(pedimentosAnteriores))
+                        foreach (var DAduanera in copiaDocumentacionAduanera.Except(DAduaneraAnteriores))
                         {
-                            pedimento.Mercancia_Id = mercancia.Id;
-                            pedimento.Mercancia = null;
-                            _db.Pedimentos.AddOrUpdate(pedimento);
+                            DAduanera.Mercancia_Id = mercancia.Id;
+                            DAduanera.Mercancia = null;
+                            _db.DocumentacionAduanera.AddOrUpdate(DAduanera);
                             _db.SaveChanges();
                         }
                     }
                     else
                     {
-                        var pedimentoAnteriores = _db.Pedimentos.Where(es => es.Mercancia_Id == mercancia.Id).ToList();
-                        _db.Pedimentos.RemoveRange(pedimentoAnteriores);
+                        var DAduaneraAnteriores = _db.DocumentacionAduanera.Where(es => es.Mercancia_Id == mercancia.Id).ToList();
+                        _db.DocumentacionAduanera.RemoveRange(DAduaneraAnteriores);
                         _db.SaveChanges();
                     }
                     
@@ -813,6 +875,49 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 _db.SaveChanges();
             }
         }
+        /*************************/
+        public void cargaRemolqueCCP(ComplementoCartaPorte complementoCP)
+        {
+            if (complementoCP.RemolqueCCPs != null && complementoCP.Mercancias.TransporteMaritimo.RemolqueCCPs == null)
+            {
+                complementoCP.Mercancias.TransporteMaritimo.RemolqueCCPs = new List<RemolqueCCP>();
+                foreach (var remolqueCCP in complementoCP.RemolqueCCPs)
+                {
+                    complementoCP.Mercancias.TransporteMaritimo.RemolqueCCPs.Add(remolqueCCP);
+                }
+            }
+            if (complementoCP.Mercancias.TransporteMaritimo.RemolqueCCPs != null)
+            {
+                var idsBorrar = complementoCP.Mercancias.TransporteMaritimo.RemolqueCCPs.Select(e => e.Id);
+                var remolqueCPCPAnteriores = _db.RemolqueCCP.Where(es => es.TransporteMaritimo_Id == complementoCP.Mercancias.TransporteMaritimo_Id && !idsBorrar.Contains(es.Id)).ToList();
+
+                _db.RemolqueCCP.RemoveRange(remolqueCPCPAnteriores);
+                _db.SaveChanges();
+
+                foreach (var remolqueCCP in complementoCP.Mercancias.TransporteMaritimo.RemolqueCCPs.Except(remolqueCPCPAnteriores))
+                {
+                    remolqueCCP.TransporteMaritimo_Id = complementoCP.Mercancias.TransporteMaritimo_Id;
+                    remolqueCCP.TransporteMaritimo = null;
+                    _db.RemolqueCCP.AddOrUpdate(remolqueCCP);
+                    try
+                    {
+                        _db.SaveChanges();
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+                }
+            }
+            else
+            {
+                var remolqueCCPAnteriores = _db.RemolqueCCP.Where(es => es.TransporteMaritimo_Id == complementoCP.Mercancias.TransporteMaritimo_Id).ToList();
+
+                _db.RemolqueCCP.RemoveRange(remolqueCCPAnteriores);
+                _db.SaveChanges();
+            }
+        }
+
+        /************************/
         public void cargaDerechoPaso(ComplementoCartaPorte complementoCP)
         {
             if (complementoCP.DerechosDePasoss != null && complementoCP.Mercancias.TransporteFerroviario.DerechosDePasoss == null)
@@ -954,6 +1059,17 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                 }
             }
         }
-       
+
+        public String GeneraIdCCP()
+        {
+            Guid nuevoGuid = Guid.NewGuid();
+
+            // Convertir el GUID a una cadena
+            string guidString = nuevoGuid.ToString();
+            string resultado = "CCC" + guidString.Substring(3);
+
+            return resultado;
+        }
+
     }
 }

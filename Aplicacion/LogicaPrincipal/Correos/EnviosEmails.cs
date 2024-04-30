@@ -10,7 +10,6 @@ using System.IO.Compression;
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
 
 namespace Aplicacion.LogicaPrincipal.Correos
 {
@@ -297,7 +296,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
             }
         }
 
-        public bool NotificacionNuevoUsuario(Usuario usuario, int sucursalId)
+        public void NotificacionNuevoUsuario(Usuario usuario, int sucursalId)
         {
             string destinatario = usuario.Email;
             string asunto;
@@ -342,30 +341,22 @@ namespace Aplicacion.LogicaPrincipal.Correos
                             "Equipo de Centro CFDI";
                     }
 
-                    try
+                    using (SmtpClient smtpClient = new SmtpClient("mail.gisconsultoria.com", 26))
                     {
-                        using (SmtpClient smtpClient = new SmtpClient("mail.gisconsultoria.com", 26))
-                        {
-                            smtpClient.UseDefaultCredentials = false;
-                            smtpClient.Credentials = new NetworkCredential("facturas.xsa@gisconsultoria.com", "Gisconsul+01");
-                            smtpClient.EnableSsl = false;
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = new NetworkCredential("facturas.xsa@gisconsultoria.com", "Gisconsul+01");
+                        smtpClient.EnableSsl = false;
 
-                            MailMessage mail = new MailMessage();
-                            mail.From = new MailAddress(sucursal.MailEmisor);
-                            mail.To.Add(destinatario);
-                            mail.Subject = asunto;
-                            mail.Body = cuerpoCorreo;
+                        MailMessage mail = new MailMessage();
+                        mail.From = new MailAddress(sucursal.MailEmisor);
+                        mail.To.Add(destinatario);
+                        mail.Subject = asunto;
+                        mail.Body = cuerpoCorreo;
 
-                            smtpClient.Send(mail);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        return false;
+                        smtpClient.Send(mail);
                     }
                 }
             }
-            return true;
         }
 
         #endregion Notificaciones de Recepción de Facturas y Pagos

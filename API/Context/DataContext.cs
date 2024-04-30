@@ -127,8 +127,8 @@ namespace API.Context
         //Facturacion
         public DbSet<DocumentoExtranjero> DocumentosExtranjeros { get; set; }
         public DbSet<FacturaEmitida> FacturasEmitidas { get; set; }
-
-        public DbSet<FacturaEmitidaTemporal> FacturasEmitidasTemp {get; set; }
+        public DbSet<FacturaRecibida> FacturasRecibidas { get; set; }
+        public DbSet<FacturaEmitidaTemporal> FacturasEmitidasTemp { get; set; }
         public DbSet<Validacion> Validaciones { get; set; }
 
         //OperacionesProveedores
@@ -163,13 +163,13 @@ namespace API.Context
 
         public DbSet<Exportacion> Exportacion { get; set; }
         public DbSet<ObjetoImpuesto> ObjetoImpuesto { get; set; }
-       
+
         public DbSet<RetencionCP> RetencionesCP { get; set; }
         public DbSet<TrasladoCP> TrasladosCP { get; set; }
         public DbSet<c_impuestoCFDI> ImpuestoCP { get; set; }
         public DbSet<FormaPagos> Cat_FormaPago { get; set; }
         public DbSet<Cat_Conceptos> Cat_Conceptos { get; set; }
-        public DbSet<Cat_Mercancias> Cat_Mercancias{ get; set; }
+        public DbSet<Cat_Mercancias> Cat_Mercancias { get; set; }
 
         public DbSet<ClaveProdServ> claveProdServ { get; set; }
         public DbSet<Cat_SubImpuestoC> Cat_Impuestos { get; set; }
@@ -183,6 +183,7 @@ namespace API.Context
         public DbSet<ConfigAutotransporte> ConfigAutotransportes { get; set; }
         public DbSet<ConfigMaritima> ConfigMaritimas { get; set; }
         public DbSet<Contenedor> Contenedores { get; set; }
+        public DbSet<RemolqueCCP> RemolqueCCP { get; set; }
         public DbSet<ContenedorMaritimo> ContenedoresMaritimos { get; set; }
         public DbSet<CveTransporte> CveTransportes { get; set; }
         public DbSet<DerechosDePaso> DerechosDePasos { get; set; }
@@ -199,14 +200,14 @@ namespace API.Context
         public DbSet<TipoRelacion> TiposRelaciones { get; set; }
 
         //CatalogosCartaPorte Domicilio
-        public DbSet<Pais> Paises {get;set;}
-        public DbSet<Estado> Estados {get;set;}
+        public DbSet<Pais> Paises { get; set; }
+        public DbSet<Estado> Estados { get; set; }
         public DbSet<Municipio> Municipios { get; set; }
-        public DbSet<Colonia> Colonias  { get; set; }
+        public DbSet<Colonia> Colonias { get; set; }
         public DbSet<CodigoPostal> CodigosPostales { get; set; }
         public DbSet<Localidad> Localidades { get; set; }
 
-       
+
         public DbSet<AutoTransporte> AutoTransporte { get; set; }
         public DbSet<CantidadTransportada> CantidadTransportadas { get; set; }
         public DbSet<Carro> Carros { get; set; }
@@ -220,10 +221,10 @@ namespace API.Context
         public DbSet<IdentificacionVehicular> IdentificacionVehiculares { get; set; }
         public DbSet<Mercancia> Mercancia { get; set; }
         public DbSet<Mercancias> Mercancias { get; set; }
-       
+
         public DbSet<PartesTransporte> PartesTransporte { get; set; }
-        public DbSet<Pedimentos> Pedimentos { get; set; }
-        
+        //public DbSet<Pedimentos> Pedimentos { get; set; }
+        public DbSet<DocumentacionAduanera> DocumentacionAduanera { get; set; }
         public DbSet<Remolques> Remolques { get; set; }
         public DbSet<Seguros> Seguros { get; set; }
         public DbSet<TiposFigura> Tiposfigura { get; set; }
@@ -231,15 +232,14 @@ namespace API.Context
         public DbSet<TransporteFerroviario> TransporteFerroviarios { get; set; }
         public DbSet<TransporteMaritimo> TransporteMaritimos { get; set; }
         public DbSet<Ubicacion> UbicacionOrigen { get; set; }
-      
+
         public DbSet<UsoCfdi> UsoCfdis { get; set; }
 
-      
+
         public DbSet<GuiasIdentificacion> GuiasIdentificacion { get; set; }
 
         #endregion
 
-
-
     }
+
 }

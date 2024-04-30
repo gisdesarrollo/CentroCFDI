@@ -222,6 +222,7 @@
     <Compile Include="Operaciones\ComplementoCartaPorte\ContenedorM.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\DerechosDePasos.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\DetalleMercancia.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\DocumentacionAduanera.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Domicilio.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\GuiasIdentificacion.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\IdentificacionVehicular.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="Operaciones\ComplementoCartaPorte\PartesTransporte.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Pedimentos.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Propietario.cs" />
+    <Compile Include="Operaciones\ComplementoCartaPorte\RemolqueCCP.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Remolques.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\RetencionCP.cs" />
     <Compile Include="Operaciones\ComplementoCartaPorte\Seguros.cs" />
@@ -257,6 +259,7 @@
     <Compile Include="Operaciones\Facturacion\DocumentoExtranjero.cs" />
     <Compile Include="Operaciones\Facturacion\FacturaEmitida.cs" />
     <Compile Include="Operaciones\Facturacion\FacturaEmitidaTemporal.cs" />
+    <Compile Include="Operaciones\Facturacion\FacturaRecibida.cs" />
     <Compile Include="Operaciones\Facturacion\Validacion.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\AdjuntosDR.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\ComprobacionGasto.cs" />

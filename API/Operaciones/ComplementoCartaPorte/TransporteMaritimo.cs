@@ -48,13 +48,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         public String NumAutorizacionNaviero_Id { get; set; }
         [ForeignKeyAttribute("NumAutorizacionNaviero_Id")]
         public virtual NumAutorizacionNaviero NumAutorizacionNaviero { get; set; }
-        /*[NotMapped]
-        public String NumAutorizacionNavieros { get; set; }
-        */
-        [DisplayName("Número de Certificación de la ITC")]
-        //[Required(ErrorMessage = "Campo obligatorio")]
-        public String NumCerITC { get; set; }
-
+        
         [DisplayName("Número de Conocimiento del Embarque")]
         public String NumConocEmbarc { get; set; }
 
@@ -109,11 +103,22 @@ namespace API.Operaciones.ComplementoCartaPorte
         //[Required(ErrorMessage = "Campo obligatorio")]
         public Decimal UnidadesDeArqBruto { get; set; }
 
+        //campo nuevos version 3.0 carta porte
+        public Decimal Puntual { get; set; }
+        public String PermisoTempNavegacion { get; set; }
+        ///
+
         [NotMapped]
         public virtual ContenedorM ContenedorM { get; set; }
 
         //[NotMapped]
         public virtual List<ContenedorM> ContenedoresM { get; set; }
+
+        [NotMapped]
+        public virtual RemolqueCCP RemolqueCCP { get; set; }
+
+        //[NotMapped]
+        public virtual List<RemolqueCCP> RemolqueCCPs { get; set; }
 
     }
 }

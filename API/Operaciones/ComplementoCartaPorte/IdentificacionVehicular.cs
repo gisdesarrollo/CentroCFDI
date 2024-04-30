@@ -37,5 +37,7 @@ namespace API.Operaciones.ComplementoCartaPorte
         [DisplayName("Placa Vehiculo Motor")]
         //[Required(ErrorMessage = "Campo Obligatorio")]
         public String PlacaVM { get; set; }
+        [DisplayName("Peso bruto vehicular")]
+        public decimal PesoBrutoVehicular { get; set; }
     }
 }

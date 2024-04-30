@@ -1,12 +1,20 @@
-﻿using System;
+﻿using API.Catalogos;
+using API.Context;
+using API.Enums;
+using API.Models.Dto;
+using API.Operaciones.OperacionesProveedores;
+using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
+using SW.Services.Authentication;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Aplicacion.RecepcionDocumentos
 {
-    internal class ValidacionesPagos
+    public class ValidacionesPagos
     {
         #region Variables
 
@@ -142,11 +150,11 @@ namespace Aplicacion.RecepcionDocumentos
         //    //si el usuario es proveedor, revisar que el RFC del emisor de la factura sea igual al RFC asignado del socio comercial del proveedor
         //    if (dv.Usuario.esProveedor)
         //    {
-        //        if (dv.Usuario.SocioComercialId == dv.SocioComercial.Id)
+        //        if (dv.Usuario.SocioComercialID == dv.SocioComercial.Id)
         //        {
         //            if (dv.SocioComercial.Rfc != dv.Cfdi.Emisor.Rfc)
         //            {
-        //                throw new Exception(String.Format("El RFC del Emisor de la factura {0} no coincide con el RFC asignado al Socio Comercial del usuario que esta subiendo el CFDi{1}", dv.Cfdi.Emisor.Rfc, dv.Usuario.SocioComercialId));
+        //                throw new Exception(String.Format("El RFC del Emisor de la factura {0} no coincide con el RFC asignado al Socio Comercial del usuario que esta subiendo el CFDi{1}", dv.Cfdi.Emisor.Rfc, dv.Usuario.SocioComercialID));
         //            }
         //        }
         //    }

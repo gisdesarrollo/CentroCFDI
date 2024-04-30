@@ -156,9 +156,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\RVCancelacion.dll</HintPath>
     </Reference>
-    <Reference Include="RVCFDI33, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="RVCFDI33, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\DEPLOY-centrocfdi\DLL-MODIFICADOREALVIRTUAL-DECIMALES\RVCFDI33.dll</HintPath>
+      <HintPath>..\..\..\..\cartaporte 3.0\DLLRealVirtual\RVCFDI33.dll</HintPath>
     </Reference>
     <Reference Include="SAT.Services, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SW-sdk-45.0.0.25.1-rc\lib\net45\SAT.Services.dll</HintPath>
@@ -310,10 +310,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="bin\Debug\API.dll.config" />
-    <None Include="bin\Debug\Aplicacion.dll.config" />
-    <None Include="bin\Release\API.dll.config" />
-    <None Include="bin\Release\Aplicacion.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -321,241 +317,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\API\API.csproj">
+      <Project>{20a7e0f9-b699-4182-82af-82df8ab48e7e}</Project>
+      <Name>API</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\API.dll" />
-    <Content Include="bin\Debug\API.pdb" />
-    <Content Include="bin\Debug\Aplicacion.dll" />
-    <Content Include="bin\Debug\Aplicacion.pdb" />
-    <Content Include="bin\Debug\BouncyCastle.Crypto.dll" />
-    <Content Include="bin\Debug\CFDI.dll" />
-    <Content Include="bin\Debug\CsvHelper.dll" />
-    <Content Include="bin\Debug\CsvHelper.xml" />
-    <Content Include="bin\Debug\de\PdfSharp.Charting.resources.dll" />
-    <Content Include="bin\Debug\de\PdfSharp.resources.dll" />
-    <Content Include="bin\Debug\DTOs.dll" />
-    <Content Include="bin\Debug\EntityFramework.dll" />
-    <Content Include="bin\Debug\EntityFramework.SqlServer.dll" />
-    <Content Include="bin\Debug\EntityFramework.SqlServer.xml" />
-    <Content Include="bin\Debug\EntityFramework.xml" />
-    <Content Include="bin\Debug\es\System.Web.Razor.resources.dll" />
-    <Content Include="bin\Debug\Facturacion.dll" />
-    <Content Include="bin\Debug\Gma.QrCodeNet.Encoding.dll" />
-    <Content Include="bin\Debug\Grpc.Core.Api.dll" />
-    <Content Include="bin\Debug\Grpc.Core.Api.pdb" />
-    <Content Include="bin\Debug\Grpc.Core.Api.xml" />
-    <Content Include="bin\Debug\HtmlRenderer.dll" />
-    <Content Include="bin\Debug\HtmlRenderer.pdb" />
-    <Content Include="bin\Debug\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="bin\Debug\ICSharpCode.SharpZipLib.pdb" />
-    <Content Include="bin\Debug\ICSharpCode.SharpZipLib.xml" />
-    <Content Include="bin\Debug\Infodextra.dll" />
-    <Content Include="bin\Debug\itext.barcodes.dll" />
-    <Content Include="bin\Debug\itext.barcodes.xml" />
-    <Content Include="bin\Debug\itext.commons.dll" />
-    <Content Include="bin\Debug\itext.commons.xml" />
-    <Content Include="bin\Debug\itext.forms.dll" />
-    <Content Include="bin\Debug\itext.forms.xml" />
-    <Content Include="bin\Debug\itext.html2pdf.dll" />
-    <Content Include="bin\Debug\itext.html2pdf.xml" />
-    <Content Include="bin\Debug\itext.io.dll" />
-    <Content Include="bin\Debug\itext.io.xml" />
-    <Content Include="bin\Debug\itext.kernel.dll" />
-    <Content Include="bin\Debug\itext.kernel.xml" />
-    <Content Include="bin\Debug\itext.layout.dll" />
-    <Content Include="bin\Debug\itext.layout.xml" />
-    <Content Include="bin\Debug\itext.pdfa.dll" />
-    <Content Include="bin\Debug\itext.pdfa.xml" />
-    <Content Include="bin\Debug\itext.sign.dll" />
-    <Content Include="bin\Debug\itext.sign.xml" />
-    <Content Include="bin\Debug\itext.styledxmlparser.dll" />
-    <Content Include="bin\Debug\itext.styledxmlparser.xml" />
-    <Content Include="bin\Debug\itext.svg.dll" />
-    <Content Include="bin\Debug\itext.svg.xml" />
-    <Content Include="bin\Debug\MessagingToolkit.QRCode.dll" />
-    <Content Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll" />
-    <Content Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml" />
-    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
-    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml" />
-    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.dll" />
-    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.xml" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Logging.dll" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Logging.xml" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Options.dll" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Options.xml" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Primitives.dll" />
-    <Content Include="bin\Debug\Microsoft.Extensions.Primitives.xml" />
-    <Content Include="bin\Debug\MySql.Data.dll" />
-    <Content Include="bin\Debug\MySql.Data.Entity.EF6.dll" />
-    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
-    <Content Include="bin\Debug\Newtonsoft.Json.pdb" />
-    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
-    <Content Include="bin\Debug\OpenHtmlToPdf.dll" />
-    <Content Include="bin\Debug\PdfSharp.Charting.dll" />
-    <Content Include="bin\Debug\PdfSharp.Charting.resources.dll" />
-    <Content Include="bin\Debug\PdfSharp.Charting.xml" />
-    <Content Include="bin\Debug\PdfSharp.dll" />
-    <Content Include="bin\Debug\PdfSharp.xml" />
-    <Content Include="bin\Debug\RabbitMQ.Client.dll" />
-    <Content Include="bin\Debug\RabbitMQ.Client.xml" />
-    <Content Include="bin\Debug\RazorEngine.dll" />
-    <Content Include="bin\Debug\RazorEngine.xml" />
-    <Content Include="bin\Debug\RVCancelacion.dll" />
-    <Content Include="bin\Debug\RVCFDI33.dll" />
-    <Content Include="bin\Debug\SAT.Services.dll" />
-    <Content Include="bin\Debug\SendGrid.dll" />
-    <Content Include="bin\Debug\SendGrid.pdb" />
-    <Content Include="bin\Debug\SendGrid.xml" />
-    <Content Include="bin\Debug\SW-sdk-45.dll" />
-    <Content Include="bin\Debug\System.Buffers.dll" />
-    <Content Include="bin\Debug\System.Buffers.xml" />
-    <Content Include="bin\Debug\System.Data.dll" />
-    <Content Include="bin\Debug\System.Diagnostics.DiagnosticSource.dll" />
-    <Content Include="bin\Debug\System.Diagnostics.DiagnosticSource.xml" />
-    <Content Include="bin\Debug\System.IO.Compression.dll" />
-    <Content Include="bin\Debug\System.IO.Compression.ZipFile.dll" />
-    <Content Include="bin\Debug\System.Memory.dll" />
-    <Content Include="bin\Debug\System.Memory.xml" />
-    <Content Include="bin\Debug\System.Net.Http.dll" />
-    <Content Include="bin\Debug\System.Numerics.Vectors.dll" />
-    <Content Include="bin\Debug\System.Numerics.Vectors.xml" />
-    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="bin\Debug\System.Security.Cryptography.Algorithms.dll" />
-    <Content Include="bin\Debug\System.Security.Cryptography.Encoding.dll" />
-    <Content Include="bin\Debug\System.Security.Cryptography.Primitives.dll" />
-    <Content Include="bin\Debug\System.Security.Cryptography.X509Certificates.dll" />
-    <Content Include="bin\Debug\System.Text.Encodings.Web.dll" />
-    <Content Include="bin\Debug\System.Text.Encodings.Web.xml" />
-    <Content Include="bin\Debug\System.Text.Json.dll" />
-    <Content Include="bin\Debug\System.Text.Json.xml" />
-    <Content Include="bin\Debug\System.Threading.Tasks.Extensions.dll" />
-    <Content Include="bin\Debug\System.Threading.Tasks.Extensions.xml" />
-    <Content Include="bin\Debug\System.ValueTuple.dll" />
-    <Content Include="bin\Debug\System.ValueTuple.xml" />
-    <Content Include="bin\Debug\System.Web.Razor.dll" />
-    <Content Include="bin\Debug\System.Web.Razor.xml" />
-    <Content Include="bin\Debug\TimbradoRV.dll" />
-    <Content Include="bin\Debug\Utilerias.dll" />
-    <Content Include="bin\Release\API.dll" />
-    <Content Include="bin\Release\API.pdb" />
-    <Content Include="bin\Release\Aplicacion.dll" />
-    <Content Include="bin\Release\Aplicacion.pdb" />
-    <Content Include="bin\Release\BouncyCastle.Crypto.dll" />
-    <Content Include="bin\Release\CFDI.dll" />
-    <Content Include="bin\Release\CsvHelper.dll" />
-    <Content Include="bin\Release\CsvHelper.xml" />
-    <Content Include="bin\Release\de\PdfSharp.Charting.resources.dll" />
-    <Content Include="bin\Release\de\PdfSharp.resources.dll" />
-    <Content Include="bin\Release\DTOs.dll" />
-    <Content Include="bin\Release\EntityFramework.dll" />
-    <Content Include="bin\Release\EntityFramework.SqlServer.dll" />
-    <Content Include="bin\Release\EntityFramework.SqlServer.xml" />
-    <Content Include="bin\Release\EntityFramework.xml" />
-    <Content Include="bin\Release\es\System.Web.Razor.resources.dll" />
-    <Content Include="bin\Release\Facturacion.dll" />
-    <Content Include="bin\Release\Gma.QrCodeNet.Encoding.dll" />
-    <Content Include="bin\Release\Grpc.Core.Api.dll" />
-    <Content Include="bin\Release\Grpc.Core.Api.pdb" />
-    <Content Include="bin\Release\Grpc.Core.Api.xml" />
-    <Content Include="bin\Release\HtmlRenderer.dll" />
-    <Content Include="bin\Release\HtmlRenderer.pdb" />
-    <Content Include="bin\Release\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="bin\Release\ICSharpCode.SharpZipLib.pdb" />
-    <Content Include="bin\Release\ICSharpCode.SharpZipLib.xml" />
-    <Content Include="bin\Release\Infodextra.dll" />
-    <Content Include="bin\Release\itext.barcodes.dll" />
-    <Content Include="bin\Release\itext.barcodes.xml" />
-    <Content Include="bin\Release\itext.commons.dll" />
-    <Content Include="bin\Release\itext.commons.xml" />
-    <Content Include="bin\Release\itext.forms.dll" />
-    <Content Include="bin\Release\itext.forms.xml" />
-    <Content Include="bin\Release\itext.html2pdf.dll" />
-    <Content Include="bin\Release\itext.html2pdf.xml" />
-    <Content Include="bin\Release\itext.io.dll" />
-    <Content Include="bin\Release\itext.io.xml" />
-    <Content Include="bin\Release\itext.kernel.dll" />
-    <Content Include="bin\Release\itext.kernel.xml" />
-    <Content Include="bin\Release\itext.layout.dll" />
-    <Content Include="bin\Release\itext.layout.xml" />
-    <Content Include="bin\Release\itext.pdfa.dll" />
-    <Content Include="bin\Release\itext.pdfa.xml" />
-    <Content Include="bin\Release\itext.sign.dll" />
-    <Content Include="bin\Release\itext.sign.xml" />
-    <Content Include="bin\Release\itext.styledxmlparser.dll" />
-    <Content Include="bin\Release\itext.styledxmlparser.xml" />
-    <Content Include="bin\Release\itext.svg.dll" />
-    <Content Include="bin\Release\itext.svg.xml" />
-    <Content Include="bin\Release\MessagingToolkit.QRCode.dll" />
-    <Content Include="bin\Release\Microsoft.Bcl.AsyncInterfaces.dll" />
-    <Content Include="bin\Release\Microsoft.Bcl.AsyncInterfaces.xml" />
-    <Content Include="bin\Release\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
-    <Content Include="bin\Release\Microsoft.Extensions.DependencyInjection.Abstractions.xml" />
-    <Content Include="bin\Release\Microsoft.Extensions.DependencyInjection.dll" />
-    <Content Include="bin\Release\Microsoft.Extensions.DependencyInjection.xml" />
-    <Content Include="bin\Release\Microsoft.Extensions.Logging.Abstractions.dll" />
-    <Content Include="bin\Release\Microsoft.Extensions.Logging.Abstractions.xml" />
-    <Content Include="bin\Release\Microsoft.Extensions.Logging.dll" />
-    <Content Include="bin\Release\Microsoft.Extensions.Logging.xml" />
-    <Content Include="bin\Release\Microsoft.Extensions.Options.dll" />
-    <Content Include="bin\Release\Microsoft.Extensions.Options.xml" />
-    <Content Include="bin\Release\Microsoft.Extensions.Primitives.dll" />
-    <Content Include="bin\Release\Microsoft.Extensions.Primitives.xml" />
-    <Content Include="bin\Release\MySql.Data.dll" />
-    <Content Include="bin\Release\MySql.Data.Entity.EF6.dll" />
-    <Content Include="bin\Release\Newtonsoft.Json.dll" />
-    <Content Include="bin\Release\Newtonsoft.Json.pdb" />
-    <Content Include="bin\Release\Newtonsoft.Json.xml" />
-    <Content Include="bin\Release\OpenHtmlToPdf.dll" />
-    <Content Include="bin\Release\PdfSharp.Charting.dll" />
-    <Content Include="bin\Release\PdfSharp.Charting.resources.dll" />
-    <Content Include="bin\Release\PdfSharp.Charting.xml" />
-    <Content Include="bin\Release\PdfSharp.dll" />
-    <Content Include="bin\Release\PdfSharp.xml" />
-    <Content Include="bin\Release\RabbitMQ.Client.dll" />
-    <Content Include="bin\Release\RabbitMQ.Client.xml" />
-    <Content Include="bin\Release\RazorEngine.dll" />
-    <Content Include="bin\Release\RazorEngine.xml" />
-    <Content Include="bin\Release\RVCancelacion.dll" />
-    <Content Include="bin\Release\RVCFDI33.dll" />
-    <Content Include="bin\Release\SAT.Services.dll" />
-    <Content Include="bin\Release\SendGrid.dll" />
-    <Content Include="bin\Release\SendGrid.pdb" />
-    <Content Include="bin\Release\SendGrid.xml" />
-    <Content Include="bin\Release\SW-sdk-45.dll" />
-    <Content Include="bin\Release\System.Buffers.dll" />
-    <Content Include="bin\Release\System.Buffers.xml" />
-    <Content Include="bin\Release\System.Data.dll" />
-    <Content Include="bin\Release\System.Diagnostics.DiagnosticSource.dll" />
-    <Content Include="bin\Release\System.Diagnostics.DiagnosticSource.xml" />
-    <Content Include="bin\Release\System.IO.Compression.dll" />
-    <Content Include="bin\Release\System.IO.Compression.ZipFile.dll" />
-    <Content Include="bin\Release\System.Memory.dll" />
-    <Content Include="bin\Release\System.Memory.xml" />
-    <Content Include="bin\Release\System.Net.Http.dll" />
-    <Content Include="bin\Release\System.Numerics.Vectors.dll" />
-    <Content Include="bin\Release\System.Numerics.Vectors.xml" />
-    <Content Include="bin\Release\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="bin\Release\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="bin\Release\System.Security.Cryptography.Algorithms.dll" />
-    <Content Include="bin\Release\System.Security.Cryptography.Encoding.dll" />
-    <Content Include="bin\Release\System.Security.Cryptography.Primitives.dll" />
-    <Content Include="bin\Release\System.Security.Cryptography.X509Certificates.dll" />
-    <Content Include="bin\Release\System.Text.Encodings.Web.dll" />
-    <Content Include="bin\Release\System.Text.Encodings.Web.xml" />
-    <Content Include="bin\Release\System.Text.Json.dll" />
-    <Content Include="bin\Release\System.Text.Json.xml" />
-    <Content Include="bin\Release\System.Threading.Tasks.Extensions.dll" />
-    <Content Include="bin\Release\System.Threading.Tasks.Extensions.xml" />
-    <Content Include="bin\Release\System.ValueTuple.dll" />
-    <Content Include="bin\Release\System.ValueTuple.xml" />
-    <Content Include="bin\Release\System.Web.Razor.dll" />
-    <Content Include="bin\Release\System.Web.Razor.xml" />
-    <Content Include="bin\Release\TimbradoRV.dll" />
-    <Content Include="bin\Release\Utilerias.dll" />
+    <WebReferences Include="TimbradoXsaWS\" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="lib\BouncyCastle.Crypto.dll" />
     <Content Include="lib\CFDI.dll" />
     <Content Include="lib\CodeScales.Http.dll" />
@@ -567,10 +340,6 @@
     <Content Include="lib\TimbradoRV.dll" />
     <Content Include="lib\Utilerias.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="TimbradoXsaWS\" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
