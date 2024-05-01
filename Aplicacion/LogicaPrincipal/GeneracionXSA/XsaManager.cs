@@ -65,6 +65,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionXSA
             { tipoCfdXsa = "b4b7fb57ebfd8641a054e7905fb6de5b"; }
             else if (sucursal.Id == 52)
             { tipoCfdXsa = "d2e621f71389ff426a62952bc76bd14f"; }
+            else if (sucursal.Id == 31) 
+            { tipoCfdXsa = "6e421462b79fb7a052713a99fca1836b"; }
             else 
             { tipoCfdXsa = sucursal.TipoCfdXsa; }
 

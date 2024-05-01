@@ -22,6 +22,7 @@
     @Html.HiddenFor(model => model.TotalImpuestoRetenidos)
     @Html.HiddenFor(model => model.ExportacionId)
     @Html.HiddenFor(model => model.IdTipoRelacion)
+    
     if (Model.Mercancias.AutoTransporte != null && Model.Mercancias.AutoTransporte_Id != null)
     {
         @Html.HiddenFor(model => model.Mercancias.AutoTransporte_Id)
@@ -50,7 +51,7 @@
 
 
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
-    
+
     <!--begin::Stepper-->
     <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid gap-10" id="kt_stepper_example_vertical" data-kt-stepper="true">
         <!--begin::Aside-->
@@ -74,6 +75,7 @@
                 string ActPesoMercancia = "hiddenDiv";
                 string ActvCargoTasacion = "hiddenDiv";
                 string ActNumEstacion = "hiddenDiv";
+                string ActCampRegistroIstmo = "hiddenDiv";
 
 
                 if (Model.hidden)
@@ -85,6 +87,7 @@
                     activaCampos = "hiddenDiv";
                 }
                 if (Model.TranspInternac) { ActCampTransInterc = "visibleDiv"; } else { ActCampTransInterc = "hiddenDiv"; }
+                if (Model.RegistroIstmo) { ActCampRegistroIstmo = "visibleDiv"; } else { ActCampRegistroIstmo = "hiddenDiv"; }
                 if (Model.Mercancias.Mercancia.MaterialPeligrosos) { ActCamposMatPeligroso = "visibleDiv"; } else { ActCamposMatPeligroso = "hiddenDiv"; }
                 if (Model.ClaveTransporteId == "01") { ActTransporte = "visibleDiv"; } else { ActTransporte = "hiddenDiv"; }
                 if (Model.ClaveTransporteId == "02") { ActTransporteMaritimo = "visibleDiv"; } else { ActTransporteMaritimo = "hiddenDiv"; }
@@ -387,7 +390,11 @@
                                             @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
                                             @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                                         </div>
-
+                                        @*<div class="form-group col-xs-12 col-sm-6 col-md-4">
+                                            @Html.LabelFor(model => model.IdCCP, htmlAttributes: new { @class = "form-label", })
+                                            @Html.EditorFor(model => model.IdCCP, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
+                                            @Html.ValidationMessageFor(model => model.IdCCP, "", new { @class = "text-danger" })
+                                        </div>*@
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.FechaDocumento, htmlAttributes: new { @class = "form-label" })
                                             @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
@@ -584,19 +591,19 @@
 
 
                             @*<div class="row">
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    @Html.LabelFor(model => model.TipoRelacion, new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
-                                    @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
-                                </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        @Html.LabelFor(model => model.TipoRelacion, new { @class = "form-label" })
+                                        @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
+                                        @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
+                                    </div>
 
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                    @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "form-label" })
-                                    @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                    @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "form-label" })
+                                        @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                        @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="clearfix"></div>
+                                <div class="clearfix"></div>
                             *@
                         </div>
                     </div>
@@ -837,10 +844,30 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                                    @Html.LabelFor(model => model.RegistroIstmo, htmlAttributes: new { @class = "form-label" })
+                                    <div class="col-md-10">
+                                        <div class="checkbox">
+                                            @Html.CheckBoxFor(model => model.RegistroIstmo, new { @class = "form-check-input ActivaCheckRegistroIstmo" })
+                                            @Html.ValidationMessageFor(model => model.RegistroIstmo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.TotalDistRec, htmlAttributes: new { @class = "form-label" })
                                     @Html.EditorFor(model => model.TotalDistRec, new { htmlAttributes = new { @class = "form-control mb-2", @id = "TotalDistRecorridas", @readonly = "readonly" } })
                                     @Html.ValidationMessageFor(model => model.TotalDistRec, "", new { @class = "text-danger" })
                                 </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4 divValidaRegistroIstmo @ActCampRegistroIstmo">
+                                    @Html.LabelFor(model => model.UbicacionPoloOrigen, new { @class = "form-label" })
+                                    @Html.EnumDropDownListFor(model => model.UbicacionPoloOrigen, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                    @Html.ValidationMessageFor(model => model.UbicacionPoloOrigen, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4 divValidaRegistroIstmo @ActCampRegistroIstmo">
+                                    @Html.LabelFor(model => model.UbicacionPoloDestino, new { @class = "form-label" })
+                                    @Html.EnumDropDownListFor(model => model.UbicacionPoloDestino, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                    @Html.ValidationMessageFor(model => model.UbicacionPoloDestino, "", new { @class = "text-danger" })
+                                </div>
+                                
                                 <div class="divValidaTransInternc @ActCampTransInterc">
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 ">
@@ -861,12 +888,17 @@
                                             @Html.DropDownListFor(model => model.viaEntradaSalida, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "ClaveTransporteCP" })
                                             @Html.ValidationMessageFor(model => model.viaEntradaSalida, "", new { @class = "text-danger" })
                                         </div>
+                                        <div class="form-group col-xs-12 col-sm-3">
+                                            @Html.LabelFor(model => model.RegimenAduanero, new { @class = "form-label" })
+                                            @Html.EnumDropDownListFor(model => model.RegimenAduanero, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                            @Html.ValidationMessageFor(model => model.RegimenAduanero, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-                       
+
                     </div>
                     <!--end::Input group-->
 
@@ -1035,7 +1067,7 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
                     <!--end::Input group-->
 
@@ -1075,6 +1107,15 @@
                                 @Html.LabelFor(model => model.Mercancias.NumTotalMercancias, htmlAttributes: new { @class = "form-label" })
                                 @Html.EditorFor(model => model.Mercancias.NumTotalMercancias, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
                                 @Html.ValidationMessageFor(model => model.Mercancias.NumTotalMercancias, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-4 hiddenDiv" id="DivLogisticaInversaRD">
+                                @Html.LabelFor(model => model.Mercancias.LogisticaInversaRecoleccionDevolucion, htmlAttributes: new { @class = "form-label" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.CheckBoxFor(model => model.Mercancias.LogisticaInversaRecoleccionDevolucion, new { @class = "form-check-input ActivaCheckLogisticaRecDev" })
+                                        @Html.ValidationMessageFor(model => model.Mercancias.LogisticaInversaRecoleccionDevolucion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -1173,7 +1214,106 @@
                                             @Html.EditorFor(model => model.Mercancias.Mercancia.TipoEmbalaje_Id, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.TipoEmbalaje_Id, "", new { @class = "text-danger" })
                                         </div>
-
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.SectorCofepris, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.SectorCofepris, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.SectorCofepris, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.NombreIngredienteActivo, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.NombreIngredienteActivo, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.NombreIngredienteActivo, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.NomQuimico, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.NomQuimico, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.NomQuimico, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DenominacionGenericaProd, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DenominacionGenericaProd, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DenominacionGenericaProd, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DenominacionDistintivaProd, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DenominacionDistintivaProd, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DenominacionDistintivaProd, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.Fabricante, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.Fabricante, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Fabricante, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.FechaCaducidad, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.FechaCaducidad, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.FechaCaducidad, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.LoteMedicamento, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.LoteMedicamento, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.LoteMedicamento, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.FormaFarmaceutica, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.FormaFarmaceutica, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.FormaFarmaceutica, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.CondicionesEspecialesTransp, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.CondicionesEspecialesTransp, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.CondicionesEspecialesTransp, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.RegistroSanitarioFolioAutorizacion, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.RegistroSanitarioFolioAutorizacion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.RegistroSanitarioFolioAutorizacion, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.PermisoImportacion, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.PermisoImportacion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.PermisoImportacion, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.FolioImpoVucem, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.FolioImpoVucem, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.FolioImpoVucem, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.NumCas, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.NumCas, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.NumCas, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.RazonSocialEmpImp, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.RazonSocialEmpImp, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.RazonSocialEmpImp, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.NumRegSanPlagCofepris, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.NumRegSanPlagCofepris, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.NumRegSanPlagCofepris, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DatosFabricante, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DatosFabricante, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DatosFabricante, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DatosFormulador, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DatosFormulador, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DatosFormulador, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DatosMaquilador, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DatosMaquilador, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DatosMaquilador, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 ActivaCampoMatPeligroso @ActCamposMatPeligroso">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.UsoAutorizado, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.UsoAutorizado, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.UsoAutorizado, "", new { @class = "text-danger" })
+                                        </div>
 
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.PesoEnKg, htmlAttributes: new { @class = "form-label" })
@@ -1193,7 +1333,16 @@
                                             @Html.EnumDropDownListSpecialFor(model => model.Mercancias.Mercancia.Moneda)
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "text-danger" })
                                         </div>
-
+                                        <div class="form-group col-xs-12 col-sm-3 @ActFracArancelaria" >
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.TipoMateria, new { @class = "form-label" })
+                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.TipoMateria, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.TipoMateria, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 @ActFracArancelaria">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DescripcionMateria, htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DescripcionMateria, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DescripcionMateria, "", new { @class = "text-danger" })
+                                        </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 @ActFracArancelaria" id="activaFraccionArancelaria">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.FraccionArancelarias, htmlAttributes: new { @class = "form-label" })
                                             @Html.EditorFor(model => model.Mercancias.Mercancia.FraccionArancelarias, new { htmlAttributes = new { @class = "form-control mb-2" } })
@@ -1212,23 +1361,24 @@
 
                                 </div>
 
-                                <!--CHECKBOX PEDIMENTO-->
-                                <div class="form-group col-xs-12 col-sm-6 col-md-6">
+                                @*  CHECKBOX DCOUMENTACION ADUANERA*@
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     <div class="checkbox">
-                                        <input type="checkbox" class="form-check-input addPedimento" />
-                                        <label class="form-label">Pedimento</label>
+                                        <input type="checkbox" class="form-check-input addDAduanera" />
+                                        <label class="form-label">Documentación Aduanera</label>
                                     </div>
                                 </div>
-
                                 <div class="clearfix"></div>
-                                <div class="card shadow-sm hiddenDiv DivPedimento">
+
+
+                                <div class="card shadow-sm hiddenDiv DivDAduanera">
 
                                     <div class="card-header">
                                         <h3 class="card-title">
-                                            Agregar Pedimentos
+                                            Agregar Documentación Aduanera
                                         </h3>
                                         <div class="card-toolbar">
-                                            <a href="#" class="icon-separator" id="agregarDetallePedimentos">
+                                            <a href="#" class="icon-separator" id="agregarDetalleDAduanera">
                                                 <!--begin::Svg Icon -->
                                                 <span class="svg-icon svg-icon-3x">
                                                     <img src="~/_CDN/assets/media/icons/duotune/general/gen041.svg" width="40" height="40" />
@@ -1237,11 +1387,26 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body row">
                                         <div class="form-group col-xs-12 col-sm-4">
-                                            @Html.LabelFor(model => model.Mercancias.Mercancia.Pedimentos.Pedimento, new { @class = "form-label" })
-                                            @Html.EditorFor(model => model.Mercancias.Mercancia.Pedimentos.Pedimento, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Pedimentos.Pedimento, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.TipoDocumento, new { @class = "form-label" })
+                                            @Html.DropDownListFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.TipoDocumento, (SelectList)ViewBag.TipoDocumentoList, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.TipoDocumento, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-4">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.NumPedimento, new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.NumPedimento, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.NumPedimento, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-4">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.IdentDocAduanero, new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.IdentDocAduanero, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.IdentDocAduanero, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-4">
+                                            @Html.LabelFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.RfcImpo, new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.RfcImpo, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                            @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.RfcImpo, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="clearfix"></div>
@@ -1250,20 +1415,20 @@
                                             <div class="content-box">
                                                 <h3 class="content-box-header bg-default">
                                                     <i class="glyph-icon icon-inbox"></i>
-                                                    Pedimentos Agregadas
-                                                    <span class="contadorPedimentos font-blue">
+                                                    Documentación Aduanera Agregados
+                                                    <span class="contadorDAduanera font-blue">
 
                                                     </span>
                                                 </h3>
                                                 <hr />
                                                 <div class="content-box-wrapper">
                                                     <div>
-                                                        <div class="row" id="detallesPedimentos">
-                                                            @if (Model.Pedimentoss != null)
+                                                        <div class="row" id="detallesDAduanera">
+                                                            @if (Model.DocumentacionAduanerass != null)
                                                             {
-                                                                foreach (var pedimento in Model.Pedimentoss)
+                                                                foreach (var documentacionAduanera in Model.DocumentacionAduanerass)
                                                                 {
-                                                                    @Html.Partial("~/Views/ComplementosCartaPorte/Pedimentos.cshtml", pedimento)
+                                                                    @Html.Partial("~/Views/ComplementosCartaPorte/DocumentacionAduanera.cshtml", documentacionAduanera)
                                                                 }
                                                             }
                                                         </div>
@@ -1272,6 +1437,7 @@
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
+
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -1557,6 +1723,11 @@
                                     @Html.EditorFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.AnioModeloVM, new { htmlAttributes = new { @class = "form-control mb-2" } })
                                     @Html.ValidationMessageFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.AnioModeloVM, "", new { @class = "text-danger" })
                                 </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                                    @Html.LabelFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.PesoBrutoVehicular, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.PesoBrutoVehicular, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                    @Html.ValidationMessageFor(model => model.Mercancias.AutoTransporte.IdentificacionVehicular.PesoBrutoVehicular, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                             <div class="clearfix"></div>
                             <h3 class="title-hero">
@@ -1736,11 +1907,6 @@
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ClaveTipoCarga_Id, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6 col-md-4">
-                                    @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.NumCerITC, htmlAttributes: new { @class = "form-label" })
-                                    @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.NumCerITC, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                    @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.NumCerITC, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                     @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.Eslora, htmlAttributes: new { @class = "form-label" })
                                     @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.Eslora, new { htmlAttributes = new { @class = "form-control mb-2" } })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.Eslora, "", new { @class = "text-danger" })
@@ -1779,6 +1945,16 @@
                                     @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.NumConocEmbarc, htmlAttributes: new { @class = "form-label" })
                                     @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.NumConocEmbarc, new { htmlAttributes = new { @class = "form-control mb-2" } })
                                     @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.NumConocEmbarc, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                                    @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.Puntual, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.Puntual, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                    @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.Puntual, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                                    @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.PermisoTempNavegacion, htmlAttributes: new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.PermisoTempNavegacion, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                    @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.PermisoTempNavegacion, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -1819,7 +1995,21 @@
                                         @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.NumPrecinto, new { htmlAttributes = new { @class = "form-control mb-2" } })
                                         @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.NumPrecinto, "", new { @class = "text-danger" })
                                     </div>
-
+                                    <div class="form-group col-xs-12 col-sm-4">
+                                        @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.IdCCPRelacionado, new { @class = "form-label" })
+                                        @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.IdCCPRelacionado, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                        @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.IdCCPRelacionado, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-4">
+                                        @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.PlacaVMCCP, new { @class = "form-label" })
+                                        @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.PlacaVMCCP, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                        @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.PlacaVMCCP, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-4">
+                                        @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.FechaCertificacionCCP, new { @class = "form-label" })
+                                        @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.FechaCertificacionCCP, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                        @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.ContenedorM.FechaCertificacionCCP, "", new { @class = "text-danger" })
+                                    </div>
                                     <div class="clearfix"></div>
 
                                     <div class="col-xs-12">
@@ -1843,6 +2033,68 @@
                                                                 {
                                                                     @Html.Partial("~/Views/ComplementosCartaPorte/ContenedoresMEdit.cshtml", contenedoresM)
                                                                 }
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <h3 class="title-hero">
+                                Remolque CCP
+                            </h3>
+                            <div class="card shadow-sm">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="glyph-icon icon-cog"></i>
+                                        Agregar Remolque CCP
+                                    </h3>
+                                    <div class="card-toolbar">
+                                        <a href="#" class="icon-separator" id="agregarDetalleRemolqueCCP">
+                                            <!--begin::Svg Icon -->
+                                            <span class="svg-icon svg-icon-3x">
+                                                <img src="~/_CDN/assets/media/icons/duotune/general/gen041.svg" width="40" height="40" />
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="form-group col-xs-12 col-sm-4">
+                                        @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.SubTipoRemCCP, new { @class = "form-label" })
+                                        @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.SubTipoRemCCP, (IEnumerable<SelectListItem>)ViewBag.SubTipoRem_Id, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                        @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.SubTipoRemCCP, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-4">
+                                        @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.PlacaCCP, new { @class = "form-label" })
+                                        @Html.EditorFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.PlacaCCP, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                        @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.PlacaCCP, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="clearfix"></div>
+
+                                    <div class="col-xs-12">
+                                        <div class="content-box">
+                                            <h3 class="content-box-header bg-default">
+                                                <i class="glyph-icon icon-inbox"></i>
+                                                Remolques CCP Agregados
+                                                <span class="contadorRemolqueCCP font-blue">
+
+                                                </span>
+                                            </h3>
+                                            <hr />
+                                            <div class="content-box-wrapper">
+                                                <div>
+                                                    <div class="row" id="detallesRemolqueCCP">
+                                                        @if (Model.RemolqueCCPs != null)
+                                                        {
+                                                            foreach (var remolqueCCP in Model.RemolqueCCPs)
+                                                            {
+                                                                @Html.Partial("~/Views/ComplementosCartaPorte/RemolqueCCP.cshtml", remolqueCCP)
                                                             }
                                                         }
                                                     </div>
@@ -2425,110 +2677,110 @@
     </div>
     <!--end::Stepper-->
 
-   
-   }
-    <script>
-        function removeDetalleUbicacion(elem) {
-            var totalU = $(".ubicacion").length;
-            if (totalU > 0) {
-                var contador = $(".ubicacion").length - 1;
-                $(".contadorUbicaciones").replaceWith('<span class="contadorUbicaciones font-blue">: ' + contador + '</span >');
-            } else {
-                $(".contadorUbicaciones").replaceWith('<span class="contadorUbicaciones font-blue">');
-            }
-            $(elem).parent().parent().parent().remove();
-        }
-        $("#tipoComprobante").change(function () {
-            if ($(this).val() === "T") {
-                /*$('#subtotal').attr("disabled", "disabled")*/
-                $('#validaTipoComprobante').hide(200);
-                $('#validaClaveTransporte').hide(200);
-                $('#activaImpuesto').hide(200);
 
-                //$('#claveTransporte').val("0.00");
-                $('#subtotal').val("0.00");
-                $('#total').val("0.00");
-            } else {
-                //$('#subtotal').removeAttr("disabled");
-                $('#validaTipoComprobante').show();
-                $('#validaClaveTransporte').show();
-                $('#activaImpuesto').show(200);
-                $('#subtotal').val("0.00");
-                $('#total').val("0.00");
-            }
-        });
-
-
-        //Total de impuesto Trasladado y Retenido
-        $('#TTasaOCuota').on("keyup", function () {
-            if ($('#TTasaOCuota').val() > 0) {
-
-                var TBase = parseFloat($('#TBase').val());
-                var TTasaOCuota = parseFloat($('#TTasaOCuota').val());
-                if ($('#TBase').val() === "") {
-                    TBase = 0;
-
-                }
-                if ($('#TTasaOCuota').val() === "") {
-                    TTasaOCuota = 0;
-                }
-
-                Total = TBase * TTasaOCuota;
-
-                $('#TImporte').val(Total);
-            } else {
-
-                $('#TImporte').val(0);
-            }
-        });
-
-        $('#RTasaOCuota').on("keyup", function () {
-            if ($('#RTasaOCuota').val() > 0) {
-                var TBase = parseFloat($('#RBase').val());
-                var TTasaOCuota = parseFloat($('#RTasaOCuota').val());
-                if ($('#RBase').val() === "") {
-                    TBase = 0;
-
-                }
-                if ($('#RTasaOCuota').val() === "") {
-                    TTasaOCuota = 0;
-                }
-
-                Total = TBase * TTasaOCuota;
-
-                $('#RImporte').val(Total);
-            } else {
-
-                $('#RImporte').val(0);
-            }
-        });
-
-
-
-        $(function () {
-            $("#tipoComprobante").change(function () {
-                if ($(this).val() === "I") {
-                    alert('Si el tipo de comprobante es I(Ingreso) agregar Nuevo  Rfc receptor y usoCFDI');
-                }
-            });
-        });
-        $("#FormaPago").val($("#IdFormaPago").val());
-        if ($("#IdTipoRelacion").val() > 0) {
-                $('.cfdiRelacionadoSeccion').show();
-                $('.cfdiRelacionadoSeccion').css('display', 'inline');
-                
-            
-        }else { $('.cfdiRelacionadoSeccion').hide();}
-
-        if ($('#tipoComprobante').val() === "T") {
-            //$('#UsoCfdiCP').val('S01');
-            $('#activaObjetoImpI').hide();
-            $('#activaObjetoImpT').show();
-            $("#Conceptos_ObjetoImpuesto").val("01");
-            $('#objetoImpuestoText').text("01-No objeto de impuesto");
+}
+<script>
+    function removeDetalleUbicacion(elem) {
+        var totalU = $(".ubicacion").length;
+        if (totalU > 0) {
+            var contador = $(".ubicacion").length - 1;
+            $(".contadorUbicaciones").replaceWith('<span class="contadorUbicaciones font-blue">: ' + contador + '</span >');
         } else {
-            $('#activaObjetoImpI').show();
-            $('#activaObjetoImpT').hide();
+            $(".contadorUbicaciones").replaceWith('<span class="contadorUbicaciones font-blue">');
         }
-    </script>
+        $(elem).parent().parent().parent().remove();
+    }
+    $("#tipoComprobante").change(function () {
+        if ($(this).val() === "T") {
+            /*$('#subtotal').attr("disabled", "disabled")*/
+            $('#validaTipoComprobante').hide(200);
+            $('#validaClaveTransporte').hide(200);
+            $('#activaImpuesto').hide(200);
+
+            //$('#claveTransporte').val("0.00");
+            $('#subtotal').val("0.00");
+            $('#total').val("0.00");
+        } else {
+            //$('#subtotal').removeAttr("disabled");
+            $('#validaTipoComprobante').show();
+            $('#validaClaveTransporte').show();
+            $('#activaImpuesto').show(200);
+            $('#subtotal').val("0.00");
+            $('#total').val("0.00");
+        }
+    });
+
+
+    //Total de impuesto Trasladado y Retenido
+    $('#TTasaOCuota').on("keyup", function () {
+        if ($('#TTasaOCuota').val() > 0) {
+
+            var TBase = parseFloat($('#TBase').val());
+            var TTasaOCuota = parseFloat($('#TTasaOCuota').val());
+            if ($('#TBase').val() === "") {
+                TBase = 0;
+
+            }
+            if ($('#TTasaOCuota').val() === "") {
+                TTasaOCuota = 0;
+            }
+
+            Total = TBase * TTasaOCuota;
+
+            $('#TImporte').val(Total);
+        } else {
+
+            $('#TImporte').val(0);
+        }
+    });
+
+    $('#RTasaOCuota').on("keyup", function () {
+        if ($('#RTasaOCuota').val() > 0) {
+            var TBase = parseFloat($('#RBase').val());
+            var TTasaOCuota = parseFloat($('#RTasaOCuota').val());
+            if ($('#RBase').val() === "") {
+                TBase = 0;
+
+            }
+            if ($('#RTasaOCuota').val() === "") {
+                TTasaOCuota = 0;
+            }
+
+            Total = TBase * TTasaOCuota;
+
+            $('#RImporte').val(Total);
+        } else {
+
+            $('#RImporte').val(0);
+        }
+    });
+
+
+
+    $(function () {
+        $("#tipoComprobante").change(function () {
+            if ($(this).val() === "I") {
+                alert('Si el tipo de comprobante es I(Ingreso) agregar Nuevo  Rfc receptor y usoCFDI');
+            }
+        });
+    });
+    $("#FormaPago").val($("#IdFormaPago").val());
+    if ($("#IdTipoRelacion").val() > 0) {
+        $('.cfdiRelacionadoSeccion').show();
+        $('.cfdiRelacionadoSeccion').css('display', 'inline');
+
+
+    } else { $('.cfdiRelacionadoSeccion').hide(); }
+
+    if ($('#tipoComprobante').val() === "T") {
+        //$('#UsoCfdiCP').val('S01');
+        $('#activaObjetoImpI').hide();
+        $('#activaObjetoImpT').show();
+        $("#Conceptos_ObjetoImpuesto").val("01");
+        $('#objetoImpuestoText').text("01-No objeto de impuesto");
+    } else {
+        $('#activaObjetoImpI').show();
+        $('#activaObjetoImpT').hide();
+    }
+</script>
 

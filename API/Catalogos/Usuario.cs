@@ -56,6 +56,7 @@ namespace API.Catalogos
 
         public Status Status { get; set; }
 
+        //[RegularExpression(@"^[a-zA-Z0-9_]*$", ErrorMessage = "El nombre de usuario solo puede contener letras, números y guiones bajos.")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Nombre de Usuario")]
         public String NombreUsuario { get; set; }

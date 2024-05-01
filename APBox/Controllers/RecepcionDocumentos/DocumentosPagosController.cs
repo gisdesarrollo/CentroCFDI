@@ -462,7 +462,7 @@ namespace APBox.Controllers.Operaciones
                 _db.Entry(documentoRecibido).State = EntityState.Modified;
                 _db.SaveChanges();
 
-                return RedirectToAction("ComplementosPagosCargados");
+                return RedirectToAction("CargaComplementoPago");
             }
             catch
             {

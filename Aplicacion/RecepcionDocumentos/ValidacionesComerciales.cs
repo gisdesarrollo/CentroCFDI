@@ -96,9 +96,12 @@ namespace Aplicacion.RecepcionDocumentos
             //validar que la factura esté emitida dentro del mes en curso
             DateTime fechaActual = DateTime.Now;
             DateTime fechaFactura = DateTime.Parse(dv.Cfdi.Fecha);
-            if (fechaFactura.Year != fechaActual.Year || fechaFactura.Month != fechaActual.Month)
+            if (dv.ConfiguracionEmpresa.RecibirFacturasMesCorriente)
             {
-                throw new Exception(String.Format("La Fecha de emisión de la factura {0} está fuera del mes actual", fechaFactura));
+                if (fechaFactura.Year != fechaActual.Year || fechaFactura.Month != fechaActual.Month)
+                {
+                    throw new Exception(String.Format("La Fecha de emisión de la factura {0} está fuera del mes actual", fechaFactura));
+                }
             }
         }
 

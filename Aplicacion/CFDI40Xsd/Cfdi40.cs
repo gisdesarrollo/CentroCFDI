@@ -81,7 +81,9 @@ public partial class ComprobanteCFDI {
 
     public TimbreFiscalDigital TimbreFiscalDigital;
 
-    public CartaPorte CartaPorte;
+    public CartaPorte CartaPorte30;
+
+    public Aplicacion.CARTAPORTE20Xsd.CartaPorte CartaPorte20;
 
     public Pagos Pagos;
 

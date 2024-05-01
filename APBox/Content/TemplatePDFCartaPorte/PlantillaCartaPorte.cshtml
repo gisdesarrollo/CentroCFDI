@@ -1,6 +1,7 @@
 ﻿
 @using API.Enums;
 @using Aplicacion.Utilidades;
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
@@ -30,6 +31,7 @@
 
                     <h1 align="right" class="encabezado">Folio: <b class="title">@Model.Serie - @Model.Folio</b></h1>
                     <h1 align="right" class="encabezado">Folio Fiscal UUID: <b class="title">@Model.TimbreFiscalDigital.UUID.ToString().ToUpper()</b></h1>
+                    <h1 align="right" class="encabezado">Identificador IdCCP: <b class="title">@Model.CartaPorte30.IdCCP.ToString().ToUpper()</b></h1>
                     @if (Model.Emisor.Rfc == "CME090205NS5")
                     {
                         <h1 align="right" class="encabezado">Fecha de emisión: <b class="title">@DescripcionesEnum.fechaFormat(Model.Fecha)</b></h1>
@@ -41,7 +43,7 @@
                     }
                     @if (Model.Referencia != null)
                     {
-                    <h1 align="right" class="encabezado">Referencia: <b class="title">@Model.Referencia</b></h1>
+                        <h1 align="right" class="encabezado">Referencia: <b class="title">@Model.Referencia</b></h1>
                     }
                 </td>
             </tr>
@@ -433,13 +435,13 @@
 
 
 
-    <!-- Area de  CartaPorte -->
+    <!-- Area de  CartaPorte30 -->
     <div style="width:100%">
 
         <!-- Destinos -->
-        @if (Model.CartaPorte != null)
+        @if (Model.CartaPorte30 != null)
         {
-            foreach (var ubicacion in Model.CartaPorte.Ubicaciones)
+            foreach (var ubicacion in Model.CartaPorte30.Ubicaciones)
             {
                 if (@ubicacion.TipoUbicacion == "Origen")
                 {
@@ -897,12 +899,12 @@
 
         }
         <!-- Mercancias -->
-        @if (Model.CartaPorte != null)
+        @if (Model.CartaPorte30 != null)
         {
 
-            if (Model.CartaPorte.Mercancias != null)
+            if (Model.CartaPorte30.Mercancias != null)
             {
-                foreach (var mercancia in Model.CartaPorte.Mercancias.Mercancia)
+                foreach (var mercancia in Model.CartaPorte30.Mercancias.Mercancia)
                 {
                     <table class="table-carta-porte" style="width: 100%;">
                         <caption class="seccion">Mercancías</caption>
@@ -1027,33 +1029,44 @@
 
                     </table>
 
-                    if (mercancia.Pedimentos != null)
+                    if (mercancia.DocumentacionAduanera != null)
                     {
-                        foreach (var pedimento in mercancia.Pedimentos)
+                        foreach (var docAduanera in mercancia.DocumentacionAduanera)
                         {
 
 
-                            <b class="encabezado" colspan="5">Pedimentos</b>
+                            <b class="encabezado" colspan="5">Documentacion Aduanera</b>
 
 
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Pedimento</th>
-
+                                        <th>Tipo Documento</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Número Pedimento</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Identificador Aduanero</th>
+                                    </tr>
+                                    <tr>
+                                        <th>RFC Importador</th>
                                     </tr>
                                 </thead>
-
-
                                 <tbody>
                                     <tr>
-                                        <td>@pedimento.Pedimento</td>
-
+                                        <td>@docAduanera.TipoDocumento</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@docAduanera.NumPedimento</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@docAduanera.IdentDocAduanero</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@docAduanera.RFCImpo</td>
                                     </tr>
                                 </tbody>
-
-
-
                             </table>
 
 
@@ -1243,10 +1256,10 @@
 
 
 
-        @if (Model.CartaPorte != null)
+        @if (Model.CartaPorte30 != null)
         {
         <!-- AutoTransporte Federal  -->
-            if (Model.CartaPorte.Mercancias.Autotransporte != null)
+            if (Model.CartaPorte30.Mercancias.Autotransporte != null)
         {
             <table class="table-carta-porte" style="width: 100%;">
                 <caption class="seccion">Autotransporte</caption>
@@ -1269,7 +1282,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.PermSCT</td>
+                        <td>@Model.CartaPorte30.Mercancias.Autotransporte.PermSCT</td>
                         <td>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -1279,7 +1292,7 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                         </td>
-                        <td>@Model.CartaPorte.Mercancias.Autotransporte.NumPermisoSCT</td>
+                        <td>@Model.CartaPorte30.Mercancias.Autotransporte.NumPermisoSCT</td>
 
                     </tr>
                 </tbody>
@@ -1290,7 +1303,7 @@
 
 
 
-            if (Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular != null)
+            if (Model.CartaPorte30.Mercancias.Autotransporte.IdentificacionVehicular != null)
             {
 
                 <b class="encabezado" colspan="5">Identificacion Vehicular</b>
@@ -1314,17 +1327,17 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular</td>
+                            <td>@Model.CartaPorte30.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular</td>
                             <th>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </th>
-                            <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM</td>
+                            <td>@Model.CartaPorte30.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM</td>
                             <th>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </th>
-                            <td>@Model.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM</td>
+                            <td>@Model.CartaPorte30.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM</td>
 
 
                         </tr>
@@ -1344,7 +1357,7 @@
 
 
 
-            if (Model.CartaPorte.Mercancias.Autotransporte.Seguros != null)
+            if (Model.CartaPorte30.Mercancias.Autotransporte.Seguros != null)
             {
 
 
@@ -1368,7 +1381,7 @@
 
                             <th>Poliza Resp Civil</th>
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraMedAmbiente != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraMedAmbiente != null)
                             {
 
 
@@ -1376,21 +1389,21 @@
                             }
 
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaMedAmbiente != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaMedAmbiente != null)
                             {
                                 <th>Poliza Med Ambiente</th>
                             }
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraCarga != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraCarga != null)
                             {
                                 <th>Asegura Carga</th>
                             }
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaCarga != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaCarga != null)
                             {
                                 <th>Poliza Carga</th>
                             }
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PrimaSeguro > 0)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PrimaSeguro > 0)
                             {
                                 <th>Prima Seguro</th>
                             }
@@ -1399,7 +1412,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil</td>
+                            <td>@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraRespCivil</td>
 
                             <th>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -1409,31 +1422,31 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </th>
 
-                            <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil</td>
+                            <td>@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaRespCivil</td>
 
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraMedAmbiente != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraMedAmbiente != null)
                             {
-                                <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraMedAmbiente</td>
+                                <td>@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraMedAmbiente</td>
                             }
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaMedAmbiente != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaMedAmbiente != null)
                             {
-                                <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaMedAmbiente</td>
+                                <td>@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaMedAmbiente</td>
                             }
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraCarga != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraCarga != null)
                             {
-                                <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraCarga</td>
+                                <td>@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraCarga</td>
                             }
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaCarga != null)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaCarga != null)
                             {
-                                <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaCarga</td>
+                                <td>@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaCarga</td>
                             }
 
-                            @if (@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PrimaSeguro > 0)
+                            @if (@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PrimaSeguro > 0)
                             {
-                                <td>@Model.CartaPorte.Mercancias.Autotransporte.Seguros.PrimaSeguro</td>
+                                <td>@Model.CartaPorte30.Mercancias.Autotransporte.Seguros.PrimaSeguro</td>
                             }
 
 
@@ -1467,10 +1480,10 @@
 
 
 
-            if (Model.CartaPorte.Mercancias.Autotransporte.Remolques != null)
+            if (Model.CartaPorte30.Mercancias.Autotransporte.Remolques != null)
             {
 
-                foreach (var remol in Model.CartaPorte.Mercancias.Autotransporte.Remolques)
+                foreach (var remol in Model.CartaPorte30.Mercancias.Autotransporte.Remolques)
                 {
 
 
@@ -1527,9 +1540,9 @@
         }
         }
             <!--Transporte Maritimo-->
-        @if (Model.CartaPorte != null)
+        @if (Model.CartaPorte30 != null)
         {
-            if (Model.CartaPorte.Mercancias.TransporteMaritimo != null)
+            if (Model.CartaPorte30.Mercancias.TransporteMaritimo != null)
             {
                 <table class="table-carta-porte" style="width: 100%;">
                     <caption class="seccion">Transporte Maritimo</caption>
@@ -1551,16 +1564,16 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.PermSCT</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPermisoSCT</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NombreAseg</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumPolizaSeguro</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.TipoEmbarcacion</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.Matricula</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumeroOMI</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.AnioEmbarcacion</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NombreEmbarc</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NacionalidadEmbarc</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.PermSCT</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NumPermisoSCT</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NombreAseg</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NumPolizaSeguro</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.TipoEmbarcacion</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.Matricula</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NumeroOMI</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.AnioEmbarcacion</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NombreEmbarc</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NacionalidadEmbarc</td>
 
                         </tr>
                     </tbody>
@@ -1589,16 +1602,16 @@
 
                     <tbody>
                         <tr>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.UnidadesDeArqBruto</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.TipoCarga</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumCertITC</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.Eslora</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.Manga</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.Calado</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NombreAgenteNaviero</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumAutorizacionNaviero</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumViaje</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteMaritimo.NumConocEmbarc</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.UnidadesDeArqBruto</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.TipoCarga</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NumCertITC</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.Eslora</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.Manga</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.Calado</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NombreAgenteNaviero</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NumAutorizacionNaviero</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NumViaje</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteMaritimo.NumConocEmbarc</td>
 
                         </tr>
                     </tbody>
@@ -1615,11 +1628,11 @@
 
 
 
-                if (Model.CartaPorte.Mercancias.TransporteMaritimo.Contenedor != null)
+                if (Model.CartaPorte30.Mercancias.TransporteMaritimo.Contenedor != null)
                 {
 
 
-                    foreach (var cont in Model.CartaPorte.Mercancias.TransporteMaritimo.Contenedor)
+                    foreach (var cont in Model.CartaPorte30.Mercancias.TransporteMaritimo.Contenedor)
                     {
 
 
@@ -1681,9 +1694,9 @@
             }
         }
         <!--Transporte Aereo-->
-        @if (Model.CartaPorte != null)
+        @if (Model.CartaPorte30 != null)
         {
-            if (Model.CartaPorte.Mercancias.TransporteAereo != null)
+            if (Model.CartaPorte30.Mercancias.TransporteAereo != null)
             {
                 <table class="table-carta-porte" style="width: 100%;">
                     <caption class="seccion">Transporte Aereo</caption>
@@ -1700,12 +1713,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.PermSCT</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumPermisoSCT</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.MatriculaAeronave</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.NombreAseg</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumPolizaSeguro</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumeroGuia</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.PermSCT</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.NumPermisoSCT</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.MatriculaAeronave</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.NombreAseg</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.NumPolizaSeguro</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.NumeroGuia</td>
 
                         </tr>
                     </tbody>
@@ -1731,12 +1744,12 @@
 
                     <tbody>
                         <tr>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.LugarContrato</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.CodigoTransportista</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.RFCEmbarcador</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.NumRegIdTribEmbarc</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.ResidenciaFiscalEmbarc</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteAereo.NombreEmbarcador</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.LugarContrato</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.CodigoTransportista</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.RFCEmbarcador</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.NumRegIdTribEmbarc</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.ResidenciaFiscalEmbarc</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteAereo.NombreEmbarcador</td>
 
                         </tr>
                     </tbody>
@@ -1746,9 +1759,9 @@
             }
         }
         <!--Transporte Ferroviario-->
-        @if (Model.CartaPorte != null)
+        @if (Model.CartaPorte30 != null)
         {
-            if (Model.CartaPorte.Mercancias.TransporteFerroviario != null)
+            if (Model.CartaPorte30.Mercancias.TransporteFerroviario != null)
             {
                 <table class="table-carta-porte" style="width: 100%;">
                     <caption class="seccion">Transporte Ferroviario</caption>
@@ -1763,10 +1776,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeServicio</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.TipoDeTrafico</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.NombreAseg</td>
-                            <td>@Model.CartaPorte.Mercancias.TransporteFerroviario.NumPolizaSeguro</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteFerroviario.TipoDeServicio</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteFerroviario.TipoDeTrafico</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteFerroviario.NombreAseg</td>
+                            <td>@Model.CartaPorte30.Mercancias.TransporteFerroviario.NumPolizaSeguro</td>
 
                         </tr>
                     </tbody>
@@ -1775,7 +1788,7 @@
 
 
 
-                foreach (var derpas in Model.CartaPorte.Mercancias.TransporteFerroviario.DerechosDePaso)
+                foreach (var derpas in Model.CartaPorte30.Mercancias.TransporteFerroviario.DerechosDePaso)
                 {
                     <b class="encabezado" colspan="5">Derecho de Paso</b>
 
@@ -1805,7 +1818,7 @@
                 }
 
 
-                foreach (var carro in Model.CartaPorte.Mercancias.TransporteFerroviario.Carro)
+                foreach (var carro in Model.CartaPorte30.Mercancias.TransporteFerroviario.Carro)
                 {
 
 
@@ -1899,11 +1912,11 @@
             }
         }
         <!-- Figura Transporte  -->
-        @if (Model.CartaPorte != null)
+        @if (Model.CartaPorte30 != null)
         {
-            if (Model.CartaPorte.FiguraTransporte != null)
+            if (Model.CartaPorte30.FiguraTransporte != null)
             {
-                foreach (var tipoFigura in Model.CartaPorte.FiguraTransporte)
+                foreach (var tipoFigura in Model.CartaPorte30.FiguraTransporte)
                 {
                     <table class="table-carta-porte" style="width: 100%;">
                         <caption class="seccion">Figura Transporte</caption>

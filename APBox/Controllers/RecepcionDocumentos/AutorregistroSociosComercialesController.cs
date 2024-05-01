@@ -107,6 +107,7 @@ namespace APBox.Controllers.Catalogos
             }
 
             TempData["SocioComercialId"] = socioComercial.Id;
+            ViewBag.socioComercialId = socioComercial.Id;
             return View("CreateUsuario");
         }
 
@@ -115,13 +116,23 @@ namespace APBox.Controllers.Catalogos
         {
             var grupo = _db.Grupos.FirstOrDefault(c => c.Llave == id);
             int perfilId = ObtenerPerfilId(grupo.Id);
-
+            var socioComercialId = TempData["SocioComercialId"] as int?;
+            string emailSocioComercial = null;
+            if (socioComercialId != null)
+            {
+                var socioComercial = _db.SociosComerciales.Find(socioComercialId);
+                if(socioComercial != null)
+                {
+                    emailSocioComercial = socioComercial.Email;
+                }
+            }
             var usuario = new Usuario
             {   
                 PerfilId = perfilId,
                 Status = API.Enums.Status.Activo,
                 Sucursales = new List<UsuarioSucursal>(),
                 GrupoId = grupo.Id,
+                NombreUsuario = emailSocioComercial
             };
 
             ViewBag.Controller = "Autoregistro";

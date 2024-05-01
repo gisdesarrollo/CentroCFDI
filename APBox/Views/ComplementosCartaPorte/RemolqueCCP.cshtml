@@ -1,0 +1,41 @@
+﻿@model API.Operaciones.ComplementoCartaPorte.RemolqueCCP
+
+@using (Html.BeginCollectionItem("Mercancias.TransporteMaritimo.RemolqueCCPs"))
+{
+    @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
+
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #6D84C2;">
+            <h3 class="card-title text-white">
+                Remolque CCP Maritimo
+            </h3>
+            <div class="card-toolbar">
+                <a href="#" class="icon-separator" onclick="removeDetalleRemolqueCCP(this)">
+                    <!--begin::Svg Icon -->
+                    <span class="svg-icon svg-icon-3x">
+                        <img src="~/_CDN/assets/media/icons/duotune/general/gen034.svg" width="30" height="30" />
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </div>
+        </div>
+        <div class="card-body row RemolqueCCP">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.TransporteMaritimo_Id)
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.SubTipoRemCCP, new { @class = "fw-bold" })<br />
+                @Html.DisplayFor(model => model.SubTipoRemCCP)
+                @Html.HiddenFor(model => model.SubTipoRemCCP)
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.PlacaCCP, new { @class = "fw-bold" })<br />
+                @Html.DisplayFor(model => model.PlacaCCP)
+                @Html.HiddenFor(model => model.PlacaCCP)
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+}
+

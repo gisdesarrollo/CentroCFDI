@@ -79,35 +79,21 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Índice";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.Title = "Documentos Recibidos";
+            ViewBag.NameHere = "Documentos Recibidos";
             //get usaurio
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
-
             var fechaInicial = DateTime.Today.AddDays(-10);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
 
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
-            if (usuario.esProveedor)
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialId);
-            }
-            else
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, 0);
-            }
+
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
+
             return View(documentosRecibidosModel);
         }
 
@@ -119,30 +105,21 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.Title = "Documentos Recibidos";
+            ViewBag.NameHere = "Documentos Recibidos";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
             DateTime fechaI = documentosRecibidosModel.FechaInicial;
             DateTime fechaF = documentosRecibidosModel.FechaFinal;
+            //var dia = DateTime.DaysInMonth(complementosPagosModel.Anio, (int)complementosPagosModel.Mes);
 
             var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-            if (usuario.esProveedor)
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialId);
-            }
-            else
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, 0);
-            }
+            
+            documentosRecibidosModel.FechaInicial = fechaInicial;
+            documentosRecibidosModel.FechaFinal = fechaFinal;
+
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }
@@ -152,20 +129,12 @@ namespace APBox.Controllers.Operaciones
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
-            ViewBag.Title = "Carga de CFDI";
+            ViewBag.NameHere = "Carga de CFDI";
             ViewBag.ActionES = "CargaCfdi";
 
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
 
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
             DocumentosRecibidosDR documentoRecibidoDr = new DocumentosRecibidosDR()
             {
                 Validaciones = new ValidacionesDR()
@@ -182,7 +151,7 @@ namespace APBox.Controllers.Operaciones
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
-            ViewBag.Title = "Documentos Recibidos";
+            ViewBag.NameHere = "Documentos Recibidos";
 
             //get usaurio
             PathArchivosDto archivo;
@@ -278,17 +247,9 @@ namespace APBox.Controllers.Operaciones
         // GET: DocumentosRecibidos/Create
         public ActionResult Create()
         {
-            ViewBag.Title = "Crear";
+            ViewBag.NameHere = "Crear";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
             return View();
         }
 
@@ -298,15 +259,6 @@ namespace APBox.Controllers.Operaciones
         {
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
-            ViewBag.NameHere = "proveedor";
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
             try
             {
                 // Obtener los datos guardados en TempData
@@ -371,8 +323,8 @@ namespace APBox.Controllers.Operaciones
                     documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
                 }
                 documentoRecibidoDr.CfdiRecibidos_Id = null;
-                documentoRecibidoDr.ComprobacionesGastos = null;
-                documentoRecibidoDr.ComprobacionGasto_Id = null;
+                //documentoRecibidoDr.Solicitudes = null;
+                //documentoRecibidoDr.Solicitud_Id = null;
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                 documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
                 documentoRecibidoDr.Pagos = null;
@@ -407,7 +359,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.Title = "Revisión de Comprobante Recibido";
+            ViewBag.NameHere = "Revisión de Comprobante Recibido";
 
             var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());

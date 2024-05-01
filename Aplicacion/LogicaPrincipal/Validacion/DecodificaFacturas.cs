@@ -196,11 +196,24 @@ namespace Aplicacion.LogicaPrincipal.Validacion
                     }
                     if (oComplementoInterior.Name.Contains("CartaPorte"))
                     {
-                        XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(CartaPorte));
-                        using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                        string version = GetCartaPorteVersion(oComplementoInterior);
+                        if (version == "2.0")
                         {
-                            oComprobante.CartaPorte =
-                                (CartaPorte)oSerializerComplemento.Deserialize(readerComplemento);
+                            XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(CartaPorte));
+                            using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                            {
+                                oComprobante.CartaPorte20 =
+                                    (Aplicacion.CARTAPORTE20Xsd.CartaPorte)oSerializerComplemento.Deserialize(readerComplemento);
+                            }
+                        }
+                        if(version == "3.0")
+                        {
+                            XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(CartaPorte));
+                            using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
+                            {
+                                oComprobante.CartaPorte30 =
+                                    (CartaPorte)oSerializerComplemento.Deserialize(readerComplemento);
+                            }
                         }
                     }
                     if (oComplementoInterior.Name.Contains("Pagos"))
@@ -313,76 +326,29 @@ namespace Aplicacion.LogicaPrincipal.Validacion
             }
             return tipoDocumento;
         }
-        /*public void DecodificarFactura(ref FacturaRecibida facturaRecibida, String pathCompleto)
+
+        private string GetCartaPorteVersion(XmlElement oComplementoInterior)
         {
-            var serializador = new XmlSerializer(typeof(Comprobante));
-            var comprobante = (Comprobante)serializador.Deserialize(new MemoryStream(facturaRecibida.ArchivoFisicoXml));
-
-            //Complementos
-            XmlElement timbreFiscalDigitalFisico = null;
-            XmlElement complementoPagosFisico = null;
-
-            foreach (var complemento in comprobante.Complemento)
+            if (oComplementoInterior.Name.Contains("CartaPorte"))
             {
-                timbreFiscalDigitalFisico = complemento.Any.FirstOrDefault(p => p.OuterXml.Contains("tfd"));
-                complementoPagosFisico = complemento.Any.FirstOrDefault(p => p.OuterXml.Contains("pago10"));
+                // Extraer la versión directamente del atributo 'Version' si está disponible
+                if (oComplementoInterior.HasAttribute("Version"))
+                {
+                    return oComplementoInterior.GetAttribute("Version");
+                }
+
+                // Si el atributo 'Version' no está en el nivel superior, buscar más profundamente
+                // Esto puede depender de cómo está formateado tu XML específico
+                foreach (XmlNode childNode in oComplementoInterior.ChildNodes)
+                {
+                    if (childNode is XmlElement childElement && childElement.HasAttribute("Version"))
+                    {
+                        return childElement.GetAttribute("Version");
+                    }
+                }
             }
-
-            var timbreFiscalDigital = new TimbreFiscalDigital();
-            if (timbreFiscalDigitalFisico != null)
-            {
-                timbreFiscalDigital = ObtenerComplemento<TimbreFiscalDigital>(timbreFiscalDigitalFisico);
-            }
-
-            var complementoPagos = new Pagos();
-            if (complementoPagosFisico != null)
-            {
-                complementoPagos = ObtenerComplemento<Pagos>(complementoPagosFisico);
-            }
-
-            //Datos
-            facturaRecibida.Fecha = Convert.ToDateTime(comprobante.Fecha);
-            facturaRecibida.NoCertificado = comprobante.NoCertificado;
-            facturaRecibida.TipoComprobante = comprobante.TipoDeComprobante;
-            facturaRecibida.Version = comprobante.Version;
-            facturaRecibida.LugarExpedicion = comprobante.LugarExpedicion;
-            facturaRecibida.FormaPago = comprobante.FormaPago;
-            facturaRecibida.MetodoPago = comprobante.MetodoPago;
-            facturaRecibida.Serie = comprobante.Serie;
-            facturaRecibida.Folio = comprobante.Folio;
-            
-            //Totales
-            facturaRecibida.Subtotal = Convert.ToDouble(comprobante.SubTotal);
-            facturaRecibida.Total = Convert.ToDouble(comprobante.Total);
-            
-            //Timbrado
-            facturaRecibida.FechaTimbrado = Convert.ToDateTime(timbreFiscalDigital.FechaTimbrado);
-            facturaRecibida.NoCertificadoSat = timbreFiscalDigital.NoCertificadoSAT;
-            facturaRecibida.SelloDigitalCfdi = timbreFiscalDigital.SelloCFD;
-            facturaRecibida.SelloSat = timbreFiscalDigital.SelloSAT;
-            facturaRecibida.Certificado = comprobante.Certificado;
-            facturaRecibida.Uuid = timbreFiscalDigital.UUID;
-
-            facturaRecibida.Emisor = new Proveedor
-            {
-                RazonSocial = comprobante.Emisor.Nombre,
-                Rfc = comprobante.Emisor.Rfc
-            };
-
-            facturaRecibida.Receptor = new Sucursal
-            {
-                Rfc = comprobante.Receptor.Rfc
-            };
-
-            try
-            {
-                facturaRecibida.Descuento = Convert.ToDouble(comprobante.Descuento);
-            }
-            catch (Exception)
-            {
-            }
-        }*/
-
+            return null;
+        }
         #region Funciones
 
         private T ObtenerComplemento<T>(XmlElement element)

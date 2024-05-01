@@ -378,8 +378,8 @@
     <Compile Include="Controllers\RecepcionDocumentos\ComprobacionesGastosController.cs" />
     <Compile Include="Controllers\RecepcionDocumentos\DocumentosExtranjerosController.cs" />
     <Compile Include="Controllers\RecepcionDocumentos\DocumentosPagosController.cs" />
-    <Compile Include="Controllers\RecepcionDocumentos\DocumentosRecibidosController.cs" />
     <Compile Include="Controllers\ComplementosPago\DescartarRecepcionDocumentosController.cs" />
+    <Compile Include="Controllers\RecepcionDocumentos\DocumentosRecibidosController.cs" />
     <Compile Include="Controllers\Reportes\ReporteRecibidosController.cs" />
     <Compile Include="Controllers\Reportes\ReportesController.cs" />
     <Compile Include="Control\Helpers.cs" />
@@ -449,6 +449,7 @@
     <Content Include="bin\EntityFramework.dll" />
     <Content Include="bin\EntityFramework.SqlServer.dll" />
     <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.xml" />
     <Content Include="bin\es\System.Web.Helpers.resources.dll" />
     <Content Include="bin\es\System.Web.Mvc.resources.dll" />
     <Content Include="bin\es\System.Web.Razor.resources.dll" />
@@ -552,6 +553,8 @@
     <Content Include="bin\SW-sdk-45.dll" />
     <Content Include="bin\System.Buffers.dll" />
     <Content Include="bin\System.Buffers.xml" />
+    <Content Include="bin\System.IO.Compression.dll" />
+    <Content Include="bin\System.IO.Compression.ZipFile.dll" />
     <Content Include="bin\System.Memory.dll" />
     <Content Include="bin\System.Memory.xml" />
     <Content Include="bin\System.Numerics.Vectors.dll" />
@@ -2768,11 +2771,8 @@
     <Content Include="Views\ComplementosPagos\CargarDocumentosExternos.cshtml" />
     <Content Include="web.config" />
     <Content Include="Views\ComplementosCartaPorte\Index.cshtml" />
-    <Content Include="Views\ComplementosCartaPorte\Create.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Domicilio.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Ubicacion.cshtml" />
-    <Content Include="Views\ComplementosCartaPorte\Mercancia.cshtml" />
-    <Content Include="Views\ComplementosCartaPorte\_ComplementoCartaPorteScript.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\FiguraTransporte.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\PartesTransporte.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\ContenedoresM.cshtml" />
@@ -2786,8 +2786,6 @@
     <Content Include="Views\ComplementosCartaPorte\Conceptos.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Remolques.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Generar.cshtml" />
-    <Content Include="Views\ComplementosCartaPorte\Edit.cshtml" />
-    <Content Include="Views\ComplementosCartaPorte\MercanciaEdit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\CarroEdit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\ContenedoresMEdit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\DerechoDePasoEdit.cshtml" />
@@ -2892,18 +2890,23 @@
     <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ValidacionFiscalDocumento.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_ArchivosAdjuntos.cshtml" />
+    <Content Include="Views\Proyectos\Index.cshtml" />
+    <Content Include="Views\Proyectos\Create.cshtml" />
+    <Content Include="Views\Proyectos\Edit.cshtml" />
+    <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
+    <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
+    <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
+    <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
+    <Content Include="Views\Proyectos\Create.cshtml" />
+    <Content Include="Views\Proyectos\Edit.cshtml" />
+    <Content Include="Views\Proyectos\Index.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\_ComplementoCartaPorteScript.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\Create.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\Edit.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\Mercancia.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\MercanciaEdit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\DocumentacionAduanera.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\RemolqueCCP.cshtml" />
-    <Content Include="Views\Proyectos\Index.cshtml" />
-    <Content Include="Views\Proyectos\Create.cshtml" />
-    <Content Include="Views\Proyectos\Edit.cshtml" />
-    <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
-    <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
-    <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
-    <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
-    <Content Include="Views\Proyectos\Create.cshtml" />
-    <Content Include="Views\Proyectos\Edit.cshtml" />
-    <Content Include="Views\Proyectos\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

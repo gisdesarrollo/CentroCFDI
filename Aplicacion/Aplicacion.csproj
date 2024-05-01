@@ -250,6 +250,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CARTAPORTE30Xsd\CartaPorte30.cs" />
     <Compile Include="CARTAPORTE20Xsd\CartaPorte20.cs" />
     <Compile Include="CFDI33Objetos\Cfdi33.cs" />
     <Compile Include="LogicaPrincipal\Acondicionamientos\Operaciones\AcondicionarComprobanteCfdi.cs" />
@@ -306,6 +307,7 @@
     <Compile Include="RecepcionDocumentos\ValidacionesPagos.cs" />
     <Compile Include="TimbreFiscalXsd\TimbreFiscalDigitalv11.cs" />
     <Compile Include="Utilidades\DescripcionesEnum.cs" />
+    <Compile Include="Utilidades\EnumExtensions.cs" />
     <Compile Include="XsdComprasAddenda\AddendaFacturaCOMPRAS.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +342,7 @@
     <Content Include="lib\TimbradoRV.dll" />
     <Content Include="lib\Utilerias.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
