@@ -23,6 +23,7 @@ using System.Text;
 using Aplicacion.LogicaPrincipal.Validacion;
 using Aplicacion.LogicaPrincipal.Descargas;
 using API.Operaciones.RelacionesCfdi;
+using System.ComponentModel;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -93,7 +94,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.Title = "CFDI Complementos Carta Porte";
+            ViewBag.NameHere = "CFDI Complementos Carta Porte";
             var complementoCartaPorteModel = new ComplementosCartaPorteModel()
             {
                 Mes = (Meses)(DateTime.Now.Month),
@@ -121,7 +122,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.Title = "emision";
+            ViewBag.NameHere = "emision";
 
             DateTime fechaI = complementosCPorteModel.FechaInicial;
             DateTime fechaF = complementosCPorteModel.FechaFinal;
@@ -151,11 +152,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFiguraTransporte();
             PopulaNavegacionTrafico();
             PopulaDerechoPaso();
-
             TipoEmbalaje_Id();
-
             PopulaMercancias();
-
             ClaveUnidadPeso_Id();
             SubTipoRem_Id();
             ConfigMaritima_Id();
@@ -168,17 +166,14 @@ namespace APBox.Controllers.ComplementosCartaPorte
             TipoDeServicio_Id();
             TipoCarro_Id();
             Contenedor_Id();
-
             PopulaTiPermiso();
             PopulaEntradaSalidaMerc();
-
             PopulaConceptos();
-            //PopulaImpuestoR();
-            //PopulaImpuestoT();
             PopulaImpuestoSat();
             PopulaFormaPago();
             PopulaExportacion();
             PopulaObjetoImpuesto();
+
             Random random = new Random();
             var randomNumber = random.Next(0, 1000000).ToString("D6");
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
@@ -191,13 +186,15 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
                 SucursalId = ObtenerSucursal(),
                 IDCliente = cliente.Id,
-                Version = "2.0",
+                Version = "3.0",
                 TotalDistRec = 0,
                 Moneda = c_Moneda.MXN,
                 TipoCambio = "1",
                 ExportacionId = "01", //no aplica
                 hidden = false,
                 ReferenciaAddenda = null,//Referencia Addenda
+                //IdCCP = _acondicionarComplementosCartaPorte.GeneraIdCCP(),
+                RegistroIstmo = false,
                 Conceptos = new Conceptos()
                 {
                     Traslado = new TrasladoCP()
@@ -242,7 +239,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                         {
                             PesoGuiaIdentificacion = 0
                         },
-                        Pedimentos = new Pedimentos()
+                        DocumentacionAduanera = new DocumentacionAduanera()
                     },
                     AutoTransporte = new AutoTransporte()
                     {
@@ -252,7 +249,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     },
                     TransporteMaritimo = new TransporteMaritimo()
                     {
-                        ContenedorM = new ContenedorM()
+                        ContenedorM = new ContenedorM(),
+                        RemolqueCCP = new RemolqueCCP()
                     },
                     TransporteAereo = new TransporteAereo(),
                     TransporteFerroviario = new TransporteFerroviario()
@@ -295,7 +293,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.Title = "emision";
+            ViewBag.NameHere = "emision";
             return View(ComplementoCartaPorte);
         }
 
@@ -412,7 +410,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 //copia mercancia - mercancia
 
                 var mercancias = complementoCartaPorte.Mercancias.Mercanciass;
-                Mercancia[] arraysDataMercancia = new Mercancia[100];
+                Mercancia[] arraysDataMercancia = new Mercancia[200];
                 if (complementoCartaPorte.Mercancias.Mercanciass.Count > 0)
                 {
                     var totalMercancia = complementoCartaPorte.Mercancias.Mercanciass.Count;
@@ -420,10 +418,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     for (int x = 0; x < complementoCartaPorte.Mercancias.Mercanciass.Count; x++)
                     {
                         arraysDataMercancia[x] = new Mercancia();
-                        arraysDataMercancia[x].Pedimentoss = new List<Pedimentos>();
+                        arraysDataMercancia[x].DocumentacionAduaneras = new List<DocumentacionAduanera>();
                         arraysDataMercancia[x].GuiasIdentificacionss = new List<GuiasIdentificacion>();
                         arraysDataMercancia[x].CantidadTransportadass = new List<CantidadTransportada>();
-                        arraysDataMercancia[x].Pedimentoss = complementoCartaPorte.Mercancias.Mercanciass[x].Pedimentoss;
+                        arraysDataMercancia[x].DocumentacionAduaneras = complementoCartaPorte.Mercancias.Mercanciass[x].DocumentacionAduaneras;
                         arraysDataMercancia[x].GuiasIdentificacionss = complementoCartaPorte.Mercancias.Mercanciass[x].GuiasIdentificacionss;
                         arraysDataMercancia[x].CantidadTransportadass = complementoCartaPorte.Mercancias.Mercanciass[x].CantidadTransportadass;
                     }
@@ -457,7 +455,19 @@ namespace APBox.Controllers.ComplementosCartaPorte
                         }
                     }
                 }
-
+                //copia transporteMaritimo - remolqueCCP
+                List<RemolqueCCP> remolqueCCP = new List<RemolqueCCP>();
+                if (complementoCartaPorte.Mercancias.TransporteMaritimo != null)
+                {
+                    if (complementoCartaPorte.Mercancias.TransporteMaritimo.RemolqueCCPs != null)
+                    {
+                        if (complementoCartaPorte.Mercancias.TransporteMaritimo.RemolqueCCPs.Count > 0)
+                        {
+                            remolqueCCP = complementoCartaPorte.Mercancias.TransporteMaritimo.RemolqueCCPs;
+                            remolqueCCP.ForEach(cm => cm.TransporteMaritimo = null);
+                        }
+                    }
+                }
                 //copia trasnporte ferroviario -derecho paso
                 List<DerechosDePasos> derechoPasos = new List<DerechosDePasos>();
                 List<Carro> carro = new List<Carro>();
@@ -520,6 +530,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 if (complementoCartaPorte.Mercancias.TransporteMaritimo != null)
                 {
                     complementoCartaPorte.Mercancias.TransporteMaritimo.ContenedoresM = null;
+                    complementoCartaPorte.Mercancias.TransporteMaritimo.RemolqueCCPs = null;
                 }
                 if (complementoCartaPorte.Mercancias.TransporteFerroviario != null)
                 {
@@ -559,7 +570,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 foreach (var mercancia in mercancias)
                 {
                     mercancia.Mercancias = null;
-                    mercancia.Pedimentoss = null;
+                    mercancia.DocumentacionAduaneras = null;
                     mercancia.GuiasIdentificacionss = null;
                     mercancia.CantidadTransportadass = null;
                     mercancia.Mercancias_Id = complementoCartaPorte.Mercancias.Id;
@@ -567,20 +578,20 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 }
                 _db.SaveChanges();
 
-                //mercancia - pedimentos
+                //mercancia - Documentacion aduanera
                 for (int x = 0; x < mercancias.Count; x++)
                 {
                     if (arraysDataMercancia[x] != null)
                     {
-                        if (arraysDataMercancia[x].Pedimentoss != null)
+                        if (arraysDataMercancia[x].DocumentacionAduaneras != null)
                         {
-                            if (arraysDataMercancia[x].Pedimentoss.Count > 0)
+                            if (arraysDataMercancia[x].DocumentacionAduaneras.Count > 0)
                             {
-                                foreach (var pedimento in arraysDataMercancia[x].Pedimentoss)
+                                foreach (var DAduanera in arraysDataMercancia[x].DocumentacionAduaneras)
                                 {
-                                    pedimento.Mercancia = null;
-                                    pedimento.Mercancia_Id = mercancias[x].Id;
-                                    _db.Pedimentos.Add(pedimento);
+                                    DAduanera.Mercancia = null;
+                                    DAduanera.Mercancia_Id = mercancias[x].Id;
+                                    _db.DocumentacionAduanera.Add(DAduanera);
                                 }
                                 _db.SaveChanges();
                             }
@@ -654,6 +665,21 @@ namespace APBox.Controllers.ComplementosCartaPorte
                             cMaritimo.TransporteMaritimo = null;
                             cMaritimo.TransporteMaritimo_Id = complementoCartaPorte.Mercancias.TransporteMaritimo.Id;
                             _db.ContenedoresM.Add(cMaritimo);
+                        }
+                        _db.SaveChanges();
+                    }
+                }
+
+                //transporteMaritimo RemolqueCCP
+                if (remolqueCCP != null)
+                {
+                    if (remolqueCCP.Count > 0)
+                    {
+                        foreach (var remolqueTM in remolqueCCP)
+                        {
+                            remolqueTM.TransporteMaritimo = null;
+                            remolqueTM.TransporteMaritimo_Id = complementoCartaPorte.Mercancias.TransporteMaritimo.Id;
+                            _db.RemolqueCCP.Add(remolqueTM);
                         }
                         _db.SaveChanges();
                     }
@@ -879,7 +905,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 Moneda = c_Moneda.MXN,
                 Cantidad = 0,
                 PesoEnKg = 0,
-                Pedimentos = new Pedimentos(),
+                DocumentacionAduanera = new DocumentacionAduanera(),
                 DetalleMercancia = new DetalleMercancia()
                 {
                     NumPiezas = 0,
@@ -901,7 +927,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 complementoCP.Mercancias.AutoTransporte.Remolque = new Remolques();
                 complementoCP.Mercancias.TransporteMaritimo = new TransporteMaritimo()
                 {
-                    ContenedorM = new ContenedorM()
+                    ContenedorM = new ContenedorM(),
+                    RemolqueCCP = new RemolqueCCP()
                 };
                 complementoCP.Mercancias.TransporteAereo = new TransporteAereo();
                 complementoCP.Mercancias.TransporteFerroviario = new TransporteFerroviario()
@@ -919,7 +946,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 {
                     Remolque = new Remolques()
                 };
-                complementoCP.Mercancias.TransporteMaritimo.ContenedorM = new ContenedorM();
+                complementoCP.Mercancias.TransporteMaritimo = new TransporteMaritimo()
+                {
+                    ContenedorM = new ContenedorM(),
+                    RemolqueCCP = new RemolqueCCP()
+                };
                 complementoCP.Mercancias.TransporteAereo = new TransporteAereo();
                 complementoCP.Mercancias.TransporteFerroviario = new TransporteFerroviario()
                 {
@@ -938,7 +969,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 };
                 complementoCP.Mercancias.TransporteMaritimo = new TransporteMaritimo()
                 {
-                    ContenedorM = new ContenedorM()
+                    ContenedorM = new ContenedorM(),
+                    RemolqueCCP = new RemolqueCCP()
                 };
                 complementoCP.Mercancias.TransporteFerroviario = new TransporteFerroviario()
                 {
@@ -957,7 +989,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 };
                 complementoCP.Mercancias.TransporteMaritimo = new TransporteMaritimo()
                 {
-                    ContenedorM = new ContenedorM()
+                    ContenedorM = new ContenedorM(),
+                    RemolqueCCP = new RemolqueCCP()
                 };
                 complementoCP.Mercancias.TransporteAereo = new TransporteAereo();
                 complementoCP.Mercancias.TransporteFerroviario.DerechosDePasos = new DerechosDePasos();
@@ -988,7 +1021,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.Title = "emision";
+            ViewBag.NameHere = "emision";
             return View(complementoCP);
         }
 
@@ -1084,8 +1117,10 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     complementoCP.Mercancias.TransporteAereo = null;
                     complementoCP.Mercancias.TransporteFerroviario = null;
                     complementoCP.Mercancias.TransporteMaritimo.ContenedoresM = null;
+                    complementoCP.Mercancias.TransporteMaritimo.RemolqueCCPs = null;
                     _db.Entry(complementoCP.Mercancias.TransporteMaritimo).State = EntityState.Modified;
                     _acondicionarComplementosCartaPorte.cargaContenedoresM(complementoCP);
+                    _acondicionarComplementosCartaPorte.cargaRemolqueCCP(complementoCP);
                     complementoCP.Mercancias.TransporteMaritimo.ContenedoresM = null;
                 }
                 if (complementoCP.Mercancias.TransporteFerroviario != null && complementoCP.Mercancias.TransporteFerroviario_Id != null)
@@ -1141,7 +1176,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.Title = "emision";
+            ViewBag.NameHere = "emision";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -1165,7 +1200,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Controller = "ComplementosCartaPorte";
             ViewBag.Action = "Generar";
             ViewBag.ActionES = "Generar";
-            ViewBag.Title = "emision";
+            ViewBag.NameHere = "emision";
 
             string error = "";
             try
@@ -1194,6 +1229,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                     complementoCartaPorteDb.Mercancias.TransporteAereo = null;
                     complementoCartaPorteDb.Mercancias.TransporteFerroviario = null;
                     complementoCartaPorteDb.Mercancias.TransporteMaritimo.ContenedoresM = null;
+                    complementoCartaPorteDb.Mercancias.TransporteMaritimo.RemolqueCCPs = null;
                 }
                 if (complementoCartaPorteDb.Mercancias.AutoTransporte != null && complementoCartaPorteDb.Mercancias.AutoTransporte_Id != null)
                 {
@@ -1575,18 +1611,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Mercancias = (popularDropDowns.PopulaMercancias(ObtenerSucursal()));
         }
 
-        /*private void PopulaImpuestoT()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ImpuestoT = (popularDropDowns.PopulaImpuestoT());
-        }
-
-        private void PopulaImpuestoR()
-        {
-            var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
-            ViewBag.ImpuestoR = (popularDropDowns.PopulaImpuestoR());
-        }*/
-
         private void PopulaPaises()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -1839,6 +1863,25 @@ namespace APBox.Controllers.ComplementosCartaPorte
 
         #endregion Popula CFDI
 
+        //retorna la clave enum con dos valores extraidos de descripcion
+        //ejemplo 01,02
+        private string GetClaveEnum(Enum valorEnum)
+        {
+            var descriptionAttribute = (DescriptionAttribute[])valorEnum
+                .GetType()
+                .GetField(valorEnum.ToString())
+                .GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            if (descriptionAttribute.Length > 0)
+            {
+                string descripcion = descriptionAttribute[0].Description;
+                return descripcion.Substring(0, 2);
+            }
+            else
+            {
+                return null; // Manejo de error si el atributo Description no está presente
+            }
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

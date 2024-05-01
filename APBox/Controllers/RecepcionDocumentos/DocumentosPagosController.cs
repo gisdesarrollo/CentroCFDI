@@ -63,11 +63,11 @@ namespace APBox.Controllers.Operaciones
             documentosRecibidosModel.FechaFinal = fechaFinal;
             if (usuario.esProveedor)
             {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialId);
             }
             else
             {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, 0);
             }
             return View(documentosRecibidosModel);
         }
@@ -98,11 +98,11 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
             if (usuario.esProveedor)
             {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialID);
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialId);
             }
             else
             {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, null);
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, 0);
             }
 
             return View(documentosRecibidosModel);
@@ -379,15 +379,10 @@ namespace APBox.Controllers.Operaciones
         public ActionResult CargaComplementoPago(int Id)
         {
             ViewBag.Controller = "DocumentosPagos";
-<<<<<<< Updated upstream
-            ViewBag.Action = "CargaComplementoPago";
-            ViewBag.ActionES = "Carga Complemento Pago";
-            ViewBag.NameHere = "Carga complemento Pago";
-=======
             ViewBag.Action = "Carga Complemento de Pago";
             ViewBag.ActionES = "Carga Complemento de Pago";
             ViewBag.Title = "Carga complemento de Pago";
->>>>>>> Stashed changes
+
             var pago = _db.PagoDr.Find(Id);
             pago.Procesado = false;
 
@@ -398,16 +393,10 @@ namespace APBox.Controllers.Operaciones
         public ActionResult CargaComplementoPago(PagosDR pagoDR)
         {
             ViewBag.Controller = "DocumentosPagos";
-<<<<<<< Updated upstream
-            ViewBag.Action = "CargaComplementoPago";
-            ViewBag.ActionES = "Carga Complemento Pago";
-            ViewBag.NameHere = "Carga complemento Pago";
-=======
             ViewBag.Action = "Carga Complemento de Pago";
             ViewBag.ActionES = "Carga Complemento de Pago";
             ViewBag.Title = "Carga complemento de Pago";
 
->>>>>>> Stashed changes
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
             ComplementoPagoDto pagoDto = new ComplementoPagoDto();
             String archivo;

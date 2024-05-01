@@ -134,13 +134,13 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                bool correoEnviado = EnviarCorreoBienvenida(usuario);
-                if (!correoEnviado)
-                {
-                    ViewBag.ErrorMessage = "Error: El buzón de correo no está disponible, es posible que esté mal escrito";
-                    ModelState.AddModelError("", "Error: El buzón de correo no está disponible, es posible que esté mal escrito");
-                    return View(usuario);
-                }
+                //bool correoEnviado = EnviarCorreoBienvenida(usuario);
+                //if (!correoEnviado)
+                //{
+                //    ViewBag.ErrorMessage = "Error: El buzón de correo no está disponible, es posible que esté mal escrito";
+                //    ModelState.AddModelError("", "Error: El buzón de correo no está disponible, es posible que esté mal escrito");
+                //    return View(usuario);
+                //}
 
                 _db.Usuarios.Add(usuario);
                 _db.SaveChanges();
@@ -313,14 +313,10 @@ namespace APBox.Controllers.Catalogos
             ViewBag.DepartamentoId = popularDropDowns.PopulaDepartamentos(DepartamentoId);
         }
 
-        private bool EnviarCorreoBienvenida(Usuario usuario)
+        private void EnviarCorreoBienvenida(Usuario usuario)
         {
-            bool enviado = _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
-            if (enviado)
-            {
-                return true;
-            }
-            return false;
+            //corregir este método, ya que cuando es un buzón que no existe genera error.
+            _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
         }
 
         #endregion PopulaForma
