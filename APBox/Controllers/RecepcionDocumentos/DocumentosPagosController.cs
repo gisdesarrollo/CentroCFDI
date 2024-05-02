@@ -45,34 +45,15 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Title = "Documentos Aprobados";
             //get usaurio
 
-            var usuarioId = ObtenerUsuario();
-            var sucursalId = ObtenerSucursal();
-            var usuario = _db.Usuarios.Find(usuarioId);
-            var sucursal = _db.Sucursales.Find(sucursalId);
-
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
             var fechaInicial = DateTime.Today.AddDays(-10);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
-
-            if (usuario.esProveedor)
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
-            }
-            else
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
-            }
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
             return View(documentosRecibidosModel);
         }
 
@@ -87,27 +68,13 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Title = "Documentos Aprobados";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
             DateTime fechaI = documentosRecibidosModel.FechaInicial;
             DateTime fechaF = documentosRecibidosModel.FechaFinal;
 
             var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-            if (usuario.esProveedor)
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialId);
-            }
-            else
-            {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, 0);
-            }
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }

@@ -25,7 +25,7 @@ namespace API.Catalogos
         [Required(ErrorMessage = "Campo Obligatorio")]
         public string Rfc { get; set; }
 
-        [Required]
+        //[Required]
         public int? GrupoId { get; set; }
         [ForeignKey("GrupoId")]
         public virtual Grupo Grupo { get; set; }
