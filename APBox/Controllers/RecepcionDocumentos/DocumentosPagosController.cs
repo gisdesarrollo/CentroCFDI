@@ -45,7 +45,10 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Title = "Documentos Aprobados";
             //get usaurio
 
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var usuarioId = ObtenerUsuario();
+            var sucursalId = ObtenerSucursal();
+            var usuario = _db.Usuarios.Find(usuarioId);
+            var sucursal = _db.Sucursales.Find(sucursalId);
 
             if (usuario.esProveedor)
             {
@@ -61,13 +64,14 @@ namespace APBox.Controllers.Operaciones
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
+
             if (usuario.esProveedor)
             {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, (int)usuario.SocioComercialId);
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
             }
             else
             {
-                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, usuario.Id, 0);
+                documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
             }
             return View(documentosRecibidosModel);
         }
