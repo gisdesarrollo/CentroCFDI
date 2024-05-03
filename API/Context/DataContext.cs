@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure;
 using API.CatalogosCartaPorte.Domicilio;
 using API.Operaciones.ComprobantesCfdi;
 using API.Operaciones.RelacionesCfdi;
+using API.Operaciones.OperacionesRecepcion;
 
 namespace API.Context
 {
@@ -31,12 +32,6 @@ namespace API.Context
                         .HasRequired(s => s.Usuario)
                         .WithMany()
                         .HasForeignKey(s => s.UsuarioId)
-                        .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<PagoProveedor>()
-                        .HasRequired(s => s.Proveedor)
-                        .WithMany()
-                        .HasForeignKey(s => s.ProveedorId)
                         .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Perfil>()
@@ -89,7 +84,6 @@ namespace API.Context
                         .HasForeignKey(s => s.SucursalId)
                         .WillCascadeOnDelete(false);
 
-
         }
 
         #region Catalogos
@@ -100,9 +94,10 @@ namespace API.Context
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Grupo> Grupos { get; set; }
         public DbSet<Perfil> Perfiles { get; set; }
-        public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Sucursal> Sucursales { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Evento> Eventos { get; set; }
+        public DbSet<Proyecto> Proyectos { get; set; }
 
         #endregion
 
@@ -132,13 +127,11 @@ namespace API.Context
         //Facturacion
         public DbSet<DocumentoExtranjero> DocumentosExtranjeros { get; set; }
         public DbSet<FacturaEmitida> FacturasEmitidas { get; set; }
-
-        public DbSet<FacturaEmitidaTemporal> FacturasEmitidasTemp {get; set; }
         public DbSet<FacturaRecibida> FacturasRecibidas { get; set; }
+        public DbSet<FacturaEmitidaTemporal> FacturasEmitidasTemp { get; set; }
         public DbSet<Validacion> Validaciones { get; set; }
 
         //OperacionesProveedores
-        public DbSet<PagoProveedor> PagosProveedores { get; set; }
         public DbSet<SolicitudAcceso> SolicitudesAccesos { get; set; }
 
         //Documentos Recibidos
@@ -149,9 +142,10 @@ namespace API.Context
         public DbSet<DocumentosPagadosDR> DocumentoPagadoDr { get; set; }
         public DbSet<RecibidosXMLDR> RecibidoXmlDr { get; set; }
         public DbSet<RecibidosPDFDR> RecibidoPdfDr { get; set; }
-        public DbSet<SolicitudesDR> SolicitudDr { get; set; }
         public DbSet<ValidacionesDR> ValidacionDr { get; set; }
 
+        //ComrpobacionesGastos
+        public DbSet<ComprobacionGasto> ComprobacionGasto { get; set; }
 
         #endregion
 
@@ -159,7 +153,6 @@ namespace API.Context
 
         public DbSet<BancoSocioComercial> BancosSociosComerciales { get; set; }
         public DbSet<BancoSucursal> BancosSucursales { get; set; }
-        public DbSet<ProveedorSucursal> ProveedoresSucursales { get; set; }
         public DbSet<UsuarioSucursal> UsuariosSucursales { get; set; }
 
         #endregion
@@ -170,13 +163,13 @@ namespace API.Context
 
         public DbSet<Exportacion> Exportacion { get; set; }
         public DbSet<ObjetoImpuesto> ObjetoImpuesto { get; set; }
-       
+
         public DbSet<RetencionCP> RetencionesCP { get; set; }
         public DbSet<TrasladoCP> TrasladosCP { get; set; }
         public DbSet<c_impuestoCFDI> ImpuestoCP { get; set; }
         public DbSet<FormaPagos> Cat_FormaPago { get; set; }
         public DbSet<Cat_Conceptos> Cat_Conceptos { get; set; }
-        public DbSet<Cat_Mercancias> Cat_Mercancias{ get; set; }
+        public DbSet<Cat_Mercancias> Cat_Mercancias { get; set; }
 
         public DbSet<ClaveProdServ> claveProdServ { get; set; }
         public DbSet<Cat_SubImpuestoC> Cat_Impuestos { get; set; }
@@ -207,14 +200,14 @@ namespace API.Context
         public DbSet<TipoRelacion> TiposRelaciones { get; set; }
 
         //CatalogosCartaPorte Domicilio
-        public DbSet<Pais> Paises {get;set;}
-        public DbSet<Estado> Estados {get;set;}
+        public DbSet<Pais> Paises { get; set; }
+        public DbSet<Estado> Estados { get; set; }
         public DbSet<Municipio> Municipios { get; set; }
-        public DbSet<Colonia> Colonias  { get; set; }
+        public DbSet<Colonia> Colonias { get; set; }
         public DbSet<CodigoPostal> CodigosPostales { get; set; }
         public DbSet<Localidad> Localidades { get; set; }
 
-       
+
         public DbSet<AutoTransporte> AutoTransporte { get; set; }
         public DbSet<CantidadTransportada> CantidadTransportadas { get; set; }
         public DbSet<Carro> Carros { get; set; }
@@ -228,7 +221,7 @@ namespace API.Context
         public DbSet<IdentificacionVehicular> IdentificacionVehiculares { get; set; }
         public DbSet<Mercancia> Mercancia { get; set; }
         public DbSet<Mercancias> Mercancias { get; set; }
-       
+
         public DbSet<PartesTransporte> PartesTransporte { get; set; }
         //public DbSet<Pedimentos> Pedimentos { get; set; }
         public DbSet<DocumentacionAduanera> DocumentacionAduanera { get; set; }
@@ -239,15 +232,14 @@ namespace API.Context
         public DbSet<TransporteFerroviario> TransporteFerroviarios { get; set; }
         public DbSet<TransporteMaritimo> TransporteMaritimos { get; set; }
         public DbSet<Ubicacion> UbicacionOrigen { get; set; }
-      
+
         public DbSet<UsoCfdi> UsoCfdis { get; set; }
 
-      
+
         public DbSet<GuiasIdentificacion> GuiasIdentificacion { get; set; }
 
         #endregion
 
-
-
     }
+
 }

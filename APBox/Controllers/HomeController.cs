@@ -22,7 +22,7 @@ namespace APBox.Controllers
             ViewBag.Controller = "Home";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Inicio";
-            ViewBag.NameHere = "Home";
+            ViewBag.Title = "Home";
 
             return View(homeModel);
         }
@@ -54,7 +54,7 @@ namespace APBox.Controllers
                 return 0;
             }
 
-            var socioComercialId = usuario.SocioComercialID;
+            var socioComercialId = usuario.SocioComercialId;
 
             return socioComercialId != null ? Convert.ToInt32(socioComercialId) : 0;       
         }
@@ -74,12 +74,12 @@ namespace APBox.Controllers
             }
 
             // Manejar la posibilidad de que el usuario no tenga departamento asignado
-            if (usuario.Departamento_Id == null)
+            if (usuario.DepartamentoId == null)
             {
                 return 0;
             }
 
-            var departamentoId = usuario.Departamento_Id;
+            var departamentoId = usuario.DepartamentoId;
             return departamentoId != null ? Convert.ToInt32(departamentoId) : 0;
         }
 

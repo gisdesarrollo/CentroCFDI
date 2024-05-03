@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+//refactorizar y eliminar 
 namespace API.Operaciones.Facturacion
 {
     [Table("ori_facturasrecibidas")]
@@ -18,7 +19,7 @@ namespace API.Operaciones.Facturacion
         [Required(ErrorMessage = "Campo Obligatorio")]
         public int EmisorId { get; set; }
         [ForeignKey("EmisorId")]
-        public virtual Proveedor Emisor { get; set; }
+        public virtual SocioComercial Emisor { get; set; }
 
         [DisplayName("Receptor")]
         [Required(ErrorMessage = "Campo Obligatorio")]

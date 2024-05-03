@@ -8,7 +8,7 @@ using System;
 
 namespace APBox.Controllers.Catalogos
 {
-    [APBox.Control.SessionExpire]
+    [Control.SessionExpire]
     public class PerfilesController : Controller
     {
 
@@ -28,7 +28,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.NameHere = "Crea y modifica los perfiles de la empresa";
+            ViewBag.Title = "Crea y modifica los perfiles de la empresa";
 
             return View(perfiles);
         }
@@ -60,7 +60,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Perfiles";
             ViewBag.Action = "Create";
             ViewBag.ActionES = "Crear";
-            ViewBag.NameHere = "sistema";
+            ViewBag.Title = "sistema";
 
             return View(perfil);
         }
@@ -97,7 +97,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Perfiles";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
-            ViewBag.NameHere = "sistema";
+            ViewBag.Title = "sistema";
             return View(perfil);
         }
 

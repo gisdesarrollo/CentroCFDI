@@ -113,9 +113,9 @@
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "form-label required" })
-                    @Html.DropDownList("Departamento_Id", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select select mb-2" })
-                    @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.DepartamentoId, htmlAttributes: new { @class = "form-label required" })
+                    @Html.DropDownList("DepartamentoId", null, "Favor de hacer su selección", htmlAttributes: new { @class = "form-select select mb-2" })
+                    @Html.ValidationMessageFor(model => model.DepartamentoId, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="clearfix"></div>
@@ -139,11 +139,11 @@
                 </div>
                 <br />
                 <div id="divSocioComercial" class="form-group col-xs-12 col-sm-6 col-md-4" style="display: none;">
-                    @Html.LabelFor(model => model.SocioComercialID, htmlAttributes: new { @class = "form-label" })
+                    @Html.LabelFor(model => model.SocioComercialId, htmlAttributes: new { @class = "form-label" })
                     <div class="col-md-10">
                         <div class="select">
-                            @Html.DropDownListFor(model => model.SocioComercialID, ViewBag.SociosComerciales as SelectList, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
-                            @Html.ValidationMessageFor(model => model.SocioComercialID, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(model => model.SocioComercialId, ViewBag.SociosComerciales as SelectList, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
+                            @Html.ValidationMessageFor(model => model.SocioComercialId, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>

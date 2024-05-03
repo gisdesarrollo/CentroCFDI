@@ -28,7 +28,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "Addenda";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
-            ViewBag.NameHere = "addenda";
+            ViewBag.Title = "addenda";
             return View(addendaDto);
         }
         [HttpPost]
@@ -37,7 +37,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Controller = "Addenda";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
-            ViewBag.NameHere = "addenda";
+            ViewBag.Title = "addenda";
 
             string archivo;
             ComprobanteCFDI comprobante = new ComprobanteCFDI();

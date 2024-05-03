@@ -96,7 +96,6 @@ namespace APBox.Control
         public List<Estado> PopulaEstados(string seleccion)
         {
             return _db.Estados.Where(a => a.c_Pais_Id == seleccion).ToList();
- 
         }
 
         public SelectList PopulaConceptos(int sucursalId)
@@ -349,6 +348,16 @@ namespace APBox.Control
             return new SelectList(_db.Departamentos.Where(a => a.SucursalId == _entidadId).OrderBy(a => a.Nombre), "Id", "Nombre", seleccion);
         }
 
+        public SelectList PopulaProyectos(int? seleccion)
+        {
+            return new SelectList(_db.Proyectos.Where(a => a.SucursalId == _entidadId).OrderBy(a => a.Nombre), "Id", "Nombre", seleccion);
+        }
+
+        public SelectList PopulaEventos(int? seleccion)
+        {
+            return new SelectList(_db.Eventos.Where(a => a.SucursalId == _entidadId && a.Estatus == c_Estatus.Activo).OrderBy(a => a.Nombre), "Id", "Nombre", seleccion);
+        }
+
         public SelectList PopulaFacturasEmitidas(bool soloPpd, int clienteId, int? seleccion)
         {
             //var facturasUtilizadas = _db.DocumentosRelacionados.Where(dr => dr.FacturaEmitida.EmisorId == _entidadId && dr.FacturaEmitida.ReceptorId == clienteId && dr.Pago.ComplementoPago.Status == Status.Activo).Select(dr => dr.FacturaEmitida).ToList();
@@ -375,7 +384,7 @@ namespace APBox.Control
 
         public SelectList PopulaProveedores(int? seleccion)
         {
-            return new SelectList(_db.Proveedores.Where(a => a.Status == Status.Activo && a.GrupoId == _entidadId).OrderBy(a => a.RazonSocial), "Id", "RazonSocial", seleccion);
+            return new SelectList(_db.SociosComerciales.Where(a => a.Status == Status.Activo && a.GrupoId == _entidadId).OrderBy(a => a.RazonSocial), "Id", "RazonSocial", seleccion);
         }
 
         public SelectList PopulaSucursalesUsuarios(int? sucursalSeleccionada = null, int? usuarioId = null)
@@ -398,19 +407,19 @@ namespace APBox.Control
             }
         }
 
-        public SelectList PopulaSucursalesProveedores(int? sucursalSeleccionada = null, int? proveedorId = null)
-        {
-            if (proveedorId == null)
-            {
-                return new SelectList(_db.Sucursales.Where(s => s.Status == Status.Activo && s.GrupoId == _entidadId).OrderBy(m => m.Nombre), "Id", "Nombre", sucursalSeleccionada);
-            }
-            else
-            {
-                var proveedor = _db.Proveedores.Find(proveedorId);
-                return new SelectList(_db.ProveedoresSucursales.Where(us => us.ProveedorId == proveedorId && us.Sucursal.Status == Status.Activo && us.Sucursal.GrupoId == _entidadId).Select(us => us.Sucursal).OrderBy(m => m.Nombre), "Id", "Nombre", sucursalSeleccionada);
-            }
+        //public SelectList PopulaSucursalesProveedores(int? sucursalSeleccionada = null, int? proveedorId = null)
+        //{
+        //    if (proveedorId == null)
+        //    {
+        //        return new SelectList(_db.Sucursales.Where(s => s.Status == Status.Activo && s.GrupoId == _entidadId).OrderBy(m => m.Nombre), "Id", "Nombre", sucursalSeleccionada);
+        //    }
+        //    else
+        //    {
+        //        var proveedor = _db.SociosComerciales.Find(proveedorId);
+        //        return new SelectList(_db.ProveedoresSucursales.Where(us => us.ProveedorId == proveedorId && us.Sucursal.Status == Status.Activo && us.Sucursal.GrupoId == _entidadId).Select(us => us.Sucursal).OrderBy(m => m.Nombre), "Id", "Nombre", sucursalSeleccionada);
+        //    }
 
-        }
+        //}
 
         public SelectList PopulaUsuarios(int? usuarioSeleccionado)
         {

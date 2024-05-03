@@ -33,7 +33,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
         private readonly EnviosEmails _enviosEmails = new EnviosEmails();
         private readonly GetTipoCambioDocRel _conversionTipoCambio = new GetTipoCambioDocRel();
         private readonly XsaManager _xsaManager = new XsaManager();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\PagoHANSEN.xml";
+        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\PagosAbril.xml";
         //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
@@ -276,6 +276,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
                         rfcEmisorCtaB = complementoPago.Pagos[x].BancoBeneficiario.Banco.Rfc;
                         ctaBeneficiario = complementoPago.Pagos[x].BancoBeneficiario.NumeroCuenta;
                     }
+                    
                     //Agrega Pagos 2.0
                     objCfdi.agregarPago20Pago(
                         complementoPago.Pagos[x].FechaPago.ToString("yyyy-MM-ddTHH:mm:ss"),
@@ -448,10 +449,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
 
                     }
                 /*}*/
-                if (tasaISRImporteR > 0) { objCfdi.agregarPago20RetencionP(tasaISRImpuestoR, Convert.ToDouble(tasaISRImporteR)); }
-                if (tasaIVAImporteR > 0) { objCfdi.agregarPago20RetencionP(tasaIVAImpuestoR, Convert.ToDouble(tasaIVAImporteR)); }
-                if (cuotaIEPSImporteR > 0) { objCfdi.agregarPago20RetencionP(cuotaIEPSImpuestoR, Convert.ToDouble(cuotaIEPSImporteR)); }
-                if (defaultImporteR > 0) { objCfdi.agregarPago20RetencionP(defaultImpuestoR, Convert.ToDouble(defaultImporteR)); }
+                if (tasaISRImporteR > 0) { objCfdi.agregarPago20RetencionP(tasaISRImpuestoR, (double)tasaISRImporteR); }
+                if (tasaIVAImporteR > 0) { objCfdi.agregarPago20RetencionP(tasaIVAImpuestoR, (double)tasaIVAImporteR); }
+                if (cuotaIEPSImporteR > 0) { objCfdi.agregarPago20RetencionP(cuotaIEPSImpuestoR, (double)cuotaIEPSImporteR); }
+                if (defaultImporteR > 0) { objCfdi.agregarPago20RetencionP(defaultImpuestoR, (double)defaultImporteR); }
 
                 //variables traslados
                 //Impuestos Pagos Traslado
@@ -970,5 +971,6 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementosPagos
             Decimal valorFormat = decimal.Round(valor, 12);//7
             return valor;
         }
+        
     }
 }

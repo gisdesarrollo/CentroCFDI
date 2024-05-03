@@ -320,8 +320,8 @@ namespace APBox.Controllers.Operaciones
                     documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
                 }
                 documentoRecibidoDr.CfdiRecibidos_Id = null;
-                documentoRecibidoDr.Solicitudes = null;
-                documentoRecibidoDr.Solicitud_Id = null;
+                //documentoRecibidoDr.Solicitudes = null;
+                //documentoRecibidoDr.Solicitud_Id = null;
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                 documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
                 documentoRecibidoDr.Pagos = null;

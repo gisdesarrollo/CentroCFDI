@@ -10,7 +10,7 @@ using API.CatalogosCartaPorte;
 
 namespace API.Catalogos
 {
-    [Table("cat_sucursales")]
+    [Table("Sucursales")]
     public class Sucursal
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

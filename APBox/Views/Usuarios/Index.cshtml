@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<API.Catalogos.Usuario>
 
-@if (User.IsInRole("USUARIOS"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+@if (User.IsInRole("USUARIOS"))
 {
     <div class="card card-flush">
         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
@@ -94,7 +94,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr class="odd">
+                        <tr class="fs-7">
                             <td>
                                 @Html.DisplayFor(modelItem => item.NombreCompleto)
                             </td>
@@ -108,13 +108,16 @@
                                 @Html.DisplayFor(modelItem => item.Departamento.Nombre)
                             </td>
                             <td>
-                                @if (item.esProveedor)
+                                @switch (item.esProveedor)
                                 {
-                                    @Html.Raw("Proveedor");
-                                }
-                                else
-                                {
-                                    @Html.Raw("Usuario");
+                                    case true:
+                                        <div class="badge badge-light-dark">SocioComercial</div>
+                                        break;
+                                    case false:
+                                        <div class="badge badge-light-info">Usuario</div>
+                                        break;
+                                    default:
+                                        break;
                                 }
                             </td>
                             <td>

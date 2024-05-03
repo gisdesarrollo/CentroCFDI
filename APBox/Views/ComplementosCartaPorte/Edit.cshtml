@@ -1333,12 +1333,12 @@
                                             @Html.EnumDropDownListSpecialFor(model => model.Mercancias.Mercancia.Moneda)
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group col-xs-12 col-sm-3">
+                                        <div class="form-group col-xs-12 col-sm-3 @ActFracArancelaria" >
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.TipoMateria, new { @class = "form-label" })
                                             @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.TipoMateria, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.TipoMateria, "", new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-4 @ActFracArancelaria">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.DescripcionMateria, htmlAttributes: new { @class = "form-label" })
                                             @Html.EditorFor(model => model.Mercancias.Mercancia.DescripcionMateria, new { htmlAttributes = new { @class = "form-control mb-2" } })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DescripcionMateria, "", new { @class = "text-danger" })
@@ -1390,7 +1390,7 @@
                                     <div class="card-body row">
                                         <div class="form-group col-xs-12 col-sm-4">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.TipoDocumento, new { @class = "form-label" })
-                                            @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.TipoDocumento, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                            @Html.DropDownListFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.TipoDocumento, (SelectList)ViewBag.TipoDocumentoList, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.DocumentacionAduanera.TipoDocumento, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-4">

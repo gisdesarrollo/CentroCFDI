@@ -9,7 +9,7 @@
     var usuario = _db.Usuarios.Find(usuarioId);
     var SocioComercial = _db.Perfiles.Where(i => i.Id == usuario.PerfilId).FirstOrDefault();
     var SocioComercialId = SocioComercial.Id;
-    var usuarioDepartamento = usuario.Departamento_Id;
+    var usuarioDepartamento = usuario.DepartamentoId;
     var usuarioSocioComercial = usuario.PerfilId;
     var usuarioesProveedor = usuario.esProveedor;
 }

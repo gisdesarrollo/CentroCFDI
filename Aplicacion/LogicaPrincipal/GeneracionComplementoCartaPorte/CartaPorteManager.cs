@@ -1,4 +1,4 @@
-﻿using API.Catalogos;
+using API.Catalogos;
 using API.Enums;
 using API.Enums.CartaPorteEnums;
 using API.Models.Dto;
@@ -430,7 +430,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 complementoCartaPorte.viaEntradaSalida == null ? "": complementoCartaPorte.viaEntradaSalida, //ViaEntradaSalida
                 Convert.ToDouble(complementoCartaPorte.TotalDistRec), //TotalDistRec
                 complementoCartaPorte.RegimenAduanero == null ?  "": complementoCartaPorte.RegimenAduanero.ToString(),
-                complementoCartaPorte.RegistroIstmo ? "Sí" : "No", //Registro ISTMO
+                complementoCartaPorte.RegistroIstmo ? "Sí" : "", //Registro ISTMO
                 complementoCartaPorte.UbicacionPoloOrigen == null ? "": GetClaveEnum(complementoCartaPorte.UbicacionPoloOrigen), //Ubicación Polo Origen
                 complementoCartaPorte.UbicacionPoloDestino == null ? "": GetClaveEnum(complementoCartaPorte.UbicacionPoloDestino) //Ubicación Polo Destino
             );
@@ -512,7 +512,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 Convert.ToDouble(complementoCartaPorte.Mercancias.PesoNetoTotal == 0 ? 0: complementoCartaPorte.Mercancias.PesoNetoTotal), //PesoNetoTotal
                 complementoCartaPorte.Mercancias.NumTotalMercancias == 0 ? 0: complementoCartaPorte.Mercancias.NumTotalMercancias, //NumTotalMercancias
                 Convert.ToDouble(complementoCartaPorte.Mercancias.CargoPorTasacion == 0 ? 0 : complementoCartaPorte.Mercancias.CargoPorTasacion), //CargoPorTasacion
-                complementoCartaPorte.Mercancias.LogisticaInversaRecoleccionDevolucion  ? "Sí" : "No" // Logistica Inversa Recolección Devolución
+                complementoCartaPorte.Mercancias.LogisticaInversaRecoleccionDevolucion  ? "Sí" : "" // Logistica Inversa Recolección Devolución
             );
             if (objCfdi.MensajeError != "")
             {
@@ -600,7 +600,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                                         (
                                             dAduanera.NumPedimento,
                                             GetClaveEnum(dAduanera.TipoDocumento),
-                                            dAduanera.IdentDocAduanero,
+                                            dAduanera.IdentDocAduanero ?? "",
                                             dAduanera.RfcImpo
                                         );
                                     if (objCfdi.MensajeError != "")

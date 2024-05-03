@@ -9,7 +9,7 @@ using API.Relaciones;
 
 namespace API.Catalogos
 {
-    [Table("cat_usuarios")]
+    [Table("Usuarios")]
     public class Usuario
     {
         //Kardex
@@ -51,65 +51,40 @@ namespace API.Catalogos
         //[Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Perfil")]
         public int? PerfilId { get; set; }
-
         [ForeignKey("PerfilId")]
         public virtual Perfil Perfil { get; set; }
 
         public Status Status { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z0-9_]*$", ErrorMessage = "El nombre de usuario solo puede contener letras, números y guiones bajos.")]
+        //[RegularExpression(@"^[a-zA-Z0-9_]*$", ErrorMessage = "El nombre de usuario solo puede contener letras, números y guiones bajos.")]
         [Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Nombre de Usuario")]
         public String NombreUsuario { get; set; }
 
-        #region Grupo
-
         [Required(ErrorMessage = "Campo Obligatorio")]
         [DisplayName("Grupo")]
         public int GrupoId { get; set; }
-
         [ForeignKey("GrupoId")]
         public virtual Grupo Grupo { get; set; }
 
-        #endregion Grupo
-
-        #region SociosComercialesId
-
         [DisplayName("SocioComercial")]
-        public int? SocioComercialID { get; set; }
-
-        [ForeignKey("SocioComercialID")]
+        public int? SocioComercialId { get; set; }
+        [ForeignKey("SocioComercialId")]
         public virtual SocioComercial SocioComercial { get; set; }
-
-        #endregion SociosComercialesId
-
-        #region Proveedor
 
         [DisplayName("Proveedor")]
         public bool esProveedor { get; set; }
 
-        #endregion Proveedor
-
-        #region Sucursales
-
         [DisplayName("Mostrar todas las Sucursales")]
         public bool TodasSucursales { get; set; }
-
         [NotMapped]
         public virtual UsuarioSucursal Sucursal { get; set; }
-
         public virtual List<UsuarioSucursal> Sucursales { get; set; }
 
-        #endregion Sucursales
-
-        #region Departamento
-
         [DisplayName("Departamento")]
-        public int? Departamento_Id { get; set; }
-
-        [ForeignKey("Departamento_Id")]
+        public int? DepartamentoId { get; set; }
+        [ForeignKey("DepartamentoId")]
         public virtual Departamento Departamento { get; set; }
 
-        #endregion Departamento
     }
 }

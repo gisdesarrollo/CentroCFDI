@@ -24,6 +24,7 @@ using Aplicacion.LogicaPrincipal.Validacion;
 using Aplicacion.LogicaPrincipal.Descargas;
 using API.Operaciones.RelacionesCfdi;
 using System.ComponentModel;
+using Aplicacion.Utilidades;
 
 namespace APBox.Controllers.ComplementosCartaPorte
 {
@@ -49,7 +50,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ComprobanteCFDI comprobante2;
             try
             {
-                //archivo = SubeArchivo2(Archivo);
                 // Convertir el archivo a un arreglo de bytes
                 byte[] bytesArchivo;
                 using (var memoryStream = new MemoryStream())
@@ -67,22 +67,8 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 return Json(null); // Devolver respuesta JSON vacía en caso de error
             }
 
-            try
-            {
-                //comprobante = _cartaPorteManager.DecodificaXML(archivo);
-                return Json(comprobante2);//Retornamos los valores a la vista hacia el Boton Carga Xml
+            return Json(comprobante2);//Retornamos los valores a la vista hacia el Boton Carga Xml
 
-                //foreach (var l in comprobante2.CartaPorte.Ubicaciones)
-                //{
-                //    l.DistanciaRecorrida
-                //}
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", String.Format("No se pudo deserializar el archivo XML: {0}", ex.ToString()));
-                // Devolver respuesta JSON vacía en caso de error
-                return Json(null);
-            }
         }
 
         public ActionResult Index()
@@ -173,7 +159,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFormaPago();
             PopulaExportacion();
             PopulaObjetoImpuesto();
-            
+            TipoDocumentoCP();
             Random random = new Random();
             var randomNumber = random.Next(0, 1000000).ToString("D6");
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
@@ -348,6 +334,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFormaPago();
             PopulaExportacion();
             PopulaObjetoImpuesto();
+            TipoDocumentoCP();
             if (!ModelState.IsValid)
             {
                 //Identifica los mensaje de error
@@ -870,6 +857,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFormaPago();
             PopulaExportacion();
             PopulaObjetoImpuesto();
+            TipoDocumentoCP();
             Random random = new Random();
             var randomNumber = random.Next(0, 1000000).ToString("D6");
             //
@@ -1088,7 +1076,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             PopulaFormaPago();
             PopulaExportacion();
             PopulaObjetoImpuesto();
-
+            TipoDocumentoCP();
             if (ModelState.IsValid)
             {
                 _acondicionarComplementosCartaPorte.cargaRelaciones(complementoCP);
@@ -1610,7 +1598,6 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.Mercancias = (popularDropDowns.PopulaMercancias(ObtenerSucursal()));
         }
-       
         private void PopulaPaises()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -1816,7 +1803,11 @@ namespace APBox.Controllers.ComplementosCartaPorte
             ViewBag.Contenedor_Id = popularDropDowns.Contenedor_Id();
         }
 
-        //
+        private void TipoDocumentoCP()
+        {
+            var selectList = new SelectList(EnumExtensions.GetAllValuesAndDescriptions(typeof(c_DocumentoAduanero)), "Key", "Value");
+            ViewBag.TipoDocumentoList = selectList;
+        }
 
         #endregion Popula CartaPorte
 

@@ -1,6 +1,6 @@
 ﻿@model API.Operaciones.ComplementoCartaPorte.Mercancia
 
-
+@using Aplicacion.Utilidades
 @using (Html.BeginCollectionItem("Mercanciass"))
 {
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
@@ -113,161 +113,149 @@
                 }
                 if (Model.NomQuimico != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.NomQuimico, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.NomQuimico)
-                    @Html.HiddenFor(model => model.NomQuimico)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.NomQuimico, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.NomQuimico)
+                        @Html.HiddenFor(model => model.NomQuimico)
+                    </div>
                 }
                 if (Model.DenominacionGenericaProd != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.DenominacionGenericaProd, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.DenominacionGenericaProd)
-                    @Html.HiddenFor(model => model.DenominacionGenericaProd)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.DenominacionGenericaProd, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.DenominacionGenericaProd)
+                        @Html.HiddenFor(model => model.DenominacionGenericaProd)
+                    </div>
                 }
                 if (Model.DenominacionDistintivaProd != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.DenominacionDistintivaProd, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.DenominacionDistintivaProd)
-                    @Html.HiddenFor(model => model.DenominacionDistintivaProd)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.DenominacionDistintivaProd, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.DenominacionDistintivaProd)
+                        @Html.HiddenFor(model => model.DenominacionDistintivaProd)
+                    </div>
                 }
                 if (Model.Fabricante != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.Fabricante, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.Fabricante)
-                    @Html.HiddenFor(model => model.Fabricante)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.Fabricante, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.Fabricante)
+                        @Html.HiddenFor(model => model.Fabricante)
+                    </div>
                 }
                 if (Model.FechaCaducidad != null)
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.FechaCaducidad, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.FechaCaducidad)
-                    @Html.HiddenFor(model => model.FechaCaducidad)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.FechaCaducidad, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.FechaCaducidad)
+                        @Html.HiddenFor(model => model.FechaCaducidad)
+                    </div>
                 }
                 if (Model.LoteMedicamento != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.LoteMedicamento, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.LoteMedicamento)
-                    @Html.HiddenFor(model => model.LoteMedicamento)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.LoteMedicamento, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.LoteMedicamento)
+                        @Html.HiddenFor(model => model.LoteMedicamento)
+                    </div>
                 }
                 if (Model.FormaFarmaceutica != null)
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.FormaFarmaceutica, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.FormaFarmaceutica)
-                    @Html.HiddenFor(model => model.FormaFarmaceutica)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.FormaFarmaceutica, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.FormaFarmaceutica)
+                        @Html.HiddenFor(model => model.FormaFarmaceutica)
+                    </div>
                 }
                 if (Model.CondicionesEspecialesTransp != null)
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.CondicionesEspecialesTransp, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.CondicionesEspecialesTransp)
-                    @Html.HiddenFor(model => model.CondicionesEspecialesTransp)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.CondicionesEspecialesTransp, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.CondicionesEspecialesTransp)
+                        @Html.HiddenFor(model => model.CondicionesEspecialesTransp)
+                    </div>
                 }
                 if (Model.RegistroSanitarioFolioAutorizacion != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.RegistroSanitarioFolioAutorizacion, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.RegistroSanitarioFolioAutorizacion)
-                    @Html.HiddenFor(model => model.RegistroSanitarioFolioAutorizacion)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.RegistroSanitarioFolioAutorizacion, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.RegistroSanitarioFolioAutorizacion)
+                        @Html.HiddenFor(model => model.RegistroSanitarioFolioAutorizacion)
+                    </div>
                 }
                 if (Model.PermisoImportacion != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.PermisoImportacion, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.PermisoImportacion)
-                    @Html.HiddenFor(model => model.PermisoImportacion)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.PermisoImportacion, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.PermisoImportacion)
+                        @Html.HiddenFor(model => model.PermisoImportacion)
+                    </div>
                 }
                 if (Model.FolioImpoVucem != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.FolioImpoVucem, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.FolioImpoVucem)
-                    @Html.HiddenFor(model => model.FolioImpoVucem)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.FolioImpoVucem, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.FolioImpoVucem)
+                        @Html.HiddenFor(model => model.FolioImpoVucem)
+                    </div>
                 }
                 if (Model.NumCas != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.NumCas, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.NumCas)
-                    @Html.HiddenFor(model => model.NumCas)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.NumCas, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.NumCas)
+                        @Html.HiddenFor(model => model.NumCas)
+                    </div>
                 }
                 if (Model.RazonSocialEmpImp != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.RazonSocialEmpImp, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.RazonSocialEmpImp)
-                    @Html.HiddenFor(model => model.RazonSocialEmpImp)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.RazonSocialEmpImp, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.RazonSocialEmpImp)
+                        @Html.HiddenFor(model => model.RazonSocialEmpImp)
+                    </div>
                 }
                 if (Model.NumRegSanPlagCofepris != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.NumRegSanPlagCofepris, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.NumRegSanPlagCofepris)
-                    @Html.HiddenFor(model => model.NumRegSanPlagCofepris)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.NumRegSanPlagCofepris, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.NumRegSanPlagCofepris)
+                        @Html.HiddenFor(model => model.NumRegSanPlagCofepris)
+                    </div>
                 }
                 if (Model.DatosFabricante != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.DatosFabricante, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.DatosFabricante)
-                    @Html.HiddenFor(model => model.DatosFabricante)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.DatosFabricante, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.DatosFabricante)
+                        @Html.HiddenFor(model => model.DatosFabricante)
+                    </div>
                 }
                 if (Model.DatosFormulador != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.DatosFormulador, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.DatosFormulador)
-                    @Html.HiddenFor(model => model.DatosFormulador)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.DatosFormulador, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.DatosFormulador)
+                        @Html.HiddenFor(model => model.DatosFormulador)
+                    </div>
                 }
                 if (Model.DatosMaquilador != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.DatosMaquilador, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.DatosMaquilador)
-                    @Html.HiddenFor(model => model.DatosMaquilador)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.DatosMaquilador, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.DatosMaquilador)
+                        @Html.HiddenFor(model => model.DatosMaquilador)
+                    </div>
                 }
                 if (Model.UsoAutorizado != "")
                 {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.UsoAutorizado, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.UsoAutorizado)
-                    @Html.HiddenFor(model => model.UsoAutorizado)
-                </div>
+                    <div class="form-group col-xs-12 col-sm-3">
+                        @Html.LabelFor(model => model.UsoAutorizado, new { @class = "fw-bold" })<br />
+                        @Html.DisplayFor(model => model.UsoAutorizado)
+                        @Html.HiddenFor(model => model.UsoAutorizado)
+                    </div>
                 }
-                if (Model.TipoMateria != null)
-                {
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.TipoMateria, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.TipoMateria)
-                    @Html.HiddenFor(model => model.TipoMateria)
-                </div>
-                <div class="form-group col-xs-12 col-sm-3">
-                    @Html.LabelFor(model => model.DescripcionMateria, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(model => model.DescripcionMateria)
-                    @Html.HiddenFor(model => model.DescripcionMateria)
-                </div>
-                }
+
             }
         }
         <div class="form-group col-xs-12 col-sm-3">
@@ -285,6 +273,22 @@
             @Html.DisplayFor(model => model.Moneda)
             @Html.HiddenFor(model => model.Moneda)
         </div>
+        @if (Model.TipoMateria != null)
+        {
+        <div class="form-group col-xs-12 col-sm-3">
+            @Html.LabelFor(model => model.TipoMateria, new { @class = "fw-bold" })<br />
+            @Html.DisplayFor(model => model.TipoMateria)
+            @Html.HiddenFor(model => model.TipoMateria)
+        </div>
+            if (Model.DescripcionMateria != "")
+            {
+            <div class="form-group col-xs-12 col-sm-3">
+                @Html.LabelFor(model => model.DescripcionMateria, new { @class = "fw-bold" })<br />
+                @Html.DisplayFor(model => model.DescripcionMateria)
+                @Html.HiddenFor(model => model.DescripcionMateria)
+            </div>
+            }
+        }
         @if (Model.FraccionArancelarias != "")
         {
             <div class="form-group col-xs-12 col-sm-3">
@@ -309,7 +313,8 @@
                 @Html.HiddenFor(x => x.DocumentacionAduaneras[i].Mercancia_Id)
                 <div class="form-group col-xs-12 col-sm-3">
                     @Html.LabelFor(x => x.DocumentacionAduaneras[i].TipoDocumento, new { @class = "fw-bold" })<br />
-                    @Html.DisplayFor(x => x.DocumentacionAduaneras[i].TipoDocumento)
+                    @*@Html.DisplayFor(x => x.DocumentacionAduaneras[i].TipoDocumento)*@
+                    <p>@DescripcionesEnum.ObtenerDescripcionEnum(Model.DocumentacionAduaneras[i].TipoDocumento)</p>
                     @Html.HiddenFor(x => x.DocumentacionAduaneras[i].TipoDocumento)
                 </div>
                 <div class="form-group col-xs-12 col-sm-3">

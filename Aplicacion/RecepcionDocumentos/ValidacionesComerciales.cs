@@ -74,11 +74,11 @@ namespace Aplicacion.RecepcionDocumentos
             //si el usuario es proveedor, revisar que el RFC del emisor de la factura sea igual al RFC asignado del socio comercial del proveedor
             if (dv.Usuario.esProveedor)
             {
-                if (dv.Usuario.SocioComercialID == dv.SocioComercial.Id)
+                if (dv.Usuario.SocioComercialId == dv.SocioComercial.Id)
                 {
                     if (dv.SocioComercial.Rfc != dv.Cfdi.Emisor.Rfc)
                     {
-                        throw new Exception(String.Format("El RFC del Emisor de la factura {0} no coincide con el RFC asignado al Socio Comercial del usuario que esta subiendo el CFDi{1}", dv.Cfdi.Emisor.Rfc, dv.Usuario.SocioComercialID));
+                        throw new Exception(String.Format("El RFC del Emisor de la factura {0} no coincide con el RFC asignado al Socio Comercial del usuario que esta subiendo el CFDi{1}", dv.Cfdi.Emisor.Rfc, dv.Usuario.SocioComercialId));
                     }
                 }
             }
@@ -96,9 +96,12 @@ namespace Aplicacion.RecepcionDocumentos
             //validar que la factura esté emitida dentro del mes en curso
             DateTime fechaActual = DateTime.Now;
             DateTime fechaFactura = DateTime.Parse(dv.Cfdi.Fecha);
-            if (fechaFactura.Year != fechaActual.Year || fechaFactura.Month != fechaActual.Month)
+            if (dv.ConfiguracionEmpresa.RecibirFacturasMesCorriente)
             {
-                throw new Exception(String.Format("La Fecha de emisión de la factura {0} está fuera del mes actual", fechaFactura));
+                if (fechaFactura.Year != fechaActual.Year || fechaFactura.Month != fechaActual.Month)
+                {
+                    throw new Exception(String.Format("La Fecha de emisión de la factura {0} está fuera del mes actual", fechaFactura));
+                }
             }
         }
 

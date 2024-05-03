@@ -50,7 +50,7 @@ namespace Aplicacion.LogicaPrincipal.GeneraPDfCartaPorte
                             XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(CartaPorte));
                             using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))
                             {
-                                oComprobante.CartaPorte =
+                                oComprobante.CartaPorte30 =
                                     (CartaPorte)oSerializerComplemento.Deserialize(readerComplemento);
                             }
                         }

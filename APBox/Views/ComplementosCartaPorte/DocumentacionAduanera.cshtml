@@ -1,7 +1,9 @@
 ﻿@model API.Operaciones.ComplementoCartaPorte.DocumentacionAduanera
 
+@using Aplicacion.Utilidades
 @using (Html.BeginCollectionItem("DocumentacionAduanerass"))
 {
+
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
 
     <div class="card shadow-sm">
@@ -21,11 +23,12 @@
 
         </div>
         <div class="card-body row DAduanera">
-            @Html.HiddenFor(model=> model.Id)
-            @Html.HiddenFor(model=> model.Mercancia_Id)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Mercancia_Id)
             <div class="form-group col-xs-12 col-sm-3">
                 @Html.LabelFor(model => model.TipoDocumento, new { @class = "fw-bold" })<br />
-                <p id="TipoDocumento">@Model.TipoDocumento</p>
+                <p id="TipoDocumento" hidden>@Model.TipoDocumento</p>
+                <p>@DescripcionesEnum.ObtenerDescripcionEnum(Model.TipoDocumento)</p>
                 @Html.HiddenFor(model => model.TipoDocumento)
             </div>
             <div class="form-group col-xs-12 col-sm-3">

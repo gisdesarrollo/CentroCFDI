@@ -1,6 +1,12 @@
 ﻿<script>
     $(function () {
+        $('#Mercancias_Mercancia_TipoMateria').change(function () {
+            var tipoMateria = $("#Mercancias_Mercancia_TipoMateria").val();
+            if (tipoMateria === "05"){
 
+                $('#ActivaCampoDescripcionMateria').show(200);
+            } else { $('#ActivaCampoDescripcionMateria').hide(200); }
+        });
 
         ///SCRIPT MERCANCIAS PARA ACTIVAR DROPDOW Y RELLENAR LOS CAMPOS MERCANCIAS
 
@@ -207,9 +213,11 @@
 
             if ($('#TranspInternac').prop('checked') && (ClaveTransporteId === "01" || ClaveTransporteId ==="03")) {
                 $('.activaFraccionArancelaria').show();
+                $('.activaMateria').show();
+                
             } else {
                 $('.activaFraccionArancelaria').hide(200);
-
+                $('.activaMateria').hide(200);
             }
         });
 
@@ -3175,17 +3183,6 @@
                                     $('#TiposFigura_NombreFigura').val(figura.NombreFigura);
 
                                     $('#agregarDetalleFTransporte').trigger('click');
-
-
-
-
-
-
-
-
-
-
-
 
                                     //Cerramos el Modal al Cargar Todos los Datos
                                     $('#kt_modal_3').modal('hide');

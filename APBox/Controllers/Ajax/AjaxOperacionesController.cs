@@ -43,17 +43,17 @@ namespace APBox.Controllers.Ajax
                 //TipoCadenaPago = "01" //SPEI
             };
 
-           
+
 
             return PartialView("~/Views/ComplementosPagos/Pagos.cshtml", pago);
         }
 
         public PartialViewResult AgregarFacturaComplementoPago(int pagoId, int facturaEmitidaId, int numeroParcialidad, string moneda, Double equivalenciaDR,
-            double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto,string objetoImpuesto, List<TrasladoDR> traslados, List<RetencionDR> retenciones)
+            double importeSaldoAnterior, double importePagado, double importeSaldoInsoluto, string objetoImpuesto, List<TrasladoDR> traslados, List<RetencionDR> retenciones)
         {
             var facturaEmitida = _db.FacturasEmitidas.Find(facturaEmitidaId);
             Pago pago = _db.Pagos.Find(pagoId);
-            
+
             var documentoRelacionado = new DocumentoRelacionado
             {
                 FacturaEmitidaId = facturaEmitida.Id,
@@ -71,8 +71,8 @@ namespace APBox.Controllers.Ajax
                 //MetodoPago = c_MetodoPago.PPD,
                 Serie = facturaEmitida.Serie,
                 ObjetoImpuestoId = objetoImpuesto,
-            
-        };
+
+            };
             if (traslados != null)
             {
                 documentoRelacionado.Traslados = new List<TrasladoDR>();
@@ -89,12 +89,12 @@ namespace APBox.Controllers.Ajax
                     documentoRelacionado.Retenciones.Add(retencion);
                 }
             }
-            
+
 
             return PartialView("~/Views/ComplementosPagos/FacturasDetalles.cshtml", documentoRelacionado);
         }
 
-        public PartialViewResult AgregarCfdiRelacionado(String TipoRelacion , String UUID)
+        public PartialViewResult AgregarCfdiRelacionado(String TipoRelacion, String UUID)
         {
             var cfdiRelacionado = new CfdiRelacionado()
             {
@@ -119,7 +119,7 @@ namespace APBox.Controllers.Ajax
 
         public PartialViewResult AgregarDRetencion(Decimal Rbase, string Rimpuesto, string RtipoFactor, Decimal RtasaOCuota, Decimal Rimporte)
         {
-           
+
             var retencion = new RetencionDR()
             {
                 Base = (double)Math.Round(Rbase, 2), //6
@@ -132,7 +132,7 @@ namespace APBox.Controllers.Ajax
         }
         public PartialViewResult AgregarUbicacion(String TipoUbicacion,
             String TipoEstacion,
-            String TipoEstacionId, 
+            String TipoEstacionId,
             String IdUbicacion,
          String RFCRemitenteDestinatario,
              String NombreRemitenteDestinatario,
@@ -159,7 +159,7 @@ namespace APBox.Controllers.Ajax
                     string PaisText,
                     String Referencia)
         {
-            c_Pais? ResidenciaFiscalParse=null;
+            c_Pais? ResidenciaFiscalParse = null;
             if (ResidenciaFiscal == "")
             {
                 ResidenciaFiscalParse = null;
@@ -178,7 +178,7 @@ namespace APBox.Controllers.Ajax
                 NombreEstacion = NombreEstacion,
                 NumEstacion = NumEstacion,
                 Estaciones_Id = NumEstacion,
-                NavegacionTrafico= NavegacionTrafico,
+                NavegacionTrafico = NavegacionTrafico,
                 FechaHoraSalidaLlegada = FechaHoraSalidaLlegada,
                 DistanciaRecorrida = DistanciaRecorrida,
                 Domicilio = new Domicilio()
@@ -204,18 +204,18 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/Ubicacion.cshtml", Ubicacion);
         }
 
-        public PartialViewResult AgregarMercancia(String ClaveProdServID, string ClaveProdSTCCID,string Descripcion,
-            int Cantidad,string Unidad,string ClaveUnidadID,string Dimensiones,bool MaterialPeligorosoSN, 
-            string MaterialPeligrosoID, string DescripcionEmbalaje, string TipoEmbalajeID,Decimal PesoEnKg,string ValorMercancia,
-            string Moneda, string FraccionArancelariaID, string UUIDComercioExt,string SectorCofepris,string NombreIngredienteActivo,
-            string NomQuimico,string DenominacionGenericaProd,string DenominacionDistintivaProd,string Fabricante,DateTime? FechaCaducidad,
-            string LoteMedicamento,string FormaFarmaceutica,string CondicionesEspecialesTransp,string RegistroSanitarioFolioAutorizacion,
-            string PermisoImportacion,string FolioImpoVucem,string NumCas,string RazonSocialEmpImp,string NumRegSanPlagCofepris,string DatosFabricante,
-            string DatosFormulador,string DatosMaquilador,string UsoAutorizado,string TipoMateria,string DescripcionMateria,
-            string DEClaveUnidadPesoID, Decimal DEPesoBruto, Decimal DEPEsoNeto,Decimal DEPesoTara, int DENumPiezas,
+        public PartialViewResult AgregarMercancia(String ClaveProdServID, string ClaveProdSTCCID, string Descripcion,
+            int Cantidad, string Unidad, string ClaveUnidadID, string Dimensiones, bool MaterialPeligorosoSN,
+            string MaterialPeligrosoID, string DescripcionEmbalaje, string TipoEmbalajeID, Decimal PesoEnKg, string ValorMercancia,
+            string Moneda, string FraccionArancelariaID, string UUIDComercioExt, string SectorCofepris, string NombreIngredienteActivo,
+            string NomQuimico, string DenominacionGenericaProd, string DenominacionDistintivaProd, string Fabricante, DateTime? FechaCaducidad,
+            string LoteMedicamento, string FormaFarmaceutica, string CondicionesEspecialesTransp, string RegistroSanitarioFolioAutorizacion,
+            string PermisoImportacion, string FolioImpoVucem, string NumCas, string RazonSocialEmpImp, string NumRegSanPlagCofepris, string DatosFabricante,
+            string DatosFormulador, string DatosMaquilador, string UsoAutorizado, string TipoMateria, string DescripcionMateria,
+            string DEClaveUnidadPesoID, Decimal DEPesoBruto, Decimal DEPEsoNeto, Decimal DEPesoTara, int DENumPiezas,
             List<DocumentacionAduanera> DAduaneraArray, List<GuiasIdentificacion> GIdentificacionArray, List<CantidadTransportada> CTransportadaArray)
         {
-            
+
             var mercancia = new Mercancia()
             {
                 ClaveProdServCP = ClaveProdServID,
@@ -231,8 +231,8 @@ namespace APBox.Controllers.Ajax
                 TipoEmbalaje_Id = TipoEmbalajeID,
                 PesoEnKg = PesoEnKg,
                 ValorMercancia = ValorMercancia,
-                Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), Moneda, true), 
-                FraccionArancelarias= FraccionArancelariaID,
+                Moneda = (c_Moneda)Enum.Parse(typeof(c_Moneda), Moneda, true),
+                FraccionArancelarias = FraccionArancelariaID,
                 UUIDComecioExt = UUIDComercioExt,
                 NombreIngredienteActivo = NombreIngredienteActivo,
                 NomQuimico = NomQuimico,
@@ -242,9 +242,9 @@ namespace APBox.Controllers.Ajax
                 FechaCaducidad = FechaCaducidad,
                 LoteMedicamento = LoteMedicamento,
                 RegistroSanitarioFolioAutorizacion = RegistroSanitarioFolioAutorizacion,
-                PermisoImportacion =PermisoImportacion,
+                PermisoImportacion = PermisoImportacion,
                 FolioImpoVucem = FolioImpoVucem,
-                NumCas= NumCas,
+                NumCas = NumCas,
                 RazonSocialEmpImp = RazonSocialEmpImp,
                 NumRegSanPlagCofepris = NumRegSanPlagCofepris,
                 DatosFabricante = DatosFabricante,
@@ -252,7 +252,6 @@ namespace APBox.Controllers.Ajax
                 DatosMaquilador = DatosMaquilador,
                 UsoAutorizado = UsoAutorizado,
                 DescripcionMateria = DescripcionMateria,
-
                 DetalleMercancia = new DetalleMercancia()
                 {
                     ClaveUnidadPeso_Id = DEClaveUnidadPesoID,
@@ -261,21 +260,20 @@ namespace APBox.Controllers.Ajax
                     PesoTara = DEPesoTara,
                     NumPiezas = DENumPiezas
                 }
-                
+
             };
             //nuevo datos version 3.0
-            
             if (SectorCofepris != "")
-            {   
+            {
                 mercancia.SectorCofepris = (c_SectorCofepris)Enum.Parse(typeof(c_SectorCofepris), SectorCofepris, true);
             }
             else { mercancia.SectorCofepris = null; }
-            if(FormaFarmaceutica != "")
+            if (FormaFarmaceutica != "")
             {
                 mercancia.FormaFarmaceutica = (c_FormaFarmaceutica)Enum.Parse(typeof(c_FormaFarmaceutica), FormaFarmaceutica, true);
             }
             else { mercancia.FormaFarmaceutica = null; }
-            if(CondicionesEspecialesTransp != "")
+            if (CondicionesEspecialesTransp != "")
             {
                 mercancia.CondicionesEspecialesTransp = (c_CondicionesEspeciales)Enum.Parse(typeof(c_CondicionesEspeciales), CondicionesEspecialesTransp, true);
             }
@@ -288,7 +286,7 @@ namespace APBox.Controllers.Ajax
             if (DAduaneraArray != null)
             {
                 mercancia.DocumentacionAduaneras = new List<DocumentacionAduanera>();
-                foreach(var DA in DAduaneraArray)
+                foreach (var DA in DAduaneraArray)
                 {
                     mercancia.DocumentacionAduaneras.Add(DA);
                 }
@@ -296,7 +294,7 @@ namespace APBox.Controllers.Ajax
             if (GIdentificacionArray != null)
             {
                 mercancia.GuiasIdentificacionss = new List<GuiasIdentificacion>();
-                foreach(var GIdent in GIdentificacionArray)
+                foreach (var GIdent in GIdentificacionArray)
                 {
                     mercancia.GuiasIdentificacionss.Add(GIdent);
                 }
@@ -304,7 +302,7 @@ namespace APBox.Controllers.Ajax
             if (CTransportadaArray != null)
             {
                 mercancia.CantidadTransportadass = new List<CantidadTransportada>();
-                foreach(var CTrans in CTransportadaArray)
+                foreach (var CTrans in CTransportadaArray)
                 {
                     mercancia.CantidadTransportadass.Add(CTrans);
                 }
@@ -418,11 +416,11 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/MercanciaEdit.cshtml", mercancia);
         }
 
-        public PartialViewResult AgregarFTransporte(string FTransporte, string RFCFigura,string NumLicencia, string NombreFigura,
-            string NumRegIdTribFigura,string ResidenciaFiscalFigura, string Pais, string PaisText, string Estado, string EstadoText, string Municipio, string MunicipioText, string Localidad,
+        public PartialViewResult AgregarFTransporte(string FTransporte, string RFCFigura, string NumLicencia, string NombreFigura,
+            string NumRegIdTribFigura, string ResidenciaFiscalFigura, string Pais, string PaisText, string Estado, string EstadoText, string Municipio, string MunicipioText, string Localidad,
             string LocalidadText, string CodigoPostal, string Colonia, string ColoniaText, string Calle, string NumExterior, string NumInterior, string Referencia, List<PartesTransporteDto> PartesTransporte)
         {
-            
+
             var TiposFigura = new TiposFigura()
             {
                 FiguraTransporte = FTransporte,
@@ -448,7 +446,7 @@ namespace APBox.Controllers.Ajax
                     NumeroInterior = NumInterior,
                     Referencia = Referencia
                 }
-                
+
             };
             if (ResidenciaFiscalFigura != null && ResidenciaFiscalFigura != "")
             {
@@ -462,14 +460,14 @@ namespace APBox.Controllers.Ajax
             TiposFigura.PartesTransportes = new List<PartesTransporte>();
             if (PartesTransporte != null)
             {
-               // var parteTransporte = new PartesTransporte();
+                // var parteTransporte = new PartesTransporte();
                 foreach (var parteTransporteDto in PartesTransporte)
                 {
                     PartesTransporte PTransporte = new PartesTransporte()
                     {
-                        ParteTransporte = (c_ParteTransporte)Enum.Parse(typeof(c_ParteTransporte), parteTransporteDto.ParteTransporte,true)
+                        ParteTransporte = (c_ParteTransporte)Enum.Parse(typeof(c_ParteTransporte), parteTransporteDto.ParteTransporte, true)
                     };
-                        
+
                     TiposFigura.PartesTransportes.Add(PTransporte);
                 }
             }
@@ -487,19 +485,20 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/FiguraTransporte.cshtml", CartaPorte);
         }
 
-                  
+
         public PartialViewResult AgregarPTransporte(string PTransporte)
         {
             var PartesTransporte = new PartesTransporte()
             {
                 ParteTransporte = (c_ParteTransporte)Enum.Parse(typeof(c_ParteTransporte), PTransporte, true)
             };
-            return PartialView("~/Views/ComplementosCartaPorte/PartesTransporte.cshtml",PartesTransporte);
+            return PartialView("~/Views/ComplementosCartaPorte/PartesTransporte.cshtml", PartesTransporte);
         }
 
-        public PartialViewResult AgregarTMContenedor(string MatContenedor,string ContenedorMaritId, string NumPrecinto)
+        public PartialViewResult AgregarTMContenedor(string MatContenedor, string ContenedorMaritId, string NumPrecinto)
         {
-            var ContenedorM = new  ContenedorM(){
+            var ContenedorM = new ContenedorM()
+            {
                 MatriculaContenedor = MatContenedor,
                 ContenedorMaritimo_Id = ContenedorMaritId,
                 NumPrecinto = NumPrecinto
@@ -535,7 +534,7 @@ namespace APBox.Controllers.Ajax
                 KilometrajePagado = KilPagado
             };
 
-            return PartialView("~/Views/ComplementosCartaPorte/DerechosDePaso.cshtml",DerechosDePasos);
+            return PartialView("~/Views/ComplementosCartaPorte/DerechosDePaso.cshtml", DerechosDePasos);
         }
 
         public PartialViewResult AgregarTFDPasoEdit(string TipoDPasoID, Decimal KilPagado)
@@ -549,7 +548,7 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/DerechoDePasoEdit.cshtml", DerechosDePasos);
         }
 
-        public PartialViewResult AgregarTFCarro(string TipoCarroID,string MatriculaCarro,string GuiaCarro,Decimal TonNetasCarro,List<ContenedorC> contenedorC)
+        public PartialViewResult AgregarTFCarro(string TipoCarroID, string MatriculaCarro, string GuiaCarro, Decimal TonNetasCarro, List<ContenedorC> contenedorC)
         {
             var Carro = new Carro()
             {
@@ -561,13 +560,13 @@ namespace APBox.Controllers.Ajax
             Carro.ContenedoresC = new List<ContenedorC>();
             if (contenedorC != null)
             {
-                foreach(var contenedor in contenedorC)
+                foreach (var contenedor in contenedorC)
                 {
                     Carro.ContenedoresC.Add(contenedor);
                 }
             }
-            
-            return PartialView("~/Views/ComplementosCartaPorte/Carro.cshtml",Carro);
+
+            return PartialView("~/Views/ComplementosCartaPorte/Carro.cshtml", Carro);
         }
 
         public PartialViewResult AgregarTFCarroEdit(string TipoCarroID, string MatriculaCarro, string GuiaCarro, Decimal TonNetasCarro, List<ContenedorC> contenedorC)
@@ -590,7 +589,7 @@ namespace APBox.Controllers.Ajax
 
             return PartialView("~/Views/ComplementosCartaPorte/CarroEdit.cshtml", Carro);
         }
-        public PartialViewResult AgregarTFContenedor(string ContenedorID,Decimal PesoContenedorVacio,Decimal pesoNetoMercancia)
+        public PartialViewResult AgregarTFContenedor(string ContenedorID, Decimal PesoContenedorVacio, Decimal pesoNetoMercancia)
         {
             var ContenedorC = new ContenedorC()
             {
@@ -598,10 +597,10 @@ namespace APBox.Controllers.Ajax
                 PesoContenedorVacio = PesoContenedorVacio,
                 PesoNetoMercancia = pesoNetoMercancia
             };
-            return PartialView("~/Views/ComplementosCartaPorte/ContenedoresC.cshtml",ContenedorC);
+            return PartialView("~/Views/ComplementosCartaPorte/ContenedoresC.cshtml", ContenedorC);
         }
 
-        public PartialViewResult AgregarDocumentacionAduanera(string TipoDocumento, string NumPedimento,string IdentDocAduanero,string RfcImpo)
+        public PartialViewResult AgregarDocumentacionAduanera(string TipoDocumento, string NumPedimento, string IdentDocAduanero, string RfcImpo)
         {
             var documentacionAduanera = new DocumentacionAduanera()
             {
@@ -613,7 +612,7 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComplementosCartaPorte/DocumentacionAduanera.cshtml", documentacionAduanera);
         }
 
-        public PartialViewResult AgregarGIdentificacion(string NumGuiIdentificacion,string DescripGuiaIdentificacion,Decimal PesoGuiaIdentificacion)
+        public PartialViewResult AgregarGIdentificacion(string NumGuiIdentificacion, string DescripGuiaIdentificacion, Decimal PesoGuiaIdentificacion)
         {
             var GuiasIdent = new GuiasIdentificacion()
             {
@@ -621,27 +620,27 @@ namespace APBox.Controllers.Ajax
                 DescripGuiaIdentificacion = DescripGuiaIdentificacion,
                 PesoGuiaIdentificacion = PesoGuiaIdentificacion
             };
-            return PartialView("~/Views/ComplementosCartaPorte/GuiasIdentificacion.cshtml",GuiasIdent);
+            return PartialView("~/Views/ComplementosCartaPorte/GuiasIdentificacion.cshtml", GuiasIdent);
         }
 
-        public PartialViewResult AgregarCTransportadas(Decimal Cantidad, string CveTransporteID, string UbicacionOrigenID,string UbicacionDestinoID)
+        public PartialViewResult AgregarCTransportadas(Decimal Cantidad, string CveTransporteID, string UbicacionOrigenID, string UbicacionDestinoID)
         {
             var CTransportadas = new CantidadTransportada()
             {
-               Cantidad = Cantidad,
-               CveTransporte_Id =CveTransporteID,
-               IDOrigen = UbicacionOrigenID,
-               IDDestino = UbicacionDestinoID
+                Cantidad = Cantidad,
+                CveTransporte_Id = CveTransporteID,
+                IDOrigen = UbicacionOrigenID,
+                IDDestino = UbicacionDestinoID
             };
             return PartialView("~/Views/ComplementosCartaPorte/CantidadTransportadas.cshtml", CTransportadas);
         }
 
-        public PartialViewResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID,string Unidad, string Descripcion,string NumIdentificacion,
-            string Cantidad, string ValorUnitario,string Importe, string ObjetoImpuesto, string TTipoImpuesto, Decimal TBase
-            ,string TImpuesto, string TTipoFactor,Decimal TTasaOCuota,Decimal TImporte,string RTipoImpuesto, Decimal RBase,string RImpuesto
-            ,string RTipofactor,Decimal RTasaOCuota,Decimal RImporte)
+        public PartialViewResult AgregarConceptos(string ClaveProdServID, string ClaveUnidadID, string Unidad, string Descripcion, string NumIdentificacion,
+            string Cantidad, string ValorUnitario, string Importe, string ObjetoImpuesto, string TTipoImpuesto, Decimal TBase
+            , string TImpuesto, string TTipoFactor, Decimal TTasaOCuota, Decimal TImporte, string RTipoImpuesto, Decimal RBase, string RImpuesto
+            , string RTipofactor, Decimal RTasaOCuota, Decimal RImporte)
         {
-           
+
             var Conceptos = new Conceptos()
             {
                 ClavesProdServ = ClaveProdServID,
@@ -656,12 +655,12 @@ namespace APBox.Controllers.Ajax
                 Traslado = new TrasladoCP()
                 {
                     TipoImpuesto = TTipoImpuesto,
-                    Base=TBase,
+                    Base = TBase,
                     Impuesto = TImpuesto,
                     TipoFactor = (API.Enums.CartaPorteEnums.c_TipoFactor)(c_TipoFactor)Enum.Parse(typeof(c_TipoFactor), TTipoFactor, true),
                     TasaOCuota = TTasaOCuota,
                     Importe = TImporte,
-                   // TotalImpuestosTR = TTImpuestosTR,
+                    // TotalImpuestosTR = TTImpuestosTR,
                 },
                 Retencion = new RetencionCP()
                 {
@@ -682,7 +681,7 @@ namespace APBox.Controllers.Ajax
             , string TImpuesto, string TTipoFactor, Decimal TTasaOCuota, Decimal TImporte, string RTipoImpuesto, Decimal RBase, string RImpuesto
             , string RTipofactor, Decimal RTasaOCuota, Decimal RImporte)
         {
-           
+
             var Conceptos = new Conceptos()
             {
                 ClavesProdServ = ClaveProdServID,
@@ -718,7 +717,7 @@ namespace APBox.Controllers.Ajax
             return PartialView("~/Views/ComprobantesCfdi/Concepto.cshtml", Conceptos);
         }
 
-        public PartialViewResult AgregarRemolque(string Placa,string TipoRemolqueId, string TipoRemolque)
+        public PartialViewResult AgregarRemolque(string Placa, string TipoRemolqueId, string TipoRemolque)
         {
             var remolques = new Remolques()
             {
@@ -727,7 +726,7 @@ namespace APBox.Controllers.Ajax
                 SubTipoRems = TipoRemolque
 
             };
-            return PartialView("~/Views/ComplementosCartaPorte/Remolques.cshtml",remolques);
+            return PartialView("~/Views/ComplementosCartaPorte/Remolques.cshtml", remolques);
         }
 
         public PartialViewResult AgregarRemolqueEdit(string Placa, string TipoRemolqueId, string TipoRemolque)
@@ -743,7 +742,7 @@ namespace APBox.Controllers.Ajax
         }
         public int Buscar(string valor, String tipo)
         {
-           
+
             var busqueda = 0;
             if (tipo.Equals("serv"))
             {
@@ -775,7 +774,7 @@ namespace APBox.Controllers.Ajax
             var pago = _db.Pagos.Find(PagoId);
             List<PagosDto> listPagos = new List<PagosDto>();
             PagosDto pagoDto = new PagosDto();
-            if(pago != null)
+            if (pago != null)
             {
                 pagoDto.Monto = pago.Monto;
                 pagoDto.TipoCambio = pago.TipoCambio;
@@ -791,7 +790,7 @@ namespace APBox.Controllers.Ajax
             return Convert.ToInt32(Session["SucursalId"]);
         }
 
-       
+
 
         #endregion
 

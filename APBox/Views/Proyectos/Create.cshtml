@@ -1,0 +1,78 @@
+﻿@model API.Catalogos.Proyecto
+
+
+<div class="card card-flush py-4">
+
+    <div class="card-header">
+        <div class="card-title">
+            <h2>Nuevo</h2>
+        </div>
+    </div>
+    <div class="card-body pt-0">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.SucursalId)
+
+            <div class="form">
+
+                <div class="row">
+                    @if (ViewBag.Errores != null && ViewBag.Errores.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in ViewBag.Errores)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control espacio" } })
+                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control espacio" } })
+                        @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.CuentaContable, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.CuentaContable, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CuentaContable, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label" })
+                        <br />
+                        @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", style = "" })
+                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="separator my-5"></div>
+                    <div class="d-flex justify-content-end">
+                        <!--begin::Button-->
+                        <a href="@Url.Action("Index", ViewBag.Controller)" class="btn btn-light me-5">Cancelar</a>
+                        <!--end::Button-->
+                        <!--begin::Button-->
+
+                        <button type="submit" id="crearConcepto" class="btn btn-alt btn-primary">
+                            <span class="indicator-label">Crear</span>
+                        </button>
+                        <!--end::Button-->
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

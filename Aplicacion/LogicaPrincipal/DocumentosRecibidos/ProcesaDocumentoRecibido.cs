@@ -48,7 +48,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
                                     .Where(dr =>
                                             dr.FechaEntrega >= fechaInicial &&
                                             dr.FechaEntrega <= fechaFinal &&
-                                            dr.SocioComercial_Id == usuario.SocioComercialID &&
+                                            dr.SocioComercial_Id == usuario.SocioComercialId &&
                                             dr.SucursalId == sucursalId)
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();

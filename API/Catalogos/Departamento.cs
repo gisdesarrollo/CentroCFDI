@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace API.Catalogos
 {
-    [Table("cat_departamentos")]
+    [Table("Departamentos")]
     public class Departamento
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,7 +27,5 @@ namespace API.Catalogos
         public virtual Sucursal Sucursal { get; set; }
 
         #endregion
-
-
     }
 }

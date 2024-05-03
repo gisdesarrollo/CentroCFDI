@@ -24,7 +24,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Controller = "Departamentos";
             ViewBag.Action = "Index";
             ViewBag.Button = "Departamentos";
-            ViewBag.NameHere = "sistema";
+            ViewBag.Title = "sistema";
             var sucursalId = ObtenerSucursal();
             var departamentos = _db.Departamentos.Where(d => d.SucursalId == sucursalId).ToList();
             return View(departamentos);
@@ -36,7 +36,7 @@ namespace APBox.Controllers.Catalogos
         {
             ViewBag.Controller = "Departamentos";
             ViewBag.Action = "Create";
-            ViewBag.NameHere = "sistema";
+            ViewBag.Title = "sistema";
             var departamento = new Departamento
             {
                 SucursalId = ObtenerSucursal()
@@ -67,7 +67,7 @@ namespace APBox.Controllers.Catalogos
         {
             ViewBag.Controller = "Departamentos";
             ViewBag.Action = "Edit";
-            ViewBag.NameHere = "sistema";
+            ViewBag.Title = "sistema";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

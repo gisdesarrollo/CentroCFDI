@@ -208,8 +208,8 @@ function validarEmail() {
                     }
 
                     initDatatable();
-                    exportButtons();
-                    handleSearchDatatable();
+                    //exportButtons();
+                    //handleSearchDatatable();
                 }
             };
         }();
@@ -243,7 +243,7 @@ function validarEmail() {
             }
 
             // Hook export buttons
-            var exportButtons = () => {
+            /*var exportButtons = () => {
                 var titulo = document.querySelector(".page-title h1").textContent;
                 const documentTitle = titulo;
                 var buttons = new $.fn.dataTable.Buttons(table, {
@@ -282,7 +282,7 @@ function validarEmail() {
                     });
                 });
             }
-
+            */
             // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
             var handleSearchDatatable = () => {
                 const filterSearch = document.querySelector('[data-kt-filter-Todos="search"]');
@@ -301,7 +301,7 @@ function validarEmail() {
                     }
 
                     initDatatable();
-                    exportButtons();
+                    //exportButtons();
                     handleSearchDatatable();
                 }
             };
