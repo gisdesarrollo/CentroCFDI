@@ -109,10 +109,13 @@ namespace APBox.Controllers.Operaciones
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            DateTime fechaI = documentosRecibidosModel.FechaInicial;
+            DateTime fechaF = documentosRecibidosModel.FechaFinal;
+            //var dia = DateTime.DaysInMonth(complementosPagosModel.Anio, (int)complementosPagosModel.Mes);
 
-            var fechaInicial = DateTime.Today.AddDays(-10);
-            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
-
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
 

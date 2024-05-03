@@ -8,7 +8,6 @@ using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.Facturas;
 using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.Validacion;
-using Aplicacion.RecepcionDocumentos;
 using System;
 using System.IO;
 using System.Linq;

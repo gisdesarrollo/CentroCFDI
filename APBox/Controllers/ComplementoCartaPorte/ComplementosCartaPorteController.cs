@@ -1598,6 +1598,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
             ViewBag.Mercancias = (popularDropDowns.PopulaMercancias(ObtenerSucursal()));
         }
+
         private void PopulaPaises()
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
@@ -1873,6 +1874,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 return null; // Manejo de error si el atributo Description no está presente
             }
         }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

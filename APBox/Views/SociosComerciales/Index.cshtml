@@ -13,11 +13,11 @@
     ViewBag.GrupoNombre = GrupoNombre;
     ViewBag.Enlace = "www.centrocfdi.com/AutorregistroSociosComerciales/Create/" + GrupoLlave;
     ViewBag.EnlaceExterno = "AutorregistroSociosComerciales/Create/" + GrupoLlave;
-    int? SocioComercialId = null;
 }
 
 @if (User.IsInRole("SOCIOSCOMERCIALES") && !usuario.esProveedor)
 {
+
     <div class="card card-flush shadow-sm py-4">
         <!--begin::Card header-->
         <div class="card-header">
@@ -195,18 +195,6 @@
             <!--end::Menu-->
         </div>
         <!--end::Wrapper-->
-        <!--begin::Wrapper-->
-        <div class="me-4">
-            <!--begin::Menu-->
-            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-bs-toggle="modal" data-bs-target="#modal2">
-                <i class="ki-duotone ki-notepad-edit fs-5 me-1">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>Validacion Lista 69-B
-            </a>
-            <!--end::Menu-->
-        </div>
-        <!--end::Wrapper-->
         <!--begin::Button-->
         <a href="@Url.Action("Create","SociosComerciales")" class="btn btn-secondary">
             Nuevo
@@ -323,75 +311,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal2" tabindex="-1" style="display: none;" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-1000px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-            <!--begin::Modal header-->
-            <div class="modal-header py-7 d-flex justify-content-between">
-                <!--begin::Modal title-->
-                <h2 class="m-0">Validación de Socios Comerciales por Lista 69-B</h2>
-                <!--end::Modal title-->
-                <!--begin::Close-->
-                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                </div>
-                <!--end::Close-->
-            </div>
-            <!--begin::Modal header-->
-            <!--begin::Modal body-->
-            <div class="modal-body scroll-y">
-                <div class="d-flex flex-column flex-xl-row">
-                    <!--begin::Content-->
-                    <div class="flex-lg-row-fluid mb-10">
-
-                        <!--begin::Alert-->
-                        <div class="alert bg-light-info d-flex flex-column flex-sm-row p-5 mb-7">
-                            <!--begin::Icon-->
-                            <i class="ki-duotone ki-some-files fs-2hx text-info me-4 mb-5 mb-sm-0">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
-                            <!--end::Icon-->
-                            <!--begin::Wrapper-->
-                            <div class="d-flex flex-column pe-0 pe-sm-10">
-                                <!--begin::Title-->
-                                <h4 class="fw-semibold fs-6">Info</h4>
-                                <!--end::Title-->
-                                <!--begin::Content-->
-                                <span>
-                                    Servicio mediante el cual puedes identificar EFOS, es decir, si un contribuyente esta en la lista 69-B. Si se ha estado emitiendo comprobantes sin contar con los activos,
-                                    personal, infraestructura o capacidad material,directa o indirectamente, para prestar los servicios o producir, comercializar o entregar los bienes que amparan tales comprobantes,
-                                    o bien, que dichos contribuyentes se encuentren no localizados, se presumirá la inexistencia de las operaciones amparadas en tales comprobantes.
-                                </span>
-                                <!--end::Content-->
-                            </div>
-                            <!--end::Wrapper-->
-                        </div>
-                        <!--end::Alert-->
-
-                        <div class="border border-dashed border-gray-500 card-rounded h-auto p-9 bg-lighten">
-                            <form id="myForm">
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => SocioComercialId, htmlAttributes: new { @class = "form-label" })
-                                    @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2", id = "socioComercialId" })
-                                    @Html.ValidationMessageFor(model => SocioComercialId, "", new { @class = "text-danger" })
-                                </div>
-                                <button type="submit" class="btn btn-primary">Valida</button>
-                            </form>
-
-                        </div>
-                    </div>
-                    <!--end::Content-->
-                </div>
-            </div>
-            <!--begin::Modal body-->
-        </div>
-    </div>
-</div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
 <script>
     // Select element
@@ -417,52 +336,21 @@
 
         e.clearSelection();
     });
-
-
-  // Esperar a que el DOM esté completamente cargado
-  document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('myForm');
-
-    // Manejar el evento de clic en el botón para abrir el modal
-    /*openModalBtn.addEventListener('click', function() {
-      // Mostrar el modal
-      $('#exampleModal').modal('show');
-    });*/
-
-    // Manejar el envío del formulario
-    form.addEventListener('submit', function(event) {
-      event.preventDefault(); // Evitar el envío del formulario por defecto
-
-      // Obtener los datos del formulario
-      const formData = new FormData(form);
-
-      // Enviar los datos del formulario al servidor utilizando Fetch API
-      fetch('@Url.Action("ValidaRfc", "SociosComerciales")', {
-        method: 'POST',
-        body: formData,
-          data: JSON.stringify({
-              idSocioComercial: $('#socioComercialId').val()
-          }),
-        contentType: "application/json; charset=utf-8",
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error al enviar el formulario');
-        }
-        return response.text();
-      })
-      .then(data => {
-        console.log(data); // Manejar la respuesta del servidor si es necesario
-        $('#exampleModal').modal('hide'); // Ocultar el modal después de enviar el formulario
-      })
-      .catch(error => {
-        console.error(error);
-        // Aquí podrías mostrar un mensaje de error al usuario si lo deseas
-      });
-    });
-  });
 </script>
 
+@*<div class="card card-flush visually-hidden">
+        <div class="card-header card-title d-flex align-items-center position-relative my-1">
+            <h2>Puedes asignar los bancos y cambiar datos de la información del socio comercial</h2>
 
+            <button type="submit" class="btn btn-alt btn-hover btn-primary float-right">
+                <span>Bancos por Layout</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </button>
+
+        </div>
+        <div class="d-flex flex-center fw-semibold mb-4 fs-5 text-gray-400">
+            <p>Los socios comerciales se crean automáticamente</p>
+        </div>
+    </div>*@
 
 

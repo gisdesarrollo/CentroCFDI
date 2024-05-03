@@ -252,6 +252,7 @@ namespace APBox.Controllers.Ajax
                 DatosMaquilador = DatosMaquilador,
                 UsoAutorizado = UsoAutorizado,
                 DescripcionMateria = DescripcionMateria,
+
                 DetalleMercancia = new DetalleMercancia()
                 {
                     ClaveUnidadPeso_Id = DEClaveUnidadPesoID,
@@ -263,6 +264,7 @@ namespace APBox.Controllers.Ajax
 
             };
             //nuevo datos version 3.0
+
             if (SectorCofepris != "")
             {
                 mercancia.SectorCofepris = (c_SectorCofepris)Enum.Parse(typeof(c_SectorCofepris), SectorCofepris, true);

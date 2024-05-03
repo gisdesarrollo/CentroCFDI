@@ -19,7 +19,8 @@ using System.Web;
 using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using API.Models.DocumentosPagos;
 using Aplicacion.LogicaPrincipal.DocumentosPagos;
-using Aplicacion.RecepcionDocumentos;
+using Aplicacion.LogicaPrincipal.Validacion;
+using API.Catalogos;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -44,28 +45,15 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Title = "Documentos Aprobados";
             //get usaurio
 
-            var usuarioId = ObtenerUsuario();
-            var sucursalId = ObtenerSucursal();
-            var usuario = _db.Usuarios.Find(usuarioId);
-            var sucursal = _db.Sucursales.Find(sucursalId);
-
-            if (usuario.esProveedor)
-            {
-                ViewBag.isProveedor = "Proveedor";
-            }
-            else
-            {
-                ViewBag.isProveedor = "Usuario";
-            }
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
             var fechaInicial = DateTime.Today.AddDays(-10);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
-
             documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
-
             return View(documentosRecibidosModel);
         }
 
@@ -81,12 +69,11 @@ namespace APBox.Controllers.Operaciones
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
-
             DateTime fechaI = documentosRecibidosModel.FechaInicial;
             DateTime fechaF = documentosRecibidosModel.FechaFinal;
+
             var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-
             documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
@@ -168,16 +155,10 @@ namespace APBox.Controllers.Operaciones
 
                 if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Aprobado)
                 {
-                    documentoRecibido.AprobacionesDR.FechaAprobacionPagos = DateTime.Now;
-                    documentoRecibido.AprobacionesDR.UsuarioAprobacionPagos_id = usuario.Id;
-                    documentoRecibido.EstadoPago = c_EstadoPago.Aprobado;
-                }
+                    documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+                    documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
 
-                if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.EnRevision)
-                {
-                    documentoRecibido.AprobacionesDR.FechaAprobacionPagos = null;
-                    documentoRecibido.AprobacionesDR.UsuarioAprobacionPagos_id = null;
-                    documentoRecibido.EstadoPago = c_EstadoPago.EnRevision;
+                    documentoRecibido.EstadoComercial = c_EstadoComercial.Aprobado;
                 }
 
                 if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Rechazado)
@@ -317,11 +298,53 @@ namespace APBox.Controllers.Operaciones
                 {
                     ModelState.AddModelError("", error);
                 }
+                
             }
 
             documentoPagoModel.Previsualizacion = false;
 
             return View(documentoPagoModel);
+        }
+
+        public ActionResult ComplementosPagosCargados()
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "ComplementosPagosCargados";
+            ViewBag.ActionES = "Complementos Pagos Cargados";
+            ViewBag.NameHere = "Complementos Pagos Cargados";
+
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            DocumentosPagosModel pagosModel = new DocumentosPagosModel();
+            DateTime dayI = DateTime.Now.AddDays(-6);
+            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, dayI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            pagosModel.FechaInicial = fechaInicial;
+            pagosModel.FechaFinal = fechaFinal;
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
+
+            return View(pagosModel);
+        }
+
+        [HttpPost]
+        public ActionResult ComplementosPagosCargados(DocumentosPagosModel pagosModel)
+        {
+            ViewBag.Controller = "DocumentosPagos";
+            ViewBag.Action = "ComplementosPagosCargados";
+            ViewBag.ActionES = "Complementos Pagos Cargados";
+            ViewBag.NameHere = "Complementos Pagos Cargados";
+
+            var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            var fechaI = pagosModel.FechaInicial;
+            var fechaF = pagosModel.FechaFinal;
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            pagosModel.FechaInicial = fechaInicial;
+            pagosModel.FechaFinal = fechaFinal;
+            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
+
+            return View(pagosModel);
         }
 
         public ActionResult CargaComplementoPago(int Id)
@@ -618,6 +641,5 @@ namespace APBox.Controllers.Operaciones
         }
 
         #endregion Validaciones
-
     }
 }

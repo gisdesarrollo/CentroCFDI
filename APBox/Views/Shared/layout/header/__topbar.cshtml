@@ -1,6 +1,5 @@
 @using APBox.Context;
-@if (Request.IsAuthenticated)
-{
+@{
     var _db = new APBoxContext();
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
     var sucursal = _db.Sucursales.Find(sucursalId);
@@ -10,10 +9,14 @@
     var usuario = _db.Usuarios.Find(usuarioId);
     var sucursales = _db.Sucursales.Where(s => s.GrupoId == usuario.GrupoId).ToList();
 
+}
+@if (Request.IsAuthenticated)
+{
+
     <!--begin::Toolbar wrapper-->
     <div class="topbar d-flex align-items-stretch flex-shrink-0">
         <!--begin:Menu item-->
-        <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
+       <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
             <div class="fs-7">@sucursalRazonSocial</div>
         </a>
         @if (sucursales.Count > 1 || usuario.esProveedor)

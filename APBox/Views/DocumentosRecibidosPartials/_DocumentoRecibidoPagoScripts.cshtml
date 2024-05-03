@@ -137,6 +137,7 @@ function validarEmail() {
                 });
             }
 
+            // Hook export buttons
 
             // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
             var handleSearchDatatable = () => {
@@ -156,7 +157,7 @@ function validarEmail() {
                     }
 
                     initDatatable();
-                    exportButtons();
+                    //exportButtons();
                     handleSearchDatatable();
                 }
             };
@@ -209,7 +210,7 @@ function validarEmail() {
 
                     initDatatable();
                     //exportButtons();
-                    //handleSearchDatatable();
+                    handleSearchDatatable();
                 }
             };
         }();
