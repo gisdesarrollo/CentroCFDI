@@ -331,41 +331,6 @@
                         @Html.DisplayFor(x => x.DocumentacionAduaneras[i].RfcImpo)
                         @Html.HiddenFor(x => x.DocumentacionAduaneras[i].RfcImpo)
                     </div>
-                }
-                <div class="clearfix"></div>
-                @if (Model.DocumentacionAduaneras != null)
-                {
-                    for (var i = 0; i < Model.DocumentacionAduaneras.Count; i++)
-                    {
-                        <hr />
-                        <h3 class="title-hero">
-                            Mercancía : Doc Aduanera
-                        </h3>
-                        @Html.HiddenFor(x => x.DocumentacionAduaneras[i].TipoDocumento)
-                        @Html.HiddenFor(x => x.DocumentacionAduaneras[i].NumPedimento)
-                        @Html.HiddenFor(x => x.DocumentacionAduaneras[i].IdentDocAduanero)
-                        @Html.HiddenFor(x => x.DocumentacionAduaneras[i].RfcImpo)
-                        @Html.HiddenFor(x => x.DocumentacionAduaneras[i].Mercancia_Id)
-                        <div class="form-group col-xs-12 col-sm-3">
-                            @Html.LabelFor(x => x.DocumentacionAduaneras[i].TipoDocumento, new { @class = "fw-bold" })<br />
-                            @Html.DisplayFor(x => x.DocumentacionAduaneras[i].TipoDocumento)
-                            @Html.HiddenFor(x => x.DocumentacionAduaneras[i].TipoDocumento)
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-3">
-                            @Html.LabelFor(x => x.DocumentacionAduaneras[i].NumPedimento, new { @class = "fw-bold" })<br />
-                            @Html.DisplayFor(x => x.DocumentacionAduaneras[i].NumPedimento)
-                            @Html.HiddenFor(x => x.DocumentacionAduaneras[i].NumPedimento)
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-3">
-                            @Html.LabelFor(x => x.DocumentacionAduaneras[i].IdentDocAduanero, new { @class = "fw-bold" })<br />
-                            @Html.DisplayFor(x => x.DocumentacionAduaneras[i].IdentDocAduanero)
-                            @Html.HiddenFor(x => x.DocumentacionAduaneras[i].IdentDocAduanero)
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-3">
-                            @Html.LabelFor(x => x.DocumentacionAduaneras[i].RfcImpo, new { @class = "fw-bold" })<br />
-                            @Html.DisplayFor(x => x.DocumentacionAduaneras[i].RfcImpo)
-                            @Html.HiddenFor(x => x.DocumentacionAduaneras[i].RfcImpo)
-                        </div>
                     }
                 }
                 <div class="clearfix"></div>
