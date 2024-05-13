@@ -1,11 +1,11 @@
-﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
+﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidos
 
 
 @using APBox.Context;
 
 @{
     var _db = new APBoxContext();
-    var cfdi = _db.RecibidoComprobanteDr.Where(x => x.Id == Model.CfdiRecibidos_Id).FirstOrDefault();
+    var cfdi = _db.RecibidoComprobanteDr.Where(x => x.Id == Model.CfdiRecibidosId).FirstOrDefault();
     var sucursalId = Convert.ToInt32(Session["SucursalId"]);
     var sucursal = _db.Sucursales.Find(sucursalId);
     var sucursalRazonSocial = sucursalId == 0 ? "" : sucursal.RazonSocial;
@@ -20,7 +20,7 @@
             <!--begin::Balance-->
             <div class="d-flex text-center flex-column text-white pt-8">
                 <span class="fw-semibold fs-7">Importe Total</span>
-                <span class="fw-bold fs-3x pt-1">@Model.Monto.ToString("C", new System.Globalization.CultureInfo("mx-MX")) <span class="fs-2">@Model.Moneda_Id</span></span>
+                <span class="fw-bold fs-3x pt-1">@Model.Monto.ToString("C", new System.Globalization.CultureInfo("mx-MX")) <span class="fs-2">@Model.MonedaId</span></span>
             </div>
             <!--end::Balance-->
         </div>
@@ -89,7 +89,7 @@
                 <div class="d-flex align-items-center flex-wrap w-100">
                     <!--begin::Title-->
                     <div class="mb-1 pe-3 flex-grow-1">
-                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidos_Serie - @Model.CfdiRecibidos_Folio</h4>
+                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidosSerie - @Model.CfdiRecibidosFolio</h4>
                         <div class="text-gray-600 fw-semibold fs-7">Serie - Folio</div>
                     </div>
                     <!--end::Title-->
@@ -110,7 +110,7 @@
                 <div class="d-flex align-items-center flex-wrap w-100">
                     <!--begin::Title-->
                     <div class="mb-1 pe-3 flex-grow-1">
-                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidos_UUID</h4>
+                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidosUUID</h4>
                         <div class="text-gray-600 fw-semibold fs-7">Folio Fiscal</div>
                     </div>
                     <!--end::Title-->

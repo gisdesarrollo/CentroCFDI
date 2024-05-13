@@ -1,4 +1,4 @@
-﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
+﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidos
 
 @using APBox.Context;
 @{
@@ -10,8 +10,11 @@
     ViewBag.Title = "Carga CFDI";
 }
 
+
+
 <!--begin::Row-->
 <div class="row g-5 g-xl-8">
+
     @if (!Model.Procesado)
     {
         <div class="col-6">
@@ -111,7 +114,7 @@
                             <!--end::Symbol-->
                             <!--begin::Text-->
                             <div class="d-flex flex-column">
-                                <span class="fs-6">@modelError.ErrorMessage</span>
+                                <span class="">@modelError.ErrorMessage</span>
                             </div>
                             <!--end::Text-->
                         </div>
@@ -131,16 +134,16 @@
     @Html.HiddenFor(model => model.Procesado)
     @Html.HiddenFor(model => model.PathArchivoXml)
     @Html.HiddenFor(model => model.PathArchivoPdf)
-    @Html.HiddenFor(model => model.SocioComercial_Id)
+    @Html.HiddenFor(model => model.SocioComercialId)
     @Html.HiddenFor(model => model.Validaciones.Detalle)
     @Html.HiddenFor(model => model.Validaciones.Fecha)
-    @Html.HiddenFor(model => model.Validaciones_Detalle)
-    @Html.HiddenFor(model => model.Usuario_Id)
-    @Html.HiddenFor(model => model.CfdiRecibidos_Id)
-    @Html.HiddenFor(model => model.CfdiRecibidos_Serie)
-    @Html.HiddenFor(model => model.CfdiRecibidos_Folio)
-    @Html.HiddenFor(model => model.Moneda_Id)
-    @Html.HiddenFor(model => model.CfdiRecibidos_UUID)
+    @Html.HiddenFor(model => model.ValidacionesDetalle)
+    @Html.HiddenFor(model => model.UsuarioId)
+    @Html.HiddenFor(model => model.CfdiRecibidosId)
+    @Html.HiddenFor(model => model.CfdiRecibidosSerie)
+    @Html.HiddenFor(model => model.CfdiRecibidosFolio)
+    @Html.HiddenFor(model => model.MonedaId)
+    @Html.HiddenFor(model => model.CfdiRecibidosUUID)
     @Html.HiddenFor(model => model.EstadoComercial)
     @Html.HiddenFor(model => model.FechaComprobante)
     @Html.HiddenFor(model => model.FechaEntrega)
@@ -236,7 +239,7 @@
                             <!--begin::Text-->
                             <div class="d-flex flex-column">
                                 <h4 class="fw-semibold fs-6">El CFDi no se ha cargado previamente</h4>
-                                <span class="text-muted fw-bold">@Html.DisplayFor(model => model.CfdiRecibidos_UUID)</span>
+                                <span class="text-muted fw-bold">@Html.DisplayFor(model => model.CfdiRecibidosUUID)</span>
                             </div>
                             <!--end::Text-->
                         </div>
@@ -329,7 +332,7 @@
                             <!--begin::Balance-->
                             <div class="d-flex text-center flex-column text-white pt-8">
                                 <span class="fw-semibold fs-7">Importe Total</span>
-                                <span class="fw-bold fs-2x pt-1">@Model.Monto.ToString("C", new System.Globalization.CultureInfo("mx-MX")) <span class="fs-2">@Model.Moneda_Id</span></span>
+                                <span class="fw-bold fs-2x pt-1">@Model.Monto.ToString("C", new System.Globalization.CultureInfo("mx-MX")) <span class="fs-2">@Model.MonedaId</span></span>
                             </div>
                             <!--end::Balance-->
                         </div>
@@ -349,7 +352,7 @@
                                 <div class="d-flex align-items-center flex-wrap w-100">
                                     <!--begin::Title-->
                                     <div class="mb-1 pe-3 flex-grow-1">
-                                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidos_Serie - @Model.CfdiRecibidos_Folio</h4>
+                                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidosSerie - @Model.CfdiRecibidosFolio</h4>
                                         <div class="text-gray-500 fw-semibold fs-7">Serie - Folio</div>
                                     </div>
                                     <!--end::Title-->
@@ -370,7 +373,7 @@
                                 <div class="d-flex align-items-center flex-wrap w-100">
                                     <!--begin::Title-->
                                     <div class="mb-1 pe-3 flex-grow-1">
-                                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidos_UUID</h4>
+                                        <h4 class="fw-semibold fs-6">@Model.CfdiRecibidosUUID</h4>
                                         <div class="text-gray-500 fw-semibold fs-7">Folio Fiscal</div>
                                     </div>
                                     <!--end::Title-->

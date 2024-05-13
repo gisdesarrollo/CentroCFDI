@@ -21,7 +21,7 @@ var KTDatatablesExample = function () {
 
     // Hook export buttons
     var exportButtons = () => {
-        var titulo = document.querySelector(".page-title h1").textContent;
+        var titulo = document.querySelector(".breadcrumb-item").textContent;
         const documentTitle = titulo;
         var buttons = new $.fn.dataTable.Buttons(table, {
             buttons: [
@@ -59,7 +59,7 @@ var KTDatatablesExample = function () {
             });
         });
     }
-    //hola
+
     // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
     var handleSearchDatatable = () => {
         const filterSearch = document.querySelector('[data-kt-filter="search"]');

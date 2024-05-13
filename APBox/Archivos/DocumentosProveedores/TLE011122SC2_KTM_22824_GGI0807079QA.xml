@@ -1,43 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="4.0" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" Serie="KTM" Folio="0022824" Fecha="2024-04-01T16:08:12" Sello="EAKTQKHVsbX0ZT2V7EET6MQvaBZkGBzbK4WRYDSaQbYNzBwBo2kfCVg/Zeh2atdfqsxfXCJvm2nZnnBhRzEH5PEMW8Q7g895jBPfSOJR/atbPTi4BSwKpC2zPWrr4YnP7s/vFviI8tqmSsCMOVEt2o7uyNWlRAwcvSH+XXl3HHe6you5jIWY1zXs7emHh9XMWo+dKP9AnpHedF4g5898238+RLyDOmus6UyovqRYDpPJKBQKH/+Kk6qOzRUH/+aERKqmz4RvBvl0TDgtnVnVYs7dkS3yBhYMVxlbGjmaO6SrSckXu9WdQdp6DRn5PxbV+AbDhv663WVRM9UEsSiX+Q==" FormaPago="99" NoCertificado="00001000000508147287" Certificado="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" CondicionesDePago="Pago de contado" SubTotal="23944.8" Descuento="0" Moneda="MXN" TipoCambio="1" Total="27775.97" TipoDeComprobante="I" Exportacion="01" MetodoPago="PPD" LugarExpedicion="76090">
-	<cfdi:Emisor Rfc="TLE011122SC2" Nombre="TRALIX MEXICO" RegimenFiscal="601"/>
-	<cfdi:Receptor Rfc="GGI0807079QA" Nombre="GIS, GRUPO EN INTEGRACION DE SISTEMAS" DomicilioFiscalReceptor="11560" RegimenFiscalReceptor="601" UsoCFDI="G03"/>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  Version="4.0"
+                  xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"
+                  Serie="KTM"
+                  Folio="0022824"
+                  Fecha="2024-05-01T16:25:59"
+                  Sello="EAKTQKHVsbX0ZT2V7EET6MQvaBZkGBzbK4WRYDSaQbYNzBwBo2kfCVg/Zeh2atdfqsxfXCJvm2nZnnBhRzEH5PEMW8Q7g895jBPfSOJR/atbPTi4BSwKpC2zPWrr4YnP7s/vFviI8tqmSsCMOVEt2o7uyNWlRAwcvSH+XXl3HHe6you5jIWY1zXs7emHh9XMWo+dKP9AnpHedF4g5898238+RLyDOmus6UyovqRYDpPJKBQKH/+Kk6qOzRUH/+aERKqmz4RvBvl0TDgtnVnVYs7dkS3yBhYMVxlbGjmaO6SrSckXu9WdQdp6DRn5PxbV+AbDhv663WVRM9UEsSiX+Q=="
+                  FormaPago="99"
+                  NoCertificado="00001000000508147287"
+                  Certificado="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"
+                  CondicionesDePago="Pago de contado"
+                  SubTotal="23944.8"
+                  Descuento="0"
+                  Moneda="MXN"
+                  TipoCambio="1"
+                  Total="27775.97"
+                  TipoDeComprobante="I"
+                  Exportacion="01"
+                  MetodoPago="PPD"
+                  LugarExpedicion="76090">
+	<cfdi:Emisor Rfc="TLE011122SC2"
+	             Nombre="TRALIX MEXICO"
+	             RegimenFiscal="601"/>
+	<cfdi:Receptor Rfc="GGI0807079QA"
+	               Nombre="GIS, GRUPO EN INTEGRACION DE SISTEMAS"
+	               DomicilioFiscalReceptor="11560"
+	               RegimenFiscalReceptor="601"
+	               UsoCFDI="G03"/>
 	<cfdi:Conceptos>
-		<cfdi:Concepto ClaveProdServ="84111506" NoIdentificacion="G_XSA" ObjetoImp="02" Cantidad="3739" ClaveUnidad="E48" Unidad="Servicios" Descripcion="G_XSA XSA Documentos CFDi Canal 2, Periodo: Septiembre 2023" ValorUnitario="1.20" Importe="4486.80" Descuento="0.00">
+		<cfdi:Concepto ClaveProdServ="84111506"
+		               NoIdentificacion="G_XSA"
+		               ObjetoImp="02"
+		               Cantidad="3739"
+		               ClaveUnidad="E48"
+		               Unidad="Servicios"
+		               Descripcion="G_XSA XSA Documentos CFDi Canal 2, Periodo: Septiembre 2023"
+		               ValorUnitario="1.20"
+		               Importe="4486.80"
+		               Descuento="0.00">
 			<cfdi:Impuestos>
 				<cfdi:Traslados>
-					<cfdi:Traslado Base="4486.8" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="717.89"/>
+					<cfdi:Traslado Base="4486.8"
+					               Impuesto="002"
+					               TipoFactor="Tasa"
+					               TasaOCuota="0.160000"
+					               Importe="717.89"/>
 				</cfdi:Traslados>
 			</cfdi:Impuestos>
 		</cfdi:Concepto>
-		<cfdi:Concepto ClaveProdServ="84111506" NoIdentificacion="G_XSA" ObjetoImp="02" Cantidad="9" ClaveUnidad="E48" Unidad="Servicios" Descripcion="G_XSA XSA RFC generación canal 2" ValorUnitario="185" Importe="1665.00" Descuento="0.00">
+		<cfdi:Concepto ClaveProdServ="84111506"
+		               NoIdentificacion="G_XSA"
+		               ObjetoImp="02"
+		               Cantidad="9"
+		               ClaveUnidad="E48"
+		               Unidad="Servicios"
+		               Descripcion="G_XSA XSA RFC generación canal 2"
+		               ValorUnitario="185"
+		               Importe="1665.00"
+		               Descuento="0.00">
 			<cfdi:Impuestos>
 				<cfdi:Traslados>
-					<cfdi:Traslado Base="1665" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="266.40"/>
+					<cfdi:Traslado Base="1665"
+					               Impuesto="002"
+					               TipoFactor="Tasa"
+					               TasaOCuota="0.160000"
+					               Importe="266.40"/>
 				</cfdi:Traslados>
 			</cfdi:Impuestos>
 		</cfdi:Concepto>
-		<cfdi:Concepto ClaveProdServ="84111506" NoIdentificacion="G_XSA" ObjetoImp="02" Cantidad="12515" ClaveUnidad="E48" Unidad="Servicios" Descripcion="G_XSA XSA Documentos CFDi Canal 3, Periodo: Septiembre 2023" ValorUnitario="1.20" Importe="15018.00" Descuento="0.00">
+		<cfdi:Concepto ClaveProdServ="84111506"
+		               NoIdentificacion="G_XSA"
+		               ObjetoImp="02"
+		               Cantidad="12515"
+		               ClaveUnidad="E48"
+		               Unidad="Servicios"
+		               Descripcion="G_XSA XSA Documentos CFDi Canal 3, Periodo: Septiembre 2023"
+		               ValorUnitario="1.20"
+		               Importe="15018.00"
+		               Descuento="0.00">
 			<cfdi:Impuestos>
 				<cfdi:Traslados>
-					<cfdi:Traslado Base="15018" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="2402.88"/>
+					<cfdi:Traslado Base="15018"
+					               Impuesto="002"
+					               TipoFactor="Tasa"
+					               TasaOCuota="0.160000"
+					               Importe="2402.88"/>
 				</cfdi:Traslados>
 			</cfdi:Impuestos>
 		</cfdi:Concepto>
-		<cfdi:Concepto ClaveProdServ="84111506" NoIdentificacion="G_XSA" ObjetoImp="02" Cantidad="15" ClaveUnidad="E48" Unidad="Servicios" Descripcion="G_XSA XSA RFC generación canal 3, Orden de Compra No. OC-CA-J00214" ValorUnitario="185" Importe="2775.00" Descuento="0.00">
+		<cfdi:Concepto ClaveProdServ="84111506"
+		               NoIdentificacion="G_XSA"
+		               ObjetoImp="02"
+		               Cantidad="15"
+		               ClaveUnidad="E48"
+		               Unidad="Servicios"
+		               Descripcion="G_XSA XSA RFC generación canal 3, Orden de Compra No. OC-CA-J00214"
+		               ValorUnitario="185"
+		               Importe="2775.00"
+		               Descuento="0.00">
 			<cfdi:Impuestos>
 				<cfdi:Traslados>
-					<cfdi:Traslado Base="2775" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="444.00"/>
+					<cfdi:Traslado Base="2775"
+					               Impuesto="002"
+					               TipoFactor="Tasa"
+					               TasaOCuota="0.160000"
+					               Importe="444.00"/>
 				</cfdi:Traslados>
 			</cfdi:Impuestos>
 		</cfdi:Concepto>
 	</cfdi:Conceptos>
 	<cfdi:Impuestos TotalImpuestosTrasladados="3831.17">
 		<cfdi:Traslados>
-			<cfdi:Traslado Base="23944.80" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="3831.17"/>
+			<cfdi:Traslado Base="23944.80"
+			               Impuesto="002"
+			               TipoFactor="Tasa"
+			               TasaOCuota="0.160000"
+			               Importe="3831.17"/>
 		</cfdi:Traslados>
 	</cfdi:Impuestos>
 	<cfdi:Complemento>
-		<tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" FechaTimbrado="2023-10-10T09:08:28" UUID="0F06D343-62CC-4763-A2A7-07874B0FBF7D" NoCertificadoSAT="00001000000503270882" SelloCFD="EAKTQKHVsbX0ZT2V7EET6MQvaBZkGBzbK4WRYDSaQbYNzBwBo2kfCVg/Zeh2atdfqsxfXCJvm2nZnnBhRzEH5PEMW8Q7g895jBPfSOJR/atbPTi4BSwKpC2zPWrr4YnP7s/vFviI8tqmSsCMOVEt2o7uyNWlRAwcvSH+XXl3HHe6you5jIWY1zXs7emHh9XMWo+dKP9AnpHedF4g5898238+RLyDOmus6UyovqRYDpPJKBQKH/+Kk6qOzRUH/+aERKqmz4RvBvl0TDgtnVnVYs7dkS3yBhYMVxlbGjmaO6SrSckXu9WdQdp6DRn5PxbV+AbDhv663WVRM9UEsSiX+Q==" SelloSAT="iE/VgprQ/rjFzvrhUaOGMUuQq14n/8w76DIa+rigi2LsR57CbQQd2i+tXmY40w3PgLltExUZad3kMwidXxfxl+UOnwKW7IWQs+5/3V5UA86MARmOfAuQwCjqlg3X0uAGaZEOYdF9OED5M35HBRkJPr15NGENghalYnQAlq/40jZQ2Pijyr2uQtjweLmtkZSQOMqoX6nEQSytNSj5o/dZINrmda50t/ssM5VDh2ZlIWkwMBGsnNj3tkORWl6fxwT22iMyCocHuhD89cqMomBaIV56KjhGMQYns9S1wOiS2drnqy/fiMv9RGc/MSF8uXzH0AzM2Xw9VhYW8oVqgQpdUQ==" Version="1.1" RfcProvCertif="TLE011122SC2" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+		<tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital"
+		                         FechaTimbrado="2023-10-10T09:08:28"
+		                         UUID="0F06D343-62CC-4763-A2A7-07874B0FBF7D"
+		                         NoCertificadoSAT="00001000000503270882"
+		                         SelloCFD="EAKTQKHVsbX0ZT2V7EET6MQvaBZkGBzbK4WRYDSaQbYNzBwBo2kfCVg/Zeh2atdfqsxfXCJvm2nZnnBhRzEH5PEMW8Q7g895jBPfSOJR/atbPTi4BSwKpC2zPWrr4YnP7s/vFviI8tqmSsCMOVEt2o7uyNWlRAwcvSH+XXl3HHe6you5jIWY1zXs7emHh9XMWo+dKP9AnpHedF4g5898238+RLyDOmus6UyovqRYDpPJKBQKH/+Kk6qOzRUH/+aERKqmz4RvBvl0TDgtnVnVYs7dkS3yBhYMVxlbGjmaO6SrSckXu9WdQdp6DRn5PxbV+AbDhv663WVRM9UEsSiX+Q=="
+		                         SelloSAT="iE/VgprQ/rjFzvrhUaOGMUuQq14n/8w76DIa+rigi2LsR57CbQQd2i+tXmY40w3PgLltExUZad3kMwidXxfxl+UOnwKW7IWQs+5/3V5UA86MARmOfAuQwCjqlg3X0uAGaZEOYdF9OED5M35HBRkJPr15NGENghalYnQAlq/40jZQ2Pijyr2uQtjweLmtkZSQOMqoX6nEQSytNSj5o/dZINrmda50t/ssM5VDh2ZlIWkwMBGsnNj3tkORWl6fxwT22iMyCocHuhD89cqMomBaIV56KjhGMQYns9S1wOiS2drnqy/fiMv9RGc/MSF8uXzH0AzM2Xw9VhYW8oVqgQpdUQ=="
+		                         Version="1.1"
+		                         RfcProvCertif="TLE011122SC2"
+		                         xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd"
+		                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
 	</cfdi:Complemento>
 </cfdi:Comprobante>

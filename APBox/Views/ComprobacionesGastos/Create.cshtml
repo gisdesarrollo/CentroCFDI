@@ -1,10 +1,12 @@
 ﻿@model API.Operaciones.OperacionesRecepcion.ComprobacionGasto
 @using APBox.Context;
+
 @{
     var _db = new APBoxContext();
     var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
     var usuario = _db.Usuarios.Find(usuarioId);
 }
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -64,17 +66,17 @@
 
             <div class="d-flex mb-7 row ">
                 <div class="mb-10 row">
-                    <div class="h1 fs-2qx col-4">
+                    <div class="h1 col-4">
                         <span class="text-gray-600">Folio</span><br />
                         @usuario.Departamento.Clave - @Model.Folio
                     </div>
 
-                    <div class="h1 fs-2qx col-4">
+                    <div class="h1 col-4">
                         <span class="text-gray-600">Fecha </span><br />
                         @DateTime.Now.ToString("dd/MM/yyyy")
                     </div>
 
-                    <div class="h1 fs-2qx col-4">
+                    <div class="h1 col-4">
                         <span class="text-gray-600">Monto Comprobado </span><br />
                         <span class="h2 text-gray-500" id="divMoneda"></span> $ 0.00
                     </div>
@@ -82,7 +84,7 @@
 
                 <div class="separator separator-dashed mb-10"></div>
 
-                <div class="mb-10 row ">
+                <div class="mb-10 row">
                     <div class="form-group col-4">
                         @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label required" })
                         @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
@@ -100,19 +102,19 @@
 
                 <div class="mb-10 row">
                     <div class="form-group col-4">
-                        @Html.LabelFor(model => model.MonedaId, htmlAttributes: new { @class = "form-label required" })
+                        @Html.LabelFor(model => model.MonedaId, htmlAttributes: new { @class = "form-label" })
                         @Html.EnumDropDownListFor(model => model.MonedaId, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
                         @Html.ValidationMessageFor(model => model.MonedaId, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group col-4">
-                        @Html.LabelFor(model => model.ProyectoId, htmlAttributes: new { @class = "form-label required" })
-                        @Html.DropDownListFor(model => model.ProyectoId, ViewBag.Proyectos as SelectList, "Favor de hacer su selección", new { @class = "form-control" })
+                        @Html.LabelFor(model => model.ProyectoId, htmlAttributes: new { @class = "form-label" })
+                        @Html.DropDownListFor(model => model.ProyectoId, (IEnumerable<SelectListItem>)ViewBag.Proyectos, "Favor de hacer su selección", new { @class = "form-control select" })
                         @Html.ValidationMessageFor(model => model.ProyectoId, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group col-4">
-                        @Html.LabelFor(model => model.EventoId, htmlAttributes: new { @class = "form-label required" })
+                        @Html.LabelFor(model => model.EventoId, htmlAttributes: new { @class = "form-label" })
                         @Html.DropDownListFor(model => model.EventoId, ViewBag.Eventos as SelectList, "Favor de hacer su selección", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.EventoId, "", new { @class = "text-danger" })
                     </div>

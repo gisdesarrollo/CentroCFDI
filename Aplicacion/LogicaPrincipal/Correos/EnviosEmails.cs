@@ -131,7 +131,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
 
         #region Notificaciones de Recepción de Facturas y Pagos
 
-        public void NotificacionCambioEstadoComercial(Usuario usuario, DocumentosRecibidosDR documentoRecibido, c_EstadoComercial EstadoComercial, int sucursalId)
+        public void NotificacionCambioEstadoComercial(Usuario usuario, API.Operaciones.OperacionesProveedores.DocumentosRecibidos documentoRecibido, c_EstadoComercial EstadoComercial, int sucursalId)
         {
             //Obtener el correo del usuario
             string destinatario = usuario.Email;
@@ -155,7 +155,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
                             asunto = "CentroCFDi - Notificación de Rechazo de Factura";
                             cuerpoCorreo = $"Estimado {documentoRecibido.Usuario.Nombre},\n\n" +
                             "Esperamos que este mensaje le encuentre bien.Nos dirigimos a usted en relación con la factura\n\n" +
-                            $"número {documentoRecibido.CfdiRecibidos_Serie}-{documentoRecibido.CfdiRecibidos_Folio} emitida el {documentoRecibido.FechaEntrega}.\n\n" +
+                            $"número {documentoRecibido.CfdiRecibidosSerie}-{documentoRecibido.CfdiRecibidosFolio} emitida el {documentoRecibido.FechaEntrega}.\n\n" +
                             "Lamentamos informarle que su factura ha sido rechazada en nuestro sistema de gestión CentroCFDi.\n" +
                             "Nuestro equipo ha revisado la factura y la ha rechazado por el siguiente motivo:\n\n" +
                             $"{documentoRecibido.AprobacionesDR.DetalleRechazo}.\n\n" +
@@ -246,7 +246,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
             }
         }
 
-        public void NotificacionRevisionComercial(Usuario usuario, DocumentosRecibidosDR documentoRecibido, int sucursalId)
+        public void NotificacionRevisionComercial(Usuario usuario, API.Operaciones.OperacionesProveedores.DocumentosRecibidos documentoRecibido, int sucursalId)
         {
             //Obtener el correo del usuario
             string destinatario = usuario.Email;
@@ -265,7 +265,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
                     cuerpoCorreo = $"Estimado {usuario.NombreCompleto},\n\n" +
                                    "Quería informarte que uno de los Documentos Recibidos que aprobaste en el sistema CentroCFDi ha sido devuelto para revisión por parte del departamento de Cuentas por Pagar.\n\n" +
                                    "Detalle del Documento:\n\n" +
-                                   $"Número de Documento: {documentoRecibido.CfdiRecibidos_UUID}\n" +
+                                   $"Número de Documento: {documentoRecibido.CfdiRecibidosUUID}\n" +
                                    $"Fecha de Carga: {documentoRecibido.FechaEntrega}\n" +
                                    $"Proveedor: {documentoRecibido.SocioComercial.RazonSocial}\n\n" +
                                    "Observaciones de Cuentas por Pagar:\n\n" +

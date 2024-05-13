@@ -41,13 +41,13 @@ namespace Aplicacion.RecepcionDocumentos
                         sb.Append("error" + ":" + "Receptor no coincide con el complemento cargado" + ",");
                     }
                     else { sb.Append("ok" + ":" + "Receptor coincide correctamente" + ","); }
-                    //if (pago.DocumentoRecibido.RecibidosComprobante.FormaPago != pagoXml.FormaDePagoP)
+                    //if (pago.DocumentosRecibidos.RecibidosComprobante.FormaPago != pagoXml.FormaDePagoP)
                     //{
                     //    sb.Append("error" + ":" + "Forma de Pago no coincide con el complemento cargado" + ",");
                     //}
                     //else { sb.Append("ok" + ":" + "Forma de Pago coincide correctamente" + ","); }
 
-                    //if (pago.DocumentoRecibido.RecibidosComprobante.TipoComprobante != cfdi.TipoDeComprobante)
+                    //if (pago.DocumentosRecibidos.RecibidosComprobante.TipoComprobante != cfdi.TipoDeComprobante)
                     //{
                     //    sb.Append("error" + ":" + "Tipo comprobante no coincide con el complemento cargado" + ",");
                     //}
@@ -71,19 +71,19 @@ namespace Aplicacion.RecepcionDocumentos
                     //}
                     //else { sb.Append("ok" + ":" + "Monto coincide correctamente" + ","); }
 
-                    //if (pago.DocumentoRecibido.RecibidosComprobante.Serie != cfdi.Serie)
+                    //if (pago.DocumentosRecibidos.RecibidosComprobante.Serie != cfdi.Serie)
                     //{
                     //    sb.Append("error" + ":" + "Serie no coincide con el complemento cargado" + ",");
                     //}
                     //else { sb.Append("ok" + ":" + "Serie coincide correctamente" + ","); }
 
-                    //if (pago.DocumentoRecibido.RecibidosComprobante.Folio != cfdi.Folio)
+                    //if (pago.DocumentosRecibidos.RecibidosComprobante.Folio != cfdi.Folio)
                     //{
                     //    sb.Append("error" + ":" + "Folio no coincide con el complemento cargado" + ",");
                     //}
                     //else { sb.Append("ok" + ":" + "Folio coincide correctamente" + ","); }
 
-                    //if (pago.DocumentoRecibido.CfdiRecibidos_UUID != cfdi.TimbreFiscalDigital.UUID)
+                    //if (pago.DocumentosRecibidos.CfdiRecibidosUUID != cfdi.TimbreFiscalDigital.UUID)
                     //{
                     //    sb.Append("error" + ":" + "UUID no coincide con el complemento cargado" + ",");
                     //}
@@ -134,7 +134,7 @@ namespace Aplicacion.RecepcionDocumentos
         //    }
 
         //    //revisar que no sea una factura duplicada, y de ser así, que el UUID cargado anteriormente esté rechazado
-        //    var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == dv.TimbreFiscalDigital.UUID).FirstOrDefault();
+        //    var existUUID = _db.DocumentosRecibidos.Where(dr => dr.CfdiRecibidosUUID == dv.TimbreFiscalDigital.UUID).FirstOrDefault();
         //    if (existUUID != null)
         //    {
         //        if (existUUID.EstadoComercial != c_EstadoComercial.Rechazado && existUUID.EstadoPago != c_EstadoPago.Rechazado)
@@ -193,8 +193,8 @@ namespace Aplicacion.RecepcionDocumentos
         //            if (responseValidacion == null) { throw new Exception("Error response validación CFDI : null"); }
         //            if (responseValidacion.status == "success")
         //            {
-        //                dv.DocumentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
-        //                dv.DocumentoRecibidoDr.Procesado = true;
+        //                dv.DocumentosRecibidos.EstadoComercial = c_EstadoComercial.EnRevision;
+        //                dv.DocumentosRecibidos.Procesado = true;
         //                //Para iterar la lista sobre la validacion estructura
         //                List<Detail> detail1 = responseValidacion.detail;
         //                StringBuilder sb = new StringBuilder();
@@ -212,39 +212,39 @@ namespace Aplicacion.RecepcionDocumentos
         //                        //add validaciones
         //                        if (limite < count)
         //                        {
-        //                            dv.DocumentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail + "\r\n");
+        //                            dv.DocumentosRecibidos.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail + "\r\n");
         //                        }
-        //                        else { dv.DocumentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail); }
+        //                        else { dv.DocumentosRecibidos.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail); }
         //                    }
         //                }
-        //                dv.DocumentoRecibidoDr.Validaciones_Detalle = sb.ToString();
-        //                dv.DocumentoRecibidoDr.Validaciones = new ValidacionesDR()
+        //                dv.DocumentosRecibidos.ValidacionesDetalle = sb.ToString();
+        //                dv.DocumentosRecibidos.Validaciones = new ValidacionesDR()
         //                {
         //                    Detalle = sb.ToString()
         //                };
-        //                dv.DocumentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
+        //                dv.DocumentosRecibidos.Validaciones.Fecha = DateTime.Now;
         //            }
         //        }
         //    }
         //    else
         //    {
-        //        dv.DocumentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
-        //        dv.DocumentoRecibidoDr.Procesado = true;
-        //        dv.DocumentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
+        //        dv.DocumentosRecibidos.EstadoComercial = c_EstadoComercial.EnRevision;
+        //        dv.DocumentosRecibidos.Procesado = true;
+        //        dv.DocumentosRecibidos.Validaciones.Fecha = DateTime.Now;
         //    }
 
-        //    dv.DocumentoRecibidoDr.SocioComercial_Id = dv.SocioComercial.Id;
-        //    dv.DocumentoRecibidoDr.Usuario_Id = dv.Usuario.Id;
-        //    dv.DocumentoRecibidoDr.CfdiRecibidos_Serie = dv.Cfdi.Serie;
-        //    dv.DocumentoRecibidoDr.CfdiRecibidos_Folio = dv.Cfdi.Folio;
-        //    dv.DocumentoRecibidoDr.Moneda_Id = dv.Cfdi.Moneda;
-        //    dv.DocumentoRecibidoDr.FechaComprobante = Convert.ToDateTime(dv.Cfdi.Fecha);
-        //    dv.DocumentoRecibidoDr.CfdiRecibidos_UUID = dv.TimbreFiscalDigital.UUID;
-        //    dv.DocumentoRecibidoDr.FechaEntrega = DateTime.Now;
-        //    dv.DocumentoRecibidoDr.TipoDocumentoRecibido = c_TipoDocumentoRecibido.CFDI;
-        //    dv.DocumentoRecibidoDr.Monto = dv.Cfdi.Total;
-        //    dv.DocumentoRecibidoDr.PathArchivoXml = dv.Archivo.PathDestinoXml;
-        //    dv.DocumentoRecibidoDr.PathArchivoPdf = dv.Archivo.PathDestinoPdf;
+        //    dv.DocumentosRecibidos.SocioComercialId = dv.SocioComercial.Id;
+        //    dv.DocumentosRecibidos.UsuarioId = dv.Usuario.Id;
+        //    dv.DocumentosRecibidos.CfdiRecibidosSerie = dv.Cfdi.Serie;
+        //    dv.DocumentosRecibidos.CfdiRecibidosFolio = dv.Cfdi.Folio;
+        //    dv.DocumentosRecibidos.MonedaId = dv.Cfdi.Moneda;
+        //    dv.DocumentosRecibidos.FechaComprobante = Convert.ToDateTime(dv.Cfdi.Fecha);
+        //    dv.DocumentosRecibidos.CfdiRecibidosUUID = dv.TimbreFiscalDigital.UUID;
+        //    dv.DocumentosRecibidos.FechaEntrega = DateTime.Now;
+        //    dv.DocumentosRecibidos.TipoDocumentoRecibido = c_TipoDocumentoRecibido.CFDI;
+        //    dv.DocumentosRecibidos.Monto = dv.Cfdi.Total;
+        //    dv.DocumentosRecibidos.PathArchivoXml = dv.Archivo.PathDestinoXml;
+        //    dv.DocumentosRecibidos.PathArchivoPdf = dv.Archivo.PathDestinoPdf;
 
         //    return dv;
         //}
@@ -257,7 +257,7 @@ namespace Aplicacion.RecepcionDocumentos
             public SocioComercial SocioComercial { get; set; }
             public Usuario Usuario { get; set; }
             public ConfiguracionesDR ConfiguracionEmpresa { get; set; }
-            public DocumentosRecibidosDR DocumentoRecibidoDr { get; set; }
+            public DocumentosRecibidos DocumentoRecibidoDr { get; set; }
             public PathArchivosDto Archivo { get; set; }
         }
     }

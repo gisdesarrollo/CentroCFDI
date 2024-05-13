@@ -135,7 +135,7 @@ namespace API.Context
         public DbSet<SolicitudAcceso> SolicitudesAccesos { get; set; }
 
         //Documentos Recibidos
-        public DbSet<DocumentosRecibidosDR> DocumentoRecibidoDr { get; set; }
+        public DbSet<DocumentosRecibidos> DocumentosRecibidos { get; set; }
         public DbSet<RecibidosComprobanteDR> RecibidoComprobanteDr { get; set; }
         public DbSet<AdjuntosDR> AdjuntoDr { get; set; }
         public DbSet<PagosDR> PagoDr { get; set; }
@@ -145,7 +145,7 @@ namespace API.Context
         public DbSet<ValidacionesDR> ValidacionDr { get; set; }
 
         //ComrpobacionesGastos
-        public DbSet<ComprobacionGasto> ComprobacionGasto { get; set; }
+        public DbSet<ComprobacionGasto> ComprobacionesGastos { get; set; }
 
         #endregion
 

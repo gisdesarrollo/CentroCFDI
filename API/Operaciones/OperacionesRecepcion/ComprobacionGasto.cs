@@ -17,6 +17,9 @@ namespace API.Operaciones.OperacionesRecepcion
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
+        [DisplayName("Clave")]
+        public string Clave { get; set; }
+
         [DisplayName("Folio")]
         public int? Folio { get; set; }
 
@@ -59,6 +62,9 @@ namespace API.Operaciones.OperacionesRecepcion
 
         [DisplayName("Estatus")]
         public c_Estatus Estatus { get; set; }
+
+        [NotMapped]
+        public bool Cerrar { get; set; }
 
     }
 }

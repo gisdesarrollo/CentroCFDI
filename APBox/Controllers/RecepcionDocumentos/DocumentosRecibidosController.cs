@@ -40,7 +40,7 @@ namespace APBox.Controllers.Operaciones
 
         //Metodo de Validacion E-Mail para usuarios solicitantes
         [HttpPost]
-        public ActionResult ValidadorEmail(DocumentosRecibidosDR documentoRecibidoDr)
+        public ActionResult ValidadorEmail(DocumentosRecibidos documentoRecibidoDr)
         {
             string email = documentoRecibidoDr.VerificarEmail;
             var grupoid = ObtenerGrupo();
@@ -79,7 +79,8 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Índice";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.Title = "Documentos Recibidos";
+
             //get usaurio
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
@@ -105,17 +106,14 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.Title = "Documentos Recibidos";
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
-            DateTime fechaI = documentosRecibidosModel.FechaInicial;
-            DateTime fechaF = documentosRecibidosModel.FechaFinal;
-            //var dia = DateTime.DaysInMonth(complementosPagosModel.Anio, (int)complementosPagosModel.Mes);
 
-            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-            
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
 
@@ -125,29 +123,41 @@ namespace APBox.Controllers.Operaciones
         }
 
         // GET: DocumentosRecibidos/CargaCfdi
-        public ActionResult CargaCfdi()
+        public ActionResult CargaCfdi(int? comprobacionGastoId)
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
             ViewBag.NameHere = "Carga de CFDI";
             ViewBag.ActionES = "CargaCfdi";
 
-            //get usaurio
+            if (comprobacionGastoId.HasValue)
+            {
+                Session["ComprobacionGastosId"] = comprobacionGastoId;
+            }
+
+            // Obtener el usuario
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
 
-            DocumentosRecibidosDR documentoRecibidoDr = new DocumentosRecibidosDR()
+            // Crear un nuevo objeto DocumentosRecibidos
+            DocumentosRecibidos documentoRecibidoDr = new DocumentosRecibidos()
             {
                 Validaciones = new ValidacionesDR()
             };
 
             documentoRecibidoDr.Procesado = false;
 
+            // Si hay un ComprobacionGastosId válido, establecerlo en el objeto
+            if (comprobacionGastoId.HasValue)
+            {
+                documentoRecibidoDr.ComprobacionGastoId = comprobacionGastoId.Value;
+            }
+
             return View(documentoRecibidoDr);
         }
 
         // POST: DocumentosRecibidos/CargaCfdi
         [HttpPost]
-        public ActionResult CargaCfdi(DocumentosRecibidosDR documentoRecibidoDr)
+        public ActionResult CargaCfdi(DocumentosRecibidos documentoRecibidoDr)
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
@@ -194,7 +204,7 @@ namespace APBox.Controllers.Operaciones
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
                 return View(documentoRecibidoDr);
             }
 
@@ -208,7 +218,7 @@ namespace APBox.Controllers.Operaciones
                 return View(documentoRecibidoDr);
             }
 
-            //validaciones de configuraciones, donde la empresa valida opcionalmente varios parámetros
+            //Manda datos leidos a la pantalla para confirmación
             try
             {
                 ViewBag.MetodoPago = cfdi.MetodoPago;
@@ -255,16 +265,21 @@ namespace APBox.Controllers.Operaciones
 
         // POST: DocumentosRecibidos/Create
         [HttpPost]
-        public ActionResult Create(DocumentosRecibidosDR documentoRecibidoDr)
+        public ActionResult Create(DocumentosRecibidos documentoRecibidoDr)
         {
+
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
+            int? compGastosId = (int?)Session["ComprobacionGastosId"];
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
             try
             {
-                // Obtener los datos guardados en TempData
+                // Recuperar los parámetros de la sesión
+                int? comprobacionGastosId = (int?)Session["ComprobacionGastosId"];
                 var usuarioSolicitanteId = Session["AprobadorId"];
                 var usuarioSolicitanteDepartamentoId = Session["DepartamentoId"];
 
+                // Limpiar los parámetros de la sesión después de usarlos
+                Session.Remove("ComprobacionGastosId");
                 Session.Remove("AprobadorId");
                 Session.Remove("DepartamentoId");
 
@@ -286,19 +301,19 @@ namespace APBox.Controllers.Operaciones
                 else
                 {
                     documentoRecibidoDr.RecibidosPdf = null;
-                    documentoRecibidoDr.CfdiRecibidos_PDF_Id = null;
+                    documentoRecibidoDr.CfdiRecibidosPdfId = null;
                 }
                 //table validaciones
                 if (documentoRecibidoDr.Validaciones == null)
                 {
                     documentoRecibidoDr.Validaciones = null;
-                    documentoRecibidoDr.Validaciones_Id = null;
+                    documentoRecibidoDr.ValidacionesId = null;
                 }
                 // table recibidosComprobante
                 documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
                 {
-                    Sucursal_Id = sucursal.Id,
-                    SocioComercial_Id = (int)documentoRecibidoDr.SocioComercial_Id,
+                    SucursalId = sucursal.Id,
+                    SocioComercialId = (int)documentoRecibidoDr.SocioComercialId,
                     Fecha = documentoRecibidoDr.FechaComprobante,
                     Serie = cfdi.Serie,
                     Folio = cfdi.Folio,
@@ -314,27 +329,35 @@ namespace APBox.Controllers.Operaciones
                     Total = (double)cfdi.Total,
                     Uuid = timbreFiscalDigital.UUID,
                     FechaTimbrado = timbreFiscalDigital.FechaTimbrado
-                    //TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados,
-                    //TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados
                 };
                 if (cfdi.Impuestos != null)
                 {
                     documentoRecibidoDr.RecibidosComprobante.TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
                     documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
                 }
-                documentoRecibidoDr.CfdiRecibidos_Id = null;
-                //documentoRecibidoDr.Solicitudes = null;
-                //documentoRecibidoDr.Solicitud_Id = null;
+                documentoRecibidoDr.CfdiRecibidosId = null;
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                 documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
                 documentoRecibidoDr.Pagos = null;
-                //documentoRecibidoDr.Pagos_Id = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
                 documentoRecibidoDr.SucursalId = sucursal.Id;
 
+
+                //operaciones en caso de que venga de una comprobacion de gastos
+                if (compGastosId.HasValue)
+                {
+                    documentoRecibidoDr.ComprobacionGastoId = comprobacionGastosId;
+
+                    var comprobacionGastos = _db.ComprobacionesGastos.Find(comprobacionGastosId);
+                    double montoAnterior = comprobacionGastos.Monto;
+                    double montoActualizado = montoAnterior + documentoRecibidoDr.RecibidosComprobante.Total;
+                    comprobacionGastos.Monto = montoActualizado;
+                    _db.Entry(comprobacionGastos).State = EntityState.Modified;
+                }
+
                 //Table Aprobaciones
-                documentoRecibidoDr.AprobacionesDR_Id = null;
-                documentoRecibidoDr.AprobacionesDR = new AprobacionesDR()
+                documentoRecibidoDr.AprobacionesId = null;
+                documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
                 {
                     UsuarioEntrega_Id = usuario.Id,
                     UsuarioSolicitante_Id = (int?)usuarioSolicitanteId,
@@ -342,26 +365,42 @@ namespace APBox.Controllers.Operaciones
                     FechaSolicitud = DateTime.Now,
                 };
 
-                _db.DocumentoRecibidoDr.Add(documentoRecibidoDr);
+                _db.DocumentosRecibidos.Add(documentoRecibidoDr);
                 _db.SaveChanges();
-                return RedirectToAction("Index", "DocumentosRecibidos");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
             }
-            return this.View(documentoRecibidoDr);
+
+
+            if (compGastosId.HasValue)
+            {
+                // Si comprobacionGastoId tiene un valor, redirige a la acción ComprobacionesGastos/Revisar/id
+                return RedirectToAction("Revision", "ComprobacionesGastos", new { id = compGastosId.Value });
+            }
+            else
+            {
+                // Si comprobacionGastoId es null, redirige a otra acción
+                return RedirectToAction("Index", "DocumentosRecibidos");
+            }
+
+
         }
 
         // GET: DocumentosRecibidos/Edit/5
-        public ActionResult Revision(int id)
+        public ActionResult Revision(int id, int? comprobacionGastoId)
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
             ViewBag.NameHere = "Revisión de Comprobante Recibido";
 
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            if (comprobacionGastoId.HasValue)
+            {
+                Session["ComprobacionGastosId"] = comprobacionGastoId;
+            }
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
             {
@@ -374,7 +413,7 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.isProveedor = "Usuario";
             }
             // Splitting the string into lines
-            string[] lines = documentoRecibido.Validaciones_Detalle.Split('\n');
+            string[] lines = documentoRecibido.ValidacionesDetalle.Split('\n');
             documentoRecibido.DetalleArrays = lines.ToList();
             TempData["AprobadorId"] = null;
             TempData["DepartamentoId"] = null;
@@ -385,12 +424,17 @@ namespace APBox.Controllers.Operaciones
         // POST: DocumentosRecibidos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Revision(DocumentosRecibidosDR documentoRecibidoEdit)
+        public ActionResult Revision(DocumentosRecibidos documentoRecibidoEdit)
         {
+            int? compGastosId = (int?)Session["ComprobacionGastosId"];
+
             try
             {
+                int? comprobacionGastosId = (int?)Session["ComprobacionGastosId"];
+                Session.Remove("ComprobacionGastosId");
+
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
-                var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
+                var documentoRecibido = _db.DocumentosRecibidos.Find(documentoRecibidoEdit.Id);
                 var usuarioEntrega = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioEntrega_Id);
 
                 documentoRecibido.EstadoComercial = documentoRecibidoEdit.EstadoComercial;
@@ -415,15 +459,25 @@ namespace APBox.Controllers.Operaciones
                     //Notificación al usuario que entrega
                     _envioEmail.NotificacionCambioEstadoComercial(usuarioEntrega, documentoRecibido, c_EstadoComercial.Rechazado, (int)ObtenerSucursal());
                 }
-
                 _db.Entry(documentoRecibido).State = EntityState.Modified;
                 _db.SaveChanges();
-
-                return RedirectToAction("Index", "DocumentosRecibidos");
             }
             catch
             {
                 return View(documentoRecibidoEdit);
+            }
+
+
+
+            if (compGastosId.HasValue)
+            {
+                // Si comprobacionGastoId tiene un valor, redirige a la acción ComprobacionesGastos/Revisar/id
+                return RedirectToAction("Revision", "ComprobacionesGastos", new { id = compGastosId.Value });
+            }
+            else
+            {
+                // Si comprobacionGastoId es null, redirige a otra acción
+                return RedirectToAction("Index", "DocumentosRecibidos");
             }
         }
 
@@ -541,11 +595,11 @@ namespace APBox.Controllers.Operaciones
         public ActionResult DescargaXml(int id)
         {
             byte[] archivoFisico = new byte[255];
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             archivoFisico = documentoRecibido.RecibidosXml.Archivo;
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
-            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string nameArchivo = documentoRecibido.CfdiRecibidosSerie + "-" + documentoRecibido.CfdiRecibidosFolio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");
             Response.Buffer = true;
             Response.Clear();
@@ -559,11 +613,11 @@ namespace APBox.Controllers.Operaciones
         public ActionResult DescargaPdf(int id)
         {
             byte[] archivoFisico = new byte[255];
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             archivoFisico = documentoRecibido.RecibidosPdf.Archivo;
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
-            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string nameArchivo = documentoRecibido.CfdiRecibidosSerie + "-" + documentoRecibido.CfdiRecibidosFolio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
             Response.Buffer = true;
             Response.Clear();
@@ -576,10 +630,10 @@ namespace APBox.Controllers.Operaciones
 
         public ActionResult DescargaAdjunto(int id)
         {
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             byte[] archivoFisicoXml = documentoRecibido.RecibidosXml.Archivo;
             byte[] archivoFisicoPdf = documentoRecibido.RecibidosPdf.Archivo;
-            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string nameArchivo = documentoRecibido.CfdiRecibidosSerie + "-" + documentoRecibido.CfdiRecibidosFolio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
 
             var memoryStream = new MemoryStream();
             using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))

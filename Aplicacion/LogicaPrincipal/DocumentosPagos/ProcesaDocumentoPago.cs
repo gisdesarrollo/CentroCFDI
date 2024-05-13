@@ -22,7 +22,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosPagos
             if (esProveedor)
             {
                 pagos = _db.PagoDr
-                        .Where(dr => dr.FechaPago >= fechaInicial && dr.FechaPago <= fechaFinal && dr.SucursalId == sucursalId && dr.SocioComercial_Id == socioComercialId)
+                        .Where(dr => dr.FechaPago >= fechaInicial && dr.FechaPago <= fechaFinal && dr.SucursalId == sucursalId && dr.SocioComercialId == socioComercialId)
                         .ToList();
             }
             else

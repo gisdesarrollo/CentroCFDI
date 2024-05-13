@@ -40,29 +40,29 @@ namespace Aplicacion.LogicaPrincipal.Control
 
             //datos para home de recepción de documentos Usuario y Cuentas por pagar
 
-            homeModel.DocumentosRecibidosEnRevisionUsuario = _db.DocumentoRecibidoDr
+            homeModel.DocumentosRecibidosEnRevisionUsuario = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision &&
                             d.AprobacionesDR.UsuarioSolicitante_Id == _usuarioId);
 
-            homeModel.DocumentosRecibidosDepartamentoUsuario = _db.DocumentoRecibidoDr
+            homeModel.DocumentosRecibidosDepartamentoUsuario = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision &&
                             d.AprobacionesDR.DepartamentoUsuarioSolicitante_Id == _departamentoId);
 
-            homeModel.DocumentosPagosRevisionUsuario = _db.DocumentoRecibidoDr
+            homeModel.DocumentosPagosRevisionUsuario = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoPago == API.Enums.c_EstadoPago.EnRevision);
 
-            homeModel.DocumentosPagosAprobadoUsuario = _db.DocumentoRecibidoDr
+            homeModel.DocumentosPagosAprobadoUsuario = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoPago == API.Enums.c_EstadoPago.Aprobado);
 
-            homeModel.PagosEnRevisionUsuario = _db.DocumentoRecibidoDr
+            homeModel.PagosEnRevisionUsuario = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoPago == API.Enums.c_EstadoPago.EnRevision);
 
-            homeModel.PagosEnRevisionUsuario = _db.DocumentoRecibidoDr
+            homeModel.PagosEnRevisionUsuario = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoPago == API.Enums.c_EstadoPago.EnRevision);
 
@@ -72,21 +72,21 @@ namespace Aplicacion.LogicaPrincipal.Control
 
             //datos para home de recepción de documentos Socios Comerciales
 
-            homeModel.DocumentosRecibidosEnRevisionUsuarioSC = _db.DocumentoRecibidoDr
+            homeModel.DocumentosRecibidosEnRevisionUsuarioSC = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision &&
                             d.AprobacionesDR.UsuarioEntrega_Id == _usuarioId &&
-                            d.SocioComercial_Id == _socioComercialId);
+                            d.SocioComercialId == _socioComercialId);
 
-            homeModel.DocumentosRecibidosEnRevisionSC = _db.DocumentoRecibidoDr
+            homeModel.DocumentosRecibidosEnRevisionSC = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision &&
-                            d.SocioComercial_Id == _socioComercialId);
+                            d.SocioComercialId == _socioComercialId);
 
-            homeModel.DocumentosPagosRevisionSC = _db.DocumentoRecibidoDr
+            homeModel.DocumentosPagosRevisionSC = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoPago == API.Enums.c_EstadoPago.EnRevision &&
-                            d.SocioComercial_Id == _socioComercialId);
+                            d.SocioComercialId == _socioComercialId);
 
             homeModel.PorcentajeAprobacionSC = PorcentajeAprobacionSC();
 
@@ -95,10 +95,10 @@ namespace Aplicacion.LogicaPrincipal.Control
             //rechazados de los ultimos 15 días
             var fechaInicialRechazados = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             var fechaFinalRechazados = DateTime.Now;
-            homeModel.DocumentosRechazadosSC = _db.DocumentoRecibidoDr
+            homeModel.DocumentosRechazadosSC = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.EstadoPago == API.Enums.c_EstadoPago.Rechazado &&
-                            d.SocioComercial_Id == _socioComercialId &&
+                            d.SocioComercialId == _socioComercialId &&
                             d.FechaEntrega >= fechaInicialRechazados &&
                             d.FechaEntrega <= fechaFinalRechazados);
 
@@ -197,10 +197,10 @@ namespace Aplicacion.LogicaPrincipal.Control
             DateTime fechaFin = DateTime.Now;
 
             // Obtener el número de facturas aprobadas y rechazadas en los últimos 30 días
-            int facturasAprobadas = _db.DocumentoRecibidoDr
+            int facturasAprobadas = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId && d.FechaEntrega >= fechaInicio && d.FechaEntrega <= fechaFin && d.EstadoPago == API.Enums.c_EstadoPago.Aprobado);
 
-            int facturasRechazadas = _db.DocumentoRecibidoDr
+            int facturasRechazadas = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId && d.FechaEntrega >= fechaInicio && d.FechaEntrega <= fechaFin && d.EstadoPago == API.Enums.c_EstadoPago.Rechazado);
 
             // Calcular el porcentaje de facturas aprobadas y rechazadas
@@ -222,11 +222,11 @@ namespace Aplicacion.LogicaPrincipal.Control
             DateTime fechaFin = DateTime.Now;
 
             // Obtener el número de facturas aprobadas y rechazadas en los últimos 30 días
-            int facturasAprobadas = _db.DocumentoRecibidoDr
-                .Count(d => d.SucursalId == _sucursalId && d.FechaEntrega >= fechaInicio && d.FechaEntrega <= fechaFin && d.EstadoPago == API.Enums.c_EstadoPago.Aprobado && d.SocioComercial_Id == _socioComercialId);
+            int facturasAprobadas = _db.DocumentosRecibidos
+                .Count(d => d.SucursalId == _sucursalId && d.FechaEntrega >= fechaInicio && d.FechaEntrega <= fechaFin && d.EstadoPago == API.Enums.c_EstadoPago.Aprobado && d.SocioComercialId == _socioComercialId);
 
-            int facturasRechazadas = _db.DocumentoRecibidoDr
-                .Count(d => d.SucursalId == _sucursalId && d.FechaEntrega >= fechaInicio && d.FechaEntrega <= fechaFin && d.EstadoPago == API.Enums.c_EstadoPago.Rechazado && d.SocioComercial_Id == _socioComercialId);
+            int facturasRechazadas = _db.DocumentosRecibidos
+                .Count(d => d.SucursalId == _sucursalId && d.FechaEntrega >= fechaInicio && d.FechaEntrega <= fechaFin && d.EstadoPago == API.Enums.c_EstadoPago.Rechazado && d.SocioComercialId == _socioComercialId);
 
             // Calcular el porcentaje de facturas aprobadas y rechazadas
             double porcentajeAprobadas = (double)facturasAprobadas / (facturasAprobadas + facturasRechazadas) * 100;
@@ -247,7 +247,7 @@ namespace Aplicacion.LogicaPrincipal.Control
             DateTime fechaFin = DateTime.Now;
 
             // Obtener el número de documentos recibidos en los últimos 30 días
-            int documentosRecibidos = _db.DocumentoRecibidoDr
+            int documentosRecibidos = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
                             d.FechaEntrega >= fechaInicio &&
                             d.FechaEntrega <= fechaFin);
@@ -262,9 +262,9 @@ namespace Aplicacion.LogicaPrincipal.Control
             DateTime fechaFin = DateTime.Now;
 
             // Obtener el número de documentos recibidos en los últimos 30 días
-            int documentosRecibidos = _db.DocumentoRecibidoDr
+            int documentosRecibidos = _db.DocumentosRecibidos
                 .Count(d => d.SucursalId == _sucursalId &&
-                            d.SocioComercial_Id == _socioComercialId &&
+                            d.SocioComercialId == _socioComercialId &&
                             d.FechaEntrega >= fechaInicio &&
                             d.FechaEntrega <= fechaFin);
 

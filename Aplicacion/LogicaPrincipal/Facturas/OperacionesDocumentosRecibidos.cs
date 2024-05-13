@@ -18,7 +18,7 @@ namespace Aplicacion.LogicaPrincipal.Facturas
         {
             var fechaInicial = documentosRecibidosModel.FechaInicial;
             var fechaFinal = documentosRecibidosModel.FechaFinal.AddDays(1); //SE AGREGA UN DIA A LA FECHA FINAL
-            documentosRecibidosModel.DocumentosRecibidos = _db.DocumentoRecibidoDr.Where(fe => fe.FechaComprobante >= fechaInicial && fe.FechaComprobante < fechaFinal && fe.SucursalId == sucursalId).ToList();
+            documentosRecibidosModel.DocumentosRecibidos = _db.DocumentosRecibidos.Where(fe => fe.FechaComprobante >= fechaInicial && fe.FechaComprobante < fechaFinal && fe.SucursalId == sucursalId).ToList();
 
         }
 

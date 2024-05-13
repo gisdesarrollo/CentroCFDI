@@ -89,7 +89,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var cuentaBancariaNombre = registros[i][6];
                             var UUID = registros[i][7];
 
-                            var documentoRecibido = _db.DocumentoRecibidoDr.FirstOrDefault(fe => fe.CfdiRecibidos_UUID == UUID);
+                            var documentoRecibido = _db.DocumentosRecibidos.FirstOrDefault(fe => fe.CfdiRecibidosUUID == UUID);
 
                             if (documentoRecibido == null)
                             {
@@ -122,8 +122,8 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             var documentoPagado = new DocumentosPagadosDR
                             {
                                 FechaDocumento = documentoRecibido.RecibidosComprobante.Fecha,
-                                Folio = documentoRecibido.CfdiRecibidos_Folio,
-                                Serie = documentoRecibido.CfdiRecibidos_Serie,
+                                Folio = documentoRecibido.CfdiRecibidosFolio,
+                                Serie = documentoRecibido.CfdiRecibidosSerie,
                                 Moneda = documentoRecibido.RecibidosComprobante.Moneda,
                                 Total = documentoRecibido.RecibidosComprobante.Total,
                                 UUID = UUID,
@@ -132,9 +132,9 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                 MetodoPago = documentoRecibido.RecibidosComprobante.MetodoPago
                             };
 
-                            if (pagos.Any(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.SocioComercial_Id == documentoRecibido.SocioComercial.Id))
+                            if (pagos.Any(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.SocioComercialId == documentoRecibido.SocioComercial.Id))
                             {
-                                var pago = pagos.First(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.SocioComercial_Id == documentoRecibido.SocioComercial.Id);
+                                var pago = pagos.First(p => p.Total == TotalPago && p.FechaPago == fechaPago && p.SocioComercialId == documentoRecibido.SocioComercial.Id);
                                 if (pago != null)
                                 {
                                     pago.DocumentosPagados.Add(documentoPagado);
@@ -150,7 +150,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                     ComplementoPagoRecibido_Id = null,
                                     DocumentoRecibido = null,
                                     Moneda = moneda,
-                                    SocioComercial_Id = documentoRecibido.SocioComercial_Id,
+                                    SocioComercialId = documentoRecibido.SocioComercialId,
                                     SocioComercial = documentoRecibido.SocioComercial,
                                     TipoCambio = tipoCambioPago,
                                     CuentaBancariaSucursal_Id = banco.Id,
@@ -212,7 +212,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                             documentoPagado.Pago_Id = pago.Id;
                             _db.DocumentoPagadoDr.Add(documentoPagado);
 
-                            var docRecib = _db.DocumentoRecibidoDr.FirstOrDefault(fe => fe.CfdiRecibidos_UUID == documentoPagado.UUID);
+                            var docRecib = _db.DocumentosRecibidos.FirstOrDefault(fe => fe.CfdiRecibidosUUID == documentoPagado.UUID);
                             //actualiza estatus pago
                             docRecib.EstadoPago = c_EstadoPago.Pagado;
                             docRecib.AprobacionesDR.FechaCargaPagos = DateTime.Now;

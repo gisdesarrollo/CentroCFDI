@@ -3,7 +3,7 @@
 @using APBox.Context;
 @{
     var _db = new APBoxContext();
-    var cfdi = _db.DocumentoRecibidoDr.Where(x => x.Id == Model.ComplementoPagoRecibido_Id).FirstOrDefault();
+    var cfdi = _db.DocumentoRecibido.Where(x => x.Id == Model.ComplementoPagoRecibido_Id).FirstOrDefault();
     bool error = false;
     bool ok = false;
     ViewBag.Title = "Carga Complemento Pago";
@@ -148,7 +148,7 @@
                                 <div class="d-flex align-items-center flex-wrap w-100">
                                     <!--begin::Title-->
                                     <div class="mb-1 pe-3 flex-grow-1">
-                                        <h4 class="fw-semibold fs-6">@Model.DocumentoRecibido.CfdiRecibidos_Serie - @Model.DocumentoRecibido.CfdiRecibidos_Folio</h4>
+                                        <h4 class="fw-semibold fs-6">@Model.DocumentoRecibido.CfdiRecibidosSerie - @Model.DocumentoRecibido.CfdiRecibidosFolio</h4>
                                         <div class="text-gray-500 fw-semibold fs-7">Serie - Folio</div>
                                     </div>
                                     <!--end::Title-->
@@ -169,7 +169,7 @@
                                 <div class="d-flex align-items-center flex-wrap w-100">
                                     <!--begin::Title-->
                                     <div class="mb-1 pe-3 flex-grow-1">
-                                        <h4 class="fw-semibold fs-6">@Model.DocumentoRecibido.CfdiRecibidos_UUID</h4>
+                                        <h4 class="fw-semibold fs-6">@Model.DocumentoRecibido.CfdiRecibidosUUID</h4>
                                         <div class="text-gray-500 fw-semibold fs-7">Folio Fiscal</div>
                                     </div>
                                     <!--end::Title-->

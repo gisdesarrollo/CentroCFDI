@@ -14,13 +14,13 @@ namespace API.Operaciones.OperacionesProveedores
         public int Id { get; set; }
 
         [DisplayName("Sucursal")]
-        public int Sucursal_Id { get; set; }
-        [ForeignKey("Sucursal_Id")]
+        public int SucursalId { get; set; }
+        [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
         [DisplayName("Socio Comercial")]
-        public int SocioComercial_Id { get; set; }
-        [ForeignKey("SocioComercial_Id")]
+        public int SocioComercialId { get; set; }
+        [ForeignKey("SocioComercialId")]
         public virtual SocioComercial SocioComercial { get; set; }
 
         [DisplayName("Fecha Comprobante")]

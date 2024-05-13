@@ -19,8 +19,7 @@ using System.Web;
 using Aplicacion.LogicaPrincipal.CargasMasivas.CSV;
 using API.Models.DocumentosPagos;
 using Aplicacion.LogicaPrincipal.DocumentosPagos;
-using Aplicacion.LogicaPrincipal.Validacion;
-using API.Catalogos;
+using Aplicacion.RecepcionDocumentos;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -45,15 +44,28 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Title = "Documentos Aprobados";
             //get usaurio
 
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            var usuarioId = ObtenerUsuario();
+            var sucursalId = ObtenerSucursal();
+            var usuario = _db.Usuarios.Find(usuarioId);
+            var sucursal = _db.Sucursales.Find(sucursalId);
+
+            if (usuario.esProveedor)
+            {
+                ViewBag.isProveedor = "Proveedor";
+            }
+            else
+            {
+                ViewBag.isProveedor = "Usuario";
+            }
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
             var fechaInicial = DateTime.Today.AddDays(-10);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
+
             documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
+
             return View(documentosRecibidosModel);
         }
 
@@ -69,11 +81,12 @@ namespace APBox.Controllers.Operaciones
             //get usaurio
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+
             DateTime fechaI = documentosRecibidosModel.FechaInicial;
             DateTime fechaF = documentosRecibidosModel.FechaFinal;
-
             var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
             var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+
             documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
@@ -109,7 +122,7 @@ namespace APBox.Controllers.Operaciones
             ViewBag.ActionES = "Editar";
             ViewBag.Title = "Revisión de Comprobante Recibido para Pago";
 
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
 
             if (usuario.esProveedor)
@@ -123,7 +136,7 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.isProveedor = "Usuario";
             }
             // Splitting the string into lines
-            string[] lines = documentoRecibido.Validaciones_Detalle.Split('\n');
+            string[] lines = documentoRecibido.ValidacionesDetalle.Split('\n');
             documentoRecibido.DetalleArrays = lines.ToList();
 
             return View(documentoRecibido);
@@ -131,12 +144,12 @@ namespace APBox.Controllers.Operaciones
 
         // POST: DocumentosPagos/Edit/5
         [HttpPost]
-        public ActionResult Revision(DocumentosRecibidosDR documentoRecibidoEdit)
+        public ActionResult Revision(DocumentosRecibidos documentoRecibidoEdit)
         {
             try
             {
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
-                var documentoRecibido = _db.DocumentoRecibidoDr.Find(documentoRecibidoEdit.Id);
+                var documentoRecibido = _db.DocumentosRecibidos.Find(documentoRecibidoEdit.Id);
                 var usuarioEntrega = _db.Usuarios.Find(documentoRecibido.AprobacionesDR.UsuarioEntrega_Id);
                 var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
@@ -155,10 +168,16 @@ namespace APBox.Controllers.Operaciones
 
                 if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Aprobado)
                 {
-                    documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
-                    documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
+                    documentoRecibido.AprobacionesDR.FechaAprobacionPagos = DateTime.Now;
+                    documentoRecibido.AprobacionesDR.UsuarioAprobacionPagos_id = usuario.Id;
+                    documentoRecibido.EstadoPago = c_EstadoPago.Aprobado;
+                }
 
-                    documentoRecibido.EstadoComercial = c_EstadoComercial.Aprobado;
+                if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.EnRevision)
+                {
+                    documentoRecibido.AprobacionesDR.FechaAprobacionPagos = null;
+                    documentoRecibido.AprobacionesDR.UsuarioAprobacionPagos_id = null;
+                    documentoRecibido.EstadoPago = c_EstadoPago.EnRevision;
                 }
 
                 if (documentoRecibidoEdit.EstadoPago == c_EstadoPago.Rechazado)
@@ -298,53 +317,11 @@ namespace APBox.Controllers.Operaciones
                 {
                     ModelState.AddModelError("", error);
                 }
-                
             }
 
             documentoPagoModel.Previsualizacion = false;
 
             return View(documentoPagoModel);
-        }
-
-        public ActionResult ComplementosPagosCargados()
-        {
-            ViewBag.Controller = "DocumentosPagos";
-            ViewBag.Action = "ComplementosPagosCargados";
-            ViewBag.ActionES = "Complementos Pagos Cargados";
-            ViewBag.NameHere = "Complementos Pagos Cargados";
-
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
-            DocumentosPagosModel pagosModel = new DocumentosPagosModel();
-            DateTime dayI = DateTime.Now.AddDays(-6);
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, dayI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-            pagosModel.FechaInicial = fechaInicial;
-            pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
-
-            return View(pagosModel);
-        }
-
-        [HttpPost]
-        public ActionResult ComplementosPagosCargados(DocumentosPagosModel pagosModel)
-        {
-            ViewBag.Controller = "DocumentosPagos";
-            ViewBag.Action = "ComplementosPagosCargados";
-            ViewBag.ActionES = "Complementos Pagos Cargados";
-            ViewBag.NameHere = "Complementos Pagos Cargados";
-
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
-            var fechaI = pagosModel.FechaInicial;
-            var fechaF = pagosModel.FechaFinal;
-            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
-            pagosModel.FechaInicial = fechaInicial;
-            pagosModel.FechaFinal = fechaFinal;
-            pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
-
-            return View(pagosModel);
         }
 
         public ActionResult CargaComplementoPago(int Id)
@@ -424,7 +401,7 @@ namespace APBox.Controllers.Operaciones
             {
                 var pago = _db.PagoDr.Find(pagoDR.Id);
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
-                var documentoRecibido = _db.DocumentoRecibidoDr.Find(pago.ComplementoPagoRecibido_Id);
+                var documentoRecibido = _db.DocumentosRecibidos.Find(pago.ComplementoPagoRecibido_Id);
 
                 documentoRecibido.EstadoPago = c_EstadoPago.Completado;
                 documentoRecibido.AprobacionesDR.FechaCompletaPagos = DateTime.Now;
@@ -479,7 +456,7 @@ namespace APBox.Controllers.Operaciones
             // Actualizar los documentos recibidos relacionados a los documentos pagados eliminados
             foreach (var documentoPagado in documentosPagados)
             {
-                var documentoRecibido = _db.DocumentoRecibidoDr.FirstOrDefault(doc => doc.CfdiRecibidos_UUID == documentoPagado.UUID);
+                var documentoRecibido = _db.DocumentosRecibidos.FirstOrDefault(doc => doc.CfdiRecibidosUUID == documentoPagado.UUID);
                 if (documentoRecibido != null)
                 {
                     //Regresa el estado de Pagado a En Revisión
@@ -574,11 +551,11 @@ namespace APBox.Controllers.Operaciones
         public ActionResult DescargaXml(int id)
         {
             byte[] archivoFisico = new byte[255];
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             archivoFisico = documentoRecibido.RecibidosXml.Archivo;
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
-            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string nameArchivo = documentoRecibido.CfdiRecibidosSerie + "-" + documentoRecibido.CfdiRecibidosFolio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".xml");
             Response.Buffer = true;
             Response.Clear();
@@ -592,11 +569,11 @@ namespace APBox.Controllers.Operaciones
         public ActionResult DescargaPdf(int id)
         {
             byte[] archivoFisico = new byte[255];
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             archivoFisico = documentoRecibido.RecibidosPdf.Archivo;
 
             MemoryStream ms = new MemoryStream(archivoFisico, 0, 0, true, true);
-            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string nameArchivo = documentoRecibido.CfdiRecibidosSerie + "-" + documentoRecibido.CfdiRecibidosFolio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Response.AddHeader("content-disposition", "attachment;filename= " + nameArchivo + ".pdf");
             Response.Buffer = true;
             Response.Clear();
@@ -609,10 +586,10 @@ namespace APBox.Controllers.Operaciones
 
         public ActionResult DescargaAdjunto(int id)
         {
-            var documentoRecibido = _db.DocumentoRecibidoDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
             byte[] archivoFisicoXml = documentoRecibido.RecibidosXml.Archivo;
             byte[] archivoFisicoPdf = documentoRecibido.RecibidosPdf.Archivo;
-            string nameArchivo = documentoRecibido.CfdiRecibidos_Serie + "-" + documentoRecibido.CfdiRecibidos_Folio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string nameArchivo = documentoRecibido.CfdiRecibidosSerie + "-" + documentoRecibido.CfdiRecibidosFolio + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
 
             var memoryStream = new MemoryStream();
             using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
@@ -641,5 +618,6 @@ namespace APBox.Controllers.Operaciones
         }
 
         #endregion Validaciones
+
     }
 }

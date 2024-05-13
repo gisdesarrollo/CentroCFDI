@@ -1,4 +1,4 @@
-﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
+﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidos
 
 
 @using (Html.BeginForm("Revision", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data", id = "form" }))
@@ -8,16 +8,16 @@
     @Html.HiddenFor(model => model.Procesado)
     @Html.HiddenFor(model => model.PathArchivoXml)
     @Html.HiddenFor(model => model.PathArchivoPdf)
-    @Html.HiddenFor(model => model.SocioComercial_Id)
+    @Html.HiddenFor(model => model.SocioComercialId)
     @Html.HiddenFor(model => model.Validaciones.Detalle)
     @Html.HiddenFor(model => model.Validaciones.Fecha)
-    @Html.HiddenFor(model => model.Validaciones_Detalle)
-    @Html.HiddenFor(model => model.Usuario_Id)
-    @Html.HiddenFor(model => model.CfdiRecibidos_Id)
-    @Html.HiddenFor(model => model.CfdiRecibidos_Serie)
-    @Html.HiddenFor(model => model.CfdiRecibidos_Folio)
-    @Html.HiddenFor(model => model.Moneda_Id)
-    @Html.HiddenFor(model => model.CfdiRecibidos_UUID)
+    @Html.HiddenFor(model => model.ValidacionesDetalle)
+    @Html.HiddenFor(model => model.UsuarioId)
+    @Html.HiddenFor(model => model.CfdiRecibidosId)
+    @Html.HiddenFor(model => model.CfdiRecibidosSerie)
+    @Html.HiddenFor(model => model.CfdiRecibidosFolio)
+    @Html.HiddenFor(model => model.MonedaId)
+    @Html.HiddenFor(model => model.CfdiRecibidosUUID)
     @Html.HiddenFor(model => model.FechaComprobante)
     @Html.HiddenFor(model => model.FechaEntrega)
     @Html.HiddenFor(model => model.TipoDocumentoRecibido)

@@ -58,7 +58,7 @@ namespace Aplicacion.RecepcionDocumentos
             }
 
             //revisar que no sea una factura duplicada, y de ser así, que el UUID cargado anteriormente esté rechazado
-            var existUUID = _db.DocumentoRecibidoDr.Where(dr => dr.CfdiRecibidos_UUID == dv.TimbreFiscalDigital.UUID).FirstOrDefault();
+            var existUUID = _db.DocumentosRecibidos.Where(dr => dr.CfdiRecibidosUUID == dv.TimbreFiscalDigital.UUID).FirstOrDefault();
             if (existUUID != null)
             {
                 if (existUUID.EstadoComercial != c_EstadoComercial.Rechazado && existUUID.EstadoPago != c_EstadoPago.Rechazado)
@@ -144,7 +144,7 @@ namespace Aplicacion.RecepcionDocumentos
                                 else { dv.DocumentoRecibidoDr.DetalleArrays.Add(limite + "." + limiteDetail + " " + detalle.section + ":" + nodedetalle.message + ":" + nodedetalle.messageDetail); }
                             }
                         }
-                        dv.DocumentoRecibidoDr.Validaciones_Detalle = sb.ToString();
+                        dv.DocumentoRecibidoDr.ValidacionesDetalle = sb.ToString();
                         dv.DocumentoRecibidoDr.Validaciones = new ValidacionesDR()
                         {
                             Detalle = sb.ToString()
@@ -160,13 +160,13 @@ namespace Aplicacion.RecepcionDocumentos
                 dv.DocumentoRecibidoDr.Validaciones.Fecha = DateTime.Now;
             }
 
-            dv.DocumentoRecibidoDr.SocioComercial_Id = dv.SocioComercial.Id;
-            dv.DocumentoRecibidoDr.Usuario_Id = dv.Usuario.Id;
-            dv.DocumentoRecibidoDr.CfdiRecibidos_Serie = dv.Cfdi.Serie;
-            dv.DocumentoRecibidoDr.CfdiRecibidos_Folio = dv.Cfdi.Folio;
-            dv.DocumentoRecibidoDr.Moneda_Id = dv.Cfdi.Moneda;
+            dv.DocumentoRecibidoDr.SocioComercialId = dv.SocioComercial.Id;
+            dv.DocumentoRecibidoDr.UsuarioId = dv.Usuario.Id;
+            dv.DocumentoRecibidoDr.CfdiRecibidosSerie = dv.Cfdi.Serie;
+            dv.DocumentoRecibidoDr.CfdiRecibidosFolio = dv.Cfdi.Folio;
+            dv.DocumentoRecibidoDr.MonedaId = dv.Cfdi.Moneda;
             dv.DocumentoRecibidoDr.FechaComprobante = Convert.ToDateTime(dv.Cfdi.Fecha);
-            dv.DocumentoRecibidoDr.CfdiRecibidos_UUID = dv.TimbreFiscalDigital.UUID;
+            dv.DocumentoRecibidoDr.CfdiRecibidosUUID = dv.TimbreFiscalDigital.UUID;
             dv.DocumentoRecibidoDr.FechaEntrega = DateTime.Now;
             dv.DocumentoRecibidoDr.TipoDocumentoRecibido = c_TipoDocumentoRecibido.CFDI;
             dv.DocumentoRecibidoDr.Monto = dv.Cfdi.Total;
@@ -184,7 +184,7 @@ namespace Aplicacion.RecepcionDocumentos
             public SocioComercial SocioComercial { get; set; }
             public Usuario Usuario { get; set; }
             public ConfiguracionesDR ConfiguracionEmpresa { get; set; }
-            public DocumentosRecibidosDR DocumentoRecibidoDr { get; set; }
+            public DocumentosRecibidos DocumentoRecibidoDr { get; set; }
             public PathArchivosDto Archivo { get; set; }
         }
     }

@@ -15,7 +15,7 @@ using System.Web;
 namespace API.Operaciones.OperacionesProveedores
 {
     [Table("DocumentosRecibidos")]
-    public class DocumentosRecibidosDR
+    public class DocumentosRecibidos
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -38,55 +38,55 @@ namespace API.Operaciones.OperacionesProveedores
         public Decimal Monto { get; set; }
 
         [DisplayName("Moneda")]
-        public c_Moneda? Moneda_Id { get; set; }
+        public c_Moneda? MonedaId { get; set; }
 
         [DisplayName("Usuario")]
-        public int? Usuario_Id { get; set; }
-        [ForeignKey("Usuario_Id")]
+        public int? UsuarioId { get; set; }
+        [ForeignKey("UsuarioId")]
         public virtual Usuario Usuario { get; set; }
 
         [DisplayName("Validaciones")]
-        public int? Validaciones_Id { get; set; }
-        [ForeignKey("Validaciones_Id")]
+        public int? ValidacionesId { get; set; }
+        [ForeignKey("ValidacionesId")]
         public virtual ValidacionesDR Validaciones { get; set; }
 
         [NotMapped]
         public List<ValidacionesDR> ValidacionesList { get; set; }
 
         [DisplayName("Validaciones Detalle")]
-        public String Validaciones_Detalle { get; set; }
+        public String ValidacionesDetalle { get; set; }
 
         [NotMapped]
         public List<String> DetalleArrays { get; set; }
 
-        public int? SocioComercial_Id { get; set; }
-        [ForeignKey("SocioComercial_Id")]
+        public int? SocioComercialId { get; set; }
+        [ForeignKey("SocioComercialId")]
         public virtual SocioComercial SocioComercial { get; set; }
 
-        public int? CfdiRecibidos_Id { get; set; }
-        [ForeignKey("CfdiRecibidos_Id")]
+        public int? CfdiRecibidosId { get; set; }
+        [ForeignKey("CfdiRecibidosId")]
         public virtual RecibidosComprobanteDR RecibidosComprobante { get; set; }
 
         [DisplayName("Carga PDF")]
-        public int? CfdiRecibidos_PDF_Id { get; set; }
-        [ForeignKey("CfdiRecibidos_PDF_Id")]
+        public int? CfdiRecibidosPdfId { get; set; }
+        [ForeignKey("CfdiRecibidosPdfId")]
         public virtual RecibidosPDFDR RecibidosPdf { get; set; }
 
         [DisplayName("Carga XML")]
-        public int? CfdiRecibidos_XML_Id { get; set; }
-        [ForeignKey("CfdiRecibidos_XML_Id")]
+        public int? CfdiRecibidosXmlId { get; set; }
+        [ForeignKey("CfdiRecibidosXmlId")]
         public virtual RecibidosXMLDR RecibidosXml { get; set; }
 
         [DisplayName("Serie")]
-        public String CfdiRecibidos_Serie { get; set; }
+        public String CfdiRecibidosSerie { get; set; }
 
         [DisplayName("Folio")]
-        public String CfdiRecibidos_Folio { get; set; }
+        public String CfdiRecibidosFolio { get; set; }
 
         [DisplayName("UUID")]
-        public String CfdiRecibidos_UUID { get; set; }
+        public String CfdiRecibidosUUID { get; set; }
 
-        public int? Adjuntos_Id { get; set; }
+        public int? AdjuntosId { get; set; }
 
         [DisplayName("Estado Comercial")]
         public c_EstadoComercial EstadoComercial { get; set; }
@@ -100,19 +100,19 @@ namespace API.Operaciones.OperacionesProveedores
         public virtual List<PagosDR> Detalles { get; set; }
 
         [DisplayName("Aprobaciones")]
-        public int? AprobacionesDR_Id { get; set; }
-        [ForeignKey("AprobacionesDR_Id")]
-        public virtual AprobacionesDR AprobacionesDR { get; set; }
+        public int? AprobacionesId { get; set; }
+        [ForeignKey("AprobacionesId")]
+        public virtual Aprobaciones AprobacionesDR { get; set; }
         [NotMapped]
-        public List<AprobacionesDR> AprobacionesList { get; set; }
+        public List<Aprobaciones> AprobacionesList { get; set; }
 
         public String Referencia { get; set; }
         
         public String OrdenDeCompra { get; set; }
 
         [DisplayName("Comprobación Gastos")]
-        public int? ComprobacionGasto_Id { get; set; }
-        [ForeignKey("ComprobacionGasto_Id")]
+        public int? ComprobacionGastoId { get; set; }
+        [ForeignKey("ComprobacionGastoId")]
         public virtual ComprobacionGasto ComprobacionesGastos { get; set; }
 
         //NotMapped

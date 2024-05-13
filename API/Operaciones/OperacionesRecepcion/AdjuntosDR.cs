@@ -17,7 +17,7 @@ namespace API.Operaciones.OperacionesProveedores
 
         public int? DocumentosRecibidos_Id { get; set; }
         [ForeignKey("DocumentosRecibidos_Id")]
-        public virtual DocumentosRecibidosDR DocumentoRecibido { get; set; }
+        public virtual DocumentosRecibidos DocumentoRecibido { get; set; }
 
         public byte[] Adjunto { get; set; }
 

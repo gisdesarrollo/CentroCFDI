@@ -1,4 +1,4 @@
-﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidosDR
+﻿@model API.Operaciones.OperacionesProveedores.DocumentosRecibidos
 
 @{ 
     if (Model.RecibidosXml != null)
@@ -26,7 +26,7 @@
         ViewBag.ClaseDeshabilitarPdf = "bg-secondary";
     }
 
-    if (Model.Adjuntos_Id.HasValue)
+    if (Model.AdjuntosId.HasValue)
     {
         ViewBag.DescargaAdjuntos = Url.Action("DescargaAdjuntos", new { id = Model.Id });
         ViewBag.LeyendaAdjuntos = "Descarga Disponible";

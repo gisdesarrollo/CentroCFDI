@@ -33,7 +33,7 @@ namespace API.Catalogos
         [DisplayName("Nombre Completo")]
         public String NombreCompleto
         {
-            get { return Nombre + " " + ApellidoPaterno + " " + ApellidoMaterno; }
+            get { return Nombre + " " + ApellidoPaterno; }
         }
 
         [DisplayName("Celular")]

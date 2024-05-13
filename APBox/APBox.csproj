@@ -210,10 +210,6 @@
     <Reference Include="RazorEngine, Version=3.8.2.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.8.2\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
-    <Reference Include="RVCFDI33, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\DEPLOY-centrocfdi\DLL-MODIFICADOREALVIRTUAL-DECIMALES\RVCFDI33.dll</HintPath>
-    </Reference>
     <Reference Include="SAT.Services, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SW-sdk-45.0.0.25.1-rc\lib\net45\SAT.Services.dll</HintPath>
     </Reference>
@@ -556,7 +552,6 @@
     <Content Include="bin\System.IO.Compression.dll" />
     <Content Include="bin\System.IO.Compression.ZipFile.dll" />
     <Content Include="bin\System.Memory.dll" />
-    <Content Include="bin\System.Memory.xml" />
     <Content Include="bin\System.Numerics.Vectors.dll" />
     <Content Include="bin\System.Numerics.Vectors.xml" />
     <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
@@ -2884,7 +2879,6 @@
     <Content Include="Views\DocumentosPagos\Pagos.cshtml" />
     <Content Include="Views\DocumentosPagos\CargaComplementoPago.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_InformacionComplementoPago.cshtml" />
-    <Content Include="Views\DocumentosPagos\ComplementosPagosCargados.cshtml" />
     <Content Include="Views\DocumentosRecibidosPartials\_AprobacionRechazoComercialPago.cshtml" />
     <Content Include="Views\DocumentosPagos\Revision.cshtml" />
     <Content Include="Views\DocumentosRecibidos\Revision.cshtml" />
@@ -2893,13 +2887,8 @@
     <Content Include="Views\Proyectos\Index.cshtml" />
     <Content Include="Views\Proyectos\Create.cshtml" />
     <Content Include="Views\Proyectos\Edit.cshtml" />
-    <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
-    <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
-    <Content Include="Views\Proyectos\Create.cshtml" />
-    <Content Include="Views\Proyectos\Edit.cshtml" />
-    <Content Include="Views\Proyectos\Index.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\_ComplementoCartaPorteScript.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Create.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Edit.cshtml" />
@@ -2907,6 +2896,8 @@
     <Content Include="Views\ComplementosCartaPorte\MercanciaEdit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\DocumentacionAduanera.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\RemolqueCCP.cshtml" />
+    <Content Include="Views\ComprobacionesGastos\Revision.cshtml" />
+    <Content Include="Views\ComprobacionesGastos\_ModalGuia.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace API.Operaciones.OperacionesProveedores
 {
-    [Table("AprobacionesDR")]
-    public class AprobacionesDR
+    [Table("Aprobaciones")]
+    public class Aprobaciones
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

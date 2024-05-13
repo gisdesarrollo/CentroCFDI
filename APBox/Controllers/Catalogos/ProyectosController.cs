@@ -22,10 +22,9 @@ namespace APBox.Controllers.Catalogos
         // GET: Proyectos
         public ActionResult Index()
         {
-            ViewBag.Controller = "Proyectos";
-            ViewBag.ActionES = "Index";
             ViewBag.Title = "Proyectos";
-
+            ViewBag.Controller = "Proyectos";
+            ViewBag.Action = "Index";
             var sucursalId = ObtenerSucursal();
             var proyectos = _db.Proyectos.Where(p => p.SucursalId == sucursalId).ToList();
 
@@ -35,9 +34,9 @@ namespace APBox.Controllers.Catalogos
         // GET: Proyectos/Create
         public ActionResult Create()
         {
+            ViewBag.Title = "Proyectos";
             ViewBag.Controller = "Proyectos";
             ViewBag.Action = "Crear";
-            ViewBag.Title = "Proyectos";
 
             var sucursalId = ObtenerSucursal();
 

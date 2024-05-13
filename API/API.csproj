@@ -266,13 +266,13 @@
     <Compile Include="Operaciones\OperacionesRecepcion\DocumentosPagadosDR.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\ValidacionesDR.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\ConfiguracionesDR.cs" />
-    <Compile Include="Operaciones\OperacionesRecepcion\DocumentosRecibidosDR.cs" />
+    <Compile Include="Operaciones\OperacionesRecepcion\DocumentosRecibidos.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\PagosDR.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\RecibidosComprobanteDR.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\RecibidosPDFDR.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\RecibidosXMLDR.cs" />
     <Compile Include="Operaciones\OperacionesRecepcion\SolicitudAcceso.cs" />
-    <Compile Include="Operaciones\OperacionesRecepcion\AprobacionesDR.cs" />
+    <Compile Include="Operaciones\OperacionesRecepcion\Aprobaciones.cs" />
     <Compile Include="Operaciones\RelacionesCfdi\CfdiRelacionado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

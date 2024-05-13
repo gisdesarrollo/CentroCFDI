@@ -34,21 +34,21 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         #endregion Variables
 
-        public List<DocumentosRecibidosDR> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
+        public List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
-            var documentoRecibido = new List<DocumentosRecibidosDR>();
-            List<DocumentosRecibidosDR> documentoRecibidoAprobador = new List<DocumentosRecibidosDR>();
-            List<DocumentosRecibidosDR> documentoRecibidos = new List<DocumentosRecibidosDR>();
+            var documentoRecibido = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
+            List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> documentoRecibidoAprobador = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
+            List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> documentoRecibidos = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
 
             //Si el usuario es proveedor
             if (usuario.esProveedor)
             {
-                documentoRecibido = _db.DocumentoRecibidoDr
+                documentoRecibido = _db.DocumentosRecibidos
                                     .Where(dr =>
                                             dr.FechaEntrega >= fechaInicial &&
                                             dr.FechaEntrega <= fechaFinal &&
-                                            dr.SocioComercial_Id == usuario.SocioComercialId &&
+                                            dr.SocioComercialId == usuario.SocioComercialId &&
                                             dr.SucursalId == sucursalId)
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
@@ -57,7 +57,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             //Si el usuartio es interno
             if (!usuario.esProveedor)
             {
-                documentoRecibido = _db.DocumentoRecibidoDr
+                documentoRecibido = _db.DocumentosRecibidos
                                     .Where(dr =>
                                             dr.FechaEntrega >= fechaInicial &&
                                             dr.FechaEntrega <= fechaFinal &&
