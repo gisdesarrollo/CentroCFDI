@@ -134,17 +134,10 @@ namespace APBox.Controllers.Catalogos
                     return View(usuario);
                 }
 
-                //bool correoEnviado = EnviarCorreoBienvenida(usuario);
-                //if (!correoEnviado)
-                //{
-                //    ViewBag.ErrorMessage = "Error: El buzón de correo no está disponible, es posible que esté mal escrito";
-                //    ModelState.AddModelError("", "Error: El buzón de correo no está disponible, es posible que esté mal escrito");
-                //    return View(usuario);
-                //}
 
                 _db.Usuarios.Add(usuario);
                 _db.SaveChanges();
-                // Envío de correo electrónico de bienvenida
+                EnviarCorreoBienvenida(usuario);
                 return RedirectToAction("Index");
             }
 
