@@ -2893,11 +2893,11 @@
     <Content Include="Views\ComplementosCartaPorte\Create.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Edit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Mercancia.cshtml" />
-    <Content Include="Views\ComplementosCartaPorte\MercanciaEdit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\DocumentacionAduanera.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\RemolqueCCP.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Revision.cshtml" />
     <Content Include="Views\ComprobacionesGastos\_ModalGuia.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\MercanciaEdit.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

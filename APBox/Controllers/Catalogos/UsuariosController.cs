@@ -79,10 +79,7 @@ namespace APBox.Controllers.Catalogos
                 }
 
                 _acondicionarUsuarios.CargaInicial(ref usuario);
-                if (usuario.esProveedor == true)
-                {
-                    //Asignacion de valor si es Proveedor
-                    usuario.esProveedor = esProveedor;
+                
                     if (usuario.PerfilId != null)
                     {
                         var perfil = _db.Perfiles.Find(usuario.PerfilId);
@@ -91,38 +88,15 @@ namespace APBox.Controllers.Catalogos
                             usuario.Departamento = null;
                             usuario.DepartamentoId = null;
                         }
-                        else
-                        {
-                            ViewBag.ErrorMessage = "Error: Al activar como proveedor , seleccione un perfil que tenga las opciones de proveedor";
-                            ModelState.AddModelError("", "Error: Al activar como proveedor , seleccione un perfil que tenga las opciones de proveedor");
-                            return View(usuario);
-                        }
+                        
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Error: Seleccione un perfil proveedor";
-                        ModelState.AddModelError("", "Error: Seleccione un perfil proveedor");
+                        ViewBag.ErrorMessage = "Error: Seleccione un perfil";
+                        ModelState.AddModelError("", "Error: Seleccione un perfil");
                         return View(usuario);
                     }
-                }
-                else
-                {
-                    usuario.esProveedor = false;
-                    if (usuario.PerfilId == null)
-                    {
-                        ViewBag.ErrorMessage = "Error: Seleccione un Perfil para el usuario";
-                        ModelState.AddModelError("", "Error: Seleccione un Perfil para el usuario");
-                        return View(usuario);
-                    }
-
-                    if (usuario.DepartamentoId == null)
-                    {
-                        ViewBag.ErrorMessage = "Error: Seleccione un Departamento para asignar al usuario";
-                        ModelState.AddModelError("", "Error: Seleccione un Departamento para asignar al usuario");
-                        return View(usuario);
-                    }
-
-                }
+                
 
                 try
                 {
