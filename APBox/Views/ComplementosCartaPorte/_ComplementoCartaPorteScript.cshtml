@@ -2993,16 +2993,16 @@
                     //Seccion Ubicacion
                     //$('#claveTransporteId').val("01").trigger('change'); //valor siempre por defecto al no venir definido en el xml cargado
 
-                    $('#TranspInternac').val(response.CartaPorte.TranspInternac);
-                    $('#TotalDistRecorridas').val(response.CartaPorte.TotalDistRec);
+                    $('#TranspInternac').val(response.CartaPorte30.TranspInternac);
+                    $('#TotalDistRecorridas').val(response.CartaPorte30.TotalDistRec);
 
                     //Seccion Mercancias
                     //$('#pesoBrutoTotalD').val(response.CartaPorte.Mercancias.PesoBrutoTotal); -Dejo que se calcule solo por que duplica el valor
-                    $('#Mercancias_ClaveUnidadPeso_Id').val(response.CartaPorte.Mercancias.UnidadPeso).trigger('change');
-                    $('#Mercancias_NumTotalMercancias').val(response.CartaPorte.Mercancias.NumTotalMercancias);
+                    $('#Mercancias_ClaveUnidadPeso_Id').val(response.CartaPorte30.Mercancias.UnidadPeso).trigger('change');
+                    $('#Mercancias_NumTotalMercancias').val(response.CartaPorte30.Mercancias.NumTotalMercancias);
 
                     //Mercancia - Autotransporte
-                    $('#Mercancias_AutoTransporte_TipoPermiso_Id').val(response.CartaPorte.Mercancias.Autotransporte.PermSCT).trigger('change');
+                    $('#Mercancias_AutoTransporte_TipoPermiso_Id').val(response.CartaPorte30.Mercancias.Autotransporte.PermSCT).trigger('change');
 
                     //Validacion si hay valor en la seccion de Auto Transporte
                     var permisoValue = $('#Mercancias_AutoTransporte_TipoPermiso_Id').val();
@@ -3017,25 +3017,25 @@
                         $('#DivAutotransporte').css('display', 'block');
                     }
 
-                    $('#Mercancias_AutoTransporte_NumPermisoSCT').val(response.CartaPorte.Mercancias.Autotransporte.NumPermisoSCT);
+                    $('#Mercancias_AutoTransporte_NumPermisoSCT').val(response.CartaPorte30.Mercancias.Autotransporte.NumPermisoSCT);
 
-                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_ConfigAutotransporte_Id').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular).trigger('change')
-                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_PlacaVM').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM)
-                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_AnioModeloVM').val(response.CartaPorte.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM)
+                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_ConfigAutotransporte_Id').val(response.CartaPorte30.Mercancias.Autotransporte.IdentificacionVehicular.ConfigVehicular).trigger('change')
+                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_PlacaVM').val(response.CartaPorte30.Mercancias.Autotransporte.IdentificacionVehicular.PlacaVM)
+                    $('#Mercancias_AutoTransporte_IdentificacionVehicular_AnioModeloVM').val(response.CartaPorte30.Mercancias.Autotransporte.IdentificacionVehicular.AnioModeloVM)
 
                     //Mercancia - Seguros
-                    $('#Mercancias_AutoTransporte_Seguros_AseguraRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.AseguraRespCivil);
-                    $('#Mercancias_AutoTransporte_Seguros_PolizaRespCivil').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PolizaRespCivil);
-                    $('#Mercancias_AutoTransporte_Seguros_PrimaSeguro').val(response.CartaPorte.Mercancias.Autotransporte.Seguros.PrimaSeguro);
+                    $('#Mercancias_AutoTransporte_Seguros_AseguraRespCivil').val(response.CartaPorte30.Mercancias.Autotransporte.Seguros.AseguraRespCivil);
+                    $('#Mercancias_AutoTransporte_Seguros_PolizaRespCivil').val(response.CartaPorte30.Mercancias.Autotransporte.Seguros.PolizaRespCivil);
+                    $('#Mercancias_AutoTransporte_Seguros_PrimaSeguro').val(response.CartaPorte30.Mercancias.Autotransporte.Seguros.PrimaSeguro);
 
                     // Llamar a la función para agregar Complemento Carta Porte
-                    $.each(response.CartaPorte.Ubicaciones, function (index, carta) {
+                    $.each(response.CartaPorte30.Ubicaciones, function (index, carta) {
 
 
-                        $.each(response.CartaPorte.Mercancias.Mercancia, function (index, mer) {
+                        $.each(response.CartaPorte30.Mercancias.Mercancia, function (index, mer) {
 
 
-                            $.each(response.CartaPorte.Ubicaciones, function (index, carta) {
+                            $.each(response.CartaPorte30.Ubicaciones, function (index, carta) {
                                 $('#TipoUbicacionRD').val(carta.TipoUbicacion);
 
 
@@ -3109,7 +3109,7 @@
 
                             });
 
-                            $.each(response.CartaPorte.Mercancias.Mercancia, function (index, mer) {
+                            $.each(response.CartaPorte30.Mercancias.Mercancia, function (index, mer) {
                                 $('#Mercancias_Mercancia_ClaveProdServCP').val(mer.BienesTransp);
                                 $('#Mercancias_Mercancia_Descripcion').val(mer.Descripcion);
                                 $('#Mercancias_Mercancia_Cantidad').val(mer.Cantidad);
@@ -3122,7 +3122,7 @@
 
                             });
 
-                            $.each(response.CartaPorte.Mercancias.Autotransporte.Remolques, function (index, remolque) {
+                            $.each(response.CartaPorte30.Mercancias.Autotransporte.Remolques, function (index, remolque) {
                                 var SubTipoRem = '';
                                 switch (remolque.SubTipoRem) {
 
@@ -3171,11 +3171,11 @@
 
                             });
 
-                            $.each(response.CartaPorte.FiguraTransporte, function (index, figura) {
+                            $.each(response.CartaPorte30.FiguraTransporte, function (index, figura) {
 
 
 
-                                $.each(response.CartaPorte.FiguraTransporte, function (index, figura) {
+                                $.each(response.CartaPorte30.FiguraTransporte, function (index, figura) {
 
                                     $('#TipoFiguraTransporte').val(figura.TipoFigura);
                                     $('#TiposFigura_RFCFigura').val(figura.RFCFigura);
@@ -3232,7 +3232,7 @@
 
                                 );
                             });
-                            $.each(response.CartaPorte.Mercancias.Autotransporte.Remolques, function (index, remolque) {
+                            $.each(response.CartaPorte30.Mercancias.Autotransporte.Remolques, function (index, remolque) {
 
 
                                 agregarcomplementoRemolque(
