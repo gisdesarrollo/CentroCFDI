@@ -9,7 +9,7 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.GrupoId)
-    if (User.IsInRole("EDICION")) //SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+    if (User.IsInRole("EDICION")) 
     {
 <div class="d-flex flex-row flex-column-fluid align-items-stretch">
     <!--begin::Content-->

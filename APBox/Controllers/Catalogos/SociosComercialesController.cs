@@ -87,7 +87,7 @@ namespace APBox.Controllers.Catalogos
             {
                 var errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                 ViewBag.errores = errores;
-              
+
             }
 
             return View(sociocomercial);
@@ -95,12 +95,16 @@ namespace APBox.Controllers.Catalogos
 
         public ActionResult Edit(int? id)
         {
+            ViewBag.Controller = "SociosComerciales";
+            ViewBag.Action = "Editar";
+            ViewBag.Title = "Editar Expediente Socio Comercial";
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             SocioComercial sociocomercial = _db.SociosComerciales.Find(id);
             if (sociocomercial == null)
             {
@@ -109,18 +113,12 @@ namespace APBox.Controllers.Catalogos
 
             if (usuario.esProveedor && usuario.SocioComercialId != id)
             {
-            // Si no coincide, redirigir al usuario a una página de error o denegar el acceso
-            // Puedes mostrar un mensaje de error u otra información relevante al usuario
-            // Si no coincide, mostrar una alerta al usuario antes de redirigir
-            TempData["Mensaje"] = "No tienes permiso para acceder a esta página.";
-            // Redirigir al usuario a la página de inicio (Home)
-            return RedirectToAction("Index", "Home");
+                TempData["Mensaje"] = "No tienes permiso para acceder a esta página.";
+                return RedirectToAction("Index", "Home");
             }
 
             PopulaForma();
-            ViewBag.Controller = "SociosComerciales";
-            ViewBag.Action = "Editar";
-            ViewBag.Title = "Editar Expediente Socio Comercial";
+
             return View(sociocomercial);
         }
 
@@ -201,7 +199,7 @@ namespace APBox.Controllers.Catalogos
             AuthResponse responseAutenticacion = new AuthResponse();
             var socioComercial = _db.SociosComerciales.Find(idSocioComercial);
             responseAutenticacion = _procesaValidacion.GetToken();
-            _procesaValidacion.ValidaRFC(responseAutenticacion.data.token,socioComercial.Rfc);
+            _procesaValidacion.ValidaRFC(responseAutenticacion.data.token, socioComercial.Rfc);
             return Content("¡Formulario enviado correctamente!");
         }
 

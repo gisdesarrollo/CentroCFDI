@@ -34,8 +34,6 @@
                     @using (Html.BeginForm("CargaCfdi", "DocumentosRecibidos", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.HiddenFor(model => model.Procesado)
-
-
                         <!--begin::Section-->
                         <div class="form-group mb-6">
                             <label class="form-label fw-semibold fs-6" for="Grupos"> Carga archivo XML</label><br />

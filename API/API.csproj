@@ -206,6 +206,8 @@
     <Compile Include="Models\Dto\ResponseValidaCfdiDto.cs" />
     <Compile Include="Models\Dto\UbicacionDropDowDto.cs" />
     <Compile Include="Models\Dto\UbicacionDto.cs" />
+    <Compile Include="Models\Expedientes\ExpedientesFiscalesModel.cs" />
+    <Compile Include="Operaciones\Expedientes\ExpedienteFiscal.cs" />
     <Compile Include="Models\Facturas\Factura.cs" />
     <Compile Include="Models\Facturas\FacturasEmitidasModel.cs" />
     <Compile Include="Models\Operaciones\ComplementosCartaPorteModel.cs" />

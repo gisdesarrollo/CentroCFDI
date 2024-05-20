@@ -38,7 +38,6 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
         {
             var usuario = _db.Usuarios.Find(usuarioId);
             var documentoRecibido = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
-            List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> documentoRecibidoAprobador = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
             List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> documentoRecibidos = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
 
             //Si el usuario es proveedor

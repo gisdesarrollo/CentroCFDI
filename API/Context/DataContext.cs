@@ -14,6 +14,8 @@ using API.CatalogosCartaPorte.Domicilio;
 using API.Operaciones.ComprobantesCfdi;
 using API.Operaciones.RelacionesCfdi;
 using API.Operaciones.OperacionesRecepcion;
+using API.Operaciones.Expedientes;
+
 
 namespace API.Context
 {
@@ -133,6 +135,7 @@ namespace API.Context
 
         //OperacionesProveedores
         public DbSet<SolicitudAcceso> SolicitudesAccesos { get; set; }
+        public DbSet<ExpedienteFiscal> ExpedientesFiscales { get; set; }
 
         //Documentos Recibidos
         public DbSet<DocumentosRecibidos> DocumentosRecibidos { get; set; }

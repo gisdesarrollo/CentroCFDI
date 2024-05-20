@@ -9,14 +9,17 @@
     var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
     var usuario = _db.Usuarios.Find(usuarioId);
     var sucursales = _db.Sucursales.Where(s => s.GrupoId == usuario.GrupoId).ToList();
-
+    if (usuario.esProveedor)
+    {
+        var socioComercialNombre = _db.SociosComerciales.Find(usuario.SocioComercialId).RazonSocial;
+    }
     <!--begin::Toolbar wrapper-->
     <div class="topbar d-flex align-items-stretch flex-shrink-0">
         <!--begin:Menu item-->
         <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
             <div class="fs-7">@sucursalRazonSocial</div>
         </a>
-        @if (sucursales.Count > 1 || usuario.esProveedor)
+        @if (sucursales.Count > 1 )
         {
             <!--begin::Menu 1-->
             <!--begin::User account menu-->
@@ -27,16 +30,6 @@
                     <div class="menu-item px-5">
                         <a href="@Url.Action("SeleccionarSucursal", "Account")" class="menu-link px-5">
                             Cambiar empresa
-                        </a>
-                    </div>
-                }
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                @if (usuario.esProveedor)
-                {
-                    <div class="menu-item px-5">
-                        <a href="@Url.Action("Edit", "SociosComerciales", new { Id = usuario.SocioComercialId })" class="menu-link px-5">
-                            Editar expediente
                         </a>
                     </div>
                 }

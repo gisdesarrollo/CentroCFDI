@@ -354,6 +354,7 @@
     <Compile Include="Controllers\Catalogos\CentrosCostosController.cs" />
     <Compile Include="Controllers\Catalogos\EventosController.cs" />
     <Compile Include="Controllers\Catalogos\ProyectosController.cs" />
+    <Compile Include="Controllers\Expedientes\ExpedientesFiscalesController.cs" />
     <Compile Include="Controllers\RecepcionDocumentos\AutorregistroSociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\SociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\ConceptosController.cs" />
@@ -2898,6 +2899,8 @@
     <Content Include="Views\ComprobacionesGastos\Revision.cshtml" />
     <Content Include="Views\ComprobacionesGastos\_ModalGuia.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\MercanciaEdit.cshtml" />
+    <Content Include="Views\ExpedientesFiscales\Index.cshtml" />
+    <Content Include="Views\ExpedientesFiscales\Create.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

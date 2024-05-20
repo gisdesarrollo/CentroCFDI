@@ -1,0 +1,75 @@
+﻿@model API.Operaciones.Expedientes.ExpedienteFiscal
+@{
+    var errores = TempData["Errores"] as List<string>;
+}
+@using (Html.BeginForm("Create", "ExpedientesFiscales", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card card-flush py-4 mb-8">
+        <div class="card-body">
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.SucursalId)
+            @Html.HiddenFor(model => model.FechaCreacion)
+
+            <div class="form">
+
+                <div class="row">
+                    @if (errores != null && errores.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in errores)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "form-label" })
+                        @Html.EnumDropDownListFor(model => model.Mes, "Seleccionar", new { @class = "form-select select mb-2" })
+                    </div>
+
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => model.Anio, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Anio, new { htmlAttributes = new { @class = "form-control espacio" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group my-6 col-4">
+                        <label class="form-label fw-semibold fs-6" for="ConstanciaSituacionFiscal">Constancia de Situación Fiscal</label><br />
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ConstanciaSituacionFiscal" id="ConstanciaSituacionFiscal" accept=".pdf, .PDF" />
+                    </div>
+
+                    <div class="form-group my-6 col-4">
+                        <label class="form-label fw-semibold fs-6" for="OpinionCumplimientoSAT">Opinión de Cumplimiento SAT</label><br />
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="OpinionCumplimientoSAT" id="OpinionCumplimientoSAT" accept=".pdf, .PDF" />
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!--begin::Guardar-->
+    <div class="d-flex justify-content-end">
+        <!--begin::Button-->
+        <a href="@Url.Action("Index",ViewBag.Controller)" class="btn btn-light me-5">
+            Cancelar
+        </a>
+        <!--end::Button-->
+        <!--begin::Button-->
+        <button type="submit" class="btn btn-primary">
+            <span class="indicator-label">
+                Guardar
+            </span>
+        </button>
+        <!--end::Button-->
+    </div>
+    <!--end::Guardar-->
+}

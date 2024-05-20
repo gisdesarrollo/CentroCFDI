@@ -150,14 +150,14 @@
 							}
 							else
 							{
-							if (User.IsInRole("EDICION"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+							if (User.IsInRole("EDICION"))
 							{
 							<div class="menu-item px-3">@Html.ActionLink("Edit Pagos", "Edit", new { id = Model.ComplementosPago[i].Id }, new { @class = "menu-link px-3" })</div>
 							<div class="menu-item px-3">@Html.ActionLink("Edit DocRelacionado", "DocumentosRelacionados", new { id = Model.ComplementosPago[i].Id }, new { @class = "menu-link px-3" })</div>
 
 							}
 							<div class="menu-item px-3">@Html.ActionLink("Generar", "Generar", new { id = Model.ComplementosPago[i].Id }, new { @class = "menu-link px-3" })</div>
-							if (User.IsInRole("BORRADO"))//SE LE APLICO PERMISO DEPENDIENDO A LOS TIPOS DE ROLES QUE TIENE ASIGNADO CADA USUARIO
+							if (User.IsInRole("BORRADO"))
 							{
 							<div class="menu-item px-3">@Html.ActionLink("Eliminar", "DeleteConfirmed", new { id = Model.ComplementosPago[i].Id }, new { onclick = "return confirm('¿Estás seguro de elminar el complemento?');", @class = "menu-link px-3" })</div>
 							}

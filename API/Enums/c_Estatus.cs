@@ -10,8 +10,8 @@ namespace API.Enums
     public enum c_Estatus
     {
         [DescriptionAttribute("Activo")]
-        Activo,
+        Activo = 1,
         [DescriptionAttribute("Cerrado")]
-        Cerrado,
+        Cerrado = 0,
     }
 }
