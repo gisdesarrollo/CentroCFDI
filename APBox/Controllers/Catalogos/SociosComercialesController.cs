@@ -194,13 +194,20 @@ namespace APBox.Controllers.Catalogos
         }
 
         [HttpPost]
-        public ActionResult ValidaRfc(string idSocioComercial)
+        public ActionResult ValidaRfc(int socioComercialId)
         {
             AuthResponse responseAutenticacion = new AuthResponse();
-            var socioComercial = _db.SociosComerciales.Find(idSocioComercial);
+            var socioComercial = _db.SociosComerciales.Find(socioComercialId);
             responseAutenticacion = _procesaValidacion.GetToken();
-            _procesaValidacion.ValidaRFC(responseAutenticacion.data.token, socioComercial.Rfc);
-            return Content("¡Formulario enviado correctamente!");
+            try{
+                _procesaValidacion.ValidaRFC(responseAutenticacion.data.token, socioComercial.Rfc);
+                return Json(new { success = true, message = "¡RFC Validado Correctamente!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+            
         }
 
         protected override void Dispose(bool disposing)

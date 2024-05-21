@@ -2890,7 +2890,6 @@
     <Content Include="Views\Proyectos\Edit.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Create.cshtml" />
     <Content Include="Views\ComprobacionesGastos\Index.cshtml" />
-    <Content Include="Views\ComplementosCartaPorte\_ComplementoCartaPorteScript.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Create.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Edit.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\Mercancia.cshtml" />
@@ -2901,6 +2900,7 @@
     <Content Include="Views\ComplementosCartaPorte\MercanciaEdit.cshtml" />
     <Content Include="Views\ExpedientesFiscales\Index.cshtml" />
     <Content Include="Views\ExpedientesFiscales\Create.cshtml" />
+    <Content Include="Views\ComplementosCartaPorte\_ComplementoCartaPorteScript.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

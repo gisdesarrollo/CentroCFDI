@@ -20,12 +20,21 @@ namespace APBox.Control
         public void Crear(String nombreUsuario)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-
+            // Establecer la configuración para permitir nombres de usuario no alfanuméricos
+            userManager.UserValidator = new UserValidator<ApplicationUser>(userManager)
+            {
+                AllowOnlyAlphanumericUserNames = false
+            };
             var user = new ApplicationUser() { UserName = nombreUsuario };
 
             try
             {
-                userManager.Create(user, password);
+                var result  = userManager.Create(user, password);
+                if (!result.Succeeded)
+                {
+                    throw new Exception(String.Format("No se pudo crear el usuario: {0}", string.Join(", ", result.Errors)));
+                }
+
             }
             catch (Exception ex)
             {
