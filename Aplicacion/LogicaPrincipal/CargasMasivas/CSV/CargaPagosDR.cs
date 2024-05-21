@@ -147,8 +147,6 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
                                     FechaPago = fechaPago,
                                     SucursalId = sucursalId,
                                     Total = TotalPago,
-                                    ComplementoPagoRecibido_Id = null,
-                                    DocumentoRecibido = null,
                                     Moneda = moneda,
                                     SocioComercialId = documentoRecibido.SocioComercialId,
                                     SocioComercial = documentoRecibido.SocioComercial,
@@ -202,8 +200,7 @@ namespace Aplicacion.LogicaPrincipal.CargasMasivas.CSV
 
                         pago.DocumentosPagados = null;
                         pago.DocumentoPagado = null;
-                        pago.ComplementoPagoRecibido_Id = null;
-
+                        
                         _db.PagoDr.Add(pago);
 
                         foreach (var documentoPagado in documentosPagados)

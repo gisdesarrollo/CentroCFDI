@@ -51,11 +51,11 @@ namespace API.Operaciones.OperacionesProveedores
 
         public virtual List<DocumentosPagadosDR> DocumentosPagados { get; set; }
 
-        public int? ComplementoPagoRecibido_Id { get; set; }
+        //public int? ComplementoPagoRecibido_Id { get; set; }
 
-        [ForeignKey("ComplementoPagoRecibido_Id")]
-        public virtual DocumentosRecibidos DocumentoRecibido { get; set; }
-
+        //[ForeignKey("ComplementoPagoRecibido_Id")]
+        //public virtual DocumentosRecibidos DocumentoRecibido { get; set; }
+        public virtual List<DocumentosRecibidos> DocumentosRecibidos { get; set; }
         public int? SocioComercialId { get; set; }
         [ForeignKey("SocioComercialId")]
         public virtual SocioComercial SocioComercial { get; set; }

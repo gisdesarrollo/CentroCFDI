@@ -4,6 +4,7 @@ using API.Catalogos;
 using API.Enums;
 using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
+using API.Operaciones.ComplementosPagos;
 using API.Operaciones.OperacionesProveedores;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
@@ -123,7 +124,7 @@ namespace APBox.Controllers.Operaciones
         }
 
         // GET: DocumentosRecibidos/CargaCfdi
-        public ActionResult CargaCfdi(int? comprobacionGastoId)
+        public ActionResult CargaCfdi(int? comprobacionGastoId, int? complementoPagoId)
         {
             ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "CargaCfdi";
@@ -133,6 +134,9 @@ namespace APBox.Controllers.Operaciones
             if (comprobacionGastoId.HasValue)
             {
                 Session["ComprobacionGastosId"] = comprobacionGastoId;
+            }
+            if (complementoPagoId.HasValue) {
+                Session["ComplementoPagoId"] = complementoPagoId;
             }
 
             // Obtener el usuario
@@ -151,6 +155,12 @@ namespace APBox.Controllers.Operaciones
             {
                 documentoRecibidoDr.ComprobacionGastoId = comprobacionGastoId.Value;
             }
+            // si hay un complementopagoId cargado , establecerlo  en el objeto
+            PagosDR pago = new PagosDR();
+            if (complementoPagoId.HasValue)
+            {
+                documentoRecibidoDr.PagosId = (int)complementoPagoId;
+            }
 
             return View(documentoRecibidoDr);
         }
@@ -167,7 +177,7 @@ namespace APBox.Controllers.Operaciones
             PathArchivosDto archivo;
             ValidateXmlResponse responseValidacion = new ValidateXmlResponse();
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
-
+            int? compPagoId = (int?)Session["ComplementoPagoId"];
             try
             {
                 archivo = SubeArchivo();
@@ -200,7 +210,7 @@ namespace APBox.Controllers.Operaciones
             //Se manda validar al grupo de valiadciones de stock para verificar que el documento pueda procesar las validaciones de configuraciones
             try
             {
-                validacionesComerciales.ValidacionesNegocio(dataValidar);
+                validacionesComerciales.ValidacionesNegocio(dataValidar, compPagoId);
             }
             catch (Exception ex)
             {
@@ -270,11 +280,13 @@ namespace APBox.Controllers.Operaciones
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             int? compGastosId = (int?)Session["ComprobacionGastosId"];
+            int? compPagoId = (int?)Session["ComplementoPagoId"];
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
             try
             {
                 // Recuperar los parámetros de la sesión
                 int? comprobacionGastosId = (int?)Session["ComprobacionGastosId"];
+                int? complementoPagoId = (int?)Session["ComplementoPagoId"];
                 var usuarioSolicitanteId = Session["AprobadorId"];
                 var usuarioSolicitanteDepartamentoId = Session["DepartamentoId"];
 
@@ -282,6 +294,7 @@ namespace APBox.Controllers.Operaciones
                 Session.Remove("ComprobacionGastosId");
                 Session.Remove("AprobadorId");
                 Session.Remove("DepartamentoId");
+                Session.Remove("ComplementoPagoId");
 
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
                 var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Receptor.Rfc).FirstOrDefault();
@@ -338,7 +351,7 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.CfdiRecibidosId = null;
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
                 documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
-                documentoRecibidoDr.Pagos = null;
+                documentoRecibidoDr.PagosId = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
                 documentoRecibidoDr.SucursalId = sucursal.Id;
 
@@ -354,7 +367,11 @@ namespace APBox.Controllers.Operaciones
                     comprobacionGastos.Monto = montoActualizado;
                     _db.Entry(comprobacionGastos).State = EntityState.Modified;
                 }
-
+                //operaciones en caso de que venga de una complemento de pagos
+                if (compPagoId.HasValue)
+                {
+                    documentoRecibidoDr.PagosId = (int)complementoPagoId;
+                }
                 //Table Aprobaciones
                 documentoRecibidoDr.AprobacionesId = null;
                 documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
@@ -378,6 +395,11 @@ namespace APBox.Controllers.Operaciones
             {
                 // Si comprobacionGastoId tiene un valor, redirige a la acción ComprobacionesGastos/Revisar/id
                 return RedirectToAction("Revision", "ComprobacionesGastos", new { id = compGastosId.Value });
+            }
+            else if (compPagoId.HasValue)
+            {
+                // Si complementoPagoId tiene un valor, redirige a la acción Index
+                return RedirectToAction("Pagos", "DocumentosPagos");
             }
             else
             {

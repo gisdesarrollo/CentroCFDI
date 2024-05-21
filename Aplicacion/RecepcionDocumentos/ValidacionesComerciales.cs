@@ -25,7 +25,7 @@ namespace Aplicacion.RecepcionDocumentos
 
         #endregion Variables
 
-        public void ValidacionesNegocio(DataValidar dv)
+        public void ValidacionesNegocio(DataValidar dv,int? compPagoId)
         {
             //crear socio comercial en caso de que no existe solo si el usuario no es socio comercial
             if (!dv.Usuario.esProveedor)
@@ -82,17 +82,25 @@ namespace Aplicacion.RecepcionDocumentos
                     }
                 }
             }
-
-            //revisar que el documento cargado sea tipo I o E
-            if (dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.I && dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.E)
+            if (compPagoId != null)
             {
-                throw new Exception(String.Format("El Tipo de Comprobante del CFDi cargado debe ser Ingreso o Egreso"));
+                if (dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.P)
+                {
+                    throw new Exception(String.Format("El Tipo de Comprobante del CFDi cargado debe ser Pago"));
+                }
             }
-            if (dv.Cfdi.TipoDeComprobante == c_TipoDeComprobante.P)
+            else
             {
-                throw new Exception(String.Format("El Tipo de Comprobante del CFDi que estas cargando es de Pago. Los complementos de Pago deben cargarse en la sección de Administración de Pagos"));
+                //revisar que el documento cargado sea tipo I o E
+                if (dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.I && dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.E)
+                {
+                    throw new Exception(String.Format("El Tipo de Comprobante del CFDi cargado debe ser Ingreso o Egreso"));
+                }
+                if (dv.Cfdi.TipoDeComprobante == c_TipoDeComprobante.P)
+                {
+                    throw new Exception(String.Format("El Tipo de Comprobante del CFDi que estas cargando es de Pago. Los complementos de Pago deben cargarse en la sección de Administración de Pagos"));
+                }
             }
-
             //validar que la factura esté emitida dentro del mes en curso
             DateTime fechaActual = DateTime.Now;
             DateTime fechaFactura = DateTime.Parse(dv.Cfdi.Fecha);

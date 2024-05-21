@@ -401,7 +401,7 @@ namespace APBox.Controllers.Operaciones
             {
                 var pago = _db.PagoDr.Find(pagoDR.Id);
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
-                var documentoRecibido = _db.DocumentosRecibidos.Find(pago.ComplementoPagoRecibido_Id);
+                var documentoRecibido = _db.DocumentosRecibidos.Where(d => d.PagosId == pago.Id).FirstOrDefault();
 
                 documentoRecibido.EstadoPago = c_EstadoPago.Completado;
                 documentoRecibido.AprobacionesDR.FechaCompletaPagos = DateTime.Now;

@@ -5,6 +5,7 @@
     var _db = new APBoxContext();
     var usuarioId = Convert.ToInt32(Session["usuarioId"]);
     var usuario = _db.Usuarios.Find(usuarioId);
+    
 }
 @if (User.IsInRole("PAGOS"))
 {
@@ -113,12 +114,15 @@
                                                 }
                                             </ul>
                                         </td>
+                                        @{
+                                            var documentoRecibido = _db.DocumentosRecibidos.Where(d => d.PagosId == item.Id).FirstOrDefault();
+                                         }
                                         <td class="text-center">
-                                            @if (item.ComplementoPagoRecibido_Id == null)
+                                            @if (documentoRecibido == null)
                                             {
                                                 <div class="badge badge-light-info">Pagado</div>
                                             }
-                                            @if (item.ComplementoPagoRecibido_Id != null)
+                                            @if (documentoRecibido != null)
                                             {
                                                 <div class="badge badge-light-dark">Completado</div>
                                             }
@@ -143,7 +147,7 @@
                                                 <!--begin::Menu item-->
                                                 <!--end::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    @Html.ActionLink("Carga Complemento", "CargaComplementoPago", new { id = item.Id }, new { @class = "menu-link px-3" })
+                                                    @Html.ActionLink("Carga Complemento", "CargaCfdi","DocumentosRecibidos", new { complementoPagoId = item.Id }, new { @class = "menu-link px-3" })
                                                 </div>
                                                 <!--begin::Menu item-->
                                             </div>

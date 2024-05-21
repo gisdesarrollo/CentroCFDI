@@ -94,11 +94,10 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("Estado Pago")]
         public c_EstadoPago EstadoPago { get; set; }
 
-        [NotMapped]
-        public virtual PagosDR Pagos { get; set; }
-        [NotMapped]
-        public virtual List<PagosDR> Detalles { get; set; }
-
+        public int? PagosId { get; set; }
+        [ForeignKey("PagosId")]
+        public virtual PagosDR Pago { get; set; }
+        
         [DisplayName("Aprobaciones")]
         public int? AprobacionesId { get; set; }
         [ForeignKey("AprobacionesId")]
