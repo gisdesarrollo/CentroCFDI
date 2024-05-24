@@ -177,6 +177,18 @@ namespace Aplicacion.RecepcionDocumentos
             return dv;
         }
 
+        public DataValidar ValidacionesGuardar(DataValidar dv)
+        {
+            if (dv.ConfiguracionEmpresa.ReferenciaDocumentosRecibidosObligatoria)
+            {
+                if (dv.DocumentoRecibidoDr.Referencia == null)
+                {
+                    throw new Exception(String.Format("El campo de Referencia es obligatorio en este proceso de carga de Documentos"));
+                }
+            }
+            return dv;
+        }
+
         public class DataValidar
         {
             public ComprobanteCFDI Cfdi { get; set; }

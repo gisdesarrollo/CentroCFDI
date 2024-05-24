@@ -19,7 +19,6 @@ namespace API.Operaciones.OperacionesProveedores
 
         [DisplayName("Sucursal Id")]
         public int Sucursal_Id { get; set;}
-
         [ForeignKey("Sucursal_Id")]
         public virtual Sucursal Sucursal { get; set; }
 
@@ -33,7 +32,9 @@ namespace API.Operaciones.OperacionesProveedores
 
         public bool RecibirFacturasMesCorriente { get; set; }
 
+        public int DiasVigenciaExpedienteFiscal { get; set; }
 
+        public bool ReferenciaDocumentosRecibidosObligatoria { get; set; }
 
     }
 }

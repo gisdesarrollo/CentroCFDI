@@ -98,7 +98,6 @@ namespace APBox.Controllers.Expedientes
         {
             var sucursalId = ObtenerSucursal();
             var grupoId = ObtenerGrupo();
-
             var socioComercialId = (int)Session["socComlId"];
 
 
@@ -144,6 +143,9 @@ namespace APBox.Controllers.Expedientes
                 expediente.SucursalId = sucursalId;
                 expediente.UsuarioId = ObtenerUsuario();
                 expediente.SocioComercialId = socioComercialId;
+                expediente.FechaCreacion = DateTime.Now;
+                var diasVigencia = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId).DiasVigenciaExpedienteFiscal;
+                expediente.Vigencia = expediente.FechaCreacion.AddDays(diasVigencia);
 
                 // Guardar el resto de la información del expedienteFiscal en la base de datos
                 _db.ExpedientesFiscales.Add(expediente);

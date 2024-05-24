@@ -105,7 +105,7 @@ namespace API.Context
 
         #region Control
 
-        public DbSet<ConfiguracionesDR> config { get; set; }
+        public DbSet<ConfiguracionesDR> ConfiguracionesDR { get; set; }
 
         #endregion
 
