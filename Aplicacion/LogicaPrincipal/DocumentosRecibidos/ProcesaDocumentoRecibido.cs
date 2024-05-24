@@ -48,7 +48,8 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
                                             dr.FechaEntrega >= fechaInicial &&
                                             dr.FechaEntrega <= fechaFinal &&
                                             dr.SocioComercialId == usuario.SocioComercialId &&
-                                            dr.SucursalId == sucursalId)
+                                            dr.SucursalId == sucursalId &&
+                                            dr.RecibidosComprobante.TipoComprobante != API.Enums.c_TipoDeComprobante.P)
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
             }
@@ -60,7 +61,8 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
                                     .Where(dr =>
                                             dr.FechaEntrega >= fechaInicial &&
                                             dr.FechaEntrega <= fechaFinal &&
-                                            dr.SucursalId == sucursalId)
+                                            dr.SucursalId == sucursalId &&
+                                            dr.RecibidosComprobante.TipoComprobante != API.Enums.c_TipoDeComprobante.P)
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
             }

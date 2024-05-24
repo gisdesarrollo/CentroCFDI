@@ -25,7 +25,7 @@ namespace Aplicacion.RecepcionDocumentos
 
         #endregion Variables
 
-        public void ValidacionesNegocio(DataValidar dv,int? compPagoId)
+        public void ValidacionesNegocio(DataValidar dv)
         {
             //crear socio comercial en caso de que no existe solo si el usuario no es socio comercial
             if (!dv.Usuario.esProveedor)
@@ -49,6 +49,7 @@ namespace Aplicacion.RecepcionDocumentos
                     //guardar datos en base de datos
                     _db.SociosComerciales.Add(socioComercial);
                     _db.SaveChanges();
+                    dv.SocioComercial = socioComercial;
                 }
             }
             //revisar que el Receptor.Rfc sea igual al Rfc de la Sucursal
@@ -82,15 +83,7 @@ namespace Aplicacion.RecepcionDocumentos
                     }
                 }
             }
-            if (compPagoId != null)
-            {
-                if (dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.P)
-                {
-                    throw new Exception(String.Format("El Tipo de Comprobante del CFDi cargado debe ser Pago"));
-                }
-            }
-            else
-            {
+           
                 //revisar que el documento cargado sea tipo I o E
                 if (dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.I && dv.Cfdi.TipoDeComprobante != c_TipoDeComprobante.E)
                 {
@@ -100,7 +93,7 @@ namespace Aplicacion.RecepcionDocumentos
                 {
                     throw new Exception(String.Format("El Tipo de Comprobante del CFDi que estas cargando es de Pago. Los complementos de Pago deben cargarse en la sección de Administración de Pagos"));
                 }
-            }
+            
             //validar que la factura esté emitida dentro del mes en curso
             DateTime fechaActual = DateTime.Now;
             DateTime fechaFactura = DateTime.Parse(dv.Cfdi.Fecha);
@@ -112,7 +105,7 @@ namespace Aplicacion.RecepcionDocumentos
                 }
             }
         }
-
+        
         public DataValidar ValidacionesConfiguraciones(DataValidar dv)
         {
             //Validar si se requiere validar contra el PAC de manera obligatoria

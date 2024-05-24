@@ -383,7 +383,7 @@ namespace APBox.Controllers.Operaciones
                         pago.ComplementoPago.Uuid = cfdi.TimbreFiscalDigital.UUID;
                         pago.ComplementoPago.FechaPago = pagoXml.FechaPago.ToString("dd/MM/yyyy");
                     }
-                    pago.Detalle_Validacion = _validaPagos.ValidaComplementoPago(pago, cfdi);
+                    //pago.Detalle_Validacion = _validaPagos.ValidaComplementoPago(pago, cfdi);
                 }
                 pago.Procesado = true;
             }

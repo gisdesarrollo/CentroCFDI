@@ -18,6 +18,7 @@ using System.Data.Entity;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Text;
 using System.Web.Mvc;
 using Utilerias.LogicaPrincipal;
@@ -192,42 +193,81 @@ namespace APBox.Controllers.Operaciones
             documentoRecibidoDr.DetalleArrays = new List<String>();
             cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
             var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
-            //se crea una instancia con los datos a validar en una petición
-            var dataValidar = new ValidacionesComerciales.DataValidar
+            var dataValidar = new ValidacionesComerciales.DataValidar();
+            var dataValidarPagos = new ValidacionesPagos.DataValidar();
+            if (compPagoId == null)
             {
-                Cfdi = cfdi,
-                TimbreFiscalDigital = timbreFiscalDigital,
-                Sucursal = _db.Sucursales.Find(ObtenerSucursal()),
-                SocioComercial = cfdi.Emisor.Equals(null) ? null : _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault(),
-                Usuario = usuario,
-                ConfiguracionEmpresa = ConfiguracionEmpresa(),
-                DocumentoRecibidoDr = documentoRecibidoDr,
-                Archivo = archivo
-            };
+                //se crea una instancia con los datos a validar en una petición
+                dataValidar = new ValidacionesComerciales.DataValidar
+                {
+                    Cfdi = cfdi,
+                    TimbreFiscalDigital = timbreFiscalDigital,
+                    Sucursal = _db.Sucursales.Find(ObtenerSucursal()),
+                    SocioComercial = cfdi.Emisor.Equals(null) ? null : _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault(),
+                    Usuario = usuario,
+                    ConfiguracionEmpresa = ConfiguracionEmpresa(),
+                    DocumentoRecibidoDr = documentoRecibidoDr,
+                    Archivo = archivo
+                };
 
-            ValidacionesComerciales validacionesComerciales = new ValidacionesComerciales();
+                ValidacionesComerciales validacionesComerciales = new ValidacionesComerciales();
 
-            //Se manda validar al grupo de valiadciones de stock para verificar que el documento pueda procesar las validaciones de configuraciones
-            try
-            {
-                validacionesComerciales.ValidacionesNegocio(dataValidar, compPagoId);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
-                return View(documentoRecibidoDr);
-            }
+                //Se manda validar al grupo de valiadciones de stock para verificar que el documento pueda procesar las validaciones de configuraciones
+                try
+                {
+                    validacionesComerciales.ValidacionesNegocio(dataValidar);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
+                    return View(documentoRecibidoDr);
+                }
 
-            try
-            {
-                validacionesComerciales.ValidacionesConfiguraciones(dataValidar);
+                try
+                {
+                    validacionesComerciales.ValidacionesConfiguraciones(dataValidar);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
+                    return View(documentoRecibidoDr);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
-                return View(documentoRecibidoDr);
-            }
+                ValidacionesPagos validacionesPagos = new ValidacionesPagos();
+                dataValidarPagos = new ValidacionesPagos.DataValidar
+                {
+                    Cfdi = cfdi,
+                    Pago = _db.PagoDr.Find(compPagoId),
+                    TimbreFiscalDigital = timbreFiscalDigital,
+                    Sucursal = _db.Sucursales.Find(ObtenerSucursal()),
+                    SocioComercial = cfdi.Emisor.Equals(null) ? null : _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault(),
+                    Usuario = usuario,
+                    ConfiguracionEmpresa = ConfiguracionEmpresa(),
+                    DocumentoRecibidoDr = documentoRecibidoDr,
+                    Archivo = archivo
+                };
+                try
+                {
+                    validacionesPagos.ValidaComplementoPago(dataValidarPagos);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
+                    return View(documentoRecibidoDr);
+                }
+                try
+                {
+                    validacionesPagos.ValidacionesConfiguraciones(dataValidarPagos);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
+                    return View(documentoRecibidoDr);
+                }
 
+            }
             //Manda datos leidos a la pantalla para confirmación
             try
             {
@@ -240,6 +280,7 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.Usuario = usuario.NombreCompleto;
                 ViewBag.Emisor = cfdi.Emisor.Nombre;
                 ViewBag.Receptor = cfdi.Receptor.Nombre;
+                ViewBag.CompPagoId = compPagoId;
             }
             catch (Exception ex)
             {
@@ -260,8 +301,14 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.Procesado = false;
                 documentoRecibidoDr.DetalleArrays = null;
             }
-
-            return View(dataValidar.DocumentoRecibidoDr);
+            if (compPagoId == null)
+            {
+                return View(dataValidar.DocumentoRecibidoDr);
+            }
+            else
+            {
+                return View(dataValidarPagos.DocumentoRecibidoDr);
+            }
         }
 
         // GET: DocumentosRecibidos/Create
@@ -370,18 +417,28 @@ namespace APBox.Controllers.Operaciones
                 //operaciones en caso de que venga de una complemento de pagos
                 if (compPagoId.HasValue)
                 {
+                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                    documentoRecibidoDr.EstadoPago = c_EstadoPago.Completado;
                     documentoRecibidoDr.PagosId = (int)complementoPagoId;
+                    //Table Aprobaciones
+                    documentoRecibidoDr.AprobacionesId = null;
+                    documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
+                    {
+                        UsuarioCompletaPagos_id = usuario.Id,
+                        FechaCompletaPagos = DateTime.Now,
+                    };
                 }
-                //Table Aprobaciones
-                documentoRecibidoDr.AprobacionesId = null;
-                documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
-                {
-                    UsuarioEntrega_Id = usuario.Id,
-                    UsuarioSolicitante_Id = (int?)usuarioSolicitanteId,
-                    DepartamentoUsuarioSolicitante_Id = (int?)usuarioSolicitanteDepartamentoId,
-                    FechaSolicitud = DateTime.Now,
-                };
-
+                else { 
+                    //Table Aprobaciones
+                    documentoRecibidoDr.AprobacionesId = null;
+                    documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
+                    {
+                       UsuarioEntrega_Id = usuario.Id,
+                       UsuarioSolicitante_Id = (int?)usuarioSolicitanteId,
+                       DepartamentoUsuarioSolicitante_Id = (int?)usuarioSolicitanteDepartamentoId,
+                       FechaSolicitud = DateTime.Now,
+                    };
+                }
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
                 _db.SaveChanges();
             }
