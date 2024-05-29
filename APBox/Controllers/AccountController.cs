@@ -496,6 +496,10 @@ namespace APBox.Controllers
         private int AddRoles(string userId, string nombreUsuario, TiposUsuarios tipoUsuario)
         {
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            um.UserValidator = new UserValidator<ApplicationUser>(um)
+            {
+                AllowOnlyAlphanumericUserNames = false
+            };
             ClearUserRoles(um, userId);
 
             /*if (tipoUsuario == TiposUsuarios.Proveedor)
@@ -571,7 +575,11 @@ namespace APBox.Controllers
         {
             if (propiedadPerfil)
             {
-                um.AddToRole(userId, rol);
+                var result = um.AddToRole(userId, rol);
+                if (!result.Succeeded)
+                {
+                   
+                }
             }
         }
 
