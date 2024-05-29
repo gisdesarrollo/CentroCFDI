@@ -286,6 +286,6 @@ namespace APBox.Controllers.Catalogos
             _envioEmail.NotificacionNuevoUsuario(usuario, (int)ObtenerSucursal());
         }
 
-        #endregion PopulaForma
+        #endregion
     }
 }

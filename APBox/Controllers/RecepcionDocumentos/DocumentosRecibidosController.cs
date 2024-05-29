@@ -6,6 +6,7 @@ using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
 using API.Operaciones.ComplementosPagos;
 using API.Operaciones.OperacionesProveedores;
+using API.Operaciones.OperacionesRecepcion;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
 using Aplicacion.LogicaPrincipal.Facturas;
@@ -54,6 +55,7 @@ namespace APBox.Controllers.Operaciones
             }
             else
             {
+
                 var usuarioSolicitanteNombre = usuarioSolicitante.NombreCompleto;
                 var usuarioSolicitanteDepartamento = usuarioSolicitante.Departamento.Nombre;
 
@@ -63,6 +65,7 @@ namespace APBox.Controllers.Operaciones
                 return Json(new
                 {
                     success = true,
+                    UsuarioSolicitanteId = usuarioSolicitante.Id,
                     UsuarioSolicitanteEmail = email,
                     UsuarioSolicitanteNombre = usuarioSolicitanteNombre,
                     UsuarioSolicitanteDepartamento = usuarioSolicitanteDepartamento
@@ -89,7 +92,7 @@ namespace APBox.Controllers.Operaciones
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
-            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaInicial = DateTime.Today.AddDays(-5);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
 
             documentosRecibidosModel.FechaInicial = fechaInicial;
@@ -109,20 +112,31 @@ namespace APBox.Controllers.Operaciones
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
             ViewBag.Title = "Documentos Recibidos";
-            //get usaurio
+
+            // Obtén el usuario y la sucursal
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
-            var fechaInicial = DateTime.Today.AddDays(-10);
-            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+            // Asigna fechas iniciales y finales por defecto si no están definidas
+            var fechaInicial = documentosRecibidosModel.FechaInicial != default(DateTime)
+                ? documentosRecibidosModel.FechaInicial
+                : DateTime.Today.AddDays(-5);
+            var fechaFinal = documentosRecibidosModel.FechaFinal != default(DateTime)
+                ? documentosRecibidosModel.FechaFinal
+                : DateTime.Today.AddDays(1).AddTicks(-1);
 
+            // Asigna las fechas al modelo
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
 
-            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
+            // Filtra los documentos usando las fechas proporcionadas
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(
+                fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }
+
+
 
         // GET: DocumentosRecibidos/CargaCfdi
         public ActionResult CargaCfdi(int? comprobacionGastoId, int? complementoPagoId)
@@ -136,7 +150,8 @@ namespace APBox.Controllers.Operaciones
             {
                 Session["ComprobacionGastosId"] = comprobacionGastoId;
             }
-            if (complementoPagoId.HasValue) {
+            if (complementoPagoId.HasValue)
+            {
                 Session["ComplementoPagoId"] = complementoPagoId;
             }
 
@@ -334,13 +349,13 @@ namespace APBox.Controllers.Operaciones
                 // Recuperar los parámetros de la sesión
                 int? comprobacionGastosId = (int?)Session["ComprobacionGastosId"];
                 int? complementoPagoId = (int?)Session["ComplementoPagoId"];
-                var usuarioSolicitanteId = Session["AprobadorId"];
-                var usuarioSolicitanteDepartamentoId = Session["DepartamentoId"];
+
+                var usuarioSolicitante = _db.Usuarios.Find(documentoRecibidoDr.idUsuarioSolicitante);
+                var usuarioSolicitanteId = usuarioSolicitante.Id;
+                var usuarioSolicitanteDepartamentoId = usuarioSolicitante.DepartamentoId;
 
                 // Limpiar los parámetros de la sesión después de usarlos
                 Session.Remove("ComprobacionGastosId");
-                Session.Remove("AprobadorId");
-                Session.Remove("DepartamentoId");
                 Session.Remove("ComplementoPagoId");
 
                 cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
@@ -428,15 +443,16 @@ namespace APBox.Controllers.Operaciones
                         FechaCompletaPagos = DateTime.Now,
                     };
                 }
-                else { 
+                else
+                {
                     //Table Aprobaciones
                     documentoRecibidoDr.AprobacionesId = null;
                     documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
                     {
-                       UsuarioEntrega_Id = usuario.Id,
-                       UsuarioSolicitante_Id = (int?)usuarioSolicitanteId,
-                       DepartamentoUsuarioSolicitante_Id = (int?)usuarioSolicitanteDepartamentoId,
-                       FechaSolicitud = DateTime.Now,
+                        UsuarioEntrega_Id = usuario.Id,
+                        UsuarioSolicitante_Id = usuarioSolicitanteId,
+                        DepartamentoUsuarioSolicitante_Id = usuarioSolicitanteDepartamentoId,
+                        FechaSolicitud = DateTime.Now,
                     };
                 }
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
@@ -596,7 +612,7 @@ namespace APBox.Controllers.Operaciones
         public ConfiguracionesDR ConfiguracionEmpresa()
         {
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
-            var configuracion = _db.config.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
+            var configuracion = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
 
             if (configuracion == null)
             {

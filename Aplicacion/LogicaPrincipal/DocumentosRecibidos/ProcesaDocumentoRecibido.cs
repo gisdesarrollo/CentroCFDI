@@ -37,35 +37,38 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
         public List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
-            var documentoRecibido = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
-            List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> documentoRecibidos = new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
 
-            //Si el usuario es proveedor
+            if (usuario == null)
+            {
+                // Manejar el caso donde el usuario no se encuentra
+                return new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
+            }
+
+            // Ajustar las fechas
+            fechaInicial = fechaInicial.Date; // Establece la hora en 00:00:00
+            fechaFinal = fechaFinal.Date.AddDays(1).AddTicks(-1); // Establece la hora en 23:59:59
+
+
+            // Base query
+            var query = _db.DocumentosRecibidos.AsQueryable();
+
+            // Filtro común
+            query = query.Where(dr =>
+                                dr.FechaEntrega >= fechaInicial &&
+                                dr.FechaEntrega <= fechaFinal &&
+                                dr.SucursalId == sucursalId &&
+                                dr.RecibidosComprobante.TipoComprobante != API.Enums.c_TipoDeComprobante.P);
+
+            // Filtro adicional si el usuario es proveedor
             if (usuario.esProveedor)
             {
-                documentoRecibido = _db.DocumentosRecibidos
-                                    .Where(dr =>
-                                            dr.FechaEntrega >= fechaInicial &&
-                                            dr.FechaEntrega <= fechaFinal &&
-                                            dr.SocioComercialId == usuario.SocioComercialId &&
-                                            dr.SucursalId == sucursalId &&
-                                            dr.RecibidosComprobante.TipoComprobante != API.Enums.c_TipoDeComprobante.P)
-                                    .OrderBy(dr => dr.EstadoComercial)
-                                    .ToList();
+                query = query.Where(dr => dr.SocioComercialId == usuario.SocioComercialId);
             }
 
-            //Si el usuartio es interno
-            if (!usuario.esProveedor)
-            {
-                documentoRecibido = _db.DocumentosRecibidos
-                                    .Where(dr =>
-                                            dr.FechaEntrega >= fechaInicial &&
-                                            dr.FechaEntrega <= fechaFinal &&
-                                            dr.SucursalId == sucursalId &&
-                                            dr.RecibidosComprobante.TipoComprobante != API.Enums.c_TipoDeComprobante.P)
+            // Ejecutar la consulta y ordenar
+            var documentoRecibido = query
                                     .OrderBy(dr => dr.EstadoComercial)
                                     .ToList();
-            }
 
             return documentoRecibido;
         }

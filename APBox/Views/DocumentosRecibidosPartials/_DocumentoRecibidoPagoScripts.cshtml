@@ -19,8 +19,10 @@ function validarEmail() {
                     var usuarioSolicitanteNombre = data.UsuarioSolicitanteNombre;
                     var usuarioSolicitanteDepartamento = data.UsuarioSolicitanteDepartamento;
                     var usuarioSolicitanteEmail = data.UsuarioSolicitanteEmail;
+                    var usuarioSolicitanteId = data.UsuarioSolicitanteId;
 
                     // Utiliza estos valores como desees, por ejemplo, ponlos en dos div
+                    $('#idUsuarioSolicitante').val(usuarioSolicitanteId);
                     $('#nombreDiv').text(usuarioSolicitanteNombre);
                     $('#emailDiv').text(usuarioSolicitanteEmail);
                     $('#departamentoDiv').text(usuarioSolicitanteDepartamento);

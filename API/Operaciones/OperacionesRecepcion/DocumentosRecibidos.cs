@@ -137,6 +137,8 @@ namespace API.Operaciones.OperacionesProveedores
         [NotMapped]
         public bool Previsualizacion { get; set; }
 
-        
+        [NotMapped]
+        public int idUsuarioSolicitante { get; set; }
+
     }
 }
