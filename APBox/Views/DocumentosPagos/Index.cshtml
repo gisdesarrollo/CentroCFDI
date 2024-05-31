@@ -14,38 +14,13 @@
     var usuarioesProveedor = usuario.esProveedor;
 }
 
-
-<div class="row">
-    <div class="col-12">
-        <div class="d-flex flex-wrap flex-stack pb-7">
-            <!--begin::Title-->
-            <div class="d-flex flex-wrap align-items-center my-1">
-                <h3 class="fw-bold me-5 my-1 text-white">
-                    Selecciona la lista de Comprobantes a Revision
-                    <span class="text-white fs-7">↓</span>
-                </h3>
-            </div>
-            <!--end::Title-->
-            <!--begin::Actions-->
-            <div class="d-flex my-0 w-300px">
-                <!--begin::Select-->
-                <select class="form-select form-select form-select-solid" data-control="select2" data-hide-search="true" id="tablas">
-                    <option value="tabla1">Comprobantes Aprobados</option>
-                    <option value="tabla2">Comprobantes En Revisión</option>
-                </select>
-            </div>
-            <!--end::Actions-->
-        </div>
-    </div>
-</div>
-
 <div class="row g-5 g-xl-8">
     <div class="col-12">
         <div class="card card-flush shadow-sm py-4 mb-xl-8 tablas" id="tabla1">
             <!--begin::Card header-->
             <div class="card-header">
                 <h3 class="card-title align-items-start flex-column w-100 mb-5">
-                    <span class="card-label text-gray-900">Comprobantes Aprobados</span>
+                    <span class="card-label text-gray-900">Comprobantes en revisión para Pago</span>
                     <span class="text-gray-600 mt-4 fw-semibold fs-6">Lista de comprobantes con Estado Comercial <span class="badge badge-light-success">Aprobado</span></span>
                 </h3>
                 <!--begin::Search-->
@@ -65,18 +40,18 @@
                     <table class="table align-middle rounded table-row-dashed fs-7 g-5" id="tablaIndividuales">
                         <thead>
                             <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
-                                <th class="min-w-100px">Socio Comercial</th>
-                                <th class="min-w-100px">Identificador</th>
-                                <th class="min-w-100px">Datos de Recepción</th>
-                                <th class="min-w-100px text-end">Monto</th>
-                                <th class="min-w-100px text-center">Referencia</th>
-                                <th class="min-w-100px text-center">Estado Pago</th>
-                                <th class="min-w-100px"></th>
+                                <th class="w-100px">Socio Comercial</th>
+                                <th>Identificador</th>
+                                <th>Datos de Recepción</th>
+                                <th class="text-end">Monto</th>
+                                <th class="w-100px text-center">Referencia</th>
+                                <th class="text-center">Estado Pago</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="align-text-top">
 
-                            @foreach (var item in Model.DocumentosRecibidos.Where(i => i.EstadoComercial == API.Enums.c_EstadoComercial.Aprobado))
+                            @foreach (var item in Model.DocumentosRecibidos)
                             {
                                 var aprobacion = item.AprobacionesDR;
 
@@ -99,12 +74,18 @@
                                         <span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
                                     </td>
                                     <td>
-                                        <div class="badge">Usuario Entrega:</div> @ViewBag.usuarioEntrega <br />
-                                        <div class="badge">Fecha de Entrega:</div> <span class="text-gray-600">@item.AprobacionesDR.FechaSolicitud.Value.ToString("dd MMM, yyyy")</span><br />
+                                        <strong>Aprobación:</strong> <br /> @ViewBag.usuarioAprobador <br />
+                                        <span class="text-gray-600">@ViewBag.nombreDepartamento</span><br />
+                                        <i class="ki-duotone ki-calendar">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i><span class="text-gray-600">@item.AprobacionesDR.FechaAprobacionComercial.Value.ToString("dd/MM/yyyy")</span><br />
                                         <div class="separator"></div>
-                                        <div class="badge">Aprobador:</div> @ViewBag.usuarioAprobador <br />
-                                        <div class="badge">Departamento:</div> <span class="text-gray-600">@ViewBag.nombreDepartamento</span><br />
-                                        <div class="badge">Fecha de Aprobación: </div> <span class="text-gray-600">@item.AprobacionesDR.FechaAprobacionComercial.Value.ToString("dd MMM, yyyy")</span><br />
+                                        <strong>Entrega:</strong> <br /> @ViewBag.usuarioEntrega <br />
+                                        <i class="ki-duotone ki-calendar">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i><span class="text-gray-600">@item.AprobacionesDR.FechaSolicitud.Value.ToString("dd/MM/yyyy")</span><br />
                                     </td>
                                     <td class="text-end">
                                         @item.Monto.ToString("c") <br />
@@ -117,7 +98,7 @@
                                         @switch (item.EstadoPago)
                                         {
                                             case API.Enums.c_EstadoPago.EnRevision:
-                                                <div class="badge badge-light-primary">En Revision</div>
+                                                <div class="badge badge-light-primary">EnRevision</div>
                                                 break;
                                             case API.Enums.c_EstadoPago.Aprobado:
                                                 <div class="badge badge-light-success">Aprobado</div>
@@ -160,124 +141,12 @@
     </div>
 </div>
 
-<div class="row g-5 g-xl-8">
-    <div class="col-12">
-        <div class="card card-flush shadow-sm py-4 mb-xl-8 tablas" id="tabla2">
-            <!--begin::Card header-->
-            <div class="card-header">
-                <h3 class="card-title align-items-start flex-column w-100 mb-5">
-                    <span class="card-label text-gray-900">Comprobantes En Revisión</span>
-                    <span class="text-gray-600 mt-4 fw-semibold fs-6">Lista de comprobantes con Estado Comercial En Revisión en espera del Usuario Solicitante para su procesamiento</span>
-                </h3>
-                <!--begin::Search-->
-                <div class="d-flex align-items-center position-relative my-1">
-                    <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
-                    <input type="text" data-kt-filter-Grupales="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
-                </div>
-                <!--end::Search-->
-                <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-
-                </div>
-            </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body pt-0">
-                <div class="d-flex flex-column gap-10">
-                    <table class="table align-middle rounded table-row-dashed fs-7 g-5" id="tablaGrupales">
-                        <thead>
-                            <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
-                                <th class="min-w-100px">Socio Comercial</th>
-                                <th class="min-w-100px">Identificador</th>
-                                <th class="min-w-100px">Datos de Recepción</th>
-                                <th class="min-w-100px text-end">Monto</th>
-                                <th class="min-w-100px text-center">Referencia</th>
-                                <th class="min-w-100px text-center">Estado Comercial</th>
-                                <th class="min-w-100px"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="align-text-top">
-                            @foreach (var item in Model.DocumentosRecibidos.Where(i => i.EstadoComercial == API.Enums.c_EstadoComercial.EnRevision))
-                            {
-                                var aprobacion = item.AprobacionesDR;
-
-                                var usuarioSolicitante = _db.Usuarios.Find(aprobacion.UsuarioAprobacionComercial_id);
-                                var nombreAprobador = usuarioSolicitante != null ? string.Format("{0} {1} {2}", usuarioSolicitante.Nombre, usuarioSolicitante.ApellidoPaterno, usuarioSolicitante.ApellidoMaterno) : "Usuario no encontrado";
-                                ViewBag.nombreAprobador = nombreAprobador;
-
-                                var departamentoUsuarioSolicitante = _db.Departamentos.Find(aprobacion.DepartamentoUsuarioSolicitante_Id);
-                                var nombreDepartamento = departamentoUsuarioSolicitante != null ? departamentoUsuarioSolicitante.Nombre : "Departamento no encontrado";
-                                ViewBag.nombreDepartamento = nombreDepartamento;
-
-                                <tr>
-                                    <td>
-                                        @item.SocioComercial.RazonSocial <br />
-                                        <span class="text-gray-600">@item.SocioComercial.Rfc</span>
-                                    </td>
-                                    <td>
-                                        @item.CfdiRecibidosSerie - @item.CfdiRecibidosFolio <br />
-                                        <span class="text-gray-600">@item.CfdiRecibidosUUID</span> <br />
-                                        <span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
-                                    </td>
-                                    <td>
-                                        Solicitante: @ViewBag.nombreAprobador <br />
-                                        <span class="text-gray-600">@ViewBag.nombreDepartamento </span><br />
-                                        <span class="text-gray-600">Fecha de Entrega: @item.FechaEntrega.ToString("dd/MM/yyyy")</span><br />
-                                    </td>
-                                    <td class="text-end">
-                                        @item.Monto.ToString("c") <br />
-                                        <div class="text-gray-600">@item.MonedaId</div>
-                                    </td>
-                                    <td>
-                                        @item.Referencia
-                                    </td>
-                                    <td class="text-center">
-                                        @switch (item.EstadoComercial)
-                                        {
-                                            case API.Enums.c_EstadoComercial.Aprobado:
-                                                <div class="badge badge-light-success">Aprobado</div>
-                                                break;
-                                            case API.Enums.c_EstadoComercial.EnRevision:
-                                                <div class="badge badge-light-primary">En Revisión</div>
-                                                break;
-                                            case API.Enums.c_EstadoComercial.Rechazado:
-                                                <div class="badge badge-light-danger">Rechazado</div>
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    </td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                            Acciones
-                                            <i class="ki-duotone ki-down fs-5 ms-1"></i>
-                                        </a>
-                                        <!--begin::Menu-->
-                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true" style="">
-
-                                            <div class="menu-item px-3">@Html.ActionLink("Revisión", "Revision", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
-                                            <div class="menu-item px-3">@Html.ActionLink("Descarga Xml", "DescargaXml", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
-                                            <div class="menu-item px-3">@Html.ActionLink("Descarga Pdf", "DescargaPDF", new { id = item.Id }, new { @class = "menu-link px-3" })</div>
-
-                                        </div>
-                                        <!--end::Menu-->
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!--end::Card header-->
-        </div>
-    </div>
-</div>
-
 <div class="hiddenDiv">
     <div class="d-flex align-items-center py-3 py-md-1" id="tools">
         <!--begin::Wrapper-->
         <div class="me-0">
             <!--begin::Menu-->
-           <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
+            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-white" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-static="true">
                 <i class="ki-duotone ki-filter fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
                 Filtros
             </a>
@@ -297,28 +166,28 @@
                     <div class="separator border-gray-200"></div>
                     <!--end::Menu separator-->
                     <!--begin::Form-->
-            <div class="px-7 py-5">
-                <!--begin::Input group-->
-                <div class="mb-5">
-                    <!--begin::Label-->
-                    <label class="form-label fw-semibold">Periodo:</label>
-                    <!--end::Label-->
-                    <!--begin::Input-->
-                    <div class="mb-3">
-                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
+                    <div class="px-7 py-5">
+                        <!--begin::Input group-->
+                        <div class="mb-5">
+                            <!--begin::Label-->
+                            <label class="form-label fw-semibold">Periodo:</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <div class="mb-3">
+                                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control fecha" } })
+                            </div>
+                            <div class="mb-3">
+                                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
+                        </div>
+                        <!--end::Actions-->
                     </div>
-                    <div class="mb-3">
-                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control fecha mb-2" } })
-                    </div>
-                    <!--end::Input-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Actions-->
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Aplicar</button>
-                </div>
-                <!--end::Actions-->
-            </div>
                     <!--end::Form-->
                 }
             </div>

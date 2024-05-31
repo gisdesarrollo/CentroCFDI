@@ -34,7 +34,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         #endregion Variables
 
-        public List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> Filtrar(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
+        public List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> FiltrarDocumentos(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
 

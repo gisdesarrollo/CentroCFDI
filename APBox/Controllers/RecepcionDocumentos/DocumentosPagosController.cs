@@ -31,7 +31,7 @@ namespace APBox.Controllers.Operaciones
         private readonly Decodificar _decodifica = new Decodificar();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly CargaPagosDR _cargaPagosDR = new CargaPagosDR();
-        private readonly ProcesaDocumentoPago _procesaDocumentoPago = new ProcesaDocumentoPago();
+        private readonly Aplicacion.LogicaPrincipal.DocumentosPagos.ProcesaDocumentoPago _procesaDocumentoPago = new Aplicacion.LogicaPrincipal.DocumentosPagos.ProcesaDocumentoPago();
         private readonly ValidacionesPagos _validaPagos = new ValidacionesPagos();
 
         // GET: DocumentosPagos
@@ -59,35 +59,44 @@ namespace APBox.Controllers.Operaciones
             }
 
             var documentosRecibidosModel = new DocumentosRecibidosModel();
-            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaInicial = DateTime.Today.AddDays(-5);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
 
-            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoPago.FiltrarDocumentos(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }
 
-        // POST: DocumentosPagos filtrados por el rango de fecha
+        // POST: DocumentosRecibidos/Index
         [HttpPost]
         public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
         {
-            ViewBag.Controller = "DocumentosAprobados";
+            ViewBag.Controller = "DocumentosRecibidos";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
-            ViewBag.Title = "Documentos Aprobados";
-            //get usaurio
+            ViewBag.Title = "Documentos Recibidos";
+
+            // Obtén el usuario y la sucursal
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
-            DateTime fechaI = documentosRecibidosModel.FechaInicial;
-            DateTime fechaF = documentosRecibidosModel.FechaFinal;
-            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            // Asigna fechas iniciales y finales por defecto si no están definidas
+            var fechaInicial = documentosRecibidosModel.FechaInicial != default(DateTime)
+                ? documentosRecibidosModel.FechaInicial
+                : DateTime.Today.AddDays(-5);
+            var fechaFinal = documentosRecibidosModel.FechaFinal != default(DateTime)
+                ? documentosRecibidosModel.FechaFinal
+                : DateTime.Today.AddDays(1).AddTicks(-1);
 
-            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
+            // Asigna las fechas al modelo
+            documentosRecibidosModel.FechaInicial = fechaInicial;
+            documentosRecibidosModel.FechaFinal = fechaFinal;
+
+            // Filtra los documentos usando las fechas proporcionadas
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoPago.FiltrarDocumentos(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }

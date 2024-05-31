@@ -61,7 +61,8 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos
             var _db = new AplicacionContext();
             var usuario = _db.Usuarios.Find(usuarioid);
 
-                return $"{usuario.Nombre} {usuario.ApellidoPaterno} {usuario.ApellidoMaterno}";
+                //return $"{usuario.Nombre} {usuario.ApellidoPaterno} {usuario.ApellidoMaterno}";
+                return $"{usuario.Nombre} {usuario.ApellidoPaterno}";
             }
             else
             {

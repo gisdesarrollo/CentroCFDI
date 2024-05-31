@@ -30,10 +30,7 @@ namespace Aplicacion.LogicaPrincipal.Expedientes
                                         dr.SucursalId == sucursalId)
                                 .OrderBy(dr => dr.FechaCreacion)
                                 .ToList();
-
             return expedientesFiscales;
         }
-
-
     }
 }

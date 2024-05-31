@@ -79,23 +79,22 @@
                 <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
                     <thead>
                         <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
-                            <th class="">
+                            <th class="w-200px">
                                 Socio Comercial
                             </th>
-                            <th class="min-w-100px">
+                            <th>
                                 Contacto
                             </th>
-                            <th class="min-w-100px">
+                            <th>
                                 Datos Fiscales
                             </th>
-                            <th class="min-w-100px">
+                            <th>
                                 Domicilio Fiscal
                             </th>
-                            <th class="min-w-100px">
+                            <th>
                                 Estado
                             </th>
-                            <th class="min-w-100px">
-
+                            <th>
                             </th>
                         </tr>
                     </thead>
@@ -109,33 +108,45 @@
                             <td>
                                 @if (!string.IsNullOrEmpty(item.Email))
                                 {
-                                    <span class="badge"> Email: </span> <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Email)</span>
+                                    <i class="ki-duotone ki-sms">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    @Html.DisplayFor(modelItem => item.Email)
                                 }
                                 else
                                 {
-                                    <span class="badge badge-light-danger"> Sin Email </span>
+                                    <span class="badge badge-light-info"> Sin Email </span>
                                 }
                                 <br />
                                 @if (!string.IsNullOrEmpty(item.Telefono1))
                                 {
-                                    <span class="badge"> Teléfono 1: </span> <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Telefono1)</span><br />
+                                    <i class="ki-duotone ki-whatsapp">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    @Html.DisplayFor(modelItem => item.Telefono1)<br />
                                 }
                                 @if (!string.IsNullOrEmpty(item.Telefono2))
                                 {
-                                    <span class="badge"> Teléfono 2: </span> <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Telefono2)</span>
+                                    <i class="ki-duotone ki-whatsapp">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    @Html.DisplayFor(modelItem => item.Telefono2)
                                 }
                             </td>
                             <td>
-                                <div class="badge">Uso CFDI: </div><span class="text-gray-600">@item.UsoCfdi</span><br />
-                                <div class="badge">Regimen Fiscal: </div><span class="text-gray-600">@Html.DisplayFor(modelItem => item.RegimenFiscal)</span>
+                                <strong>Uso CFDI: </strong> @item.UsoCfdi <br />
+                                <strong>Regimen Fiscal: </strong> @Html.DisplayFor(modelItem => item.RegimenFiscal)
                             <td>
-                                <div class="badge">Pais: </div><span class="text-gray-600">@item.Pais</span><br />
-                                <div class="badge">CP: </div><span class="text-gray-600">@item.CodigoPostal</span>
+                                <strong>Pais: </strong>@item.Pais<br />
+                                <strong>CP: </strong>@item.CodigoPostal
 
                                 <br />
                                 @if (!string.IsNullOrEmpty(item.NumRegIdTrib))
                                 {
-                                    <div class="badge">NumRegIdTrib: </div><span class="text-gray-600">@item.NumRegIdTrib</span>
+                                    <strong>NumRegIdTrib: </strong>@item.NumRegIdTrib
                                 }
                             </td>
                             <td>
@@ -380,7 +391,7 @@
                                     @Html.LabelFor(model => SocioComercialId, htmlAttributes: new { @class = "form-label" })
                                     @Html.DropDownList("ReceptorId", null, "Favor de hacer su selección", new { @class = "form-select mb-2", id = "socioComercialId" })
                                     @Html.ValidationMessageFor(model => SocioComercialId, "", new { @class = "text-danger" })
-                                    
+
                                 </div>
                                 <button type="submit" class="btn btn-primary">Valida</button>
                             </form>
@@ -427,10 +438,10 @@
   document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('myForm');
       const submitButton = form.querySelector('button[type="submit"]');
-    
+
     // Manejar el envío del formulario
     form.addEventListener('submit', function(event) {
-      event.preventDefault(); 
+      event.preventDefault();
       submitButton.disabled = true;
       const formData = new FormData(form);
       const socioComercialId = document.getElementById('socioComercialId').value;
@@ -447,14 +458,14 @@
             .then(data => {
                 if (data.success) {
                     alert(data.message);
-                    
+
                 } else {
                     // Manejar el error
                     alert(data.message);
                 }
-                
+
       })
-      
+
       .catch(error => {
         console.error('Error:', error);
           alert('Hubo un error al validar RFC Socio Comercial');
@@ -462,10 +473,10 @@
       .finally(() => {
             $('#modal2').modal('hide');
             submitButton.disabled = false;
-            
+
         });
     });
-      
+
 
   });
 </script>

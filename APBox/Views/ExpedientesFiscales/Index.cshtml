@@ -112,8 +112,8 @@
                             </ul>
                         </td>
                         <td>
-                            Creación: @Html.DisplayFor(modelItem => item.FechaCreacion) <br />
-                            Vigencia: @Html.DisplayFor(modelItem => item.Vigencia)
+                            <strong>Creación</strong> @Html.DisplayFor(modelItem => item.FechaCreacion) <br />
+                            <strong>Vigencia</strong> @Html.DisplayFor(modelItem => item.Vigencia)
                         </td>
                         <td>
                             @if (item.Vigencia < DateTime.Now)

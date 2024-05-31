@@ -98,7 +98,7 @@ namespace APBox.Controllers.Operaciones
             documentosRecibidosModel.FechaInicial = fechaInicial;
             documentosRecibidosModel.FechaFinal = fechaFinal;
 
-            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.FiltrarDocumentos(fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }
@@ -130,13 +130,11 @@ namespace APBox.Controllers.Operaciones
             documentosRecibidosModel.FechaFinal = fechaFinal;
 
             // Filtra los documentos usando las fechas proporcionadas
-            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.Filtrar(
+            documentosRecibidosModel.DocumentosRecibidos = _procesaDocumentoRecibido.FiltrarDocumentos(
                 fechaInicial, fechaFinal, sucursal.Id, usuario.Id);
 
             return View(documentosRecibidosModel);
         }
-
-
 
         // GET: DocumentosRecibidos/CargaCfdi
         public ActionResult CargaCfdi(int? comprobacionGastoId, int? complementoPagoId)
@@ -339,7 +337,6 @@ namespace APBox.Controllers.Operaciones
         [HttpPost]
         public ActionResult Create(DocumentosRecibidos documentoRecibidoDr)
         {
-
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             int? compGastosId = (int?)Session["ComprobacionGastosId"];
             int? compPagoId = (int?)Session["ComplementoPagoId"];
@@ -365,6 +362,7 @@ namespace APBox.Controllers.Operaciones
 
                 documentoRecibidoDr.RecibidosXml = new RecibidosXMLDR();
                 documentoRecibidoDr.RecibidosPdf = new RecibidosPDFDR();
+                
                 //insert files
                 byte[] xmlFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoXml);
                 documentoRecibidoDr.RecibidosXml.Archivo = xmlFile;
@@ -378,12 +376,14 @@ namespace APBox.Controllers.Operaciones
                     documentoRecibidoDr.RecibidosPdf = null;
                     documentoRecibidoDr.CfdiRecibidosPdfId = null;
                 }
+                
                 //table validaciones
                 if (documentoRecibidoDr.Validaciones == null)
                 {
                     documentoRecibidoDr.Validaciones = null;
                     documentoRecibidoDr.ValidacionesId = null;
                 }
+                
                 // table recibidosComprobante
                 documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
                 {
@@ -429,6 +429,7 @@ namespace APBox.Controllers.Operaciones
                     comprobacionGastos.Monto = montoActualizado;
                     _db.Entry(comprobacionGastos).State = EntityState.Modified;
                 }
+
                 //operaciones en caso de que venga de una complemento de pagos
                 if (compPagoId.HasValue)
                 {
@@ -455,6 +456,22 @@ namespace APBox.Controllers.Operaciones
                         FechaSolicitud = DateTime.Now,
                     };
                 }
+
+                var configuraciones = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursal.Id);
+                if (configuraciones.AprobacionComercialAutomatica == true)
+                {
+                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                    documentoRecibidoDr.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
+                    documentoRecibidoDr.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+                }
+
+                if (configuraciones.AprobacionPagosAutomatica == true)
+                {
+                    documentoRecibidoDr.EstadoPago = c_EstadoPago.Completado;
+                    documentoRecibidoDr.AprobacionesDR.UsuarioAprobacionPagos_id = usuario.Id;
+                    documentoRecibidoDr.AprobacionesDR.FechaAprobacionPagos = DateTime.Now;
+                }
+
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
                 _db.SaveChanges();
             }

@@ -36,5 +36,8 @@ namespace API.Operaciones.OperacionesProveedores
 
         public bool ReferenciaDocumentosRecibidosObligatoria { get; set; }
 
+        public bool AprobacionComercialAutomatica { get; set; }
+
+        public bool AprobacionPagosAutomatica { get; set; }
     }
 }
