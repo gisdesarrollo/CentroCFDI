@@ -1,28 +1,30 @@
 ﻿using APBox.Context;
 using APBox.Control;
-using API.Catalogos;
 using API.Enums;
 using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
-using API.Operaciones.ComplementosPagos;
 using API.Operaciones.OperacionesProveedores;
-using API.Operaciones.OperacionesRecepcion;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
+using Aplicacion.LogicaPrincipal.Expedientes;
 using Aplicacion.LogicaPrincipal.Facturas;
 using Aplicacion.RecepcionDocumentos;
-using SW.Services.Authentication;
+using Aplicacion.Utilidades;
+using AWS;
 using SW.Services.Validate;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Management.Instrumentation;
-using System.Text;
 using System.Web.Mvc;
 using Utilerias.LogicaPrincipal;
+using API.Operaciones.Expedientes;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -36,6 +38,9 @@ namespace APBox.Controllers.Operaciones
         private readonly Decodificar _decodifica = new Decodificar();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly OperacionesDocumentosRecibidos _operacionesDocumentosRecibidos = new OperacionesDocumentosRecibidos();
+        private readonly AmazonS3Uploader _s3Uploader;
+        private readonly ProcesaExpediente _procesaExpediente = new ProcesaExpediente();
+        private readonly AmazonS3Helper _s3Helper;
 
         #endregion variables
 
@@ -585,6 +590,103 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
+        // POST: Expedientes/Create
+        [HttpPost]
+        public async Task<ActionResult> Create(ExpedienteFiscal expediente)
+        {
+            var sucursalId = ObtenerSucursal();
+            var grupoId = ObtenerGrupo();
+            var socioComercialId = (int)Session["socComlId"];
+
+
+            if (ModelState.IsValid)
+            {
+
+                //quiero hacer un try para checar si el registro ya existe, buscando mes, anio, sucursal y socio comercial
+                var expedienteExistente = _db.ExpedientesFiscales
+                    .FirstOrDefault(e => e.Mes == expediente.Mes &&
+                                         e.Anio == expediente.Anio &&
+                                         e.SucursalId == sucursalId &&
+                                         e.SocioComercialId == socioComercialId);
+
+                if (expedienteExistente != null)
+                {
+                    TempData["Errores"] = new List<string> { "Ya existe un expediente fiscal para el mes y año seleccionado" };
+                    return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
+                }
+
+
+
+                var basePath = $"ExpedientesFiscales/{grupoId}/{sucursalId}/{socioComercialId}/{expediente.Anio}/{(int)expediente.Mes}";
+
+                if (expediente.ConstanciaSituacionFiscal != null && expediente.ConstanciaSituacionFiscal.ContentLength > 0)
+                {
+                    var nombreArchivo = "ConstanciaSituacionFiscal.pdf";
+                    var key = $"{basePath}/{nombreArchivo}";
+                    await UploadFileToS3(expediente.ConstanciaSituacionFiscal, key);
+
+                    expediente.PathConstanciaSituacionFiscal = key;
+                }
+
+                if (expediente.OpinionCumplimientoSAT != null && expediente.OpinionCumplimientoSAT.ContentLength > 0)
+                {
+                    var nombreArchivo = "OpinionCumplimientoSAT.pdf";
+                    var key = $"{basePath}/{nombreArchivo}";
+                    await UploadFileToS3(expediente.OpinionCumplimientoSAT, key);
+
+                    expediente.PathOpinionCumplimientoSAT = key;
+                }
+
+                expediente.SucursalId = sucursalId;
+                expediente.UsuarioId = ObtenerUsuario();
+                expediente.SocioComercialId = socioComercialId;
+                expediente.FechaCreacion = DateTime.Now;
+                var diasVigencia = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId).DiasVigenciaExpedienteFiscal;
+                expediente.Vigencia = expediente.FechaCreacion.AddDays(diasVigencia);
+
+                // Guardar el resto de la información del expedienteFiscal en la base de datos
+                _db.ExpedientesFiscales.Add(expediente);
+                await _db.SaveChangesAsync();
+
+                Session.Remove("socComlId");
+                return RedirectToAction("Index", "ExpedientesFiscales", new { id = socioComercialId, socioComercialId = socioComercialId });
+            }
+
+            ViewBag.SocioComercialId = socioComercialId;
+            return View(expediente);
+        }
+
+        private async Task UploadFileToS3(HttpPostedFileBase file, string key)
+        {
+            using (var stream = file.InputStream)
+            {
+                await _s3Uploader.UploadFileAsync(stream, key, file.ContentType);
+            }
+        }
+
+        public ActionResult Download(string filePath)
+        {
+            // Generar URL de CloudFront pre-firmada
+            var preSignedUrl = _s3Helper.GenerateCloudFrontPreSignedURL(filePath);
+
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    var fileBytes = client.DownloadData(preSignedUrl);
+                    var fileName = System.IO.Path.GetFileName(filePath);
+
+                    return File(fileBytes, "application/octet-stream", fileName);
+                }
+                catch (WebException ex)
+                {
+                    // Manejar el error de descarga
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, ex.Message);
+                }
+            }
+        }
+
+
         // GET: DocumentosRecibidos/Delete/5
         public ActionResult Delete(int id)
         {
@@ -605,6 +707,22 @@ namespace APBox.Controllers.Operaciones
             {
                 return View();
             }
+        }
+
+
+        public DocumentosRecibidosController()
+        {
+            // Obtener valores de configuración
+            var awsAccessKeyId = ConfigurationManager.AppSettings["AWSAccessKeyId"];
+            var awsSecretAccessKey = ConfigurationManager.AppSettings["AWSSecretAccessKey"];
+            var region = ConfigurationManager.AppSettings["AWSRegion"];
+            var bucketName = ConfigurationManager.AppSettings["BucketName"];
+            var cloudFrontDomain = ConfigurationManager.AppSettings["CloudFrontDomain"];
+
+            // Inicializar AmazonS3Uploader con los valores de configuración
+            _s3Uploader = new AmazonS3Uploader(awsAccessKeyId, awsSecretAccessKey, region, bucketName);
+            _s3Helper = new AmazonS3Helper(awsAccessKeyId, awsSecretAccessKey, region, bucketName, cloudFrontDomain);
+
         }
 
         #endregion Vistas
