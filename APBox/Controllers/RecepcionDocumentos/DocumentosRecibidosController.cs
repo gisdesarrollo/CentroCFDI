@@ -316,22 +316,14 @@ namespace APBox.Controllers.Operaciones
             }
             if (compPagoId == null)
             {
-                return View(dataValidar.DocumentoRecibidoDr);
+                return View("Create", dataValidar.DocumentoRecibidoDr);
             }
             else
             {
-                return View(dataValidarPagos.DocumentoRecibidoDr);
+                return View("Create", dataValidarPagos.DocumentoRecibidoDr);
             }
         }
 
-        // GET: DocumentosRecibidos/Create
-        public ActionResult Create()
-        {
-            ViewBag.NameHere = "Crear";
-            //get usaurio
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            return View();
-        }
 
         // POST: DocumentosRecibidos/Create
         [HttpPost]

@@ -2901,6 +2901,7 @@
     <Content Include="Views\ExpedientesFiscales\Index.cshtml" />
     <Content Include="Views\ExpedientesFiscales\Create.cshtml" />
     <Content Include="Views\ComplementosCartaPorte\_ComplementoCartaPorteScript.cshtml" />
+    <Content Include="Views\DocumentosRecibidos\Create.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
