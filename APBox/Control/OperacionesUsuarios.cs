@@ -42,15 +42,23 @@ namespace APBox.Control
             }
         }
 
-        public void EliminarUsuario(string clave)
+        /*public void EliminarUsuario(string clave)
         {
             //TODO: Arreglar Esto
             Membership.Provider.DeleteUser(clave, true);
-        }
+        }*/
 
         public void Reseteo(string nombreUsuario)
         {
-            _db.Database.ExecuteSqlCommand(String.Format("UPDATE AspNetUsers SET PasswordHash = 'AHYKBw50VZUCbIizHV3RvvDXFzD1Pqu87mToM/uIvcTSYMQR8nf1PykV0FBQA+t3ZA==' WHERE UserName = '{0}'", nombreUsuario));
+            _db.Database.ExecuteSqlCommand(String.Format("UPDATE aspnetusers SET PasswordHash = 'AHYKBw50VZUCbIizHV3RvvDXFzD1Pqu87mToM/uIvcTSYMQR8nf1PykV0FBQA+t3ZA==' WHERE UserName = '{0}'", nombreUsuario));
+        }
+        public void ReseteoUsername(string nombreUsuarioAnterior,string nombreUsuarioNuevo)
+        {
+            _db.Database.ExecuteSqlCommand(String.Format("UPDATE aspnetusers SET UserName = '{0}' WHERE UserName = '{1}'", nombreUsuarioNuevo,nombreUsuarioAnterior));
+        }
+        public void EliminarUsuario(string nombreUsuario)
+        {
+            _db.Database.ExecuteSqlCommand(String.Format("DELETE FROM aspnetusers WHERE UserName = '{0}'", nombreUsuario));
         }
     }
 }

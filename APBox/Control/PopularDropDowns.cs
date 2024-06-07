@@ -340,6 +340,7 @@ namespace APBox.Control
 
         public SelectList PopulaClientes(int? seleccion)
         {
+            var p = _db.SociosComerciales.Where(a => a.Status == Status.Activo && a.SucursalId == _entidadId).OrderBy(a => a.RazonSocial).ThenBy(a => a.Rfc);
             return new SelectList(_db.SociosComerciales.Where(a => a.Status == Status.Activo && a.SucursalId == _entidadId).OrderBy(a => a.RazonSocial).ThenBy(a => a.Rfc), "Id", "RfcRazonSocial", seleccion);
         }
 

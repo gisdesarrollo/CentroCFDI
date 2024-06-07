@@ -11,6 +11,7 @@ using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 using APBox.Control;
 using System.Net.Mail;
 using Aplicacion.LogicaPrincipal.Correos;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -83,10 +84,11 @@ namespace APBox.Controllers.Catalogos
                     if (usuario.PerfilId != null)
                     {
                         var perfil = _db.Perfiles.Find(usuario.PerfilId);
-                        if (perfil.Proveedor)
+                        if (perfil.Proveedor && usuario.SocioComercialId != null)
                         {
                             usuario.Departamento = null;
                             usuario.DepartamentoId = null;
+                            usuario.esProveedor = true;
                         }
                         
                     }
@@ -152,46 +154,48 @@ namespace APBox.Controllers.Catalogos
             PopulaForma(usuario.PerfilId);
             PopulaDepartamento(usuario.DepartamentoId);
 
-            var proveedorExistente = _db.Usuarios.FirstOrDefault(e => e.esProveedor == usuario.esProveedor && e.Id != usuario.Id);
             if (ModelState.IsValid)
             {
-                var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.Nombre == usuario.Nombre && e.ApellidoPaterno == usuario.ApellidoPaterno && e.ApellidoMaterno == usuario.ApellidoMaterno && e.Id != usuario.Id);
-                if (entidadExistente != null)
+                var usuarioAnterior = _db.Usuarios.Find(usuario.Id);
+                string username = usuarioAnterior.NombreUsuario;
+                if (username != usuario.NombreUsuario)
                 {
-                    ModelState.AddModelError("", "Ese usuario ya existe");
-                    return View(usuario);
+                    var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.NombreUsuario == usuario.NombreUsuario);
+                    if (entidadExistente != null)
+                    {
+                        ModelState.AddModelError("", "Ese usuario ya existe");
+                        return View(usuario);
+                    }
                 }
-
-                if (usuario.esProveedor == true)
-                {
+           
+                
                     //Asignacion de valor si es Proveedor
-                    usuario.esProveedor = esProveedor;
                     if (usuario.PerfilId != null)
                     {
                         var perfil = _db.Perfiles.Find(usuario.PerfilId);
-                        if (perfil.Proveedor)
+                        if (perfil.Proveedor && usuario.SocioComercialId != null)
                         {
                             usuario.Departamento = null;
                             usuario.DepartamentoId = null;
                         }
-                        else
-                        {
-                            ViewBag.ErrorMessage = "Error: Al activar como proveedor , seleccione un perfil que tenga las opciones de proveedor";
-                            ModelState.AddModelError("", "Error: Al activar como proveedor , seleccione un perfil que tenga las opciones de proveedor");
-                            return View(usuario);
-                        }
+                        
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Error: seleccione un perfil proveedor";
-                        ModelState.AddModelError("", "Error: seleccione un perfil proveedor");
+                        ViewBag.ErrorMessage = "Error: seleccione un perfil";
+                        ModelState.AddModelError("", "Error: seleccione un perfil");
                         return View(usuario);
                     }
-                }
+                
 
                 _acondicionarUsuarios.Sucursales(usuario);
-                _db.Entry(usuario).State = EntityState.Modified;
+                _db.Entry(usuarioAnterior).CurrentValues.SetValues(usuario);
+                _db.Entry(usuarioAnterior).State = EntityState.Modified;
                 _db.SaveChanges();
+                if (username != usuario.NombreUsuario)
+                {
+                    _operacionesUsuarios.ReseteoUsername(username,usuario.NombreUsuario);
+                }
                 return RedirectToAction("Index");
             }
 
@@ -222,6 +226,8 @@ namespace APBox.Controllers.Catalogos
             Usuario usuario = _db.Usuarios.Find(id);
             _db.Usuarios.Remove(usuario);
             _db.SaveChanges();
+            //eliminar de aspnetusers
+            _operacionesUsuarios.EliminarUsuario(usuario.NombreUsuario);
             return RedirectToAction("Index");
         }
 
@@ -269,7 +275,7 @@ namespace APBox.Controllers.Catalogos
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
 
-            ViewBag.SocioComercialId = popularDropDowns.PopulaClientes(receptorId);
+            ViewBag.SocioComerciales = popularDropDowns.PopulaClientes(receptorId);
         }
 
         //DropDown Departamentos
