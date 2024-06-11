@@ -34,7 +34,7 @@ namespace APBox.Controllers.Reportes
             documentosRecibidosModel.FechaFinal = fechaFinal;
             _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, sucursalId);
 
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "ReporteDocumetosRecibidos";
             ViewBag.ActionES = "Reporte CFDI Recibidos";
             ViewBag.Title = "Reporte CFDI Recibidos";
@@ -55,7 +55,7 @@ namespace APBox.Controllers.Reportes
             documentosRecibidosModel.FechaFinal = fechaFinal;
             _operacionesDocumentosRecibidos.ObtenerFacturas(ref documentosRecibidosModel, sucursalId);
 
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "ReporteDocumetosRecibidos";
             ViewBag.ActionES = "Reporte CFDI Recibidos";
             ViewBag.Title = "Reporte CFDI Recibidos";

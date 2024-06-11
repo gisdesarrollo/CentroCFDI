@@ -9,11 +9,11 @@ namespace API.Enums
 {
     public enum c_TipoDocumentoRecibido
     {
-        [DescriptionAttribute("CFDI")]
+        [DescriptionAttribute("Comprobante CFDI")]
         CFDI,
-        [DescriptionAttribute("Comprobante No Digital")]
-        ComprobanteNoDigital,
-        [DescriptionAttribute("Documento Extranjero")]
-        DocumentoExtranjero,
+        [DescriptionAttribute("Comprobante No Fiscal")]
+        ComprobanteNoFiscal,
+        [DescriptionAttribute("Comprobante Extranjero")]
+        ComprobanteExtranjero,
     }
 }

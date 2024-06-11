@@ -197,7 +197,7 @@ namespace Aplicacion.RecepcionDocumentos
             public SocioComercial SocioComercial { get; set; }
             public Usuario Usuario { get; set; }
             public ConfiguracionesDR ConfiguracionEmpresa { get; set; }
-            public DocumentosRecibidos DocumentoRecibidoDr { get; set; }
+            public DocumentoRecibido DocumentoRecibidoDr { get; set; }
             public PathArchivosDto Archivo { get; set; }
         }
     }

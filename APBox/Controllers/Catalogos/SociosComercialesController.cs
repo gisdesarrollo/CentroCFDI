@@ -36,7 +36,7 @@ namespace APBox.Controllers.Catalogos
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "Crear";
-            ViewBag.Title = "Crea y modifica Socios Comerciales";
+            ViewBag.Title = "Socios Comerciales";
 
             return View(clientes);
         }

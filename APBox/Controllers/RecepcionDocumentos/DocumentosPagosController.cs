@@ -69,11 +69,11 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
 
-        // POST: DocumentosRecibidos/Index
+        // POST: DocumentoRecibido/Index
         [HttpPost]
         public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
         {
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
@@ -126,7 +126,7 @@ namespace APBox.Controllers.Operaciones
         // GET: DocumentosPagos/Edit/5
         public ActionResult Revision(int id)
         {
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
             ViewBag.Title = "Revisión de Comprobante Recibido para Pago";
@@ -136,12 +136,12 @@ namespace APBox.Controllers.Operaciones
 
             if (usuario.esProveedor)
             {
-                documentoRecibido.isProveedor = true;
+                documentoRecibido.IsProveedor = true;
                 ViewBag.isProveedor = "Proveedor";
             }
             else
             {
-                documentoRecibido.isProveedor = false;
+                documentoRecibido.IsProveedor = false;
                 ViewBag.isProveedor = "Usuario";
             }
             // Splitting the string into lines
@@ -153,7 +153,7 @@ namespace APBox.Controllers.Operaciones
 
         // POST: DocumentosPagos/Edit/5
         [HttpPost]
-        public ActionResult Revision(DocumentosRecibidos documentoRecibidoEdit)
+        public ActionResult Revision(DocumentoRecibido documentoRecibidoEdit)
         {
             try
             {

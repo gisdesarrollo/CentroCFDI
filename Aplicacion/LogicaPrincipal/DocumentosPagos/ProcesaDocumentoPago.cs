@@ -27,14 +27,14 @@ namespace Aplicacion.LogicaPrincipal.DocumentosPagos
 
         #endregion Variables
 
-        public List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> FiltrarDocumentos(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
+        public List<API.Operaciones.OperacionesProveedores.DocumentoRecibido> FiltrarDocumentos(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
 
             if (usuario == null)
             {
                 // Manejar el caso donde el usuario no se encuentra
-                return new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
+                return new List<API.Operaciones.OperacionesProveedores.DocumentoRecibido>();
             }
 
             // Ajustar las fechas

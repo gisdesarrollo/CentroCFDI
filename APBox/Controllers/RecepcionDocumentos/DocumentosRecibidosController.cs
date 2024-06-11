@@ -25,6 +25,7 @@ using API.Operaciones.Expedientes;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using API.Catalogos;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -42,13 +43,28 @@ namespace APBox.Controllers.Operaciones
         private readonly ProcesaExpediente _procesaExpediente = new ProcesaExpediente();
         private readonly AmazonS3Helper _s3Helper;
 
+        public DocumentosRecibidosController()
+        {
+            // Obtener valores de configuración
+            var awsAccessKeyId = ConfigurationManager.AppSettings["AWSAccessKeyId"];
+            var awsSecretAccessKey = ConfigurationManager.AppSettings["AWSSecretAccessKey"];
+            var region = ConfigurationManager.AppSettings["AWSRegion"];
+            var bucketName = ConfigurationManager.AppSettings["BucketName"];
+            var cloudFrontDomain = ConfigurationManager.AppSettings["CloudFrontDomain"];
+
+            // Inicializar AmazonS3Uploader con los valores de configuración
+            _s3Uploader = new AmazonS3Uploader(awsAccessKeyId, awsSecretAccessKey, region, bucketName);
+            _s3Helper = new AmazonS3Helper(awsAccessKeyId, awsSecretAccessKey, region, bucketName, cloudFrontDomain);
+
+        }
+
         #endregion variables
 
         #region Consultas
 
         //Metodo de Validacion E-Mail para usuarios solicitantes
         [HttpPost]
-        public ActionResult ValidadorEmail(DocumentosRecibidos documentoRecibidoDr)
+        public ActionResult ValidadorEmail(DocumentoRecibido documentoRecibidoDr)
         {
             string email = documentoRecibidoDr.VerificarEmail;
             var grupoid = ObtenerGrupo();
@@ -82,10 +98,10 @@ namespace APBox.Controllers.Operaciones
 
         #region Vistas
 
-        // GET: DocumentosRecibidos/Index
+        // GET: DocumentoRecibido/Index
         public ActionResult Index()
         {
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Índice";
             ViewBag.Button = "CargaDocumentoRecibido";
@@ -108,11 +124,11 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
 
-        // POST: DocumentosRecibidos/Index
+        // POST: DocumentoRecibido/Index
         [HttpPost]
         public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
         {
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Index";
             ViewBag.ActionES = "Index";
             ViewBag.Button = "CargaDocumentoRecibido";
@@ -141,13 +157,13 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
 
-        // GET: DocumentosRecibidos/CargaCfdi
+        // GET: DocumentoRecibido/CargaCfdi
         public ActionResult CargaCfdi(int? comprobacionGastoId, int? complementoPagoId)
         {
-            ViewBag.Controller = "DocumentosRecibidos";
-            ViewBag.Action = "CargaCfdi";
-            ViewBag.NameHere = "Carga de CFDI";
-            ViewBag.ActionES = "CargaCfdi";
+            ViewBag.Controller = "DocumentoRecibido";
+            ViewBag.Action = "Carga Comprobantes";
+            ViewBag.NameHere = "Carga de Comprobantes";
+            ViewBag.ActionES = "CargaComprobantes";
 
             if (comprobacionGastoId.HasValue)
             {
@@ -161,8 +177,8 @@ namespace APBox.Controllers.Operaciones
             // Obtener el usuario
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
 
-            // Crear un nuevo objeto DocumentosRecibidos
-            DocumentosRecibidos documentoRecibidoDr = new DocumentosRecibidos()
+            // Crear un nuevo objeto DocumentoRecibido
+            DocumentoRecibido documentoRecibidoDr = new DocumentoRecibido()
             {
                 Validaciones = new ValidacionesDR()
             };
@@ -181,21 +197,27 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.PagosId = (int)complementoPagoId;
             }
 
+            //prellenar datos para comprobantes no fiscales
+            documentoRecibidoDr.MonedaId = c_Moneda.MXN;
+            documentoRecibidoDr.FechaComprobante = DateTime.Now;
+
             return View(documentoRecibidoDr);
         }
 
-        // POST: DocumentosRecibidos/CargaCfdi
+        // POST: DocumentoRecibido/CargaCfdi
         [HttpPost]
-        public ActionResult CargaCfdi(DocumentosRecibidos documentoRecibidoDr)
+        public ActionResult CargaCfdi(DocumentoRecibido documentoRecibidoDr)
         {
-            ViewBag.Controller = "DocumentosRecibidos";
-            ViewBag.Action = "CargaCfdi";
-            ViewBag.NameHere = "Documentos Recibidos";
+            ViewBag.Controller = "DocumentoRecibido";
+            ViewBag.Action = "Carga Comprobantes";
+            ViewBag.NameHere = "Carga de Comprobantes";
+            ViewBag.ActionES = "CargaComprobantes";
 
             //get usaurio
             PathArchivosDto archivo;
             ValidateXmlResponse responseValidacion = new ValidateXmlResponse();
             ComprobanteCFDI cfdi = new ComprobanteCFDI();
+
             int? compPagoId = (int?)Session["ComplementoPagoId"];
             try
             {
@@ -329,178 +351,224 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-
-        // POST: DocumentosRecibidos/Create
+        // POST: DocumentoRecibido/Create
         [HttpPost]
-        public ActionResult Create(DocumentosRecibidos documentoRecibidoDr)
+        public ActionResult Create(DocumentoRecibido documentoRecibidoDr)
         {
-            var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            int? compGastosId = (int?)Session["ComprobacionGastosId"];
-            int? compPagoId = (int?)Session["ComplementoPagoId"];
-            ComprobanteCFDI cfdi = new ComprobanteCFDI();
+            ViewBag.Controller = "DocumentoRecibido";
+            ViewBag.Action = "Create";
+            ViewBag.NameHere = "Documentos Recibidos";
+
             try
             {
-                // Recuperar los parámetros de la sesión
-                int? comprobacionGastosId = (int?)Session["ComprobacionGastosId"];
-                int? complementoPagoId = (int?)Session["ComplementoPagoId"];
 
-                var usuarioSolicitante = _db.Usuarios.Find(documentoRecibidoDr.idUsuarioSolicitante);
-                var usuarioSolicitanteId = usuarioSolicitante.Id;
-                var usuarioSolicitanteDepartamentoId = usuarioSolicitante.DepartamentoId;
-
-                // Limpiar los parámetros de la sesión después de usarlos
+                //Obtener los valores de sesión y vaciarlos
+                //estas variables guardan si el DocumentoRecibido está asociado a
+                //una comprobación de gastos o un complemento de pago
+                int? compGastosId = (int?)Session["ComprobacionGastosId"];
+                int? compPagoId = (int?)Session["ComplementoPagoId"];
                 Session.Remove("ComprobacionGastosId");
                 Session.Remove("ComplementoPagoId");
 
-                cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
-                var sucursal = _db.Sucursales.Where(s => s.Rfc == cfdi.Receptor.Rfc).FirstOrDefault();
+                //Crear variables para el proceso
+                var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+                var usuario = _db.Usuarios.Find(ObtenerUsuario());
+                var configuraciones = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursal.Id);
 
-                var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
 
-                documentoRecibidoDr.RecibidosXml = new RecibidosXMLDR();
-                documentoRecibidoDr.RecibidosPdf = new RecibidosPDFDR();
-                
-                //insert files
-                byte[] xmlFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoXml);
-                documentoRecibidoDr.RecibidosXml.Archivo = xmlFile;
-                if (documentoRecibidoDr.PathArchivoPdf != null)
+                switch (documentoRecibidoDr.TipoDocumentoRecibido)
                 {
-                    byte[] pdfFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoPdf);
-                    documentoRecibidoDr.RecibidosPdf.Archivo = pdfFile;
+                    case c_TipoDocumentoRecibido.CFDI:
+                        
+                        ProcesarCFDI(documentoRecibidoDr, usuario, sucursal, compGastosId, compPagoId);
+                        
+                        break;
+
+                    case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                        ProcesarComprobanteNoFiscal(documentoRecibidoDr, usuario, sucursal, compGastosId, compPagoId);
+                        
+                        break;
+
+                    case c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                        ProcesarComprobanteExtranjero(documentoRecibidoDr, usuario, sucursal, compGastosId, compPagoId);
+                        
+                        break;
+
+                    default:
+                        ModelState.AddModelError("", "Tipo de documento no reconocido");
+                        return View(documentoRecibidoDr);
                 }
-                else
-                {
-                    documentoRecibidoDr.RecibidosPdf = null;
-                    documentoRecibidoDr.CfdiRecibidosPdfId = null;
-                }
-                
-                //table validaciones
-                if (documentoRecibidoDr.Validaciones == null)
-                {
-                    documentoRecibidoDr.Validaciones = null;
-                    documentoRecibidoDr.ValidacionesId = null;
-                }
-                
-                // table recibidosComprobante
-                documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
-                {
-                    SucursalId = sucursal.Id,
-                    SocioComercialId = (int)documentoRecibidoDr.SocioComercialId,
-                    Fecha = documentoRecibidoDr.FechaComprobante,
-                    Serie = cfdi.Serie,
-                    Folio = cfdi.Folio,
-                    TipoComprobante = cfdi.TipoDeComprobante,
-                    Version = cfdi.Version,
-                    FormaPago = cfdi.FormaPago,
-                    Moneda = cfdi.Moneda,
-                    TipoCambio = (double)cfdi.TipoCambio,
-                    LugarExpedicion = cfdi.LugarExpedicion,
-                    MetodoPago = cfdi.MetodoPago,
-                    Descuento = (double)cfdi.Descuento,
-                    Subtotal = (double)cfdi.SubTotal,
-                    Total = (double)cfdi.Total,
-                    Uuid = timbreFiscalDigital.UUID,
-                    FechaTimbrado = timbreFiscalDigital.FechaTimbrado
-                };
-                if (cfdi.Impuestos != null)
-                {
-                    documentoRecibidoDr.RecibidosComprobante.TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
-                    documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
-                }
+
                 documentoRecibidoDr.CfdiRecibidosId = null;
-                documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
-                documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
                 documentoRecibidoDr.PagosId = null;
                 documentoRecibidoDr.Referencia = documentoRecibidoDr.Referencia;
                 documentoRecibidoDr.SucursalId = sucursal.Id;
 
+                ProcesarAprobaciones(documentoRecibidoDr, configuraciones, usuario);
 
-                //operaciones en caso de que venga de una comprobacion de gastos
-                if (compGastosId.HasValue)
-                {
-                    documentoRecibidoDr.ComprobacionGastoId = comprobacionGastosId;
+                ProcesarComprobacionGastos(documentoRecibidoDr, compGastosId);
 
-                    var comprobacionGastos = _db.ComprobacionesGastos.Find(comprobacionGastosId);
-                    double montoAnterior = comprobacionGastos.Monto;
-                    double montoActualizado = montoAnterior + documentoRecibidoDr.RecibidosComprobante.Total;
-                    comprobacionGastos.Monto = montoActualizado;
-                    _db.Entry(comprobacionGastos).State = EntityState.Modified;
-                }
+                ProcesarComplementoPago(documentoRecibidoDr, compPagoId, usuario);
 
-                //operaciones en caso de que venga de una complemento de pagos
-                if (compPagoId.HasValue)
-                {
-                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
-                    documentoRecibidoDr.EstadoPago = c_EstadoPago.Completado;
-                    documentoRecibidoDr.PagosId = (int)complementoPagoId;
-                    //Table Aprobaciones
-                    documentoRecibidoDr.AprobacionesId = null;
-                    documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
-                    {
-                        UsuarioCompletaPagos_id = usuario.Id,
-                        FechaCompletaPagos = DateTime.Now,
-                    };
-                }
-                else
-                {
-                    //Table Aprobaciones
-                    documentoRecibidoDr.AprobacionesId = null;
-                    documentoRecibidoDr.AprobacionesDR = new Aprobaciones()
-                    {
-                        UsuarioEntrega_Id = usuario.Id,
-                        UsuarioSolicitante_Id = usuarioSolicitanteId,
-                        DepartamentoUsuarioSolicitante_Id = usuarioSolicitanteDepartamentoId,
-                        FechaSolicitud = DateTime.Now,
-                    };
-                }
-
-                var configuraciones = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursal.Id);
-                if (configuraciones.AprobacionComercialAutomatica == true)
-                {
-                    documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
-                    documentoRecibidoDr.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
-                    documentoRecibidoDr.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
-                }
-
-                if (configuraciones.AprobacionPagosAutomatica == true)
-                {
-                    documentoRecibidoDr.EstadoPago = c_EstadoPago.Completado;
-                    documentoRecibidoDr.AprobacionesDR.UsuarioAprobacionPagos_id = usuario.Id;
-                    documentoRecibidoDr.AprobacionesDR.FechaAprobacionPagos = DateTime.Now;
-                }
 
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
                 _db.SaveChanges();
+
+                return RedireccionarDespuesDeGuardado(compGastosId, compPagoId);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
+                return View(documentoRecibidoDr);
+            }
+        }
+
+        private DocumentoRecibido ProcesarCFDI(DocumentoRecibido documentoRecibidoDr, Usuario usuario, Sucursal sucursal, int? compGastosId, int? compPagoId)
+        {
+            ComprobanteCFDI cfdi = new ComprobanteCFDI();
+            cfdi = _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
+            var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
+            documentoRecibidoDr.RecibidosXml = new RecibidosXMLDR();
+            documentoRecibidoDr.RecibidosPdf = new RecibidosPDFDR();
+
+            // Insert files
+            byte[] xmlFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoXml);
+            documentoRecibidoDr.RecibidosXml.Archivo = xmlFile;
+            if (documentoRecibidoDr.PathArchivoPdf != null)
+            {
+                byte[] pdfFile = System.IO.File.ReadAllBytes(documentoRecibidoDr.PathArchivoPdf);
+                documentoRecibidoDr.RecibidosPdf.Archivo = pdfFile;
+            }
+            else
+            {
+                documentoRecibidoDr.RecibidosPdf = null;
+                documentoRecibidoDr.CfdiRecibidosPdfId = null;
             }
 
+            // Lógica específica para CFDI
+            // Table recibidosComprobante
+            documentoRecibidoDr.RecibidosComprobante = new RecibidosComprobanteDR()
+            {
+                SucursalId = sucursal.Id,
+                SocioComercialId = (int)documentoRecibidoDr.SocioComercialId,
+                Fecha = documentoRecibidoDr.FechaComprobante,
+                Serie = cfdi.Serie,
+                Folio = cfdi.Folio,
+                TipoComprobante = cfdi.TipoDeComprobante,
+                Version = cfdi.Version,
+                FormaPago = cfdi.FormaPago,
+                Moneda = cfdi.Moneda,
+                TipoCambio = (double)cfdi.TipoCambio,
+                LugarExpedicion = cfdi.LugarExpedicion,
+                MetodoPago = cfdi.MetodoPago,
+                Descuento = (double)cfdi.Descuento,
+                Subtotal = (double)cfdi.SubTotal,
+                Total = (double)cfdi.Total,
+                Uuid = timbreFiscalDigital.UUID,
+                FechaTimbrado = timbreFiscalDigital.FechaTimbrado
+            };
+            if (cfdi.Impuestos != null)
+            {
+                documentoRecibidoDr.RecibidosComprobante.TotalImpuestosTrasladados = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
+                documentoRecibidoDr.RecibidosComprobante.TotalImpuestosRetenidos = (double)cfdi.Impuestos.TotalImpuestosTrasladados;
+            }
 
+            _procesaDocumentoRecibido.DecodificaXML(documentoRecibidoDr.PathArchivoXml);
+
+            return (documentoRecibidoDr);
+        }
+
+        private DocumentoRecibido ProcesarComprobanteNoFiscal(DocumentoRecibido documentoRecibidoDr, Usuario usuario, Sucursal sucursal, int? compGastosId, int? compPagoId)
+        {
+            // Lógica específica para Comprobante No Fiscal
+            return (documentoRecibidoDr);
+        }
+
+        private DocumentoRecibido ProcesarComprobanteExtranjero(DocumentoRecibido documentoRecibidoDr, Usuario usuario, Sucursal sucursal, int? compGastosId, int? compPagoId)
+        {
+            // Lógica específica para Comprobante Extranjero
+            return (documentoRecibidoDr);
+        }
+
+        private void ProcesarAprobaciones(DocumentoRecibido documentoRecibidoDr, ConfiguracionesDR configuraciones, Usuario usuario)
+        {
+            // Recuperar el usuario solicitante del input de la vista
+            var usuarioSolicitante = _db.Usuarios.Find(documentoRecibidoDr.IdUsuarioSolicitante);
+            var usuarioSolicitanteId = usuarioSolicitante.Id;
+            var usuarioSolicitanteDepartamentoId = usuarioSolicitante.DepartamentoId;
+            
+            documentoRecibidoDr.AprobacionesId = null;
+            documentoRecibidoDr.AprobacionesDR = new Aprobaciones();
+
+            documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
+            documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
+            documentoRecibidoDr.AprobacionesDR.UsuarioEntrega_Id = usuario.Id;
+            documentoRecibidoDr.AprobacionesDR.UsuarioSolicitante_Id = usuarioSolicitante.Id;
+            documentoRecibidoDr.AprobacionesDR.DepartamentoUsuarioSolicitante_Id = usuarioSolicitante.DepartamentoId;
+
+            if (configuraciones.AprobacionComercialAutomatica)
+            {
+                documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                documentoRecibidoDr.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
+                documentoRecibidoDr.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+            }
+
+            if (configuraciones.AprobacionPagosAutomatica)
+            {
+                documentoRecibidoDr.EstadoPago = c_EstadoPago.Completado;
+                documentoRecibidoDr.AprobacionesDR.UsuarioAprobacionPagos_id = usuario.Id;
+                documentoRecibidoDr.AprobacionesDR.FechaAprobacionPagos = DateTime.Now;
+            }
+
+        }
+
+        private void ProcesarComprobacionGastos(DocumentoRecibido documentoRecibidoDr, int? compGastosId)
+        {
             if (compGastosId.HasValue)
             {
-                // Si comprobacionGastoId tiene un valor, redirige a la acción ComprobacionesGastos/Revisar/id
+                documentoRecibidoDr.ComprobacionGastoId = compGastosId;
+                var comprobacionGastos = _db.ComprobacionesGastos.Find(compGastosId);
+                double montoAnterior = comprobacionGastos.Monto;
+                double montoActualizado = montoAnterior + documentoRecibidoDr.RecibidosComprobante.Total;
+                comprobacionGastos.Monto = montoActualizado;
+                _db.Entry(comprobacionGastos).State = EntityState.Modified;
+            }
+        }
+
+        private void ProcesarComplementoPago(DocumentoRecibido documentoRecibidoDr, int? compPagoId, Usuario usuario)
+        {
+            if (compPagoId.HasValue)
+            {
+                documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
+                documentoRecibidoDr.EstadoPago = c_EstadoPago.Completado;
+                documentoRecibidoDr.PagosId = compPagoId.Value;
+                documentoRecibidoDr.AprobacionesId = null;
+                documentoRecibidoDr.AprobacionesDR.UsuarioCompletaPagos_id = usuario.Id;
+                documentoRecibidoDr.AprobacionesDR.FechaCompletaPagos = DateTime.Now;
+            }
+        }
+
+        private ActionResult RedireccionarDespuesDeGuardado(int? compGastosId, int? compPagoId)
+        {
+            if (compGastosId.HasValue)
+            {
                 return RedirectToAction("Revision", "ComprobacionesGastos", new { id = compGastosId.Value });
             }
             else if (compPagoId.HasValue)
             {
-                // Si complementoPagoId tiene un valor, redirige a la acción Index
                 return RedirectToAction("Pagos", "DocumentosPagos");
             }
             else
             {
-                // Si comprobacionGastoId es null, redirige a otra acción
                 return RedirectToAction("Index", "DocumentosRecibidos");
             }
-
-
         }
 
-        // GET: DocumentosRecibidos/Edit/5
+
+        // GET: DocumentoRecibido/Edit/5
         public ActionResult Revision(int id, int? comprobacionGastoId)
         {
-            ViewBag.Controller = "DocumentosRecibidos";
+            ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Edit";
             ViewBag.ActionES = "Editar";
             ViewBag.NameHere = "Revisión de Comprobante Recibido";
@@ -513,12 +581,12 @@ namespace APBox.Controllers.Operaciones
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             if (usuario.esProveedor)
             {
-                documentoRecibido.isProveedor = true;
+                documentoRecibido.IsProveedor = true;
                 ViewBag.isProveedor = "Proveedor";
             }
             else
             {
-                documentoRecibido.isProveedor = false;
+                documentoRecibido.IsProveedor = false;
                 ViewBag.isProveedor = "Usuario";
             }
             // Splitting the string into lines
@@ -530,10 +598,10 @@ namespace APBox.Controllers.Operaciones
             return View(documentoRecibido);
         }
 
-        // POST: DocumentosRecibidos/Edit/5
+        // POST: DocumentoRecibido/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Revision(DocumentosRecibidos documentoRecibidoEdit)
+        public ActionResult Revision(DocumentoRecibido documentoRecibidoEdit)
         {
             int? compGastosId = (int?)Session["ComprobacionGastosId"];
 
@@ -586,74 +654,97 @@ namespace APBox.Controllers.Operaciones
             else
             {
                 // Si comprobacionGastoId es null, redirige a otra acción
-                return RedirectToAction("Index", "DocumentosRecibidos");
+                return RedirectToAction("Index", "DocumentoRecibido");
             }
         }
 
-        // POST: Expedientes/Create
+        // GET: DocumentoRecibido/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: DocumentoRecibido/Delete/5
         [HttpPost]
-        public async Task<ActionResult> Create(ExpedienteFiscal expediente)
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        #endregion Vistas
+
+        #region Upload a S3
+        [HttpPost]
+        private async Task<ActionResult> CargaComprobanteNoFiscal(DocumentoRecibido documentoRecibido)
         {
             var sucursalId = ObtenerSucursal();
             var grupoId = ObtenerGrupo();
             var socioComercialId = (int)Session["socComlId"];
 
+            //if (ModelState.IsValid)
+            //{
 
-            if (ModelState.IsValid)
-            {
+            //    //quiero hacer un try para checar si el registro ya existe, buscando mes, anio, sucursal y socio comercial
+            //    var expedienteExistente = _db.ExpedientesFiscales
+            //        .FirstOrDefault(e => e.Mes == expediente.Mes &&
+            //                             e.Anio == expediente.Anio &&
+            //                             e.SucursalId == sucursalId &&
+            //                             e.SocioComercialId == socioComercialId);
 
-                //quiero hacer un try para checar si el registro ya existe, buscando mes, anio, sucursal y socio comercial
-                var expedienteExistente = _db.ExpedientesFiscales
-                    .FirstOrDefault(e => e.Mes == expediente.Mes &&
-                                         e.Anio == expediente.Anio &&
-                                         e.SucursalId == sucursalId &&
-                                         e.SocioComercialId == socioComercialId);
-
-                if (expedienteExistente != null)
-                {
-                    TempData["Errores"] = new List<string> { "Ya existe un expediente fiscal para el mes y año seleccionado" };
-                    return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
-                }
-
+            //    if (expedienteExistente != null)
+            //    {
+            //        TempData["Errores"] = new List<string> { "Ya existe un expediente fiscal para el mes y año seleccionado" };
+            //        return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
+            //    }
 
 
-                var basePath = $"ExpedientesFiscales/{grupoId}/{sucursalId}/{socioComercialId}/{expediente.Anio}/{(int)expediente.Mes}";
 
-                if (expediente.ConstanciaSituacionFiscal != null && expediente.ConstanciaSituacionFiscal.ContentLength > 0)
-                {
-                    var nombreArchivo = "ConstanciaSituacionFiscal.pdf";
-                    var key = $"{basePath}/{nombreArchivo}";
-                    await UploadFileToS3(expediente.ConstanciaSituacionFiscal, key);
+            //    var basePath = $"ExpedientesFiscales/{grupoId}/{sucursalId}/{socioComercialId}/{expediente.Anio}/{(int)expediente.Mes}";
 
-                    expediente.PathConstanciaSituacionFiscal = key;
-                }
+            //    if (expediente.ArchivoConstanciaSituacionFiscal != null && expediente.ArchivoConstanciaSituacionFiscal.ContentLength > 0)
+            //    {
+            //        var nombreArchivo = "ArchivoConstanciaSituacionFiscal.pdf";
+            //        var key = $"{basePath}/{nombreArchivo}";
+            //        await UploadFileToS3(expediente.ArchivoConstanciaSituacionFiscal, key);
 
-                if (expediente.OpinionCumplimientoSAT != null && expediente.OpinionCumplimientoSAT.ContentLength > 0)
-                {
-                    var nombreArchivo = "OpinionCumplimientoSAT.pdf";
-                    var key = $"{basePath}/{nombreArchivo}";
-                    await UploadFileToS3(expediente.OpinionCumplimientoSAT, key);
+            //        expediente.PathConstanciaSituacionFiscal = key;
+            //    }
 
-                    expediente.PathOpinionCumplimientoSAT = key;
-                }
+            //    if (expediente.ArchivoOpinionCumplimientoSAT != null && expediente.ArchivoOpinionCumplimientoSAT.ContentLength > 0)
+            //    {
+            //        var nombreArchivo = "ArchivoOpinionCumplimientoSAT.pdf";
+            //        var key = $"{basePath}/{nombreArchivo}";
+            //        await UploadFileToS3(expediente.ArchivoOpinionCumplimientoSAT, key);
 
-                expediente.SucursalId = sucursalId;
-                expediente.UsuarioId = ObtenerUsuario();
-                expediente.SocioComercialId = socioComercialId;
-                expediente.FechaCreacion = DateTime.Now;
-                var diasVigencia = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId).DiasVigenciaExpedienteFiscal;
-                expediente.Vigencia = expediente.FechaCreacion.AddDays(diasVigencia);
+            //        expediente.PathOpinionCumplimientoSAT = key;
+            //    }
 
-                // Guardar el resto de la información del expedienteFiscal en la base de datos
-                _db.ExpedientesFiscales.Add(expediente);
-                await _db.SaveChangesAsync();
+            //    expediente.SucursalId = sucursalId;
+            //    expediente.UsuarioId = ObtenerUsuario();
+            //    expediente.SocioComercialId = socioComercialId;
+            //    expediente.FechaCreacion = DateTime.Now;
+            //    var diasVigencia = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId).DiasVigenciaExpedienteFiscal;
+            //    expediente.Vigencia = expediente.FechaCreacion.AddDays(diasVigencia);
 
-                Session.Remove("socComlId");
-                return RedirectToAction("Index", "ExpedientesFiscales", new { id = socioComercialId, socioComercialId = socioComercialId });
-            }
+            //    // Guardar el resto de la información del expedienteFiscal en la base de datos
+            //    _db.ExpedientesFiscales.Add(expediente);
+            //    await _db.SaveChangesAsync();
+
+            //    Session.Remove("socComlId");
+            //    return RedirectToAction("Index", "ExpedientesFiscales", new { id = socioComercialId, socioComercialId = socioComercialId });
+            //}
 
             ViewBag.SocioComercialId = socioComercialId;
-            return View(expediente);
+            return View(documentoRecibido);
         }
 
         private async Task UploadFileToS3(HttpPostedFileBase file, string key)
@@ -685,47 +776,7 @@ namespace APBox.Controllers.Operaciones
                 }
             }
         }
-
-
-        // GET: DocumentosRecibidos/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: DocumentosRecibidos/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-
-        public DocumentosRecibidosController()
-        {
-            // Obtener valores de configuración
-            var awsAccessKeyId = ConfigurationManager.AppSettings["AWSAccessKeyId"];
-            var awsSecretAccessKey = ConfigurationManager.AppSettings["AWSSecretAccessKey"];
-            var region = ConfigurationManager.AppSettings["AWSRegion"];
-            var bucketName = ConfigurationManager.AppSettings["BucketName"];
-            var cloudFrontDomain = ConfigurationManager.AppSettings["CloudFrontDomain"];
-
-            // Inicializar AmazonS3Uploader con los valores de configuración
-            _s3Uploader = new AmazonS3Uploader(awsAccessKeyId, awsSecretAccessKey, region, bucketName);
-            _s3Helper = new AmazonS3Helper(awsAccessKeyId, awsSecretAccessKey, region, bucketName, cloudFrontDomain);
-
-        }
-
-        #endregion Vistas
+        #endregion
 
         #region Validaciones
 

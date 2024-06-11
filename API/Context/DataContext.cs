@@ -134,11 +134,10 @@ namespace API.Context
         public DbSet<Validacion> Validaciones { get; set; }
 
         //OperacionesProveedores
-        public DbSet<SolicitudAcceso> SolicitudesAccesos { get; set; }
         public DbSet<ExpedienteFiscal> ExpedientesFiscales { get; set; }
 
         //Documentos Recibidos
-        public DbSet<DocumentosRecibidos> DocumentosRecibidos { get; set; }
+        public DbSet<DocumentoRecibido> DocumentosRecibidos { get; set; }
         public DbSet<RecibidosComprobanteDR> RecibidoComprobanteDr { get; set; }
         public DbSet<AdjuntosDR> AdjuntoDr { get; set; }
         public DbSet<PagosDR> PagoDr { get; set; }
@@ -146,6 +145,9 @@ namespace API.Context
         public DbSet<RecibidosXMLDR> RecibidoXmlDr { get; set; }
         public DbSet<RecibidosPDFDR> RecibidoPdfDr { get; set; }
         public DbSet<ValidacionesDR> ValidacionDr { get; set; }
+        public DbSet<ComprobanteExtranjero> ComprobanteExtranjero { get; set; }
+        public DbSet<ComprobanteNoFiscal> ComprobanteNoFiscal { get; set; }
+        //public DbSet<ComprobanteCfdi> ComprobanteCfdi { get; set; }
 
         //ComrpobacionesGastos
         public DbSet<ComprobacionGasto> ComprobacionesGastos { get; set; }

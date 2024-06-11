@@ -29,19 +29,18 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
         //private static string userPruebas = "eduardo.ayala@gisconsultoria.com";
         //private static string passwordPruebas = "Dr5$%5jHefg9";
         private static string user = "desarrollo@gisconsultoria.com";
-
         private static string password = "GI/2201*qA";
 
         #endregion Variables
 
-        public List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> FiltrarDocumentos(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
+        public List<API.Operaciones.OperacionesProveedores.DocumentoRecibido> FiltrarDocumentos(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
 
             if (usuario == null)
             {
                 // Manejar el caso donde el usuario no se encuentra
-                return new List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos>();
+                return new List<API.Operaciones.OperacionesProveedores.DocumentoRecibido>();
             }
 
             // Ajustar las fechas

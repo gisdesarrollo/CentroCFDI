@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 namespace API.Operaciones.Expedientes
 {
     [Table("ExpedientesFiscales")]
-    public class ExpedienteFiscal
+    public class ExpedienteFiscal 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -44,10 +44,10 @@ namespace API.Operaciones.Expedientes
         public DateTime Vigencia { get; set; }
 
         [NotMapped]
-        public HttpPostedFileBase ConstanciaSituacionFiscal { get; set; }
+        public HttpPostedFileBase ArchivoConstanciaSituacionFiscal { get; set; }
 
         [NotMapped]
-        public HttpPostedFileBase OpinionCumplimientoSAT { get; set; }
+        public HttpPostedFileBase ArchivoOpinionCumplimientoSAT { get; set; }
 
         public String PathConstanciaSituacionFiscal { get; set; }
 

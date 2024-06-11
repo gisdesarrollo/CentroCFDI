@@ -7,15 +7,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace API.Operaciones.OperacionesProveedores
 {
     [Table("DocumentosRecibidos")]
-    public class DocumentosRecibidos
+    public class DocumentoRecibido
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -27,15 +24,15 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("Tipo Documento Recibido")]
         public c_TipoDocumentoRecibido TipoDocumentoRecibido { get; set; }
 
-        [DisplayName("Fecha Entrega")]
+        [DisplayName("Fecha de Entrega")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaEntrega { get; set; }
 
-        [DisplayName("Fecha Comprobante")]
+        [DisplayName("Fecha del Comprobante")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaComprobante { get; set; }
 
-        public Decimal Monto { get; set; }
+        public decimal Monto { get; set; }
 
         [DisplayName("Moneda")]
         public c_Moneda? MonedaId { get; set; }
@@ -54,10 +51,10 @@ namespace API.Operaciones.OperacionesProveedores
         public List<ValidacionesDR> ValidacionesList { get; set; }
 
         [DisplayName("Validaciones Detalle")]
-        public String ValidacionesDetalle { get; set; }
+        public string ValidacionesDetalle { get; set; }
 
         [NotMapped]
-        public List<String> DetalleArrays { get; set; }
+        public List<string> DetalleArrays { get; set; }
 
         public int? SocioComercialId { get; set; }
         [ForeignKey("SocioComercialId")]
@@ -78,13 +75,13 @@ namespace API.Operaciones.OperacionesProveedores
         public virtual RecibidosXMLDR RecibidosXml { get; set; }
 
         [DisplayName("Serie")]
-        public String CfdiRecibidosSerie { get; set; }
+        public string CfdiRecibidosSerie { get; set; }
 
         [DisplayName("Folio")]
-        public String CfdiRecibidosFolio { get; set; }
+        public string CfdiRecibidosFolio { get; set; }
 
         [DisplayName("UUID")]
-        public String CfdiRecibidosUUID { get; set; }
+        public string CfdiRecibidosUUID { get; set; }
 
         public int? AdjuntosId { get; set; }
 
@@ -97,48 +94,56 @@ namespace API.Operaciones.OperacionesProveedores
         public int? PagosId { get; set; }
         [ForeignKey("PagosId")]
         public virtual PagosDR Pago { get; set; }
-        
+
         [DisplayName("Aprobaciones")]
         public int? AprobacionesId { get; set; }
         [ForeignKey("AprobacionesId")]
         public virtual Aprobaciones AprobacionesDR { get; set; }
+
         [NotMapped]
         public List<Aprobaciones> AprobacionesList { get; set; }
 
-        public String Referencia { get; set; }
-        
-        public String OrdenDeCompra { get; set; }
+        public string Referencia { get; set; }
+
+        public string OrdenDeCompra { get; set; }
 
         [DisplayName("Comprobación Gastos")]
         public int? ComprobacionGastoId { get; set; }
         [ForeignKey("ComprobacionGastoId")]
         public virtual ComprobacionGasto ComprobacionesGastos { get; set; }
 
-        //NotMapped
+        [DisplayName("Categoria de Gastos")]
+        public int? CategoriaGastoId { get; set; }
+        [ForeignKey("CategoriaGastoId")]
+        public virtual CategoriaGasto CategoriaGasto { get; set; }
+
+        #region Not Mapped Properties
+
         [DisplayName("Archivo")]
         [NotMapped]
         public HttpPostedFileBase Archivo { get; set; }
 
         [NotMapped]
-        public String PathArchivoXml { get; set; }
-        
+        public string PathArchivoXml { get; set; }
+
         [NotMapped]
         public string PathArchivoPdf { get; set; }
-        
+
         [NotMapped]
         public bool Procesado { get; set; }
-        
+
         [NotMapped]
         public string VerificarEmail { get; set; }
 
         [NotMapped]
-        public bool isProveedor { get; set; }
+        public bool IsProveedor { get; set; }
 
         [NotMapped]
         public bool Previsualizacion { get; set; }
 
         [NotMapped]
-        public int idUsuarioSolicitante { get; set; }
+        public int IdUsuarioSolicitante { get; set; }
 
+        #endregion
     }
 }

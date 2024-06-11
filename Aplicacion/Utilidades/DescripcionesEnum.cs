@@ -14,7 +14,7 @@ namespace Aplicacion.Utilidades
 {
     public class DescripcionesEnum
     {
-        
+
         public static string ObtenerDescripcionEnum(object value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
@@ -85,10 +85,10 @@ namespace Aplicacion.Utilidades
             }
         }
 
-        
+
         public static string NumerosLetras(string numero)
         {
-            
+
             string str1 = "";
             if (numero.IndexOf(".") == -1)
                 numero += ".00";

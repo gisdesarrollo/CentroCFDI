@@ -131,7 +131,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
 
         #region Notificaciones de Recepción de Facturas y Pagos
 
-        public void NotificacionCambioEstadoComercial(Usuario usuario, API.Operaciones.OperacionesProveedores.DocumentosRecibidos documentoRecibido, c_EstadoComercial EstadoComercial, int sucursalId)
+        public void NotificacionCambioEstadoComercial(Usuario usuario, API.Operaciones.OperacionesProveedores.DocumentoRecibido documentoRecibido, c_EstadoComercial EstadoComercial, int sucursalId)
         {
             //Obtener el correo del usuario
             string destinatario = usuario.Email;
@@ -246,7 +246,7 @@ namespace Aplicacion.LogicaPrincipal.Correos
             }
         }
 
-        public void NotificacionRevisionComercial(Usuario usuario, API.Operaciones.OperacionesProveedores.DocumentosRecibidos documentoRecibido, int sucursalId)
+        public void NotificacionRevisionComercial(Usuario usuario, API.Operaciones.OperacionesProveedores.DocumentoRecibido documentoRecibido, int sucursalId)
         {
             //Obtener el correo del usuario
             string destinatario = usuario.Email;

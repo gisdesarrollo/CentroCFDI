@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Catalogos
 {
-    [Table("CategoriasGastos")]
+    [Table("CategoriasGasto")]
     public class CategoriaGasto
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

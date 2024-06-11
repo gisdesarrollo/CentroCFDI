@@ -122,20 +122,20 @@ namespace APBox.Controllers.Expedientes
 
                 var basePath = $"ExpedientesFiscales/{grupoId}/{sucursalId}/{socioComercialId}/{expediente.Anio}/{(int)expediente.Mes}";
 
-                if (expediente.ConstanciaSituacionFiscal != null && expediente.ConstanciaSituacionFiscal.ContentLength > 0)
+                if (expediente.ArchivoConstanciaSituacionFiscal != null && expediente.ArchivoConstanciaSituacionFiscal.ContentLength > 0)
                 {
-                    var nombreArchivo = "ConstanciaSituacionFiscal.pdf";
+                    var nombreArchivo = "ArchivoConstanciaSituacionFiscal.pdf";
                     var key = $"{basePath}/{nombreArchivo}";
-                    await UploadFileToS3(expediente.ConstanciaSituacionFiscal, key);
+                    await UploadFileToS3(expediente.ArchivoConstanciaSituacionFiscal, key);
 
                     expediente.PathConstanciaSituacionFiscal = key;
                 }
 
-                if (expediente.OpinionCumplimientoSAT != null && expediente.OpinionCumplimientoSAT.ContentLength > 0)
+                if (expediente.ArchivoOpinionCumplimientoSAT != null && expediente.ArchivoOpinionCumplimientoSAT.ContentLength > 0)
                 {
-                    var nombreArchivo = "OpinionCumplimientoSAT.pdf";
+                    var nombreArchivo = "ArchivoOpinionCumplimientoSAT.pdf";
                     var key = $"{basePath}/{nombreArchivo}";
-                    await UploadFileToS3(expediente.OpinionCumplimientoSAT, key);
+                    await UploadFileToS3(expediente.ArchivoOpinionCumplimientoSAT, key);
 
                     expediente.PathOpinionCumplimientoSAT = key;
                 }

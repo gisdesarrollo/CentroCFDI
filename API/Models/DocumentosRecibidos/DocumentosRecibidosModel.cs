@@ -14,9 +14,9 @@ namespace API.Models.DocumentosRecibidos
     {
         public int SucursalId { get; set; }
 
-        public virtual List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> DocumentosRecibidos { get; set; }
+        public virtual List<API.Operaciones.OperacionesProveedores.DocumentoRecibido> DocumentosRecibidos { get; set; }
 
-        public virtual List<API.Operaciones.OperacionesProveedores.DocumentosRecibidos> DocumentosRecibidosAsignados { get; set; }
+        public virtual List<API.Operaciones.OperacionesProveedores.DocumentoRecibido> DocumentosRecibidosAsignados { get; set; }
 
         public bool isProveedor { get; set; }
 
