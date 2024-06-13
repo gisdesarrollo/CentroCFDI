@@ -505,7 +505,7 @@ namespace APBox.Controllers.Operaciones
             documentoRecibidoDr.AprobacionesDR.UsuarioEntrega_Id = usuario.Id;
             documentoRecibidoDr.AprobacionesDR.UsuarioSolicitante_Id = usuarioSolicitante.Id;
             documentoRecibidoDr.AprobacionesDR.DepartamentoUsuarioSolicitante_Id = usuarioSolicitante.DepartamentoId;
-
+            documentoRecibidoDr.AprobacionesDR.FechaSolicitud = DateTime.Now;
             if (configuraciones.AprobacionComercialAutomatica)
             {
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
