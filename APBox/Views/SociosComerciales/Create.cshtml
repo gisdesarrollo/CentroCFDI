@@ -150,7 +150,23 @@
                          @Html.TextAreaFor(model => model.Observaciones, new { @class = "form-control", style = "" })
                          @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
                      </div>
+                     <div class="form-group col-xs-12 col-lg-3">
+                         <label class="form-label">Cliente</label>
+                         <div class="form-check form-check-custom form-check-solid mb-2">
+                             @Html.CheckBoxFor(model => model.esCliente, new { @class = "form-check-input" })
+                             @Html.LabelFor(model => model.esCliente, htmlAttributes: new { @class = "form-check-label" })
+                             @Html.ValidationMessageFor(model => model.esCliente, "", new { @class = "text-danger" })
+                         </div>
+                     </div>
 
+                     <div class="form-group col-xs-12 col-lg-3">
+                         <label class="form-label">Proveedor</label>
+                         <div class="form-check form-check-custom form-check-solid mb-2">
+                             @Html.CheckBoxFor(model => model.esProveedor, new { @class = "form-check-input" })
+                             @Html.LabelFor(model => model.esProveedor, htmlAttributes: new { @class = "form-check-label" })
+                             @Html.ValidationMessageFor(model => model.esProveedor, "", new { @class = "text-danger" })
+                         </div>
+                     </div>
                      <div class="clearfix"></div>
 
                      <div class="separator my-5"></div>

@@ -91,7 +91,7 @@ namespace APBox.Controllers.Catalogos
             }
             // Guardar datos en TempData para asignarlo a otro metodo
             socioComercial.Status = API.Enums.Status.Activo;
-            
+            socioComercial.esProveedor = true;
 
             try
             {

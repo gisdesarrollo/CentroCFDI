@@ -73,6 +73,9 @@ namespace API.Catalogos
 
         public string Observaciones { get; set; }
 
+        public bool esCliente { get; set; }
+        public bool esProveedor {  get; set; }
+
         #region Grupo
 
         [NotMapped]

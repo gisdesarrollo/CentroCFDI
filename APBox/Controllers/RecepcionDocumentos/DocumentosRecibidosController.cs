@@ -654,7 +654,7 @@ namespace APBox.Controllers.Operaciones
             else
             {
                 // Si comprobacionGastoId es null, redirige a otra acción
-                return RedirectToAction("Index", "DocumentoRecibido");
+                return RedirectToAction("Index", "DocumentosRecibidos");
             }
         }
 
