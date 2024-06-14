@@ -151,7 +151,7 @@ namespace API.Context
 
         //ComrpobacionesGastos
         public DbSet<ComprobacionGasto> ComprobacionesGastos { get; set; }
-
+        public DbSet<Aprobaciones> Aprobaciones { get; set; }
         #endregion
 
         #region Relaciones

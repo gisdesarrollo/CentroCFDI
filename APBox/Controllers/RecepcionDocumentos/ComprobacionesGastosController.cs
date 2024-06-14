@@ -170,27 +170,39 @@ namespace APBox.Controllers.RecepcionDocumentos
             }
         }
 
-        // GET: ComprobacionesGastos/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
+        
         // POST: ComprobacionesGastos/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        //[HttpPost]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            // Obtener el ComprobacionGasto
+            var comprobacionGasto = _db.ComprobacionesGastos.Find(id);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            // Obtener y eliminar todos los DocumentosRecibidos relacionados
+            var documentosRecibidos = _db.DocumentosRecibidos
+                                         .Where(dr => dr.ComprobacionGastoId == id)
+                                         .ToList();
+            // Extraer los IDs de los documentos recibidos
+            var documentoRecibidoIds = documentosRecibidos.Select(dr => dr.AprobacionesId).ToList();
+
+
+            // Obtener todas las aprobaciones asociadas a estos documentos
+            var aprobaciones = _db.Aprobaciones
+                                  .Where(a => documentoRecibidoIds.Contains(a.Id))
+                                  .ToList();
+            _db.Aprobaciones.RemoveRange(aprobaciones);
+            _db.DocumentosRecibidos.RemoveRange(documentosRecibidos);
+
+            // Eliminar el ComprobacionGasto
+            _db.ComprobacionesGastos.Remove(comprobacionGasto);
+
+            // Guardar los cambios en la base de datos
+            _db.SaveChanges();
+
+            // Redirigir a la acción de índice
+            return RedirectToAction("Index");
         }
+        
 
         #region Validaciones
 
