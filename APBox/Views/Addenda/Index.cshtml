@@ -71,7 +71,50 @@
 
                                             <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                                 @Html.LabelFor(model => model.ReceptorREgInter, htmlAttributes: new { @class = "form-label" })
-                                                @Html.EditorFor(model => model.ReceptorREgInter, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                                                <select id="ReceptorREgInter" name="ReceptorREgInter" class="form-control mb-2">
+                                                    <option value="">Seleccione una opción</option>
+                                                    <option value="0166155">0166155 - ACCIONAMOS TUS DATOS</option>
+                                                    <option value="000095">000095 - AEROTAXIS</option>
+                                                    <option value="0114264">0114264 - ALTA EMPRESA SA DE CV</option>
+                                                    <option value="0172724">0172724 - AROCKET MX</option>
+                                                    <option value="0123744">0123744 - ARRENDADORA AZTECA</option>
+                                                    <option value="503340">503340 - AZTECA DIGITAL</option>
+                                                    <option value="0508013">0508013 - AZTECA NOVELAS</option>
+                                                    <option value="0502652">0502652 - BANCO AZTECA</option>
+                                                    <option value="0000915">0000915 - COMERCIALIZADORA DE MOTOS</option>
+                                                    <option value="0120856">0120856 - COMERCIALIZADORA DE MOTOS Y GARANTIAS CMG</option>
+                                                    <option value="0165484">0165484 - CONMA CONSTRUYE</option>
+                                                    <option value="0148368">0148368 - DOPAMINA</option>
+                                                    <option value="000100">000100 - ELMEX</option>
+                                                    <option value="0113769">0113769 - EVEN ENERGIAS VERDES</option>
+                                                    <option value="0140133">0140133 - GESALM</option>
+                                                    <option value="0140132">0140132 - GESALM CONSULTORES</option>
+                                                    <option value="0143401">0143401 - GESALM SERVICIOS</option>
+                                                    <option value="0502648">0502648 - GRUPO ELEKTRA</option>
+                                                    <option value="0000923">0000923 - ELEKTRAFIN</option>
+                                                    <option value="0125224">0125224 - GS DEFINICION</option>
+                                                    <option value="0165446">0165446 - IMIDE CONSTRUCCIONES</option>
+                                                    <option value="0123744">0123744 - NUEVA ELEKTRA DEL MILENIO</option>
+                                                    <option value="0000912">0000912 - OPERADORA EN SERVICIOS</option>
+                                                    <option value="0503354">0503354 - OPERADORA MEXICANA DE TV</option>
+                                                    <option value="0125225">0125225 - PROCESOS BOFF</option>
+                                                    <option value="0503333">0503333 - PRODUCCIONES ESPECIALIZADAS</option>
+                                                    <option value="0159071">0159071 - PROMOTORA DE TORNEOS</option>
+                                                    <option value="104125">104125 - PUBLICIDAD ESPECIALIZADA EN MEDIOS</option>
+                                                    <option value="500525">500525 - SCI DE MEXICO</option>
+                                                    <option value="0114145">0114145 - SERVICIO DE ASESORIA EN MEDIOS</option>
+                                                    <option value="0061">0061 - TELECOMUNICACIONES 360</option>
+                                                    <option value="0503347">0503347 - TELEVISION AZTECA</option>
+                                                    <option value="0109990">0109990 - TOTAL PLAY</option>
+                                                    <option value="0131201">0131201 - TOTALBOX</option>
+                                                    <option value="0145248">0145248 - TOTALSEC</option>
+                                                    <option value="0175833">0175833 - TP GO</option>
+                                                    <option value="0163862">0163862 - TRANSMISION Y VISION DIGITAL</option>
+                                                    <option value="500">500 - TV AZTECA</option>
+                                                    <option value="0131657">0131657 - TYPHOON</option>
+                                                    <option value="153828">153828 - UPAX</option>
+                                                    <option value="0181126">0181126 - TELEXTANTE</option>
+                                                </select>
                                                 @Html.ValidationMessageFor(model => model.ReceptorREgInter, "", new { @class = "text-danger" })
                                             </div>
 
