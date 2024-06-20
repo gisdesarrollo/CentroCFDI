@@ -1,7 +1,6 @@
 ﻿
 
-//using MySql.Data.EntityFramework;
-using MySql.Data.Entity;
+using MySql.Data.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations.Model;
