@@ -36,7 +36,7 @@
                     {
                         <option value="tabla2">Comprobantes del Departamento</option>
                     }
-                    @if (User.IsInRole("PAGOS") && !usuario.esProveedor)
+                    @if (!usuario.esProveedor)
                     {
                         <option value="tabla3">Todos los Comprobantes</option>
                     }
