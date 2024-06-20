@@ -92,6 +92,12 @@
                                 Domicilio Fiscal
                             </th>
                             <th>
+                                Tipo
+                            </th>
+                            <th>
+                                Expediente
+                            </th>
+                            <th>
                                 Estado
                             </th>
                             <th>
@@ -100,6 +106,16 @@
                     </thead>
                     @foreach (var item in Model)
                     {
+
+
+                        var expedientefiscal = _db.ExpedientesFiscales
+                              .Where(e => e.SucursalId == sucursalId && e.SocioComercialId == item.Id)
+                              .OrderByDescending(e => e.Anio)  // Ordenar primero por el año en orden descendente
+                              .ThenByDescending(e => e.Mes)    // Luego ordenar por el mes en orden descendente
+                              .FirstOrDefault();  // Obtener los datos conforme a la fecha actual agregada
+
+
+
                         <tr class="fs-7 align-text-top">
                             <td>
                                 @Html.Raw(item.RazonSocial.Length > 50 ? item.RazonSocial.Substring(0, 50) + "..." : item.RazonSocial)<br />
@@ -149,6 +165,50 @@
                                     <strong>NumRegIdTrib: </strong>@item.NumRegIdTrib
                                 }
                             </td>
+                            <td>
+                                @switch (item.esProveedor)
+                                {
+                                    case true:
+                                        <div class="badge badge-light-dark">Proveedor</div>
+                                        break;
+                                    case false:
+                                        <div class="badge badge-light-info">Cliente</div>
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+
+
+                            <td>
+
+                                @if (expedientefiscal != null)
+                                {
+                                    if (item.Id == expedientefiscal.SocioComercialId)
+                                    {
+                                        DateTime vigencia = expedientefiscal.Vigencia;
+                                        DateTime fechaActual = DateTime.Now;
+
+                                        if (fechaActual < vigencia)
+                                        {
+
+
+                                            <div class="badge badge-light-success">Vigente</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="badge badge-light-danger">Vencido</div>
+                                        }
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    <div class="badge badge-light-warning">Pendiente</div>
+                                }
+                            </td>
+
                             <td>
                                 @if (item.Status == API.Enums.Status.Activo)
                                 {

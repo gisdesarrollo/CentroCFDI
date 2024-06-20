@@ -39,14 +39,14 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group my-6 col-4">
-                        <label class="form-label fw-semibold fs-6" for="ConstanciaSituacionFiscal">Constancia de Situación Fiscal</label><br />
-                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ConstanciaSituacionFiscal" id="ConstanciaSituacionFiscal" accept=".pdf, .PDF" />
+                  <div class="form-group my-6 col-4">
+                        @Html.Label("Constancia de Situación Fiscal", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoConstanciaSituacionFiscal" id="ArchivoConstanciaSituacionFiscal" accept=".pdf, .PDF" />
                     </div>
 
                     <div class="form-group my-6 col-4">
-                        <label class="form-label fw-semibold fs-6" for="OpinionCumplimientoSAT">Opinión de Cumplimiento SAT</label><br />
-                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="OpinionCumplimientoSAT" id="OpinionCumplimientoSAT" accept=".pdf, .PDF" />
+                        @Html.Label("Opinión de Cumplimiento SAT", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoOpinionCumplimientoSAT" id="ArchivoOpinionCumplimientoSAT" accept=".pdf, .PDF" />
                     </div>
                 </div>
             </div>
