@@ -131,6 +131,7 @@ namespace APBox.Controllers.Catalogos
             Usuario usuario = _db.Usuarios.Find(id);
             if (usuario == null)
             {
+                
                 return HttpNotFound();
             }
             PopulaForma(usuario.PerfilId);
@@ -167,27 +168,29 @@ namespace APBox.Controllers.Catalogos
                         return View(usuario);
                     }
                 }
-           
-                
-                    //Asignacion de valor si es Proveedor
-                    if (usuario.PerfilId != null)
-                    {
-                        var perfil = _db.Perfiles.Find(usuario.PerfilId);
-                        if (perfil.Proveedor && usuario.SocioComercialId != null)
-                        {
-                            usuario.Departamento = null;
-                            usuario.DepartamentoId = null;
-                        }
-                        
-                    }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Error: seleccione un perfil";
-                        ModelState.AddModelError("", "Error: seleccione un perfil");
-                        return View(usuario);
-                    }
-                
 
+
+                //Asignacion de valor si es Proveedor
+                if (usuario.PerfilId != null)
+                {
+                    var perfil = _db.Perfiles.Find(usuario.PerfilId);
+                    if (perfil.Proveedor && usuario.SocioComercialId != null)
+                    {
+                        usuario.esProveedor = true;
+                        usuario.Departamento = null;
+                        usuario.DepartamentoId = null;
+                    }
+                    else { usuario.esProveedor = false; }
+                }
+                else
+                {
+
+                    ViewBag.ErrorMessage = "Error: seleccione un perfil";
+                    ModelState.AddModelError("", "Error: seleccione un perfil");
+                    return View(usuario);
+                }
+                 
+                 usuario.Status = API.Enums.Status.Activo;
                 _acondicionarUsuarios.Sucursales(usuario);
                 _db.Entry(usuarioAnterior).CurrentValues.SetValues(usuario);
                 _db.Entry(usuarioAnterior).State = EntityState.Modified;
