@@ -632,6 +632,7 @@ namespace APBox.Controllers.Operaciones
                     documentoRecibido.AprobacionesDR.DetalleRechazo = documentoRecibidoEdit.AprobacionesDR.DetalleRechazo;
 
                     documentoRecibido.EstadoComercial = c_EstadoComercial.Rechazado;
+                    documentoRecibido.EstadoPago = c_EstadoPago.Rechazado;
 
                     //Notificación al usuario que entrega
                     _envioEmail.NotificacionCambioEstadoComercial(usuarioEntrega, documentoRecibido, c_EstadoComercial.Rechazado, (int)ObtenerSucursal());

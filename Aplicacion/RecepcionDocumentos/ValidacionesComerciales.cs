@@ -44,7 +44,8 @@ namespace Aplicacion.RecepcionDocumentos
                         Status = Status.Activo,
                         FechaAlta = DateTime.Now,
                         GrupoId = dv.Sucursal.GrupoId,
-                        Observaciones = "Socio Comercial creado automaticamente"
+                        Observaciones = "Socio Comercial creado automaticamente",
+                        esProveedor = true
                     };
                     //guardar datos en base de datos
                     _db.SociosComerciales.Add(socioComercial);
@@ -66,10 +67,7 @@ namespace Aplicacion.RecepcionDocumentos
                 {
                     throw new Exception("Error Validación : El archivo ya se encuentra cargado en el sistema y no puede duplicarse. De ser necesario, debe rechazarse la solicitud anterior de este CFDi para poder subirlo nuevamente.");
                 }
-                else
-                {
-                    throw new Exception(String.Format("La factura {0} ya fue cargada al sistema y está activa.", dv.TimbreFiscalDigital.UUID));
-                }
+                
             }
 
             //si el usuario es proveedor, revisar que el RFC del emisor de la factura sea igual al RFC asignado del socio comercial del proveedor
