@@ -1,7 +1,20 @@
 ﻿@model API.Catalogos.Usuario
+@using APBox.Context;
+
+
+
 
 @using (Html.BeginForm())
 {
+
+    var _db = new APBoxContext();
+    var sucursalId = Convert.ToInt32(Session["SucursalId"]);
+    //var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
+    //var usuario = _db.Usuarios.Find(usuarioId);
+    var GrupoId = _db.Sucursales.Find(sucursalId).GrupoId;
+    var listasucursales = _db.Sucursales.Where(e => e.GrupoId == GrupoId).ToList();
+
+
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.GrupoId)
     @Html.HiddenFor(model => model.esProveedor)
@@ -142,13 +155,15 @@
 
                     <div class="form-group col-4">
                         <!--begin::Label-->
-                        <label class="form-label">Acceso</label>
+                        <label class="form-label">Seleccione las Sucursales de Acceso</label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <div class="form-check form-check-custom form-check-solid mb-2">
-                            <input class="form-check-input" type="checkbox" value="true" checked>
-                            <label class="form-check-label">Todas las sucursales</label>
-                        </div>
+                        <select id="sucursales" name="SucursalIds" class="form-control" multiple="multiple">
+                            @foreach (var sucursal in listasucursales)
+                            {
+                                <option value="@sucursal.Id">@sucursal.RazonSocial</option>
+                            }
+                        </select>
                         <!--end::Input-->
                     </div>
 
@@ -168,17 +183,16 @@
                     @Html.ValidationMessageFor(model => model.DepartamentoId, "", new { @class = "text-danger" })
                 </div>
 
-
             </div>
 
 
             <div id="divSocioComercial" class="d-flex mb-7 row visually-hidden">
                 <div class="form-group col-5">
                     @Html.LabelFor(model => model.SocioComercialId, htmlAttributes: new { @class = "form-label" })
-                    
+
                     @Html.DropDownListFor(model => model.SocioComercialId, ViewBag.SocioComerciales as SelectList, "Favor de hacer su selección", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SocioComercialId, "", new { @class = "text-danger" })
-                       
+
                 </div>
             </div>
         </div>

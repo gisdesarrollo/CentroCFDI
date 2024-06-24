@@ -65,7 +65,7 @@ namespace APBox.Controllers.Catalogos
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario, bool esProveedor)
+        public ActionResult Create(Usuario usuario, bool esProveedor, int[] SucursalIds)
         {
             PopulaClientes(usuario.SocioComercialId);
             PopulaForma(usuario.PerfilId);
@@ -112,6 +112,18 @@ namespace APBox.Controllers.Catalogos
 
 
                 _db.Usuarios.Add(usuario);
+                _db.SaveChanges();
+
+                // Guardar las relaciones UsuarioSucursal
+                foreach (var sucursalId in SucursalIds)
+                {
+                    var usuarioSucursal = new UsuarioSucursal
+                    {
+                        UsuarioId = usuario.Id,
+                        SucursalId = sucursalId
+                    };
+                    _db.UsuariosSucursales.Add(usuarioSucursal);
+                }
                 _db.SaveChanges();
                 EnviarCorreoBienvenida(usuario);
                 return RedirectToAction("Index");

@@ -10,6 +10,7 @@ using System.Linq;
 using API.Enums;
 using APBox.Context;
 using APBox.Models;
+using API.Catalogos;
 
 namespace APBox.Controllers
 {
@@ -128,6 +129,19 @@ namespace APBox.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
+
+
+                // Obtener las sucursales asignadas al usuario
+                var usuarioSucursales = _db.UsuariosSucursales.Where(us => us.UsuarioId == usuarioId).ToList();
+                if (usuarioSucursales.Count == 1)
+                {
+                    var sucursalId = usuarioSucursales.First().SucursalId;
+                    var sucursal = _db.Sucursales.Find(sucursalId);
+                    Session["SucursalId"] = sucursal.Id;
+                    Session["GrupoId"] = sucursal.GrupoId;
+                    return RedirectToAction("Index", "Home");
+                }
+
                 var popularDropDowns = new PopularDropDowns(loginSucursal.GrupoId, true);
                 ViewBag.SucursalId = popularDropDowns.PopulaSucursalesUsuarios(null, usuarioId);
 
@@ -150,6 +164,17 @@ namespace APBox.Controllers
                 {
                     Session["SucursalId"] = sucursales.First().Id;
                     Session["GrupoId"] = sucursales.First().GrupoId;
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Obtener las sucursales asignadas al usuario
+                var usuarioSucursales = _db.UsuariosSucursales.Where(us => us.UsuarioId == socioComercialId).ToList();
+                if (usuarioSucursales.Count == 1)
+                {
+                    var sucursalId = usuarioSucursales.First().SucursalId;
+                    var sucursal = _db.Sucursales.Find(sucursalId);
+                    Session["SucursalId"] = sucursal.Id;
+                    Session["GrupoId"] = sucursal.GrupoId;
                     return RedirectToAction("Index", "Home");
                 }
 
