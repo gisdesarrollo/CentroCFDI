@@ -170,7 +170,7 @@ namespace APBox.Controllers.RecepcionDocumentos
             }
         }
 
-        
+
         // POST: ComprobacionesGastos/Delete/5
         //[HttpPost]
         public ActionResult DeleteConfirmed(int id)
@@ -202,22 +202,22 @@ namespace APBox.Controllers.RecepcionDocumentos
             // Redirigir a la acción de índice
             return RedirectToAction("Index");
         }
-        
+
 
         #region Validaciones
 
-        private void PopulaProyectos()
+        private void PopulaProyectos(int? seleccionId = null)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
 
-            ViewBag.Proyectos = popularDropDowns.PopulaProyectos(ObtenerSucursal());
+            ViewBag.Proyectos = popularDropDowns.PopulaProyectos(seleccionId);
         }
 
-        private void PopulaEventos()
+        private void PopulaEventos(int? seleccionId = null)
         {
             var popularDropDowns = new PopularDropDowns(ObtenerSucursal(), true);
 
-            ViewBag.Eventos = popularDropDowns.PopulaEventos(ObtenerSucursal());
+            ViewBag.Eventos = popularDropDowns.PopulaEventos(seleccionId);
         }
 
         private void PopulaEstadoComercial()
