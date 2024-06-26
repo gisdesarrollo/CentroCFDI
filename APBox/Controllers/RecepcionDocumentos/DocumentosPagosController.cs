@@ -500,7 +500,7 @@ namespace APBox.Controllers.Operaciones
         public ConfiguracionesDR ConfiguracionEmpresa()
         {
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
-            var configuracion = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
+            var configuracion = _db.ConfiguracionesDR.FirstOrDefault(c => c.SucursalId == sucursalId.Id);
 
             if (configuracion == null)
             {

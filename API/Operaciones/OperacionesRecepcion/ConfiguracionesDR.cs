@@ -18,8 +18,8 @@ namespace API.Operaciones.OperacionesProveedores
         public int Id { get; set;}
 
         [DisplayName("Sucursal Id")]
-        public int Sucursal_Id { get; set;}
-        [ForeignKey("Sucursal_Id")]
+        public int SucursalId { get; set;}
+        [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
         public bool AprobacionGastosObligatoria { get; set; }

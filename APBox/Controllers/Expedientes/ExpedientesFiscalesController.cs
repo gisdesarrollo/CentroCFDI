@@ -144,7 +144,7 @@ namespace APBox.Controllers.Expedientes
                 expediente.UsuarioId = ObtenerUsuario();
                 expediente.SocioComercialId = socioComercialId;
                 expediente.FechaCreacion = DateTime.Now;
-                var diasVigencia = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId).DiasVigenciaExpedienteFiscal;
+                var diasVigencia = _db.ConfiguracionesDR.FirstOrDefault(c => c.SucursalId == sucursalId).DiasVigenciaExpedienteFiscal;
                 expediente.Vigencia = expediente.FechaCreacion.AddDays(diasVigencia);
 
                 // Guardar el resto de la información del expedienteFiscal en la base de datos

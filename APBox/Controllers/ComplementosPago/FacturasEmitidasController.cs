@@ -9,7 +9,6 @@ using System.Web;
 using System.Web.Mvc;
 using APBox.Context;
 using API.Enums;
-using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
 using API.Models.Facturas;
 using API.Operaciones.Facturacion;
@@ -19,7 +18,6 @@ using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
-using MySqlConnector;
 
 
 namespace APBox.Controllers.Catalogos

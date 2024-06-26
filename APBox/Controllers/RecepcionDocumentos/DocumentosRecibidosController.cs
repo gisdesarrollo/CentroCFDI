@@ -373,7 +373,7 @@ namespace APBox.Controllers.Operaciones
                 //Crear variables para el proceso
                 var sucursal = _db.Sucursales.Find(ObtenerSucursal());
                 var usuario = _db.Usuarios.Find(ObtenerUsuario());
-                var configuraciones = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursal.Id);
+                var configuraciones = _db.ConfiguracionesDR.FirstOrDefault(c => c.SucursalId == sucursal.Id);
 
 
                 switch (documentoRecibidoDr.TipoDocumentoRecibido)
@@ -791,7 +791,7 @@ namespace APBox.Controllers.Operaciones
         public ConfiguracionesDR ConfiguracionEmpresa()
         {
             var sucursalId = _db.Sucursales.Find(ObtenerSucursal());
-            var configuracion = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId.Id);
+            var configuracion = _db.ConfiguracionesDR.FirstOrDefault(c => c.SucursalId == sucursalId.Id);
 
             if (configuracion == null)
             {
