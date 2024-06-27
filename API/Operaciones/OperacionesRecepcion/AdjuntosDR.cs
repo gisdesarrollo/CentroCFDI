@@ -15,8 +15,8 @@ namespace API.Operaciones.OperacionesProveedores
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int? DocumentosRecibidos_Id { get; set; }
-        [ForeignKey("DocumentosRecibidos_Id")]
+        public int? DocumentosRecibidosId { get; set; }
+        [ForeignKey("DocumentosRecibidosId")]
         public virtual DocumentoRecibido DocumentoRecibido { get; set; }
 
         public string PathAdjunto { get; set; }

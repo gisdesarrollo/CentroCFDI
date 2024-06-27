@@ -122,13 +122,30 @@
 }
 
 <script>
-    if ($("#Email").val() !== null || $("#Email").val().trim() !== "") {
-        $('#NombreUsuario').val($("#Email").val());
-    }
     $(document).ready(function () {
-        $('#Email').on('input', function () {
-            var emailValue = $(this).val();
-            $('#NombreUsuario').val(emailValue);
+        function toLowerCaseAndReplicate() {
+            // Convierte el texto a minúsculas
+            var lowerCaseValue = $(this).val().toLowerCase();
+            $(this).val(lowerCaseValue);
+            // Si es el campo #Email, replica el valor en #NombreUsuario
+            if (this.id === 'Email') {
+                $('#NombreUsuario').val(lowerCaseValue);
+            }
+        }
+
+        // Selecciona todos los elementos con la clase 'minusculas' y el campo #Email
+        $('.minusculas, #Email').on('input', toLowerCaseAndReplicate);
+
+        // Añadir evento de pegado para cambiar a minúsculas el texto pegado y replicarlo
+        $('.minusculas, #Email').on('paste', function (event) {
+            event.preventDefault();
+            var text = (event.originalEvent.clipboardData || window.clipboardData).getData('text').toLowerCase();
+            var newValue = $(this).val() + text;
+            $(this).val(newValue);
+            // Si es el campo #Email, replica el valor en #NombreUsuario
+            if (this.id === 'Email') {
+                $('#NombreUsuario').val(newValue);
+            }
         });
     });
 </script>

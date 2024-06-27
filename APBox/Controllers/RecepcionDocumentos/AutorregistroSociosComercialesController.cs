@@ -81,13 +81,14 @@ namespace APBox.Controllers.Catalogos
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Create(SocioComercial socioComercial)
-        {            
-            _acondicionarClientes.CargaInicial(ref socioComercial);
-            var receptor = _db.SociosComerciales.Where(c => c.Rfc == socioComercial.Rfc && c.RazonSocial == socioComercial.RazonSocial && c.SucursalId == socioComercial.SucursalId).FirstOrDefault();
+        {
+            var receptor = _db.SociosComerciales.Where(c => c.Rfc == socioComercial.Rfc && c.SucursalId == socioComercial.SucursalId).FirstOrDefault();
             if (receptor != null)
             {
-                ModelState.AddModelError("", "Error RFC o Razon Social Ya Se Encuentra Registrado!!");
-                return View(socioComercial);
+                TempData["SocioComercialId"] = socioComercial.Id;
+                ViewBag.socioComercialId = socioComercial.Id;
+                return View("CreateUsuario");
+
             }
             // Guardar datos en TempData para asignarlo a otro metodo
             socioComercial.Status = API.Enums.Status.Activo;
@@ -108,16 +109,24 @@ namespace APBox.Controllers.Catalogos
 
             TempData["SocioComercialId"] = socioComercial.Id;
             ViewBag.socioComercialId = socioComercial.Id;
+
             return View("CreateUsuario");
         }
 
         [AllowAnonymous]
         public ActionResult CreateUsuario(Guid? id)
         {
+            ViewBag.Controller = "AutorRegistro";
+            ViewBag.Action = "Create";
+            ViewBag.ActionES = "Crear";
+            ViewBag.Title = "Registro de Socios Comerciales";
+            ViewBag.Grupo = TempData["grupoNombre"];
+
             var grupo = _db.Grupos.FirstOrDefault(c => c.Llave == id);
             int perfilId = ObtenerPerfilId(grupo.Id);
             var socioComercialId = TempData["SocioComercialId"] as int?;
             string emailSocioComercial = null;
+
             if (socioComercialId != null)
             {
                 var socioComercial = _db.SociosComerciales.Find(socioComercialId);
@@ -134,12 +143,6 @@ namespace APBox.Controllers.Catalogos
                 GrupoId = grupo.Id,
                 NombreUsuario = emailSocioComercial
             };
-
-            ViewBag.Controller = "Autoregistro";
-            ViewBag.Action = "Create";
-            ViewBag.ActionES = "Crear";
-            ViewBag.Title = "Registro de Socios Comerciales";
-
             return View(usuario);
         }
 
@@ -147,6 +150,7 @@ namespace APBox.Controllers.Catalogos
         [ValidateAntiForgeryToken]
         public ActionResult CreateUsuario(Usuario usuario)
         {
+
             var entidadExistente = _db.Usuarios.FirstOrDefault(e => e.NombreUsuario == usuario.NombreUsuario);
             if (entidadExistente != null)
             {

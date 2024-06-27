@@ -138,19 +138,56 @@
                             var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
                             <tr>
                                 <td>
-                                    @item.SocioComercial.RazonSocial <br />
-                                    <span class="text-gray-600">@item.SocioComercial.Rfc</span>
+                                    @switch (item.TipoDocumentoRecibido)
+                                    {
+                                        case API.Enums.c_TipoDocumentoRecibido.CFDI:
+                                            @item.SocioComercial.RazonSocial <br />
+                                            <span class="text-gray-600">@item.SocioComercial.Rfc</span>
+                                            break;
+                                        case API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                                            @Html.Raw("Sin Socio Comercial");
+                                            break;
+                                        case API.Enums.c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                                            break;
+                                        default:
+                                            break;
+                                    }
 
                                 </td>
                                 <td>
-                                    @item.CfdiRecibidosSerie - @item.CfdiRecibidosFolio <br />
-                                    <span class="text-gray-600">@item.CfdiRecibidosUUID</span> <br />
-                                    <span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
+                                    @switch (item.TipoDocumentoRecibido)
+                                    {
+                                        case API.Enums.c_TipoDocumentoRecibido.CFDI:
+
+                                            string sf = String.Format("{0} - {1}", item.CfdiRecibidosSerie, item.CfdiRecibidosFolio);
+                                            @sf <br />
+
+                                            <span class="text-gray-600">@item.CfdiRecibidosUUID</span> <br />
+                                            <span class="text-gray-600">@nombreDepartamento </span><br />
+
+                                            <i class="ki-duotone ki-calendar">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i><span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
+
+                                            break;
+                                        case API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                                            <strong>Comprobante No Fiscal</strong> <br />
+                                            @Html.Raw("Sin Identificador");
+                                            break;
+                                        case API.Enums.c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 </td>
                                 <td>
-                                    Solicitante: @nombreAprobador <br />
+                                    <strong>Solicitado a:</strong> <br /> @nombreAprobador <br />
                                     <span class="text-gray-600">@nombreDepartamento </span><br />
-                                    <span class="text-gray-600">Fecha de Entrega: @item.FechaEntrega.ToString("dd/MM/yyyy")</span><br />
+                                    <i class="ki-duotone ki-calendar">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i> <span class="text-gray-600"> @item.FechaEntrega.ToString("dd/MM/yyyy")</span><br />
                                 </td>
                                 <td class="text-end">
                                     @item.Monto.ToString("c") <br />

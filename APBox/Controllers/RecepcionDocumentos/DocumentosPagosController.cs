@@ -31,8 +31,7 @@ namespace APBox.Controllers.Operaciones
         private readonly Decodificar _decodifica = new Decodificar();
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly CargaPagosDR _cargaPagosDR = new CargaPagosDR();
-        private readonly Aplicacion.LogicaPrincipal.DocumentosPagos.ProcesaDocumentoPago _procesaDocumentoPago = new Aplicacion.LogicaPrincipal.DocumentosPagos.ProcesaDocumentoPago();
-        private readonly ValidacionesPagos _validaPagos = new ValidacionesPagos();
+        private readonly ProcesaDocumentoPago _procesaDocumentoPago = new ProcesaDocumentoPago();
 
         // GET: DocumentosPagos
         public ActionResult Index()

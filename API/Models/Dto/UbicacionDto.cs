@@ -24,8 +24,8 @@ namespace API.Models.Dto
         [DisplayName("Id Ubicacion")]
         public string IDUbicacion { get; set; }
 
-        /*public int Sucursal_Id { get; set; }
-        [ForeignKey("Sucursal_Id")]
+        /*public int SucursalId { get; set; }
+        [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }*/
 
         [DisplayName("RFC Remitente Destinatario")]

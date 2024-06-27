@@ -318,8 +318,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RecepcionDocumentos\ValidacionesComerciales.cs" />
-    <Compile Include="RecepcionDocumentos\ValidacionesPagos.cs" />
+    <Compile Include="RecepcionDocumentos\Validaciones.cs" />
     <Compile Include="TimbreFiscalXsd\TimbreFiscalDigitalv11.cs" />
     <Compile Include="Utilidades\AmazonS3Helper.cs" />
     <Compile Include="Utilidades\AmazonS3Uploader.cs" />

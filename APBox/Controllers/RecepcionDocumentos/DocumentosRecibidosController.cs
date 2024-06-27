@@ -1,5 +1,6 @@
 ﻿using APBox.Context;
 using APBox.Control;
+using API.Catalogos;
 using API.Enums;
 using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
@@ -19,13 +20,11 @@ using System.Data.Entity;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Web.Mvc;
-using Utilerias.LogicaPrincipal;
-using API.Operaciones.Expedientes;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
-using API.Catalogos;
+using System.Web.Mvc;
+using Utilerias.LogicaPrincipal;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -98,7 +97,6 @@ namespace APBox.Controllers.Operaciones
 
         #region Vistas
 
-        // GET: DocumentoRecibido/Index
         public ActionResult Index()
         {
             ViewBag.Controller = "DocumentoRecibido";
@@ -124,7 +122,6 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
 
-        // POST: DocumentoRecibido/Index
         [HttpPost]
         public ActionResult Index(DocumentosRecibidosModel documentosRecibidosModel)
         {
@@ -157,13 +154,11 @@ namespace APBox.Controllers.Operaciones
             return View(documentosRecibidosModel);
         }
 
-        // GET: DocumentoRecibido/CargaCfdi
         public ActionResult CargaCfdi(int? comprobacionGastoId, int? complementoPagoId)
         {
             ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Carga Comprobantes";
-            ViewBag.NameHere = "Carga de Comprobantes";
-            ViewBag.ActionES = "CargaComprobantes";
+            ViewBag.Title = "Carga de Comprobantes";
 
             if (comprobacionGastoId.HasValue)
             {
@@ -204,156 +199,98 @@ namespace APBox.Controllers.Operaciones
             return View(documentoRecibidoDr);
         }
 
-        // POST: DocumentoRecibido/CargaCfdi
         [HttpPost]
         public ActionResult CargaCfdi(DocumentoRecibido documentoRecibidoDr)
         {
             ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Carga Comprobantes";
-            ViewBag.NameHere = "Carga de Comprobantes";
-            ViewBag.ActionES = "CargaComprobantes";
-
-            //get usaurio
-            PathArchivosDto archivo;
-            ValidateXmlResponse responseValidacion = new ValidateXmlResponse();
-            ComprobanteCFDI cfdi = new ComprobanteCFDI();
+            ViewBag.Title = "Carga de Comprobantes";
 
             int? compPagoId = (int?)Session["ComplementoPagoId"];
-            try
-            {
-                archivo = SubeArchivo();
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
-                return View(documentoRecibidoDr);
-            }
-
+            int? compGast = (int?)Session["ComprobacionGastosId"];
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
-            documentoRecibidoDr.DetalleArrays = new List<String>();
-            cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
-            var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
-            var dataValidar = new ValidacionesComerciales.DataValidar();
-            var dataValidarPagos = new ValidacionesPagos.DataValidar();
-            if (compPagoId == null)
-            {
-                //se crea una instancia con los datos a validar en una petición
-                dataValidar = new ValidacionesComerciales.DataValidar
-                {
-                    Cfdi = cfdi,
-                    TimbreFiscalDigital = timbreFiscalDigital,
-                    Sucursal = _db.Sucursales.Find(ObtenerSucursal()),
-                    SocioComercial = cfdi.Emisor.Equals(null) ? null : _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault(),
-                    Usuario = usuario,
-                    ConfiguracionEmpresa = ConfiguracionEmpresa(),
-                    DocumentoRecibidoDr = documentoRecibidoDr,
-                    Archivo = archivo
-                };
 
-                ValidacionesComerciales validacionesComerciales = new ValidacionesComerciales();
+            documentoRecibidoDr.SucursalId = ObtenerSucursal();
+            documentoRecibidoDr.ComprobacionGastoId = compGast;
+            documentoRecibidoDr.PagosId = compPagoId;
 
-                //Se manda validar al grupo de valiadciones de stock para verificar que el documento pueda procesar las validaciones de configuraciones
-                try
-                {
-                    validacionesComerciales.ValidacionesNegocio(dataValidar);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
-                    return View(documentoRecibidoDr);
-                }
+            switch (documentoRecibidoDr.TipoDocumentoRecibido)
+            {
+                case c_TipoDocumentoRecibido.CFDI:
+                    PathArchivosDto archivo;
+                    ValidateXmlResponse responseValidacion = new ValidateXmlResponse();
+                    ComprobanteCFDI cfdi = new ComprobanteCFDI();
 
-                try
-                {
-                    validacionesComerciales.ValidacionesConfiguraciones(dataValidar);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
-                    return View(documentoRecibidoDr);
-                }
-            }
-            else
-            {
-                ValidacionesPagos validacionesPagos = new ValidacionesPagos();
-                dataValidarPagos = new ValidacionesPagos.DataValidar
-                {
-                    Cfdi = cfdi,
-                    Pago = _db.PagoDr.Find(compPagoId),
-                    TimbreFiscalDigital = timbreFiscalDigital,
-                    Sucursal = _db.Sucursales.Find(ObtenerSucursal()),
-                    SocioComercial = cfdi.Emisor.Equals(null) ? null : _db.SociosComerciales.Where(s => s.Rfc == cfdi.Emisor.Rfc).FirstOrDefault(),
-                    Usuario = usuario,
-                    ConfiguracionEmpresa = ConfiguracionEmpresa(),
-                    DocumentoRecibidoDr = documentoRecibidoDr,
-                    Archivo = archivo
-                };
-                try
-                {
-                    validacionesPagos.ValidaComplementoPago(dataValidarPagos);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
-                    return View(documentoRecibidoDr);
-                }
-                try
-                {
-                    validacionesPagos.ValidacionesConfiguraciones(dataValidarPagos);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", String.Format("Error: {0}", ex.Message));
-                    return View(documentoRecibidoDr);
-                }
+                    try
+                    {
+                        archivo = SubeArchivo();
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
+                        return View(documentoRecibidoDr);
+                    }
 
-            }
-            //Manda datos leidos a la pantalla para confirmación
-            try
-            {
-                ViewBag.MetodoPago = cfdi.MetodoPago;
-                ViewBag.FormaPago = cfdi.FormaPago;
-                ViewBag.TipoComprobante = cfdi.TipoDeComprobante.ToString();
-                ViewBag.TipoCambio = cfdi.TipoCambio;
-                ViewBag.Moneda = cfdi.Moneda;
-                ViewBag.UsoCFDI = cfdi.Receptor.UsoCFDI;
-                ViewBag.Usuario = usuario.NombreCompleto;
-                ViewBag.Emisor = cfdi.Emisor.Nombre;
-                ViewBag.Receptor = cfdi.Receptor.Nombre;
-                ViewBag.CompPagoId = compPagoId;
-            }
-            catch (Exception ex)
-            {
-                var errores = ex.Message.Split('|');
-                foreach (var error in errores)
-                {
-                    ModelState.AddModelError("", error);
-                }
-                //delete Files
-                if (archivo.PathDestinoXml != null)
-                {
-                    System.IO.File.Delete(archivo.PathDestinoXml);
-                }
-                if (archivo.PathDestinoPdf != null)
-                {
-                    System.IO.File.Delete(archivo.PathDestinoPdf);
-                }
-                documentoRecibidoDr.Procesado = false;
-                documentoRecibidoDr.DetalleArrays = null;
-            }
-            if (compPagoId == null)
-            {
-                return View("Create", dataValidar.DocumentoRecibidoDr);
-            }
-            else
-            {
-                return View("Create", dataValidarPagos.DocumentoRecibidoDr);
+                    cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
+                    var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
+                    documentoRecibidoDr.DetalleArrays = new List<String>();
+
+                    var dataValidar = CrearDataValidar(cfdi, timbreFiscalDigital, usuario, documentoRecibidoDr, archivo, compPagoId);
+
+                    try
+                    {
+                        ValidarDatos(dataValidar, compPagoId);
+                        SetViewBag(documentoRecibidoDr, cfdi, usuario, compPagoId);
+                    }
+                    catch (Exception ex)
+                    {
+                        ManejarErrores(ex, archivo, documentoRecibidoDr);
+                        return View(documentoRecibidoDr);
+                    }
+
+                    TempData["DocumentoRecibido"] = dataValidar.DocumentoRecibidoDr;
+                    return RedirectToAction("Create");
+
+                case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                    SubirDocumento(documentoRecibidoDr);
+                    SetViewBag(documentoRecibidoDr, null, usuario, null);
+                    documentoRecibidoDr.FechaComprobante = documentoRecibidoDr.FechaComprobante;
+                    documentoRecibidoDr.FechaEntrega = DateTime.Now;
+
+                    TempData["DocumentoRecibido"] = documentoRecibidoDr;
+                    return RedirectToAction("Create");
+
+                case c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                    SubirDocumento(documentoRecibidoDr);
+                    TempData["DocumentoRecibido"] = documentoRecibidoDr;
+                    return RedirectToAction("Create");
+
+                default:
+                    ModelState.AddModelError("", "Tipo de documentoRecibido no reconocido");
+                    return View(documentoRecibidoDr);
             }
         }
 
-        // POST: DocumentoRecibido/Create
+        public ActionResult Create()
+        {
+            ViewBag.Controller = "DocumentoRecibido";
+            ViewBag.Action = "Carga Comprobantes";
+            ViewBag.Title = "Carga de Comprobantes";
+
+            // Recuperar el documento desde TempData
+            var documentoRecibidoDr = TempData["DocumentoRecibido"] as DocumentoRecibido;
+
+            // Si no hay documento en TempData, crear uno nuevo
+            if (documentoRecibidoDr == null)
+            {
+                documentoRecibidoDr = new DocumentoRecibido();
+            }
+
+            return View(documentoRecibidoDr);
+        }
+
         [HttpPost]
-        public ActionResult Create(DocumentoRecibido documentoRecibidoDr)
+        public async Task<ActionResult> Create(DocumentoRecibido documentoRecibidoDr)
         {
             ViewBag.Controller = "DocumentoRecibido";
             ViewBag.Action = "Create";
@@ -361,7 +298,6 @@ namespace APBox.Controllers.Operaciones
 
             try
             {
-
                 //Obtener los valores de sesión y vaciarlos
                 //estas variables guardan si el DocumentoRecibido está asociado a
                 //una comprobación de gastos o un complemento de pago
@@ -379,9 +315,9 @@ namespace APBox.Controllers.Operaciones
                 switch (documentoRecibidoDr.TipoDocumentoRecibido)
                 {
                     case c_TipoDocumentoRecibido.CFDI:
-                        
+
                         ProcesarCFDI(documentoRecibidoDr, usuario, sucursal, compGastosId, compPagoId);
-                        
+
                         break;
 
                     case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
@@ -391,11 +327,11 @@ namespace APBox.Controllers.Operaciones
 
                     case c_TipoDocumentoRecibido.ComprobanteExtranjero:
                         ProcesarComprobanteExtranjero(documentoRecibidoDr, usuario, sucursal, compGastosId, compPagoId);
-                        
+
                         break;
 
                     default:
-                        ModelState.AddModelError("", "Tipo de documento no reconocido");
+                        ModelState.AddModelError("", "Tipo de documentoRecibido no reconocido");
                         return View(documentoRecibidoDr);
                 }
 
@@ -414,6 +350,8 @@ namespace APBox.Controllers.Operaciones
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
                 _db.SaveChanges();
 
+                await CargaComprobante(documentoRecibidoDr);
+
                 return RedireccionarDespuesDeGuardado(compGastosId, compPagoId);
             }
             catch (Exception ex)
@@ -421,6 +359,89 @@ namespace APBox.Controllers.Operaciones
                 ModelState.AddModelError("", ex.Message);
                 return View(documentoRecibidoDr);
             }
+        }
+
+        private Validaciones.DataValidar CrearDataValidar(ComprobanteCFDI cfdi, TimbreFiscalDigital timbreFiscalDigital, Usuario usuario, DocumentoRecibido documentoRecibidoDr, PathArchivosDto archivo, int? compPagoId)
+        {
+            var socioComercial = cfdi.Emisor == null ? null : _db.SociosComerciales.FirstOrDefault(s => s.Rfc == cfdi.Emisor.Rfc);
+            var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+
+            var dataValidar = new Validaciones.DataValidar
+            {
+                Cfdi = cfdi,
+                Pago = _db.PagoDr.Find(compPagoId),
+                TimbreFiscalDigital = timbreFiscalDigital,
+                Sucursal = sucursal,
+                SocioComercial = socioComercial,
+                Usuario = usuario,
+                ConfiguracionEmpresa = ConfiguracionEmpresa(),
+                DocumentoRecibidoDr = documentoRecibidoDr,
+                Archivo = archivo
+            };
+            return (dataValidar);
+        }
+
+        private void ValidarDatos(Validaciones.DataValidar dataValidar, int? compPagoId)
+        {
+            var validaciones = new Validaciones();
+
+            if (compPagoId == null)
+            {
+                validaciones.ValidacionesNegocio(dataValidar);
+                validaciones.ValidacionesConfiguraciones(dataValidar);
+            }
+            else
+            {
+                validaciones.ValidaComplementoPago(dataValidar);
+                validaciones.ValidacionesConfiguracionesPagos(dataValidar);
+            }
+        }
+
+        private void SetViewBag(DocumentoRecibido documentoRecibidoDr, ComprobanteCFDI cfdi, Usuario usuario, int? compPagoId)
+        {
+            switch (documentoRecibidoDr.TipoDocumentoRecibido)
+            {
+                case c_TipoDocumentoRecibido.CFDI:
+                    ViewBag.MetodoPago = cfdi.MetodoPago;
+                    ViewBag.FormaPago = cfdi.FormaPago;
+                    ViewBag.TipoComprobante = cfdi.TipoDeComprobante.ToString();
+                    ViewBag.TipoCambio = cfdi.TipoCambio;
+                    ViewBag.Moneda = cfdi.Moneda;
+                    ViewBag.UsoCFDI = cfdi.Receptor.UsoCFDI;
+                    ViewBag.Usuario = usuario.NombreCompleto;
+                    ViewBag.Emisor = cfdi.Emisor.Nombre;
+                    ViewBag.Receptor = cfdi.Receptor.Nombre;
+                    ViewBag.CompPagoId = compPagoId;
+                    break;
+                case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                    ViewBag.TipoComprobante = "Comprobante No Fiscal";
+                    ViewBag.Moneda = documentoRecibidoDr.MonedaId;
+                    ViewBag.Usuario = usuario.NombreCompleto;
+                    break;
+                case c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ManejarErrores(Exception ex, PathArchivosDto archivo, DocumentoRecibido documentoRecibidoDr)
+        {
+            var errores = ex.Message.Split('|');
+            foreach (var error in errores)
+            {
+                ModelState.AddModelError("", error);
+            }
+            if (archivo.PathDestinoXml != null)
+            {
+                System.IO.File.Delete(archivo.PathDestinoXml);
+            }
+            if (archivo.PathDestinoPdf != null)
+            {
+                System.IO.File.Delete(archivo.PathDestinoPdf);
+            }
+            documentoRecibidoDr.Procesado = false;
+            documentoRecibidoDr.DetalleArrays = null;
         }
 
         private DocumentoRecibido ProcesarCFDI(DocumentoRecibido documentoRecibidoDr, Usuario usuario, Sucursal sucursal, int? compGastosId, int? compPagoId)
@@ -480,13 +501,20 @@ namespace APBox.Controllers.Operaciones
 
         private DocumentoRecibido ProcesarComprobanteNoFiscal(DocumentoRecibido documentoRecibidoDr, Usuario usuario, Sucursal sucursal, int? compGastosId, int? compPagoId)
         {
-            // Lógica específica para Comprobante No Fiscal
+            documentoRecibidoDr = new DocumentoRecibido()
+            {
+                TipoDocumentoRecibido = c_TipoDocumentoRecibido.ComprobanteNoFiscal,
+                FechaComprobante = DateTime.Now,
+                MonedaId = documentoRecibidoDr.MonedaId,
+                Monto = documentoRecibidoDr.Monto,
+                Referencia = documentoRecibidoDr.Referencia,
+                SucursalId = sucursal.Id
+            };
             return (documentoRecibidoDr);
         }
 
         private DocumentoRecibido ProcesarComprobanteExtranjero(DocumentoRecibido documentoRecibidoDr, Usuario usuario, Sucursal sucursal, int? compGastosId, int? compPagoId)
         {
-            // Lógica específica para Comprobante Extranjero
             return (documentoRecibidoDr);
         }
 
@@ -496,7 +524,7 @@ namespace APBox.Controllers.Operaciones
             var usuarioSolicitante = _db.Usuarios.Find(documentoRecibidoDr.IdUsuarioSolicitante);
             var usuarioSolicitanteId = usuarioSolicitante.Id;
             var usuarioSolicitanteDepartamentoId = usuarioSolicitante.DepartamentoId;
-            
+
             documentoRecibidoDr.AprobacionesId = null;
             documentoRecibidoDr.AprobacionesDR = new Aprobaciones();
 
@@ -511,6 +539,7 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.EstadoComercial = c_EstadoComercial.Aprobado;
                 documentoRecibidoDr.AprobacionesDR.UsuarioAprobacionComercial_id = usuario.Id;
                 documentoRecibidoDr.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+                documentoRecibidoDr.AprobacionesDR.FechaSolicitud = DateTime.Now;
             }
 
             if (configuraciones.AprobacionPagosAutomatica)
@@ -529,7 +558,7 @@ namespace APBox.Controllers.Operaciones
                 documentoRecibidoDr.ComprobacionGastoId = compGastosId;
                 var comprobacionGastos = _db.ComprobacionesGastos.Find(compGastosId);
                 double montoAnterior = comprobacionGastos.Monto;
-                double montoActualizado = montoAnterior + documentoRecibidoDr.RecibidosComprobante.Total;
+                double montoActualizado = montoAnterior + (double)documentoRecibidoDr.Monto;
                 comprobacionGastos.Monto = montoActualizado;
                 _db.Entry(comprobacionGastos).State = EntityState.Modified;
             }
@@ -564,8 +593,6 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-
-        // GET: DocumentoRecibido/Edit/5
         public ActionResult Revision(int id, int? comprobacionGastoId)
         {
             ViewBag.Controller = "DocumentoRecibido";
@@ -598,7 +625,6 @@ namespace APBox.Controllers.Operaciones
             return View(documentoRecibido);
         }
 
-        // POST: DocumentoRecibido/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Revision(DocumentoRecibido documentoRecibidoEdit)
@@ -659,13 +685,11 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        // GET: DocumentoRecibido/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: DocumentoRecibido/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -684,68 +708,64 @@ namespace APBox.Controllers.Operaciones
         #endregion Vistas
 
         #region Upload a S3
+
         [HttpPost]
-        private async Task<ActionResult> CargaComprobanteNoFiscal(DocumentoRecibido documentoRecibido)
+        private async Task CargaComprobante(DocumentoRecibido documentoRecibido)
         {
             var sucursalId = ObtenerSucursal();
             var grupoId = ObtenerGrupo();
-            var socioComercialId = (int)Session["socComlId"];
 
-            //if (ModelState.IsValid)
-            //{
-
-            //    //quiero hacer un try para checar si el registro ya existe, buscando mes, anio, sucursal y socio comercial
-            //    var expedienteExistente = _db.ExpedientesFiscales
-            //        .FirstOrDefault(e => e.Mes == expediente.Mes &&
-            //                             e.Anio == expediente.Anio &&
-            //                             e.SucursalId == sucursalId &&
-            //                             e.SocioComercialId == socioComercialId);
-
-            //    if (expedienteExistente != null)
-            //    {
-            //        TempData["Errores"] = new List<string> { "Ya existe un expediente fiscal para el mes y año seleccionado" };
-            //        return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
-            //    }
+            switch (documentoRecibido.TipoDocumentoRecibido)
+            {
+                case c_TipoDocumentoRecibido.CFDI:
 
 
+                    break;
 
-            //    var basePath = $"ExpedientesFiscales/{grupoId}/{sucursalId}/{socioComercialId}/{expediente.Anio}/{(int)expediente.Mes}";
+                case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
 
-            //    if (expediente.ArchivoConstanciaSituacionFiscal != null && expediente.ArchivoConstanciaSituacionFiscal.ContentLength > 0)
-            //    {
-            //        var nombreArchivo = "ArchivoConstanciaSituacionFiscal.pdf";
-            //        var key = $"{basePath}/{nombreArchivo}";
-            //        await UploadFileToS3(expediente.ArchivoConstanciaSituacionFiscal, key);
+                    var basePath = $"DocumentosRecibidos/ComprobanteNoFiscal/{grupoId}/{sucursalId}/{documentoRecibido.Id}/{documentoRecibido.FechaEntrega.Year}/{(int)documentoRecibido.FechaEntrega.Month}/{(int)documentoRecibido.FechaEntrega.Day}";
 
-            //        expediente.PathConstanciaSituacionFiscal = key;
-            //    }
+                    PathArchivosDto pathArchivos = new PathArchivosDto();
+                    string directoryPath = Server.MapPath("~/Archivos/DocumentosRecibidos");
 
-            //    if (expediente.ArchivoOpinionCumplimientoSAT != null && expediente.ArchivoOpinionCumplimientoSAT.ContentLength > 0)
-            //    {
-            //        var nombreArchivo = "ArchivoOpinionCumplimientoSAT.pdf";
-            //        var key = $"{basePath}/{nombreArchivo}";
-            //        await UploadFileToS3(expediente.ArchivoOpinionCumplimientoSAT, key);
+                    var nombreArchivo = documentoRecibido.ArchivoComprobanteNoFiscal;
+                    var key = $"{basePath}/{nombreArchivo}";
 
-            //        expediente.PathOpinionCumplimientoSAT = key;
-            //    }
+                    await UploadFileToS3(documentoRecibido.ArchivoComprobanteNoFiscal, key);
 
-            //    expediente.SucursalId = sucursalId;
-            //    expediente.UsuarioId = ObtenerUsuario();
-            //    expediente.SocioComercialId = socioComercialId;
-            //    expediente.FechaCreacion = DateTime.Now;
-            //    var diasVigencia = _db.ConfiguracionesDR.FirstOrDefault(c => c.Sucursal_Id == sucursalId).DiasVigenciaExpedienteFiscal;
-            //    expediente.Vigencia = expediente.FechaCreacion.AddDays(diasVigencia);
+                    var comprobanteNoFiscal = new ComprobanteNoFiscal
+                    {
+                        DocumentosRecibidosId = documentoRecibido.Id,
+                        SucursalId = documentoRecibido.SucursalId,
+                        Referencia = documentoRecibido.Referencia,
+                        FechaCreacion = DateTime.Now,
+                        PathS3 = key
+                    };
 
-            //    // Guardar el resto de la información del expedienteFiscal en la base de datos
-            //    _db.ExpedientesFiscales.Add(expediente);
-            //    await _db.SaveChangesAsync();
+                    // Guardar el resto de la información del expedienteFiscal en la base de datos
+                    _db.ComprobanteNoFiscal.Add(comprobanteNoFiscal);
+                    await _db.SaveChangesAsync();
 
-            //    Session.Remove("socComlId");
-            //    return RedirectToAction("Index", "ExpedientesFiscales", new { id = socioComercialId, socioComercialId = socioComercialId });
-            //}
+                    //eliminar archivo local del path directoryPath
+                    if (System.IO.File.Exists(directoryPath + "/" + nombreArchivo))
+                    {
+                        System.IO.File.Delete(directoryPath + "/" + nombreArchivo);
+                    }
 
-            ViewBag.SocioComercialId = socioComercialId;
-            return View(documentoRecibido);
+                    break;
+
+                case c_TipoDocumentoRecibido.ComprobanteExtranjero:
+
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            Session.Remove("socComlId");
+
         }
 
         private async Task UploadFileToS3(HttpPostedFileBase file, string key)
@@ -777,6 +797,7 @@ namespace APBox.Controllers.Operaciones
                 }
             }
         }
+
         #endregion
 
         #region Validaciones
@@ -823,6 +844,74 @@ namespace APBox.Controllers.Operaciones
         private int ObtenerUsuario()
         {
             return Convert.ToInt32(Session["UsuarioId"]);
+        }
+
+        public DocumentoRecibido SubirDocumento(DocumentoRecibido documentoRecibido)
+        {
+            PathArchivosDto pathArchivos = new PathArchivosDto();
+            string directoryPath = Server.MapPath("~/Archivos/DocumentosRecibidos");
+
+            if (documentoRecibido.ArchivoComprobanteCfdiXml != null && documentoRecibido.ArchivoComprobanteCfdiXml.ContentLength > 0 ||
+                documentoRecibido.ArchivoComprobanteCfdiPdf != null && documentoRecibido.ArchivoComprobanteCfdiPdf.ContentLength > 0 ||
+                documentoRecibido.ArchivoComprobanteNoFiscal != null && documentoRecibido.ArchivoComprobanteNoFiscal.ContentLength > 0 ||
+                documentoRecibido.ArchivoComprobanteExtranjero != null && documentoRecibido.ArchivoComprobanteExtranjero.ContentLength > 0 ||
+                documentoRecibido.ArchivoAdjuntos != null && documentoRecibido.ArchivoAdjuntos.ContentLength > 0)
+            {
+                try
+                {
+                    // Guardar cada archivo si está presente
+                    documentoRecibido.PathArchivoXml = SaveFile(documentoRecibido.ArchivoComprobanteCfdiXml, directoryPath, "ArchivoComprobanteCfdiXml");
+                    documentoRecibido.PathArchivoPdf = SaveFile(documentoRecibido.ArchivoComprobanteCfdiPdf, directoryPath, "ArchivoComprobanteCfdiPdf");
+                    documentoRecibido.PathNoFiscal = SaveFile(documentoRecibido.ArchivoComprobanteNoFiscal, directoryPath, "ArchivoComprobanteNoFiscal");
+                    documentoRecibido.PathExtranjero = SaveFile(documentoRecibido.ArchivoComprobanteExtranjero, directoryPath, "ArchivoComprobanteExtranjero");
+                    documentoRecibido.PathAdjunto = SaveFile(documentoRecibido.ArchivoAdjuntos, directoryPath, "ArchivoAdjuntos");
+
+                    return (documentoRecibido);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Ha ocurrido un error al guardar el registro: " + ex.Message);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Por favor, selecciona al menos un archivo para subir.");
+            }
+
+            return (documentoRecibido);
+        }
+
+        private string SaveFile(HttpPostedFileBase file, string directoryPath, string a)
+        {
+            if (file != null && file.ContentLength > 0)
+            {
+                try
+                {
+                    // Generar un nombre único para el archivo
+                    string extension = Path.GetExtension(file.FileName);
+                    string newFileName = $"{Guid.NewGuid()}{extension}";
+
+                    // Definir la ruta de almacenamiento
+                    string path = Path.Combine(directoryPath, newFileName);
+
+                    // Crear el directorio si no existe
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    // Guardar el archivo
+                    file.SaveAs(path);
+
+                    return (newFileName);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Ha ocurrido un error al subir el archivo: " + ex.Message);
+                    return null;
+                }
+            }
+            return null;
         }
 
         private PathArchivosDto SubeArchivo()
@@ -945,5 +1034,6 @@ namespace APBox.Controllers.Operaciones
             }
             base.Dispose(disposing);
         }
+
     }
 }

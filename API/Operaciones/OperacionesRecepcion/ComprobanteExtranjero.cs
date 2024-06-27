@@ -13,8 +13,8 @@ namespace API.Operaciones.OperacionesProveedores
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int? DocumentosRecibidos_Id { get; set; }
-        [ForeignKey("DocumentosRecibidos_Id")]
+        public int? DocumentosRecibidosId { get; set; }
+        [ForeignKey("DocumentosRecibidosId")]
         public virtual DocumentoRecibido DocumentoRecibido { get; set; }
 
         public int SucursalId { get; set; }
@@ -25,7 +25,7 @@ namespace API.Operaciones.OperacionesProveedores
 
         public string Referencia { get; set; }
 
-        [DisplayName("Fecha")]
+        [DisplayName("Fecha de Creacion")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FechaCreacion { get; set; }
 

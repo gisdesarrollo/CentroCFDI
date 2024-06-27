@@ -119,15 +119,38 @@ namespace API.Operaciones.OperacionesProveedores
 
         #region Not Mapped Properties
 
-        [DisplayName("Archivo")]
         [NotMapped]
         public HttpPostedFileBase Archivo { get; set; }
+
+        [NotMapped]
+        public HttpPostedFileBase ArchivoComprobanteNoFiscal { get; set; }
+        
+        [NotMapped]
+        public HttpPostedFileBase ArchivoComprobanteExtranjero { get; set; }
+        
+        [NotMapped]
+        public HttpPostedFileBase ArchivoAdjuntos { get; set; }
+        
+        [NotMapped]
+        public HttpPostedFileBase ArchivoComprobanteCfdiXml { get; set; }
+        
+        [NotMapped]
+        public HttpPostedFileBase ArchivoComprobanteCfdiPdf { get; set; }
 
         [NotMapped]
         public string PathArchivoXml { get; set; }
 
         [NotMapped]
         public string PathArchivoPdf { get; set; }
+
+        [NotMapped]
+        public string PathNoFiscal { get; set; }
+
+        [NotMapped] 
+        public string PathExtranjero { get; set; }
+
+        [NotMapped] 
+        public string PathAdjunto { get; set; }
 
         [NotMapped]
         public bool Procesado { get; set; }

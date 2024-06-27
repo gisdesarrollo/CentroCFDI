@@ -396,9 +396,6 @@
   <ItemGroup>
     <Content Include="Archivos\CartaPTemp\CLM181204AD3_D5B05D95-A10F-488B-B217-D8CB82D6E22D.xml" />
     <Content Include="Archivos\CartaPTemp\TR - 3505 - 20230712112716173.xml" />
-    <Content Include="Archivos\DocumentosProveedores\Defectuosa.xml" />
-    <Content Include="Archivos\DocumentosProveedores\Proveedor.xml" />
-    <Content Include="Archivos\DocumentosProveedores\Viaticos.xml" />
     <Content Include="Archivos\Ejemplos\Acuse.xml" />
     <Content Include="Archivos\Gastos\Viaticos.xml" />
     <Content Include="Archivos\images\AP.Box.jpg" />
@@ -2591,6 +2588,8 @@
     <Folder Include="Archivos\ArchivosSucursales\Certificados\" />
     <Folder Include="Archivos\ArchivosSucursales\Logos\" />
     <Folder Include="Archivos\CargasMasivas\" />
+    <Folder Include="Archivos\DocumentosProveedores\" />
+    <Folder Include="Archivos\DocumentosRecibidos\" />
     <Folder Include="Archivos\FacturasProveedores\" />
     <Folder Include="Archivos\PDFs Facturas Emitidas\" />
     <Folder Include="Archivos\RecibosExternos\" />
@@ -2683,8 +2682,6 @@
     <Content Include="Views\Reportes\EstadisticasProveedor.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Archivos\DocumentosProveedores\Proveedor.pdf" />
-    <Content Include="Archivos\DocumentosProveedores\Viaticos.pdf" />
     <Content Include="Archivos\Gastos\Viaticos.pdf" />
     <Content Include="Archivos\Ejemplos\Complemento.zip" />
     <Content Include="Archivos\Formatos\LayoutPagos.csv">

@@ -15,5 +15,7 @@ namespace API.Enums
         ComprobanteNoFiscal,
         [DescriptionAttribute("Comprobante Extranjero")]
         ComprobanteExtranjero,
+        [DescriptionAttribute("Comprobante de Pago")]
+        CFDIpago,
     }
 }

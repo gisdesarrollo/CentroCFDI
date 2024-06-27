@@ -8,7 +8,10 @@ namespace API.Models.Dto
 {
     public class PathArchivosDto
     {
-        public String PathDestinoXml { get; set; }
-        public String PathDestinoPdf { get; set; }
+        public string PathDestinoXml { get; set; }
+        public string PathDestinoPdf { get; set; }
+        public string PathDestinoNoFiscales { get; set; }
+        public string PathDestinoExtranjeros { get; set; }
+        public string PathDestinoAdjunto { get; set; }
     }
 }

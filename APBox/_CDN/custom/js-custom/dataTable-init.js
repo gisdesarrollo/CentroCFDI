@@ -15,7 +15,7 @@ var KTDatatablesExample = function () {
         datatable = $(table).DataTable({
             "info": false,
             'order': [],
-            'pageLength': 25,
+            'pageLength': 25
         });
     }
 

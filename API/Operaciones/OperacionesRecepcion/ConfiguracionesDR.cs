@@ -13,7 +13,6 @@ namespace API.Operaciones.OperacionesProveedores
     [Table("Configuraciones")]
     public  class ConfiguracionesDR
     {
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set;}
 
@@ -39,5 +38,11 @@ namespace API.Operaciones.OperacionesProveedores
         public bool AprobacionComercialAutomatica { get; set; }
 
         public bool AprobacionPagosAutomatica { get; set; }
+
+        public bool RecepcionCfdi { get; set; }
+
+        public bool RecepcionNoFiscales { get; set; }
+
+        public bool RecepcionFacturasExtranjeras { get; set; }
     }
 }
