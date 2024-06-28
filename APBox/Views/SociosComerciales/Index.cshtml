@@ -83,9 +83,6 @@
                                 Socio Comercial
                             </th>
                             <th>
-                                Contacto
-                            </th>
-                            <th>
                                 Datos Fiscales
                             </th>
                             <th>
@@ -119,9 +116,7 @@
                         <tr class="fs-7 align-text-top">
                             <td>
                                 @Html.Raw(item.RazonSocial.Length > 50 ? item.RazonSocial.Substring(0, 50) + "..." : item.RazonSocial)<br />
-                                <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Rfc)</span>
-                            </td>
-                            <td>
+                                <span class="text-gray-600">@Html.DisplayFor(modelItem => item.Rfc)</span><br />
                                 @if (!string.IsNullOrEmpty(item.Email))
                                 {
                                     <i class="ki-duotone ki-sms">
@@ -134,27 +129,10 @@
                                 {
                                     <span class="badge badge-light-info"> Sin Email </span>
                                 }
-                                <br />
-                                @if (!string.IsNullOrEmpty(item.Telefono1))
-                                {
-                                    <i class="ki-duotone ki-whatsapp">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                    @Html.DisplayFor(modelItem => item.Telefono1)<br />
-                                }
-                                @if (!string.IsNullOrEmpty(item.Telefono2))
-                                {
-                                    <i class="ki-duotone ki-whatsapp">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                    @Html.DisplayFor(modelItem => item.Telefono2)
-                                }
                             </td>
                             <td>
                                 <strong>Uso CFDI: </strong> @item.UsoCfdi <br />
-                                <strong>Regimen Fiscal: </strong> @Html.DisplayFor(modelItem => item.RegimenFiscal)
+                                <strong>Regimen Fiscal: </strong> @item.RegimenFiscal
                             <td>
                                 <strong>Pais: </strong>@item.Pais<br />
                                 <strong>CP: </strong>@item.CodigoPostal
@@ -177,11 +155,8 @@
                                     default:
                                         break;
                                 }
-
                              </td>
-
                             <td>
-
                                 @if (expedientefiscal != null)
                                 {
                                     if (item.Id == expedientefiscal.SocioComercialId)

@@ -42,7 +42,7 @@ namespace APBox.Controllers.Expedientes
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
 
             var expedientesFiscalesModel = new ExpedientesFiscalesModel();
-            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaInicial = DateTime.Today.AddMonths(-60);
             var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
 
             expedientesFiscalesModel.FechaInicial = fechaInicial;

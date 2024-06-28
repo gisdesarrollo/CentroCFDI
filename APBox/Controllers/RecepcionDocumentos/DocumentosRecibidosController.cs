@@ -280,11 +280,11 @@ namespace APBox.Controllers.Operaciones
             ViewBag.Action = "Carga Comprobantes";
             ViewBag.Title = "Carga de Comprobantes";
 
-            // Recuperar el documento desde TempData
+            // Recuperar el documentoRecibido desde TempData
             var documentoRecibidoDr = TempData["DocumentoRecibido"] as DocumentoRecibido;
             //byte[] archivoBytes = TempData["archivoBytes"] as byte[];
 
-            // Si no hay documento en TempData, crear uno nuevo
+            // Si no hay documentoRecibido en TempData, crear uno nuevo
             if (documentoRecibidoDr == null)
             {
                 documentoRecibidoDr = new DocumentoRecibido();
@@ -1064,6 +1064,31 @@ namespace APBox.Controllers.Operaciones
             }
         }
         #endregion Validaciones
+
+        #region Aprobaciones Ajax
+
+        [HttpPost]
+        public ActionResult AprobarDocumento(int id)
+        {
+            // Obtén el documentoRecibido por su ID
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
+            if (documentoRecibido == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Cambia el estado del documentoRecibido
+            documentoRecibido.EstadoComercial = c_EstadoComercial.Aprobado;
+            documentoRecibido.AprobacionesDR.UsuarioAprobacionComercial_id = ObtenerUsuario();
+            documentoRecibido.AprobacionesDR.FechaAprobacionComercial = DateTime.Now;
+
+            _db.SaveChanges();
+
+            return Json(new { success = true, estado = documentoRecibido.EstadoComercial.ToString() });
+        }
+
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

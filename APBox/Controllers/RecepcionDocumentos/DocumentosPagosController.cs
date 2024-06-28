@@ -478,6 +478,30 @@ namespace APBox.Controllers.Operaciones
             return RedirectToAction("Pagos");
         }
 
+        #region Aprobaciones Ajax
+
+        [HttpPost]
+        public ActionResult AprobarDocumento(int id)
+        {
+            // Obtén el documentoRecibido por su ID
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id);
+            if (documentoRecibido == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Cambia el estado del documentoRecibido
+            documentoRecibido.EstadoPago = c_EstadoPago.Aprobado;
+            documentoRecibido.AprobacionesDR.UsuarioAprobacionPagos_id = ObtenerUsuario();
+            documentoRecibido.AprobacionesDR.FechaAprobacionPagos = DateTime.Now;
+
+            _db.SaveChanges();
+
+            return Json(new { success = true, estado = documentoRecibido.EstadoPago.ToString() });
+        }
+
+        #endregion
+
         #region Validaciones
 
         protected override void Dispose(bool disposing)
