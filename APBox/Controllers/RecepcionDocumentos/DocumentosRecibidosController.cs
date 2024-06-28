@@ -39,6 +39,7 @@ namespace APBox.Controllers.Operaciones
         private readonly EnviosEmails _envioEmail = new EnviosEmails();
         private readonly OperacionesDocumentosRecibidos _operacionesDocumentosRecibidos = new OperacionesDocumentosRecibidos();
         private readonly AmazonS3Uploader _s3Uploader;
+        private readonly AmazonS3Downloader _s3Downloader;
         private readonly ProcesaExpediente _procesaExpediente = new ProcesaExpediente();
         private readonly AmazonS3Helper _s3Helper;
 
@@ -54,6 +55,7 @@ namespace APBox.Controllers.Operaciones
             // Inicializar AmazonS3Uploader con los valores de configuración
             _s3Uploader = new AmazonS3Uploader(awsAccessKeyId, awsSecretAccessKey, region, bucketName);
             _s3Helper = new AmazonS3Helper(awsAccessKeyId, awsSecretAccessKey, region, bucketName, cloudFrontDomain);
+            _s3Downloader = new AmazonS3Downloader(awsAccessKeyId, awsSecretAccessKey, region, bucketName);
 
         }
 
@@ -253,10 +255,11 @@ namespace APBox.Controllers.Operaciones
 
                 case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
                     SubirDocumento(documentoRecibidoDr);
+                    //var archivoComprobanteNoFiscalByte =ConvertByteFiles(documentoRecibidoDr.ArchivoComprobanteNoFiscal);
                     SetViewBag(documentoRecibidoDr, null, usuario, null);
                     documentoRecibidoDr.FechaComprobante = documentoRecibidoDr.FechaComprobante;
                     documentoRecibidoDr.FechaEntrega = DateTime.Now;
-
+                    //TempData["archivoBytes"] = archivoComprobanteNoFiscalByte;
                     TempData["DocumentoRecibido"] = documentoRecibidoDr;
                     return RedirectToAction("Create");
 
@@ -279,6 +282,7 @@ namespace APBox.Controllers.Operaciones
 
             // Recuperar el documento desde TempData
             var documentoRecibidoDr = TempData["DocumentoRecibido"] as DocumentoRecibido;
+            //byte[] archivoBytes = TempData["archivoBytes"] as byte[];
 
             // Si no hay documento en TempData, crear uno nuevo
             if (documentoRecibidoDr == null)
@@ -322,7 +326,7 @@ namespace APBox.Controllers.Operaciones
 
                     case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
                         ProcesarComprobanteNoFiscal(documentoRecibidoDr, usuario, sucursal, compGastosId, compPagoId);
-                        
+
                         break;
 
                     case c_TipoDocumentoRecibido.ComprobanteExtranjero:
@@ -729,10 +733,12 @@ namespace APBox.Controllers.Operaciones
                     PathArchivosDto pathArchivos = new PathArchivosDto();
                     string directoryPath = Server.MapPath("~/Archivos/DocumentosRecibidos");
 
-                    var nombreArchivo = documentoRecibido.ArchivoComprobanteNoFiscal;
+                    var nombreArchivo = documentoRecibido.PathNoFiscal;
                     var key = $"{basePath}/{nombreArchivo}";
+                    string pathCompletoNoFiscal = directoryPath + "/" + nombreArchivo;
+                    HttpPostedFileBase ArchivoComprobanteNoFiscal = new FileFromPath(pathCompletoNoFiscal);
 
-                    await UploadFileToS3(documentoRecibido.ArchivoComprobanteNoFiscal, key);
+                    await UploadFileToS3(ArchivoComprobanteNoFiscal, key);
 
                     var comprobanteNoFiscal = new ComprobanteNoFiscal
                     {
@@ -1014,7 +1020,18 @@ namespace APBox.Controllers.Operaciones
 
             return fileStreamResult;
         }
+        public async Task<ActionResult> DescargaComprobanteNoFiscal(int id)
+        {
 
+            var comprobanteNoFiscal = _db.ComprobanteNoFiscal.Where(nf=> nf.DocumentosRecibidosId == id).FirstOrDefault();
+            string fileName = Path.GetFileName(comprobanteNoFiscal.PathS3);
+
+            var stream = await _s3Downloader.DownloadFileAsync(comprobanteNoFiscal.PathS3);
+            string contentType = GetContentType(fileName);
+
+            return File(stream, contentType, fileName);
+
+        }
         private void AddFileToZip(ZipArchive archive, byte[] fileBytes, string entryName)
         {
             var entry = archive.CreateEntry(entryName);
@@ -1023,7 +1040,29 @@ namespace APBox.Controllers.Operaciones
                 entryStream.Write(fileBytes, 0, fileBytes.Length);
             }
         }
+        private string GetContentType(string fileName)
+        {
+            // Example logic to determine content type based on file extension
+            string extension = Path.GetExtension(fileName);
 
+            switch (extension.ToLower())
+            {
+                case ".pdf":
+                    return "application/pdf";
+                case ".xml":
+                    return "application/xml";
+                case ".csv":
+                    return "text/csv";
+                case ".xlsx":
+                case ".xls":
+                    return "application/vnd.ms-excel";
+                case ".xslt":
+                case ".xsl":
+                    return "application/xslt+xml";
+                default:
+                    return "application/octet-stream"; // Default content type if not recognized
+            }
+        }
         #endregion Validaciones
 
         protected override void Dispose(bool disposing)

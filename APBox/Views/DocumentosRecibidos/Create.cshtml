@@ -16,6 +16,8 @@
     @Html.HiddenFor(model => model.Procesado)
     @Html.HiddenFor(model => model.PathArchivoXml)
     @Html.HiddenFor(model => model.PathArchivoPdf)
+    @Html.HiddenFor(model => model.PathNoFiscal)
+    @Html.HiddenFor(model => model.PathExtranjero)
     @Html.HiddenFor(model => model.SocioComercialId)
     @Html.HiddenFor(model => model.Validaciones.Detalle)
     @Html.HiddenFor(model => model.Validaciones.Fecha)
@@ -31,6 +33,7 @@
     @Html.HiddenFor(model => model.FechaEntrega)
     @Html.HiddenFor(model => model.TipoDocumentoRecibido)
     @Html.HiddenFor(model => model.Monto)
+    <input type="file" name="ArchivoComprobanteNoFiscal" id="ArchivoComprobanteNoFiscal" style="display:none;" />
     <input id="idUsuarioSolicitante"
            name="idUsuarioSolicitante"
            type="hidden"
@@ -473,7 +476,7 @@
 
     if (Model.TipoDocumentoRecibido == API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal)
     {
-        
+
 
         <div class="row g-5 g-xl-8">
             <div class="col-xl-6">
