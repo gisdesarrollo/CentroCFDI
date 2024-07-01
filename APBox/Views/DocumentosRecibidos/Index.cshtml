@@ -517,13 +517,47 @@
 
                                     <tr>
                                         <td>
-                                            @item.SocioComercial.RazonSocial <br />
-                                            <span class="text-gray-600">@item.SocioComercial.Rfc</span>
+                                            @switch (item.TipoDocumentoRecibido)
+                                            {
+                                                case API.Enums.c_TipoDocumentoRecibido.CFDI:
+                                                    @item.SocioComercial.RazonSocial <br />
+                                                    <span class="text-gray-600">@item.SocioComercial.Rfc</span>
+                                                    break;
+                                                case API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                                                    @Html.Raw("Sin Socio Comercial");
+                                                    break;
+                                                case API.Enums.c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
                                         </td>
                                         <td>
-                                            @item.CfdiRecibidosSerie - @item.CfdiRecibidosFolio <br />
-                                            <span class="text-gray-600">@item.CfdiRecibidosUUID</span> <br />
-                                            <span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
+                                            @switch (item.TipoDocumentoRecibido)
+                                            {
+                                                case API.Enums.c_TipoDocumentoRecibido.CFDI:
+
+                                                    string sf = String.Format("{0} - {1}", item.CfdiRecibidosSerie, item.CfdiRecibidosFolio);
+                                                    @sf <br />
+
+                                                    <span class="text-gray-600">@item.CfdiRecibidosUUID</span> <br />
+                                                    <span class="text-gray-600">@nombreDepartamento </span><br />
+
+                                                    <i class="ki-duotone ki-calendar">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i><span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
+
+                                                    break;
+                                                case API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                                                    <strong>Comprobante No Fiscal</strong> <br />
+                                                    @Html.Raw("Sin Identificador");
+                                                    break;
+                                                case API.Enums.c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
                                         </td>
                                         <td>
                                             <strong>Solicitado a:</strong> <br /> @nombreAprobador <br />
@@ -538,7 +572,31 @@
                                             <div class="text-gray-600">@item.MonedaId</div>
                                         </td>
                                         <td class="text-end">
-                                            @item.Referencia
+                                            @switch (item.TipoDocumentoRecibido)
+                                            {
+                                                case API.Enums.c_TipoDocumentoRecibido.CFDI:
+                                                    @item.Referencia
+
+                                                    break;
+                                                case API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                                                    @item.Referencia
+
+                                                    if (item.ComprobacionGastoId != null)
+                                                    {
+                                                        string compGast = String.Format("{0} - {1}", item.ComprobacionesGastos.Clave, item.ComprobacionesGastos.Folio);
+                                                        <br /> <strong>Comp Gastos: </strong>
+                                                        @Html.Raw(compGast);
+                                                    }
+
+                                                    break;
+                                                case API.Enums.c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                                                    @item.Referencia
+
+                                                    break;
+
+                                                default:
+                                                    break;
+                                            }
                                         </td>
                                         <td class="text-center">
                                             @switch (item.EstadoComercial)

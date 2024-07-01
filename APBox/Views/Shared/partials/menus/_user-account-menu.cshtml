@@ -36,7 +36,7 @@
                 </div>
                 @if (ViewBag.UsuarioEsProveedor != null && ViewBag.UsuarioEsProveedor == true)
                 {
-                    <div class="badge badge-light-success fw-bold fs-8">
+                    <div class="fs-8 text-gray-700">
                         Socio Comercial
                     </div>
                 }
@@ -44,7 +44,7 @@
                 {
                     if (ViewBag.UsuarioDepartamento != null)
                     {
-                        <div class="badge badge-light-success fw-bold fs-8">
+                        <div class="fs-8 text-gray-700">
                             @usuario.Departamento.Nombre
                         </div>
                     }
