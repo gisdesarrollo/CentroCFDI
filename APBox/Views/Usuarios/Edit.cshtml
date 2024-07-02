@@ -1,4 +1,6 @@
-﻿@model API.Catalogos.Usuario
+﻿
+@model API.Catalogos.Usuario
+@using APBox.Context;
 
 @{ ViewBag.Title = "Editar"; }
 
@@ -7,6 +9,20 @@
 
 @using (Html.BeginForm())
 {
+
+    var _db = new APBoxContext();
+    var sucursalId = Convert.ToInt32(Session["SucursalId"]);
+    var GrupoId = _db.Sucursales.Find(sucursalId).GrupoId;
+    var sucursalesgrupo = _db.Sucursales.Where(e => e.GrupoId == GrupoId).ToList();
+    //var usuarioId = Convert.ToInt32(Session["UsuarioId"]);
+    //var usuario = _db.Usuarios.Find(usuarioId);
+    //var GrupoId = _db.Sucursales.Find(sucursalId).GrupoId;
+    var usuariosucursal = _db.UsuariosSucursales.Where(e => e.UsuarioId == Model.Id).ToList();
+
+    var selectedSucursalIds = usuariosucursal.Select(e => e.SucursalId).ToList(); // Lista de IDs seleccionados
+    var selectedSucursalIdsJson = System.Text.Json.JsonSerializer.Serialize(selectedSucursalIds);
+
+
     @Html.AntiForgeryToken()
 
     @Html.HiddenFor(model => model.Id)
@@ -15,12 +31,12 @@
     @Html.ValidationSummary(true, "", new { @class = "label-blue-alt" })
     <div class="card card-stretch card-flush mb-8">
 
-        
+
 
         <!--begin::Card body-->
         <div class="card-body pt-0">
 
-           
+
 
             <div class="py-10">
                 <div class="row">
@@ -41,7 +57,7 @@
                                 <!--end::Title-->
                                 <!--begin::Content-->
                                 <span>El nombre de usuario será el <span class="badge badge-primary badge-lg">Email</span> de la empresa, asi podemos asegurar que no exista duplicidad.</span>
-                         
+
                                 <span>En este apartado podras editar el usuario seleccionado.</span>
                                 <!--end::Content-->
                             </div>
@@ -152,15 +168,37 @@
                         @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
                     </div>
 
+
+
                     <div class="form-group col-4">
                         <!--begin::Label-->
-                        <label class="form-label">Acceso</label>
+                        <label class="form-label">Seleccione las Sucursales de Acceso</label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <div class="form-check form-check-custom form-check-solid mb-2">
-                            <input class="form-check-input" type="checkbox" value="true" checked>
-                            <label class="form-check-label">Todas las sucursales</label>
-                        </div>
+                        <select id="sucursales" name="SucursalIds" class="form-control" multiple="multiple">
+
+                            @if (usuariosucursal.Count > 0)
+                            {
+                                var sucursal = usuariosucursal;
+                                foreach (var sucursal2 in usuariosucursal)
+                                {
+                                    var listasucursales = _db.Sucursales.Where(e => e.Id == sucursal2.SucursalId).FirstOrDefault();
+                                    <option value="@sucursal2.SucursalId">@listasucursales.RazonSocial</option>
+
+
+
+                                }
+
+                                foreach (var sucursales2 in sucursalesgrupo)
+                                {
+                                    bool exists = usuariosucursal.Any(u => u.SucursalId == sucursales2.Id);
+                                    if (!exists)
+                                    {
+                                        <option value="@sucursales2.Id">@sucursales2.RazonSocial</option>
+                                    }
+                                }
+                            }
+                        </select>
                         <!--end::Input-->
                     </div>
 
@@ -211,11 +249,23 @@
         </button>
         <!--end::Button-->
     </div>
+
+    <script>
+    $(document).ready(function() {
+        var selectedSucursalIds = @Html.Raw(selectedSucursalIdsJson);
+
+        $('#sucursales').val(selectedSucursalIds);
+    });
+    </script>
     <!--end::Guardar-->
 }
+
+
+
+
 <script>
     $(document).ready(function () {
-      
+
         var socioComercialId = $('#SocioComercialId').val();
 
         // Verificar si SocioComercialId tiene algún valor
@@ -257,7 +307,6 @@
     });
 
 </script>
-
 
 <script>
     $(document).ready(function () {
