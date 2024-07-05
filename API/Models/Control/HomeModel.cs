@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using API.Operaciones;
+using API.Operaciones.Expedientes;
 
 namespace API.Models.Control
 {
@@ -104,7 +106,12 @@ namespace API.Models.Control
 
 
 
+        //Datos para validar y recordar estar al dia con los expedientes fiscales
 
+        public int DiasVigencia { get; set; }
+
+        public virtual ExpedienteFiscal ExpedientesFiscales { get; set; }
+       
     }
 
 

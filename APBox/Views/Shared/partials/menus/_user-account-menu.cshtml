@@ -54,24 +54,26 @@
         </div>
 
         <div class="menu-content d-flex">
-            <div class="badge badge-light-primary fw-bold fs-8 clearfix">
+            <div class="badge badge-light-primary fw-bold fs-8">
                 @ViewBag.UsuarioPerfil
             </div>
         </div>
+        <div class="menu-content d-flex">
+            @if (ViewBag.UsuarioEsProveedor != null && socioComercial != null)
+            {
+                <div class="fw-semibold fs-8 ps-2">
+                    @socioComercial.RazonSocial <br />
+                    @ViewBag.UsuarioEmaill
+                </div>
+            }
+        </div>
     </div>
 
-    <!--begin::Menu separator-->
-    <div class="separator my-2"></div>
-    <!--end::Menu separator-->
 
     @if (ViewBag.UsuarioEsProveedor != null && socioComercial != null)
     {
-        <div class="menu-content d-flex px-5">
-            <div class="fw-semibold text-muted text-hover-primary fs-7">
-                @socioComercial.RazonSocial <br />
-                @ViewBag.UsuarioEmaill
-            </div>
-        </div>
+        <div class="separator my-2"></div>
+
         <!--begin::Menu item-->
         <div class="menu-item px-5">
             <a href="@Url.Action("Edit", "SociosComerciales",new { id = socioComercial.Id})" class="menu-link px-5">

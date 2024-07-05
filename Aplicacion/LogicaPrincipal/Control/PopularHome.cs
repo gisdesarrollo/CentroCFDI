@@ -188,6 +188,26 @@ namespace Aplicacion.LogicaPrincipal.Control
             homeModel.Mes5total = (int)_db.FacturasEmitidasTemp.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial5 && fe.Fecha <= fechaFinal5).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
 
             homeModel.Mes6total = (int)_db.FacturasEmitidasTemp.Where(fe => fe.EmisorId == _sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.I && fe.Fecha >= fechaInicial6 && fe.Fecha <= fechaFinal6).Select(fe => fe.Total).DefaultIfEmpty(0).Sum(); ;
+
+            //validación de vigencia de expediente fiscal
+
+            if (_socioComercialId != 0)
+            {
+                var expedientefiscal = _db.ExpedientesFiscales
+                          .Where(e => e.SucursalId == _sucursalId && e.SocioComercialId == _socioComercialId)
+                          .OrderByDescending(e => e.Anio)
+                          .ThenByDescending(e => e.Mes)
+                          .FirstOrDefault();
+                if (expedientefiscal != null)
+                {
+                    var vigencia = expedientefiscal.Vigencia;
+
+                    var dias = (vigencia - DateTime.Now).Days;
+
+                    homeModel.DiasVigencia = dias;
+                    homeModel.ExpedientesFiscales = _db.ExpedientesFiscales.Where(e => e.SucursalId == _sucursalId && e.SocioComercialId == _socioComercialId).FirstOrDefault();
+                }
+            }
         }
 
         private double PorcentajeAprobacionUsuario()

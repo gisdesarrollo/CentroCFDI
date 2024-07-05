@@ -235,12 +235,15 @@ namespace APBox.Controllers.Operaciones
 
             var usuario = _db.Usuarios.Find(ObtenerUsuario());
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+
             DocumentosPagosModel pagosModel = new DocumentosPagosModel();
-            DateTime dayI = DateTime.Now.AddDays(-6);
-            var fechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, dayI.Day, 0, 0, 0);
-            var fechaFinal = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+
+            var fechaInicial = DateTime.Today.AddDays(-5);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
+
             pagosModel.FechaInicial = fechaInicial;
             pagosModel.FechaFinal = fechaFinal;
+
             pagosModel.Pagos = _procesaDocumentoPago.Filtrar(fechaInicial, fechaFinal, false, null, sucursal.Id);
 
             return View(pagosModel);
@@ -426,13 +429,11 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
-        // GET: DocumentosPagos/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: DocumentosPagos/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

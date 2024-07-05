@@ -50,6 +50,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosPagos
                                 dr.FechaEntrega >= fechaInicial &&
                                 dr.FechaEntrega <= fechaFinal &&
                                 dr.SucursalId == sucursalId &&
+                                dr.TipoDocumentoRecibido == API.Enums.c_TipoDocumentoRecibido.CFDI &&
                                 dr.RecibidosComprobante.TipoComprobante != API.Enums.c_TipoDeComprobante.P &&
                                 dr.EstadoComercial == API.Enums.c_EstadoComercial.Aprobado);
 

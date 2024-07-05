@@ -25,6 +25,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Utilerias.LogicaPrincipal;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -226,6 +229,7 @@ namespace APBox.Controllers.Operaciones
                     try
                     {
                         archivo = SubeArchivo();
+
                     }
                     catch (Exception ex)
                     {
@@ -939,7 +943,6 @@ namespace APBox.Controllers.Operaciones
                         fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
                         mStreamer.Seek(0, SeekOrigin.Begin);
                         operacionesStreams.StreamArchivo(mStreamer, pathDestinoXml);
-
                         pathArchivos.PathDestinoXml = pathDestinoXml;
                     }
                     if (extencion == ".pdf" || extencion == ".PDF")
@@ -951,7 +954,6 @@ namespace APBox.Controllers.Operaciones
                         fileStream.Read(mStreamer.GetBuffer(), 0, (int)fileStream.Length);
                         mStreamer.Seek(0, SeekOrigin.Begin);
                         operacionesStreams.StreamArchivo(mStreamer, pathDestinoPdf);
-
                         pathArchivos.PathDestinoPdf = pathDestinoPdf;
                     }
                 }

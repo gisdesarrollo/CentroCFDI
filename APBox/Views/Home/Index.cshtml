@@ -1,5 +1,5 @@
 ﻿@model API.Models.Control.HomeModel
-@using System.Text.Json;
+@*@using System.Text.Json;*@
 @using APBox.Context;
 @using System.Globalization;
 
@@ -7,6 +7,8 @@
     var _db = new APBoxContext();
     var sucursal = _db.Sucursales.Find(Convert.ToInt32(Session["SucursalId"]));
     var usuario = _db.Usuarios.Find(Convert.ToInt32(Session["UsuarioId"]));
+    var configuraciones = _db.ConfiguracionesDR.Where(c => c.SucursalId == sucursal.Id).FirstOrDefault();
+    var socioComercialId = usuario.SocioComercialId != null ? usuario.SocioComercialId : 0;
 }
 
 @{
@@ -15,8 +17,8 @@
     if (!string.IsNullOrEmpty(mensaje))
     {
         Html.Raw("alert('" + mensaje + "');");
-    <script>
-        
+        <script>
+
             toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -35,10 +37,7 @@
                 "hideMethod": "fadeOut"
             };
             toastr.error("", '@Html.Raw(mensaje)');
-    </script>
-        
-        
-
+        </script>
     }
 }
 @if (Request.IsAuthenticated && sucursal.Id != 0)
@@ -51,7 +50,7 @@
             <!--begin::Col-->
             <div class="col-3">
                 <!--begin::Engage widget 1-->
-                <div class="card card-stretch shadow h-100">
+                <div class="card border-transparent card-stretch shadow h-100">
                     <!--begin::Body-->
                     <div class="card-body d-flex flex-column flex-center">
                         <!--begin::Heading-->
@@ -79,7 +78,7 @@
             <!--begin::Col-->
             <div class="col-3">
                 <!--begin::Card widget 3-->
-                <div class="card card-flush shadow bgi-no-repeat bgi-size-contain bgi-position-x-end h-100" style="background-color: #7239EA;background-image:url('/_CDN/assets/media/svg/shapes/wave-bg-purple.svg')">
+                <div class="card border-transparent card-flush shadow bgi-no-repeat bgi-size-contain bgi-position-x-end h-100" style="background-color: #7239EA;background-image:url('/_CDN/assets/media/svg/shapes/wave-bg-purple.svg')">
                     <!--begin::Header-->
                     <div class="card-header pt-5 mb-3">
                         <!--begin::Icon-->
@@ -125,7 +124,7 @@
 
             <div class="col-6">
                 <!--begin::Engage widget 9-->
-                <div class="card mb-5 shadow" style="background: linear-gradient(112.14deg, #FF8A00 0%, #E96922 100%)">
+                <div class="card border-transparent mb-5 shadow" style="background: linear-gradient(112.14deg, #FF8A00 0%, #E96922 100%)">
                     <!--begin::Body-->
                     <div class="card-body">
                         <!--begin::Row-->
@@ -211,7 +210,7 @@
                     <!--begin::Col-->
                     <div class="col-6">
                         <!--begin::Tiles Widget 5-->
-                        <a href="#" class="card shadow card-stretch bg-body h-100">
+                        <a href="#" class="card border-transparent shadow card-stretch bg-body h-100">
                             <!--begin::Body-->
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <i class="ki-duotone ki-percentage text-primary fs-2hx ms-n1 flex-grow-1">
@@ -237,7 +236,7 @@
                     <!--begin::Col-->
                     <div class="col-6 mb-5 mb-xl-0">
                         <!--begin::Tiles Widget 5-->
-                        <a href="#" class="card shadow card-stretch bg-body h-100">
+                        <a href="#" class="card border-transparent shadow card-stretch bg-body h-100">
                             <!--begin::Body-->
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <i class="ki-duotone ki-clipboard text-success fs-2hx ms-n1 flex-grow-1">
@@ -271,11 +270,69 @@
     // home si el usuario es proveedor
     if (User.IsInRole("RECEPCION") && usuario.esProveedor)
     {
+        var existeExpediente = Model.ExpedientesFiscales != null;
+
+
+        if (existeExpediente == false || Model.DiasVigencia <= 5)
+        {
+            <div class="row g-5 mb-5 d-flex">
+                <div class="col-12">
+                    <div class="card border-transparent shadow" style="background-color: #1C325E;">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex ps-xl-15">
+                            <!--begin::Wrapper-->
+                            <div class="m-0">
+                                <!--begin::Title-->
+                                <div class="position-relative fs-3 z-index-2 text-white pe-20 me-20 mb-7">
+                                    <span class="me-2">
+
+                                        @if (existeExpediente == false)
+                                        {
+                                            <span>
+                                                No has cargado tu Expediente Fiscal, recuerda que es necesario para poder entregar tus facturas.
+                                                @sucursal.RazonSocial pide que se actualice la Constancia de Situación Fiscal y Opinión de Cumplimiento de SAT cada
+                                                <span class="text-danger bolded fs-2">@configuraciones.DiasVigenciaExpedienteFiscal</span> días.
+                                            </span>
+                                        }
+                                        @if (Model.DiasVigencia <= 5 && Model.DiasVigencia > 0)
+                                        {
+                                            <span>
+                                                Tu Expediente Fiscal esta a <span class="text-danger bolded fs-2">@Model.DiasVigencia</span> días de vencer su vigencia.
+                                            </span>
+                                        }
+                                        @if (Model.DiasVigencia <= 0)
+                                        {
+                                            <span>
+                                                Tu Expediente Fiscal esta <span class="text-danger bolded fs-2">VENCIDO</span>. Actualiza tu expediente lo antes posible para continuar con tus operaciones.
+                                            </span>
+                                        }
+                                    </span>
+                                </div>
+                                <!--end::Title-->
+                                <!--begin::Action-->
+                                <div class="mb-3">
+                                    <a href="@Url.Action("Edit", "SociosComerciales", new { id = socioComercialId })" class="btn btn-danger fw-semibold me-2">
+                                        Ir a Expediente
+                                    </a>
+                                </div>
+                                <!--begin::Action-->
+                            </div>
+                            <!--begin::Wrapper-->
+                            <!--begin::Illustration-->
+                            <img src="~/_CDN/assets/media/illustrations/sigma-1/17-dark.png" class="position-absolute me-3 bottom-0 end-0 h-150px" alt="">
+                            <!--end::Illustration-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                </div>
+            </div>
+        }
+
         <div class="row g-5 mb-10 d-flex">
             <!--begin::Col-->
             <div class="col-3">
                 <!--begin::Engage widget 1-->
-                <div class="card card-stretch shadow h-100">
+                <div class="card border-transparent card-stretch shadow h-100">
                     <!--begin::Body-->
                     <div class="card-body d-flex flex-column flex-center">
                         <!--begin::Heading-->
@@ -303,7 +360,7 @@
             <!--begin::Col-->
             <div class="col-3">
                 <!--begin::Card widget 3-->
-                <div class="card card-flush shadow bgi-no-repeat bgi-size-contain bgi-position-x-end h-100" style="background-color: #7239EA;background-image:url('/_CDN/assets/media/svg/shapes/wave-bg-purple.svg')">
+                <div class="card border-transparent card-flush shadow bgi-no-repeat bgi-size-contain bgi-position-x-end h-100" style="background-color: #7239EA;background-image:url('/_CDN/assets/media/svg/shapes/wave-bg-purple.svg')">
                     <!--begin::Header-->
                     <div class="card-header pt-5 mb-3">
                         <!--begin::Icon-->
@@ -349,7 +406,7 @@
 
             <div class="col-6">
                 <!--begin::Engage widget 9-->
-                <div class="card mb-5 shadow" style="background: linear-gradient(112.14deg, #FF8A00 0%, #E96922 100%)">
+                <div class="card border-transparent mb-5 shadow" style="background: linear-gradient(112.14deg, #FF8A00 0%, #E96922 100%)">
                     <!--begin::Body-->
                     <div class="card-body">
                         <!--begin::Row-->
@@ -435,7 +492,7 @@
                     <!--begin::Col-->
                     <div class="col-6">
                         <!--begin::Tiles Widget 5-->
-                        <a href="#" class="card shadow card-stretch bg-body h-100">
+                        <a href="#" class="card border-transparent shadow card-stretch bg-body h-100">
                             <!--begin::Body-->
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <i class="ki-duotone ki-percentage text-primary fs-2hx ms-n1 flex-grow-1">
@@ -461,7 +518,7 @@
                     <!--begin::Col-->
                     <div class="col-6 mb-5 mb-xl-0">
                         <!--begin::Tiles Widget 5-->
-                        <a href="#" class="card shadow card-stretch bg-body h-100">
+                        <a href="#" class="card border-transparent shadow card-stretch bg-body h-100">
                             <!--begin::Body-->
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <i class="ki-duotone ki-clipboard text-success fs-2hx ms-n1 flex-grow-1">
@@ -497,7 +554,7 @@
         <!--begin::Col-->
         <div class="col-xl-3 col-lg-4">
             <!--begin::Card widget 3-->
-            <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #009fc0; background-image: url('~_/CDN/assets/media/svg/shapes/wave-bg-red.svg')">
+            <div class="card border-transparent card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #009fc0; background-image: url('~_/CDN/assets/media/svg/shapes/wave-bg-red.svg')">
                 <!--begin::Header-->
                 <div class="card-header pt-5 mb-3">
                     <!--begin::Icon-->
@@ -543,7 +600,7 @@
         <!--begin::Col-->
         <div class="col-xl-3 col-lg-4">
             <!--begin::Card widget 3-->
-            <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
+            <div class="card border-transparent card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
                 <!--begin::Header-->
                 <div class="card-header pt-5 mb-3">
                     <!--begin::Icon-->
@@ -590,7 +647,7 @@
                 <!--begin::Col-->
                 <div class="col-sm-6 mb-xl-10">
                     <!--begin::Card widget 2-->
-                    <div class="card h-lg-100">
+                    <div class="card border-transparent h-lg-100">
                         <!--begin::Body-->
                         <div class="card-body d-flex justify-content-between align-items-start flex-column">
                             <!--begin::Icon-->
@@ -622,7 +679,7 @@
                 <!--begin::Col-->
                 <div class="col-sm-6 mb-xl-10">
                     <!--begin::Card widget 2-->
-                    <div class="card h-lg-100">
+                    <div class="card border-transparent h-lg-100">
                         <!--begin::Body-->
                         <div class="card-body d-flex justify-content-between align-items-start flex-column">
                             <!--begin::Icon-->
@@ -660,7 +717,7 @@
                 <!--begin::Col-->
                 <div class="col-sm-6 mb-xl-10">
                     <!--begin::Card widget 2-->
-                    <div class="card h-lg-100">
+                    <div class="card border-transparent h-lg-100">
                         <!--begin::Body-->
                         <div class="card-body d-flex justify-content-between align-items-start flex-column">
                             <!--begin::Icon-->
@@ -692,7 +749,7 @@
                 <!--begin::Col-->
                 <div class="col-sm-6 mb-xl-10">
                     <!--begin::Card widget 2-->
-                    <div class="card h-lg-100">
+                    <div class="card border-transparent h-lg-100">
                         <!--begin::Body-->
                         <div class="card-body d-flex justify-content-between align-items-start flex-column">
                             <!--begin::Icon-->
@@ -733,7 +790,7 @@
     <div class="row g-5 g-xl-8 visually-hidden">
         <div class="col-xl-3">
             <!--begin::Statistics Widget 5-->
-            <a href="#" class="card bg-body hoverable card-xl-stretch mb-xl-8">
+            <a href="#" class="card border-transparent bg-body hoverable card-xl-stretch mb-xl-8">
                 <!--begin::Body-->
                 <div class="card-body">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
@@ -755,7 +812,7 @@
         </div>
         <div class="col-xl-3">
             <!--begin::Statistics Widget 5-->
-            <a href="#" class="card bg-dark hoverable card-xl-stretch mb-xl-8">
+            <a href="#" class="card border-transparent bg-dark hoverable card-xl-stretch mb-xl-8">
                 <!--begin::Body-->
                 <div class="card-body">
                     <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm008.svg-->
@@ -776,7 +833,7 @@
         </div>
         <div class="col-xl-3">
             <!--begin::Statistics Widget 5-->
-            <a href="#" class="card bg-warning hoverable card-xl-stretch mb-xl-8">
+            <a href="#" class="card border-transparent bg-warning hoverable card-xl-stretch mb-xl-8">
                 <!--begin::Body-->
                 <div class="card-body">
                     <!--begin::Svg Icon | path: icons/duotune/finance/fin006.svg-->
@@ -796,7 +853,7 @@
         </div>
         <div class="col-xl-3">
             <!--begin::Statistics Widget 5-->
-            <a href="#" class="card bg-info hoverable card-xl-stretch mb-5 mb-xl-8">
+            <a href="#" class="card border-transparent bg-info hoverable card-xl-stretch mb-5 mb-xl-8">
                 <!--begin::Body-->
                 <div class="card-body">
                     <!--begin::Svg Icon | path: icons/duotune/graphs/gra007.svg-->
@@ -820,7 +877,7 @@
     <div class="row g-5 g-xl-8 visually-hidden">
         <div class="col-xl-6">
             <!--begin::Charts Widget 3-->
-            <div class="card card-xl-stretch mb-xl-8">
+            <div class="card border-transparent card-xl-stretch mb-xl-8">
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
