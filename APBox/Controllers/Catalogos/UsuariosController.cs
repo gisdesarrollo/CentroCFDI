@@ -80,25 +80,25 @@ namespace APBox.Controllers.Catalogos
                 }
 
                 _acondicionarUsuarios.CargaInicial(ref usuario);
-                
-                    if (usuario.PerfilId != null)
+
+                if (usuario.PerfilId != null)
+                {
+                    var perfil = _db.Perfiles.Find(usuario.PerfilId);
+                    if (perfil.Proveedor && usuario.SocioComercialId != null)
                     {
-                        var perfil = _db.Perfiles.Find(usuario.PerfilId);
-                        if (perfil.Proveedor && usuario.SocioComercialId != null)
-                        {
-                            usuario.Departamento = null;
-                            usuario.DepartamentoId = null;
-                            usuario.esProveedor = true;
-                        }
-                        
+                        usuario.Departamento = null;
+                        usuario.DepartamentoId = null;
+                        usuario.esProveedor = true;
                     }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Error: Seleccione un perfil";
-                        ModelState.AddModelError("", "Error: Seleccione un perfil");
-                        return View(usuario);
-                    }
-                
+
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Error: Seleccione un perfil";
+                    ModelState.AddModelError("", "Error: Seleccione un perfil");
+                    return View(usuario);
+                }
+
 
                 try
                 {
@@ -143,7 +143,7 @@ namespace APBox.Controllers.Catalogos
             Usuario usuario = _db.Usuarios.Find(id);
             if (usuario == null)
             {
-                
+
                 return HttpNotFound();
             }
             PopulaForma(usuario.PerfilId);
@@ -161,7 +161,7 @@ namespace APBox.Controllers.Catalogos
         // POST: Usuarios/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Usuario usuario, bool esProveedor)
+        public ActionResult Edit(Usuario usuario, bool esProveedor, int[] SucursalIds)
         {
             PopulaClientes(usuario.SocioComercialId);
             PopulaForma(usuario.PerfilId);
@@ -201,15 +201,28 @@ namespace APBox.Controllers.Catalogos
                     ModelState.AddModelError("", "Error: seleccione un perfil");
                     return View(usuario);
                 }
-                 
-                 usuario.Status = API.Enums.Status.Activo;
+
+                usuario.Status = API.Enums.Status.Activo;
                 _acondicionarUsuarios.Sucursales(usuario);
                 _db.Entry(usuarioAnterior).CurrentValues.SetValues(usuario);
                 _db.Entry(usuarioAnterior).State = EntityState.Modified;
                 _db.SaveChanges();
+
+                // Guardar las relaciones UsuarioSucursal
+                foreach (var sucursalId in SucursalIds)
+                {
+                    var usuarioSucursal = new UsuarioSucursal
+                    {
+                        UsuarioId = usuario.Id,
+                        SucursalId = sucursalId
+                    };
+                    _db.UsuariosSucursales.Add(usuarioSucursal);
+                }
+                _db.SaveChanges();
+
                 if (username != usuario.NombreUsuario)
                 {
-                    _operacionesUsuarios.ReseteoUsername(username,usuario.NombreUsuario);
+                    _operacionesUsuarios.ReseteoUsername(username, usuario.NombreUsuario);
                 }
                 return RedirectToAction("Index");
             }
@@ -310,3 +323,4 @@ namespace APBox.Controllers.Catalogos
         #endregion
     }
 }
+
