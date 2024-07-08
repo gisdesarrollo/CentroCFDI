@@ -236,7 +236,16 @@ namespace APBox.Controllers.Operaciones
                         ModelState.AddModelError("", String.Format("No se pudo cargar el archivo: {0}", ex.Message));
                         return View(documentoRecibidoDr);
                     }
+                    try
+                    {
+                        _procesaDocumentoRecibido.ValidaEstructuraCfdi(archivo.PathDestinoXml);
 
+                    }
+                    catch (Exception ex)
+                    {
+                        ManejarErrores(ex, archivo, documentoRecibidoDr);
+                        return View(documentoRecibidoDr);
+                    }
                     cfdi = _procesaDocumentoRecibido.DecodificaXML(archivo.PathDestinoXml);
                     var timbreFiscalDigital = _decodifica.DecodificarTimbre(cfdi, null);
                     documentoRecibidoDr.DetalleArrays = new List<String>();

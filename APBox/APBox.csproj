@@ -2696,6 +2696,9 @@
     <Content Include="bin\Aplicacion.dll.config" />
     <Content Include="bin\Archivos\Formatos\LayoutPagos.csv" />
     <Content Include="bin\BusApBox.exe.config" />
+    <None Include="Archivos\Xsd\cfdv40.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />

@@ -1,8 +1,5 @@
-﻿using API.Models.Dto;
-using API.Operaciones.OperacionesProveedores;
-using Aplicacion.Context;
+﻿using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
-using Newtonsoft.Json;
 using SW.Services.Authentication;
 using SW.Services.Taxpayer;
 using SW.Services.Validate;
@@ -11,8 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 {
@@ -25,7 +22,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         //private static string urlPruebas = $"http://services.test.sw.com.mx";
         private static string urlProduccion = $"https://services.sw.com.mx";
-
+        private static string xsdFilePath = "cfdv40.xsd";
         //private static string userPruebas = "eduardo.ayala@gisconsultoria.com";
         //private static string passwordPruebas = "Dr5$%5jHefg9";
         private static string user = "desarrollo@gisconsultoria.com";
@@ -154,5 +151,59 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             }
             return response;
         }
+
+        public string ValidaEstructuraCfdi(String pathXml)
+        {
+           // Construir la ruta relativa usando String.Format o directamente
+            string relativePath = Path.Combine("Archivos", "Xsd", xsdFilePath);
+
+            // Obtener la ruta base del directorio de la aplicación
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Obtener la ruta completa del archivo
+            string xsdFullPath = Path.Combine(baseDirectory, relativePath);
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.Schemas.Add(null, xsdFullPath);
+            settings.ValidationType = ValidationType.Schema;
+            // Configurar la validación
+            settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
+            settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
+            settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+            settings.ValidationEventHandler += new ValidationEventHandler(ValidationEventHandler);
+
+            // Habilitar el procesamiento de DTD
+            settings.DtdProcessing = DtdProcessing.Parse;
+           
+            using (XmlReader reader = XmlReader.Create(pathXml, settings))
+            {
+               
+                try
+                {
+                    while (reader.Read()) {}
+                  
+                }
+                catch (XmlException ex)
+                {
+                    throw new Exception(String.Format($"Error de validación XML: El XML contiene errores no es un cfdi correcto - {ex.Message}"));
+                }
+                catch (XmlSchemaValidationException ex)
+                {
+                    throw new Exception(String.Format($"Error de esquema XML: {ex.Message}"));
+                }
+                catch (Exception)
+                {
+                    throw new Exception(String.Format("Error XML incorrecto: El XML cargado no es un cfdi"));
+                }
+            }
+            return "";
+        }
+        private static void ValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            if (e.Severity == XmlSeverityType.Warning)
+                Console.WriteLine($"Advertencia: {e.Message}");
+            else if (e.Severity == XmlSeverityType.Error)
+                Console.WriteLine($"Error: {e.Message}");
+        }
+
     }
 }
