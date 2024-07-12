@@ -9,9 +9,13 @@ using System.Collections.Generic;
 using API.Relaciones;
 using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 using APBox.Control;
-using System.Net.Mail;
 using Aplicacion.LogicaPrincipal.Correos;
-using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
+using API.Context;
+using APBox.Models;
+using ApplicationUser = APBox.Models.ApplicationUser;
 
 namespace APBox.Controllers.Catalogos
 {
@@ -266,7 +270,51 @@ namespace APBox.Controllers.Catalogos
             EnviarCorreoBienvenida(usuario);
             return RedirectToAction("Index");
         }
+        public ActionResult ResetPassword(int id)
+        {
+            ViewBag.Controller = "Usuarios";
+            ViewBag.Action = "ResetPassword";
+            ViewBag.ActionES = "Resetear Password";
+            ViewBag.Title = "sistema";
+            var usuario = _db.Usuarios.Find(id);
+            return View(usuario);
+        }
 
+        [HttpPost]
+        public async Task<ActionResult> ResetPassword(Usuario usuarioReset)
+        {
+            ViewBag.Controller = "Usuarios";
+            ViewBag.Action = "ResetPassword";
+            ViewBag.ActionES = "Resetear Password";
+            ViewBag.Title = "sistema";
+            if (usuarioReset.PasswordAnterior != null || usuarioReset.PasswordNuevo != null)
+            {
+                var usuario = _db.Usuarios.Find(usuarioReset.Id);
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                var user = userManager.FindByName(usuario.NombreUsuario);
+                bool esSucccessPassword = VerifyPassword(user.PasswordHash, usuarioReset.PasswordAnterior);
+                if (!esSucccessPassword)
+                {
+                    ViewBag.ErrorMessage = "Error: la contraseña anterior es incorrecta";
+                    return View(usuarioReset);
+                }
+                var result = await userManager.ChangePasswordAsync(user.Id, usuarioReset.PasswordAnterior, usuarioReset.PasswordNuevo);
+                if (!result.Succeeded)
+                {
+                    ViewBag.ErrorMessage = "Error: no se pudo cambiar la contraseña";
+                    return View(usuarioReset);
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.ErrorMessage = "Error: los dos campos son requeridos";
+            return View(usuarioReset);
+        }
+        public bool VerifyPassword(string passwordHash, string plainPassword)
+        {
+            var passwordHasher = new PasswordHasher();
+            var result = passwordHasher.VerifyHashedPassword(passwordHash, plainPassword);
+            return result == PasswordVerificationResult.Success;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

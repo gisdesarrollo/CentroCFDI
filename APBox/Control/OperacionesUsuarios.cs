@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
-using System.Web.Security;
 using Aplicacion.Context;
 using APBox.Models;
+using ApplicationUser = APBox.Models.ApplicationUser;
 
 namespace APBox.Control
 {
@@ -19,7 +19,8 @@ namespace APBox.Control
 
         public void Crear(String nombreUsuario)
         {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            
             // Establecer la configuración para permitir nombres de usuario no alfanuméricos
             userManager.UserValidator = new UserValidator<ApplicationUser>(userManager)
             {

@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row g-7">
+    <!--begin::Contact groups-->
+    <div class="col-12">
+        <!--begin::Contact group wrapper-->
+        <div class="card shadow-sm card-flush">
+            <!--begin::Card body-->
+            <div class="card-body">
+                <!--begin::Heading-->
+                <div class="card-px text-center pt-5 pb-5">
+                    <!--begin::Title-->
+                    <h2>@ViewBag.Title</h2>
+                    <!--end::Title-->
+                    <!--begin::Description-->
+                    <p class="text-gray-700 fs-4 fw-semibold">
+                        @ViewBag.Completed
+                    </p>
+                    <!--end::Description-->
+                </div>
+                <!--end::Heading-->
+                <!--begin::Illustration-->
+                <div class="text-center pb-15 px-5">
+                    <img src="~/_CDN/assets/media/illustrations/sigma-1/7-dark.png" alt="" class="mw-100 h-200px h-sm-325px">
+                </div>
+                <!--end::Illustration-->
+                <!--begin::Button-->
+                <div class="text-center mt-5">
+                    <a href="~/Account/Login" class="btn btn-primary">Regresar al Login</a>
+                </div>
+                <!--end::Button-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Contact group wrapper-->
+    </div>
+    <!--end::Contact groups-->
+</div>

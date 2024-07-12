@@ -15,21 +15,28 @@ using API.Operaciones.ComprobantesCfdi;
 using API.Operaciones.RelacionesCfdi;
 using API.Operaciones.OperacionesRecepcion;
 using API.Operaciones.Expedientes;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 
 namespace API.Context
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<ApplicationUser>
+    //DbContext
     {
         public DataContext()
             : base("APBox")
         {
             ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 180;
         }
-
+        public static DataContext Create()
+        {
+            return new DataContext();
+        }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<UsuarioSucursal>()
                         .HasRequired(s => s.Usuario)
                         .WithMany()

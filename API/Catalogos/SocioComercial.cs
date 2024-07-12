@@ -36,7 +36,7 @@ namespace API.Catalogos
         [ForeignKey("SucursalId")]
         public virtual Sucursal Sucursal { get; set; }
 
-        [DisplayName("Clave")]
+        [DisplayName("Clave ERP")]
         public String Clave { get; set; }
 
         [RegularExpression(@"^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$", ErrorMessage = "El formato del correo electrónico no es válido.")]

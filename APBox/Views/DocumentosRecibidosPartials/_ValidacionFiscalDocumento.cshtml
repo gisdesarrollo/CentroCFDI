@@ -115,7 +115,8 @@
     </div>
     <!--end::List Widget 2-->
 </div>
-
+@if (Model.TipoDocumentoRecibido == API.Enums.c_TipoDocumentoRecibido.CFDI)
+{
 <div class="col-xl-6">
     <!--begin::List Widget 4-->
     <div class="card shadow card-xl-stretch mb-xl-8">
@@ -163,3 +164,4 @@
     </div>
     <!--end::List Widget 4-->
 </div>
+}

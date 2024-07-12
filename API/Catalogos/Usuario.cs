@@ -85,6 +85,12 @@ namespace API.Catalogos
         public int? DepartamentoId { get; set; }
         [ForeignKey("DepartamentoId")]
         public virtual Departamento Departamento { get; set; }
-
+        [DisplayName("Contraseña Anterior")]
+        [NotMapped]
+        public string PasswordAnterior { get; set; }
+        [DisplayName("Contraseña Nueva")]
+        [NotMapped]
+        //[RegularExpression(@"^[a-zA-Z0-9_\-@#$%&*()!]*$", ErrorMessage = "El campo PasswordNuevo solo puede contener letras, números y los siguientes caracteres especiales: _ - @ # $ % & * ( ) ! sin espacios")]
+        public string PasswordNuevo { get; set; }
     }
 }

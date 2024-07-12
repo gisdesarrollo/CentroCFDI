@@ -634,8 +634,12 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.isProveedor = "Usuario";
             }
             // Splitting the string into lines
-            string[] lines = documentoRecibido.ValidacionesDetalle.Split('\n');
-            documentoRecibido.DetalleArrays = lines.ToList();
+            if(documentoRecibido.TipoDocumentoRecibido == c_TipoDocumentoRecibido.CFDI)
+            {
+                string[] lines = documentoRecibido.ValidacionesDetalle.Split('\n');
+                documentoRecibido.DetalleArrays = lines.ToList();
+            }
+            
             TempData["AprobadorId"] = null;
             TempData["DepartamentoId"] = null;
 

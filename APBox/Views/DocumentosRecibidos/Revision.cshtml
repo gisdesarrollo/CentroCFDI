@@ -32,11 +32,14 @@
             <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#ValidacionComercial" aria-selected="true" role="tab">Validación Comercial</a>
         </li>
         <!--end:::Tab item-->
+        @if (Model.TipoDocumentoRecibido == API.Enums.c_TipoDocumentoRecibido.CFDI)
+        {
         <!--begin:::Tab item-->
         <li class="nav-item" role="presentation">
             <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#ValidacionFiscal" data-kt-initialized="1" aria-selected="false" role="tab" tabindex="-1">Validacion Fiscal</a>
         </li>
         <!--end:::Tab item-->
+        }
         <!--begin:::Tab item-->
         <li class="nav-item" role="presentation">
             <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#ArchivoAdjuntos" aria-selected="false" role="tab" tabindex="-1">Archivos Adjuntos</a>
@@ -50,10 +53,12 @@
         <div class="tab-pane fade active show" id="ValidacionComercial" role="tabpanel">
             <!--begin::Row-->
             <div class="row g-5">
+                @if (Model.TipoDocumentoRecibido == API.Enums.c_TipoDocumentoRecibido.CFDI)
+                {
                 <div class="col-6">
                     @Html.Partial("~/Views/DocumentosRecibidosPartials/_InformacionDocumento.cshtml", Model)
                 </div>
-
+                }
                 <div class="col-6">
                     @Html.Partial("~/Views/DocumentosRecibidosPartials/_EstadoComercialPagoDocumento.cshtml", Model)
                 </div>
