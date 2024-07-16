@@ -14,10 +14,10 @@ namespace APBox
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configura el contexto de la base de datos, el administrador de usuarios y el administrador de inicio de sesión para usar una única instancia por solicitud
-            app.CreatePerOwinContext(DataContext.Create);
             app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(DataContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-
+            
             // Enable the application to use a cookie to store information for the signed in user
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {

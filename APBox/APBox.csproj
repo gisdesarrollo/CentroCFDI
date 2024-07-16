@@ -436,6 +436,12 @@
     <Content Include="bin\API.pdb" />
     <Content Include="bin\Aplicacion.dll" />
     <Content Include="bin\Aplicacion.pdb" />
+    <Content Include="bin\AWSSDK.Core.dll" />
+    <Content Include="bin\AWSSDK.Core.pdb" />
+    <Content Include="bin\AWSSDK.Core.xml" />
+    <Content Include="bin\AWSSDK.S3.dll" />
+    <Content Include="bin\AWSSDK.S3.pdb" />
+    <Content Include="bin\AWSSDK.S3.xml" />
     <Content Include="bin\BeginCollectionItem.dll" />
     <Content Include="bin\BouncyCastle.Crypto.dll" />
     <Content Include="bin\BusApBox.exe" />
@@ -556,10 +562,12 @@
     <Content Include="bin\System.IO.Compression.dll" />
     <Content Include="bin\System.IO.Compression.ZipFile.dll" />
     <Content Include="bin\System.Memory.dll" />
+    <Content Include="bin\System.Memory.xml" />
     <Content Include="bin\System.Numerics.Vectors.dll" />
     <Content Include="bin\System.Numerics.Vectors.xml" />
     <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="bin\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="bin\System.Runtime.dll" />
     <Content Include="bin\System.Security.Cryptography.Algorithms.dll" />
     <Content Include="bin\System.Security.Cryptography.Encoding.dll" />
     <Content Include="bin\System.Security.Cryptography.Primitives.dll" />
@@ -2697,14 +2705,14 @@
     <Content Include="Content\TemplatePDFCartaPorte\PlantillaCartaPorte.cshtml" />
     <Content Include="Content\TemplatePDFPagos\PlantillaPagos33.cshtml" />
     <Content Include="Content\TemplatePDFCartaPorte\PlantillaCartaPorte33.cshtml" />
+    <None Include="Archivos\Xsd\cfdv40.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="bin\APBox.dll.config" />
     <Content Include="bin\API.dll.config" />
     <Content Include="bin\Aplicacion.dll.config" />
     <Content Include="bin\Archivos\Formatos\LayoutPagos.csv" />
     <Content Include="bin\BusApBox.exe.config" />
-    <None Include="Archivos\Xsd\cfdv40.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
