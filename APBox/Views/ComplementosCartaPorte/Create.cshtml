@@ -263,13 +263,15 @@
                             <!--end::Icon-->
                             <!--begin::Label-->
                             <div class="stepper-label">
+
                                 <h3 class="stepper-title">
-                                    Ubicaciones
+                                    RegimenesAduaneros
                                 </h3>
 
                                 <div class="stepper-desc fw-semibold">
                                     Description
                                 </div>
+
                             </div>
                             <!--end::Label-->
                         </div>
@@ -292,7 +294,7 @@
                             <!--begin::Label-->
                             <div class="stepper-label">
                                 <h3 class="stepper-title">
-                                    Mercancías
+                                    Ubicaciones
                                 </h3>
 
                                 <div class="stepper-desc fw-semibold">
@@ -320,7 +322,7 @@
                             <!--begin::Label-->
                             <div class="stepper-label">
                                 <h3 class="stepper-title">
-                                    Transporte
+                                    Mercancías
                                 </h3>
 
                                 <div class="stepper-desc fw-semibold">
@@ -348,7 +350,7 @@
                             <!--begin::Label-->
                             <div class="stepper-label">
                                 <h3 class="stepper-title">
-                                    Figura Transporte
+                                    Transporte
                                 </h3>
 
                                 <div class="stepper-desc fw-semibold">
@@ -363,6 +365,34 @@
                         <!--end::Line-->
                     </div>
                     <!--end::Step 9-->
+                    <!--begin::Step 10-->
+                    <div class="stepper-item pending" data-kt-stepper-element="nav">
+                        <!--begin::Wrapper-->
+                        <div class="stepper-wrapper">
+                            <!--begin::Icon-->
+                            <div class="stepper-icon w-40px h-40px">
+                                <i class="stepper-check fas fa-check"></i>
+                                <span class="stepper-number">10</span>
+                            </div>
+                            <!--end::Icon-->
+                            <!--begin::Label-->
+                            <div class="stepper-label">
+                                <h3 class="stepper-title">
+                                    Figura Transporte
+                                </h3>
+
+                                <div class="stepper-desc fw-semibold">
+                                    Description
+                                </div>
+                            </div>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Wrapper-->
+                        <!--begin::Line-->
+                        <div class="stepper-line h-40px"></div>
+                        <!--end::Line-->
+                    </div>
+                    <!--end::Step 10-->
                 </div>
                 <!--end::Nav-->
             </div>
@@ -394,10 +424,10 @@
                                             @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                                         </div>
                                         @*<div class="form-group col-xs-12 col-sm-6 col-md-4">
-                                            @Html.LabelFor(model => model.IdCCP, htmlAttributes: new { @class = "form-label", })
-                                            @Html.EditorFor(model => model.IdCCP, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
-                                            @Html.ValidationMessageFor(model => model.IdCCP, "", new { @class = "text-danger" })
-                                        </div>*@
+                                    @Html.LabelFor(model => model.IdCCP, htmlAttributes: new { @class = "form-label", })
+                                    @Html.EditorFor(model => model.IdCCP, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.IdCCP, "", new { @class = "text-danger" })
+                                </div>*@
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.FechaDocumento, htmlAttributes: new { @class = "form-label" })
                                             @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
@@ -881,16 +911,16 @@
                                     @Html.EditorFor(model => model.TotalDistRec, new { htmlAttributes = new { @class = "form-control mb-2", @id = "TotalDistRecorridas", @readonly = "readonly" } })
                                     @Html.ValidationMessageFor(model => model.TotalDistRec, "", new { @class = "text-danger" })
                                 </div>
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 hiddenDiv divValidaRegistroIstmo">
-                                        @Html.LabelFor(model => model.UbicacionPoloOrigen, new { @class = "form-label" })
-                                        @Html.EnumDropDownListFor(model => model.UbicacionPoloOrigen, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
-                                        @Html.ValidationMessageFor(model => model.UbicacionPoloOrigen, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-4 hiddenDiv divValidaRegistroIstmo">
-                                        @Html.LabelFor(model => model.UbicacionPoloDestino, new { @class = "form-label" })
-                                        @Html.EnumDropDownListFor(model => model.UbicacionPoloDestino, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
-                                        @Html.ValidationMessageFor(model => model.UbicacionPoloDestino, "", new { @class = "text-danger" })
-                                    </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4 hiddenDiv divValidaRegistroIstmo">
+                                    @Html.LabelFor(model => model.UbicacionPoloOrigen, new { @class = "form-label" })
+                                    @Html.EnumDropDownListFor(model => model.UbicacionPoloOrigen, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                    @Html.ValidationMessageFor(model => model.UbicacionPoloOrigen, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-4 hiddenDiv divValidaRegistroIstmo">
+                                    @Html.LabelFor(model => model.UbicacionPoloDestino, new { @class = "form-label" })
+                                    @Html.EnumDropDownListFor(model => model.UbicacionPoloDestino, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                    @Html.ValidationMessageFor(model => model.UbicacionPoloDestino, "", new { @class = "text-danger" })
+                                </div>
                                 <div class="divValidaTransInternc" @*@ActCampTransInterc*@>
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 ">
@@ -911,11 +941,11 @@
                                             @Html.DropDownListFor(model => model.viaEntradaSalida, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select select mb-2 select", @id = "ClaveTransporteCP" })
                                             @Html.ValidationMessageFor(model => model.viaEntradaSalida, "", new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group col-xs-12 col-sm-3">
-                                            @Html.LabelFor(model => model.RegimenAduanero, new { @class = "form-label" })
-                                            @Html.EnumDropDownListFor(model => model.RegimenAduanero, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
-                                            @Html.ValidationMessageFor(model => model.RegimenAduanero, "", new { @class = "text-danger" })
-                                        </div>
+                                        @*<div class="form-group col-xs-12 col-sm-3">
+                                    @Html.LabelFor(model => model.RegimenAduanero, new { @class = "form-label" })
+                                    @Html.EnumDropDownListFor(model => model.RegimenAduanero, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                    @Html.ValidationMessageFor(model => model.RegimenAduanero, "", new { @class = "text-danger" })
+                                </div>*@
 
                                     </div>
                                 </div>
@@ -928,6 +958,26 @@
                 </div>
                 <!--end::Step 5-->
                 <!--begin::Step 6-->
+                <div class="flex-column" data-kt-stepper-element="content">
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-10">
+                        <div class="row">
+                            <div class="ehiddenDiv" id="DivRegimenAduanero" style="display: none;">
+                                <h3 class="title-hero">
+                                    RegimenAduaneroCCP
+                                </h3>
+                                <div class="form-group col-xs-12 col-sm-3">
+                                    @Html.LabelFor(model => model.RegimenAduanero, new { @class = "form-label" })
+                                    @Html.EnumDropDownListFor(model => model.RegimenAduanero, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                    @Html.ValidationMessageFor(model => model.RegimenAduanero, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Input group-->
+                </div>
+                <!--end::Step 6-->
+                <!--begin::Step 7-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -1041,7 +1091,7 @@
                                             @Html.ValidationMessageFor(model => model.Ubicacion.TipoEstacion_Id, "", new { @class = "text-danger" })
                                         </div>
                                         @*</div>*@
-                                        <div class="form-group col-xs-12 col-sm-4 hiddenDiv activaDR"  @*@hidden*@>
+                                        <div class="form-group col-xs-12 col-sm-4 hiddenDiv activaDR" @*@hidden*@>
                                             @Html.LabelFor(model => model.Ubicacion.DistanciaRecorrida, htmlAttributes: new { @class = "form-label" })
                                             @Html.EditorFor(model => model.Ubicacion.DistanciaRecorrida, new { htmlAttributes = new { @class = "form-control mb-2", @id = "DistanciaRO" } })
                                             @Html.ValidationMessageFor(model => model.Ubicacion.DistanciaRecorrida, "", new { @class = "text-danger" })
@@ -1094,8 +1144,8 @@
                     <!--end::Input group-->
 
                 </div>
-                <!--end::Step 6-->
-                <!--begin::Step 7-->
+                <!--end::Step 7-->
+                <!--begin::Step 8-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -1708,8 +1758,8 @@
                     <!--end::Input group-->
 
                 </div>
-                <!--end::Step 7-->
-                <!--begin::Step 8-->
+                <!--end::Step 8-->
+                <!--begin::Step 9-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -2086,7 +2136,7 @@
                                 <div class="card-body row">
                                     <div class="form-group col-xs-12 col-sm-4">
                                         @Html.LabelFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.SubTipoRemCCP, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.SubTipoRemCCP, (IEnumerable<SelectListItem>)ViewBag.SubTipoRem_Id, "Favor de hacer su selección", new { @class = "form-select select mb-2" , @data_control = "select2" })
+                                        @Html.DropDownListFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.SubTipoRemCCP, (IEnumerable<SelectListItem>)ViewBag.SubTipoRem_Id, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
                                         @Html.ValidationMessageFor(model => model.Mercancias.TransporteMaritimo.RemolqueCCP.SubTipoRemCCP, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-4">
@@ -2459,8 +2509,8 @@
                     <!--end::Input group-->
 
                 </div>
-                <!--end::Step 8-->
-                <!--begin::Step 9-->
+                <!--end::Step 9-->
+                <!--begin::Step 10-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -2633,7 +2683,7 @@
                     </div>
                     <!--end::Input group-->
                 </div>
-                <!--end::Step 9-->
+                <!--end::Step 10-->
                 <!--begin::Actions-->
                 <div class="d-flex flex-stack">
                     <!--begin::Wrapper-->
@@ -2707,8 +2757,7 @@
         }
         $(elem).parent().parent().parent().remove();
     }
-
-
+  
     $("#tipoComprobante").change(function () {
         let divDatosComprobante = document.querySelector('#validaTipoComprobante');
         let divDatosImpuestos = document.querySelector('#activaImpuesto');

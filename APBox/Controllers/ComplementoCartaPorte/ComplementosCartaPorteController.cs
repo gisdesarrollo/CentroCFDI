@@ -172,7 +172,7 @@ namespace APBox.Controllers.ComplementosCartaPorte
                 Mes = (Meses)Enum.ToObject(typeof(Meses), DateTime.Now.Month),
                 SucursalId = ObtenerSucursal(),
                 IDCliente = cliente.Id,
-                Version = "3.0",
+                Version = "3.1",
                 TotalDistRec = 0,
                 Moneda = c_Moneda.MXN,
                 TipoCambio = "1",

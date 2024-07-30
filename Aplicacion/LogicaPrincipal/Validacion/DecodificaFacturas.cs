@@ -206,7 +206,7 @@ namespace Aplicacion.LogicaPrincipal.Validacion
                                     (Aplicacion.CARTAPORTE20Xsd.CartaPorte)oSerializerComplemento.Deserialize(readerComplemento);
                             }
                         }
-                        if(version == "3.0")
+                        if(version == "3.0" || version == "3.1")
                         {
                             XmlSerializer oSerializerComplemento = new XmlSerializer(typeof(CartaPorte));
                             using (var readerComplemento = new StringReader(oComplementoInterior.OuterXml))

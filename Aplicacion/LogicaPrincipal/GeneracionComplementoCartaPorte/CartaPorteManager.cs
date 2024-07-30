@@ -25,13 +25,13 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
     {
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly XsaManager _xsaManager = new XsaManager();
-        private static string pathXml = @"D:\XML-GENERADOS-CARTAPORTE\carta-porte30.xml";
-        //private static string pathCer = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
+        private static string pathXml = @"C:\CARTAPORTE31\carta-porte31.xml";
+        //private static string pathCer = @"C:\Users\kmaur\Desktop\PruebaCSD\CSD_Sucursal_1_XIA190128J61_20230518_063218.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
-        //private static string pathKey = @"D:\Descargas(C)\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
+        //private static string pathKey = @"C:\Users\kmaur\Desktop\PruebaCSD\CSD_Sucursal_1_XIA190128J61_20230518_063218.key";
         //private static string pathKey = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.key";
         //private static string passwordKey = "12345678a";
-        
+
         public string GenerarComplementoCartaPorte(int sucursalId, int complementoCartaPorteId, string mailAlterno)
         {
             string cfdi = null;
@@ -142,8 +142,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             RVCFDI33.GeneraCFDI objCfdi = new RVCFDI33.GeneraCFDI();
 
             // Agrega el certificado prueba
-             //objCfdi.agregarCertificado(pathCer);
-            
+            //objCfdi.agregarCertificado(pathCer);
+
             // certificado de produccion
             objCfdi.agregarCertificadoBase64(System.Convert.ToBase64String(sucursal.Cer));
             if (objCfdi.MensajeError != "")
@@ -177,13 +177,13 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                    (
                        complementoCartaPorte.Sucursal.SerieCartaPorte, //Serie
                        complementoCartaPorte.Sucursal.FolioCartaPorte.ToString(), //Folio
-                       getFormatoFecha(complementoCartaPorte.FechaDocumento,complementoCartaPorte.Hora).ToString("yyyy-MM-ddTHH:mm:ss"), //Fecha de emision
+                       getFormatoFecha(complementoCartaPorte.FechaDocumento, complementoCartaPorte.Hora).ToString("yyyy-MM-ddTHH:mm:ss"), //Fecha de emision
                        complementoCartaPorte.FormaPago ?? "",//complementoCartaPorte.FormaPago, //Forma de pago
                        complementoCartaPorte.CondicionesPago == null ? "" : complementoCartaPorte.CondicionesPago, //Condicion de pago
                        Decimal.ToDouble(complementoCartaPorte.Subtotal), //Subtotal
                        0, //Descuento
                        complementoCartaPorte.Moneda.ToString() ?? "", //Moneda
-                       tipoCambio , //Tipo de cambio
+                       tipoCambio, //Tipo de cambio
                        Decimal.ToDouble(complementoCartaPorte.Total), //Total
                        complementoCartaPorte.TipoDeComprobante.ToString(), //Tipo de comprobante
                        complementoCartaPorte.MetodoPago.ToString() ?? "", //Metodo de pago
@@ -192,12 +192,12 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                        complementoCartaPorte.ExportacionId //Exportacion CFDI40
                    );
 
-            if(objCfdi.MensajeError != "")
+            if (objCfdi.MensajeError != "")
             {
                 error = objCfdi.MensajeError;
                 throw new Exception(string.Join(",", error));
             }
-           
+
             if (complementoCartaPorte.CfdiRelacionados != null)
             {
                 foreach (var cfdiRelacionado in complementoCartaPorte.CfdiRelacionados)
@@ -324,7 +324,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
             decimal sumaImporteT = 0;
             decimal sumaImporteR = 0;
-            
+
             string impuestoT = "";
             string impuestoR = "";
             string tipoFactorT = "";
@@ -421,18 +421,19 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 }
             }
             //CARTA PORTE
-            
-            objCfdi.agregarCartaPorte30
-            (
-                complementoCartaPorte.TranspInternac ? "Sí": "No", //TranspInternac
-                complementoCartaPorte.viaEntradaSalida == null ? "": complementoCartaPorte.EntradaSalidaMerc, //EntradaSalidaMerc
-                complementoCartaPorte.PaisOrigendestino == null ? "": complementoCartaPorte.PaisOrigendestino, //Pais Origen Destino
-                complementoCartaPorte.viaEntradaSalida == null ? "": complementoCartaPorte.viaEntradaSalida, //ViaEntradaSalida
+
+            objCfdi.agregarCartaPorte31(
+                complementoCartaPorte.TranspInternac ? "Sí" : "No", //TranspInternac
+                complementoCartaPorte.viaEntradaSalida == null ? "" : complementoCartaPorte.EntradaSalidaMerc, //EntradaSalidaMerc
+                complementoCartaPorte.PaisOrigendestino == null ? "" : complementoCartaPorte.PaisOrigendestino, //Pais Origen Destino
+                complementoCartaPorte.viaEntradaSalida == null ? "" : complementoCartaPorte.viaEntradaSalida, //ViaEntradaSalida
                 Convert.ToDouble(complementoCartaPorte.TotalDistRec), //TotalDistRec
-                complementoCartaPorte.RegimenAduanero == null ?  "": complementoCartaPorte.RegimenAduanero.ToString(),
                 complementoCartaPorte.RegistroIstmo ? "Sí" : "", //Registro ISTMO
-                complementoCartaPorte.UbicacionPoloOrigen == null ? "": GetClaveEnum(complementoCartaPorte.UbicacionPoloOrigen), //Ubicación Polo Origen
-                complementoCartaPorte.UbicacionPoloDestino == null ? "": GetClaveEnum(complementoCartaPorte.UbicacionPoloDestino) //Ubicación Polo Destino
+                complementoCartaPorte.UbicacionPoloOrigen == null ? "" : GetClaveEnum(complementoCartaPorte.UbicacionPoloOrigen), //Ubicación Polo Origen
+                complementoCartaPorte.UbicacionPoloDestino == null ? "" : GetClaveEnum(complementoCartaPorte.UbicacionPoloDestino), //Ubicación Polo Destino
+                complementoCartaPorte.RegimenAduanero == null ? null : new[] { complementoCartaPorte.RegimenAduanero.ToString() } //RegimenAduanero
+
+
             );
 
             if (objCfdi.MensajeError != "")
@@ -455,7 +456,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         {
                             residenciaFiscal = ubicacion.ResidenciaFiscal.ToString();
                         }
-                        objCfdi.agregarCartaPorte30_Ubicacion
+                        objCfdi.agregarCartaPorte31_Ubicacion
                          (
                              ubicacion.TipoUbicacion, //TipoUbicacion
                              ubicacion.IDUbicacion, //IDUbicacion
@@ -479,7 +480,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         if (ubicacion.Domicilio != null)
                         {
 
-                            objCfdi.agregarCartaPorte30_Ubicacion_Domicilio
+                            objCfdi.agregarCartaPorte31_Ubicacion_Domicilio
                             (
                                 ubicacion.Domicilio.Calle ?? "", //Calle
                                 ubicacion.Domicilio.NumeroExterior ?? "", //NumeroExterior
@@ -505,7 +506,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
             }
             //MERCANCIA
-            objCfdi.agregarCartaPorte30_Mercancias
+            objCfdi.agregarCartaPorte31_Mercancias
             (
                 Convert.ToDouble(complementoCartaPorte.Mercancias.PesoBrutoTotal == 0 ? 0: complementoCartaPorte.Mercancias.PesoBrutoTotal), //PesoBrutoTotal
                 complementoCartaPorte.Mercancias.ClaveUnidadPeso_Id ?? "", //UnidadPeso
@@ -541,7 +542,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         if(validaMPeligroso.MaterialPeligroso == "0") { valorMaterialPeligroso = mercancia.MaterialPeligrosos ? "Sí" : ""; }
                         string fechaCaducidad = mercancia.FechaCaducidad == null ? "" : mercancia.FechaCaducidad.Value.ToString("yyyy-MM-dd");
                         
-                        objCfdi.agregarCartaPorte30_Mercancias_Mercancia
+                        objCfdi.agregarCartaPorte31_Mercancias_Mercancia
                         (
                             mercancia.ClaveProdServCP, //BienesTransp
                             mercancia.ClaveProdSTCC == null ? "" : mercancia.ClaveProdSTCC, //ClaveSTCC
@@ -596,7 +597,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                             {
                                 foreach (var dAduanera in DAduaneras)
                                 {
-                                    objCfdi.agregarCartaPorte30_Mercancias_Mercancia_DocumentacionAduanera
+                                    objCfdi.agregarCartaPorte31_Mercancias_Mercancia_DocumentacionAduanera
                                         (
                                             dAduanera.NumPedimento,
                                             GetClaveEnum(dAduanera.TipoDocumento),
@@ -620,7 +621,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                             {
                                 foreach (var mGIdentificacion in gIdentificacion)
                                 {
-                                    objCfdi.agregarCartaPorte30_Mercancias_Mercancia_GuiasIdentificacion
+                                    objCfdi.agregarCartaPorte31_Mercancias_Mercancia_GuiasIdentificacion
                                         (
                                         mGIdentificacion.NumeroGuiaIdentificacion ?? "",
                                         mGIdentificacion.DescripGuiaIdentificacion ?? "",
@@ -642,7 +643,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                             {
                                 foreach (var mCTransportada in cantidadTransportadas)
                                 {
-                                    objCfdi.agregarCartaPorte30_Mercancias_Mercancia_CantidadTransporta(
+                                    objCfdi.agregarCartaPorte31_Mercancias_Mercancia_CantidadTransporta(
                                          Convert.ToDouble(mCTransportada.Cantidad), //Cantidad
                                          mCTransportada.IDOrigen, //IDOrigen
                                          mCTransportada.IDDestino, //IDDestino
@@ -662,7 +663,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
                         if (mercancia.DetalleMercancia != null)
                         {
-                            objCfdi.agregarCartaPorte30_Mercancias_Mercancia_DetalleMercancia
+                            objCfdi.agregarCartaPorte31_Mercancias_Mercancia_DetalleMercancia
                                 (
                                 mercancia.DetalleMercancia.ClaveUnidadPeso_Id,
                                 Convert.ToDouble(mercancia.DetalleMercancia.PesoBruto),
@@ -685,7 +686,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             //AUTOTRANSPORTE
             if (complementoCartaPorte.Mercancias.AutoTransporte != null)
             {
-                objCfdi.agregarCartaPorte30_Mercancias_Autotransporte
+                objCfdi.agregarCartaPorte31_Mercancias_Autotransporte
                     (
                         complementoCartaPorte.Mercancias.AutoTransporte.TipoPermiso_Id, //PermSCT
                         complementoCartaPorte.Mercancias.AutoTransporte.NumPermisoSCT //NumPermisoSCT
@@ -698,7 +699,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
                 if (complementoCartaPorte.Mercancias.AutoTransporte.IdentificacionVehicular != null)
                 {
-                    objCfdi.agregarCartaPorte30_Mercancias_Autotransporte_IdentificacionVehicular
+                    objCfdi.agregarCartaPorte31_Mercancias_Autotransporte_IdentificacionVehicular
                         (
                             complementoCartaPorte.Mercancias.AutoTransporte.IdentificacionVehicular.ConfigAutotransporte_Id,
                             complementoCartaPorte.Mercancias.AutoTransporte.IdentificacionVehicular.PlacaVM,
@@ -714,7 +715,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 if (complementoCartaPorte.Mercancias.AutoTransporte.Seguros != null)
                 {
 
-                    objCfdi.agregarCartaPorte30_Mercancias_Autotransporte_Seguros
+                    objCfdi.agregarCartaPorte31_Mercancias_Autotransporte_Seguros
                         (
                         complementoCartaPorte.Mercancias.AutoTransporte.Seguros.AseguraRespCivil,
                         complementoCartaPorte.Mercancias.AutoTransporte.Seguros.PolizaRespCivil ?? "",
@@ -739,7 +740,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
                         if (remolques.Count <= 1)
                         {
-                            objCfdi.agregarCartaPorte30_Mercancias_Autotransporte_Remolques
+                            objCfdi.agregarCartaPorte31_Mercancias_Autotransporte_Remolques
                                     (
                                         remolques[0].SubTipoRem_Id,
                                         remolques[0].Placa,
@@ -754,7 +755,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         }
                         if (remolques.Count > 1 && remolques.Count <= 2)
                         {
-                            objCfdi.agregarCartaPorte30_Mercancias_Autotransporte_Remolques
+                            objCfdi.agregarCartaPorte31_Mercancias_Autotransporte_Remolques
                                    (
                                        remolques[0].SubTipoRem_Id,
                                        remolques[0].Placa,
@@ -772,7 +773,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
             if (complementoCartaPorte.Mercancias.TransporteMaritimo != null)
             {
-                objCfdi.agregarCartaPorte30_Mercancias_TransporteMaritimo
+                objCfdi.agregarCartaPorte31_Mercancias_TransporteMaritimo
                     (
                         complementoCartaPorte.Mercancias.TransporteMaritimo.TipoPermiso_Id, //PermSCT
                         complementoCartaPorte.Mercancias.TransporteMaritimo.NumPermisoSCT ?? "", //NumPermisoSCT
@@ -812,7 +813,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                     {
                         foreach (var MContenedor in contenedoresM)
                         {
-                            objCfdi.agregarCartaPorte30_Mercancias_TransporteMaritimo_Contenedor
+                            objCfdi.agregarCartaPorte31_Mercancias_TransporteMaritimo_Contenedor
                                 (
                                 MContenedor.MatriculaContenedor,
                                 MContenedor.ContenedorMaritimo_Id,
@@ -840,7 +841,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                     {
                         foreach (var remolqueCCP in remolqueCCPs)
                         {
-                            objCfdi.agregarCartaPorte30_Mercancias_TransporteMaritimo_RemolquesCCP
+                            objCfdi.agregarCartaPorte31_Mercancias_TransporteMaritimo_RemolquesCCP
                                 (
                                     remolqueCCP.SubTipoRemCCP,
                                     remolqueCCP.PlacaCCP,
@@ -861,7 +862,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
             if (complementoCartaPorte.Mercancias.TransporteAereo != null)
             {
-                objCfdi.agregarCartaPorte30_Mercancias_TransporteAereo
+                objCfdi.agregarCartaPorte31_Mercancias_TransporteAereo
                     (
                         complementoCartaPorte.Mercancias.TransporteAereo.TipoPermiso_Id, //PermSCT
                         complementoCartaPorte.Mercancias.TransporteAereo.NumPermisoSCT, //NumPermisoSCT
@@ -884,7 +885,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             }
             if (complementoCartaPorte.Mercancias.TransporteFerroviario != null)
             {
-                objCfdi.agregarCartaPorte30_Mercancias_TransporteFerroviario
+                objCfdi.agregarCartaPorte31_Mercancias_TransporteFerroviario
                    (
                        complementoCartaPorte.Mercancias.TransporteFerroviario.TipoDeServicio_Id, //TipoDeServicio
                        complementoCartaPorte.Mercancias.TransporteFerroviario.TipoDeTrafico.ToString(),
@@ -904,7 +905,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                     {
                         foreach (var DPaso in derechosDePasos)
                         {
-                            objCfdi.agregarCartaPorte30_Mercancias_TransporteFerroviario_DerechosDePaso
+                            objCfdi.agregarCartaPorte31_Mercancias_TransporteFerroviario_DerechosDePaso
                                 (
                                 DPaso.TipoDerechoDePaso,
                                 Convert.ToDouble(DPaso.KilometrajePagado)
@@ -925,7 +926,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                     {
                         foreach (var Carro in carros)
                         {
-                            objCfdi.agregarCartaPorte30_Mercancias_TransporteFerroviario_Carro
+                            objCfdi.agregarCartaPorte31_Mercancias_TransporteFerroviario_Carro
                                 (
                                 Carro.TipoCarro_Id,
                                 Carro.MatriculaCarro,
@@ -944,7 +945,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                                 {
                                     foreach (var contenedorC in contenedoresC)
                                     {
-                                        objCfdi.agregarCartaPorte30_Mercancias_TransporteFerroviario_Carro_Contenedor
+                                        objCfdi.agregarCartaPorte31_Mercancias_TransporteFerroviario_Carro_Contenedor
                                             (
                                             contenedorC.Contenedor_Id,
                                             Convert.ToDouble(contenedorC.PesoContenedorVacio),
@@ -976,7 +977,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                 {
                     foreach (var TFigura in figuraTransporte)
                     {
-                        objCfdi.agregarCartaPorte30_TiposFigura(
+                        objCfdi.agregarCartaPorte31_TiposFigura(
                             TFigura.FiguraTransporte, //TipoFigura
                             TFigura.RFCFigura ?? "", //RFCFigura
                             TFigura.NumLicencia ?? "", //NumLicencia
@@ -994,7 +995,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                                 {
                                     foreach (var pTransporte in partesTransportes)
                                     {
-                                        objCfdi.agregarCartaPorte30_TiposFigura_ParteTransporte
+                                        objCfdi.agregarCartaPorte31_TiposFigura_ParteTransporte
                                             (
                                             pTransporte.ToString()
                                             );
@@ -1004,7 +1005,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                             }
                         if (TFigura.Domicilio != null)
                         {
-                            objCfdi.agregarCartaPorte30_TiposFigura_Domicilio
+                            objCfdi.agregarCartaPorte31_TiposFigura_Domicilio
                                 (
                                 TFigura.Domicilio.Calle ?? "",
                                 TFigura.Domicilio.NumeroExterior ?? "",
@@ -1028,7 +1029,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                     }
                 }
             }
-            
+
             // key pruebas
             //objCfdi.GeneraXML(pathKey, passwordKey);
             // key produccion
@@ -1041,9 +1042,9 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             //System.IO.File.WriteAllText(pathXml, xml);
             //obtener IdCCP para guardar despues de timbrar
             string idCCP = GetIdCCPXml(xml);
-            //objCfdi = Timbra(objCfdi,sucursal);
+            //objCfdi = Timbra(objCfdi, sucursal);
             //timbrado por XSA Tralix
-             
+
             ComprobanteDto comprobanteDto = new ComprobanteDto() {
                 SucursalId = sucursal.Id,
                 RfcSucursal = sucursal.Rfc,
@@ -1324,10 +1325,10 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             XDocument xmlDoc = XDocument.Parse(xml);
             // Definir el namespace si es necesario
             XNamespace cfdi = "http://www.sat.gob.mx/cfd/4";
-            XNamespace cartaporte30 = "http://www.sat.gob.mx/CartaPorte30";
+            XNamespace cartaporte31 = "http://www.sat.gob.mx/CartaPorte31";
 
             // Busca el elemento CartaPorte dentro del Complemento
-            XElement cartaPorte = xmlDoc.Descendants(cartaporte30 + "CartaPorte").FirstOrDefault();
+            XElement cartaPorte = xmlDoc.Descendants(cartaporte31 + "CartaPorte").FirstOrDefault();
 
             // Obtiene el valor del atributo IdCCP
             string idCCP = cartaPorte != null ? cartaPorte.Attribute("IdCCP")?.Value : null;

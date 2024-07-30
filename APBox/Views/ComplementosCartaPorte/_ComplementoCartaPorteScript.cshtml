@@ -141,13 +141,17 @@
                 divDatosTransInter.style.visibility = 'visible';
                 //$('.divValidaTransInternc').show(200);
                 $('#EntradaSalidaMerc').prop('checked', true);
+                // Mostrar la vista
+                $('#DivRegimenAduanero').show();
+
 
             } else {
                 divDatosTransInter.style.visibility = 'hidden';
                 divDatosTransInter.style.display = "none";
                 //$('.divValidaTransInternc').hide(200);
                 $('#EntradaSalidaMerc').prop('checked', false);
-        }
+                $('#DivRegimenAduanero').hide();
+            }
         });
 
     });

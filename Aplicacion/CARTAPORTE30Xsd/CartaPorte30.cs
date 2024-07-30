@@ -1,4 +1,7 @@
 using API.Enums.CartaPorteEnums;
+using System;
+using System.Linq;
+using System.Xml.Serialization;
 
 
 
@@ -7,8 +10,8 @@ using API.Enums.CartaPorteEnums;
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.sat.gob.mx/CartaPorte30", IsNullable=false)]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.sat.gob.mx/CartaPorte31", IsNullable=false)]
 public partial class CartaPorte {
     
     private CartaPorteUbicacion[] ubicacionesField;
@@ -54,11 +57,34 @@ public partial class CartaPorte {
     private bool ubicacionPoloDestinoFieldSpecified;
 
     public CartaPorte() {
-        this.versionField = "3.0";
+        this.versionField = "3.1";
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("Ubicacion", IsNullable=false)]
+    [XmlArrayItem("RegimenAduaneroCCP", IsNullable = false)]
+    public c_RegimenAduanero[] RegimenAduaneroArray
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(regimenAduaneroField))
+            {
+                return null; // Omitir atributo si es null o vacío
+            }
+            else
+            {
+                // Convertir el campo en un array de c_RegimenAduanero
+                return regimenAduaneroField
+                    .Split(',')
+                    .Select(key => Enum.TryParse<API.Enums.CartaPorteEnums.c_RegimenAduanero>(key.Trim(), out var result) ? result : (c_RegimenAduanero?)null)
+                    .Where(enumValue => enumValue.HasValue)
+                    .Select(enumValue => enumValue.Value)
+                    .ToArray();
+            }
+        }
+    }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Ubicacion", IsNullable=false)]
     public CartaPorteUbicacion[] Ubicaciones {
         get {
             return this.ubicacionesField;
@@ -321,7 +347,7 @@ public partial class CartaPorte {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteUbicacion {
     
     private CartaPorteUbicacionDomicilio domicilioField;
@@ -574,7 +600,7 @@ public partial class CartaPorteUbicacion {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteUbicacionDomicilio {
     
     private string calleField;
@@ -27420,7 +27446,7 @@ public enum c_Estaciones {
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public enum CartaPorteUbicacionNavegacionTrafico {
     
     /// <remarks/>
@@ -27454,7 +27480,7 @@ public enum c_TipoEstacion {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercancias {
     
     private CartaPorteMercanciasMercancia[] mercanciaField;
@@ -27631,7 +27657,7 @@ public partial class CartaPorteMercancias {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasMercancia {
 
     private CartaPorteMercanciasMercanciaDocumentacionAduanera[] documentacionAduaneraField;
@@ -28413,7 +28439,7 @@ public partial class CartaPorteMercanciasMercancia {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasMercanciaDocumentacionAduanera
 {
 
@@ -28488,7 +28514,7 @@ public partial class CartaPorteMercanciasMercanciaDocumentacionAduanera
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasMercanciaGuiasIdentificacion {
     
     private string numeroGuiaIdentificacionField;
@@ -28536,7 +28562,7 @@ public partial class CartaPorteMercanciasMercanciaGuiasIdentificacion {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasMercanciaCantidadTransporta {
     
     private decimal cantidadField;
@@ -28612,7 +28638,7 @@ public partial class CartaPorteMercanciasMercanciaCantidadTransporta {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasMercanciaDetalleMercancia {
     
     private string unidadPesoMercField;
@@ -30138,7 +30164,7 @@ public enum c_ClaveUnidad {
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public enum CartaPorteMercanciasMercanciaMaterialPeligroso {
     
     /// <remarks/>
@@ -128637,7 +128663,7 @@ public enum c_FraccionArancelaria {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasAutotransporte {
     
     private CartaPorteMercanciasAutotransporteIdentificacionVehicular identificacionVehicularField;
@@ -128709,7 +128735,7 @@ public partial class CartaPorteMercanciasAutotransporte {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasAutotransporteIdentificacionVehicular {
     
     private string configVehicularField;
@@ -128888,7 +128914,7 @@ public enum c_ConfigAutotransporte {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasAutotransporteSeguros {
     
     private string aseguraRespCivilField;
@@ -129001,7 +129027,7 @@ public partial class CartaPorteMercanciasAutotransporteSeguros {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasAutotransporteRemolque {
     
     private c_SubTipoRem subTipoRemField;
@@ -129224,7 +129250,7 @@ public enum c_TipoPermiso {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteMaritimo {
     
     private CartaPorteMercanciasTransporteMaritimoContenedor[] contenedorField;
@@ -129647,7 +129673,7 @@ public partial class CartaPorteMercanciasTransporteMaritimo {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteMaritimoContenedor {
     
     private string matriculaContenedorField;
@@ -129793,7 +129819,7 @@ public enum c_ContenedorMaritimo {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteMaritimoRemolqueCCP
 {
 
@@ -131109,7 +131135,7 @@ public enum c_NumAutorizacionNaviero {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteAereo {
     
     private string permSCTField;
@@ -131774,7 +131800,7 @@ public enum c_CodigoTransporteAereo {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteFerroviario {
     
     private CartaPorteMercanciasTransporteFerroviarioDerechosDePaso[] derechosDePasoField;
@@ -131861,7 +131887,7 @@ public partial class CartaPorteMercanciasTransporteFerroviario {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteFerroviarioDerechosDePaso {
     
     private string tipoDerechoDePasoField;
@@ -132260,7 +132286,7 @@ public enum c_DerechosDePaso {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteFerroviarioCarro {
     
     private CartaPorteMercanciasTransporteFerroviarioCarroContenedor[] contenedorField;
@@ -132334,7 +132360,7 @@ public partial class CartaPorteMercanciasTransporteFerroviarioCarro {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteMercanciasTransporteFerroviarioCarroContenedor {
     
     private string tipoContenedorField;
@@ -132482,7 +132508,7 @@ public enum c_TipoDeTrafico {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteTiposFigura {
     
     private CartaPorteTiposFiguraPartesTransporte[] partesTransporteField;
@@ -132598,7 +132624,7 @@ public partial class CartaPorteTiposFigura {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteTiposFiguraPartesTransporte {
     
     private c_ParteTransporte parteTransporteField;
@@ -132663,7 +132689,7 @@ public enum c_ParteTransporte {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte30")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.sat.gob.mx/CartaPorte31")]
 public partial class CartaPorteTiposFiguraDomicilio {
     
     private string calleField;

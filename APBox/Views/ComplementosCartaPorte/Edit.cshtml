@@ -262,7 +262,7 @@
                             <!--begin::Label-->
                             <div class="stepper-label">
                                 <h3 class="stepper-title">
-                                    Ubicaciones
+                                    RegimenesAduaneros
                                 </h3>
 
                                 <div class="stepper-desc fw-semibold">
@@ -278,6 +278,34 @@
                     </div>
                     <!--end::Step 6-->
                     <!--begin::Step 7-->
+                    <div class="stepper-item pending" data-kt-stepper-element="nav">
+                        <!--begin::Wrapper-->
+                        <div class="stepper-wrapper">
+                            <!--begin::Icon-->
+                            <div class="stepper-icon w-40px h-40px">
+                                <i class="stepper-check fas fa-check"></i>
+                                <span class="stepper-number">6</span>
+                            </div>
+                            <!--end::Icon-->
+                            <!--begin::Label-->
+                            <div class="stepper-label">
+                                <h3 class="stepper-title">
+                                    Ubicaciones
+                                </h3>
+
+                                <div class="stepper-desc fw-semibold">
+                                    Description
+                                </div>
+                            </div>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Wrapper-->
+                        <!--begin::Line-->
+                        <div class="stepper-line h-40px"></div>
+                        <!--end::Line-->
+                    </div>
+                    <!--end::Step 7-->
+                    <!--begin::Step 8-->
                     <div class="stepper-item pending" data-kt-stepper-element="nav">
                         <!--begin::Wrapper-->
                         <div class="stepper-wrapper">
@@ -304,8 +332,8 @@
                         <div class="stepper-line h-40px"></div>
                         <!--end::Line-->
                     </div>
-                    <!--end::Step 7-->
-                    <!--begin::Step 8-->
+                    <!--end::Step 8-->
+                    <!--begin::Step 9-->
                     <div class="stepper-item pending" data-kt-stepper-element="nav">
                         <!--begin::Wrapper-->
                         <div class="stepper-wrapper">
@@ -332,8 +360,8 @@
                         <div class="stepper-line h-40px"></div>
                         <!--end::Line-->
                     </div>
-                    <!--end::Step 8-->
-                    <!--begin::Step 9-->
+                    <!--end::Step 9-->
+                    <!--begin::Step 10-->
                     <div class="stepper-item pending" data-kt-stepper-element="nav">
                         <!--begin::Wrapper-->
                         <div class="stepper-wrapper">
@@ -360,7 +388,7 @@
                         <div class="stepper-line h-40px"></div>
                         <!--end::Line-->
                     </div>
-                    <!--end::Step 9-->
+                    <!--end::Step 10-->
                 </div>
                 <!--end::Nav-->
             </div>
@@ -391,10 +419,10 @@
                                             @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                                         </div>
                                         @*<div class="form-group col-xs-12 col-sm-6 col-md-4">
-                                            @Html.LabelFor(model => model.IdCCP, htmlAttributes: new { @class = "form-label", })
-                                            @Html.EditorFor(model => model.IdCCP, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
-                                            @Html.ValidationMessageFor(model => model.IdCCP, "", new { @class = "text-danger" })
-                                        </div>*@
+                                    @Html.LabelFor(model => model.IdCCP, htmlAttributes: new { @class = "form-label", })
+                                    @Html.EditorFor(model => model.IdCCP, new { htmlAttributes = new { @class = "form-control mb-2", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.IdCCP, "", new { @class = "text-danger" })
+                                </div>*@
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4">
                                             @Html.LabelFor(model => model.FechaDocumento, htmlAttributes: new { @class = "form-label" })
                                             @Html.EditorFor(model => model.FechaDocumento, new { htmlAttributes = new { @class = "form-control mb-2 date" } })
@@ -591,19 +619,19 @@
 
 
                             @*<div class="row">
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        @Html.LabelFor(model => model.TipoRelacion, new { @class = "form-label" })
-                                        @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
-                                        @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
-                                    </div>
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            @Html.LabelFor(model => model.TipoRelacion, new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.TipoRelacion, (IEnumerable<SelectListItem>)ViewBag.tipoRelacion, "Favor de hacer su selección", new { @class = "form-select select mb-2" })
+                            @Html.ValidationMessageFor(model => model.TipoRelacion, "", new { @class = "text-danger" })
+                        </div>
 
-                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "form-label" })
-                                        @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                                        @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
+                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            @Html.LabelFor(model => model.UUIDCfdiRelacionado, new { @class = "form-label" })
+                            @Html.EditorFor(model => model.UUIDCfdiRelacionado, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                            @Html.ValidationMessageFor(model => model.UUIDCfdiRelacionado, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
                             *@
                         </div>
                     </div>
@@ -867,7 +895,7 @@
                                     @Html.EnumDropDownListFor(model => model.UbicacionPoloDestino, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
                                     @Html.ValidationMessageFor(model => model.UbicacionPoloDestino, "", new { @class = "text-danger" })
                                 </div>
-                                
+
                                 <div class="divValidaTransInternc @ActCampTransInterc">
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-4 ">
@@ -888,11 +916,11 @@
                                             @Html.DropDownListFor(model => model.viaEntradaSalida, (IEnumerable<SelectListItem>)ViewBag.ClavesTransporte, "Favor de hacer su selección", new { @class = "form-select select mb-2", @id = "ClaveTransporteCP" })
                                             @Html.ValidationMessageFor(model => model.viaEntradaSalida, "", new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group col-xs-12 col-sm-3">
+                                        @*<div class="form-group col-xs-12 col-sm-3">
                                             @Html.LabelFor(model => model.RegimenAduanero, new { @class = "form-label" })
                                             @Html.EnumDropDownListFor(model => model.RegimenAduanero, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
                                             @Html.ValidationMessageFor(model => model.RegimenAduanero, "", new { @class = "text-danger" })
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
 
@@ -905,6 +933,27 @@
                 </div>
                 <!--end::Step 5-->
                 <!--begin::Step 6-->
+                <div class="flex-column" data-kt-stepper-element="content">
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-10">
+                        <div class="row">
+                            <div class="ehiddenDiv" id="DivRegimenAduanero">
+                                <h3 class="title-hero">
+                                    RegimenAduaneroCCP
+                                </h3>
+                                <div class="form-group col-xs-12 col-sm-3">
+                                    @Html.LabelFor(model => model.RegimenAduanero, new { @class = "form-label" })
+                                    @Html.EnumDropDownListFor(model => model.RegimenAduanero, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                    @Html.ValidationMessageFor(model => model.RegimenAduanero, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Input group-->
+
+                </div>
+                <!--end::Step 6-->
+                <!--begin::Step 7-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -1072,8 +1121,8 @@
                     <!--end::Input group-->
 
                 </div>
-                <!--end::Step 6-->
-                <!--begin::Step 7-->
+                <!--end::Step 7-->
+                <!--begin::Step 8-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -1333,7 +1382,7 @@
                                             @Html.EnumDropDownListSpecialFor(model => model.Mercancias.Mercancia.Moneda)
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.Moneda, "", new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group col-xs-12 col-sm-3 @ActFracArancelaria" >
+                                        <div class="form-group col-xs-12 col-sm-3 @ActFracArancelaria">
                                             @Html.LabelFor(model => model.Mercancias.Mercancia.TipoMateria, new { @class = "form-label" })
                                             @Html.EnumDropDownListFor(model => model.Mercancias.Mercancia.TipoMateria, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
                                             @Html.ValidationMessageFor(model => model.Mercancias.Mercancia.TipoMateria, "", new { @class = "text-danger" })
@@ -1680,8 +1729,8 @@
                     <!--end::Input group-->
 
                 </div>
-                <!--end::Step 7-->
-                <!--begin::Step 8-->
+                <!--end::Step 8-->
+                <!--begin::Step 9-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -2444,8 +2493,8 @@
                     <!--end::Input group-->
 
                 </div>
-                <!--end::Step 8-->
-                <!--begin::Step 9-->
+                <!--end::Step 9-->
+                <!--begin::Step 10-->
                 <div class="flex-column" data-kt-stepper-element="content">
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
@@ -2616,7 +2665,7 @@
                     </div>
                     <!--end::Input group-->
                 </div>
-                <!--end::Step 9-->
+                <!--end::Step 10-->
                 <!--begin::Actions-->
                 <div class="d-flex flex-stack">
                     <!--begin::Wrapper-->
