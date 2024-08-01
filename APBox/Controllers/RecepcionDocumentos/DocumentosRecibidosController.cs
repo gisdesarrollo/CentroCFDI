@@ -380,8 +380,8 @@ namespace APBox.Controllers.Operaciones
 
         private Validaciones.DataValidar CrearDataValidar(ComprobanteCFDI cfdi, TimbreFiscalDigital timbreFiscalDigital, Usuario usuario, DocumentoRecibido documentoRecibidoDr, PathArchivosDto archivo, int? compPagoId)
         {
-            var socioComercial = cfdi.Emisor == null ? null : _db.SociosComerciales.FirstOrDefault(s => s.Rfc == cfdi.Emisor.Rfc);
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
+            var socioComercial = cfdi.Emisor == null ? null : _db.SociosComerciales.FirstOrDefault(s => s.Rfc == cfdi.Emisor.Rfc && s.SucursalId == sucursal.Id);
 
             var dataValidar = new Validaciones.DataValidar
             {
