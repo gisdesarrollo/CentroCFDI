@@ -18,6 +18,7 @@ using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 
 namespace APBox.Controllers.Catalogos
@@ -548,70 +549,90 @@ namespace APBox.Controllers.Catalogos
         public ActionResult ReportePagos()
         {
             var sucursalId = ObtenerSucursal();
-
+            bool isEmpty;
             var facturasEmitidasModel = new FacturasEmitidasModel
             {
-                FechaInicial = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                FechaInicial = DateTime.Now.AddDays(-5), // SE RESTA 6 DIAS PARA MOSTRAR EL RANGO DE FACTURAS GENERADAS EN UN SEMANA
                 FechaFinal = DateTime.Now,
                 SucursalId = ObtenerSucursal(),
             };
+            var fechaInicial = DateTime.Today.AddDays(-10);
+            var fechaFinal = DateTime.Today.AddDays(1).AddTicks(-1);
 
-            List<search_doc_rel_fac_emi> listaComplementosPagos = new List<search_doc_rel_fac_emi>();
+            facturasEmitidasModel.FechaInicial = fechaInicial;
+            facturasEmitidasModel.FechaFinal = fechaFinal;
+
             _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
-            bool isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+
+            isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
+
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                /*if (facturasEmitidasModel.SucursalId == 42)
                 {
-                    search_doc_rel_fac_emi queryFacturas = queryFacturasPagadas(facturasEmitidas.Id);
-                    if (queryFacturas != null && queryFacturas.FacturaEmitidaId != 0)
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                     {
-                        facturasEmitidas.FolioComplementoPago = queryFacturas.Folio;
-                        facturasEmitidas.SerieComplementoPago = queryFacturas.Serie;
-                        facturasEmitidas.FacturaComplementoPagoId = queryFacturas.Id;
-                        facturasEmitidas.FacturaEmitidaPagada = true;
+                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                        if (queryFacturas != null)
+                        {
+                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
+                            //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                            //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        }
                     }
-                }
+                }*/
             }
+
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReportePagos";
             ViewBag.ActionES = "Reporte Pago";
             ViewBag.Title = "reportes";
+
             return View(facturasEmitidasModel);
         }
 
         [HttpPost]
-        public ActionResult ReportePagos(FacturasEmitidasModel facturasEmitidasModel)
+        public ActionResult ReportePagos(FacturasEmitidasModel facturasEmitidasModel )
         {
+
             bool isEmpty;
-            if (!ModelState.IsValid)
-            {
-                //_operacionesCfdisEmitidos.ObtenerFacturasById(ref facturasEmitidasModel);
-            }
-            else
+            var fechaI = facturasEmitidasModel.FechaInicial;
+            var fechaF = facturasEmitidasModel.FechaFinal;
+            var fechaInicial = new DateTime(fechaI.Year, fechaI.Month, fechaI.Day, 0, 0, 0);
+            var fechaFinal = new DateTime(fechaF.Year, fechaF.Month, fechaF.Day, 23, 59, 59);
+            facturasEmitidasModel.FechaInicial = fechaInicial;
+            facturasEmitidasModel.FechaFinal = fechaFinal;
+            if (ModelState.IsValid)
             {
                 _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
             }
-            isEmpty = facturasEmitidasModel.FacturasEmitidas.Any();
+            isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
+
             if (isEmpty)
             {
-                foreach (var facturasEmitidas in facturasEmitidasModel.FacturasEmitidas)
+                /*if (facturasEmitidasModel.SucursalId == 42)
                 {
-                    search_doc_rel_fac_emi queryFacturas = queryFacturasPagadas(facturasEmitidas.Id);
-                    if (queryFacturas != null && queryFacturas.FacturaEmitidaId != 0)
+                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                     {
-                        facturasEmitidas.FolioComplementoPago = queryFacturas.Folio;
-                        facturasEmitidas.SerieComplementoPago = queryFacturas.Serie;
-                        facturasEmitidas.FacturaComplementoPagoId = queryFacturas.Id;
-                        facturasEmitidas.FacturaEmitidaPagada = true;
+                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
+                        if (queryFacturas != null)
+                        {
+                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
+                            //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
+                            //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                        }
                     }
-                }
+                }*/
             }
+
             ViewBag.Controller = "FacturasEmitidas";
             ViewBag.Action = "ReportePagos";
             ViewBag.ActionES = "Reporte Pago";
             ViewBag.Title = "reportes";
             return View(facturasEmitidasModel);
+
+
+
         }
 
         public search_doc_rel_fac_emi queryFacturasPagadas(int id)

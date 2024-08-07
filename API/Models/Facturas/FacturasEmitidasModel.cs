@@ -12,5 +12,7 @@ namespace API.Models.Facturas
 
         public virtual List<FacturaEmitidaTemporal> FacturaEmitidasTemporal { get; set; }
 
+        
+
     }
 }

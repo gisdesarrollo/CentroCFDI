@@ -108,10 +108,12 @@
                         <div class="table-responsive">
                             <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
                                 <thead>
-                                    <!--begin::Table row-->
                                     <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
                                         <th class="min-w-100px">
-                                            Receptor
+                                            Rfc
+                                        </th>
+                                        <th class="min-w-100px">
+                                            Razon Social
                                         </th>
                                         <th class="min-w-100px">
                                             UUID
@@ -119,9 +121,11 @@
                                         <th class="min-w-100px">
                                             Serie
                                         </th>
+
                                         <th class="min-w-100px">
                                             Folio
                                         </th>
+
                                         <th class="min-w-100px">
                                             Fecha
                                         </th>
@@ -129,93 +133,135 @@
                                             Moneda
                                         </th>
                                         <th class="min-w-100px">
+                                            Tipo de Cambio
+                                        </th>
+                                        <th class="min-w-100px">
+                                            Metodo Pago
+                                        </th>
+                                        <th class="min-w-100px">
+                                            Forma de Pago
+                                        </th>
+                                        <th class="min-w-100px">
+                                            Uso Cfdi
+                                        </th>
+                                        <th class="min-w-100px">
                                             Subtotal
                                         </th>
+
                                         <th class="min-w-100px">
                                             Descuento
                                         </th>
-                                        <th class="min-w-100px">
+                                        <th>
                                             Total Impuestos Trasladados
                                         </th>
-                                        <th class="min-w-100px">
+                                        <th>
                                             Total Impuestos Retenidos
                                         </th>
                                         <th class="min-w-100px">
                                             Total
                                         </th>
-                                        <th class="min-w-100px">
+                                        <th>
                                             Tipo Comprobante
                                         </th>
-                                        <th class="min-w-100px">
-                                            Complemento de Pago
-                                        </th>
+
+                                       
+
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    @for (int x = 0; x < Model.FacturasEmitidas.Count; x++)
-                                    {
-                                        <tr class="odd">
-
-                                            <td>
-                                                @Model.FacturasEmitidas[x].Receptor.RazonSocial
-                                                @Html.HiddenFor(model => model.FacturasEmitidas[x].Id)
-
-
-                                            </td>
-                                            <td>
-                                                @Model.FacturasEmitidas[x].Uuid
-
-                                            </td>
-                                            <td>
-                                                @Model.FacturasEmitidas[x].Serie
-
-                                            </td>
-                                            <td>
-                                                @Model.FacturasEmitidas[x].Folio
-
-                                            </td>
-                                            <td>
-                                                @Model.FacturasEmitidas[x].Fecha
-
-                                            </td>
-                                            <td class="text-center">
-                                                @Model.FacturasEmitidas[x].Moneda
-
-                                            </td>
-                                            <td class="text-right">
-                                                @Html.Raw(Model.FacturasEmitidas[x].Subtotal.ToString("c"))
-
-                                            </td>
-                                            <td class="text-right">
-                                                @Model.FacturasEmitidas[x].Descuento
-
-                                            </td>
-                                            <td class="text-right">
-                                                @Model.FacturasEmitidas[x].TotalImpuestosTrasladados
-
-                                            </td>
-                                            <td class="text-right">
-                                                @Model.FacturasEmitidas[x].TotalImpuestosRetenidos
-                                            </td>
-                                            <td class="text-right">
-                                                @Html.Raw(Model.FacturasEmitidas[x].Total.ToString("c"))
-                                            </td>
-                                            <td class="text-center">
-                                                @Model.FacturasEmitidas[x].TipoComprobante
-                                            </td>
-                                            <td class="text-center">
-                                                @if (Model.FacturasEmitidas[x].FacturaEmitidaPagada)
-                                                {
-                                                    @Html.ActionLink(Model.FacturasEmitidas[x].SerieComplementoPago + "-" + Model.FacturasEmitidas[x].FolioComplementoPago, "DescargarXml", "ComplementosPagos", new { id = Model.FacturasEmitidas[x].FacturaComplementoPagoId }, new { @class = "font-size-12" })
-                                                }
-                                                else
-                                                {
-                                                    @Html.Raw("")
-                                                }
-                                            </td>
-                                        </tr>
+                                    @{
+                                        var db = new APBox.Context.APBoxContext();
                                     }
+                                    @foreach (var item in Model.FacturaEmitidasTemporal)
+                                    {
+
+                                        if (item.TipoComprobante.ToString() == "P")
+                                        {
+                                            {
+                                                var receptor = db.SociosComerciales.Find(item.ReceptorId);
+                                                var facturaEmitida = db.FacturasEmitidas.Find(item.Id);
+
+                                            <tr class="odd">
+                                                <td>
+                                                    @receptor.Rfc
+                                                </td>
+
+                                                <td>
+                                                    @receptor.RazonSocial
+                                                </td>
+                                                <td>
+                                                    @item.Uuid
+                                                </td>
+                                                <td>
+                                                    @item.Serie
+                                                </td>
+
+                                                <td>
+                                                    @item.Folio
+                                                </td>
+
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Fecha)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Moneda)
+
+                                                </td>
+
+                                                <td>
+                                                    @facturaEmitida.TipoCambio.ToString()
+                                                </td>
+                                                <td>
+                                                    @facturaEmitida.MetodoPago.ToString()
+                                                </td>
+                                                <td>
+                                                    @facturaEmitida.FormaPago
+                                                </td>
+                                                <td>
+                                                    @facturaEmitida.Receptor.UsoCfdi
+                                                </td>
+                                                @{
+//var db = new APBox.Context.APBoxContext();
+//var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+//var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+//var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
+
+                                                }
+
+                                                <td>
+                                                    @facturaEmitida.Subtotal
+                                                </td>
+                                                <td>
+                                                    @facturaEmitida.Descuento
+                                                </td>
+
+                                                <td class="text-right">
+
+                                                    @facturaEmitida.TotalImpuestosTrasladados
+
+                                                </td>
+                                                <td class="text-right">
+
+                                                    @facturaEmitida.TotalImpuestosRetenidos
+
+                                                </td>
+                                                <td class="text-right">
+                                                    @item.Total
+                                                </td>
+
+                                                <td class="text-center">
+                                                    @item.TipoComprobante
+                                                </td>
+
+                                              
+
+                                            </tr>
+                                                            }
+                                                        }
+                                                    }
                                 </tbody>
                             </table>
                         </div>
