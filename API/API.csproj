@@ -229,6 +229,7 @@
     <Compile Include="Models\Dto\UbicacionDropDowDto.cs" />
     <Compile Include="Models\Dto\UbicacionDto.cs" />
     <Compile Include="Models\Expedientes\ExpedientesFiscalesModel.cs" />
+    <Compile Include="Models\Expedientes\ExpedientesLegalesModel.cs" />
     <Compile Include="Operaciones\Expedientes\ExpedienteFiscal.cs" />
     <Compile Include="Models\Facturas\Factura.cs" />
     <Compile Include="Models\Facturas\FacturasEmitidasModel.cs" />
@@ -281,6 +282,7 @@
     <Compile Include="Operaciones\ComplementosPagos\Traslado.cs" />
     <Compile Include="Operaciones\ComplementosPagos\TrasladoDR.cs" />
     <Compile Include="Operaciones\ComprobantesCfdi\ComprobanteCfdi.cs" />
+    <Compile Include="Operaciones\Expedientes\ExpedienteLegal.cs" />
     <Compile Include="Operaciones\Facturacion\DocumentoExtranjero.cs" />
     <Compile Include="Operaciones\Facturacion\FacturaEmitida.cs" />
     <Compile Include="Operaciones\Facturacion\FacturaEmitidaTemporal.cs" />

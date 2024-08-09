@@ -142,6 +142,7 @@ namespace API.Context
 
         //OperacionesProveedores
         public DbSet<ExpedienteFiscal> ExpedientesFiscales { get; set; }
+        public DbSet<ExpedienteLegal> ExpedientesLegales { get; set; }
 
         //Documentos Recibidos
         public DbSet<DocumentoRecibido> DocumentosRecibidos { get; set; }

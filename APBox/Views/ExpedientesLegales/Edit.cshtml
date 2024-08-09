@@ -1,0 +1,137 @@
+﻿@model API.Operaciones.Expedientes.ExpedienteLegal
+@{
+    var errores = TempData["Errores"] as List<string>;
+}
+@using (Html.BeginForm("Edit", "ExpedientesLegales", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card card-flush py-4 mb-8">
+        <div class="card-body">
+
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.SucursalId)
+            @Html.HiddenFor(model => model.SocioComercialId)
+            @Html.HiddenFor(model => model.UsuarioIdActaConstitutiva)
+            @Html.HiddenFor(model => model.UsuarioIdCedulaIdentificacionFiscal)
+            @Html.HiddenFor(model => model.UsuarioIdComprobanteDomicilio)
+            @Html.HiddenFor(model => model.UsuarioIdIdentificacionOficialRepLeg)
+            @Html.HiddenFor(model => model.UsuarioIdEstadoCuentaBancario)
+            @Html.HiddenFor(model => model.FechaCreacionActaConstitutiva)
+            @Html.HiddenFor(model => model.FechaCreacionCedulaIdentificacionFiscal)
+            @Html.HiddenFor(model => model.FechaCreacionComprobanteDomicilio)
+            @Html.HiddenFor(model => model.FechaCreacionEstadoCuentaBancario)
+            @Html.HiddenFor(model => model.FechaCreacionIdentificacionOficialRepLeg)
+            @Html.HiddenFor(model => model.AprobacionActaConstitutiva)
+            @Html.HiddenFor(model => model.AprobacionCedulaIdentificacionFiscal)
+            @Html.HiddenFor(model => model.AprobacionComprobanteDomicilio)
+            @Html.HiddenFor(model => model.AprobacionEstadoCuentaBancario)
+            @Html.HiddenFor(model => model.AprobacionIdentificacionOficialRepLeg)
+            @Html.HiddenFor(model => model.PathActaConstitutiva)
+            @Html.HiddenFor(model => model.PathCedulaIdentificacionFiscal)
+            @Html.HiddenFor(model => model.PathComprobanteDomicilio)
+            @Html.HiddenFor(model => model.PathEstadoCuentaBancario)
+            @Html.HiddenFor(model => model.PathIdentificacionOficialRepLeg)
+
+            <div class="form">
+
+                <div class="row">
+                    @if (errores != null && errores.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in errores)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+
+                <div class="row">
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Acta Constitutiva", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoActaConstitutiva" id="ArchivoActaConstitutiva" accept="*/*" onchange="validateFileSize(this)"/>
+                        @if (!string.IsNullOrEmpty(Model.ActaConstitutivaName))
+                        {
+                            <i class="ki-outline ki-check-circle"></i><span class="form-text text-muted"> @Model.ActaConstitutivaName </span>
+                        }
+                            @Html.HiddenFor(model => model.ActaConstitutivaName)
+                        </div>
+
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Cédula Identificación Fiscal", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoCedulaIdentificacionFiscal" id="ArchivoCedulaIdentificacionFiscal" accept="*/*" onchange="validateFileSize(this)"/>
+                        @if (!string.IsNullOrEmpty(Model.CedulaIdentificacionFiscalName))
+                        {
+                            <i class="ki-outline ki-check-circle"></i><span class="form-text text-muted"> @Model.CedulaIdentificacionFiscalName </span>
+                            @Html.HiddenFor(model => model.CedulaIdentificacionFiscalName)
+                        }
+                        </div>
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Comprobante de Domicilio", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoComprobanteDomicilio" id="ArchivoComprobanteDomicilio" accept="*/*" onchange="validateFileSize(this)"/>
+                        @if (!string.IsNullOrEmpty(Model.ComprobanteDomicilioName))
+                        {
+                            <i class="ki-outline ki-check-circle"></i><span class="form-text text-muted"> @Model.ComprobanteDomicilioName </span>
+                        }
+                            @Html.HiddenFor(model => model.ComprobanteDomicilioName)
+                        </div>
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Identificación Oficial", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoIdentificacionOficialRepLeg " id="ArchivoIdentificacionOficialRepLeg " accept="*/*" onchange="validateFileSize(this)"/>
+                        @if (!string.IsNullOrEmpty(Model.IdentificacionOficialRepLegName))
+                        {
+                            <i class="ki-outline ki-check-circle"></i><span class="form-text text-muted"> @Model.IdentificacionOficialRepLegName</span>
+                        }
+                            @Html.HiddenFor(model => model.IdentificacionOficialRepLegName)
+                        </div>
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Estado de Cuenta Bancario", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoEstadoCuentaBancario" id="ArchivoEstadoCuentaBancario" accept="*/*" onchange="validateFileSize(this)"/>
+                        @if (!string.IsNullOrEmpty(Model.EstadoCuentaBancarioName))
+                        {
+                            <i class="ki-outline ki-check-circle"></i><span class="form-text text-muted"> @Model.EstadoCuentaBancarioName</span>
+                        }
+                            @Html.HiddenFor(model => model.EstadoCuentaBancarioName)
+                        </div>
+                    <div class="mb-10 row">
+                        <div class="form-group col-8">
+                            @Html.LabelFor(model => model.Comentarios, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextAreaFor(model => model.Comentarios, htmlAttributes: new { @class = "form-control textarea mb-2" })
+                            @Html.ValidationMessageFor(model => model.Comentarios, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--begin::Guardar-->
+    <div class="d-flex justify-content-end">
+        <!--begin::Button-->
+        <a href="@Url.Action("Index",ViewBag.Controller,new {id = ViewBag.SocioComercialId,socioComercialId = ViewBag.SocioComercialId })" class="btn btn-light me-5">
+            Cancelar
+        </a>
+        <!--end::Button-->
+        <!--begin::Button-->
+        <button type="submit" class="btn btn-primary">
+            <span class="indicator-label">
+                Guardar
+            </span>
+        </button>
+        <!--end::Button-->
+    </div>
+    <!--end::Guardar-->
+}
+<script>
+    function validateFileSize(input) {
+        const file = input.files[0];
+        const maxSize = 10 * 1024 * 1024; // 10 MB in bytes
+
+        if (file && file.size > maxSize) {
+            alert("El archivo supera el límite de 10 MB.");
+            input.value = ""; // Clear the input
+        }
+    }
+</script>

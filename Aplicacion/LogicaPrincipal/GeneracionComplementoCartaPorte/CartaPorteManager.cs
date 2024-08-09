@@ -25,7 +25,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
     {
         private readonly AplicacionContext _db = new AplicacionContext();
         private readonly XsaManager _xsaManager = new XsaManager();
-        private static string pathXml = @"C:\CARTAPORTE31\carta-porte31.xml";
+        private static string pathXml = @"C:\TempFileCartaPorte\carta-porte31.xml";
         //private static string pathCer = @"C:\Users\kmaur\Desktop\PruebaCSD\CSD_Sucursal_1_XIA190128J61_20230518_063218.cer";
         //private static string pathCer = @"C:\inetpub\CertificadoPruebas\CSD_Pruebas_CFDI_XIA190128J61.cer";
         //private static string pathKey = @"C:\Users\kmaur\Desktop\PruebaCSD\CSD_Sucursal_1_XIA190128J61_20230518_063218.key";
@@ -409,7 +409,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         }
                     }
                 }
-                if (sumaImporteT > 0)
+                if (sumaImporteT >= 0 && baseT > 0 && tipoFactorT == "Tasa")
                 {
                     objCfdi.agregarTraslado(
                                    impuestoT,

@@ -1,4 +1,5 @@
-﻿using API.Operaciones.Expedientes;
+﻿using API.Models.Expedientes;
+using API.Operaciones.Expedientes;
 using Aplicacion.Context;
 using Aplicacion.LogicaPrincipal.Facturas;
 using System;
@@ -31,6 +32,19 @@ namespace Aplicacion.LogicaPrincipal.Expedientes
                                 .OrderBy(dr => dr.FechaCreacion)
                                 .ToList();
             return expedientesFiscales;
+        }
+        public List<ExpedienteLegal> FiltrarExpedienteLegal(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int socioComercialId)
+        {
+            List<ExpedienteLegal> expedientesLegales = new List<ExpedienteLegal>();
+
+            //Si el usuario es proveedor
+            expedientesLegales = _db.ExpedientesLegales
+                                .Where(dr =>
+                                        dr.SocioComercialId == socioComercialId &&
+                                        dr.SucursalId == sucursalId)
+                                .OrderBy(dr => dr.SucursalId)
+                                .ToList();
+            return expedientesLegales;
         }
     }
 }

@@ -359,6 +359,7 @@
     <Compile Include="Controllers\Catalogos\EventosController.cs" />
     <Compile Include="Controllers\Catalogos\ProyectosController.cs" />
     <Compile Include="Controllers\Expedientes\ExpedientesFiscalesController.cs" />
+    <Compile Include="Controllers\Expedientes\ExpedientesLegalesController.cs" />
     <Compile Include="Controllers\Operaciones\RestoreController.cs" />
     <Compile Include="Controllers\RecepcionDocumentos\AutorregistroSociosComercialesController.cs" />
     <Compile Include="Controllers\Catalogos\SociosComercialesController.cs" />
@@ -2921,6 +2922,9 @@
     <Content Include="Views\Restore\Error.cshtml" />
     <Content Include="Views\Restore\Completado.cshtml" />
     <Content Include="Views\Restore\ResetPassword.cshtml" />
+    <Content Include="Views\ExpedientesLegales\Index.cshtml" />
+    <Content Include="Views\ExpedientesLegales\Create.cshtml" />
+    <Content Include="Views\ExpedientesLegales\Edit.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

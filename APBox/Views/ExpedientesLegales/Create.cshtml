@@ -1,0 +1,91 @@
+﻿@model API.Operaciones.Expedientes.ExpedienteLegal
+@{
+    var errores = TempData["Errores"] as List<string>;
+}
+@using (Html.BeginForm("Create", "ExpedientesLegales", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card card-flush py-4 mb-8">
+        <div class="card-body">
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.SucursalId)
+            
+            <div class="form">
+
+                <div class="row">
+                    @if (errores != null && errores.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in errores)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+
+                <div class="row">
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Acta Constitutiva", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoActaConstitutiva" id="ArchivoActaConstitutiva" accept="*/*" onchange="validateFileSize(this)" />
+                    </div>
+
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Cédula Identificación Fiscal", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoCedulaIdentificacionFiscal" id="ArchivoCedulaIdentificacionFiscal" accept="*/*" onchange="validateFileSize(this)"/>
+                    </div>
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Comprobante de Domicilio", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoComprobanteDomicilio" id="ArchivoComprobanteDomicilio" accept="*/*" />
+                    </div>
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Identificación Oficial", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoIdentificacionOficialRepLeg " id="ArchivoIdentificacionOficialRepLeg " accept="*/*" onchange="validateFileSize(this)"/>
+                    </div>
+                    <div class="form-group my-6 col-4">
+                        @Html.Label("Estado de Cuenta Bancario", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoEstadoCuentaBancario" id="ArchivoEstadoCuentaBancario" accept="*/*" onchange="validateFileSize(this)"/>
+                    </div>
+                    <div class="mb-10 row">
+                        <div class="form-group col-8">
+                            @Html.LabelFor(model => model.Comentarios, htmlAttributes: new { @class = "form-label" })
+                            @Html.TextAreaFor(model => model.Comentarios, htmlAttributes: new { @class = "form-control textarea mb-2" })
+                            @Html.ValidationMessageFor(model => model.Comentarios, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--begin::Guardar-->
+    <div class="d-flex justify-content-end">
+        <!--begin::Button-->
+        <a href="@Url.Action("Index",ViewBag.Controller,new {id = ViewBag.SocioComercialId,socioComercialId = ViewBag.SocioComercialId })" class="btn btn-light me-5">
+            Cancelar
+        </a>
+        <!--end::Button-->
+        <!--begin::Button-->
+        <button type="submit" class="btn btn-primary">
+            <span class="indicator-label">
+                Guardar
+            </span>
+        </button>
+        <!--end::Button-->
+    </div>
+    <!--end::Guardar-->
+}
+<script>
+    function validateFileSize(input) {
+        const file = input.files[0];
+        const maxSize = 10 * 1024 * 1024; // 10 MB in bytes
+
+        if (file && file.size > maxSize) {
+            alert("El archivo supera el límite de 10 MB.");
+            input.value = ""; // Clear the input
+        }
+    }
+</script>
