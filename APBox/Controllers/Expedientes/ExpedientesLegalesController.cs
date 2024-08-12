@@ -108,7 +108,7 @@ namespace APBox.Controllers.Expedientes
                     expediente.FechaCreacionActaConstitutiva = DateTime.Now;
                     var fechaformateadoActaConstitutiva = expediente.FechaCreacionActaConstitutiva?.ToString("dd-MM-yyyy") ?? null;
                     string extensionActaConstitutiva = Path.GetExtension(expediente.ArchivoActaConstitutiva.FileName);
-                    var nombreArchivo = $"ArchivoActaConstitutiva_{fechaformateadoActaConstitutiva}{extensionActaConstitutiva}";
+                    var nombreArchivo = $"ActaConstitutiva_{fechaformateadoActaConstitutiva}{extensionActaConstitutiva}";
                     var key = $"{basePath}/{nombreArchivo}";
                     await UploadFileToS3(expediente.ArchivoActaConstitutiva, key);
 
@@ -122,7 +122,7 @@ namespace APBox.Controllers.Expedientes
                     expediente.FechaCreacionCedulaIdentificacionFiscal = DateTime.Now;
                     var fechaformateadoCedulaIdentificacionFiscal = expediente.FechaCreacionCedulaIdentificacionFiscal?.ToString("dd-MM-yyyy") ?? null;
                     string extensionCedulaIdentificacionFiscal = Path.GetExtension(expediente.ArchivoCedulaIdentificacionFiscal.FileName);
-                    var nombreArchivo = $"ArchivoCedulaIdentificacionFiscal_{fechaformateadoCedulaIdentificacionFiscal}{extensionCedulaIdentificacionFiscal}";
+                    var nombreArchivo = $"CedulaIdentificacionFiscal_{fechaformateadoCedulaIdentificacionFiscal}{extensionCedulaIdentificacionFiscal}";
                     var key = $"{basePath}/{nombreArchivo}";
                     await UploadFileToS3(expediente.ArchivoCedulaIdentificacionFiscal, key);
 
@@ -135,7 +135,7 @@ namespace APBox.Controllers.Expedientes
                     expediente.FechaCreacionComprobanteDomicilio = DateTime.Now;
                     var fechaformateadoComprobanteDomicilio = expediente.FechaCreacionComprobanteDomicilio?.ToString("dd-MM-yyyy") ?? null;
                     string extensionComprobanteDomicilio = Path.GetExtension(expediente.ArchivoComprobanteDomicilio.FileName);
-                    var nombreArchivo = $"ArchivoComprobanteDomicilio_{fechaformateadoComprobanteDomicilio}{extensionComprobanteDomicilio}";
+                    var nombreArchivo = $"ComprobanteDomicilio_{fechaformateadoComprobanteDomicilio}{extensionComprobanteDomicilio}";
                     var key = $"{basePath}/{nombreArchivo}";
                     await UploadFileToS3(expediente.ArchivoComprobanteDomicilio, key);
 
@@ -148,7 +148,7 @@ namespace APBox.Controllers.Expedientes
                     expediente.FechaCreacionIdentificacionOficialRepLeg = DateTime.Now;
                     var fechaformateadoIdentificacionOficialRepLeg = expediente.FechaCreacionIdentificacionOficialRepLeg?.ToString("dd-MM-yyyy") ?? null;
                     string extensionIdentificacionOficialRepLeg = Path.GetExtension(expediente.ArchivoIdentificacionOficialRepLeg.FileName);
-                    var nombreArchivo = $"ArchivoIdentificacionOficialRepLeg_{fechaformateadoIdentificacionOficialRepLeg}{extensionIdentificacionOficialRepLeg}";
+                    var nombreArchivo = $"IdentificacionOficialRepLeg_{fechaformateadoIdentificacionOficialRepLeg}{extensionIdentificacionOficialRepLeg}";
                     var key = $"{basePath}/{nombreArchivo}";
                     await UploadFileToS3(expediente.ArchivoIdentificacionOficialRepLeg, key);
 
@@ -161,7 +161,7 @@ namespace APBox.Controllers.Expedientes
                     expediente.FechaCreacionEstadoCuentaBancario = DateTime.Now;
                     var fechaformateadoEstadoCuentaBancario = expediente.FechaCreacionEstadoCuentaBancario?.ToString("dd-MM-yyyy") ?? null;
                     string extensionEstadoCuentaBancario = Path.GetExtension(expediente.ArchivoEstadoCuentaBancario.FileName);
-                    var nombreArchivo = $"ArchivoEstadoCuentaBancario_{fechaformateadoEstadoCuentaBancario}{extensionEstadoCuentaBancario}";
+                    var nombreArchivo = $"EstadoCuentaBancario_{fechaformateadoEstadoCuentaBancario}{extensionEstadoCuentaBancario}";
                     var key = $"{basePath}/{nombreArchivo}";
                     await UploadFileToS3(expediente.ArchivoEstadoCuentaBancario, key);
 
