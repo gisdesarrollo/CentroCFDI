@@ -123,7 +123,7 @@
             <div class="clearfix"></div>
             @if (Model.Retencion != null)
             {
-                if (Model.Retencion.Importe > 0 )
+                if (Model.Retencion.Importe >= 0 && Model.Retencion.Base > 0)
                 {
                     <hr />
                     <h3 class="title-hero">

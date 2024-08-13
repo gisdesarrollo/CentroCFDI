@@ -102,7 +102,7 @@ namespace Aplicacion.LogicaPrincipal.Acondicionamientos.Operaciones
                     }
                     else
                     {
-                        if (concepto.Retencion.Importe > 0)
+                        if (concepto.Retencion.Importe >= 0 && concepto.Retencion.Base > 0)
                         {
                             complementoCP.TotalImpuestoRetenidos += decimal.Round(concepto.Retencion.Importe,2);
                         }
