@@ -18,6 +18,7 @@ using Aplicacion.LogicaPrincipal.GeneracionComplementosPagos;
 using Aplicacion.LogicaPrincipal.GeneracionComprobante;
 using Aplicacion.LogicaPrincipal.Validacion;
 using MySql.Data.MySqlClient;
+using MySqlConnector;
 //using MySqlConnector;
 
 

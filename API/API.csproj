@@ -161,6 +161,7 @@
     <Compile Include="Catalogos\Grupo.cs" />
     <Compile Include="Catalogos\Perfil.cs" />
     <Compile Include="Catalogos\Sucursal.cs" />
+    <Compile Include="Catalogos\TipoGasto.cs" />
     <Compile Include="Catalogos\Usuario.cs" />
     <Compile Include="Context\ApplicationUser.cs" />
     <Compile Include="Context\DataContext.cs" />

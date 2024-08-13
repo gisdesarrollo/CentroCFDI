@@ -107,6 +107,7 @@ namespace API.Context
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Evento> Eventos { get; set; }
         public DbSet<Proyecto> Proyectos { get; set; }
+        public DbSet<TipoGasto> TipoGastos { get; set; }
 
         #endregion
 

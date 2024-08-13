@@ -137,18 +137,18 @@
                                     </div>
                                     <!--end:Menu item-->
                                 }
-                                @if (User.IsInRole("USUARIOS"))
-                                {
+                                @*@if (User.IsInRole("USUARIOS"))
+                                {*@
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
-                                        <a href="@Url.Action("Index", "Usuarios")" class="menu-link ">
+                                        <a href="@Url.Action("Index", "TiposGastos")" class="menu-link ">
                                             <span class="menu-title">Categoria Gastos</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
                                     <!--end:Menu item-->
-                                }
+                                @*}*@
                             </div>
                             <!--end:Col-->
                         }
