@@ -331,6 +331,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
             decimal tasaCuotaT = 0;
             decimal baseT = 0;
             decimal baseR = 0;
+            string tipoFactorR = "";    
 
             if (impuestoTraladado || impuestoRetenido)
             {
@@ -353,6 +354,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         {
                             sumaImporteR += impuesto.Retencion.Importe;
                             impuestoR = impuesto.Retencion.Impuesto;
+                            tipoFactorR += impuesto.Retencion.TipoFactor.ToString();
                             baseR = impuesto.Retencion.Base;
                         }
                         else
@@ -372,7 +374,7 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
 
                 }
 
-                if (sumaImporteR >= 0 && baseR > 0 && tipoFactorT == "Tasa")
+                if (sumaImporteR >= 0 && baseR > 0 && tipoFactorR == "Tasa")
                 {
                     objCfdi.agregarRetencion(
                                    impuestoR,
