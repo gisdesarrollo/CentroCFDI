@@ -1105,6 +1105,49 @@ namespace APBox.Controllers.Operaciones
 
         #endregion
 
+        public ActionResult GetPDF(int id)
+        {
+            var recibidoPdf = _db.RecibidoPdfDr.Find(id);
+            var documentoRecibido = _db.DocumentosRecibidos.Where(d=> d.CfdiRecibidosPdfId == recibidoPdf.Id).FirstOrDefault();
+
+            // Convierte el arreglo de bytes a un MemoryStream
+            var stream = new MemoryStream(recibidoPdf.Archivo);
+
+            // Devuelve el archivo como un FileStreamResult
+            return new FileStreamResult(stream, "application/pdf"); 
+        }
+        public ActionResult GetImage()
+        {
+            // Ruta del archivo de imagen
+            var imagePath = @"C:\\Users\\Admin\\Downloads\\image-20240730-164626.png";
+
+            // Lee el archivo de imagen en un arreglo de bytes
+            var imageFile = System.IO.File.ReadAllBytes(imagePath);
+
+            // Convierte el arreglo de bytes a un MemoryStream
+            var stream = new MemoryStream(imageFile);
+
+            // Devuelve el archivo como un FileStreamResult
+            return new FileStreamResult(stream, "image/png");
+        }
+        public ActionResult GetExcel()
+        {
+            // Ruta del archivo Excel
+            var filePath = @"C:\\Users\\Admin\\Downloads\\catCFDI_V_4_20240731.xls";
+
+            // Verifica si el archivo existe
+            if (!System.IO.File.Exists(filePath))
+            {
+                return HttpNotFound("El archivo no se encontró.");
+            }
+
+            // Abre el archivo como FileStream sin usar 'using'
+            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
+            // Devuelve el archivo como un FileStreamResult
+            return new FileStreamResult(stream, "application/vnd.ms-excel");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -1113,6 +1156,7 @@ namespace APBox.Controllers.Operaciones
             }
             base.Dispose(disposing);
         }
+        
 
     }
 }

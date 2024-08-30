@@ -41,7 +41,14 @@
     <!--end::CUSTOM-->
 
     <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
+    <style>
+        .pdfobject-container {
+            height: 400px;
+            border: 1px solid #ccc;
+        }
+        
 
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -94,8 +101,11 @@
     <!--begin::Javascript Initialize-->
     <script src="https://unpkg.com/flatpickr/dist/l10n/es.js"></script>
     <script src="~/_CDN/custom/js-custom/triggers-init.js"></script>
-
     <!--end::Javascript Initialize-->
+    <!--PDFObject-->
+    <script src="https://unpkg.com/pdfobject"></script>
+    <script src="https://github.com/pipwerks/PDFObject/blob/master/pdfobject.min.js"></script>
+    <!--end::PDFObject-->
     <!--end::Javascript-->
     <script>
         ///activa calendario date

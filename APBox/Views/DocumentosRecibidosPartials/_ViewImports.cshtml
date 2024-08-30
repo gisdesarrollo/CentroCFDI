@@ -1,0 +1,12 @@
+﻿@model string
+
+<a href="javascript:void(0);"
+   class=""
+   style="display: flex; align-items: center; justify-content: center;"
+   data-bs-toggle="modal"
+   data-bs-target="#pdfModal"
+   data-pdf-url="@Model"
+   onclick="embedPDF(this.getAttribute('data-pdf-url')); return false;">
+    <i class="ki-solid ki-search-list text-xl" style="font-size: 2rem; width: 2rem; height: 2rem;"></i>
+</a>
+

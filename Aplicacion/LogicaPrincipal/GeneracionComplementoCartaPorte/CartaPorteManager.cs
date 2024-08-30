@@ -354,8 +354,8 @@ namespace Aplicacion.LogicaPrincipal.GeneracionComplementoCartaPorte
                         {
                             sumaImporteR += impuesto.Retencion.Importe;
                             impuestoR = impuesto.Retencion.Impuesto;
-                            tipoFactorR += impuesto.Retencion.TipoFactor.ToString();
-                            baseR = impuesto.Retencion.Base;
+                            tipoFactorR = impuesto.Retencion.TipoFactor.ToString();
+                            baseR += impuesto.Retencion.Base;
                         }
                         else
                         {

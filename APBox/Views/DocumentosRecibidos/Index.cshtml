@@ -3,6 +3,7 @@
 @using Aplicacion.LogicaPrincipal.Acondicionamientos.Catalogos;
 @using APBox.Context;
 
+
 @{
     var _db = new APBoxContext();
     var usuario = _db.Usuarios.Find(Convert.ToInt32(Session["UsuarioId"]));
@@ -46,6 +47,24 @@
         </div>
     </div>
 </div>
+<!-- Modal HTML -->
+<div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-rounded">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfModalLabel">Previsualización PDF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body scroll-y m-5">
+                <div id="pdf-container"></div> <!-- Contenedor para incrustar el PDF -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @if (usuario.esProveedor)
 {
@@ -194,12 +213,24 @@
                                             {
                                                 case API.Enums.c_EstadoComercial.Aprobado:
                                                     <div class="badge badge-light-success">Aprobado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 case API.Enums.c_EstadoComercial.EnRevision:
                                                     <div class="badge badge-light-primary">EnRevisión</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 case API.Enums.c_EstadoComercial.Rechazado:
                                                     <div class="badge badge-light-danger">Rechazado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 default:
                                                     break;
@@ -475,7 +506,7 @@
                                                 default:
                                                     break;
                                             }
-                                           
+
                                         </td>
                                         <td>
                                             @switch (item.TipoDocumentoRecibido)
@@ -525,12 +556,24 @@
                                             {
                                                 case API.Enums.c_EstadoComercial.Aprobado:
                                                     <div class="badge badge-light-success">Aprobado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 case API.Enums.c_EstadoComercial.EnRevision:
                                                     <div class="badge badge-light-primary">EnRevisión</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 case API.Enums.c_EstadoComercial.Rechazado:
                                                     <div class="badge badge-light-danger">Rechazado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 default:
                                                     break;
@@ -703,12 +746,25 @@
                                             {
                                                 case API.Enums.c_EstadoComercial.Aprobado:
                                                     <div class="badge badge-light-success">Aprobado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
+
                                                     break;
                                                 case API.Enums.c_EstadoComercial.EnRevision:
                                                     <div class="badge badge-light-primary">EnRevisión</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 case API.Enums.c_EstadoComercial.Rechazado:
                                                     <div class="badge badge-light-danger">Rechazado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 default:
                                                     break;
@@ -925,12 +981,24 @@
                                             {
                                                 case API.Enums.c_EstadoComercial.Aprobado:
                                                     <div class="badge badge-light-success">Aprobado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 case API.Enums.c_EstadoComercial.EnRevision:
                                                     <div class="badge badge-light-primary">EnRevisión</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 case API.Enums.c_EstadoComercial.Rechazado:
                                                     <div class="badge badge-light-danger">Rechazado</div>
+                                                    if (item.RecibidosPdf != null)
+                                                    {
+                                                        @Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                                                    }
                                                     break;
                                                 default:
                                                     break;
@@ -1114,5 +1182,33 @@
                 }
             });
         });
+
+
+
     });
+
+    var pdfUrl = '';
+
+    function embedPDF(url) {
+        pdfUrl = url;
+        if (typeof PDFObject !== 'undefined' && pdfUrl) {
+            PDFObject.embed(pdfUrl, "#pdf-container");
+        } else {
+            console.error("La biblioteca PDFObject no está cargada o la URL del PDF no está definida.");
+        }
+    }
+
+    $('#pdfModal').on('shown.bs.modal', function () {
+        if (pdfUrl) {
+            PDFObject.embed(pdfUrl, "#pdf-container");
+        }
+    });
+
+    $('#pdfModal').on('hide.bs.modal', function () {
+        $('#pdf-container').empty(); 
+    });
+
+
+
+
 </script>
