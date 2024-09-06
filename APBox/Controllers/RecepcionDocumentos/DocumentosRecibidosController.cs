@@ -370,13 +370,13 @@ namespace APBox.Controllers.Operaciones
                 ProcesarComprobacionGastos(documentoRecibidoDr, compGastosId);
 
                 ProcesarComplementoPago(documentoRecibidoDr, compPagoId, usuario);
+                //aqui empieza el bloque que se modifica para la demo de COFCO, se refactorizará después.
+                await ProcesarCustomIntegrationCOFCO(documentoRecibidoDr);
                 documentoRecibidoDr.DocumentoAsociadoDR = null;
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
 
                 _db.SaveChanges();
-                //aqui empieza el bloque que se modifica para la demo de COFCO, se refactorizará después.
-                await ProcesarCustomIntegrationCOFCO(documentoRecibidoDr);
-                
+               
                 await CargaAdjuntos(documentoRecibidoDr);
 
                 await CargaComprobante(documentoRecibidoDr);
