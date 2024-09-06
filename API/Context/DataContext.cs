@@ -14,6 +14,7 @@ using API.CatalogosCartaPorte.Domicilio;
 using API.Operaciones.ComprobantesCfdi;
 using API.Operaciones.RelacionesCfdi;
 using API.Operaciones.OperacionesRecepcion;
+using API.Integraciones.Clientes;
 using API.Operaciones.Expedientes;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -148,7 +149,7 @@ namespace API.Context
         //Documentos Recibidos
         public DbSet<DocumentoRecibido> DocumentosRecibidos { get; set; }
         public DbSet<RecibidosComprobanteDR> RecibidoComprobanteDr { get; set; }
-        public DbSet<AdjuntosDR> AdjuntoDr { get; set; }
+        public DbSet<AdjuntoDR> AdjuntoDr { get; set; }
         public DbSet<PagosDR> PagoDr { get; set; }
         public DbSet<DocumentosPagadosDR> DocumentoPagadoDr { get; set; }
         public DbSet<RecibidosXMLDR> RecibidoXmlDr { get; set; }
@@ -156,6 +157,7 @@ namespace API.Context
         public DbSet<ValidacionesDR> ValidacionDr { get; set; }
         public DbSet<ComprobanteExtranjero> ComprobanteExtranjero { get; set; }
         public DbSet<ComprobanteNoFiscal> ComprobanteNoFiscal { get; set; }
+        public DbSet<DocumentoAsociadoDR> DocumentoAsociadoDR { get; set; }
         //public DbSet<ComprobanteCfdi> ComprobanteCfdi { get; set; }
 
         //ComrpobacionesGastos
@@ -254,6 +256,9 @@ namespace API.Context
 
         #endregion
 
+        #region CustomIntegration COFCO
+        public DbSet<Custom_Cofco_FacturasRecibidas_Referencias> Custom_Cofco_FacturasRecibidas_Referencias { get; set; }
+        #endregion
     }
 
 }

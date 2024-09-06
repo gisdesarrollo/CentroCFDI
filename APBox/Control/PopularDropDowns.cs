@@ -20,7 +20,7 @@ namespace APBox.Control
 
         private readonly int _entidadId;
         private readonly APBoxContext _db = new APBoxContext();
-        
+
 
         #endregion
 
@@ -37,9 +37,9 @@ namespace APBox.Control
         #region Catalogos
 
         public List<(String RFC, String RazonSocial, String Pais)> PopulaDatosCliente(int seleccion)
-        { 
-                var result=_db.SociosComerciales.Where(a => a.Id == seleccion).Select(a => new { a.Rfc, a.RazonSocial,a.Pais}).ToList();
-                return result.Select(r => (r.Rfc, r.RazonSocial, r.Pais.ToString())).ToList();
+        {
+            var result = _db.SociosComerciales.Where(a => a.Id == seleccion).Select(a => new { a.Rfc, a.RazonSocial, a.Pais }).ToList();
+            return result.Select(r => (r.Rfc, r.RazonSocial, r.Pais.ToString())).ToList();
         }
         public List<ClaveUnidad> PopulaDatosClaveUnidad(string seleccion)
         {
@@ -147,7 +147,7 @@ namespace APBox.Control
         }
         public SelectList PopulaFormaPagoFiltro(string seleccion)
         {
-            return new SelectList(_db.Cat_FormaPago.OrderBy(a => a.c_FormaPago), "c_FormaPago", "Descripcion",seleccion);
+            return new SelectList(_db.Cat_FormaPago.OrderBy(a => a.c_FormaPago), "c_FormaPago", "Descripcion", seleccion);
         }
         public SelectList PopulaFormaPago()
         {
@@ -177,7 +177,7 @@ namespace APBox.Control
         {
             return new SelectList(_db.UsoCfdis.OrderBy(u => u.C_UsoCfdi), "C_UsoCfdi", "descripcion");
         }
-       
+
         public SelectList PopulaDatosEstaciones(string seleccion)
         {
             var concat = _db.Estaciones.Where(a => a.ClaveTransporte_Id == seleccion).OrderBy(a => a.Descripcion).ToDictionary(a => a.ClaveIdentificacion, a => a.ClaveIdentificacion + "-" + a.Descripcion);
@@ -193,8 +193,8 @@ namespace APBox.Control
         }
         public SelectList PopulaDerechodePaso()
         {
-              var concat = _db.DerechosDePasos.OrderBy(a => a.ClavederechoPaso).ToDictionary(a => a.ClavederechoPaso, a=>a.DerechoDePaso+" "+a.Concesionario);
-            return new SelectList(concat,"key","value");
+            var concat = _db.DerechosDePasos.OrderBy(a => a.ClavederechoPaso).ToDictionary(a => a.ClavederechoPaso, a => a.DerechoDePaso + " " + a.Concesionario);
+            return new SelectList(concat, "key", "value");
         }
         public SelectList PopulaTipoRelacion()
         {
@@ -238,7 +238,7 @@ namespace APBox.Control
         }
         public SelectList PopulaClaveUnida_Id()
         {
-            return new SelectList(_db.ClavesUnidad.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Nombre"); 
+            return new SelectList(_db.ClavesUnidad.OrderBy(a => a.c_ClaveUnidad), "c_ClaveUnidad", "Nombre");
         }
 
         public SelectList PopulaMaterialPeligroso_Id()

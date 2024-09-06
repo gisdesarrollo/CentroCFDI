@@ -5,6 +5,7 @@ using API.Enums;
 using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
 using API.Operaciones.OperacionesProveedores;
+using API.Operaciones.OperacionesRecepcion;
 using Aplicacion.LogicaPrincipal.Correos;
 using Aplicacion.LogicaPrincipal.DocumentosRecibidos;
 using Aplicacion.LogicaPrincipal.Expedientes;
@@ -28,6 +29,11 @@ using Utilerias.LogicaPrincipal;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml;
+using API.Integraciones.Clientes;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using DTOs.Correos;
 
 namespace APBox.Controllers.Operaciones
 {
@@ -268,7 +274,7 @@ namespace APBox.Controllers.Operaciones
 
                 case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
                     SubirDocumento(documentoRecibidoDr);
-                    //var archivoComprobanteNoFiscalByte =ConvertByteFiles(documentoRecibidoDr.ArchivoComprobanteNoFiscal);
+                    //var archivoComprobanteNoFiscalByte =ConvertByteFiles(documentoRecibidoDr.ArchivoAdjuntoDR);
                     SetViewBag(documentoRecibidoDr, null, usuario, null);
                     documentoRecibidoDr.FechaComprobante = documentoRecibidoDr.FechaComprobante;
                     documentoRecibidoDr.FechaEntrega = DateTime.Now;
@@ -302,6 +308,8 @@ namespace APBox.Controllers.Operaciones
             {
                 documentoRecibidoDr = new DocumentoRecibido();
             }
+
+            PopulaDocumentosAsociados(documentoRecibidoDr);
 
             return View(documentoRecibidoDr);
         }
@@ -363,15 +371,21 @@ namespace APBox.Controllers.Operaciones
 
                 ProcesarComplementoPago(documentoRecibidoDr, compPagoId, usuario);
 
+                //aqui empieza el bloque que se modifica para la demo de COFCO, se refactorizará después.
+                await ProcesarCustomIntegrationCOFCO(documentoRecibidoDr);
 
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
+
                 _db.SaveChanges();
+
+                await CargaAdjuntos(documentoRecibidoDr);
 
                 await CargaComprobante(documentoRecibidoDr);
 
                 return RedireccionarDespuesDeGuardado(compGastosId, compPagoId);
             }
-            catch (Exception ex)
+            catch (Exception 
+            ex)
             {
                 ModelState.AddModelError("", ex.Message);
                 return View(documentoRecibidoDr);
@@ -594,6 +608,62 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
+        private Task ProcesarCustomIntegrationCOFCO(DocumentoRecibido documentoRecibidoDr)
+        {
+            if (documentoRecibidoDr.DocumentoAsociadoDR != null)
+            {
+                var precioContrato = Request.Form["PrecioContrato"];
+                var moneda = c_Moneda.MXN;
+                var tipoCambio = Request.Form["TipoCambio"];
+                var pesoOrigen = Request.Form["PesoOrigen"];
+                var pesoDestino = Request.Form["PesoDestino"];
+                var kgMermaExcedente = Request.Form["KgMermaExcedente"];
+                var mermaPorcentaje = Request.Form["MermaPorcentaje"];
+                var montoNC = Request.Form["MontoNC"];
+                decimal MontoNC = Convert.ToDecimal(montoNC);
+
+
+                // Si todo está bien, asignar
+                var ciCofcoReferencias = new Custom_Cofco_FacturasRecibidas_Referencias()
+                {
+                    SucursalId = documentoRecibidoDr.SucursalId,
+                    SocioComercialId = documentoRecibidoDr.SocioComercialId,
+                    PrecioContrato = decimal.Parse(precioContrato),
+                    Moneda = moneda,
+                    TipoCambio = decimal.Parse(tipoCambio),
+                    PesoOrigen = decimal.Parse(pesoOrigen),
+                    PesoDestino = decimal.Parse(pesoDestino),
+                    KgMermaExcedente = decimal.Parse(kgMermaExcedente)
+                };
+
+                if (Convert.ToDecimal(mermaPorcentaje) > 0.2m)
+                {
+                    var documentoAsociadoDR = new DocumentoAsociadoDR()
+                    {
+                        SucursalId = documentoRecibidoDr.SucursalId,
+                        SocioComercialId = documentoRecibidoDr.SocioComercialId,
+                        TipoDocumentoAsociado = TipoDocumentoAsociado.NotaCredito,
+                        Descripcion = "Merma excedente",
+                        FechaSolicitud = DateTime.Now,
+                        Monto = MontoNC,
+                        MonedaId = c_Moneda.MXN
+                    };
+                    _db.DocumentoAsociadoDR.Add(documentoAsociadoDR);
+                }
+            _db.Custom_Cofco_FacturasRecibidas_Referencias.Add(ciCofcoReferencias);
+            }
+            else
+            {
+                var documentoAsociado = _db.DocumentoAsociadoDR.Find(documentoRecibidoDr.DocumentoAsociadoDRId);
+
+                documentoAsociado.FechaEntrega = DateTime.Now;
+            }
+
+            _db.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
         private ActionResult RedireccionarDespuesDeGuardado(int? compGastosId, int? compPagoId)
         {
             if (compGastosId.HasValue)
@@ -634,12 +704,12 @@ namespace APBox.Controllers.Operaciones
                 ViewBag.isProveedor = "Usuario";
             }
             // Splitting the string into lines
-            if(documentoRecibido.TipoDocumentoRecibido == c_TipoDocumentoRecibido.CFDI)
+            if (documentoRecibido.TipoDocumentoRecibido == c_TipoDocumentoRecibido.CFDI)
             {
                 string[] lines = documentoRecibido.ValidacionesDetalle.Split('\n');
                 documentoRecibido.DetalleArrays = lines.ToList();
             }
-            
+
             TempData["AprobadorId"] = null;
             TempData["DepartamentoId"] = null;
 
@@ -759,7 +829,7 @@ namespace APBox.Controllers.Operaciones
 
                     var comprobanteNoFiscal = new ComprobanteNoFiscal
                     {
-                        DocumentosRecibidosId = documentoRecibido.Id,
+                        DocumentoRecibidoId = documentoRecibido.Id,
                         SucursalId = documentoRecibido.SucursalId,
                         Referencia = documentoRecibido.Referencia,
                         FechaCreacion = DateTime.Now,
@@ -788,6 +858,45 @@ namespace APBox.Controllers.Operaciones
             }
 
             Session.Remove("socComlId");
+
+        }
+
+        [HttpPost]
+        private async Task CargaAdjuntos(DocumentoRecibido documentoRecibido)
+        {
+            var sucursalId = ObtenerSucursal();
+            var grupoId = ObtenerGrupo();
+
+            var basePath = $"DocumentosRecibidos/DocumentosAdjuntos/{grupoId}/{sucursalId}/{documentoRecibido.Id}/{documentoRecibido.FechaEntrega.Year}/{(int)documentoRecibido.FechaEntrega.Month}/{(int)documentoRecibido.FechaEntrega.Day}";
+
+            PathArchivosDto pathArchivos = new PathArchivosDto();
+            string directoryPath = Server.MapPath("~/Archivos/DocumentosAdjuntos");
+
+            var nombreArchivo = "DocumentosAdjuntosDR.pdf";
+            var key = $"{basePath}/{nombreArchivo}";
+            string pathCompletoAdjuntoDR = directoryPath + "/" + nombreArchivo;
+            HttpPostedFileBase ArchivoAdjuntoDR = new FileFromPath(pathCompletoAdjuntoDR);
+
+            await UploadFileToS3(ArchivoAdjuntoDR, key);
+
+            var archivoAdjuntoDR = new AdjuntoDR
+            {
+                DocumentoRecibidoId = documentoRecibido.Id,
+                SucursalId = documentoRecibido.SucursalId,
+                SocioComercialId = documentoRecibido.SocioComercialId,
+                FechaCreacion = DateTime.Now,
+                PathS3Adjunto = key
+            };
+
+            // Guardar el resto de la información del expedienteFiscal en la base de datos
+            _db.AdjuntoDr.Add(archivoAdjuntoDR);
+            await _db.SaveChangesAsync();
+
+            //eliminar archivo local del path directoryPath
+            if (System.IO.File.Exists(directoryPath + "/" + nombreArchivo))
+            {
+                System.IO.File.Delete(directoryPath + "/" + nombreArchivo);
+            }
 
         }
 
@@ -843,6 +952,20 @@ namespace APBox.Controllers.Operaciones
             }
 
             return configuracion;
+        }
+
+        private void PopulaDocumentosAsociados(DocumentoRecibido documentoRecibido)
+        {
+            // Suponiendo que tienes un contexto de base de datos llamado '_db' 
+            var documentosAsociados = _db.DocumentoAsociadoDR
+                .AsEnumerable() // Cambiamos a LINQ to Objects para usar propiedades no mapeadas
+                .Select(d => new
+                {
+                    d.Id,
+                    Nombre = string.Format("{0} - {1} - {2}", d.TipoDocumentoAsociado, d.Monto, d.MonedaId)
+                }).ToList();
+
+            ViewBag.DocumentosAsociados = new SelectList(documentosAsociados, "Id", "Nombre");
         }
 
         private void PopulaEstadoComercial()
@@ -1038,7 +1161,7 @@ namespace APBox.Controllers.Operaciones
         public async Task<ActionResult> DescargaComprobanteNoFiscal(int id)
         {
 
-            var comprobanteNoFiscal = _db.ComprobanteNoFiscal.Where(nf=> nf.DocumentosRecibidosId == id).FirstOrDefault();
+            var comprobanteNoFiscal = _db.ComprobanteNoFiscal.Where(nf => nf.DocumentoRecibidoId == id).FirstOrDefault();
             string fileName = Path.GetFileName(comprobanteNoFiscal.PathS3);
 
             var stream = await _s3Downloader.DownloadFileAsync(comprobanteNoFiscal.PathS3);
@@ -1078,6 +1201,7 @@ namespace APBox.Controllers.Operaciones
                     return "application/octet-stream"; // Default content type if not recognized
             }
         }
+
         #endregion Validaciones
 
         #region Aprobaciones Ajax
@@ -1108,13 +1232,13 @@ namespace APBox.Controllers.Operaciones
         public ActionResult GetPDF(int id)
         {
             var recibidoPdf = _db.RecibidoPdfDr.Find(id);
-            var documentoRecibido = _db.DocumentosRecibidos.Where(d=> d.CfdiRecibidosPdfId == recibidoPdf.Id).FirstOrDefault();
+            var documentoRecibido = _db.DocumentosRecibidos.Where(d => d.CfdiRecibidosPdfId == recibidoPdf.Id).FirstOrDefault();
 
             // Convierte el arreglo de bytes a un MemoryStream
             var stream = new MemoryStream(recibidoPdf.Archivo);
 
             // Devuelve el archivo como un FileStreamResult
-            return new FileStreamResult(stream, "application/pdf"); 
+            return new FileStreamResult(stream, "application/pdf");
         }
         public ActionResult GetImage()
         {
@@ -1156,7 +1280,7 @@ namespace APBox.Controllers.Operaciones
             }
             base.Dispose(disposing);
         }
-        
+
 
     }
 }

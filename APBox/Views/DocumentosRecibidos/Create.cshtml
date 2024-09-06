@@ -437,33 +437,124 @@
                 <div class="col-6">
                     <!--begin::List Widget 1-->
                     <div class="card card-xl-stretch mb-xl-8">
-                        <!--begin::Header-->
-                        <div class="card-header border-0 pt-5">
-                            <h3 class="card-title align-items-start flex-column">
-                                <span class="card-label fw-bold text-gray-900">Referencias</span>
-                                <span class="text-muted mt-1 fw-semibold fs-7">Agregas datos de referencia</span>
-                            </h3>
-                        </div>
-
-                        <!--end::Header-->
                         <!--begin::Body-->
-                        <div class="card-body pt-5">
+                        <div class="card-body">
                             <div class="w-100">
-                                <!--begin::Title-->
-                                <label for="Referencia" class="form-label fs-5 fw-semibold text-gray-800">Referencia</label>
-                                <!--end::Title-->
-                                <!--begin::Title-->
-                                <div class="d-flex">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-45px w-40px me-5">
-                                        <span class="symbol-label bg-lighten">
-                                            <i class="ki-duotone ki-element-11 fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
-                                        </span>
-                                    </div>
+
+                                <div class="align-items-start">
+                                    <div class="fw-bold h3">Archivos adjuntos</div>
+                                    <div class="text-gray-600 fs-7">Adjunta todos los documentos de respaldo en esta misma ventana.</div>
+                                </div>
+                                <div class="form-group mb-6">
+                                    <input class="btn btn-sm btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" id="fileInput" type="file" name="fileInput" typeof="fileInput" multiple accept="image/*,.pdf, .PDF" />
+                                    <input type="file" id="AdjuntoDR" name="AdjuntoDR" class="visually-hidden" />
+                                </div>
+
+                                <div class="align-items-start">
+                                    <div class="fw-bold h3">Documento asociado</div>
+                                </div>
+
+                                <div class="form-group mb-6">
+                                    @Html.DropDownListFor(model => model.DocumentoAsociadoDR.Id, ViewBag.DocumentosAsociados as SelectList, "Favor de hacer su selección", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                </div>
+
+                                <div class="align-items-start">
+                                    <div class="fw-bold h3">Referencia</div>
+                                </div>
+
+                                <div class="form-group mb-6">
                                     @Html.EditorFor(model => model.Referencia, new { htmlAttributes = new { @class = "form-control me-3 flex-grow-1", required = isRequired ? null : "required" } })
                                     @Html.ValidationMessageFor(model => model.Referencia, "", new { @class = "text-danger" })
                                 </div>
-                                <!--end::Title-->
+
+                                <div class="cofco">
+                                    <div class="align-items-start">
+                                        <div class="fw-bold h3">COFCO - Datos de transportación</div>
+                                        <div class="text-gray-600 fs-7">Si tu factura es referente a servicios de transporte, agrega los datos relacionados a tu contrato y cantidades totales por factura. Los excedentes de merma generarán una solicitud de nota de crédito automático.</div>
+                                        <div class="text-gray-600 fs-7">La merma excedente no debe sobrepasar el 0.2% de la carga total.</div>
+
+                                    </div>
+
+                                    <div class="row my-5 px-5">
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Precio del Contrato</label>
+                                            <input type="text" name="PrecioContrato" id="PrecioContrato" value="" class="form-control me-3" />
+                                        </div>
+
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Moneda</label>
+                                            @Html.EnumDropDownListFor(model => model.MonedaId, "Seleccionar", new { @class = "form-select select mb-2", @data_control = "select2" })
+                                        </div>
+
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Tipo de cambio</label>
+                                            <input type="text" name="TipoCambio" id="TipoCambio" value="1" class="form-control me-3" />
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row my-5 px-5">
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Peso Origen <span class="text-gray-600 small">Kg</span></label>
+                                            <input type="text" name="PesoOrigen" id="PesoOrigen" value="" class="form-control me-3" />
+                                        </div>
+
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Peso Destino <span class="text-gray-600 small">Kg</span></label>
+                                            <input type="text" name="PesoDestino" id="PesoDestino" value="" class="form-control me-3" />
+                                        </div>
+
+                                        <div class="form-group col-4">
+                                            <label class="form-label">Merma Excedente <span class="text-gray-600 small">Kg</span></label>
+                                            <input type="text" name="KgMermaExcedente" id="KgMermaExcedente" value="0" class="form-control me-3" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="row my-10 px-5">
+
+                                        <!--begin::Alert-->
+                                        <div class="alert alert-primary d-flex align-items-center permitido visually-hidden">
+                                            <!--begin::Icon-->
+                                            <i class="ki-duotone ki-shield-tick fs-2hx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-column">
+                                                <!--begin::Title-->
+                                                <h4 class="mb-1 text-dark">No excede</h4>
+                                                <!--end::Title-->
+                                                <!--begin::Content-->
+                                                <span class="text-gray-900">El cálculo en tu entrega muestra una merma de <span class="mermaPorcentaje fw-semibold"></span>%</span>
+                                                <span class="text-gray-900">El porcentaje de merma está dentro de lo permitido en el contrato, la factura se puede procesar de manera regular.</span>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                        <!--end::Alert-->
+                                        <!--begin::Alert-->
+                                        <div class="alert alert-warning d-flex align-items-center excedente visually-hidden">
+                                            <!--begin::Icon-->
+                                            <i class="ki-duotone ki-information-5 fs-2hx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-column">
+                                                <!--begin::Title-->
+                                                <h4 class="mb-1 text-dark">Atención</h4>
+                                                <!--end::Title-->
+                                                <!--begin::Content-->
+                                                <span class="text-gray-900">El cálculo en tu entrega muestra una merma de <span class="mermaPorcentaje fw-semibold"></span>%</span>
+                                                <span class="text-gray-900">El porcentaje de merma está fuera de lo permitido en el contrato, se requiere realizar una Nota de Crédito por <span class="ncExcedente fw-semibold"></span><br                                             </span>
+                                                <span class="text-gray-900">Se creará una solicitud de documento que tendras que seleccionar cuando cargues la Nota de Crédito y tendra que igualar el valor por el total del requerimiento.</span>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                        <!--end::Alert-->
+
+                                        <input type="decimal" id="MermaPorcentaje" name="MermaPorcentaje" value="" class="visually-hidden" />
+                                        <input type="decimal" id="MontoNC" name="MontoNC" value="" class="visually-hidden" />
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!--end::Body-->
@@ -476,8 +567,6 @@
 
     if (Model.TipoDocumentoRecibido == API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal)
     {
-
-
         <div class="row g-5 g-xl-8">
             <div class="col-xl-6">
                 <!--begin::List Widget 6-->
@@ -556,7 +645,7 @@
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
                                 <span class="card-label fw-bold text-gray-900">Referencias</span>
-                                <span class="text-muted mt-1 fw-semibold fs-7">Agregas datos de referencia</span>
+                                <span class="text-muted mt-1 fw-semibold fs-7">Agrega datos de referencia</span>
                             </h3>
                         </div>
 
@@ -564,6 +653,12 @@
                         <!--begin::Body-->
                         <div class="card-body pt-5">
                             <div class="w-100">
+
+                                <div class="form-group mb-6">
+                                    <label class="form-label fw-semibold fs-6" for="Grupos"> Carga archivo XML</label><br />
+                                    <input class="btn btn-sm btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" id="CfdiRecibidosXmlId" type="file" name="Archivo" typeof="Archivo" accept=".xml, .XML" />
+                                </div>
+
                                 <!--begin::Title-->
                                 <label for="Referencia" class="form-label fs-5 fw-semibold text-gray-800">Referencia</label>
                                 <!--end::Title-->

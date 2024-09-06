@@ -323,3 +323,128 @@ function validarEmail() {
         }
     });
 </script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script src="https://unpkg.com/pdfobject"></script>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', async function () {
+        const files = this.files;
+        const pdfDoc = await PDFLib.PDFDocument.create();
+
+        for (const file of files) {
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                if (file.type === 'application/pdf') {
+                    const pdf = await PDFLib.PDFDocument.load(event.target.result);
+                    const pages = await pdfDoc.copyPages(pdf, pdf.getPageIndices());
+                    pages.forEach((page) => pdfDoc.addPage(page));
+                } else if (file.type.startsWith('image/')) {
+                    const img = await pdfDoc.embedJpg(event.target.result);
+                    const page = pdfDoc.addPage();
+                    page.drawImage(img, {
+                        x: 0,
+                        y: 0,
+                        width: page.getWidth(),
+                        height: page.getHeight(),
+                    });
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        setTimeout(async () => {
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const file = new File([blob], "ArchivoAdjuntoDR.pdf", { type: 'application/pdf' });
+
+            // Asignar el archivo al input AdjuntoDR
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            document.getElementById('AdjuntoDR').files = dataTransfer.files;
+        }, 1000); // Se añade un pequeño retraso para asegurar que todos los archivos se procesen
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        // Detectar el cambio en el dropdown
+        $('select[name="DocumentoAsociadoDR.Id"]').change(function () {
+            // Obtener el valor seleccionado
+            var selectedValue = $(this).val();
+
+            // Si el valor es diferente de la opción predeterminada (que asumo es "")
+            if (selectedValue) {
+                // Añadir la clase visually-hidden al div con clase .cofco
+                $('.cofco').addClass('visually-hidden');
+            }
+        });
+
+        function updateMerma() {
+            var pesoOrigen = $('input[name="PesoOrigen"]').val();
+            var pesoDestino = $('input[name="PesoDestino"]').val();
+            var mermaExcedente = pesoOrigen - pesoDestino;
+            var moneda = $('#MonedaId').val();
+
+            $('input[name="KgMermaExcedente"]').val(mermaExcedente.toFixed(2));
+
+
+            // Calcular porcentaje de merma
+            var mermaPorcentaje = (mermaExcedente / pesoOrigen) * 100;
+            var precioContrato = $('#PrecioContrato').val();
+
+            // Actualiza el valor en el div de mermaCalculada
+            $('.mermaCalulada').text(mermaExcedente.toFixed(2) + ' Kg');
+            $('.mermaPorcentaje').text(mermaPorcentaje.toFixed(2));
+
+            //un alert de mermaPorcentaje que me muestre su valor
+
+
+            if (mermaPorcentaje < 0.2) {
+                $('.permitido').removeClass('visually-hidden');
+                $('.excedente').addClass('visually-hidden');
+                $('#Referencia').val('Servicio dentro del rango de merma permitida: ' + mermaPorcentaje.toFixed(2) + '%');
+            } else {
+                $('.permitido').addClass('visually-hidden');
+                $('.excedente').removeClass('visually-hidden');
+                $('#Referencia').val('Servicio con merma excedente: ' + mermaPorcentaje.toFixed(2) + '%');
+
+                // Calcular y mostrar el valor en ncExcedente
+                var ncExcedente = mermaExcedente * precioContrato;
+                var ncExcedenteFormatted = ncExcedente.toFixed(2);
+
+                // Concatenar ncExcedente formateado con la moneda
+                $('.ncExcedente').text(ncExcedenteFormatted + " " + moneda);
+
+                $('#MermaPorcentaje').val(mermaPorcentaje.toFixed(2));
+                $('#MontoNC').val(ncExcedenteFormatted);
+            }
+        }
+
+        $('#PesoOrigen, #PesoDestino').on('input', function () {
+            updateMerma();
+        });
+
+        var selectors = document.querySelectorAll("#PesoOrigen, #PesoDestino, #KgMermaExcedente, #PrecioContrato");
+
+        selectors.forEach(function (selector) {
+            // Aplica Inputmask a cada elemento
+            Inputmask({
+                "alias": "decimal",
+                "groupSeparator": ",",
+                "autoGroup": true,
+                "digits": 2,
+                "digitsOptional": false,
+                "clearMaskOnLostFocus": false
+            }).mask(selector);
+        });
+    });
+
+
+</script>
+

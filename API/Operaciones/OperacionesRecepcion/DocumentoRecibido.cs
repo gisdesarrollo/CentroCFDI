@@ -1,5 +1,6 @@
 ﻿using API.Catalogos;
 using API.Enums;
+using API.Integraciones.Clientes;
 using API.Operaciones.Facturacion;
 using API.Operaciones.OperacionesRecepcion;
 using System;
@@ -105,7 +106,10 @@ namespace API.Operaciones.OperacionesProveedores
 
         public string Referencia { get; set; }
 
-        public string OrdenDeCompra { get; set; }
+        [DisplayName("Documento Asociado")]
+        public int? DocumentoAsociadoDRId { get; set; }
+        [ForeignKey("DocumentoAsociadoDRId")]
+        public virtual DocumentoAsociadoDR DocumentoAsociadoDR { get; set; }
 
         [DisplayName("Comprobación Gastos")]
         public int? ComprobacionGastoId { get; set; }
@@ -116,6 +120,13 @@ namespace API.Operaciones.OperacionesProveedores
         public int? CategoriaGastoId { get; set; }
         [ForeignKey("CategoriaGastoId")]
         public virtual CategoriaGasto CategoriaGasto { get; set; }
+
+
+
+        public int? CI_Cofco_Ref_Id { get; set; }
+        [ForeignKey("CI_Cofco_Ref_Id")]
+        public virtual Custom_Cofco_FacturasRecibidas_Referencias CI_Cofco_FacturasRecibidas_Referencias { get; set; }
+
 
         #region Not Mapped Properties
 
