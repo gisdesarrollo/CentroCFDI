@@ -863,38 +863,43 @@ namespace APBox.Controllers.Operaciones
         [HttpPost]
         private async Task CargaAdjuntos(DocumentoRecibido documentoRecibido)
         {
-            var sucursalId = ObtenerSucursal();
-            var grupoId = ObtenerGrupo();
-
-            var basePath = $"DocumentosRecibidos/DocumentosAdjuntos/{grupoId}/{sucursalId}/{documentoRecibido.Id}/{documentoRecibido.FechaEntrega.Year}/{(int)documentoRecibido.FechaEntrega.Month}/{(int)documentoRecibido.FechaEntrega.Day}";
-
-            PathArchivosDto pathArchivos = new PathArchivosDto();
-            string directoryPath = Server.MapPath("~/Archivos/DocumentosAdjuntos");
-
-            var nombreArchivo = "DocumentosAdjuntosDR.pdf";
-            var key = $"{basePath}/{nombreArchivo}";
-            string pathCompletoAdjuntoDR = directoryPath + "/" + nombreArchivo;
-            HttpPostedFileBase ArchivoAdjuntoDR = new FileFromPath(pathCompletoAdjuntoDR);
-
-            await UploadFileToS3(ArchivoAdjuntoDR, key);
-
-            var archivoAdjuntoDR = new AdjuntoDR
+            // Verificar que se ha subido un archivo
+            if (documentoRecibido.AdjuntoDR != null && documentoRecibido.AdjuntoDR.ContentLength > 0)
             {
-                DocumentoRecibidoId = documentoRecibido.Id,
-                SucursalId = documentoRecibido.SucursalId,
-                SocioComercialId = documentoRecibido.SocioComercialId,
-                FechaCreacion = DateTime.Now,
-                PathS3Adjunto = key
-            };
+                try
+                {
+                    var sucursalId = ObtenerSucursal();
+                    var grupoId = ObtenerGrupo();
 
-            // Guardar el resto de la información del expedienteFiscal en la base de datos
-            _db.AdjuntoDr.Add(archivoAdjuntoDR);
-            await _db.SaveChangesAsync();
+                    var basePath = $"DocumentosRecibidos/DocumentosAdjuntos/{grupoId}/{sucursalId}/{documentoRecibido.Id}/{documentoRecibido.FechaEntrega.Year}/{(int)documentoRecibido.FechaEntrega.Month}/{(int)documentoRecibido.FechaEntrega.Day}";
 
-            //eliminar archivo local del path directoryPath
-            if (System.IO.File.Exists(directoryPath + "/" + nombreArchivo))
+                    //PathArchivosDto pathArchivos = new PathArchivosDto();
+                    //string directoryPath = Server.MapPath("~/Archivos/DocumentosAdjuntos");
+                    // Obtener el nombre del archivo
+                    var nombreArchivo = Path.GetFileName(documentoRecibido.AdjuntoDR.FileName);
+                    var key = $"{basePath}/{nombreArchivo}";
+                    await UploadFileToS3(documentoRecibido.AdjuntoDR, key);
+                    var archivoAdjuntoDR = new AdjuntoDR
+                    {
+                        DocumentoRecibidoId = documentoRecibido.Id,
+                        SucursalId = documentoRecibido.SucursalId,
+                        SocioComercialId = documentoRecibido.SocioComercialId,
+                        FechaCreacion = DateTime.Now,
+                        PathS3Adjunto = key
+                    };
+
+                    // Guardar el resto de la información del expedienteFiscal en la base de datos
+                    _db.AdjuntoDr.Add(archivoAdjuntoDR);
+                    await _db.SaveChangesAsync();
+
+                }catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+            else
             {
-                System.IO.File.Delete(directoryPath + "/" + nombreArchivo);
+                throw new Exception("Error no encontro los archivos adjuntos: null");
             }
 
         }

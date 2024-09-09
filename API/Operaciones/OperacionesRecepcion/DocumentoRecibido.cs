@@ -120,14 +120,11 @@ namespace API.Operaciones.OperacionesProveedores
         public int? CategoriaGastoId { get; set; }
         [ForeignKey("CategoriaGastoId")]
         public virtual CategoriaGasto CategoriaGasto { get; set; }
-
-
-
         public int? CI_Cofco_Ref_Id { get; set; }
         [ForeignKey("CI_Cofco_Ref_Id")]
         public virtual Custom_Cofco_FacturasRecibidas_Referencias CI_Cofco_FacturasRecibidas_Referencias { get; set; }
 
-
+        
         #region Not Mapped Properties
 
         [NotMapped]
@@ -178,6 +175,8 @@ namespace API.Operaciones.OperacionesProveedores
         [NotMapped]
         public int IdUsuarioSolicitante { get; set; }
 
+        [NotMapped]
+        public HttpPostedFileBase AdjuntoDR { get; set; }
         #endregion
     }
 }

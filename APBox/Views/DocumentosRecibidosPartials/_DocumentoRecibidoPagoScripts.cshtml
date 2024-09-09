@@ -324,9 +324,6 @@ function validarEmail() {
     });
 </script>
 
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
 <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 <script src="https://unpkg.com/pdfobject"></script>
@@ -335,7 +332,7 @@ function validarEmail() {
     document.getElementById('fileInput').addEventListener('change', async function () {
         const files = this.files;
         const pdfDoc = await PDFLib.PDFDocument.create();
-
+        
         for (const file of files) {
             const reader = new FileReader();
             reader.onload = async (event) => {
@@ -361,7 +358,7 @@ function validarEmail() {
             const pdfBytes = await pdfDoc.save();
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const file = new File([blob], "ArchivoAdjuntoDR.pdf", { type: 'application/pdf' });
-
+           
             // Asignar el archivo al input AdjuntoDR
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
