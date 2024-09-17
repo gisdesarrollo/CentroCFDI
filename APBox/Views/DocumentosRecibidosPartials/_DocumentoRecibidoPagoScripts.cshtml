@@ -4,7 +4,6 @@ function validarEmail() {
 
     // Ahora, agrega la lógica AJAX para validar el email
     var email = $('#emailSolicitante').val();
-
     $.ajax({
             url: '@Url.Action("ValidadorEmail", "DocumentosRecibidos")',
             type: 'POST',
