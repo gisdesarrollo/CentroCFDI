@@ -373,6 +373,7 @@ namespace APBox.Controllers.Operaciones
                 //aqui empieza el bloque que se modifica para la demo de COFCO, se refactorizará después.
                 await ProcesarCustomIntegrationCOFCO(documentoRecibidoDr);
                 documentoRecibidoDr.DocumentoAsociadoDR = null;
+               
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
 
                 _db.SaveChanges();
@@ -627,15 +628,17 @@ namespace APBox.Controllers.Operaciones
                 {
                     SucursalId = documentoRecibidoDr.SucursalId,
                     SocioComercialId = documentoRecibidoDr.SocioComercialId,
-                    PrecioContrato = decimal.Parse(precioContrato),
+                    PrecioContrato = decimal.TryParse(precioContrato, out var precio) ? precio : default(decimal),
                     Moneda = moneda,
-                    TipoCambio = decimal.Parse(tipoCambio),
-                    PesoOrigen = decimal.Parse(pesoOrigen),
-                    PesoDestino = decimal.Parse(pesoDestino),
-                    KgMermaExcedente = decimal.Parse(kgMermaExcedente)
+                    TipoCambio = decimal.TryParse(tipoCambio, out var tipoCambioDecimal) ? tipoCambioDecimal : default(decimal),
+                    PesoOrigen = decimal.TryParse(pesoOrigen, out var pesoOrigenDecimal) ? pesoOrigenDecimal : default(decimal),
+                    PesoDestino = decimal.TryParse(pesoDestino, out var pesoDestinoDecimal) ? pesoDestinoDecimal : default(decimal),
+                    KgMermaExcedente = decimal.TryParse(kgMermaExcedente, out var kgMermaExcedenteDecimal) ? kgMermaExcedenteDecimal : default(decimal)
                 };
+                decimal mermaPorcentajeDecimal;
+                bool isValid = decimal.TryParse(mermaPorcentaje, out mermaPorcentajeDecimal);
 
-                if (Convert.ToDecimal(mermaPorcentaje) > 0.2m)
+                if (isValid && mermaPorcentajeDecimal > 0.2m)
                 {
                     var documentoAsociadoDR = new DocumentoAsociadoDR()
                     {
@@ -1233,9 +1236,13 @@ namespace APBox.Controllers.Operaciones
 
         #endregion
 
-        public ActionResult GetPDF(int id)
+        public ActionResult GetPDF(int? id)
         {
-            var recibidoPdf = _db.RecibidoPdfDr.Find(id);
+            if (id == null)
+            {
+                return HttpNotFound("El ID proporcionado no es válido.");
+            }
+            var recibidoPdf = _db.RecibidoPdfDr.Find(id.Value);
             var documentoRecibido = _db.DocumentosRecibidos.Where(d => d.CfdiRecibidosPdfId == recibidoPdf.Id).FirstOrDefault();
 
             // Convierte el arreglo de bytes a un MemoryStream
@@ -1244,18 +1251,46 @@ namespace APBox.Controllers.Operaciones
             // Devuelve el archivo como un FileStreamResult
             return new FileStreamResult(stream, "application/pdf");
         }
+        public ActionResult GetPDfAdjunto(int? id)
+        {
+            var documentoRecibido = _db.DocumentosRecibidos.Find(id.Value);
+            if (documentoRecibido == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Documento no encontrado");
+            }
+            var abjunto = _db.AdjuntoDr.Where(a=> a.DocumentoRecibidoId == documentoRecibido.Id).FirstOrDefault();
+            if (abjunto == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Adjunto no encontrado");
+            }
+            string filePath = abjunto.PathS3Adjunto;
+            
+            // Generar URL de CloudFront pre-firmada
+            var preSignedUrl = _s3Helper.GenerateCloudFrontPreSignedURL(filePath);
+            var client = new WebClient();
+
+            try
+            {
+               var fileBytes = client.DownloadData(preSignedUrl);
+               var stream = new MemoryStream(fileBytes);
+               
+                return new FileStreamResult(stream, "application/pdf");
+                
+            }
+            catch (WebException ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                client.Dispose();
+            }
+        }
         public ActionResult GetImage()
         {
-            // Ruta del archivo de imagen
             var imagePath = @"C:\\Users\\Admin\\Downloads\\image-20240730-164626.png";
-
-            // Lee el archivo de imagen en un arreglo de bytes
             var imageFile = System.IO.File.ReadAllBytes(imagePath);
-
-            // Convierte el arreglo de bytes a un MemoryStream
             var stream = new MemoryStream(imageFile);
-
-            // Devuelve el archivo como un FileStreamResult
             return new FileStreamResult(stream, "image/png");
         }
         public ActionResult GetExcel()

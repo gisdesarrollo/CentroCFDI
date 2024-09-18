@@ -323,48 +323,7 @@ function validarEmail() {
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
-<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-<script src="https://unpkg.com/pdfobject"></script>
 
-<script>
-    document.getElementById('fileInput').addEventListener('change', async function () {
-        const files = this.files;
-        const pdfDoc = await PDFLib.PDFDocument.create();
-        
-        for (const file of files) {
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                if (file.type === 'application/pdf') {
-                    const pdf = await PDFLib.PDFDocument.load(event.target.result);
-                    const pages = await pdfDoc.copyPages(pdf, pdf.getPageIndices());
-                    pages.forEach((page) => pdfDoc.addPage(page));
-                } else if (file.type.startsWith('image/')) {
-                    const img = await pdfDoc.embedJpg(event.target.result);
-                    const page = pdfDoc.addPage();
-                    page.drawImage(img, {
-                        x: 0,
-                        y: 0,
-                        width: page.getWidth(),
-                        height: page.getHeight(),
-                    });
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        setTimeout(async () => {
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const file = new File([blob], "ArchivoAdjuntoDR.pdf", { type: 'application/pdf' });
-           
-            // Asignar el archivo al input AdjuntoDR
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            document.getElementById('AdjuntoDR').files = dataTransfer.files;
-        }, 1000); // Se añade un pequeño retraso para asegurar que todos los archivos se procesen
-    });
-</script>
 
 <script>
     $(document).ready(function () {

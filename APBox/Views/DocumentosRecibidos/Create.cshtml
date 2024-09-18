@@ -511,46 +511,44 @@
                                     </div>
 
                                     <div class="row my-10 px-5">-->
-
-                                        <!--begin::Alert-->
-                                        <!--<div class="alert alert-primary d-flex align-items-center permitido visually-hidden">-->
-                                            <!--begin::Icon-->
-                                            <!--<i class="ki-duotone ki-shield-tick fs-2hx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>-->
-                                            <!--end::Icon-->
-                                            <!--begin::Wrapper-->
-                                            <!--<div class="d-flex flex-column">-->
-                                                <!--begin::Title-->
-                                                <!--<h4 class="mb-1 text-dark">No excede</h4>-->
-                                                <!--end::Title-->
-                                                <!--begin::Content-->
-                                                <!--<span class="text-gray-900">El cálculo en tu entrega muestra una merma de <span class="mermaPorcentaje fw-semibold"></span>%</span>
-                                                <span class="text-gray-900">El porcentaje de merma está dentro de lo permitido en el contrato, la factura se puede procesar de manera regular.</span>-->
-                                                <!--end::Content-->
-                                            <!--</div>-->
-                                            <!--end::Wrapper-->
-                                        <!--</div>-->
-                                        <!--end::Alert-->
-                                        <!--begin::Alert-->
-                                        <!--<div class="alert alert-warning d-flex align-items-center excedente visually-hidden">-->
-                                            <!--begin::Icon-->
-                                            <!--<i class="ki-duotone ki-information-5 fs-2hx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>-->
-                                            <!--end::Icon-->
-                                            <!--begin::Wrapper-->
-                                            <!--<div class="d-flex flex-column">-->
-                                                <!--begin::Title-->
-                                                <!--<h4 class="mb-1 text-dark">Atención</h4>-->
-                                                <!--end::Title-->
-                                                <!--begin::Content-->
-                                                <!--<span class="text-gray-900">El cálculo en tu entrega muestra una merma de <span class="mermaPorcentaje fw-semibold"></span>%</span>
-                                                <span class="text-gray-900">El porcentaje de merma está fuera de lo permitido en el contrato, se requiere realizar una Nota de Crédito por <span class="ncExcedente fw-semibold"></span><br                                             </span>
-                                                <span class="text-gray-900">Se creará una solicitud de documento que tendras que seleccionar cuando cargues la Nota de Crédito y tendra que igualar el valor por el total del requerimiento.</span>-->
-                                                <!--end::Content-->
-                                            <!--</div>-->
-                                            <!--end::Wrapper-->
-                                        <!--</div>-->
-                                        <!--end::Alert-->
-
-                                        <!--<input type="decimal" id="MermaPorcentaje" name="MermaPorcentaje" value="" class="visually-hidden" />
+                                <!--begin::Alert-->
+                                <!--<div class="alert alert-primary d-flex align-items-center permitido visually-hidden">-->
+                                <!--begin::Icon-->
+                                <!--<i class="ki-duotone ki-shield-tick fs-2hx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>-->
+                                <!--end::Icon-->
+                                <!--begin::Wrapper-->
+                                <!--<div class="d-flex flex-column">-->
+                                <!--begin::Title-->
+                                <!--<h4 class="mb-1 text-dark">No excede</h4>-->
+                                <!--end::Title-->
+                                <!--begin::Content-->
+                                <!--<span class="text-gray-900">El cálculo en tu entrega muestra una merma de <span class="mermaPorcentaje fw-semibold"></span>%</span>
+                                <span class="text-gray-900">El porcentaje de merma está dentro de lo permitido en el contrato, la factura se puede procesar de manera regular.</span>-->
+                                <!--end::Content-->
+                                <!--</div>-->
+                                <!--end::Wrapper-->
+                                <!--</div>-->
+                                <!--end::Alert-->
+                                <!--begin::Alert-->
+                                <!--<div class="alert alert-warning d-flex align-items-center excedente visually-hidden">-->
+                                <!--begin::Icon-->
+                                <!--<i class="ki-duotone ki-information-5 fs-2hx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>-->
+                                <!--end::Icon-->
+                                <!--begin::Wrapper-->
+                                <!--<div class="d-flex flex-column">-->
+                                <!--begin::Title-->
+                                <!--<h4 class="mb-1 text-dark">Atención</h4>-->
+                                <!--end::Title-->
+                                <!--begin::Content-->
+                                <!--<span class="text-gray-900">El cálculo en tu entrega muestra una merma de <span class="mermaPorcentaje fw-semibold"></span>%</span>
+                                <span class="text-gray-900">El porcentaje de merma está fuera de lo permitido en el contrato, se requiere realizar una Nota de Crédito por <span class="ncExcedente fw-semibold"></span><br                                             </span>
+                                <span class="text-gray-900">Se creará una solicitud de documento que tendras que seleccionar cuando cargues la Nota de Crédito y tendra que igualar el valor por el total del requerimiento.</span>-->
+                                <!--end::Content-->
+                                <!--</div>-->
+                                <!--end::Wrapper-->
+                                <!--</div>-->
+                                <!--end::Alert-->
+                                <!--<input type="decimal" id="MermaPorcentaje" name="MermaPorcentaje" value="" class="visually-hidden" />
                                         <input type="decimal" id="MontoNC" name="MontoNC" value="" class="visually-hidden" />
 
                                     </div>
@@ -871,3 +869,58 @@
 }
 
 @Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script src="https://unpkg.com/pdfobject"></script>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', async function () {
+        const files = this.files;
+        const pdfDoc = await PDFLib.PDFDocument.create();
+
+        // Crear un array de promesas para procesar los archivos
+        const promesasDeProcesamiento = Array.from(files).map(file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = async (event) => {
+                try {
+                    if (file.type === 'application/pdf') {
+                        const pdf = await PDFLib.PDFDocument.load(event.target.result);
+                        const pages = await pdfDoc.copyPages(pdf, pdf.getPageIndices());
+                        pages.forEach(page => pdfDoc.addPage(page));
+                    } else if (file.type.startsWith('image/')) {
+                        const img = await pdfDoc.embedJpg(event.target.result);
+                        const page = pdfDoc.addPage();
+                        page.drawImage(img, {
+                            x: 0,
+                            y: 0,
+                            width: page.getWidth(),
+                            height: page.getHeight(),
+                        });
+                    }
+                    resolve(); // Resolver la promesa después de procesar el archivo
+                } catch (error) {
+                    reject(error); // Rechazar la promesa si ocurre un error
+                }
+            };
+
+            reader.onerror = () => reject(new Error('Error al leer el archivo')); // Rechazar la promesa si FileReader falla
+            reader.readAsArrayBuffer(file);
+        }));
+
+        try {
+            await Promise.all(promesasDeProcesamiento); // Esperar a que se completen todas las promesas
+
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const file = new File([blob], "ArchivoAdjuntoDR.pdf", { type: 'application/pdf' });
+
+            // Asignar el archivo al input AdjuntoDR
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            document.getElementById('AdjuntoDR').files = dataTransfer.files;
+        } catch (error) {
+            console.error('Error al procesar los archivos:', error);
+        }
+    });
+</script>

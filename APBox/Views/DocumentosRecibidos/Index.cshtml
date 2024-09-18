@@ -48,7 +48,7 @@
     </div>
 </div>
 <!-- Modal HTML -->
-<div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+<!--<div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content modal-rounded">
             <div class="modal-header">
@@ -57,13 +57,13 @@
             </div>
             <div class="modal-body scroll-y m-5">
                 <div id="pdf-container"></div> <!-- Contenedor para incrustar el PDF -->
-            </div>
+            <!--</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <div class="modal fade" id="pdfCfdi" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -73,7 +73,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body scroll-y m-5">
-                <div id="pdf-container"></div> <!-- Contenedor para incrustar el PDF -->
+                <div id="pdf-container1"></div> <!-- Contenedor para incrustar el PDF -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -90,7 +90,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body scroll-y m-5">
-                <div id="pdf-container"></div> <!-- Contenedor para incrustar el PDF -->
+                <div id="pdf-container2"></div> <!-- Contenedor para incrustar el PDF -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -923,6 +923,19 @@
                                     var nombreAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(item.AprobacionesDR.UsuarioSolicitante_Id);
                                     var nombreDepartamento = _db.Departamentos.Find(item.AprobacionesDR.DepartamentoUsuarioSolicitante_Id).Nombre;
 
+                                    string pdfUrl = null;
+
+                                    if (item.RecibidosPdf != null && item.RecibidosPdf.Id != null)
+                                    {
+                                        pdfUrl = Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id });
+                                    }
+
+                                    string pdfAdjunto = null;
+
+                                    if (item.Id != null)
+                                    {
+                                        pdfAdjunto = Url.Action("GetPDFAdjunto", "DocumentosRecibidos", new { id = item.Id });
+                                    }
                                     <tr>
                                         <td>
                                             @switch (item.TipoDocumentoRecibido)
@@ -1027,9 +1040,9 @@
                                         <td class="align-top text-end">
 
                                             @*@if (item.RecibidosPdf != null)
-                                                {
-                                                 Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
-                                                }*@
+                    {
+                     Html.Partial("~/Views/DocumentosRecibidosPartials/_ViewImports.cshtml", Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id }))
+                    }*@
 
                                             <div class="d-flex justify-content-center">
                                                 @switch (item.EstadoComercial)
@@ -1051,25 +1064,29 @@
                                                     default:
                                                         break;
                                                 }
-                                                <div data-bs-toggle="tooltip"
-                                                     data-bs-placement="top"
-                                                     data-bs-trigger="hover focus"
-                                                     data-bs-original-title="PDF CFDI">
-                                                    <button type="button" class="btn btn-icon btn-color-gray-500 btn-active-color-primary"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#pdfCfdi">
-                                                        <i class="ki-duotone ki-tablet-book fs-1">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                        </i>
-                                                    </button>
-                                                </div>
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="PDF CFDI"
+                                                 data-pdf-url="@pdfUrl"
+                                                 onclick="embedPDF(this.getAttribute('data-pdf-url'),'#pdf-container1'); return false;">
+                                                <button type="button" class="btn btn-icon btn-color-gray-500 btn-active-color-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#pdfCfdi">
+                                                    <i class="ki-duotone ki-tablet-book fs-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </button>
+                                            </div>
 
 
                                                 <div data-bs-toggle="tooltip"
                                                      data-bs-placement="top"
                                                      data-bs-trigger="hover focus"
-                                                     data-bs-original-title="PDF Adjuntos">
+                                                     data-bs-original-title="PDF Adjuntos"
+                                                     data-pdf-url="@pdfAdjunto"
+                                                     onclick="embedPDF(this.getAttribute('data-pdf-url'),'#pdf-container2'); return false;">
                                                     <button type="button" class="btn btn-icon btn-color-gray-500 btn-active-color-primary"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#pdfAdjuntos">
@@ -1272,27 +1289,37 @@
     });
 
     var pdfUrl = '';
-
-    function embedPDF(url) {
+    var recipiente = '';
+    function embedPDF(url,cont) {
         pdfUrl = url;
+        recipiente = cont
         if (typeof PDFObject !== 'undefined' && pdfUrl) {
-            PDFObject.embed(pdfUrl, "#pdf-container");
+            PDFObject.embed(pdfUrl, recipiente);
         } else {
             console.error("La biblioteca PDFObject no está cargada o la URL del PDF no está definida.");
         }
     }
 
-    $('#pdfModal').on('shown.bs.modal', function () {
+    $('#pdfCfdi').on('shown.bs.modal', function () {
         if (pdfUrl) {
-            PDFObject.embed(pdfUrl, "#pdf-container");
+            PDFObject.embed(pdfUrl, recipiente);
         }
     });
 
-    $('#pdfModal').on('hide.bs.modal', function () {
-        $('#pdf-container').empty();
+    $('#pdfCfdi').on('hide.bs.modal', function () {
+        $(recipiente).empty();
     });
 
+    $('#pdfAdjuntos').on('shown.bs.modal', function () {
+        if (pdfUrl) {
+            PDFObject.embed(pdfUrl, recipiente);
+        }
+    });
 
+    $('#pdfAdjuntos').on('hide.bs.modal', function () {
+        $(recipiente).empty();
+    });
+    
 
 
     $(document).ready(function () {
