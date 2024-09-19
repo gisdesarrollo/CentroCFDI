@@ -1,0 +1,5 @@
+*Fecha de Pago,*Forma de Pago,*Monto,*Moneda,*Tipo de cambio del dia del pago para moneda del pago,*EquivalenciaDR,*Numero de Operacion,Banco Ordenante,Banco Beneficiario,*Numero de Parcialidad,*Serie de la Factura,*Folio de la Factura,Importe Pagado,Importe Saldo Anterior,Importe Saldo Insoluto
+21/08/2024,03,37000,MXN,1,1,132453,,,1,A,2665,17748,17748,0
+19/08/2024,03,45500,MXN,1,1,K89127,,,1,A,2657,45500,45500,0
+17/08/2024,03,65000,MXN,1,1,817622,,,1,A,2666,65000,65000,0
+16/08/2024,03,35000,MXN,1,1,A98213,,,1,A,2667,35000,35000,0

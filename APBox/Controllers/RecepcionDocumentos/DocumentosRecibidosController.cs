@@ -270,6 +270,7 @@ namespace APBox.Controllers.Operaciones
                     }
 
                     TempData["DocumentoRecibido"] = dataValidar.DocumentoRecibidoDr;
+                    TempData["dataValidar"] = dataValidar;
                     return RedirectToAction("Create");
 
                 case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
@@ -308,7 +309,8 @@ namespace APBox.Controllers.Operaciones
             {
                 documentoRecibidoDr = new DocumentoRecibido();
             }
-
+            var dataValidar = TempData["dataValidar"] as Validaciones.DataValidar;
+            //SetViewBagDv(dataValidar);
             PopulaDocumentosAsociados(documentoRecibidoDr);
 
             return View(documentoRecibidoDr);
@@ -456,6 +458,33 @@ namespace APBox.Controllers.Operaciones
             }
         }
 
+        private void SetViewBagDv(Validaciones.DataValidar dv)
+        {
+            switch (dv.DocumentoRecibidoDr.TipoDocumentoRecibido)
+            {
+                case c_TipoDocumentoRecibido.CFDI:
+                    ViewBag.MetodoPago = dv.Cfdi.MetodoPago;
+                    ViewBag.FormaPago = dv.Cfdi.FormaPago;
+                    ViewBag.TipoComprobante = dv.Cfdi.TipoDeComprobante.ToString();
+                    ViewBag.TipoCambio = dv.Cfdi.TipoCambio;
+                    ViewBag.Moneda = dv.Cfdi.Moneda;
+                    ViewBag.UsoCFDI = dv.Cfdi.Receptor.UsoCFDI;
+                    ViewBag.Usuario = dv.Usuario.NombreCompleto;
+                    ViewBag.Emisor = dv.Cfdi.Emisor.Nombre;
+                    ViewBag.Receptor = dv.Cfdi.Receptor.Nombre;
+                    ViewBag.CompPagoId = dv.Pago.Id;
+                    break;
+                case c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                    ViewBag.TipoComprobante = "Comprobante No Fiscal";
+                    ViewBag.Moneda = dv.DocumentoRecibidoDr.MonedaId;
+                    ViewBag.Usuario = dv.Usuario.NombreCompleto;
+                    break;
+                case c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                    break;
+                default:
+                    break;
+            }
+        }
         private void ManejarErrores(Exception ex, PathArchivosDto archivo, DocumentoRecibido documentoRecibidoDr)
         {
             var errores = ex.Message.Split('|');
@@ -551,14 +580,12 @@ namespace APBox.Controllers.Operaciones
 
         private void ProcesarAprobaciones(DocumentoRecibido documentoRecibidoDr, ConfiguracionesDR configuraciones, Usuario usuario)
         {
-            // Recuperar el usuario solicitante del input de la vista
             var usuarioSolicitante = _db.Usuarios.Find(documentoRecibidoDr.IdUsuarioSolicitante);
             var usuarioSolicitanteId = usuarioSolicitante.Id;
             var usuarioSolicitanteDepartamentoId = usuarioSolicitante.DepartamentoId;
 
             documentoRecibidoDr.AprobacionesId = null;
             documentoRecibidoDr.AprobacionesDR = new Aprobaciones();
-
             documentoRecibidoDr.EstadoComercial = c_EstadoComercial.EnRevision;
             documentoRecibidoDr.EstadoPago = c_EstadoPago.EnRevision;
             documentoRecibidoDr.AprobacionesDR.UsuarioEntrega_Id = usuario.Id;
@@ -1165,6 +1192,7 @@ namespace APBox.Controllers.Operaciones
 
             return fileStreamResult;
         }
+        
         public async Task<ActionResult> DescargaComprobanteNoFiscal(int id)
         {
 
@@ -1232,7 +1260,6 @@ namespace APBox.Controllers.Operaciones
 
             return Json(new { success = true, estado = documentoRecibido.EstadoComercial.ToString() });
         }
-
 
         #endregion
 
