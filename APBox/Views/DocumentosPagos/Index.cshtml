@@ -14,6 +14,46 @@
     var usuarioesProveedor = usuario.esProveedor;
 }
 
+<div class="modal fade" tabindex="-1" id="pdfCfdi">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header p-3">
+                <h5 class="modal-title">Previsualización PDF</h5>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-2x"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <div id="pdf-container1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="pdfAdjuntos">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header p-3">
+                <h5 class="modal-title">Previsualización PDF</h5>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-2x"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <div id="pdf-container2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row g-5 g-xl-8">
     <div class="col-12">
         <div class="card card-flush shadow-sm py-4 mb-xl-8 tablas" id="tabla1">
@@ -44,8 +84,8 @@
                                 <th>Identificador</th>
                                 <th>Datos de Recepción</th>
                                 <th class="text-end">Monto</th>
-                                <th class="w-100px text-center">Referencia</th>
-                                <th class="text-center">Estado Pago</th>
+                                <th class="text-center">Referencia</th>
+                                <th class="text-center">Estado<br />Pago</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -62,30 +102,105 @@
                                 ViewBag.nombreDepartamento = nombreDepartamento;
                                 ViewBag.usuarioAprobador = AcondicionarUsuarios.ObtenerNombreCompleto(aprobacion.UsuarioAprobacionComercial_id);
 
+                                string pdfCfdi = null;
+
+                                if (item.RecibidosPdf != null && item.RecibidosPdf.Id != 0)
+                                {
+                                    pdfCfdi = Url.Action("GetPDF", "DocumentosRecibidos", new { id = item.RecibidosPdf.Id });
+                                }
+
+                                string pdfAdjunto = null;
+
+                                if (item.AdjuntosId != null)
+                                {
+                                    pdfAdjunto = Url.Action("GetPDFAdjunto", "DocumentosRecibidos", new { id = item.AdjuntosId });
+                                }
 
                                 <tr>
                                     <td>
-                                        @item.SocioComercial.RazonSocial <br />
-                                        <span class="text-gray-600">@item.SocioComercial.Rfc</span>
+
+                                        @switch (item.TipoDocumentoRecibido)
+                                        {
+                                            case API.Enums.c_TipoDocumentoRecibido.CFDI:
+                                                @item.SocioComercial.RazonSocial <br />
+                                                <span class="text-gray-600">@item.SocioComercial.Rfc</span>
+                                                break;
+                                            case API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                                                @Html.Raw("Sin Socio Comercial");
+                                                break;
+                                            case API.Enums.c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                     </td>
                                     <td>
-                                        @item.CfdiRecibidosSerie - @item.CfdiRecibidosFolio <br />
-                                        <span class="text-gray-600">@item.CfdiRecibidosUUID</span> <br />
-                                        <span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
+                                        @switch (item.TipoDocumentoRecibido)
+                                        {
+                                            case API.Enums.c_TipoDocumentoRecibido.CFDI:
+
+                                                string sf = "";
+                                                if (item.CfdiRecibidosSerie != null)
+                                                {
+                                                    sf = String.Format("{0} - {1}", item.CfdiRecibidosSerie, item.CfdiRecibidosFolio);
+                                                }
+                                                else
+                                                {
+                                                    sf = item.CfdiRecibidosFolio;
+                                                }
+
+                                                @sf <br />
+
+                                                <span class="text-gray-600">@item.CfdiRecibidosUUID</span> <br />
+
+                                                <i class="ki-duotone ki-calendar text-gray-800 fs-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i><span class="text-gray-600">@item.FechaComprobante.ToString("dd/MM/yyyy")</span>
+
+                                                break;
+                                            case API.Enums.c_TipoDocumentoRecibido.ComprobanteNoFiscal:
+                                                <strong>Comprobante No Fiscal</strong> <br />
+                                                <span>Sin Identificador</span>
+                                                break;
+                                            case API.Enums.c_TipoDocumentoRecibido.ComprobanteExtranjero:
+                                                <strong>Comprobante No Fiscal</strong> <br />
+                                                <span>Sin Identificador</span>
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                     </td>
                                     <td>
+
                                         <strong>Aprobación:</strong> <br /> @ViewBag.usuarioAprobador <br />
+
+                                        <i class="ki-duotone ki-tablet-text-up text-gray-800 fs-3">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
                                         <span class="text-gray-600">@ViewBag.nombreDepartamento</span><br />
-                                        <i class="ki-duotone ki-calendar">
+
+                                        <i class="ki-duotone ki-calendar text-gray-800 fs-3">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i><span class="text-gray-600">@item.AprobacionesDR.FechaAprobacionComercial.Value.ToString("dd/MM/yyyy")</span><br />
+                                        </i> <span class="text-gray-600">@item.AprobacionesDR.FechaAprobacionComercial.Value.ToString("dd/MM/yyyy")</span><br />
                                         <div class="separator"></div>
+
                                         <strong>Entrega:</strong> <br /> @ViewBag.usuarioEntrega <br />
-                                        <i class="ki-duotone ki-calendar">
+                                        <i class="ki-duotone ki-calendar text-gray-800 fs-3">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i><span class="text-gray-600">@item.AprobacionesDR.FechaSolicitud.Value.ToString("dd/MM/yyyy")</span><br />
+                                        </i> <span class="text-gray-600">@item.AprobacionesDR.FechaSolicitud.Value.ToString("dd/MM/yyyy")</span><br />
+
+
+                                        @if (item.ComprobacionGastoId != null)
+                                        {
+                                            string compGast = String.Format("{0} - {1}", item.ComprobacionesGastos.Clave, item.ComprobacionesGastos.Folio);
+                                            <br /> <strong>Comp Gastos: </strong>
+                                            <br /><span class="text-gray-600">@Html.Raw(compGast)</span><br />
+                                        }
+
                                     </td>
                                     <td class="text-end">
                                         @item.Monto.ToString("c") <br />
@@ -95,29 +210,73 @@
                                         @item.Referencia
                                     </td>
                                     <td class="text-center" id="estado-@item.Id">
-                                        @switch (item.EstadoPago)
-                                        {
-                                            case API.Enums.c_EstadoPago.EnRevision:
-                                                <div class="badge badge-light-primary">EnRevision</div>
-                                                break;
-                                            case API.Enums.c_EstadoPago.Aprobado:
-                                                <div class="badge badge-light-success">Aprobado</div>
-                                                break;
-                                            case API.Enums.c_EstadoPago.Pagado:
-                                                <div class="badge badge-light-info">Pagado</div>
-                                                break;
-                                            case API.Enums.c_EstadoPago.Completado:
-                                                <div class="badge badge-light-dark">Completado</div>
-                                                break;
-                                            case API.Enums.c_EstadoPago.Rechazado:
-                                                <div class="badge badge-light-danger">Rechazado</div>
-                                                break;
-                                            default:
-                                                break;
-                                        }
+                                        <div class="d-flex justify-content-center">
+                                            @switch (item.EstadoPago)
+                                            {
+                                                case API.Enums.c_EstadoPago.EnRevision:
+                                                    <div data-bs-toggle="tooltip"
+                                                         data-bs-placement="top"
+                                                         data-bs-trigger="hover focus"
+                                                         data-bs-original-title="En Revisión">
+                                                        <button type="button" class="btn btn-icon">
+                                                            <i class="ki-duotone ki-file-right text-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                        </button>
+                                                    </div>
+
+                                                    break;
+                                                case API.Enums.c_EstadoPago.Aprobado:
+                                                    <div data-bs-toggle="tooltip"
+                                                         data-bs-placement="top"
+                                                         data-bs-trigger="hover focus"
+                                                         data-bs-original-title="Aprobado">
+                                                        <button type="button" class="btn btn-icon">
+                                                            <i class="ki-duotone ki-file-added text-success fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                        </button>
+                                                    </div>
+
+                                                    break;
+                                                case API.Enums.c_EstadoPago.Rechazado:
+                                                    <div data-bs-toggle="tooltip"
+                                                         data-bs-placement="top"
+                                                         data-bs-trigger="hover focus"
+                                                         data-bs-original-title="Rechazado">
+                                                        <button type="button" class="btn btn-icon">
+                                                            <i class="ki-duotone ki-file-deleted text-danger fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                        </button>
+                                                    </div>
+
+                                                    break;
+                                                case API.Enums.c_EstadoPago.Pagado:
+                                                    <div data-bs-toggle="tooltip"
+                                                         data-bs-placement="top"
+                                                         data-bs-trigger="hover focus"
+                                                         data-bs-original-title="Pagado">
+                                                        <button type="button" class="btn btn-icon">
+                                                            <i class="ki-duotone ki-bill text-info fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></i>
+                                                        </button>
+                                                    </div>
+
+                                                    break;
+                                                case API.Enums.c_EstadoPago.Completado:
+                                                    <div data-bs-toggle="tooltip"
+                                                         data-bs-placement="top"
+                                                         data-bs-trigger="hover focus"
+                                                         data-bs-original-title="Completado">
+                                                        <button type="button" class="btn btn-icon">
+                                                            <i class="ki-duotone ki-questionnaire-tablet text-dark fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                        </button>
+                                                    </div>
+
+                                                    break;
+                                                default:
+
+                                                    break;
+                                            }
+                                        </div>
                                     </td>
-                                    <td class="text-end">
+                                    <td>
                                         <div class="d-flex justify-content-end">
+
                                             @if (item.EstadoPago == API.Enums.c_EstadoPago.EnRevision)
                                             {
                                                 ViewBag.ClasesEstadoPago = "btn-color-gray-800 btn-active-color-success";
@@ -137,6 +296,59 @@
                                                     <i class="ki-duotone ki-check-square fs-1">
                                                         <span class="path1"></span>
                                                         <span class="path2"></span>
+                                                    </i>
+                                                </button>
+                                            </div>
+
+                                            @if (pdfCfdi != null)
+                                            {
+                                                ViewBag.ClasesPdfCfdi = "btn-color-gray-800 btn-active-color-success";
+                                                ViewBag.TooltipPdfCfdi = "PDF CFDI";
+                                            }
+                                            else
+                                            {
+                                                ViewBag.ClasesPdfCfdi = "btn-color-gray-500 disabled";
+                                                ViewBag.TooltipPdfCfdi = "Sin Archivos";
+                                            }
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="@ViewBag.TooltipPdfCfdi"
+                                                 data-pdf-url="@pdfCfdi"
+                                                 onclick="embedPDF(this.getAttribute('data-pdf-url'),'#pdf-container1'); return false;">
+                                                <button type="button" class="btn btn-icon @ViewBag.ClasesPdfCfdi text-hover-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#pdfCfdi">
+                                                    <i class="ki-duotone ki-tablet-book fs-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </button>
+                                            </div>
+
+                                            @if (pdfAdjunto != null)
+                                            {
+                                                ViewBag.ClasesPdfAdjunto = "btn-color-gray-800 btn-active-color-success";
+                                                ViewBag.TooltipPdfAdjunto = "PDF Adjuntos";
+                                            }
+                                            else
+                                            {
+                                                ViewBag.ClasesPdfAdjunto = "btn-color-gray-500 disabled";
+                                                ViewBag.TooltipPdfAdjunto = "Sin Archivos";
+                                            }
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="@ViewBag.TooltipPdfAdjunto"
+                                                 data-pdf-url="@pdfAdjunto"
+                                                 onclick="embedPDF(this.getAttribute('data-pdf-url'),'#pdf-container2'); return false;">
+                                                <button type="button" class="btn btn-icon @ViewBag.ClasesPdfAdjunto text-hover-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#pdfAdjuntos">
+                                                    <i class="ki-duotone ki-clipboard fs-1">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
                                                     </i>
                                                 </button>
                                             </div>
@@ -244,70 +456,88 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $("#tablas").change(function () {
-            var tabSeleccionado = $(this).val();
-            $(".tablas").hide();
-            $("#" + tabSeleccionado).fadeIn(400); // Se ha cambiado .show() por .fadeIn()
-        });
-
-        // Mostrar la primera pestaña por defecto
-        $("#tablas").trigger("change");
-
-        // Ocultar las pestañas que no sean la primera al cargar la página
-        $(".tablas:not(#tabla1)").hide();
-    });
-</script>
 
 @Html.Partial("~/Views/DocumentosRecibidosPartials/_DocumentoRecibidoPagoScripts.cshtml")
 
 <script>
-    $(document).ready(function() {
-        $(".aprobar").click(function() {
-            var id = $(this).data("id");
-            var button = $(this);
+$(document).ready(function() {
+    $(".aprobar").click(function() {
+        var id = $(this).data("id");
+        var button = $(this);
 
             $.ajax({
-                type: "POST",
-                url: '@Url.Action("AprobarDocumento", "DocumentosPagos")',
-                data: { id: id },
-                success: function(response) {
-                    if (response.success) {
-                        // Actualiza el estado en la vista
-                        var estadoBadge = "";
+            type: "POST",
+            url: '@Url.Action("AprobarDocumento", "DocumentosPagos")',
+            data: { id: id },
+            success: function(response) {
+                if (response.success) {
+                    // Actualiza el estado en la vista
+                    var estadoBadge = "";
 
-                        switch (response.estado) {
-                            case "EnRevision":
-                                estadoBadge = '<div class="badge badge-light-primary">EnRevision</div>';
-                                break;
-                            case "Aprobado":
-                                estadoBadge = '<div class="badge badge-light-success">Aprobado</div>';
-                                break;
-                            case "Pagado":
-                                estadoBadge = '<div class="badge badge-light-info">Pagado</div>';
-                                break;
-                            case "Completado":
-                                estadoBadge = '<div class="badge badge-light-dark">Completado</div>';
-                                break;
-                            case "Rechazado":
-                                estadoBadge = '<div class="badge badge-light-danger">Rechazado</div>';
-                                break;
-                            default:
-                                break;
-                        }
-
-                        $("#estado-" + id).html(estadoBadge);
-                        // Opcional: Deshabilita el botón o cámbialo a un estado aprobado
-                        button.prop("disabled", true);
-                    } else {
-                        alert("Error al aprobar el documento.");
+                    switch (response.estado) {
+                        case "Aprobado":
+                            estadoBadge = '<div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover focus" data-bs-original-title="Aprobado"><button type="button" class="btn btn-icon"><i class="ki-duotone ki-file-added text-success fs-1"><span class="path1" /><span class="path2" /></i></button></div>';
+                            break;
+                        case "EnRevision":
+                            estadoBadge = '<div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover focus" data-bs-original-title="En Revisión"><button type="button" class="btn btn-icon"><i class="ki-duotone ki-file-right text-primary fs-1"><span class="path1" /><span class="path2" /><span class="path3" /></i></button></div>';
+                            break;
+                        case "Rechazado":
+                            estadoBadge = '<div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover focus" data-bs-original-title="Rechazado"><button type="button" class="btn btn-icon"><i class="ki-duotone ki-file-deleted text-danger fs-1"><span class="path1" /><span class="path2" /></i></button></div>';
+                            break;
+                        case "Pagado":
+                            estadoBadge = '<div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover focus" data-bs-original-title="Pagado"><button type="button" class="btn btn-icon"><i class="ki-duotone ki-bill text-info fs-1"><span class="path1" /><span class="path2" /></i></button></div>';
+                            break;
+                        case "Completado":
+                            estadoBadge = '<div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover focus" data-bs-original-title="Completado"><button type="button" class="btn btn-icon"><i class="ki-duotone ki-questionnaire-tablet text-dark fs-1"><span class="path1" /><span class="path2" /></i></button></div>';
+                            break;
+                        default:
+                            break;
                     }
-                },
-                error: function() {
-                    alert("Error en la llamada AJAX.");
+
+                    $("#estado-" + id).html(estadoBadge);
+                    // Opcional: Deshabilita el botón o cámbialo a un estado aprobado
+                    button.prop("disabled", true);
+                } else {
+                    alert("Error al aprobar el documento.");
                 }
-            });
+            },
+            error: function() {
+                alert("Error en la llamada AJAX.");
+            }
         });
     });
+
+    var pdfUrl = '';
+    var recipiente = '';
+    function embedPDF(url, cont) {
+        pdfUrl = url;
+        recipiente = cont
+        if (typeof PDFObject !== 'undefined' && pdfUrl) {
+            PDFObject.embed(pdfUrl, recipiente);
+        } else {
+            console.error("La biblioteca PDFObject no está cargada o la URL del PDF no está definida.");
+        }
+    }
+
+    $('#pdfCfdi').on('shown.bs.modal', function () {
+        if (pdfUrl) {
+            PDFObject.embed(pdfUrl, recipiente);
+        }
+    });
+
+    $('#pdfCfdi').on('hide.bs.modal', function () {
+        $(recipiente).empty();
+    });
+
+    $('#pdfAdjuntos').on('shown.bs.modal', function () {
+        if (pdfUrl) {
+            PDFObject.embed(pdfUrl, recipiente);
+        }
+    });
+
+    $('#pdfAdjuntos').on('hide.bs.modal', function () {
+        $(recipiente).empty();
+    });
+
+});
 </script>

@@ -8,366 +8,437 @@
 
 }
 <div class="card card-flush shadow-sm py-4">
-   
+
     <!--begin::Card body-->
     <div class="card-body pt-0">
         <div class="d-flex flex-column gap-10">
             <table class="table align-middle rounded table-row-dashed g-5">
                 <thead>
                     <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
-                        <th class="min-w-100px">
-                            Nombre
+                        <th>
+                            Documento
                         </th>
-                        <th class="min-w-100px">
-                            Descarga
+                        <th class="text-center">
+                            Fecha de carga
                         </th>
-                        <th class="min-w-100px">
-                            Comentarios
-                        </th>
-                        <th class="min-w-100px">
-                            Usuario
-                        </th>
-                        <th class="min-w-100px">
-                            Fecha
-                        </th>
-                        <th class="min-w-100px">
+                        <th class="text-center">
                             Estatus
+                        </th>
+                        <th>
                         </th>
                     </tr>
                 </thead>
 
                 @foreach (var item in Model)
                 {
-                    <tr class="fs-7 align-text-top">
-                            <td>
+                    <tbody>
+                        <tr class="align-text-top">
+                            <td>Acta Constitutiva</td>
+                            <td class="text-center">
                                 @if (string.IsNullOrEmpty(item.PathActaConstitutiva))
-                                { 
-                                    <h4 class="fw-semibold fs-7">Acta Constitutiva</h4>
+                                {
                                 }
                                 else
                                 {
-                                    <!--begin::Alert-->
-                                    <div class="d-flex align-items-center mb-1">
-                                        <!--begin::Symbol-->
-                                        <div class="symbol symbol-50px me-5">
-                                            <span class="symbol-label bg-light-primary">
-                                                <i class="ki-duotone ki-double-check fs-2x text-primary">
+                                    @item.FechaCreacionActaConstitutiva.Value.ToString("dd-MM-yyyy");
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathActaConstitutiva))
+                                    {
+                                        <span>Sin documento cargado</span>
+                                    }
+                                    else
+                                    {
+                                        if (item.AprobacionActaConstitutiva.HasValue && item.AprobacionActaConstitutiva == 1)
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="Aprobado">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-check-circle text-success fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <i class="ki-duotone ki-user-tick">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                                <span class="text-gray-800">@item.UsuarioActaConstitutiva.NombreCompleto</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="En Revisión">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-search-list text-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathActaConstitutiva))
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <div data-bs-toggle="tooltip"
+                                             data-bs-placement="top"
+                                             data-bs-trigger="hover focus"
+                                             data-bs-original-title="Descarga">
+                                            <button type="button" class="btn btn-icon"
+                                                    onclick="window.location.href='@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathActaConstitutiva })';">
+                                                <i class="ki-duotone ki-file-down fs-1 text-primary">
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
                                                 </i>
-                                            </span>
+                                            </button>
                                         </div>
-                                        <!--end::Symbol-->
-                                        <!--begin::Text-->
-                                        <div class="d-flex flex-column">
-                                            <h4 class="fw-semibold fs-7">Acta Constitutiva</h4>
-                                            <span class="text-muted fw-bold"> </span>
-                                        </div>
-                                        <!--end::Text-->
-                                    </div>
-                                    <!--end::Alert-->
-                                }
+                                    }
+                                </div>
                             </td>
-                            @if (string.IsNullOrEmpty(item.PathActaConstitutiva))
-                            {
-                                <td colspan="5" class="text-center"><span class="badge badge-light-warning">No disponible</span></td>
-                            }
-                            else
-                            {
-                                <td class="ki-text-align-center">
-                                    
-                                    <a id="downloadlinkCSF" href="@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathActaConstitutiva })"><i class="ki-outline ki-cloud-download" style="font-size: 35px;"></i></a>
-                                </td>
-                                <td rowspan="5">
-                                    @if (string.IsNullOrEmpty(item.Comentarios))
-                                    {
-                                        @:&nbsp; <!-- Render a non-breaking space -->
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(modelItem => item.Comentarios)
-                                    }
-                                </td>
-                                <td>@Html.DisplayFor(modelItem => item.UsuarioActaConstitutiva.NombreCompleto)</td>
-                                <td>@Html.DisplayFor(modelItem => item.FechaCreacionActaConstitutiva)</td>
-                                <td>
-                                    @if (item.AprobacionActaConstitutiva.HasValue && item.AprobacionActaConstitutiva == 1)
-                                    {
-                                        <span class="badge badge-light-success">Aprobado</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge badge-light-dark">Pendiente</span>
-                                    }
-                                </td>
-                            }
                         </tr>
-                    <tr class="fs-7 align-text-top">
-                        <td>
-                            @if (string.IsNullOrEmpty(item.PathCedulaIdentificacionFiscal))
-                            {
-                                <h4 class="fw-semibold fs-7">RFC</h4>
-                            }
-                            else
-                            {
-                                <!--begin::Alert-->
-                                <div class="d-flex align-items-center mb-1">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-50px me-5">
-                                        <span class="symbol-label bg-light-primary">
-                                            <i class="ki-duotone ki-double-check fs-2x text-primary">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column">
-                                        <h4 class="fw-semibold fs-7">RFC</h4>
-                                        <span class="text-muted fw-bold"> </span>
-                                    </div>
-                                    <!--end::Text-->
-                                </div>
-                                <!--end::Alert-->
-                            }
-                        </td>
-                        @if (string.IsNullOrEmpty(item.PathCedulaIdentificacionFiscal))
-                        {
-                            <td colspan="5" class="text-center"><span class="badge badge-light-warning">No disponible</span></td>
-                        }
-                        else
-                        {
-                            <td>
-                                <a href="@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathCedulaIdentificacionFiscal })"><i class="ki-outline ki-cloud-download" style="font-size: 35px;"></i></a>
-                            </td>
-                            if (string.IsNullOrEmpty(item.PathActaConstitutiva))
-                            {
-                                <td rowspan="5">
-                                    @if (string.IsNullOrEmpty(item.Comentarios))
-                                    {
-                                        @:&nbsp; <!-- Render a non-breaking space -->
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(modelItem => item.Comentarios)
-                                    }
-                                </td>
-                            }
-                            <td>@Html.DisplayFor(modelItem => item.UsuarioCedulaIdentificacionFiscal.NombreCompleto)</td>
-                            <td>@Html.DisplayFor(modelItem => item.FechaCreacionCedulaIdentificacionFiscal)</td>
-                            <td>
-                                @if (item.AprobacionCedulaIdentificacionFiscal.HasValue && item.AprobacionCedulaIdentificacionFiscal == 1)
+
+
+                        <tr class="align-text-top">
+                            <td>Cédula de identificación fiscal</td>
+                            <td class="text-center">
+                                @if (string.IsNullOrEmpty(item.PathCedulaIdentificacionFiscal))
                                 {
-                                    <span class="badge badge-light-success">Aprobado</span>
                                 }
                                 else
                                 {
-                                    <span class="badge badge-light-dark">Pendiente</span>
+                                    @item.FechaCreacionCedulaIdentificacionFiscal.Value.ToString("dd-MM-yyyy");
                                 }
                             </td>
-                        }
-                    </tr>
-                    <tr class="fs-7 align-text-top">
-                        <td>
-                            @if (string.IsNullOrEmpty(item.PathComprobanteDomicilio))
-                            {
-                                <h4 class="fw-semibold fs-7">Comprobante de Domicilio</h4>
-                            }
-                            else
-                            {
-                                <!--begin::Alert-->
-                                <div class="d-flex align-items-center mb-1">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-50px me-5">
-                                        <span class="symbol-label bg-light-primary">
-                                            <i class="ki-duotone ki-double-check fs-2x text-primary">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column">
-                                        <h4 class="fw-semibold fs-7">Comprobante de Domicilio</h4>
-                                        <span class="text-muted fw-bold"> </span>
-                                    </div>
-                                    <!--end::Text-->
-                                </div>
-                                <!--end::Alert-->
-                            }
-                        </td>
-                        @if (string.IsNullOrEmpty(item.PathComprobanteDomicilio))
-                        {
-                            <td colspan="5" class="text-center"><span class="badge badge-light-warning">No disponible</span></td>
-                        }
-                        else
-                        {
-                            <td>
-                                <a href="@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathComprobanteDomicilio })"><i class="ki-outline ki-cloud-download" style="font-size: 35px;"></i></a>
-                            </td>
-                            if (string.IsNullOrEmpty(item.PathActaConstitutiva))
-                            {
-                                <td rowspan="5">
-                                    @if (string.IsNullOrEmpty(item.Comentarios))
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathCedulaIdentificacionFiscal))
                                     {
-                                        @:&nbsp; <!-- Render a non-breaking space -->
+                                        <span>Sin documento cargado</span>
                                     }
                                     else
                                     {
-                                        @Html.DisplayFor(modelItem => item.Comentarios)
+                                        if (item.AprobacionCedulaIdentificacionFiscal.HasValue
+                                            && item.AprobacionCedulaIdentificacionFiscal == 1)
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="Aprobado">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-check-circle text-success fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <i class="ki-duotone ki-user-tick">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                                <span class="text-gray-800">@item.UsuarioCedulaIdentificacionFiscal.NombreCompleto</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="En Revisión">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-search-list text-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                </button>
+                                            </div>
+                                        }
                                     }
-                                </td>
-                            }
-                            <td>@Html.DisplayFor(modelItem => item.UsuarioComprobanteDomicilio.NombreCompleto)</td>
-                            <td>@Html.DisplayFor(modelItem => item.FechaCreacionComprobanteDomicilio)</td>
-                            <td>
-                                @if (item.AprobacionComprobanteDomicilio.HasValue && item.AprobacionComprobanteDomicilio == 1)
-                                {
-                                    <span class="badge badge-light-success">Aprobado</span>
-                                }
-                                else
-                                {
-                                    <span class="badge badge-light-dark">Pendiente</span>
-                                }
-                            </td>
-                        }
-                    </tr>
-                    <tr class="fs-7 align-text-top">
-                        <td>
-                            @if (string.IsNullOrEmpty(item.PathIdentificacionOficialRepLeg))
-                            {
-                                <h4 class="fw-semibold fs-7">Identificación Oficial</h4>
-                            }
-                            else
-                            {
-                                <!--begin::Alert-->
-                                <div class="d-flex align-items-center mb-1">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-50px me-5">
-                                        <span class="symbol-label bg-light-primary">
-                                            <i class="ki-duotone ki-double-check fs-2x text-primary">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column">
-                                        <h4 class="fw-semibold fs-7">Identificación Oficial</h4>
-                                        <span class="text-muted fw-bold"> </span>
-                                    </div>
-                                    <!--end::Text-->
                                 </div>
-                                <!--end::Alert-->
-                            }
-                        </td>
-                        @if (string.IsNullOrEmpty(item.PathIdentificacionOficialRepLeg))
-                        {
-                            <td colspan="5" class="text-center"><span class="badge badge-light-warning">No disponible</span></td>
-                        }
-                        else
-                        {
-                            <td>
-                                <a href="@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathIdentificacionOficialRepLeg })"><i class="ki-outline ki-cloud-download" style="font-size: 35px;"></i></a>
                             </td>
-                            if (string.IsNullOrEmpty(item.PathActaConstitutiva))
-                            {
-                                <td rowspan="5">
-                                    @if (string.IsNullOrEmpty(item.Comentarios))
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathCedulaIdentificacionFiscal))
                                     {
-                                        @:&nbsp; <!-- Render a non-breaking space -->
+
                                     }
                                     else
                                     {
-                                        @Html.DisplayFor(modelItem => item.Comentarios)
+                                        <div data-bs-toggle="tooltip"
+                                             data-bs-placement="top"
+                                             data-bs-trigger="hover focus"
+                                             data-bs-original-title="Descarga">
+                                            <button type="button" class="btn btn-icon"
+                                                    onclick="window.location.href='@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathActaConstitutiva })';">
+                                                <i class="ki-duotone ki-file-down fs-1 text-primary">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </div>
                                     }
-                                </td>
-                            }
-                            <td>@Html.DisplayFor(modelItem => item.UsuarioIdentificacionOficialRepLeg.NombreCompleto)</td>
-                            <td>@Html.DisplayFor(modelItem => item.FechaCreacionIdentificacionOficialRepLeg)</td>
-                            <td>
-                                @if (item.AprobacionIdentificacionOficialRepLeg.HasValue && item.AprobacionIdentificacionOficialRepLeg == 1)
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr class="align-text-top">
+                            <td>Comprobante de domicilio</td>
+                            <td class="text-center">
+                                @if (string.IsNullOrEmpty(item.PathComprobanteDomicilio))
                                 {
-                                    <span class="badge badge-light-success">Aprobado</span>
                                 }
                                 else
                                 {
-                                    <span class="badge badge-light-dark">Pendiente</span>
+                                    @item.FechaCreacionComprobanteDomicilio.Value.ToString("dd-MM-yyyy");
                                 }
                             </td>
-                        }
-                    </tr>
-                    <tr class="fs-7 align-text-top">
-                        <td>
-                            @if (string.IsNullOrEmpty(item.PathEstadoCuentaBancario))
-                            {
-                                <h4 class="fw-semibold fs-7">Estado Cuenta Bancario</h4>
-                            }
-                            else
-                            {
-                                <!--begin::Alert-->
-                                <div class="d-flex align-items-center mb-1">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-50px me-5">
-                                        <span class="symbol-label bg-light-primary">
-                                            <i class="ki-duotone ki-double-check fs-2x text-primary">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column">
-                                        <h4 class="fw-semibold fs-7">Estado Cuenta Bancario</h4>
-                                        <span class="text-muted fw-bold"> </span>
-                                    </div>
-                                    <!--end::Text-->
-                                </div>
-                                <!--end::Alert-->
-                            }
-                        </td>
-                        @if (string.IsNullOrEmpty(item.PathEstadoCuentaBancario))
-                        {
-                            <td colspan="5" class="text-center"><span class="badge badge-light-warning">No disponible</span></td>
-                        }
-                        else
-                        {
-                            <td>
-                                <a href="@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathEstadoCuentaBancario })"><i class="ki-outline ki-cloud-download" style="font-size: 35px;"></i></a>
-                            </td>
-                            if (string.IsNullOrEmpty(item.PathActaConstitutiva))
-                            {
-                                <td rowspan="5">
-                                    @if (string.IsNullOrEmpty(item.Comentarios))
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathComprobanteDomicilio))
                                     {
-                                        @:&nbsp; <!-- Render a non-breaking space -->
+                                        <span>Sin documento cargado</span>
                                     }
                                     else
                                     {
-                                        @Html.DisplayFor(modelItem => item.Comentarios)
+                                        if (item.AprobacionComprobanteDomicilio.HasValue && item.AprobacionComprobanteDomicilio == 1)
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="Aprobado">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-check-circle text-success fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <i class="ki-duotone ki-user-tick">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                                <span class="text-gray-800">@item.UsuarioComprobanteDomicilio.NombreCompleto</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="En Revisión">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-search-list text-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                </button>
+                                            </div>
+                                        }
                                     }
-                                </td>
-                            }
-                            <td>@Html.DisplayFor(modelItem => item.UsuarioEstadoCuentaBancario.NombreCompleto)</td>
-                            <td>@Html.DisplayFor(modelItem => item.FechaCreacionEstadoCuentaBancario)</td>
-                            <td>
-                                @if (item.AprobacionEstadoCuentaBancario.HasValue && item.AprobacionEstadoCuentaBancario == 1)
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathComprobanteDomicilio))
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <div data-bs-toggle="tooltip"
+                                             data-bs-placement="top"
+                                             data-bs-trigger="hover focus"
+                                             data-bs-original-title="Descarga">
+                                            <button type="button" class="btn btn-icon"
+                                                    onclick="window.location.href='@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathActaConstitutiva })';">
+                                                <i class="ki-duotone ki-file-down fs-1 text-primary">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr class="align-text-top">
+                            <td>Identificación Oficial del Representante Legal</td>
+                            <td class="text-center">
+                                @if (string.IsNullOrEmpty(item.PathIdentificacionOficialRepLeg))
                                 {
-                                    <span class="badge badge-light-success">Aprobado</span>
                                 }
                                 else
                                 {
-                                    <span class="badge badge-light-dark">Pendiente</span>
+                                    @item.FechaCreacionIdentificacionOficialRepLeg.Value.ToString("dd-MM-yyyy");
                                 }
                             </td>
-                        }
-                    </tr>
-                    }
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathIdentificacionOficialRepLeg))
+                                    {
+                                        <span>Sin documento cargado</span>
+                                    }
+                                    else
+                                    {
+                                        if (item.AprobacionIdentificacionOficialRepLeg.HasValue
+                                            && item.AprobacionIdentificacionOficialRepLeg == 1)
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="Aprobado">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-check-circle text-success fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <i class="ki-duotone ki-user-tick">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                                <span class="text-gray-800">@item.UsuarioIdentificacionOficialRepLeg.NombreCompleto</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="En Revisión">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-search-list text-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </td>
+
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathIdentificacionOficialRepLeg))
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <div data-bs-toggle="tooltip"
+                                             data-bs-placement="top"
+                                             data-bs-trigger="hover focus"
+                                             data-bs-original-title="Descarga">
+                                            <button type="button" class="btn btn-icon"
+                                                    onclick="window.location.href='@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathActaConstitutiva })';">
+                                                <i class="ki-duotone ki-file-down fs-1 text-primary">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr class="align-text-top">
+                            <td>Estado Cuenta Bancario</td>
+                            <td class="text-center">
+                                @if (string.IsNullOrEmpty(item.PathEstadoCuentaBancario))
+                                {
+                                }
+                                else
+                                {
+                                    @item.FechaCreacionEstadoCuentaBancario.Value.ToString("dd-MM-yyyy");
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathEstadoCuentaBancario))
+                                    {
+                                        <span>Sin documento cargado</span>
+                                    }
+                                    else
+                                    {
+                                        if (item.AprobacionEstadoCuentaBancario.HasValue
+                                            && item.AprobacionEstadoCuentaBancario == 1)
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="Aprobado">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-check-circle text-success fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <i class="ki-duotone ki-user-tick">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                                <span class="text-gray-800">@item.UsuarioEstadoCuentaBancario.NombreCompleto</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div data-bs-toggle="tooltip"
+                                                 data-bs-placement="top"
+                                                 data-bs-trigger="hover focus"
+                                                 data-bs-original-title="En Revisión">
+                                                <button type="button" class="btn btn-icon">
+                                                    <i class="ki-duotone ki-search-list text-primary fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </td>
+
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center">
+                                    @if (string.IsNullOrEmpty(item.PathEstadoCuentaBancario))
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <div data-bs-toggle="tooltip"
+                                             data-bs-placement="top"
+                                             data-bs-trigger="hover focus"
+                                             data-bs-original-title="Descarga">
+                                            <button type="button" class="btn btn-icon"
+                                                    onclick="window.location.href='@Url.Action("Download", "ExpedientesLegales", new { filePath = item.PathActaConstitutiva })';">
+                                                <i class="ki-duotone ki-file-down fs-1 text-primary">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                }
+
+
             </table>
+        </div>
+
+        <hr class="py-0 mb-10" />
+
+
+        <div class="d-flex flex-column">
+            <h3>Comentarios</h3>
+            <p>Comentarios guardados</p>
         </div>
     </div>
     <!--end::Card header-->

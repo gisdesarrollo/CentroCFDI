@@ -30,7 +30,7 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
 
         #endregion Variables
 
-        public List<API.Operaciones.OperacionesProveedores.DocumentoRecibido> FiltrarDocumentos(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId)
+        public List<API.Operaciones.OperacionesProveedores.DocumentoRecibido> FiltrarDocumentos(DateTime fechaInicial, DateTime fechaFinal, int sucursalId, int usuarioId, string tipoQuery)
         {
             var usuario = _db.Usuarios.Find(usuarioId);
 
@@ -59,6 +59,25 @@ namespace Aplicacion.LogicaPrincipal.DocumentosRecibidos
             if (usuario.esProveedor)
             {
                 query = query.Where(dr => dr.SocioComercialId == usuario.SocioComercialId);
+            }
+
+            switch (tipoQuery)
+            {
+                case "miscomprobantes":
+                    query = query.Where(
+                        dr => dr.UsuarioId == usuario.Id);
+                    break;
+                case "autorizarcomprobantes":
+                    query = query.Where(
+                        dr => dr.AprobacionesDR.UsuarioSolicitante_Id != usuario.Id && 
+                              dr.AprobacionesDR.DepartamentoUsuarioSolicitante_Id == usuario.DepartamentoId);
+                    break;
+                case "todoscomprobantes":
+                    query = query.Where(
+                        dr => dr.ValidacionesId != null);
+                    break;
+                default:
+                    break;
             }
 
             // Ejecutar la consulta y ordenar

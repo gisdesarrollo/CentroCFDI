@@ -1,3 +1,4 @@
+@using APBox.Context;
 @{
     if (!User.IsInRole("CFDI") || !User.IsInRole("COMPLEMENTOSPAGOS") || !User.IsInRole("COMPLEMENTOCARTAPORTE"))
     {
@@ -5,6 +6,34 @@
         {
             ViewBag.Active = "active";
         }
+    }
+    var _db = new APBoxContext();
+    var usuario = _db.Usuarios.Find(Convert.ToInt32(Session["UsuarioId"]));
+
+    if (usuario.esProveedor == true)
+    {
+        ViewBag.MiscomprobantesTitulo = "Mis Comprobantes";
+        ViewBag.MiscomprobanesUrl = "miscomprobantes";
+        ViewBag.MiscomprobanesTooltip = "Adminisitra los comprobates que has cargado";
+
+        ViewBag.TodoscomprobanesTitulo = "Todos los Comprobantes";
+        ViewBag.TodoscomprobanesUrl = "todoscomprobantes";
+        ViewBag.TodoscomprobantesTooltip = "Todos los Comprobantes";
+
+    }
+    else
+    {
+        ViewBag.MiscomprobantesTitulo = "Mis Comprobantes";
+        ViewBag.MiscomprobantesUrl = "miscomprobantes";
+        ViewBag.MiscomprobantesTooltip = "Adminisitra los comprobates que has cargado";
+
+        ViewBag.AutorizarcomprobantesTitulo = "Autorizar Comprobantes";
+        ViewBag.AutorizarcomprobantesUrl = "autorizarcomprobantes";
+        ViewBag.AutorizarcomprobantesTooltip = "Lista de Comprobantes por Autorizar";
+
+        ViewBag.TodoscomprobantesTitulo = "Todos los Comprobantes";
+        ViewBag.TodoscomprobanesUrl = "todoscomprobantes";
+        ViewBag.TodoscomprobantesTooltip = "Todos los Comprobantes";
     }
 
 }
@@ -150,7 +179,7 @@
                         <!--begin:Row-->
                         <div class="row">
                             <!--begin:Col-->
-                            <div class="col-lg-4 mb-6 mb-lg-0">
+                            <div class="col-lg-6 mb-6 mb-lg-0">
                                 <!--begin:Menu section-->
                                 <div class="mb-0">
                                     <!--begin:Menu heading-->
@@ -159,8 +188,41 @@
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
-                                        <a href="@Url.Action("Index", "DocumentosRecibidos")" class="menu-link ">
-                                            <span class="menu-title">Comprobantes CFDi</span>
+                                        <a href="@Url.Action("Index", "DocumentosRecibidos", new { q = ViewBag.MiscomprobantesUrl })" class="menu-link">
+                                            <span class="menu-title">@ViewBag.MiscomprobantesTitulo</span> 
+                                            <i data-bs-toggle="tooltip" data-bs-title="@ViewBag.MiscomprobantesTooltip" data-bs-placement="right" class="ki-duotone ki-information-2 fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index", "DocumentosRecibidos", new { q = ViewBag.AutorizarcomprobantesUrl })" class="menu-link">
+                                            <span class="menu-title">@ViewBag.AutorizarcomprobantesTitulo</span>
+                                            <i data-bs-toggle="tooltip" data-bs-title="@ViewBag.AutorizarcomprobantesTooltip" data-bs-placement="right" class="ki-duotone ki-information-2 fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item p-0 m-0">
+                                        <!--begin:Menu link-->
+                                        <a href="@Url.Action("Index", "DocumentosRecibidos", new { q = ViewBag.TodoscomprobanesUrl })" class="menu-link">
+                                            <span class="menu-title">@ViewBag.TodoscomprobantesTitulo</span>
+                                            <i data-bs-toggle="tooltip" data-bs-title="@ViewBag.TodoscomprobantesTooltip" data-bs-placement="right" class="ki-duotone ki-information-2 fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -170,7 +232,7 @@
                             </div>
                             <!--end:Col-->
                             <!--begin:Col-->
-                            <div class="col-lg-4 mb-6 mb-lg-0">
+                            <div class="col-lg-6 mb-6 mb-lg-0">
                                 <!--begin:Menu section-->
                                 <div class="mb-0">
                                     <!--begin:Menu heading-->
@@ -214,11 +276,11 @@
                         <!--begin:Row-->
                         <div class="row">
                             <!--begin:Col-->
-                            <div class="col-lg-4 mb-6 mb-lg-0">
+                            <div class="col-lg-6 mb-6 mb-lg-0">
                                 <!--begin:Menu section-->
                                 <div class="mb-0">
                                     <!--begin:Menu heading-->
-                                    <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Aprobaciones</h4>
+                                    <h4 class="fs-6 fs-lg-6 fw-bold mb-3 ms-4">Aprobaciones</h4>
                                     <!--end:Menu heading-->
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
@@ -242,11 +304,11 @@
                                 <!--end:Menu section-->
                             </div>
 
-                            <div class="col-lg-4 mb-6 mb-lg-0">
+                            <div class="col-lg-6 mb-6 mb-lg-0">
                                 <!--begin:Menu section-->
                                 <div class="mb-0">
                                     <!--begin:Menu heading-->
-                                    <h4 class="fs-6 fs-lg-4 fw-bold mb-3 ms-4">Operaciones</h4>
+                                    <h4 class="fs-6 fs-lg-6 fw-bold mb-3 ms-4">Operaciones</h4>
                                     <!--end:Menu heading-->
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
