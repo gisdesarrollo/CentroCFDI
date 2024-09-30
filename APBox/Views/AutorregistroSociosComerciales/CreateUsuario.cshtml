@@ -3,7 +3,13 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    /* Impide que el usuario edite el campo manualmente pero permite la edición por JavaScript */
+    .no-edit {
+        pointer-events: none;
+        background-color: #e9ecef; /* Para que se vea como un campo de solo lectura */
+    }
+</style>
 @using (Html.BeginForm("CreateUsuario", "AutorregistroSociosComerciales", FormMethod.Post, new { enctype = "multipart/form-data", id = "miForm" }))
 {
     @Html.AntiForgeryToken()
@@ -56,7 +62,7 @@
                         <div class="mb-10 row fv-row">
                             <div class="form-group col-4 fv-row">
                                 @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label required" })
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off", @id = "email" } })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -85,7 +91,7 @@
 
                             <div class="form-group col-4 fv-row">
                                 @Html.LabelFor(model => model.NombreUsuario, htmlAttributes: new { @class = "form-label" })
-                                @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control readonly", @readonly = "readonly", @autocomplete = "off" } })
+                                @Html.EditorFor(model => model.NombreUsuario, new { htmlAttributes = new { @class = "form-control readonly", @readonly = "readonly", @autocomplete = "off", @id = "nombreUsuario" } })
                                 @Html.ValidationMessageFor(model => model.NombreUsuario, "", new { @class = "text-danger" })
                             </div>
 
@@ -147,5 +153,26 @@
                 $('#NombreUsuario').val(newValue);
             }
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var emailField = document.getElementById('email');
+        var nombreUsuarioField = document.getElementById('nombreUsuario');
+       
+        // Escuchar cambios en el campo de email
+       
+        var email = emailField.value.trim();
+        
+            if (email !== "") {
+                // Asignar el valor del email al campo NombreUsuario
+                nombreUsuarioField.value = email;
+        }
+        emailField.addEventListener('input', function () {
+            var emailNuevo = emailField.value.trim();
+            if (emailNuevo !== "") {
+                nombreUsuarioField.value = emailNuevo;
+            }
+        });
+       
     });
 </script>

@@ -43,6 +43,12 @@ namespace API.Operaciones.Expedientes
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Vigencia { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? FechaDocumentoCsf { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? FechaDocumentoOcof { get; set; }
+
         [NotMapped]
         public HttpPostedFileBase ArchivoConstanciaSituacionFiscal { get; set; }
 
