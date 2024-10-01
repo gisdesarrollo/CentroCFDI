@@ -372,13 +372,13 @@ namespace APBox.Controllers.Operaciones
                 ProcesarComplementoPago(documentoRecibidoDr, compPagoId, usuario);
                 //aqui empieza el bloque que se modifica para la demo de COFCO, se refactorizará después.
                 await ProcesarCustomIntegrationCOFCO(documentoRecibidoDr);
+                int adjuntoId = await CargaAdjuntos(documentoRecibidoDr);
+                documentoRecibidoDr.AdjuntosId = adjuntoId;
                 documentoRecibidoDr.DocumentoAsociadoDR = null;
 
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
 
                 _db.SaveChanges();
-
-                await CargaAdjuntos(documentoRecibidoDr);
 
                 await CargaComprobante(documentoRecibidoDr);
 
@@ -858,7 +858,7 @@ namespace APBox.Controllers.Operaciones
         }
 
         [HttpPost]
-        private async Task CargaAdjuntos(DocumentoRecibido documentoRecibido)
+        private async Task<int> CargaAdjuntos(DocumentoRecibido documentoRecibido)
         {
             // Verificar que se ha subido un archivo
             if (documentoRecibido.AdjuntoDR != null && documentoRecibido.AdjuntoDR.ContentLength > 0)
@@ -878,7 +878,6 @@ namespace APBox.Controllers.Operaciones
                     await UploadFileToS3(documentoRecibido.AdjuntoDR, key);
                     var archivoAdjuntoDR = new AdjuntoDR
                     {
-                        DocumentoRecibidoId = documentoRecibido.Id,
                         SucursalId = documentoRecibido.SucursalId,
                         SocioComercialId = documentoRecibido.SocioComercialId,
                         FechaCreacion = DateTime.Now,
@@ -888,6 +887,7 @@ namespace APBox.Controllers.Operaciones
                     // Guardar el resto de la información del expedienteFiscal en la base de datos
                     _db.AdjuntoDr.Add(archivoAdjuntoDR);
                     await _db.SaveChangesAsync();
+                    return archivoAdjuntoDR.Id;
                 }
                 catch (Exception ex)
                 {
@@ -1252,12 +1252,12 @@ namespace APBox.Controllers.Operaciones
 
         public ActionResult GetPDfAdjunto(int? id)
         {
-            var documentoRecibido = _db.DocumentosRecibidos.Find(id.Value);
-            if (documentoRecibido == null)
+            //var documentoRecibido = _db.DocumentosRecibidos.Find(id.Value);
+            /*if (documentoRecibido == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Documento no encontrado");
-            }
-            var abjunto = _db.AdjuntoDr.Where(a => a.DocumentoRecibidoId == documentoRecibido.Id).FirstOrDefault();
+            }*/
+            var abjunto = _db.AdjuntoDr.Find(id.Value);
             if (abjunto == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Adjunto no encontrado");

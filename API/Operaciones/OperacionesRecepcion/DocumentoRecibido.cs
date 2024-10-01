@@ -84,7 +84,10 @@ namespace API.Operaciones.OperacionesProveedores
         [DisplayName("UUID")]
         public string CfdiRecibidosUUID { get; set; }
 
+        [DisplayName("Adjunto")]
         public int? AdjuntosId { get; set; }
+        [ForeignKey("AdjuntosId")]
+        public virtual AdjuntoDR Adjunto { get; set; }
 
         [DisplayName("Estado Comercial")]
         public c_EstadoComercial EstadoComercial { get; set; }

@@ -79,7 +79,7 @@
                         </div>
                     <div class="form-group my-6 col-4">
                         @Html.Label("Identificación Oficial", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
-                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoIdentificacionOficialRepLeg " id="ArchivoIdentificacionOficialRepLeg " accept="*/*" onchange="validateFileSize(this)"/>
+                        <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoIdentificacionOficialRepLeg" id="ArchivoIdentificacionOficialRepLeg" accept="*/*" onchange="validateFileSize(this)"/>
                         @if (!string.IsNullOrEmpty(Model.IdentificacionOficialRepLegName))
                         {
                             <i class="ki-outline ki-check-circle"></i><span class="form-text text-muted"> @Model.IdentificacionOficialRepLegName</span>

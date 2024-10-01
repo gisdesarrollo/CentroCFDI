@@ -168,7 +168,7 @@
 
                                 if (item.AdjuntosId != null)
                                 {
-                                    pdfAdjunto = Url.Action("GetPDFAdjunto", "DocumentosRecibidos", new { id = item.AdjuntosId });
+                                    pdfAdjunto = Url.Action("GetPDFAdjunto", "DocumentosRecibidos", new { id = item.AdjuntosId});
                                 }
                                 <tr>
                                     @if (usuario.esProveedor == false)
