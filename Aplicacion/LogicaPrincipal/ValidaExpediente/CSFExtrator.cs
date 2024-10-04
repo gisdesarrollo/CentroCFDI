@@ -29,7 +29,7 @@ namespace Aplicacion.LogicaPrincipal.ValidaExpediente
                     text += PdfTextExtractor.GetTextFromPage(page);
                 }
                 string[] lineas = Regex.Split(text, @"\r\n|\r|\n");
-                InformacionFiscalCsf infoFiscal = null;
+                InformacionFiscalCsf infoFiscal = new InformacionFiscalCsf();
                 for (int i = 0; i < lineas.Length; i++)
                 {
                     string linea = lineas[i];
@@ -117,7 +117,7 @@ namespace Aplicacion.LogicaPrincipal.ValidaExpediente
                     text += PdfTextExtractor.GetTextFromPage(page);
                 }
                 string[] lineas = Regex.Split(text, @"\r\n|\r|\n");
-                InformacionFiscalOcof infoFiscal = null;
+                InformacionFiscalOcof infoFiscal = new InformacionFiscalOcof();
                 for (int i = 0; i < lineas.Length; i++)
                 {
                     string linea = lineas[i];

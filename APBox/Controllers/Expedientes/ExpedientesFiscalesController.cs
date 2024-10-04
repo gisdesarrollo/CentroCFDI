@@ -39,7 +39,7 @@ namespace APBox.Controllers.Expedientes
             ViewBag.Controller = "ExpedientesFiscales";
             ViewBag.Action = "Index";
             ViewBag.Title = "Expediente Fiscal: " + socioComercial.RazonSocial;
-
+            ViewBag.SocioComercialId = socioComercialId;
             Session["socComlId"] = socioComercialId;
 
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
@@ -64,7 +64,7 @@ namespace APBox.Controllers.Expedientes
             ViewBag.Controller = "ExpedientesFiscales";
             ViewBag.Action = "Index";
             ViewBag.Title = "Expediente Fiscal: " + socioComercial.RazonSocial;
-
+            ViewBag.SocioComercialId = socioComercialId;
             Session["socComlId"] = socioComercialId;
 
 
