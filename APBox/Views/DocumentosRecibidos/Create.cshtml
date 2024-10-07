@@ -314,7 +314,7 @@
                                 <div class="d-flex align-items-center flex-wrap w-100">
                                     <!--begin::Title-->
                                     <div class="mb-1 pe-3 flex-grow-1">
-                                        <h4 class="fw-semibold fs-6"> - @ViewBag.FormaPago</h4>
+                                        <h4 class="fw-semibold fs-6">@TempData["MetodoPago"] - @TempData["FormaPago"]</h4>
                                         <div class="text-gray-500 fw-semibold fs-7">Método y Forma de Pago</div>
                                     </div>
                                     <!--end::Title-->
@@ -387,7 +387,7 @@
                                 <div class="d-flex align-items-center flex-wrap w-100">
                                     <!--begin::Title-->
                                     <div class="mb-1 pe-3 flex-grow-1">
-                                        <h4 class="fw-semibold fs-6">@ViewBag.Moneda - @ViewBag.TipoCambio</h4>
+                                        <h4 class="fw-semibold fs-6">@TempData["Moneda"] - @TempData["TipoCambio"]</h4>
                                         <div class="text-gray-500 fw-semibold fs-7">Moneda y Tipo de Cambio</div>
                                     </div>
                                     <!--end::Title-->
@@ -413,7 +413,7 @@
                                 <div class="d-flex align-items-center flex-wrap w-100">
                                     <!--begin::Title-->
                                     <div class="mb-1 pe-3 flex-grow-1">
-                                        <h4 class="fw-semibold fs-6">@ViewBag.UsoCFDI</h4>
+                                        <h4 class="fw-semibold fs-6">@TempData["UsoCFDI"]</h4>
                                         <div class="text-gray-500 fw-semibold fs-7">Uso de CFDI</div>
                                     </div>
                                     <!--end::Title-->
