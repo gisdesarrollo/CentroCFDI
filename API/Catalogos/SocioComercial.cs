@@ -73,6 +73,8 @@ namespace API.Catalogos
 
         public string Observaciones { get; set; }
 
+        public string Categoria { get;set; }
+
         public bool esCliente { get; set; }
         public bool esProveedor {  get; set; }
 

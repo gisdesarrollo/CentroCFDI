@@ -95,6 +95,9 @@
                                 Expediente
                             </th>
                             <th>
+                                Categoria
+                            </th>
+                            <th>
                                 Estado
                             </th>
                             <th>
@@ -183,7 +186,16 @@
                                     <div class="badge badge-light-warning">Pendiente</div>
                                 }
                             </td>
-
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Categoria))
+                                {
+                                    @Html.DisplayFor(modelItem => item.Categoria)
+                                }
+                                else
+                                {
+                                    <span class="badge badge-light-info"> Sin Categoria </span>
+                                }
+                            </td>
                             <td>
                                 @if (item.Status == API.Enums.Status.Activo)
                                 {

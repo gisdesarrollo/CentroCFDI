@@ -233,6 +233,8 @@
     <Compile Include="Models\Dto\UbicacionDto.cs" />
     <Compile Include="Models\Expedientes\ExpedientesFiscalesModel.cs" />
     <Compile Include="Models\Expedientes\ExpedientesLegalesModel.cs" />
+    <Compile Include="Models\Expedientes\InformacionFiscalCsf.cs" />
+    <Compile Include="Models\Expedientes\InformacionFiscalOcof.cs" />
     <Compile Include="Operaciones\Expedientes\ExpedienteFiscal.cs" />
     <Compile Include="Models\Facturas\Factura.cs" />
     <Compile Include="Models\Facturas\FacturasEmitidasModel.cs" />

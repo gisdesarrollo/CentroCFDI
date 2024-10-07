@@ -1,9 +1,11 @@
 ﻿using APBox.Context;
 using API.Enums;
+using API.Models.Expedientes;
 using API.Models.ExpedientesFiscales;
 using API.Operaciones.Expedientes;
 using API.Operaciones.OperacionesProveedores;
 using Aplicacion.LogicaPrincipal.Expedientes;
+using Aplicacion.LogicaPrincipal.ValidaExpediente;
 using Aplicacion.Utilidades;
 using AWS;
 using System;
@@ -26,6 +28,7 @@ namespace APBox.Controllers.Expedientes
         private readonly APBoxContext _db = new APBoxContext();
         private readonly ProcesaExpediente _procesaExpediente = new ProcesaExpediente();
         private readonly AmazonS3Helper _s3Helper;
+        private readonly CSFExtrator _cSFExtrator =  new CSFExtrator();
 
         #endregion Variables
 
@@ -36,7 +39,7 @@ namespace APBox.Controllers.Expedientes
             ViewBag.Controller = "ExpedientesFiscales";
             ViewBag.Action = "Index";
             ViewBag.Title = "Expediente Fiscal: " + socioComercial.RazonSocial;
-
+            ViewBag.SocioComercialId = socioComercialId;
             Session["socComlId"] = socioComercialId;
 
             var sucursal = _db.Sucursales.Find(ObtenerSucursal());
@@ -61,7 +64,7 @@ namespace APBox.Controllers.Expedientes
             ViewBag.Controller = "ExpedientesFiscales";
             ViewBag.Action = "Index";
             ViewBag.Title = "Expediente Fiscal: " + socioComercial.RazonSocial;
-
+            ViewBag.SocioComercialId = socioComercialId;
             Session["socComlId"] = socioComercialId;
 
 
@@ -81,6 +84,7 @@ namespace APBox.Controllers.Expedientes
             ViewBag.Controller = "ExpedientesFiscales";
             ViewBag.Action = "Index";
             ViewBag.Title = "Nuevo Expediente Fiscal";
+            ViewBag.IdSocioComercial = socioComercialId;
 
             ExpedienteFiscal expedienteFiscal = new ExpedienteFiscal()
             {
@@ -99,26 +103,100 @@ namespace APBox.Controllers.Expedientes
             var sucursalId = ObtenerSucursal();
             var grupoId = ObtenerGrupo();
             var socioComercialId = (int)Session["socComlId"];
-
-
+            ViewBag.IdSocioComercial = socioComercialId;
             if (ModelState.IsValid)
             {
-
                 //quiero hacer un try para checar si el registro ya existe, buscando mes, anio, sucursal y socio comercial
-                var expedienteExistente = _db.ExpedientesFiscales
+                /*var expedienteExistente = _db.ExpedientesFiscales
                     .FirstOrDefault(e => e.Mes == expediente.Mes &&
                                          e.Anio == expediente.Anio &&
                                          e.SucursalId == sucursalId &&
-                                         e.SocioComercialId == socioComercialId);
-
-                if (expedienteExistente != null)
+                                         e.SocioComercialId == socioComercialId);*/
+                /*if (expedienteExistente != null)
                 {
                     TempData["Errores"] = new List<string> { "Ya existe un expediente fiscal para el mes y año seleccionado" };
                     return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
 
+                }*/
+                if(expediente.ArchivoConstanciaSituacionFiscal == null || expediente.ArchivoOpinionCumplimientoSAT == null)
+                {
+                    TempData["Errores"] = new List<string> { "Error: Es requerido cargar los dos archivos." };
+                    return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
                 }
+                var expedienteExistentes = _db.ExpedientesFiscales
+                    .Where(dr =>dr.SocioComercialId == socioComercialId &&
+                                dr.SucursalId == sucursalId)
+                                .OrderByDescending(dr => dr.FechaCreacion)
+                                .ToList();
 
+                ExpedienteFiscal ultimoExpediente = null;
+                if (expedienteExistentes.Any())
+                {
+                    ultimoExpediente = expedienteExistentes.First(); // Obtiene el más reciente
+                }
+                
 
+                // validacion de expedientes cargados
+                InformacionFiscalCsf infoFiscalCSF = null;
+                InformacionFiscalOcof infoFiscalOCOF = null;
+                try
+                {
+                    if(expediente.ArchivoConstanciaSituacionFiscal != null && expediente.ArchivoConstanciaSituacionFiscal.ContentLength > 0)
+                    {
+                        bool esCsf = _cSFExtrator.EsCsf(expediente.ArchivoConstanciaSituacionFiscal);
+                        if (!esCsf)
+                        {
+                            TempData["Errores"] = new List<string> { "Error: el archivo cargado no es una constancia de situación fiscal" };
+                            return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
+                        }
+                        infoFiscalCSF = _cSFExtrator.GetCadenaOriginalCsf(expediente.ArchivoConstanciaSituacionFiscal);
+                        if (infoFiscalCSF != null)
+                        {
+                            
+                            if (infoFiscalCSF.TipoDocumento != "CONSTANCIA DE SITUACIÓN FISCAL")
+                            {
+                                TempData["Errores"] = new List<string> { "Error : el archivo no cuenta con los datos sello digital" };
+                                return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
+                            }
+                            else { expediente.FechaDocumentoCsf = infoFiscalCSF.Fecha; }
+                        }
+                    }
+                    if (expediente.ArchivoOpinionCumplimientoSAT != null && expediente.ArchivoOpinionCumplimientoSAT.ContentLength > 0)
+                    {
+                        bool esOcof = _cSFExtrator.EsOcof(expediente.ArchivoOpinionCumplimientoSAT);
+                        if (!esOcof)
+                        {
+                            TempData["Errores"] = new List<string> { "Error: el archivo cargado no es una opinión del cumplimiento de obligaciones fiscales" };
+                            return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
+                        }
+
+                        infoFiscalOCOF = _cSFExtrator.GetCadenaOriginalOcof(expediente.ArchivoOpinionCumplimientoSAT);
+
+                        if (infoFiscalOCOF != null)
+                        {
+                            
+                            if (infoFiscalOCOF.EstatusCumplimiento != "P")
+                            {
+                                TempData["Errores"] = new List<string> { "Error : el archivo no cuenta con estatus positivo" };
+                                return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
+                            }
+                            else { expediente.FechaDocumentoOcof = infoFiscalOCOF.FechaEmision; }
+                        }
+                    }
+
+                    //valida rango de fecha de emision del archivo contra vigencia y fecha actual
+                    if (ultimoExpediente != null)
+                    {
+                        bool fechaDentroDeRangoCSF = _cSFExtrator.ValidEmision(ultimoExpediente.Vigencia, infoFiscalCSF.Fecha);
+                        bool fechaDentroDeRangoOCOF = _cSFExtrator.ValidEmision(ultimoExpediente.Vigencia, infoFiscalOCOF.FechaEmision);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["Errores"] = new List<string> { ex.Message };
+                    return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
+
+                }
 
                 var basePath = $"ExpedientesFiscales/{grupoId}/{sucursalId}/{socioComercialId}/{expediente.Anio}/{(int)expediente.Mes}";
 
