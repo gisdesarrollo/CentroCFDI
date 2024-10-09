@@ -5,6 +5,7 @@ using API.Enums;
 using API.Integraciones.Clientes;
 using API.Models.DocumentosRecibidos;
 using API.Models.Dto;
+using API.Operaciones.ComplementoCartaPorte;
 using API.Operaciones.OperacionesProveedores;
 using API.Operaciones.OperacionesRecepcion;
 using Aplicacion.LogicaPrincipal.Correos;
@@ -388,15 +389,15 @@ namespace APBox.Controllers.Operaciones
 
                 ProcesarComplementoPago(documentoRecibidoDr, compPagoId, usuario);
                 //aqui empieza el bloque que se modifica para la demo de COFCO, se refactorizará después.
-                await ProcesarCustomIntegrationCOFCO(documentoRecibidoDr);
-                int adjuntoId = await CargaAdjuntos(documentoRecibidoDr);
-                documentoRecibidoDr.AdjuntosId = adjuntoId;
+                //await ProcesarCustomIntegrationCOFCO(documentoRecibidoDr);
+                
                 documentoRecibidoDr.DocumentoAsociadoDR = null;
 
                 _db.DocumentosRecibidos.Add(documentoRecibidoDr);
 
                 _db.SaveChanges();
-
+                int adjuntoId = await CargaAdjuntos(documentoRecibidoDr);
+                if(adjuntoId > 0) { UpdateDocRec(documentoRecibidoDr.Id,adjuntoId); }
                 await CargaComprobante(documentoRecibidoDr);
 
                 return RedireccionarDespuesDeGuardado(compGastosId, compPagoId);
@@ -683,7 +684,8 @@ namespace APBox.Controllers.Operaciones
                 MonedaId = documentoRecibidoDr.MonedaId,
                 Monto = documentoRecibidoDr.Monto,
                 Referencia = documentoRecibidoDr.Referencia,
-                SucursalId = sucursal.Id
+                SucursalId = sucursal.Id,
+                UsuarioId = usuario.Id,
             };
             return documentoRecibidoDr;
         }
@@ -796,9 +798,11 @@ namespace APBox.Controllers.Operaciones
             }
             else
             {
-                var documentoAsociado = _db.DocumentoAsociadoDR.Find(documentoRecibidoDr.DocumentoAsociadoDRId);
-
-                documentoAsociado.FechaEntrega = DateTime.Now;
+                if (documentoRecibidoDr.DocumentoAsociadoDRId != null)
+                {
+                    var documentoAsociado = _db.DocumentoAsociadoDR.Find(documentoRecibidoDr.DocumentoAsociadoDRId);
+                    documentoAsociado.FechaEntrega = DateTime.Now;
+                }
             }
 
             _db.SaveChanges();
@@ -854,7 +858,7 @@ namespace APBox.Controllers.Operaciones
 
                     var comprobanteNoFiscal = new ComprobanteNoFiscal
                     {
-                        DocumentoRecibidoId = documentoRecibido.Id,
+                        DocumentosRecibidos_Id = documentoRecibido.Id,
                         SucursalId = documentoRecibido.SucursalId,
                         Referencia = documentoRecibido.Referencia,
                         FechaCreacion = DateTime.Now,
@@ -921,10 +925,7 @@ namespace APBox.Controllers.Operaciones
                     throw new Exception(ex.Message);
                 }
             }
-            else
-            {
-                throw new Exception("Error no encontro los archivos adjuntos: null");
-            }
+            return 0;
         }
 
         private async Task UploadFileToS3(HttpPostedFileBase file, string key)
@@ -1188,7 +1189,7 @@ namespace APBox.Controllers.Operaciones
 
         public async Task<ActionResult> DescargaComprobanteNoFiscal(int id)
         {
-            var comprobanteNoFiscal = _db.ComprobanteNoFiscal.Where(nf => nf.DocumentoRecibidoId == id).FirstOrDefault();
+            var comprobanteNoFiscal = _db.ComprobanteNoFiscal.Where(nf => nf.DocumentosRecibidos_Id == id).FirstOrDefault();
             string fileName = Path.GetFileName(comprobanteNoFiscal.PathS3);
 
             var stream = await _s3Downloader.DownloadFileAsync(comprobanteNoFiscal.PathS3);
@@ -1337,7 +1338,13 @@ namespace APBox.Controllers.Operaciones
             // Devuelve el archivo como un FileStreamResult
             return new FileStreamResult(stream, "application/vnd.ms-excel");
         }
-
+        private void UpdateDocRec(int documentoRecibidoId, int adjuntoId)
+        {
+            var documentoRecibido = _db.DocumentosRecibidos.Find(documentoRecibidoId);
+            documentoRecibido.AdjuntosId = adjuntoId;
+            _db.Entry(documentoRecibido).State = EntityState.Modified;
+            _db.SaveChanges();
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

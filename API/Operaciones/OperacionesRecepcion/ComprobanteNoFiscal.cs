@@ -13,8 +13,8 @@ namespace API.Operaciones.OperacionesProveedores
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int DocumentoRecibidoId { get; set; }
-        [ForeignKey("DocumentoRecibidoId")]
+        public int DocumentosRecibidos_Id { get; set; }
+        [ForeignKey("DocumentosRecibidos_Id")]
         public virtual DocumentoRecibido DocumentoRecibido { get; set; }
 
         public int SucursalId { get; set; }
