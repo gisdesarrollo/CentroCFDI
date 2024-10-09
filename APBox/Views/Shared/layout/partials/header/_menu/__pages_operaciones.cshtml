@@ -13,11 +13,11 @@
     if (usuario.esProveedor == true)
     {
         ViewBag.MiscomprobantesTitulo = "Mis Comprobantes";
-        ViewBag.MiscomprobanesUrl = "miscomprobantes";
-        ViewBag.MiscomprobanesTooltip = "Adminisitra los comprobates que has cargado";
+        ViewBag.MiscomprobantesUrl = "miscomprobantes";
+        ViewBag.MiscomprobantesTooltip = "Adminisitra los comprobates que has cargado";
 
-        ViewBag.TodoscomprobanesTitulo = "Todos los Comprobantes";
-        ViewBag.TodoscomprobanesUrl = "todoscomprobantes";
+        ViewBag.TodoscomprobantesTitulo = "Todos los Comprobantes";
+        ViewBag.TodoscomprobantesUrl = "todoscomprobantes";
         ViewBag.TodoscomprobantesTooltip = "Todos los Comprobantes";
 
     }
@@ -200,6 +200,8 @@
                                     </div>
                                     <!--end:Menu item-->
                                     <!--begin:Menu item-->
+                                   @if (ViewBag.AutorizarcomprobantesUrl != null)
+                                   {
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
                                         <a href="@Url.Action("Index", "DocumentosRecibidos", new { q = ViewBag.AutorizarcomprobantesUrl })" class="menu-link">
@@ -212,11 +214,12 @@
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
+                                   }
                                     <!--end:Menu item-->
                                     <!--begin:Menu item-->
                                     <div class="menu-item p-0 m-0">
                                         <!--begin:Menu link-->
-                                        <a href="@Url.Action("Index", "DocumentosRecibidos", new { q = ViewBag.TodoscomprobanesUrl })" class="menu-link">
+                                        <a href="@Url.Action("Index", "DocumentosRecibidos", new { q = ViewBag.TodoscomprobantesUrl })" class="menu-link">
                                             <span class="menu-title">@ViewBag.TodoscomprobantesTitulo</span>
                                             <i data-bs-toggle="tooltip" data-bs-title="@ViewBag.TodoscomprobantesTooltip" data-bs-placement="right" class="ki-duotone ki-information-2 fs-3">
                                                 <span class="path1"></span>
