@@ -254,31 +254,18 @@ namespace Aplicacion.LogicaPrincipal.ValidaExpediente
 
         public bool ValidEmision(DateTime fechaVencimiento,DateTime fechaDocumento)
         {
-            DateTime fechaMinima = fechaVencimiento.AddDays(-8);
-            DateTime fechaHoy = DateTime.Now;
-            DateTime fechaMinimaAlactual = fechaHoy.AddDays(-8);
+            DateTime fechaMinima = DateTime.Now.AddDays(-8);
+            DateTime fechaMaxima = DateTime.Now;
             bool valid = false;
-            if (fechaDocumento <= fechaHoy)
+            if (fechaDocumento <= fechaMaxima && fechaDocumento >= fechaMinima)
             {
                 valid = true;
             }
-
-            if (fechaDocumento < fechaMinima)
-            {
-                throw new Exception("Error: La fecha del documento está fuera del rango de vencimiento.");
-            }
-
-            if (fechaDocumento >= fechaMinima)
-            {
-                valid = true; 
-            }
-
-            if (fechaDocumento < fechaMinimaAlactual)
+            else
             {
                 throw new Exception("Error: La fecha del documento está fuera de rango.");
             }
-
-            return valid; 
+            return valid;
 
         }
 
