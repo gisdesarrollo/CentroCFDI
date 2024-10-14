@@ -120,7 +120,7 @@ namespace APBox.Controllers.Expedientes
                 }*/
                 if(expediente.ArchivoConstanciaSituacionFiscal == null || expediente.ArchivoOpinionCumplimientoSAT == null)
                 {
-                    TempData["Errores"] = new List<string> { "Error: Es requerido cargar los dos archivos." };
+                    TempData["Errores"] = new List<string> { "Es requerido cargar los dos archivos." };
                     return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
                 }
                 var expedienteExistentes = _db.ExpedientesFiscales
@@ -146,7 +146,7 @@ namespace APBox.Controllers.Expedientes
                         bool esCsf = _cSFExtrator.EsCsf(expediente.ArchivoConstanciaSituacionFiscal);
                         if (!esCsf)
                         {
-                            TempData["Errores"] = new List<string> { "Error: el archivo cargado no es una constancia de situación fiscal" };
+                            TempData["Errores"] = new List<string> { "El archivo que cargaste no se reconoce como una Constancia de Situación Fiscal." };
                             return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
                         }
                         infoFiscalCSF = _cSFExtrator.GetCadenaOriginalCsf(expediente.ArchivoConstanciaSituacionFiscal);
@@ -155,7 +155,7 @@ namespace APBox.Controllers.Expedientes
                             
                             if (infoFiscalCSF.TipoDocumento != "CONSTANCIA DE SITUACIÓN FISCAL")
                             {
-                                TempData["Errores"] = new List<string> { "Error : el archivo no cuenta con los datos sello digital" };
+                                TempData["Errores"] = new List<string> { "El archivo que cargaste no cuenta con los datos sello digital para validar." };
                                 return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
                             }
                             else { expediente.FechaDocumentoCsf = infoFiscalCSF.Fecha; }
@@ -166,7 +166,7 @@ namespace APBox.Controllers.Expedientes
                         bool esOcof = _cSFExtrator.EsOcof(expediente.ArchivoOpinionCumplimientoSAT);
                         if (!esOcof)
                         {
-                            TempData["Errores"] = new List<string> { "Error: el archivo cargado no es una opinión del cumplimiento de obligaciones fiscales" };
+                            TempData["Errores"] = new List<string> { "El archivo que cargaste no se reconoce como una Opinión de Cumplimiento de Obligaciones Fiscales." };
                             return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
                         }
 
@@ -177,7 +177,7 @@ namespace APBox.Controllers.Expedientes
                             
                             if (infoFiscalOCOF.EstatusCumplimiento != "P")
                             {
-                                TempData["Errores"] = new List<string> { "Error : el archivo no cuenta con estatus positivo" };
+                                TempData["Errores"] = new List<string> { "El archivo que cargaste no cuenta con una opinion positiva en el sello digital." };
                                 return RedirectToAction("Create", "ExpedientesFiscales", new { socioComercialId });
                             }
                             else { expediente.FechaDocumentoOcof = infoFiscalOCOF.FechaEmision; }

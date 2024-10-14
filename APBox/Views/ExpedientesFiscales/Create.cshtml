@@ -12,20 +12,74 @@
             @Html.HiddenFor(model => model.SucursalId)
             @Html.HiddenFor(model => model.FechaCreacion)
 
+            <div class="row">
+                <div class="pb-0">
+                    <!--begin::Information-->
+                    <!--begin::Alert-->
+                    <div class="alert bg-light-secondary border border-secondary d-flex flex-column flex-sm-row p-5 mb-10">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-calendar-8 fs-2hx text-info me-4 mb-5 mb-sm-0">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                            <span class="path4"></span>
+                            <span class="path5"></span>
+                            <span class="path6"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <!--begin::Title-->
+                            <h5 class="mb-1">Fecha de expedición de los documentos</h5>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>Cada documento que subas al expediente fiscal deberá haber sido expedido hace no más de 8 días.</span>
+                            <span>Esto con el fin de asegurar que los documentos subidos sean los solicitados</span>
+                            <span>y que hayan sido expedidos en fechas recientes.</span>
+
+                            <span>La validación se realiza a través de la cadena original de los documentos, por lo que deben ser los originales descargados directamente</span>
+                            <span>de la página del SAT.</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+
+                    </div>
+                    <!--end::Alert-->
+                    <!--end::Information-->
+                </div>
+            </div>
+
+            @if (errores != null && errores.Count > 0)
+            {
+                foreach (var error in errores)
+                {
+                    <!--begin::Alert-->
+                    <div class="alert alert-danger d-flex align-items-center p-5">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-shield-cross fs-2hx text-danger me-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column">
+                            <!--begin::Title-->
+                            <h4 class="mb-1 text-danger">Ocurrió un Error</h4>
+                            <!--end::Title-->
+                            <!--begin::Content-->
+                            <span>@error</span>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Alert-->
+                }
+            }
+
             <div class="form">
 
                 <div class="row">
-                    @if (errores != null && errores.Count > 0)
-                    {
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach (var error in errores)
-                                {
-                                    <li>@error</li>
-                                }
-                            </ul>
-                        </div>
-                    }
 
                     <div class="form-group col-4">
                         @Html.LabelFor(model => model.Mes, htmlAttributes: new { @class = "form-label" })
@@ -39,7 +93,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="form-group my-6 col-4">
+                    <div class="form-group my-6 col-4">
                         @Html.Label("Constancia de Situación Fiscal", htmlAttributes: new { @class = "form-label fw-semibold fs-6" })
                         <input class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" type="file" name="ArchivoConstanciaSituacionFiscal" id="ArchivoConstanciaSituacionFiscal" accept=".pdf, .PDF" />
                     </div>
