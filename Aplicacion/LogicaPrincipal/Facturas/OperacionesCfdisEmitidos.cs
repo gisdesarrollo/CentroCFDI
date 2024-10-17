@@ -27,6 +27,14 @@ namespace Aplicacion.LogicaPrincipal.Facturas
             facturasEmitidasModel.FacturaEmitidasTemporal = _db.FacturasEmitidasTemp.Where(fe => fe.EmisorId == sucursalId && fe.Fecha >= fechaInicial && fe.Fecha < fechaFinal).ToList();
             
         }
+        public void ObtenerFacturasPago(ref FacturasEmitidasModel facturasEmitidasModel)
+        {
+            var fechaInicial = facturasEmitidasModel.FechaInicial;
+            var fechaFinal = facturasEmitidasModel.FechaFinal.AddDays(1); //SE AGREGA UN DIA A LA FECHA FINAL
+            var sucursalId = facturasEmitidasModel.SucursalId;
+            facturasEmitidasModel.FacturaEmitidasTemporal = _db.FacturasEmitidasTemp.Where(fe => fe.EmisorId == sucursalId && fe.TipoComprobante == API.Enums.c_TipoDeComprobante.P && fe.Fecha >= fechaInicial && fe.Fecha < fechaFinal).ToList();
+
+        }
 
         public void Cancelar(FacturaEmitida facturaEmitida)
         {

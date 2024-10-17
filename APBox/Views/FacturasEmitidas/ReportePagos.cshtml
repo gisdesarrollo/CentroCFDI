@@ -2,14 +2,12 @@
 @{
     ViewBag.Title = "Reporte Facturas con Pago";
 }
-
 <div class="card card-flush py-4">
     <!--begin::Card body-->
     <div class="card-body">
         <h2 class="card-title">Reporte de Facturas con Pago</h2>
     </div>
     <!--end::Card body-->
-    
     <!--begin::Card body-->
 
     <div class="card-body pt-0">
@@ -18,257 +16,310 @@
         {
             @Html.AntiForgeryToken()
 
-        <div class="form">
+            <div class="form">
 
-            @Html.HiddenFor(model => model.SucursalId)
+                @Html.HiddenFor(model => model.SucursalId)
 
-            <div class="sub-title">
-                <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
-            </div>
-            <div class="row">
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    <span class="input-group-addon">Fecha Inicial</span>
-                    @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                    @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                <div class="sub-title">
+                    <span class="fa fa-bars text-muted"></span> Periodos de Tiempo
                 </div>
-
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    <span class="input-group-addon">Fecha Final</span>
-                    @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
-                    @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
-                </div>
-            </div>
-
-            <div class="clearfix"></div>
-            <div class="separator my-5"></div>
-            
-            <br />
-            <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                <div class="card-title">
-                    <!--begin::Search-->
-                    <div class="d-flex align-items-center position-relative my-1">
-                        <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
-                        <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
-                    </div>
-                    <!--end::Search-->
-                    <!--begin::Export buttons-->
-                    <div id="kt_datatable_example_1_export" class="d-none"></div>
-                    <!--end::Export buttons-->
-                </div>
-                <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                    <!--begin::Export dropdown-->
-                    <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                        <i class="fa fa-file-export"></i>
-                        Exportar
-                    </button>
-                    <!--begin::Menu-->
-                    <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-export="copy">
-                                Copiar a portapapeles
-                            </a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-export="excel">
-                                Exportar a Excel
-                            </a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-export="csv">
-                                Exportar a CSV
-                            </a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-export="pdf">
-                                Exportar a PDF
-                            </a>
-                        </div>
-                        <!--end::Menu item-->
-                    </div>
-                    <!--end::Menu-->
-                    <!--end::Export dropdown-->
-                    <!--begin::Hide default export buttons-->
-                    <div id="kt_datatable_example_buttons" class="d-none"></div>
-                    <!--end::Hide default export buttons-->
-                </div>
-            </div>
-            <div class="container" style="width:102%">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="table-responsive">
-                            <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
-                                <thead>
-                                    <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
-                                        <th class="min-w-100px">
-                                            Rfc
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Razon Social
-                                        </th>
-                                        <th class="min-w-100px">
-                                            UUID
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Serie
-                                        </th>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <span class="input-group-addon">Fecha Inicial</span>
+                        @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+                    </div>
 
-                                        <th class="min-w-100px">
-                                            Folio
-                                        </th>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <span class="input-group-addon">Fecha Final</span>
+                        @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control mb-2" } })
+                        @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                    </div>
+                </div>
 
-                                        <th class="min-w-100px">
-                                            Fecha
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Moneda
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Tipo de Cambio
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Metodo Pago
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Forma de Pago
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Uso Cfdi
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Subtotal
-                                        </th>
+                <div class="clearfix"></div>
+                <div class="separator my-5"></div>
 
-                                        <th class="min-w-100px">
-                                            Descuento
-                                        </th>
-                                        <th>
-                                            Total Impuestos Trasladados
-                                        </th>
-                                        <th>
-                                            Total Impuestos Retenidos
-                                        </th>
-                                        <th class="min-w-100px">
-                                            Total
-                                        </th>
-                                        <th>
-                                            Tipo Comprobante
-                                        </th>
+                <br />
+                <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+                    <div class="card-title">
+                        <!--begin::Search-->
+                        <div class="d-flex align-items-center position-relative my-1">
+                            <i class="fa fa-magnifying-glass position-absolute ms-4"></i>
+                            <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Buscar" />
+                        </div>
+                        <!--end::Search-->
+                        <!--begin::Export buttons-->
+                        <div id="kt_datatable_example_1_export" class="d-none"></div>
+                        <!--end::Export buttons-->
+                    </div>
+                    <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                        <!--begin::Export dropdown-->
+                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <i class="fa fa-file-export"></i>
+                            Exportar
+                        </button>
+                        <!--begin::Menu-->
+                        <div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="copy">
+                                    Copiar a portapapeles
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="excel">
+                                    Exportar a Excel
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="csv">
+                                    Exportar a CSV
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="#" class="menu-link px-3" data-kt-export="pdf">
+                                    Exportar a PDF
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                        </div>
+                        <!--end::Menu-->
+                        <!--end::Export dropdown-->
+                        <!--begin::Hide default export buttons-->
+                        <div id="kt_datatable_example_buttons" class="d-none"></div>
+                        <!--end::Hide default export buttons-->
+                    </div>
+                </div>
+                <div class="container" style="width:102%">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table align-middle rounded table-row-dashed fs-6 g-5" id="kt_datatable">
+                                    <thead>
+                                        <tr class="text-start text-gray-600 fw-bold fs-7 text-uppercase">
+                                            <th class="min-w-100px">
+                                                Rfc
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Razon Social
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Version
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Serie
+                                            </th>
 
-                                       
+                                            <th class="min-w-100px">
+                                                Folio
+                                            </th>
 
-                                    </tr>
-                                </thead>
+                                            <th class="min-w-100px">
+                                                Fecha
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Monto TotalPagos
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total TrasladosBaseIVA16
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total TrasladosImpuestoIVA16
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total TrasladosBaseIVA8
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total TrasladosImpuestosIVA8
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total TrasladosBaseIVA0
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total TrasladosImpuestosIVA0
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total TrasladosBaseIVAExento
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total RetencionesIVA
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total RetencionesISR
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Total RetencionesIEPS
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Id DocumentoDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                SerieDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                FolioDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                EquivalenciaDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                MonedaDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Importe Saldo AnteriorDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Importe PagadoDr
+                                            </th>
+                                            <th>
+                                                Importe Saldo InsolutoDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Objeto ImpuestoDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Traslado baseDR
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Traslado ImpuestoDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Traslado TasaOCuotaDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Traslado TipoFactorDr
+                                            </th>
+                                            <th class="min-w-100px">
+                                                Traslado ImporteDr
+                                            </th>
+                                        </tr>
+                                    </thead>
 
-                                <tbody>
-                                    @{
-                                        var db = new APBox.Context.APBoxContext();
-                                    }
-                                    @foreach (var item in Model.FacturaEmitidasTemporal)
-                                    {
-
-                                        if (item.TipoComprobante.ToString() == "P")
+                                    <tbody>
+                                        @if (Model.DataPagosDocRelDtos != null)
                                         {
+                                            var db = new APBox.Context.APBoxContext();
+                                            foreach (var data in Model.DataPagosDocRelDtos)
                                             {
-                                                var receptor = db.SociosComerciales.Find(item.ReceptorId);
-                                                var facturaEmitida = db.FacturasEmitidas.Find(item.Id);
+                                                var totalPagoImpuesto = db.TotalesPagosImpuestos.Find(data.TotalPagoImpuestoId);
+                                                <tr class="odd">
+                                                    <td>
+                                                        @data.Rfc
+                                                    </td>
+                                                    <td>
+                                                        @data.RazonSocial
+                                                    </td>
+                                                    <td>
+                                                        @data.Version
+                                                    </td>
+                                                    <td>
+                                                        @data.Serie
+                                                    </td>
+                                                    <td>
+                                                        @data.Folio
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => data.Fecha)
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.MontoTotalPagos
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalTrasladosBaseIVA16
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalTrasladosImpuestoIVA16
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalTrasladosBaseIVA8
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalTrasladosImpuestoIVA8
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalTrasladosBaseIVA0
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalTrasladosImpuestoIVA0
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalTrasladosBaseIVAExento
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalRetencionesIVA
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalRetencionesISR
+                                                    </td>
+                                                    <td>
+                                                        @totalPagoImpuesto.TotalRetencionesIEPS
+                                                    </td>
+                                                    <td>
+                                                        @data.IdDocumentoDr
+                                                    </td>
+                                                    <td>
+                                                        @data.SerieDr
+                                                    </td>
+                                                    <td>
+                                                        @data.FolioDr
+                                                    </td>
+                                                    <td>
+                                                        @data.EquivalenciaDr
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => data.MonedaDr)
+                                                    </td>
+                                                    <td>
+                                                        @data.ImporteSaldoAnteriorDr
+                                                    </td>
+                                                    <td>
+                                                        @data.ImportePagadoDr
+                                                    </td>
 
-                                            <tr class="odd">
-                                                <td>
-                                                    @receptor.Rfc
-                                                </td>
+                                                    <td>
+                                                        @data.ImporteSaldoInsolutoDr
+                                                    </td>
+                                                    <td>
+                                                        @data.ObjetoImpuestoDR
+                                                    </td>
+                                                    <td>
+                                                        @data.BaseDr
+                                                    </td>
+                                                    <td>
+                                                        @data.ImpuestoDr
+                                                    </td>
+                                                    <td>
+                                                        @data.TasaOCuotaDr
+                                                    </td>
+                                                    <td>
+                                                        @data.TipoFactorDr
+                                                    </td>
+                                                    <td>
+                                                        @data.ImporteDr
+                                                    </td>
+                                                </tr>
 
-                                                <td>
-                                                    @receptor.RazonSocial
-                                                </td>
-                                                <td>
-                                                    @item.Uuid
-                                                </td>
-                                                <td>
-                                                    @item.Serie
-                                                </td>
+                                            }
 
-                                                <td>
-                                                    @item.Folio
-                                                </td>
-
-
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Fecha)
-                                                </td>
-
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Moneda)
-
-                                                </td>
-
-                                                <td>
-                                                    @facturaEmitida.TipoCambio.ToString()
-                                                </td>
-                                                <td>
-                                                    @facturaEmitida.MetodoPago.ToString()
-                                                </td>
-                                                <td>
-                                                    @facturaEmitida.FormaPago
-                                                </td>
-                                                <td>
-                                                    @facturaEmitida.Receptor.UsoCfdi
-                                                </td>
-                                                @{
-//var db = new APBox.Context.APBoxContext();
-//var pagos = db.ComplementosPago.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-//var cartaPorte = db.ComplementoCartaPortes.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-//var comprobanteCfdi = db.ComprobantesCfdi.Where(p => p.FacturaEmitidaId == item.Id).FirstOrDefault();
-
-                                                }
-
-                                                <td>
-                                                    @facturaEmitida.Subtotal
-                                                </td>
-                                                <td>
-                                                    @facturaEmitida.Descuento
-                                                </td>
-
-                                                <td class="text-right">
-
-                                                    @facturaEmitida.TotalImpuestosTrasladados
-
-                                                </td>
-                                                <td class="text-right">
-
-                                                    @facturaEmitida.TotalImpuestosRetenidos
-
-                                                </td>
-                                                <td class="text-right">
-                                                    @item.Total
-                                                </td>
-
-                                                <td class="text-center">
-                                                    @item.TipoComprobante
-                                                </td>
-
-                                              
-
-                                            </tr>
-                                                            }
-                                                        }
-                                                    }
-                                </tbody>
-                            </table>
+                                        }
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         }
     </div>

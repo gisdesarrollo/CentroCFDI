@@ -11,6 +11,7 @@ using APBox.Context;
 using API.Enums;
 using API.Models.Dto;
 using API.Models.Facturas;
+using API.Operaciones.ComplementosPagos;
 using API.Operaciones.Facturacion;
 using Aplicacion.LogicaPrincipal.Descargas;
 using Aplicacion.LogicaPrincipal.Facturas;
@@ -563,25 +564,61 @@ namespace APBox.Controllers.Catalogos
             facturasEmitidasModel.FechaInicial = fechaInicial;
             facturasEmitidasModel.FechaFinal = fechaFinal;
 
-            _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+            _operacionesCfdisEmitidos.ObtenerFacturasPago(ref facturasEmitidasModel);
 
             isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
 
             if (isEmpty)
             {
-                /*if (facturasEmitidasModel.SucursalId == 42)
+                List<DataPagosDocRelDto> dataPagosDocRelDto = new List<DataPagosDocRelDto>();
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                 {
-                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                    var socioComercial = _db.SociosComerciales.Find(facturasEmitidas.ReceptorId);
+                    List<search_pago_fac_emit> queryPagos = GetPagosFacEmi(facturasEmitidas.Id);
+                    if (queryPagos.Any())
                     {
-                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
-                        if (queryFacturas != null)
+                        foreach (var pago in queryPagos)
                         {
-                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
-                            //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                            //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                            List<DocumentoRelacionadoDto> queryDr = GetDocumentoRelacionadoPago(pago.Id);
+                            if (queryDr.Any())
+                            {
+
+                                foreach (var dr in queryDr)
+                                {
+                                    var data = new DataPagosDocRelDto
+                                    {
+                                        Rfc = socioComercial.Rfc,
+                                        RazonSocial = socioComercial.RazonSocial,
+                                        Version = pago.Version,
+                                        Serie = facturasEmitidas.Serie,
+                                        Folio = facturasEmitidas.Folio,
+                                        Fecha = facturasEmitidas.Fecha,
+                                        TotalPagoImpuestoId = pago.TotalesPagoImpuestoId,
+                                        IdDocumentoDr = dr.IdDocumento,
+                                        SerieDr = dr.Serie,
+                                        FolioDr = dr.Folio,
+                                        EquivalenciaDr = dr.EquivalenciaDR,
+                                        MonedaDr = dr.Moneda,
+                                        ImporteSaldoAnteriorDr = dr.ImporteSaldoAnterior,
+                                        ImportePagadoDr = dr.ImportePagado,
+                                        ImporteSaldoInsolutoDr = dr.ImporteSaldoInsoluto,
+                                        ObjetoImpuestoDR = dr.ObjetoImpuestoId,
+                                        BaseDr = dr.Base,
+                                        ImpuestoDr = dr.Impuesto,
+                                        TasaOCuotaDr = dr.TasaOCuota,
+                                        TipoFactorDr = dr.TipoFactor,
+                                        ImporteDr = dr.Importe,
+                                    };
+                                    dataPagosDocRelDto.Add(data);
+                                }
+
+                            }
                         }
+
                     }
-                }*/
+
+                }
+                facturasEmitidasModel.DataPagosDocRelDtos = dataPagosDocRelDto;
             }
 
             ViewBag.Controller = "FacturasEmitidas";
@@ -593,7 +630,7 @@ namespace APBox.Controllers.Catalogos
         }
 
         [HttpPost]
-        public ActionResult ReportePagos(FacturasEmitidasModel facturasEmitidasModel )
+        public ActionResult ReportePagos(FacturasEmitidasModel facturasEmitidasModel)
         {
 
             bool isEmpty;
@@ -605,25 +642,63 @@ namespace APBox.Controllers.Catalogos
             facturasEmitidasModel.FechaFinal = fechaFinal;
             if (ModelState.IsValid)
             {
-                _operacionesCfdisEmitidos.ObtenerFacturas(ref facturasEmitidasModel);
+                _operacionesCfdisEmitidos.ObtenerFacturasPago(ref facturasEmitidasModel);
             }
             isEmpty = facturasEmitidasModel.FacturaEmitidasTemporal.Any();
 
             if (isEmpty)
             {
-                /*if (facturasEmitidasModel.SucursalId == 42)
+
+                List<DataPagosDocRelDto> dataPagosDocRelDto = new List<DataPagosDocRelDto>();
+                foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
                 {
-                    foreach (var facturasEmitidas in facturasEmitidasModel.FacturaEmitidasTemporal)
+                    var socioComercial = _db.SociosComerciales.Find(facturasEmitidas.ReceptorId);
+                    List<search_pago_fac_emit> queryPagos = GetPagosFacEmi(facturasEmitidas.Id);
+                    if (queryPagos.Any())
                     {
-                        facturareferencia queryFacturas = facturaidferencia(facturasEmitidas.Id);
-                        if (queryFacturas != null)
+                        foreach (var pago in queryPagos)
                         {
-                            facturasEmitidas.Referencia = queryFacturas.ReferenciaAddenda;
-                            //facturasEmitidas.TotalImpRetenidos = queryFacturas.TotalImpuestoRetenidos;
-                            //facturasEmitidas.TotalImpTrasladados = queryFacturas.TotalImpuestoTrasladado;
+                            List<DocumentoRelacionadoDto> queryDr = GetDocumentoRelacionadoPago(pago.Id);
+                            if (queryDr.Any())
+                            {
+
+                                foreach (var dr in queryDr)
+                                {
+                                    var data = new DataPagosDocRelDto
+                                    {
+                                        Rfc = socioComercial.Rfc,
+                                        RazonSocial = socioComercial.RazonSocial,
+                                        Version = pago.Version,
+                                        Serie = facturasEmitidas.Serie,
+                                        Folio = facturasEmitidas.Folio,
+                                        Fecha = facturasEmitidas.Fecha,
+                                        TotalPagoImpuestoId = pago.TotalesPagoImpuestoId,
+                                        IdDocumentoDr = dr.IdDocumento,
+                                        SerieDr = dr.Serie,
+                                        FolioDr = dr.Folio,
+                                        EquivalenciaDr = dr.EquivalenciaDR,
+                                        MonedaDr = dr.Moneda,
+                                        ImporteSaldoAnteriorDr = dr.ImporteSaldoAnterior,
+                                        ImportePagadoDr = dr.ImportePagado,
+                                        ImporteSaldoInsolutoDr = dr.ImporteSaldoInsoluto,
+                                        ObjetoImpuestoDR = dr.ObjetoImpuestoId,
+                                        BaseDr = dr.Base,
+                                        ImpuestoDr = dr.Impuesto,
+                                        TasaOCuotaDr = dr.TasaOCuota,
+                                        TipoFactorDr = dr.TipoFactor,
+                                        ImporteDr = dr.Importe,
+                                    };
+                                    dataPagosDocRelDto.Add(data);
+                                }
+
+                            }
                         }
+
                     }
-                }*/
+
+                }
+                facturasEmitidasModel.DataPagosDocRelDtos = dataPagosDocRelDto;
+
             }
 
             ViewBag.Controller = "FacturasEmitidas";
@@ -631,8 +706,6 @@ namespace APBox.Controllers.Catalogos
             ViewBag.ActionES = "Reporte Pago";
             ViewBag.Title = "reportes";
             return View(facturasEmitidasModel);
-
-
 
         }
 
@@ -674,6 +747,33 @@ namespace APBox.Controllers.Catalogos
 
             return consulta;
         }
+        public List<search_pago_fac_emit> GetPagosFacEmi(int id)
+        {
+            var documentoRelacionadoDto = new DocumentoRelacionadoDto();
+            const string query = @"select p.Id,p.Monto,cp.Version,cp.TotalesPagoImpuestoId from ori_pagos p " +
+                        "join ori_complementospagos cp on(p.ComplementoPagoId = cp.Id) " +
+                        "join ori_facturasemitidas fe on (cp.FacturaEmitidaId = fe.Id) " +
+                        "where fe.Id in (@Id); ";
+
+            var consulta = _db.Database.SqlQuery<search_pago_fac_emit>(query,
+                    new MySqlParameter { ParameterName = "@Id", MySqlDbType = MySqlDbType.String, Value = id }).ToList();
+
+            return consulta;
+        }
+
+        public List<DocumentoRelacionadoDto> GetDocumentoRelacionadoPago(int id)
+        {
+            const string query = @"select dr.IdDocumento,dr.Serie,dr.Folio,dr.Moneda,dr.EquivalenciaDR,dr.ObjetoImpuestoId,dr.ImporteSaldoAnterior,dr.ImportePagado,dr.ImporteSaldoInsoluto," +
+                        "tr.Base,tr.Impuesto,tr.TipoFactor,tr.TasaOCuota,tr.Importe " +
+                        "from ori_documentosrelacionados dr " +
+                        "left join ori_trasladodocrel tr on(dr.Id = tr.DocRelacionadoId) " +
+                        "where dr.PagoId in (@Id); ";
+
+            var consulta = _db.Database.SqlQuery<DocumentoRelacionadoDto>(query,
+                    new MySqlParameter { ParameterName = "@Id", MySqlDbType = MySqlDbType.String, Value = id }).ToList();
+
+            return consulta;
+        }
 
         public class facturareferencia
         {
@@ -686,6 +786,14 @@ namespace APBox.Controllers.Catalogos
             public double TotalImpuestoRetenidos { get; set; }
 
             public Status Status { get; set; }
+        }
+
+        public class search_pago_fac_emit
+        {
+            public int Id { get; set; }
+            public double Monto { get; set; }
+            public string Version { get; set; }
+            public int TotalesPagoImpuestoId { get; set; }
         }
 
         private void PopulaMotivoCancelacion()

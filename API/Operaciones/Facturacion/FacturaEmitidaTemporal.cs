@@ -1,5 +1,7 @@
 ﻿using API.Enums;
+using API.Models.Dto;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,5 +46,8 @@ namespace API.Operaciones.Facturacion
 
         [NotMapped]
         public string MotivoCancelacion { get; set; }
+
+        [NotMapped]
+        public List<DataPagosDocRelDto> DataPagosDocRelDto { get; set; }  
     }
 }
